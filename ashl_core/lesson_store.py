@@ -112,3 +112,21 @@ def find_applicable_lesson(lessons: list[dict[str, Any]], goal: dict[str, Any]) 
         ):
             return lesson
     return None
+
+
+def select_lesson_for_failure_reason(lessons: list[dict[str, Any]], failure_reason: str) -> dict[str, Any]:
+    matches = [
+        lesson
+        for lesson in list_active_lessons(lessons)
+        if lesson.get("source_failure_reason") == failure_reason
+    ]
+    selected = matches[0] if len(matches) == 1 else None
+    return {
+        "type": "lesson_selection_result",
+        "active_lesson_ids": [lesson.get("lesson_id") for lesson in list_active_lessons(lessons)],
+        "matched_failure_reason": failure_reason,
+        "selected_lesson_id": selected.get("lesson_id") if selected else None,
+        "selected_action": selected.get("suggested_action_before_retry") if selected else None,
+        "selected_lesson": selected,
+        "conflict_detected": False,
+    }

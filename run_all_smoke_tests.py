@@ -33,7 +33,12 @@ from ashl_core.lesson_runner import (
     run_phase_minus_one_negative_controls,
     run_session_2b2_without_lesson_with_turn_tool,
 )
-from ashl_core.lesson_store import build_lesson_from_failure, find_applicable_lesson, generate_lesson_from_failure
+from ashl_core.lesson_store import (
+    build_lesson_from_failure,
+    find_applicable_lesson,
+    generate_lesson_from_failure,
+    select_lesson_for_failure_reason,
+)
 from ashl_core.memory_layers import (
     append_archive_memory,
     append_long_term_memory,
@@ -292,6 +297,37 @@ def smoke_second_known_failure_reason_determinism() -> dict:
         and "turn(east)" not in str(normalized[0])
     )
     return _result("second_known_failure_reason_determinism", passed, {"normalized_lesson": normalized[0]})
+
+
+def smoke_multi_lesson_isolation() -> dict:
+    east_failure = pick_up(build_initial_sandbox_state(), "cube_001")
+    west_failure = {
+        "type": "sandbox_action_result",
+        "tool": "pick_up",
+        "object_id": "cube_001",
+        "result": "failed",
+        "failure_reason": "not_facing_west",
+        "state": build_initial_sandbox_state(),
+    }
+    lessons = [
+        build_lesson_from_failure("session_east", east_failure),
+        build_lesson_from_failure("session_west", west_failure),
+    ]
+    east = select_lesson_for_failure_reason(lessons, "not_facing_east")
+    west = select_lesson_for_failure_reason(lessons, "not_facing_west")
+    passed = (
+        east["active_lesson_ids"] == ["lesson_001", "lesson_002"]
+        and east["selected_lesson_id"] == "lesson_001"
+        and east["selected_action"] == "turn(east)"
+        and "turn(west)" not in str(east)
+        and east["conflict_detected"] is False
+        and west["active_lesson_ids"] == ["lesson_001", "lesson_002"]
+        and west["selected_lesson_id"] == "lesson_002"
+        and west["selected_action"] == "turn(west)"
+        and "turn(east)" not in str(west)
+        and west["conflict_detected"] is False
+    )
+    return _result("multi_lesson_isolation", passed, {"east": east, "west": west})
 
 
 def smoke_teaching_cli() -> dict:
@@ -622,6 +658,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_unknown_failure_reason_boundary(),
         smoke_teaching_cli(),
         smoke_second_known_failure_reason_determinism(),
+        smoke_multi_lesson_isolation(),
         smoke_state_persistence(),
         smoke_concept_layer(),
         smoke_state_core(),

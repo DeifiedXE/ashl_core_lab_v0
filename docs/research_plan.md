@@ -166,6 +166,23 @@ v1.7c 不證明 multi-lesson conflict，不證明 priority，不證明 open-ende
 - v1.9c CLI conflict_check 補真實檢查：延後
 - v2.0 Stale / Supersede：延後
 
+## Multi-lesson Isolation
+
+v1.9a Multi-lesson Isolation Test 驗證 `lesson_001` 與 `lesson_002` 可以同時存在，且在不衝突情境下互不干擾。
+east case 只應選 `lesson_001 -> turn(east)`；west case 只應選 `lesson_002 -> turn(west)`；兩者都不得交叉觸發，也不得出現 `conflict_detected = true`。
+v1.9a 不證明 conflict detection，不證明 priority，不做 require_review，不做 stale / supersede，也不更新 CLI 的 `conflict_check = not_implemented`。
+
+目前順序：
+- v1.6 Phase -1.2 Lesson Causality Test：已完成
+- v1.7a Known Failure Reason Determinism Test：已完成
+- v1.7b Unknown Failure Reason Boundary Test：已完成
+- v1.8 Minimal Teaching CLI：已完成
+- v1.7c Second Known Failure Reason Determinism Test：已完成
+- v1.9a Multi-lesson Isolation Test：本包
+- v1.9b Conflict Detection / Require Review：下一步
+- v1.9c CLI conflict_check 補真實檢查：延後
+- v2.0 Stale / Supersede：延後
+
 ## Minimal Teaching CLI
 
 v1.8 Minimal Teaching CLI 是既有 lesson flow 的命令列 wrapper。

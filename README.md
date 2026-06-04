@@ -18,6 +18,7 @@ ASHL Core Lab 是 ASHL Core／D清音 的最小 Python 實驗專案，用來驗�
 - v1.7b Unknown Failure Reason Boundary Test
 - v1.8 Minimal Teaching CLI
 - v1.7c Second Known Failure Reason Determinism Test
+- v1.9a Multi-lesson Isolation Test
 - Integrated Loop v0.1
 - Persistent Candidate Layer v0.2
 - Correction Label v0.3
@@ -211,6 +212,28 @@ v1.7c 新增第二條 known failure_reason 的穩定基準。
 - v1.7c Second Known Failure Reason Determinism Test：本包
 - v1.9a Multi-lesson Isolation Test：下一步
 - v1.9b Conflict Detection / Require Review：延後
+- v1.9c CLI conflict_check 補真實檢查：延後
+- v2.0 Stale / Supersede：延後
+
+## v1.9a Multi-lesson Isolation Test
+
+v1.9a 只驗證多條已知 lesson 在不衝突情境下可共存且互不干擾。
+- `lesson_001` 來源為 `not_facing_east`，action 為 `turn(east)`。
+- `lesson_002` 來源為 `not_facing_west`，action 為 `turn(west)`。
+- east case 只觸發 east lesson，不產生 `turn(west)`。
+- west case 只觸發 west lesson，不產生 `turn(east)`。
+- `conflict_detected = false`。
+- 本包不做 conflict detection、priority、require_review、stale / supersede。
+- 不更新 CLI 的 `conflict_check = not_implemented`。
+
+目前順序：
+- v1.6 Phase -1.2 Lesson Causality Test：已完成
+- v1.7a Known Failure Reason Determinism Test：已完成
+- v1.7b Unknown Failure Reason Boundary Test：已完成
+- v1.8 Minimal Teaching CLI：已完成
+- v1.7c Second Known Failure Reason Determinism Test：已完成
+- v1.9a Multi-lesson Isolation Test：本包
+- v1.9b Conflict Detection / Require Review：下一步
 - v1.9c CLI conflict_check 補真實檢查：延後
 - v2.0 Stale / Supersede：延後
 
