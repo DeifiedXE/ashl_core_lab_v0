@@ -223,6 +223,20 @@ v1.9d 不證明 stale，不證明 supersede，不證明 priority，不新增 req
 - v2.0b Supersede Link：延後
 - v2.0c CLI lifecycle display：延後
 
+## Manual Stale Marking
+
+v2.0a Manual Stale Marking 只採用人工標記 stale。
+lesson 保留 `status = active`，但 `stale = true` 時 selection helper 會跳過它，trace 記錄 `skipped_reason = stale`。
+取消 stale 後，lesson 可恢復選用，並接回既有單 lesson 因果控制。
+v2.0a 不做自動 stale，不做時間過期，不做 unused-count / failure-count stale，不做 supersede，不更新 CLI lifecycle display。
+
+目前順序：
+- v1.9d Cross-task Shared Prerequisite Isolation Test：已完成
+- v2.0a Manual Stale Marking：本包
+- v2.0b Supersede Link：下一步
+- v2.0c CLI lifecycle display：延後
+- v2.1 Stale / Supersede activation behavior：延後
+
 ## Minimal Teaching CLI
 
 v1.8 Minimal Teaching CLI 是既有 lesson flow 的命令列 wrapper。

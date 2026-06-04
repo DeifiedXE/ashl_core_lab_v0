@@ -22,6 +22,7 @@ ASHL Core Lab 是 ASHL Core／D清音 的最小 Python 實驗專案，用來驗�
 - v1.9b Conflict Detection / Require Review
 - v1.9c CLI conflict_check 真實檢查
 - v1.9d Cross-task Shared Prerequisite Isolation Test
+- v2.0a Manual Stale Marking
 - Integrated Loop v0.1
 - Persistent Candidate Layer v0.2
 - Correction Label v0.3
@@ -296,6 +297,23 @@ v1.9d 驗證 selection helper 可區分不同 task / object，即使多條 lesso
 - v2.0a Manual Stale Marking：下一步
 - v2.0b Supersede Link：延後
 - v2.0c CLI lifecycle display：延後
+
+## v2.0a Manual Stale Marking
+
+v2.0a 只證明人工 stale 標記會讓 lesson 被 selection helper 跳過，且取消 stale 後可恢復原本因果控制。
+- stale 使用 `stale = true`，保留 `status = active`。
+- stale lesson 不會被選用，不產生 selected action。
+- trace 會記錄 `skipped_reason = stale`。
+- 取消 stale 後 `lesson_001 -> turn(east)` 可恢復。
+- stale lesson 不參與 conflict 判斷。
+- 本包不做自動 stale、時間過期、unused-count、failure-count、supersede 或 CLI lifecycle display。
+
+目前順序：
+- v1.9d Cross-task Shared Prerequisite Isolation Test：已完成
+- v2.0a Manual Stale Marking：本包
+- v2.0b Supersede Link：下一步
+- v2.0c CLI lifecycle display：延後
+- v2.1 Stale / Supersede activation behavior：延後
 
 ## Correction / Rule / Trial Flow
 

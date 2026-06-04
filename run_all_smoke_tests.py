@@ -39,9 +39,11 @@ from ashl_core.lesson_store import (
     enable_lesson,
     find_applicable_lesson,
     generate_lesson_from_failure,
+    mark_lesson_stale,
     select_lesson_for_decision_point,
     select_lesson_for_failure_reason,
     select_lesson_for_context,
+    unmark_lesson_stale,
 )
 from ashl_core.memory_layers import (
     append_archive_memory,
@@ -420,6 +422,41 @@ def smoke_cross_task_shared_prerequisite_isolation() -> dict:
     )
 
 
+def smoke_manual_stale_marking() -> dict:
+    lesson = build_lesson_from_failure("session_east", pick_up(build_initial_sandbox_state(), "cube_001"))
+    lesson["object_id"] = "cube_001"
+    stale_lesson = mark_lesson_stale(lesson)
+    context = {"task": "pick_up", "object_id": "cube_001", "decision_point": "before_retry_pick_up_cube"}
+    stale_result = select_lesson_for_context([stale_lesson], context)
+    restored_result = select_lesson_for_context([unmark_lesson_stale(stale_lesson)], context)
+    west_failure = {
+        "type": "sandbox_action_result",
+        "tool": "pick_up",
+        "object_id": "cube_001",
+        "result": "failed",
+        "failure_reason": "not_facing_west",
+        "state": build_initial_sandbox_state(),
+    }
+    west_lesson = build_lesson_from_failure("session_west", west_failure)
+    conflict_result = select_lesson_for_decision_point([stale_lesson, west_lesson], "before_retry_pick_up_cube")
+    passed = (
+        stale_result["selected_lesson_id"] is None
+        and stale_result["selected_action"] is None
+        and stale_result["skipped_lessons"] == [{"lesson_id": "lesson_001", "skipped_reason": "stale"}]
+        and stale_result["conflict_detected"] is False
+        and stale_result["behavior_changed"] is False
+        and restored_result["selected_lesson_id"] == "lesson_001"
+        and restored_result["selected_action"] == "turn(east)"
+        and conflict_result["conflict_detected"] is False
+        and conflict_result["selected_lesson_id"] == "lesson_002"
+    )
+    return _result(
+        "manual_stale_marking",
+        passed,
+        {"stale": stale_result, "restored": restored_result, "conflict": conflict_result},
+    )
+
+
 def smoke_teaching_cli() -> dict:
     known = run_known_flow()
     unknown = run_unknown_flow()
@@ -772,6 +809,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_conflict_detection_require_review(),
         smoke_teaching_cli_conflict_check(),
         smoke_cross_task_shared_prerequisite_isolation(),
+        smoke_manual_stale_marking(),
         smoke_state_persistence(),
         smoke_concept_layer(),
         smoke_state_core(),

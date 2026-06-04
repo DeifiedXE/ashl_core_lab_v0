@@ -75,6 +75,32 @@ def list_active_lessons(lessons: list[dict[str, Any]]) -> list[dict[str, Any]]:
     return [lesson for lesson in lessons if lesson.get("status") == "active"]
 
 
+def list_selectable_lessons(lessons: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    return [lesson for lesson in list_active_lessons(lessons) if lesson.get("stale") is not True]
+
+
+def _stale_skips(lessons: list[dict[str, Any]]) -> list[dict[str, str]]:
+    return [
+        {"lesson_id": lesson.get("lesson_id"), "skipped_reason": "stale"}
+        for lesson in list_active_lessons(lessons)
+        if lesson.get("stale") is True
+    ]
+
+
+def set_lesson_stale(lesson: dict[str, Any], stale: bool) -> dict[str, Any]:
+    updated = dict(lesson)
+    updated["stale"] = bool(stale)
+    return updated
+
+
+def mark_lesson_stale(lesson: dict[str, Any]) -> dict[str, Any]:
+    return set_lesson_stale(lesson, True)
+
+
+def unmark_lesson_stale(lesson: dict[str, Any]) -> dict[str, Any]:
+    return set_lesson_stale(lesson, False)
+
+
 def set_lesson_status(lesson: dict[str, Any], status: str) -> dict[str, Any] | None:
     if status not in VALID_LESSON_STATUSES:
         return None
@@ -102,7 +128,7 @@ def find_applicable_lesson(lessons: list[dict[str, Any]], goal: dict[str, Any]) 
     if goal.get("object_id") != "cube_001":
         return None
 
-    for lesson in list_active_lessons(lessons):
+    for lesson in list_selectable_lessons(lessons):
         trigger = lesson.get("trigger", {})
         condition = lesson.get("condition", {})
         # Phase -1.1 keeps target_type metadata but uses strict object binding to avoid premature generalization.
@@ -118,13 +144,14 @@ def find_applicable_lesson(lessons: list[dict[str, Any]], goal: dict[str, Any]) 
 def select_lesson_for_failure_reason(lessons: list[dict[str, Any]], failure_reason: str) -> dict[str, Any]:
     matches = [
         lesson
-        for lesson in list_active_lessons(lessons)
+        for lesson in list_selectable_lessons(lessons)
         if lesson.get("source_failure_reason") == failure_reason
     ]
     selected = matches[0] if len(matches) == 1 else None
     return {
         "type": "lesson_selection_result",
         "active_lesson_ids": [lesson.get("lesson_id") for lesson in list_active_lessons(lessons)],
+        "skipped_lessons": _stale_skips(lessons),
         "matched_failure_reason": failure_reason,
         "selected_lesson_id": selected.get("lesson_id") if selected else None,
         "selected_action": selected.get("suggested_action_before_retry") if selected else None,
@@ -139,7 +166,8 @@ def _actions_are_incompatible(actions: list[str]) -> bool:
 
 def select_lesson_for_decision_point(lessons: list[dict[str, Any]], decision_point: str) -> dict[str, Any]:
     active_lessons = list_active_lessons(lessons)
-    matches = [lesson for lesson in active_lessons if lesson.get("decision_point") == decision_point]
+    skipped_lessons = _stale_skips(lessons)
+    matches = [lesson for lesson in list_selectable_lessons(lessons) if lesson.get("decision_point") == decision_point]
     actions = [lesson.get("suggested_action_before_retry") for lesson in matches if lesson.get("suggested_action_before_retry")]
     lesson_ids = [lesson.get("lesson_id") for lesson in matches]
 
@@ -148,6 +176,7 @@ def select_lesson_for_decision_point(lessons: list[dict[str, Any]], decision_poi
             "type": "lesson_selection_result",
             "decision_point": decision_point,
             "active_lesson_ids": [lesson.get("lesson_id") for lesson in active_lessons],
+            "skipped_lessons": skipped_lessons,
             "matched_lesson_ids": lesson_ids,
             "conflict_detected": True,
             "conflict_resolution": "require_review",
@@ -166,6 +195,7 @@ def select_lesson_for_decision_point(lessons: list[dict[str, Any]], decision_poi
         "type": "lesson_selection_result",
         "decision_point": decision_point,
         "active_lesson_ids": [lesson.get("lesson_id") for lesson in active_lessons],
+        "skipped_lessons": skipped_lessons,
         "matched_lesson_ids": lesson_ids,
         "conflict_detected": False,
         "conflict_resolution": None,
@@ -182,12 +212,13 @@ def select_lesson_for_decision_point(lessons: list[dict[str, Any]], decision_poi
 
 def select_lesson_for_context(lessons: list[dict[str, Any]], context: dict[str, Any]) -> dict[str, Any]:
     active_lessons = list_active_lessons(lessons)
+    skipped_lessons = _stale_skips(lessons)
     task = context.get("task")
     object_id = context.get("object_id")
     decision_point = context.get("decision_point")
     matches = [
         lesson
-        for lesson in active_lessons
+        for lesson in list_selectable_lessons(lessons)
         if lesson.get("decision_point") == decision_point
         and lesson.get("trigger", {}).get("action") == task
         and lesson.get("object_id", "cube_001") == object_id
@@ -199,9 +230,11 @@ def select_lesson_for_context(lessons: list[dict[str, Any]], context: dict[str, 
         "matched_object_id": object_id,
         "decision_point": decision_point,
         "active_lesson_ids": [lesson.get("lesson_id") for lesson in active_lessons],
+        "skipped_lessons": skipped_lessons,
         "matched_lesson_ids": [lesson.get("lesson_id") for lesson in matches],
         "selected_lesson_id": selected.get("lesson_id") if selected else None,
         "selected_action": selected.get("suggested_action_before_retry") if selected else None,
         "selected_lesson": selected,
         "conflict_detected": False,
+        "behavior_changed": selected is not None,
     }
