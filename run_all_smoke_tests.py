@@ -7,6 +7,11 @@ import json
 import tempfile
 from pathlib import Path
 
+from ashl_core.candidate_review import (
+    append_candidate_review,
+    build_candidate_review,
+    list_candidates_with_review_status,
+)
 from ashl_core.concepts import apply_concepts
 from ashl_core.deliberation import deliberate
 from ashl_core.expression import build_expression_package
@@ -189,6 +194,31 @@ def smoke_rule_candidate() -> dict:
         return _result("rule_candidate", passed, {"trace_candidate": label_result["rule_candidate"], "rows": rows})
 
 
+def smoke_candidate_review() -> dict:
+    with tempfile.TemporaryDirectory() as tmp:
+        previous = run_turn("睡眠模式這個功能怎麼設計？", data_dir=tmp)
+        pending_result = run_turn("不是，我是在說睡眠模式功能。", data_dir=tmp, previous_trace=previous)
+        label_result = run_turn(
+            "判斷錯",
+            data_dir=tmp,
+            pending_correction=pending_result["correction_pending"],
+        )
+        review = build_candidate_review(label_result["rule_candidate"], "reviewed", note="smoke audit")
+        append_candidate_review(tmp, review)
+        rows = read_jsonl(Path(tmp) / "candidate_reviews.jsonl")
+        candidates = list_candidates_with_review_status(tmp)
+        passed = (
+            review is not None
+            and len(rows) == 1
+            and rows[0]["type"] == "candidate_review"
+            and rows[0]["decision"] == "reviewed"
+            and len(candidates) == 1
+            and candidates[0]["current_status"] == "reviewed"
+            and candidates[0]["status"] == "candidate"
+        )
+        return _result("candidate_review", passed, {"review": review, "candidates": candidates})
+
+
 def run_smoke_tests() -> list[dict]:
     return [
         smoke_concept_layer(),
@@ -202,6 +232,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_correction_pending(),
         smoke_correction_label(),
         smoke_rule_candidate(),
+        smoke_candidate_review(),
     ]
 
 

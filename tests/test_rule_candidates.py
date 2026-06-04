@@ -2,9 +2,11 @@ import tempfile
 import unittest
 from pathlib import Path
 
+from ashl_core.candidate_review import build_candidate_review, get_candidate_current_status
 from ashl_core.correction import create_correction_label, create_correction_pending
 from ashl_core.integrated_loop import run_turn
 from ashl_core.persistence import read_jsonl
+from ashl_core.state_core import EVENT_EFFECTS
 from ashl_core.rule_candidates import (
     append_rule_candidate,
     build_rule_candidate_from_correction,
@@ -65,6 +67,34 @@ class RuleCandidateTests(unittest.TestCase):
             self.assertEqual(candidate["prefer_event"], "technical.topic_discussed")
             self.assertEqual(candidate["wrong_event"], "user.fatigue_signaled")
             self.assertEqual(candidate["correct_event"], "technical.topic_discussed")
+
+    def test_review_does_not_change_rule_candidate_status(self):
+        candidate = {
+            "id": "rule_cand_test",
+            "type": "rule_candidate",
+            "status": "candidate",
+        }
+        review = build_candidate_review(candidate, "approved_for_trial")
+
+        self.assertEqual(candidate["status"], "candidate")
+        self.assertEqual(get_candidate_current_status(candidate, [review]), "approved_for_trial")
+
+    def test_review_does_not_modify_concepts_py(self):
+        concepts_path = Path(__file__).resolve().parents[1] / "ashl_core" / "concepts.py"
+        before = concepts_path.read_text(encoding="utf-8")
+        candidate = {"id": "rule_cand_test", "type": "rule_candidate", "status": "candidate"}
+
+        build_candidate_review(candidate, "approved_for_trial")
+
+        self.assertEqual(concepts_path.read_text(encoding="utf-8"), before)
+
+    def test_review_does_not_modify_state_effects(self):
+        before = {event: dict(effects) for event, effects in EVENT_EFFECTS.items()}
+        candidate = {"id": "rule_cand_test", "type": "rule_candidate", "status": "candidate"}
+
+        build_candidate_review(candidate, "approved_for_trial")
+
+        self.assertEqual(EVENT_EFFECTS, before)
 
 
 if __name__ == "__main__":
