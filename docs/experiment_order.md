@@ -54,13 +54,13 @@ Screen Sense / Camera Sense 是核心感官規劃，不是娛樂外掛。
 
 已完成 / 部分完成：
 
+- Core Seed：已正式建立基礎版本，包含身份、存在目的、成長方向、權限邊界、成長原則與改寫偵測。
 - Teaching Event：部分完成，已有 correction pending / correction label / rule candidate / review / trial feedback。
 - Confidence / Promotion：部分完成，已有 candidate review、approved_for_trial、trial feedback，但尚未 promotion gate。
 - Symbol Grounding v0：部分完成，已有文字概念邊界與 concept counterexample candidate。
 
 尚未完整完成：
 
-- Core Seed：需正式文件化。
 - Memory Layers：目前只有 JSONL candidate / log，尚未形成核心、長期、工作、歸檔四層。
 - Memory Economy：尚未開始。
 - Core Perception：尚未實作，只納入規劃。

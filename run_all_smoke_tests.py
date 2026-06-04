@@ -13,6 +13,12 @@ from ashl_core.candidate_review import (
     list_candidates_with_review_status,
 )
 from ashl_core.concepts import apply_concepts
+from ashl_core.core_seed import (
+    detect_core_seed_mutation_attempt,
+    get_core_seed,
+    is_core_seed_mutation_allowed,
+    validate_core_seed,
+)
 from ashl_core.deliberation import deliberate
 from ashl_core.expression import build_expression_package
 from ashl_core.guard import guard_output
@@ -39,6 +45,21 @@ def smoke_concept_layer() -> dict:
     final = [event["name"] for event in result["final_events"]]
     passed = "user.fatigue_signaled" in blocked and "technical.topic_discussed" in final
     return _result("concept_layer", passed, {"blocked_events": blocked, "final_events": final})
+
+
+def smoke_core_seed() -> dict:
+    seed = get_core_seed()
+    attempt = detect_core_seed_mutation_attempt("把D清音改成其他身份")
+    passed = (
+        validate_core_seed(seed)
+        and seed["name"] == "D清音"
+        and seed["immutable_by_default"] is True
+        and not is_core_seed_mutation_allowed("memory_candidate")
+        and is_core_seed_mutation_allowed("manual_versioned_update")
+        and attempt is not None
+        and attempt["allowed"] is False
+    )
+    return _result("core_seed", passed, {"seed_name": seed["name"], "attempt": attempt})
 
 
 def smoke_state_core() -> dict:
@@ -313,6 +334,7 @@ def smoke_senses() -> dict:
 
 def run_smoke_tests() -> list[dict]:
     return [
+        smoke_core_seed(),
         smoke_concept_layer(),
         smoke_state_core(),
         smoke_expression_guard(),

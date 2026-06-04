@@ -29,6 +29,7 @@ v0 的目標是能跑完整主循環：
 
 已完成：
 
+- Core Seed Formalization v0.9
 - Integrated Loop v0.1
 - Persistent Candidate Layer v0.2
 - Correction Label v0.3
@@ -81,6 +82,16 @@ Screen Sense 與 Camera Sense 是未來核心感官，不是娛樂外掛。
 - Symbol Grounding v1
 
 因此下一階段不急著接攝影機或螢幕監視。Screen Sense / Camera Sense 已納入核心感官規劃，但真正硬體接入應在主循環、記憶層、教學事件、信心/晉升機制穩定後進行。
+
+## Core Seed
+
+Core Seed 已正式文件化，詳見 [docs/core_seed.md](core_seed.md)。
+
+Core Seed 是 D清音幼體的成長胚胎藍圖，用於定義身份、存在目的、成長方向、權限邊界與成長原則。
+
+需要特別澄清：Core Seed 中的「知性、溫柔、包容、研究不妥協」等人格詞彙是成長目標與行為評估方向，不代表系統已理解完整含義。
+
+Core Seed 預設不可由 memory candidate、correction label、rule candidate、trial suggestion 或 trial feedback 直接改寫。修改 Core Seed 必須是明確版本化人工決策。
 
 ## 尚未完成
 
