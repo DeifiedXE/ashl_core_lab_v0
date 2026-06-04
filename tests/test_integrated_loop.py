@@ -9,6 +9,25 @@ from ashl_core.rule_candidates import append_rule_candidate
 
 
 class IntegratedLoopTests(unittest.TestCase):
+    def _add_approved_sleep_trial_candidate(self, tmp: str) -> dict:
+        candidate = {
+            "id": "rule_cand_sleep",
+            "type": "rule_candidate",
+            "status": "candidate",
+            "candidate_kind": "concept_counterexample",
+            "target_phrase": "睡眠模式",
+            "wrong_event": "user.fatigue_signaled",
+            "correct_event": "technical.topic_discussed",
+            "not_event": "user.fatigue_signaled",
+            "prefer_event": "technical.topic_discussed",
+            "confidence": 0.3,
+            "audit_required": True,
+            "created_at": "2026-06-04T00:00:00+00:00",
+        }
+        append_rule_candidate(tmp, candidate)
+        append_candidate_review(tmp, build_candidate_review(candidate, "approved_for_trial"))
+        return candidate
+
     def test_case_1_sleep_mode_is_technical(self):
         result = run_turn("睡眠模式這個功能怎麼設計？")
 
@@ -148,22 +167,7 @@ class IntegratedLoopTests(unittest.TestCase):
 
     def test_approved_trial_rule_adds_trace_suggestion_without_applying(self):
         with tempfile.TemporaryDirectory() as tmp:
-            candidate = {
-                "id": "rule_cand_sleep",
-                "type": "rule_candidate",
-                "status": "candidate",
-                "candidate_kind": "concept_counterexample",
-                "target_phrase": "睡眠模式",
-                "wrong_event": "user.fatigue_signaled",
-                "correct_event": "technical.topic_discussed",
-                "not_event": "user.fatigue_signaled",
-                "prefer_event": "technical.topic_discussed",
-                "confidence": 0.3,
-                "audit_required": True,
-                "created_at": "2026-06-04T00:00:00+00:00",
-            }
-            append_rule_candidate(tmp, candidate)
-            append_candidate_review(tmp, build_candidate_review(candidate, "approved_for_trial"))
+            self._add_approved_sleep_trial_candidate(tmp)
 
             result = run_turn("睡眠模式這個功能怎麼設計？", data_dir=tmp)
             final_events = [event["name"] for event in result["concept_result"]["final_events"]]
@@ -176,6 +180,43 @@ class IntegratedLoopTests(unittest.TestCase):
             self.assertNotIn("user.fatigue_signaled", final_events)
             self.assertEqual(result["decision"]["intent"], "answer_normally")
             self.assertIn("正常", result["final_output"])
+
+    def test_trial_feedback_helpful_is_recorded_without_applying(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            self._add_approved_sleep_trial_candidate(tmp)
+
+            result = run_turn(
+                "睡眠模式這個功能怎麼設計？",
+                data_dir=tmp,
+                trial_feedback_verdict="helpful",
+                trial_feedback_note="good suggestion",
+            )
+            rows = read_jsonl(Path(tmp) / "trial_feedback.jsonl")
+            final_events = [event["name"] for event in result["concept_result"]["final_events"]]
+
+            self.assertEqual(len(result["trial_suggestions"]), 1)
+            self.assertIsNotNone(result["trial_feedback"])
+            self.assertEqual(result["trial_feedback"]["verdict"], "helpful")
+            self.assertEqual(len(rows), 1)
+            self.assertEqual(rows[0], result["trial_feedback"])
+            self.assertIn("technical.topic_discussed", final_events)
+            self.assertNotIn("user.fatigue_signaled", final_events)
+            self.assertEqual(result["decision"]["intent"], "answer_normally")
+            self.assertIn("正常", result["final_output"])
+
+    def test_unknown_trial_feedback_verdict_does_not_write(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            self._add_approved_sleep_trial_candidate(tmp)
+
+            result = run_turn(
+                "睡眠模式這個功能怎麼設計？",
+                data_dir=tmp,
+                trial_feedback_verdict="unknown_label",
+            )
+
+            self.assertEqual(len(result["trial_suggestions"]), 1)
+            self.assertIsNone(result["trial_feedback"])
+            self.assertEqual(read_jsonl(Path(tmp) / "trial_feedback.jsonl"), [])
 
 
 if __name__ == "__main__":

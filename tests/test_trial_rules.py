@@ -77,6 +77,7 @@ class TrialRulesTests(unittest.TestCase):
         self.assertEqual(len(suggestions), 1)
         self.assertEqual(suggestions[0]["type"], "trial_suggestion")
         self.assertEqual(suggestions[0]["source_trial_rule"], "trial_rule_cand_sleep")
+        self.assertEqual(suggestions[0]["source_candidate_id"], "rule_cand_sleep")
         self.assertEqual(suggestions[0]["block_event"], "user.fatigue_signaled")
         self.assertEqual(suggestions[0]["prefer_event"], "technical.topic_discussed")
         self.assertFalse(suggestions[0]["applied"])

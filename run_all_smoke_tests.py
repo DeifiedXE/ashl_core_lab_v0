@@ -21,6 +21,7 @@ from ashl_core.persistence import append_jsonl, read_jsonl
 from ashl_core.perception import perceive
 from ashl_core.rule_candidates import append_rule_candidate
 from ashl_core.state_core import StateCore
+from ashl_core.trial_feedback import append_trial_feedback, build_trial_feedback, summarize_trial_feedback
 from ashl_core.trial_rules import build_trial_suggestions, list_approved_trial_candidates, build_trial_rule_view
 
 
@@ -258,6 +259,41 @@ def smoke_trial_rule() -> dict:
         return _result("trial_rule", passed, {"trial_rules": trial_rules, "suggestions": suggestions})
 
 
+def smoke_trial_feedback() -> dict:
+    with tempfile.TemporaryDirectory() as tmp:
+        candidate = {
+            "id": "rule_cand_sleep",
+            "type": "rule_candidate",
+            "status": "candidate",
+            "candidate_kind": "concept_counterexample",
+            "target_phrase": "睡眠模式",
+            "wrong_event": "user.fatigue_signaled",
+            "correct_event": "technical.topic_discussed",
+            "not_event": "user.fatigue_signaled",
+            "prefer_event": "technical.topic_discussed",
+            "confidence": 0.3,
+            "audit_required": True,
+            "created_at": "2026-06-04T00:00:00+00:00",
+        }
+        append_rule_candidate(tmp, candidate)
+        review = build_candidate_review(candidate, "approved_for_trial")
+        append_candidate_review(tmp, review)
+        result = run_turn("睡眠模式這個功能怎麼設計？", data_dir=tmp, trial_feedback_verdict="helpful")
+        rows = read_jsonl(Path(tmp) / "trial_feedback.jsonl")
+        summary = summarize_trial_feedback(tmp)
+        direct_feedback = build_trial_feedback(result["trial_suggestions"][0], "wrong")
+        append_trial_feedback(tmp, direct_feedback)
+        passed = (
+            result["trial_feedback"] is not None
+            and result["trial_feedback"]["verdict"] == "helpful"
+            and len(rows) == 1
+            and summary["total"] == 1
+            and summary["helpful"] == 1
+            and direct_feedback["verdict"] == "wrong"
+        )
+        return _result("trial_feedback", passed, {"feedback": result["trial_feedback"], "summary": summary})
+
+
 def run_smoke_tests() -> list[dict]:
     return [
         smoke_concept_layer(),
@@ -273,6 +309,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_rule_candidate(),
         smoke_candidate_review(),
         smoke_trial_rule(),
+        smoke_trial_feedback(),
     ]
 
 

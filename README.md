@@ -39,6 +39,7 @@ v0.2 新增最小持久化候選層，使用 JSONL 作為實驗用 artifact 格�
 - `data/correction_log.jsonl`：記錄 correction pending 與正式 correction label。
 - `data/rule_candidates.jsonl`：記錄候選規則與候選概念反例。
 - `data/candidate_reviews.jsonl`：記錄候選審核狀態。
+- `data/trial_feedback.jsonl`：記錄 trial suggestion 的回饋。
 - 測試預設使用暫存資料夾，避免污染 repo 的 `data/`。
 - `data/*.jsonl` 被 `.gitignore` 忽略，避免把本機實驗資料提交進版控。
 
@@ -117,6 +118,19 @@ Trial Rule Layer v0.6 會讀取 current status 為 `approved_for_trial` 的 rule
 - 本階段不修改 final output。
 - 本階段不建立 active rule。
 
+## Trial Suggestion Feedback v0.7
+
+Trial Suggestion Feedback v0.7 會記錄 `trial_suggestions` 是否有幫助或錯誤，並提供基本統計。
+
+- `trial_feedback.jsonl` 是 `trial_suggestion` 的回饋日誌。
+- 支援 `helpful` / `wrong` / `unclear` / `ignored`。
+- feedback 只用於統計與未來審核。
+- feedback 不會啟用規則。
+- feedback 不會修改 Concept Layer。
+- feedback 不會修改 `final_events` / decision / final output。
+- 本階段不做 Rule Promotion。
+- 本階段不做 Rule Apply。
+
 ## 專案結構
 
 ```text
@@ -128,6 +142,7 @@ ashl_core/
   persistence.py
   rule_candidates.py
   trial_rules.py
+  trial_feedback.py
   perception.py
   concepts.py
   state_core.py
@@ -144,6 +159,7 @@ tests/
   test_persistence.py
   test_rule_candidates.py
   test_trial_rules.py
+  test_trial_feedback.py
   test_integrated_loop.py
   test_smoke.py
   test_concepts.py

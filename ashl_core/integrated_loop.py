@@ -1,4 +1,4 @@
-"""ASHL Core integrated loop v0.4."""
+"""ASHL Core integrated loop v0.7."""
 
 from __future__ import annotations
 
@@ -17,6 +17,7 @@ from .perception import perceive
 from .rule_candidates import append_rule_candidate, build_rule_candidate_from_correction
 from .state_core import StateCore
 from .thoughts import generate_thoughts
+from .trial_feedback import append_trial_feedback, build_trial_feedback
 from .trial_rules import build_trial_rule_view, build_trial_suggestions, list_approved_trial_candidates
 
 
@@ -76,6 +77,8 @@ class IntegratedLoop:
         data_dir: str | Path = "data",
         previous_trace: dict[str, Any] | None = None,
         pending_correction: dict[str, Any] | None = None,
+        trial_feedback_verdict: str | None = None,
+        trial_feedback_note: str | None = None,
     ) -> dict[str, Any]:
         perception_result = perceive(text)
         trial_candidates = list_approved_trial_candidates(data_dir)
@@ -85,6 +88,7 @@ class IntegratedLoop:
             if trial_rule is not None
         ]
         trial_suggestions = build_trial_suggestions(text, perception_result["candidate_events"], trial_rules)
+
         concept_result = apply_concepts(perception_result)
         state_result = self.state_core.apply(concept_result["final_events"])
         states = state_result["after"]
@@ -100,6 +104,7 @@ class IntegratedLoop:
         correction_pending = None
         correction_label = None
         rule_candidate = None
+        trial_feedback = None
 
         if pending_correction is not None:
             correction_label = create_correction_label(pending_correction, text, data_dir)
@@ -128,6 +133,15 @@ class IntegratedLoop:
             guard_result = {"passed": True, "failures": [], "final_output": raw_output}
             final_output = raw_output
 
+        if trial_suggestions and trial_feedback_verdict is not None:
+            trial_feedback = build_trial_feedback(
+                trial_suggestions[0],
+                trial_feedback_verdict,
+                note=trial_feedback_note,
+            )
+            if trial_feedback is not None:
+                append_trial_feedback(data_dir, trial_feedback)
+
         return {
             "input": text,
             "candidate_events": perception_result["candidate_events"],
@@ -145,6 +159,7 @@ class IntegratedLoop:
             "rule_candidate": rule_candidate,
             "trial_rules": trial_rules,
             "trial_suggestions": trial_suggestions,
+            "trial_feedback": trial_feedback,
         }
 
     def run_script(self, inputs: list[str], data_dir: str | Path = "data") -> list[dict[str, Any]]:
@@ -156,12 +171,16 @@ def run_turn(
     data_dir: str | Path = "data",
     previous_trace: dict[str, Any] | None = None,
     pending_correction: dict[str, Any] | None = None,
+    trial_feedback_verdict: str | None = None,
+    trial_feedback_note: str | None = None,
 ) -> dict[str, Any]:
     return IntegratedLoop().run_turn(
         text,
         data_dir=data_dir,
         previous_trace=previous_trace,
         pending_correction=pending_correction,
+        trial_feedback_verdict=trial_feedback_verdict,
+        trial_feedback_note=trial_feedback_note,
     )
 
 

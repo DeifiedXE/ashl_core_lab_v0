@@ -62,6 +62,7 @@ def build_trial_suggestions(
             {
                 "type": "trial_suggestion",
                 "source_trial_rule": trial_rule.get("id"),
+                "source_candidate_id": trial_rule.get("source_candidate_id"),
                 "target_phrase": target_phrase,
                 "suggested_action": "block_event_and_prefer_event",
                 "block_event": block_event,
