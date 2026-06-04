@@ -218,6 +218,36 @@ class IntegratedLoopTests(unittest.TestCase):
             self.assertIsNone(result["trial_feedback"])
             self.assertEqual(read_jsonl(Path(tmp) / "trial_feedback.jsonl"), [])
 
+    def test_persist_state_true_writes_state_files_without_changing_output(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            baseline = run_turn("1 + 2 * 3", data_dir=tmp)
+            result = run_turn(
+                "1 + 2 * 3",
+                data_dir=tmp,
+                persist_state=True,
+                session_id="test-session",
+            )
+
+            self.assertEqual(result["decision"]["intent"], baseline["decision"]["intent"])
+            self.assertEqual(result["final_output"], baseline["final_output"])
+            self.assertEqual(
+                [event["name"] for event in result["concept_result"]["final_events"]],
+                [event["name"] for event in baseline["concept_result"]["final_events"]],
+            )
+            self.assertIsNotNone(result["state_persistence"])
+            self.assertTrue((Path(tmp) / "state_snapshot.json").exists())
+            self.assertTrue((Path(tmp) / "session_summary.json").exists())
+            self.assertTrue((Path(tmp) / "last_trace_summary.json").exists())
+
+    def test_persist_state_false_does_not_write_state_files(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            result = run_turn("1 + 2 * 3", data_dir=tmp, persist_state=False)
+
+            self.assertIsNone(result["state_persistence"])
+            self.assertFalse((Path(tmp) / "state_snapshot.json").exists())
+            self.assertFalse((Path(tmp) / "session_summary.json").exists())
+            self.assertFalse((Path(tmp) / "last_trace_summary.json").exists())
+
 
 if __name__ == "__main__":
     unittest.main()

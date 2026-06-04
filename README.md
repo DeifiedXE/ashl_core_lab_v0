@@ -8,6 +8,7 @@ ASHL Core Lab 是 ASHL Core／D清音 的最小 Python 實驗專案，用來驗�
 
 - Core Seed Formalization v0.9
 - Memory Layers v1.0
+- State Persistence v1.1
 - Integrated Loop v0.1
 - Persistent Candidate Layer v0.2
 - Correction Label v0.3
@@ -75,6 +76,15 @@ JSONL / JSON 仍是幼體階段資料格式，暫不使用 SQLite。
 
 `memory_candidates.jsonl` 是候選日誌，不是 Long-term Memory。
 
+## State Persistence v1.1
+
+State Persistence 是 D清音狀態連續性的基礎，不是 Long-term Memory，也不替代 Memory Layers。
+- `persist_state` 預設為 `false`。
+- `persist_state=true` 時會寫入 `state_snapshot.json`、`session_summary.json`、`last_trace_summary.json`。
+- 保存 state 不改 `final_output`、不改 decision、不改 final events。
+- State Persistence 不自動固化記憶，不寫入 Long-term Memory。
+- 本階段仍使用 JSON，不使用 SQLite。
+
 ## Correction / Rule / Trial Flow
 
 - correction pending 只記錄使用者糾正。
@@ -128,6 +138,7 @@ ashl_core/
   candidate_review.py
   memory_candidates.py
   memory_layers.py
+  state_persistence.py
   persistence.py
   rule_candidates.py
   trial_rules.py
@@ -148,6 +159,7 @@ tests/
   test_candidate_review.py
   test_memory_candidates.py
   test_memory_layers.py
+  test_state_persistence.py
   test_persistence.py
   test_rule_candidates.py
   test_trial_rules.py
@@ -164,6 +176,7 @@ docs/
   core_seed.md
   core_senses.md
   memory_layers.md
+  state_persistence.md
   experiment_order.md
   research_plan.md
 

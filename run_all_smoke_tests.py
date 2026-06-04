@@ -38,6 +38,11 @@ from ashl_core.perception import perceive
 from ashl_core.rule_candidates import append_rule_candidate
 from ashl_core.senses import build_sensor_event, build_visual_concept_candidate, validate_sensor_event
 from ashl_core.state_core import StateCore
+from ashl_core.state_persistence import (
+    read_last_trace_summary,
+    read_session_summary,
+    read_state_snapshot,
+)
 from ashl_core.trial_feedback import append_trial_feedback, build_trial_feedback, summarize_trial_feedback
 from ashl_core.trial_rules import build_trial_suggestions, list_approved_trial_candidates, build_trial_rule_view
 
@@ -101,6 +106,27 @@ def smoke_state_core() -> dict:
         and result["after"]["overexpand_risk"] > result["before"]["overexpand_risk"]
     )
     return _result("state_core", passed, result)
+
+
+def smoke_state_persistence() -> dict:
+    with tempfile.TemporaryDirectory() as tmp:
+        result = run_turn("1 + 2 * 3", data_dir=tmp, persist_state=True, session_id="smoke-session")
+        snapshot = read_state_snapshot(tmp)
+        session = read_session_summary(tmp)
+        trace_summary = read_last_trace_summary(tmp)
+        passed = (
+            result["state_persistence"] is not None
+            and snapshot.get("type") == "state_snapshot"
+            and session.get("type") == "session_summary"
+            and session.get("session_id") == "smoke-session"
+            and trace_summary.get("type") == "last_trace_summary"
+            and trace_summary.get("intent") == result["decision"]["intent"]
+        )
+        return _result(
+            "state_persistence",
+            passed,
+            {"snapshot": snapshot, "session": session, "trace_summary": trace_summary},
+        )
 
 
 def smoke_expression_guard() -> dict:
@@ -364,6 +390,7 @@ def run_smoke_tests() -> list[dict]:
     return [
         smoke_core_seed(),
         smoke_memory_layers(),
+        smoke_state_persistence(),
         smoke_concept_layer(),
         smoke_state_core(),
         smoke_expression_guard(),

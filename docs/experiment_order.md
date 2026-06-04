@@ -66,3 +66,9 @@ Screen Sense / Camera Sense 是核心感官規劃，不是娛樂外掛。
 - Core Perception：尚未實作，只納入規劃。
 - Visual Impression：尚未開始。
 - Symbol Grounding v1：尚未開始。
+
+## State Persistence v1.1 狀態
+
+State Persistence 已建立基礎版本，位於 Memory Layers 之後，負責 `state_snapshot.json`、`session_summary.json`、`last_trace_summary.json` 的讀寫。
+這代表 D清音已具備最小狀態連續性基礎，但它不是 Long-term Memory，也不代表記憶固化。
+下一步可進入 Minimal Teaching CLI，讓教學、糾正、候選與狀態保存可以透過穩定命令流程操作。

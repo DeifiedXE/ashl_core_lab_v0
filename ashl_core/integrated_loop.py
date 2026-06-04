@@ -15,6 +15,17 @@ from .guard import guard_output
 from .memory_candidates import create_memory_candidate
 from .perception import perceive
 from .rule_candidates import append_rule_candidate, build_rule_candidate_from_correction
+from .state_persistence import (
+    LAST_TRACE_SUMMARY_FILE,
+    SESSION_SUMMARY_FILE,
+    STATE_SNAPSHOT_FILE,
+    build_last_trace_summary,
+    build_session_summary,
+    build_state_snapshot,
+    write_last_trace_summary,
+    write_session_summary,
+    write_state_snapshot,
+)
 from .state_core import StateCore
 from .thoughts import generate_thoughts
 from .trial_feedback import append_trial_feedback, build_trial_feedback
@@ -79,6 +90,8 @@ class IntegratedLoop:
         pending_correction: dict[str, Any] | None = None,
         trial_feedback_verdict: str | None = None,
         trial_feedback_note: str | None = None,
+        persist_state: bool = False,
+        session_id: str | None = None,
     ) -> dict[str, Any]:
         perception_result = perceive(text)
         trial_candidates = list_approved_trial_candidates(data_dir)
@@ -142,7 +155,7 @@ class IntegratedLoop:
             if trial_feedback is not None:
                 append_trial_feedback(data_dir, trial_feedback)
 
-        return {
+        trace = {
             "input": text,
             "candidate_events": perception_result["candidate_events"],
             "concept_result": concept_result,
@@ -160,7 +173,31 @@ class IntegratedLoop:
             "trial_rules": trial_rules,
             "trial_suggestions": trial_suggestions,
             "trial_feedback": trial_feedback,
+            "state_persistence": None,
         }
+
+        if persist_state:
+            snapshot = build_state_snapshot(states, turn=state_result.get("turn"))
+            session_summary = build_session_summary(
+                session_id or "default",
+                state_result.get("turn", 0),
+                text,
+                decision["intent"],
+                final_output,
+            )
+            trace_summary = build_last_trace_summary(trace)
+            write_state_snapshot(data_dir, snapshot)
+            write_session_summary(data_dir, session_summary)
+            write_last_trace_summary(data_dir, trace_summary)
+            trace["state_persistence"] = {
+                "written": [
+                    STATE_SNAPSHOT_FILE,
+                    SESSION_SUMMARY_FILE,
+                    LAST_TRACE_SUMMARY_FILE,
+                ]
+            }
+
+        return trace
 
     def run_script(self, inputs: list[str], data_dir: str | Path = "data") -> list[dict[str, Any]]:
         return [self.run_turn(text, data_dir=data_dir) for text in inputs]
@@ -173,6 +210,8 @@ def run_turn(
     pending_correction: dict[str, Any] | None = None,
     trial_feedback_verdict: str | None = None,
     trial_feedback_note: str | None = None,
+    persist_state: bool = False,
+    session_id: str | None = None,
 ) -> dict[str, Any]:
     return IntegratedLoop().run_turn(
         text,
@@ -181,6 +220,8 @@ def run_turn(
         pending_correction=pending_correction,
         trial_feedback_verdict=trial_feedback_verdict,
         trial_feedback_note=trial_feedback_note,
+        persist_state=persist_state,
+        session_id=session_id,
     )
 
 

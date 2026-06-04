@@ -134,3 +134,9 @@ py -3 -m unittest discover
 where.exe python
 where.exe py
 ```
+
+## State Persistence
+
+State Persistence v1.1 已建立基礎版本，用於保存 `state_snapshot.json`、`session_summary.json`、`last_trace_summary.json`。
+這是 D清音狀態連續性的基礎：重開後可以讀回最近狀態、session 摘要與 last trace 摘要。
+State Persistence 不是 Long-term Memory，不會自動固化記憶，也不會修改 Concept Layer、rules、final output 或 state effects。
