@@ -19,6 +19,7 @@ ASHL Core Lab 是 ASHL Core／D清音 的最小 Python 實驗專案，用來驗�
 - v1.8 Minimal Teaching CLI
 - v1.7c Second Known Failure Reason Determinism Test
 - v1.9a Multi-lesson Isolation Test
+- v1.9b Conflict Detection / Require Review
 - Integrated Loop v0.1
 - Persistent Candidate Layer v0.2
 - Correction Label v0.3
@@ -235,6 +236,23 @@ v1.9a 只驗證多條已知 lesson 在不衝突情境下可共存且互不干擾
 - v1.9a Multi-lesson Isolation Test：本包
 - v1.9b Conflict Detection / Require Review：下一步
 - v1.9c CLI conflict_check 補真實檢查：延後
+- v2.0 Stale / Supersede：延後
+
+## v1.9b Conflict Detection / Require Review
+
+v1.9b 只驗證同一 decision point 上 incompatible active lessons 會被偵測為 conflict，並進入 require_review。
+- conflict 定義不是「多 lesson 同時 active」，而是同一 decision point 同時 match 且 action incompatible。
+- 本包最小互斥 action：`turn(east)` 與 `turn(west)`。
+- conflict 時 `conflict_detected = true`，`conflict_resolution = require_review`。
+- conflict 時不自動套用任何 lesson，`selected_lesson_id = null`，`selected_action = null`。
+- conflict 時不自動選 priority，不刪除 lesson，不修改 lesson 狀態。
+- disable 其中一條後會恢復單 lesson 因果控制；re-enable 後恢復 require_review。
+- 本包不更新 CLI 的 `conflict_check = not_implemented`。
+
+目前順序：
+- v1.9a Multi-lesson Isolation Test：已完成
+- v1.9b Conflict Detection / Require Review：本包
+- v1.9c CLI conflict_check 補真實檢查：下一步
 - v2.0 Stale / Supersede：延後
 
 ## Correction / Rule / Trial Flow

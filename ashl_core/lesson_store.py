@@ -33,6 +33,7 @@ def build_lesson_from_failure(session_id: str, failure_result: dict[str, Any]) -
             "action": "pick_up",
             "target_type": "cube",
         },
+        "decision_point": "before_retry_pick_up_cube",
         "condition": {
             "avatar_facing": mapping["avatar_facing"],
         },
@@ -129,4 +130,51 @@ def select_lesson_for_failure_reason(lessons: list[dict[str, Any]], failure_reas
         "selected_action": selected.get("suggested_action_before_retry") if selected else None,
         "selected_lesson": selected,
         "conflict_detected": False,
+    }
+
+
+def _actions_are_incompatible(actions: list[str]) -> bool:
+    return "turn(east)" in actions and "turn(west)" in actions
+
+
+def select_lesson_for_decision_point(lessons: list[dict[str, Any]], decision_point: str) -> dict[str, Any]:
+    active_lessons = list_active_lessons(lessons)
+    matches = [lesson for lesson in active_lessons if lesson.get("decision_point") == decision_point]
+    actions = [lesson.get("suggested_action_before_retry") for lesson in matches if lesson.get("suggested_action_before_retry")]
+    lesson_ids = [lesson.get("lesson_id") for lesson in matches]
+
+    if len(matches) >= 2 and _actions_are_incompatible(actions):
+        return {
+            "type": "lesson_selection_result",
+            "decision_point": decision_point,
+            "active_lesson_ids": [lesson.get("lesson_id") for lesson in active_lessons],
+            "matched_lesson_ids": lesson_ids,
+            "conflict_detected": True,
+            "conflict_resolution": "require_review",
+            "review_required": True,
+            "review_status": "pending_human_review",
+            "conflicting_lesson_ids": lesson_ids,
+            "conflicting_actions": actions,
+            "selected_lesson_id": None,
+            "selected_action": None,
+            "selected_lesson": None,
+            "behavior_changed": False,
+        }
+
+    selected = matches[0] if len(matches) == 1 else None
+    return {
+        "type": "lesson_selection_result",
+        "decision_point": decision_point,
+        "active_lesson_ids": [lesson.get("lesson_id") for lesson in active_lessons],
+        "matched_lesson_ids": lesson_ids,
+        "conflict_detected": False,
+        "conflict_resolution": None,
+        "review_required": False,
+        "review_status": None,
+        "conflicting_lesson_ids": [],
+        "conflicting_actions": [],
+        "selected_lesson_id": selected.get("lesson_id") if selected else None,
+        "selected_action": selected.get("suggested_action_before_retry") if selected else None,
+        "selected_lesson": selected,
+        "behavior_changed": selected is not None,
     }

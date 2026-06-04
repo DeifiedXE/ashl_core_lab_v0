@@ -183,6 +183,19 @@ v1.9a 不證明 conflict detection，不證明 priority，不做 require_review�
 - v1.9c CLI conflict_check 補真實檢查：延後
 - v2.0 Stale / Supersede：延後
 
+## Conflict Detection / Require Review
+
+v1.9b Conflict Detection / Require Review 只證明同一 decision point 上 incompatible active lessons 會被偵測為 conflict，並採用 `require_review`。
+本包的最小互斥 action 是 `turn(east)` 與 `turn(west)`；conflict 時不自動套用 lesson，不自動選 priority，不刪除 lesson，不修改 lesson 狀態。
+disable 其中一條 lesson 後會恢復單 lesson 因果控制；re-enable 後恢復 require_review。
+v1.9b 不證明 priority，不做自動解衝突，不做 stale / supersede，也不更新 CLI 的 `conflict_check = not_implemented`。
+
+目前順序：
+- v1.9a Multi-lesson Isolation Test：已完成
+- v1.9b Conflict Detection / Require Review：本包
+- v1.9c CLI conflict_check 補真實檢查：下一步
+- v2.0 Stale / Supersede：延後
+
 ## Minimal Teaching CLI
 
 v1.8 Minimal Teaching CLI 是既有 lesson flow 的命令列 wrapper。

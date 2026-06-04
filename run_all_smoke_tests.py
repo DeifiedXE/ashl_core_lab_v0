@@ -35,8 +35,11 @@ from ashl_core.lesson_runner import (
 )
 from ashl_core.lesson_store import (
     build_lesson_from_failure,
+    disable_lesson,
+    enable_lesson,
     find_applicable_lesson,
     generate_lesson_from_failure,
+    select_lesson_for_decision_point,
     select_lesson_for_failure_reason,
 )
 from ashl_core.memory_layers import (
@@ -328,6 +331,50 @@ def smoke_multi_lesson_isolation() -> dict:
         and west["conflict_detected"] is False
     )
     return _result("multi_lesson_isolation", passed, {"east": east, "west": west})
+
+
+def smoke_conflict_detection_require_review() -> dict:
+    east_failure = pick_up(build_initial_sandbox_state(), "cube_001")
+    west_failure = {
+        "type": "sandbox_action_result",
+        "tool": "pick_up",
+        "object_id": "cube_001",
+        "result": "failed",
+        "failure_reason": "not_facing_west",
+        "state": build_initial_sandbox_state(),
+    }
+    lesson_east = build_lesson_from_failure("session_east", east_failure)
+    lesson_west = build_lesson_from_failure("session_west", west_failure)
+    conflict = select_lesson_for_decision_point(
+        [lesson_east, lesson_west],
+        "before_retry_pick_up_cube",
+    )
+    disabled = select_lesson_for_decision_point(
+        [lesson_east, disable_lesson(lesson_west)],
+        "before_retry_pick_up_cube",
+    )
+    reenabled = select_lesson_for_decision_point(
+        [lesson_east, enable_lesson(disable_lesson(lesson_west))],
+        "before_retry_pick_up_cube",
+    )
+    passed = (
+        conflict["conflict_detected"] is True
+        and conflict["conflict_resolution"] == "require_review"
+        and conflict["review_required"] is True
+        and conflict["selected_lesson_id"] is None
+        and conflict["selected_action"] is None
+        and conflict["behavior_changed"] is False
+        and disabled["conflict_detected"] is False
+        and disabled["selected_lesson_id"] == "lesson_001"
+        and disabled["selected_action"] == "turn(east)"
+        and reenabled["conflict_detected"] is True
+        and reenabled["conflict_resolution"] == "require_review"
+    )
+    return _result(
+        "conflict_detection_require_review",
+        passed,
+        {"conflict": conflict, "disabled": disabled, "reenabled": reenabled},
+    )
 
 
 def smoke_teaching_cli() -> dict:
@@ -659,6 +706,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_teaching_cli(),
         smoke_second_known_failure_reason_determinism(),
         smoke_multi_lesson_isolation(),
+        smoke_conflict_detection_require_review(),
         smoke_state_persistence(),
         smoke_concept_layer(),
         smoke_state_core(),
