@@ -12,6 +12,8 @@ from ashl_core.candidate_review import (
     build_candidate_review,
     list_candidates_with_review_status,
 )
+from ashl_core.action_sandbox import apply_action
+from ashl_core.body_state import build_body_state, validate_body_state
 from ashl_core.concepts import apply_concepts
 from ashl_core.core_seed import (
     detect_core_seed_mutation_attempt,
@@ -43,6 +45,7 @@ from ashl_core.state_persistence import (
     read_session_summary,
     read_state_snapshot,
 )
+from ashl_core.standing_task import run_standing_task
 from ashl_core.trial_feedback import append_trial_feedback, build_trial_feedback, summarize_trial_feedback
 from ashl_core.trial_rules import build_trial_suggestions, list_approved_trial_candidates, build_trial_rule_view
 
@@ -93,6 +96,47 @@ def smoke_memory_layers() -> dict:
             and is_core_memory_write_allowed("manual_versioned_update")
         )
         return _result("memory_layers", passed, {"long_term": long_term_record, "archive": archive_record})
+
+
+def smoke_body_state() -> dict:
+    body = build_body_state(stability=2.0, energy=-1.0)
+    passed = (
+        body is not None
+        and body["state"] == "lying"
+        and body["stability"] == 1.0
+        and body["energy"] == 0.0
+        and validate_body_state(body)
+        and build_body_state("unknown") is None
+    )
+    return _result("body_state", passed, {"body": body})
+
+
+def smoke_action_sandbox() -> dict:
+    failed = apply_action(build_body_state("lying"), "stand_up")
+    sitting = apply_action(build_body_state("lying"), "sit_up")
+    unstable = apply_action(sitting["body_state"], "stand_up")
+    stable = apply_action(unstable["body_state"], "balance")
+    passed = (
+        failed["success"] is False
+        and failed["failure_reason"] == "cannot_stand_directly_from_lying"
+        and sitting["to_state"] == "sitting"
+        and unstable["to_state"] == "standing_unstable"
+        and stable["to_state"] == "standing_stable"
+    )
+    return _result("action_sandbox", passed, {"failed": failed, "stable": stable})
+
+
+def smoke_standing_task() -> dict:
+    trace = run_standing_task()
+    failures = [failure["failure_reason"] for failure in trace["failures"]]
+    passed = (
+        trace["success"] is True
+        and trace["final_state"] == "standing_stable"
+        and "cannot_stand_directly_from_lying" in failures
+        and trace["lesson_candidate"]["status"] == "candidate"
+        and trace["lesson_candidate"]["audit_required"] is True
+    )
+    return _result("standing_task", passed, trace)
 
 
 def smoke_state_core() -> dict:
@@ -390,6 +434,9 @@ def run_smoke_tests() -> list[dict]:
     return [
         smoke_core_seed(),
         smoke_memory_layers(),
+        smoke_body_state(),
+        smoke_action_sandbox(),
+        smoke_standing_task(),
         smoke_state_persistence(),
         smoke_concept_layer(),
         smoke_state_core(),

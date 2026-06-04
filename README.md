@@ -9,6 +9,7 @@ ASHL Core Lab 是 ASHL Core／D清音 的最小 Python 實驗專案，用來驗�
 - Core Seed Formalization v0.9
 - Memory Layers v1.0
 - State Persistence v1.1
+- Standing Task Sandbox v1.2
 - Integrated Loop v0.1
 - Persistent Candidate Layer v0.2
 - Correction Label v0.3
@@ -84,6 +85,15 @@ State Persistence 是 D清音狀態連續性的基礎，不是 Long-term Memory�
 - 保存 state 不改 `final_output`、不改 decision、不改 final events。
 - State Persistence 不自動固化記憶，不寫入 Long-term Memory。
 - 本階段仍使用 JSON，不使用 SQLite。
+
+## Standing Task Sandbox v1.2
+
+Standing Task Sandbox 是第一個純 Python AGE 行動沙盒。
+- 任務從 `lying` 嘗試站到 `standing_stable`。
+- `lying + stand_up` 會失敗並產生 `cannot_stand_directly_from_lying`。
+- 修正流程會經過 `sit_up`、`stand_up`、`balance`。
+- 成功後只在 trace 內產生 `lesson_candidate`。
+- 本包不做持久化、不接感官、不改主循環。
 
 ## Correction / Rule / Trial Flow
 
