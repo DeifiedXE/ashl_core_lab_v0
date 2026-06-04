@@ -79,6 +79,14 @@ class LessonContributionTests(unittest.TestCase):
         self.assertTrue(result["summary"]["lesson_caused_behavior_shift"])
         self.assertEqual(result["summary"]["behavior_shift_traceable_to"], ["lesson_001"])
 
+    def test_phase_minus_one_existing_controls_still_hold(self):
+        result = run_phase_minus_one()
+
+        self.assertTrue(result["session_2a"]["success"])
+        self.assertFalse(result["session_2b"]["success"])
+        self.assertFalse(result["session_2b2"]["success"])
+        self.assertEqual(result["summary"]["behavior_shift_traceable_to"], ["lesson_001"])
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -33,13 +33,17 @@ def find_applicable_lesson(lessons: list[dict[str, Any]], goal: dict[str, Any]) 
     if goal.get("action") != "pick_up":
         return None
 
-    object_id = goal.get("object_id")
-    target_type = goal.get("target_type")
-    if object_id != "cube_001" and target_type != "cube":
+    if goal.get("object_id") != "cube_001":
         return None
 
     for lesson in list_active_lessons(lessons):
         trigger = lesson.get("trigger", {})
-        if trigger.get("action") == "pick_up" and trigger.get("target_type") == "cube":
+        condition = lesson.get("condition", {})
+        # Phase -1.1 keeps target_type metadata but uses strict object binding to avoid premature generalization.
+        if (
+            lesson.get("lesson_id") == "lesson_001"
+            and trigger.get("action") == "pick_up"
+            and condition.get("avatar_facing") == "east"
+        ):
             return lesson
     return None

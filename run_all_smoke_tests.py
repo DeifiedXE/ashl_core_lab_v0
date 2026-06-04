@@ -26,7 +26,11 @@ from ashl_core.expression import build_expression_package
 from ashl_core.experience_log import list_experience_events, list_lesson_candidates
 from ashl_core.guard import guard_output
 from ashl_core.integrated_loop import run_turn
-from ashl_core.lesson_runner import run_phase_minus_one, run_session_2b2_without_lesson_with_turn_tool
+from ashl_core.lesson_runner import (
+    run_phase_minus_one,
+    run_phase_minus_one_negative_controls,
+    run_session_2b2_without_lesson_with_turn_tool,
+)
 from ashl_core.memory_layers import (
     append_archive_memory,
     append_long_term_memory,
@@ -191,6 +195,18 @@ def smoke_prompt_leakage_control() -> dict:
         passed,
         {"control_check": control["decision_input_snapshot"]["leakage_check"]},
     )
+
+
+def smoke_phase_minus_one_negative_controls() -> dict:
+    result = run_phase_minus_one_negative_controls()
+    passed = (
+        result["passed"] is True
+        and result["summary"]["no_wrong_object_generalization"] is True
+        and result["summary"]["no_wrong_action_generalization"] is True
+        and result["summary"]["no_wrong_condition_success"] is True
+        and result["summary"]["no_unrelated_lesson_trigger"] is True
+    )
+    return _result("phase_minus_one_negative_controls", passed, result["summary"])
 
 
 def smoke_state_core() -> dict:
@@ -494,6 +510,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_experience_log(),
         smoke_phase_minus_one_lesson_contribution(),
         smoke_prompt_leakage_control(),
+        smoke_phase_minus_one_negative_controls(),
         smoke_state_persistence(),
         smoke_concept_layer(),
         smoke_state_core(),

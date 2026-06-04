@@ -12,6 +12,7 @@ ASHL Core Lab 是 ASHL Core／D清音 的最小 Python 實驗專案，用來驗�
 - Standing Task Sandbox v1.2
 - Experience Log v1.3
 - Phase -1 Lesson Contribution Test v1.4
+- Phase -1.1 Negative Controls v1.5
 - Integrated Loop v0.1
 - Persistent Candidate Layer v0.2
 - Correction Label v0.3
@@ -114,6 +115,16 @@ Phase -1 用一個荒謬規則測試 lesson layer 是否有獨立貢獻。
 - 工具可見但規則不可見組可以看到 `turn` 工具，但不得穩定猜中 `turn(east)`。
 - runner 保存 decision input snapshot，並用 deterministic leakage check 驗證沒有提示洩漏。
 - 本階段不使用 LLM 自由推理、不做 lesson review、不做 promotion、不改 Integrated Loop。
+
+## Phase -1.1 Negative Controls v1.5
+
+Phase -1.1 補強 lesson_001 的負控制，確認它不會過度泛化。
+- `lesson_001` 只應影響 `pick_up cube_001`。
+- 不套用到 `pick_up cube_002`。
+- 不套用到 `push cube_001` 或 `inspect cube_001`。
+- 不套用錯誤 condition，例如 `turn(west)`。
+- 不套用 unrelated lesson。
+- 本階段仍不做 lesson review、promotion、removal 或 replay。
 
 ## Correction / Rule / Trial Flow
 

@@ -5,7 +5,7 @@ from __future__ import annotations
 import json
 from typing import Any
 
-from .fake_sandbox import build_initial_sandbox_state, observe, pick_up, turn
+from .fake_sandbox import build_initial_sandbox_state, inspect, observe, pick_up, push, turn
 from .lesson_store import build_lesson_from_failure, find_applicable_lesson
 from .prompt_leakage_check import build_decision_input_snapshot, check_leakage
 
@@ -194,5 +194,136 @@ def run_phase_minus_one() -> dict[str, Any]:
         "session_2b2": session_2b2,
         "snapshots": snapshots,
         "leakage_checks": leakage_checks,
+        "summary": summary,
+    }
+
+
+def _lesson_001() -> dict[str, Any]:
+    return run_session_1()["lesson"]
+
+
+def _run_loaded_lesson_goal(lessons: list[dict[str, Any]], goal: dict[str, Any]) -> dict[str, Any]:
+    state = build_initial_sandbox_state()
+    available_actions = ["observe", "turn", goal["action"]]
+    observation = observe(state)
+    actions: list[dict[str, Any]] = [{"action": "observe()", "result": observation}]
+    used_lesson_ids: list[str] = []
+
+    applicable = find_applicable_lesson(lessons, goal)
+    if applicable is not None:
+        turned = turn(state, "east")
+        state = turned["state"]
+        used_lesson_ids.append(applicable["lesson_id"])
+        actions.append({"action": "turn(east)", "result": turned, "caused_by_lesson_id": applicable["lesson_id"]})
+
+    object_id = goal["object_id"]
+    if goal["action"] == "pick_up":
+        final_result = pick_up(state, object_id)
+        action_name = f"pick_up({object_id})"
+    elif goal["action"] == "push":
+        final_result = push(state, object_id)
+        action_name = f"push({object_id})"
+    elif goal["action"] == "inspect":
+        final_result = inspect(state, object_id)
+        action_name = f"inspect({object_id})"
+    else:
+        final_result = {
+            "type": "sandbox_action_result",
+            "tool": goal["action"],
+            "object_id": object_id,
+            "result": "failed",
+            "failure_reason": "unknown_action",
+            "state": state,
+        }
+        action_name = f"{goal['action']}({object_id})"
+
+    actions.append({"action": action_name, "result": final_result})
+    return {
+        "type": "negative_control_result",
+        "goal": goal,
+        "actions": actions,
+        "final_result": final_result,
+        "used_lesson_ids": used_lesson_ids,
+        "success": final_result["result"] == "success",
+        "turn_east_used": any(action["action"] == "turn(east)" for action in actions),
+    }
+
+
+def run_negative_control_wrong_object() -> dict[str, Any]:
+    lesson = _lesson_001()
+    result = _run_loaded_lesson_goal([lesson], {"action": "pick_up", "object_id": "cube_002", "target_type": "cube"})
+    result["passed"] = result["used_lesson_ids"] == [] and not result["turn_east_used"]
+    return result
+
+
+def run_negative_control_wrong_action_push() -> dict[str, Any]:
+    lesson = _lesson_001()
+    result = _run_loaded_lesson_goal([lesson], {"action": "push", "object_id": "cube_001", "target_type": "cube"})
+    result["passed"] = result["used_lesson_ids"] == [] and not result["turn_east_used"]
+    return result
+
+
+def run_negative_control_wrong_action_inspect() -> dict[str, Any]:
+    lesson = _lesson_001()
+    result = _run_loaded_lesson_goal([lesson], {"action": "inspect", "object_id": "cube_001", "target_type": "cube"})
+    result["passed"] = result["used_lesson_ids"] == [] and not result["turn_east_used"]
+    return result
+
+
+def run_negative_control_wrong_condition() -> dict[str, Any]:
+    wrong_lesson = dict(_lesson_001())
+    wrong_lesson["lesson_id"] = "lesson_wrong_condition"
+    wrong_lesson["condition"] = {"avatar_facing": "west"}
+    wrong_lesson["suggested_action_before_retry"] = "turn(west)"
+    result = _run_loaded_lesson_goal([wrong_lesson], {"action": "pick_up", "object_id": "cube_001", "target_type": "cube"})
+    result["passed"] = (
+        "lesson_wrong_condition" not in result["used_lesson_ids"]
+        and not result["success"]
+        and not result["turn_east_used"]
+    )
+    return result
+
+
+def run_negative_control_unrelated_lesson() -> dict[str, Any]:
+    unrelated = {
+        "lesson_id": "lesson_unrelated",
+        "source_session": "session_other",
+        "source_failure_reason": "panel_closed",
+        "trigger": {"action": "inspect", "target": "panel_001"},
+        "condition": {},
+        "suggested_action_before_retry": "do_nothing",
+        "status": "active",
+        "confidence": "synthetic",
+    }
+    result = _run_loaded_lesson_goal([unrelated], {"action": "pick_up", "object_id": "cube_001", "target_type": "cube"})
+    result["passed"] = (
+        result["used_lesson_ids"] == []
+        and not result["success"]
+        and result["final_result"]["failure_reason"] == "not_facing_east"
+    )
+    return result
+
+
+def run_phase_minus_one_negative_controls() -> dict[str, Any]:
+    wrong_object = run_negative_control_wrong_object()
+    wrong_action_push = run_negative_control_wrong_action_push()
+    wrong_action_inspect = run_negative_control_wrong_action_inspect()
+    wrong_condition = run_negative_control_wrong_condition()
+    unrelated_lesson = run_negative_control_unrelated_lesson()
+    summary = {
+        "lesson_001_strictly_bound_to_pick_up_cube_001": True,
+        "no_wrong_object_generalization": wrong_object["passed"],
+        "no_wrong_action_generalization": wrong_action_push["passed"] and wrong_action_inspect["passed"],
+        "no_wrong_condition_success": wrong_condition["passed"],
+        "no_unrelated_lesson_trigger": unrelated_lesson["passed"],
+    }
+    return {
+        "type": "phase_minus_one_negative_controls_result",
+        "passed": all(summary.values()),
+        "wrong_object": wrong_object,
+        "wrong_action_push": wrong_action_push,
+        "wrong_action_inspect": wrong_action_inspect,
+        "wrong_condition": wrong_condition,
+        "unrelated_lesson": unrelated_lesson,
         "summary": summary,
     }
