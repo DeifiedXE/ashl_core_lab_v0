@@ -131,6 +131,32 @@ Trial Suggestion Feedback v0.7 會記錄 `trial_suggestions` 是否有幫助或�
 - 本階段不做 Rule Promotion。
 - 本階段不做 Rule Apply。
 
+## Core Senses v0.8
+
+Screen Sense 與 Camera Sense 已納入 ASHL Core / 清音的核心感官規劃。
+
+文字能教清音「蘋果怎麼定義」，但視覺感官才有機會教她「這個東西就是蘋果」。
+
+本階段只做：
+
+- Core Senses 設計文件
+- sensor event 資料模型
+- visual concept candidate 資料模型
+- mock sensor event 測試
+
+本階段不做：
+
+- 真攝影機
+- 螢幕截圖
+- 真圖片儲存
+- OpenCV
+- image model
+- 視覺辨識
+- 手勢辨識
+- 物件辨識
+
+`visual_concept_candidate` 是候選，不是正式概念。
+
 ## 專案結構
 
 ```text
@@ -143,6 +169,7 @@ ashl_core/
   rule_candidates.py
   trial_rules.py
   trial_feedback.py
+  senses.py
   perception.py
   concepts.py
   state_core.py
@@ -160,6 +187,7 @@ tests/
   test_rule_candidates.py
   test_trial_rules.py
   test_trial_feedback.py
+  test_senses.py
   test_integrated_loop.py
   test_smoke.py
   test_concepts.py

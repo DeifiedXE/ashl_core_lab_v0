@@ -20,6 +20,7 @@ from ashl_core.integrated_loop import run_turn
 from ashl_core.persistence import append_jsonl, read_jsonl
 from ashl_core.perception import perceive
 from ashl_core.rule_candidates import append_rule_candidate
+from ashl_core.senses import build_sensor_event, build_visual_concept_candidate, validate_sensor_event
 from ashl_core.state_core import StateCore
 from ashl_core.trial_feedback import append_trial_feedback, build_trial_feedback, summarize_trial_feedback
 from ashl_core.trial_rules import build_trial_suggestions, list_approved_trial_candidates, build_trial_rule_view
@@ -294,6 +295,22 @@ def smoke_trial_feedback() -> dict:
         return _result("trial_feedback", passed, {"feedback": result["trial_feedback"], "summary": summary})
 
 
+def smoke_senses() -> dict:
+    camera_event = build_sensor_event("camera", "pointing_teach", {"label_hint": "蘋果"})
+    screen_event = build_sensor_event("screen", "screen_observation", {"window_title": "ASHL Lab"})
+    candidate = build_visual_concept_candidate(camera_event, "蘋果", region_ref={"x": 1, "y": 2, "w": 3, "h": 4})
+    passed = (
+        validate_sensor_event(camera_event)
+        and validate_sensor_event(screen_event)
+        and candidate is not None
+        and candidate["type"] == "visual_concept_candidate"
+        and candidate["status"] == "candidate"
+        and candidate["audit_required"] is True
+        and "image_data" not in candidate
+    )
+    return _result("senses", passed, {"camera_event": camera_event, "screen_event": screen_event, "candidate": candidate})
+
+
 def run_smoke_tests() -> list[dict]:
     return [
         smoke_concept_layer(),
@@ -310,6 +327,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_candidate_review(),
         smoke_trial_rule(),
         smoke_trial_feedback(),
+        smoke_senses(),
     ]
 
 

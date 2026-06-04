@@ -1,4 +1,4 @@
-# ASHL Core 研究計畫 v0.1.1
+# ASHL Core 研究計畫 v0.8
 
 ## 核心定位
 
@@ -10,9 +10,9 @@ ASHL Core 是低算力、可教、可糾正、可連續、能外接工具的唯�
 
 核心宣言：唯一模型的唯一性，不在出生，而在成長。
 
-## v0 目標
+## v0 主循環
 
-v0 的目標不是完整智慧，也不是完整人格，而是能跑完整主循環：
+v0 的目標是能跑完整主循環：
 
 ```text
 輸入
@@ -27,49 +27,55 @@ v0 的目標不是完整智慧，也不是完整人格，而是能跑完整主�
 → log
 ```
 
-這個階段重點是建立可觀察、可修正、可測試的最小骨架。
-
-## 已完成
+已完成：
 
 - Integrated Loop v0.1
-- smoke runner
-- unittest
-- decision priority 修正
+- Persistent Candidate Layer v0.2
+- Correction Label v0.3
+- Rule Candidate v0.4
+- Candidate Review / Audit v0.5
+- Trial Rule Layer v0.6
+- Trial Suggestion Feedback v0.7
+- Core Senses Design v0.8
 
-已修正的 priority 重點：
+## Core Senses / 核心感官
 
-- `direct_intent` 最高優先
-- `fatigue_close` 高於 `self_check`
-- `memory_candidate_possible` 必須觸發 `self_check`
+Text Sense 已存在，代表目前的文字輸入能力。
+
+Screen Sense 與 Camera Sense 是未來核心感官，不是娛樂外掛。
+
+- Screen Sense：畫面監視、視窗內容、游標位置、畫面變化。
+- Camera Sense：攝影機畫面、實物教學、指向教學。
+- Audio Sense：未來語音與環境聲音，暫緩。
+- Tool Sense：工具回傳結果，暫緩。
+
+純文字不足以支援真實世界概念學習。文字能教清音「蘋果怎麼定義」，但視覺感官才有機會教她「這個東西就是蘋果」。
+
+視覺教學的早期目標是建立 `visual_concept_candidate`：
+
+- 使用者文字教學
+- mock sensor event
+- 視覺區域參照
+- 場景來源
+- 候選概念
+- audit 狀態
+
+真正硬體支援延後到主循環、狀態保存、CLI 穩定後。
 
 ## 尚未完成
 
-- Memory Candidate
-- Correction Label
-- Rule Candidate
+- 真攝影機 / 真螢幕感知
+- 狀態保存穩定化
+- CLI workflow
+- Rule Apply
+- Rule Promotion
 - Mood Layer
-- Persistence Layer
+- SQLite / Persistence Layer 正式化
 - Tool Adapter
 
-## 下一步
+## 限制
 
-下一個建議工作包：Memory Candidate v0.1。
-
-目標是讓 `memory.candidate_requested` 不只觸發 `self_check`，也能產生明確、可審核、不可直接固化的 memory candidate artifact。
-
-## 本階段限制
-
-本階段不做：
-
-- 真 LLM 串接
-- Web
-- 工具系統
-- GUI
-- TTS
-- Mood Layer
-- 長期資料庫
-- 自動固化記憶
-- 完整智慧語言
+本階段不接真 LLM、Web、GUI、TTS、SQLite、OpenCV、image model，也不讀螢幕、不接真攝影機、不儲存真圖片。
 
 ## Windows PowerShell
 
