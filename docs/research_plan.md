@@ -208,6 +208,21 @@ v1.9c 不做 priority，不做自動解衝突，不新增 accept / reject / choo
 - v1.9c CLI conflict_check 真實檢查：本包
 - v2.0 Stale / Supersede：下一步候選
 
+## Cross-task Shared Prerequisite Isolation
+
+v1.9d Cross-task Shared Prerequisite Isolation Test 驗證 selection helper 可依 task / object / decision_point 區分 lesson。
+本包使用 `lesson_001: pick_up cube_001 -> turn(east)` 與 `lesson_003: pick_up cube_002 -> turn(east)`，確認共享同一前置 action 不會造成 false conflict，也不會交叉選用。
+v1.9d 不證明 stale，不證明 supersede，不證明 priority，不新增 require_review，也不修改 CLI conflict_check。
+
+目前順序：
+- v1.9a Multi-lesson Isolation Test：已完成
+- v1.9b Conflict Detection / Require Review：已完成
+- v1.9c CLI conflict_check 真實檢查：已完成
+- v1.9d Cross-task Shared Prerequisite Isolation Test：本包
+- v2.0a Manual Stale Marking：下一步
+- v2.0b Supersede Link：延後
+- v2.0c CLI lifecycle display：延後
+
 ## Minimal Teaching CLI
 
 v1.8 Minimal Teaching CLI 是既有 lesson flow 的命令列 wrapper。

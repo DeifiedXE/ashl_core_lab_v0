@@ -41,6 +41,7 @@ from ashl_core.lesson_store import (
     generate_lesson_from_failure,
     select_lesson_for_decision_point,
     select_lesson_for_failure_reason,
+    select_lesson_for_context,
 )
 from ashl_core.memory_layers import (
     append_archive_memory,
@@ -374,6 +375,48 @@ def smoke_conflict_detection_require_review() -> dict:
         "conflict_detection_require_review",
         passed,
         {"conflict": conflict, "disabled": disabled, "reenabled": reenabled},
+    )
+
+
+def smoke_cross_task_shared_prerequisite_isolation() -> dict:
+    lesson_001 = build_lesson_from_failure("session_cube_001", pick_up(build_initial_sandbox_state(), "cube_001"))
+    lesson_001["object_id"] = "cube_001"
+    lesson_003 = {
+        "lesson_id": "lesson_003",
+        "source_session": "session_cube_002",
+        "source_failure_reason": "not_facing_east_for_cube_002",
+        "trigger": {"action": "pick_up", "target_type": "cube"},
+        "decision_point": "before_retry_pick_up_cube",
+        "object_id": "cube_002",
+        "condition": {"avatar_facing": "east"},
+        "suggested_action_before_retry": "turn(east)",
+        "status": "active",
+        "confidence": "tested_once",
+    }
+    cube_001 = select_lesson_for_context(
+        [lesson_001, lesson_003],
+        {"task": "pick_up", "object_id": "cube_001", "decision_point": "before_retry_pick_up_cube"},
+    )
+    cube_002 = select_lesson_for_context(
+        [lesson_001, lesson_003],
+        {"task": "pick_up", "object_id": "cube_002", "decision_point": "before_retry_pick_up_cube"},
+    )
+    passed = (
+        cube_001["active_lesson_ids"] == ["lesson_001", "lesson_003"]
+        and cube_001["selected_lesson_id"] == "lesson_001"
+        and cube_001["selected_action"] == "turn(east)"
+        and "lesson_003" not in cube_001["matched_lesson_ids"]
+        and cube_001["conflict_detected"] is False
+        and cube_002["active_lesson_ids"] == ["lesson_001", "lesson_003"]
+        and cube_002["selected_lesson_id"] == "lesson_003"
+        and cube_002["selected_action"] == "turn(east)"
+        and "lesson_001" not in cube_002["matched_lesson_ids"]
+        and cube_002["conflict_detected"] is False
+    )
+    return _result(
+        "cross_task_shared_prerequisite_isolation",
+        passed,
+        {"cube_001": cube_001, "cube_002": cube_002},
     )
 
 
@@ -728,6 +771,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_multi_lesson_isolation(),
         smoke_conflict_detection_require_review(),
         smoke_teaching_cli_conflict_check(),
+        smoke_cross_task_shared_prerequisite_isolation(),
         smoke_state_persistence(),
         smoke_concept_layer(),
         smoke_state_core(),

@@ -178,3 +178,30 @@ def select_lesson_for_decision_point(lessons: list[dict[str, Any]], decision_poi
         "selected_lesson": selected,
         "behavior_changed": selected is not None,
     }
+
+
+def select_lesson_for_context(lessons: list[dict[str, Any]], context: dict[str, Any]) -> dict[str, Any]:
+    active_lessons = list_active_lessons(lessons)
+    task = context.get("task")
+    object_id = context.get("object_id")
+    decision_point = context.get("decision_point")
+    matches = [
+        lesson
+        for lesson in active_lessons
+        if lesson.get("decision_point") == decision_point
+        and lesson.get("trigger", {}).get("action") == task
+        and lesson.get("object_id", "cube_001") == object_id
+    ]
+    selected = matches[0] if len(matches) == 1 else None
+    return {
+        "type": "lesson_context_selection_result",
+        "matched_task": task,
+        "matched_object_id": object_id,
+        "decision_point": decision_point,
+        "active_lesson_ids": [lesson.get("lesson_id") for lesson in active_lessons],
+        "matched_lesson_ids": [lesson.get("lesson_id") for lesson in matches],
+        "selected_lesson_id": selected.get("lesson_id") if selected else None,
+        "selected_action": selected.get("suggested_action_before_retry") if selected else None,
+        "selected_lesson": selected,
+        "conflict_detected": False,
+    }

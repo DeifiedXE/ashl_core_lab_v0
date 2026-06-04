@@ -21,6 +21,7 @@ ASHL Core Lab 是 ASHL Core／D清音 的最小 Python 實驗專案，用來驗�
 - v1.9a Multi-lesson Isolation Test
 - v1.9b Conflict Detection / Require Review
 - v1.9c CLI conflict_check 真實檢查
+- v1.9d Cross-task Shared Prerequisite Isolation Test
 - Integrated Loop v0.1
 - Persistent Candidate Layer v0.2
 - Correction Label v0.3
@@ -275,6 +276,26 @@ py -3 -m ashl_core.teaching_cli run-conflict-check-flow
 - v1.9b Conflict Detection / Require Review：已完成
 - v1.9c CLI conflict_check 真實檢查：本包
 - v2.0 Stale / Supersede：下一步候選
+
+## v1.9d Cross-task Shared Prerequisite Isolation Test
+
+v1.9d 驗證 selection helper 可區分不同 task / object，即使多條 lesson 共享同一前置 action。
+- `lesson_001`: `pick_up cube_001 -> turn(east)`
+- `lesson_003`: `pick_up cube_002 -> turn(east)`
+- cube_001 context 只選 `lesson_001`。
+- cube_002 context 只選 `lesson_003`。
+- 共享 `turn(east)` 不應誤判 conflict。
+- v1.9b 的 `turn(east)` / `turn(west)` incompatible conflict 仍有效。
+- 本包不做 stale、supersede、priority、require_review，也不修改 CLI conflict_check。
+
+目前順序：
+- v1.9a Multi-lesson Isolation Test：已完成
+- v1.9b Conflict Detection / Require Review：已完成
+- v1.9c CLI conflict_check 真實檢查：已完成
+- v1.9d Cross-task Shared Prerequisite Isolation Test：本包
+- v2.0a Manual Stale Marking：下一步
+- v2.0b Supersede Link：延後
+- v2.0c CLI lifecycle display：延後
 
 ## Correction / Rule / Trial Flow
 
