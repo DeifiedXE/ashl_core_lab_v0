@@ -7,6 +7,7 @@ ASHL Core Lab 是 ASHL Core／D清音 的最小 Python 實驗專案，用來驗�
 ## 已完成
 
 - Core Seed Formalization v0.9
+- Memory Layers v1.0
 - Integrated Loop v0.1
 - Persistent Candidate Layer v0.2
 - Correction Label v0.3
@@ -20,7 +21,6 @@ ASHL Core Lab 是 ASHL Core／D清音 的最小 Python 實驗專案，用來驗�
 
 ## 尚未完成
 
-- Memory Layers
 - Memory Economy
 - Rule Apply
 - Rule Promotion
@@ -61,6 +61,19 @@ JSONL artifacts：
 - `data/trial_feedback.jsonl`
 
 這些檔案都是實驗資料與候選紀錄，已由 `.gitignore` 忽略。測試使用暫存資料夾，不污染 repo `data/`。
+
+## Memory Layers v1.0
+
+D清音的記憶不應全部混在同一個檔案中。v1.0 建立四層記憶基礎結構：
+
+- Core Memory：只讀，不由普通流程改寫。
+- Long-term Memory：只提供 append 入口，不自動固化 memory candidate。
+- Working Memory：可保存 session snapshot。
+- Archive Memory：可 append 封存資料。
+
+JSONL / JSON 仍是幼體階段資料格式，暫不使用 SQLite。
+
+`memory_candidates.jsonl` 是候選日誌，不是 Long-term Memory。
 
 ## Correction / Rule / Trial Flow
 
@@ -114,6 +127,7 @@ ashl_core/
   correction.py
   candidate_review.py
   memory_candidates.py
+  memory_layers.py
   persistence.py
   rule_candidates.py
   trial_rules.py
@@ -133,6 +147,7 @@ tests/
   test_correction.py
   test_candidate_review.py
   test_memory_candidates.py
+  test_memory_layers.py
   test_persistence.py
   test_rule_candidates.py
   test_trial_rules.py
@@ -148,6 +163,7 @@ tests/
 docs/
   core_seed.md
   core_senses.md
+  memory_layers.md
   experiment_order.md
   research_plan.md
 

@@ -23,6 +23,16 @@ from ashl_core.deliberation import deliberate
 from ashl_core.expression import build_expression_package
 from ashl_core.guard import guard_output
 from ashl_core.integrated_loop import run_turn
+from ashl_core.memory_layers import (
+    append_archive_memory,
+    append_long_term_memory,
+    build_memory_record,
+    is_core_memory_write_allowed,
+    list_archive_memory,
+    list_long_term_memory,
+    read_working_memory_snapshot,
+    write_working_memory_snapshot,
+)
 from ashl_core.persistence import append_jsonl, read_jsonl
 from ashl_core.perception import perceive
 from ashl_core.rule_candidates import append_rule_candidate
@@ -60,6 +70,24 @@ def smoke_core_seed() -> dict:
         and attempt["allowed"] is False
     )
     return _result("core_seed", passed, {"seed_name": seed["name"], "attempt": attempt})
+
+
+def smoke_memory_layers() -> dict:
+    with tempfile.TemporaryDirectory() as tmp:
+        long_term_record = build_memory_record("long_term", "confirmed item", "manual_confirmation")
+        archive_record = build_memory_record("archive", "archived item", "manual_archive")
+        append_long_term_memory(tmp, long_term_record)
+        append_archive_memory(tmp, archive_record)
+        snapshot = {"session": "smoke", "focus": "memory_layers"}
+        write_working_memory_snapshot(tmp, snapshot)
+        passed = (
+            list_long_term_memory(tmp) == [long_term_record]
+            and list_archive_memory(tmp) == [archive_record]
+            and read_working_memory_snapshot(tmp) == snapshot
+            and not is_core_memory_write_allowed("memory_candidate")
+            and is_core_memory_write_allowed("manual_versioned_update")
+        )
+        return _result("memory_layers", passed, {"long_term": long_term_record, "archive": archive_record})
 
 
 def smoke_state_core() -> dict:
@@ -335,6 +363,7 @@ def smoke_senses() -> dict:
 def run_smoke_tests() -> list[dict]:
     return [
         smoke_core_seed(),
+        smoke_memory_layers(),
         smoke_concept_layer(),
         smoke_state_core(),
         smoke_expression_guard(),

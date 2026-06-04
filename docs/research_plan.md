@@ -30,6 +30,7 @@ v0 的目標是能跑完整主循環：
 已完成：
 
 - Core Seed Formalization v0.9
+- Memory Layers v1.0
 - Integrated Loop v0.1
 - Persistent Candidate Layer v0.2
 - Correction Label v0.3
@@ -92,6 +93,17 @@ Core Seed 是 D清音幼體的成長胚胎藍圖，用於定義身份、存在�
 需要特別澄清：Core Seed 中的「知性、溫柔、包容、研究不妥協」等人格詞彙是成長目標與行為評估方向，不代表系統已理解完整含義。
 
 Core Seed 預設不可由 memory candidate、correction label、rule candidate、trial suggestion 或 trial feedback 直接改寫。修改 Core Seed 必須是明確版本化人工決策。
+
+## Memory Layers
+
+Memory Layers v1.0 已建立 core / long-term / working / archive 四層記憶基礎結構。
+
+- Core Memory：只讀，不由普通流程改寫。
+- Long-term Memory：提供 append 入口，不自動從 memory candidate 固化。
+- Working Memory：可保存 session snapshot。
+- Archive Memory：提供 append 入口，用於未來封存資料。
+
+`memory_candidates.jsonl` 仍是候選日誌，不是 Long-term Memory。Long-term Memory 必須透過未來 promotion / confirmation 流程產生。
 
 ## 尚未完成
 
