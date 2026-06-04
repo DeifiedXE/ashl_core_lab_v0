@@ -62,6 +62,26 @@ Screen Sense 與 Camera Sense 是未來核心感官，不是娛樂外掛。
 
 真正硬體支援延後到主循環、狀態保存、CLI 穩定後。
 
+## 實驗總順序
+
+目前採用 [ASHL Core／D清音 實驗總順序 v0.2](experiment_order.md) 作為後續開發路線依據。
+
+後續開發應優先補齊：
+
+- Core Seed
+- Memory Layers
+- Teaching Event
+- Confidence / Promotion
+- Memory Economy
+
+完成內在連續性與文字接地後，再進入：
+
+- Core Perception
+- Visual Impression
+- Symbol Grounding v1
+
+因此下一階段不急著接攝影機或螢幕監視。Screen Sense / Camera Sense 已納入核心感官規劃，但真正硬體接入應在主循環、記憶層、教學事件、信心/晉升機制穩定後進行。
+
 ## 尚未完成
 
 - 真攝影機 / 真螢幕感知

@@ -157,6 +157,24 @@ Screen Sense 與 Camera Sense 已納入 ASHL Core / 清音的核心感官規劃�
 
 `visual_concept_candidate` 是候選，不是正式概念。
 
+## Roadmap
+
+目前採用 `ASHL Core／D清音 實驗總順序 v0.2`，詳見 [docs/experiment_order.md](docs/experiment_order.md)。
+
+下一階段不急著接攝影機。
+
+優先補內在連續性：
+
+- Core Seed
+- Memory Layers
+- Teaching Event
+- Confidence / Promotion
+- Memory Economy
+
+Core Perception 與 Visual Impression 已納入核心感官規劃，但實作延後。
+
+Screen Sense / Camera Sense 是核心感官規劃，不是娛樂外掛；真正硬體接入應在主循環、記憶層、教學事件、信心/晉升機制穩定後進行。
+
 ## 專案結構
 
 ```text
@@ -196,6 +214,7 @@ tests/
   test_deliberation.py
 
 docs/
+  experiment_order.md
   research_plan.md
 
 examples/
