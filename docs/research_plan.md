@@ -196,6 +196,18 @@ v1.9b 不證明 priority，不做自動解衝突，不做 stale / supersede，�
 - v1.9c CLI conflict_check 補真實檢查：下一步
 - v2.0 Stale / Supersede：延後
 
+## CLI Conflict Check Integration
+
+v1.9c CLI conflict_check 真實檢查只把 CLI 顯示層接到 v1.9b conflict detection 結果。
+CLI 現在會回傳 `implemented = true`，並在 conflict flow 中顯示 `conflict_detected = true`、`conflict_resolution = require_review`、`review_status = pending_human_review`。
+v1.9c 不做 priority，不做自動解衝突，不新增 accept / reject / choose lesson CLI，不修改 lesson 狀態，也不做 stale / supersede。
+
+目前順序：
+- v1.9a Multi-lesson Isolation Test：已完成
+- v1.9b Conflict Detection / Require Review：已完成
+- v1.9c CLI conflict_check 真實檢查：本包
+- v2.0 Stale / Supersede：下一步候選
+
 ## Minimal Teaching CLI
 
 v1.8 Minimal Teaching CLI 是既有 lesson flow 的命令列 wrapper。

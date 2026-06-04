@@ -20,6 +20,7 @@ ASHL Core Lab 是 ASHL Core／D清音 的最小 Python 實驗專案，用來驗�
 - v1.7c Second Known Failure Reason Determinism Test
 - v1.9a Multi-lesson Isolation Test
 - v1.9b Conflict Detection / Require Review
+- v1.9c CLI conflict_check 真實檢查
 - Integrated Loop v0.1
 - Persistent Candidate Layer v0.2
 - Correction Label v0.3
@@ -254,6 +255,26 @@ v1.9b 只驗證同一 decision point 上 incompatible active lessons 會被偵�
 - v1.9b Conflict Detection / Require Review：本包
 - v1.9c CLI conflict_check 補真實檢查：下一步
 - v2.0 Stale / Supersede：延後
+
+## v1.9c CLI conflict_check 真實檢查
+
+v1.9c 只把 CLI 的 `conflict_check` 從 `not_implemented` 升級為讀取 v1.9b conflict detection 的真實結果。
+- `run-known-flow` 會顯示 `implemented = true` 且 `conflict_detected = false`。
+- `run-unknown-flow` 維持 v1.7b unknown boundary。
+- `run-disable-reenable-flow` 維持 v1.6 因果控制。
+- 新增 `run-conflict-check-flow`，會顯示 `conflict_detected = true`、`conflict_resolution = require_review`、`review_status = pending_human_review`。
+- 本包不做 priority，不做自動解衝突，不做 accept / reject / choose lesson CLI，不改 lesson 狀態。
+
+常用指令：
+```powershell
+py -3 -m ashl_core.teaching_cli run-conflict-check-flow
+```
+
+目前順序：
+- v1.9a Multi-lesson Isolation Test：已完成
+- v1.9b Conflict Detection / Require Review：已完成
+- v1.9c CLI conflict_check 真實檢查：本包
+- v2.0 Stale / Supersede：下一步候選
 
 ## Correction / Rule / Trial Flow
 
