@@ -10,6 +10,7 @@ ASHL Core Lab 是 ASHL Core／D清音 的最小 Python 實驗專案，用來驗�
 - Memory Layers v1.0
 - State Persistence v1.1
 - Standing Task Sandbox v1.2
+- Experience Log v1.3
 - Integrated Loop v0.1
 - Persistent Candidate Layer v0.2
 - Correction Label v0.3
@@ -94,6 +95,15 @@ Standing Task Sandbox 是第一個純 Python AGE 行動沙盒。
 - 修正流程會經過 `sit_up`、`stand_up`、`balance`。
 - 成功後只在 trace 內產生 `lesson_candidate`。
 - 本包不做持久化、不接感官、不改主循環。
+
+## Experience Log v1.3
+
+Experience Log 讓 standing task trace 可以轉成可回放的經驗紀錄。
+- action result 可轉成 `experience_event`。
+- 成功站立後可建立 `lesson_candidate`。
+- 只有 `persist_experience=True` 才寫入 `experience_events.jsonl` 與 `lesson_candidates.jsonl`。
+- `lesson_candidate` 仍是候選，不是 Long-term Memory。
+- 本包不做 promotion、不改 Integrated Loop。
 
 ## Correction / Rule / Trial Flow
 

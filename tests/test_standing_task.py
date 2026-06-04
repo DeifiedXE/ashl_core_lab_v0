@@ -2,6 +2,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
+from ashl_core.experience_log import list_experience_events, list_lesson_candidates
 from ashl_core.standing_task import run_standing_task
 
 
@@ -45,6 +46,48 @@ class StandingTaskTests(unittest.TestCase):
 
             self.assertTrue(trace["success"])
             self.assertEqual(after, before)
+
+    def test_persist_experience_false_does_not_create_jsonl_files(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            trace = run_standing_task(persist_experience=False, data_dir=tmp)
+
+            self.assertTrue(trace["success"])
+            self.assertIsNone(trace["experience_persistence"])
+            self.assertFalse((Path(tmp) / "experience_events.jsonl").exists())
+            self.assertFalse((Path(tmp) / "lesson_candidates.jsonl").exists())
+
+    def test_persist_experience_true_creates_experience_events(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            trace = run_standing_task(persist_experience=True, data_dir=tmp)
+            events = list_experience_events(tmp)
+
+            self.assertTrue(trace["success"])
+            self.assertTrue((Path(tmp) / "experience_events.jsonl").exists())
+            self.assertEqual(len(events), len(trace["actions"]))
+
+    def test_persist_experience_true_creates_lesson_candidates(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            run_standing_task(persist_experience=True, data_dir=tmp)
+            lessons = list_lesson_candidates(tmp)
+
+            self.assertTrue((Path(tmp) / "lesson_candidates.jsonl").exists())
+            self.assertEqual(len(lessons), 1)
+            self.assertEqual(lessons[0]["lesson_kind"], "body_transition")
+            self.assertEqual(lessons[0]["status"], "candidate")
+
+    def test_experience_events_include_failed_stand_up(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            run_standing_task(persist_experience=True, data_dir=tmp)
+            events = list_experience_events(tmp)
+
+            self.assertTrue(
+                any(
+                    event["action"] == "stand_up"
+                    and event["success"] is False
+                    and event["failure_reason"] == "cannot_stand_directly_from_lying"
+                    for event in events
+                )
+            )
 
 
 if __name__ == "__main__":

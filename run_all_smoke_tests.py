@@ -23,6 +23,7 @@ from ashl_core.core_seed import (
 )
 from ashl_core.deliberation import deliberate
 from ashl_core.expression import build_expression_package
+from ashl_core.experience_log import list_experience_events, list_lesson_candidates
 from ashl_core.guard import guard_output
 from ashl_core.integrated_loop import run_turn
 from ashl_core.memory_layers import (
@@ -137,6 +138,22 @@ def smoke_standing_task() -> dict:
         and trace["lesson_candidate"]["audit_required"] is True
     )
     return _result("standing_task", passed, trace)
+
+
+def smoke_experience_log() -> dict:
+    with tempfile.TemporaryDirectory() as tmp:
+        trace = run_standing_task(persist_experience=True, data_dir=tmp)
+        events = list_experience_events(tmp)
+        lessons = list_lesson_candidates(tmp)
+        passed = (
+            trace["experience_persistence"] is not None
+            and len(events) == len(trace["actions"])
+            and len(lessons) == 1
+            and lessons[0]["status"] == "candidate"
+            and "cannot_stand_directly_from_lying" in lessons[0]["evidence"]
+            and any(event["failure_reason"] == "cannot_stand_directly_from_lying" for event in events)
+        )
+        return _result("experience_log", passed, {"events": events, "lessons": lessons})
 
 
 def smoke_state_core() -> dict:
@@ -437,6 +454,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_body_state(),
         smoke_action_sandbox(),
         smoke_standing_task(),
+        smoke_experience_log(),
         smoke_state_persistence(),
         smoke_concept_layer(),
         smoke_state_core(),
