@@ -1,18 +1,32 @@
 # ASHL Core Lab v0
 
-ASHL Core Lab v0.1 is a small Python project skeleton for testing an integrated ASHL Core loop.
+ASHL Core Lab v0.1 是 ASHL Core 的最小 Python 專案雛形，用來驗證 Integrated Loop 是否能穩定跑完。
 
-This version only includes:
+本階段人格核心是「清音」，不是艾希米。清音是研究者型人格：知性、溫柔、包容，但在研究時不妥協。
 
-- Project structure cleanup
-- Smoke runner
+核心宣言：唯一模型的唯一性，不在出生，而在成長。
+
+## 目前範圍
+
+已完成：
+
 - Integrated Loop v0.1
-- Decision priority correction
-- `unittest` coverage
+- smoke runner
+- unittest
+- decision priority 修正
 
-It does not connect a real LLM, web, tool system, GUI, TTS, Mood Layer, long-term database, or automatic memory solidification.
+尚未完成：
 
-## Project Structure
+- Memory Candidate
+- Correction Label
+- Rule Candidate
+- Mood Layer
+- Persistence Layer
+- Tool Adapter
+
+本階段不接真 LLM、Web、工具系統、GUI、TTS、資料庫，也不自動固化記憶。
+
+## 專案結構
 
 ```text
 ashl_core/
@@ -45,26 +59,28 @@ run_all_smoke_tests.py
 
 ## Windows PowerShell
 
-Windows PowerShell should prefer `py -3`, not `python`.
+Windows PowerShell 請優先使用 `py -3`。
 
-Reason: `python` may point to the WindowsApps alias instead of the intended Python installation.
+不要優先使用 `python`，因為 `python` 可能指到 WindowsApps alias。
 
-Common commands:
+常用指令：
 
 ```powershell
 py -3 run_all_smoke_tests.py
 py -3 -m unittest discover
+where.exe python
+where.exe py
 ```
 
 ## Integrated Loop
 
-The main API is:
+主要 API：
 
 ```python
 from ashl_core.integrated_loop import run_turn, run_script
 ```
 
-Flow:
+流程：
 
 ```text
 input
@@ -79,7 +95,7 @@ input
 -> final output + trace
 ```
 
-`run_turn(text: str) -> dict` returns a trace containing:
+`run_turn(text: str) -> dict` 會回傳 trace，至少包含：
 
 - `input`
 - `candidate_events`
