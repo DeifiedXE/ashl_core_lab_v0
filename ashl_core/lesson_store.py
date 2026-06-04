@@ -28,6 +28,34 @@ def build_lesson_from_failure(session_id: str, failure_result: dict[str, Any]) -
     }
 
 
+def generate_lesson_from_failure(session_id: str, failure_result: dict[str, Any]) -> dict[str, Any]:
+    lesson = build_lesson_from_failure(session_id, failure_result)
+    failure_reason = failure_result.get("failure_reason")
+    if lesson is not None:
+        return {
+            "type": "lesson_generation_result",
+            "lesson": lesson,
+            "trace": {
+                "generation_status": "supported_failure_reason",
+                "reason": "known_failure_reason",
+                "source_failure_reason": failure_reason,
+                "executable_action": lesson["suggested_action_before_retry"],
+            },
+        }
+
+    return {
+        "type": "lesson_generation_result",
+        "lesson": None,
+        "trace": {
+            "generation_status": "unknown_failure_reason",
+            "reason": "unknown_failure_reason",
+            "source_failure_reason": failure_reason,
+            "executable_action": None,
+            "known_failure_reasons": ["not_facing_east"],
+        },
+    }
+
+
 def list_active_lessons(lessons: list[dict[str, Any]]) -> list[dict[str, Any]]:
     return [lesson for lesson in lessons if lesson.get("status") == "active"]
 

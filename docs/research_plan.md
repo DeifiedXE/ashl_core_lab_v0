@@ -135,6 +135,20 @@ where.exe python
 where.exe py
 ```
 
+## Unknown Failure Reason Boundary
+
+v1.7b Unknown Failure Reason Boundary Test 驗證格式正確但未知的 `failure_reason = unmapped_obstacle_shadow` 會被明確標記為 `unknown_failure_reason`。
+這個結果不得生成 executable action，不得產生 active lesson，不得 fallback 成 `not_facing_east`，不得產生 `turn(east)`，也不得改變 behavior。
+v1.7b 不測 malformed / empty / ambiguous failure_reason，不證明開放式泛化能力，也不處理 multi-lesson conflict / priority。
+
+目前順序：
+- v1.6 Phase -1.2 Lesson Causality Test：已完成
+- v1.7a Known Failure Reason Determinism Test：已完成
+- v1.7b Unknown Failure Reason Boundary Test：本包
+- v1.8 Minimal Teaching CLI：延後
+- v1.9 Multi-lesson Conflict / Priority：延後
+- v2.0 Stale / Supersede：延後
+
 ## State Persistence
 
 State Persistence v1.1 已建立基礎版本，用於保存 `state_snapshot.json`、`session_summary.json`、`last_trace_summary.json`。

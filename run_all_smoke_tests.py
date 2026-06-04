@@ -33,7 +33,7 @@ from ashl_core.lesson_runner import (
     run_phase_minus_one_negative_controls,
     run_session_2b2_without_lesson_with_turn_tool,
 )
-from ashl_core.lesson_store import build_lesson_from_failure
+from ashl_core.lesson_store import build_lesson_from_failure, find_applicable_lesson, generate_lesson_from_failure
 from ashl_core.memory_layers import (
     append_archive_memory,
     append_long_term_memory,
@@ -244,6 +244,29 @@ def smoke_lesson_generation_determinism() -> dict:
         and normalized[0]["status"] == "active"
     )
     return _result("lesson_generation_determinism", passed, {"normalized_lesson": normalized[0]})
+
+
+def smoke_unknown_failure_reason_boundary() -> dict:
+    failure_result = {
+        "type": "sandbox_action_result",
+        "tool": "pick_up",
+        "object_id": "cube_001",
+        "result": "failed",
+        "failure_reason": "unmapped_obstacle_shadow",
+        "state": build_initial_sandbox_state(),
+    }
+    result = generate_lesson_from_failure("session_unknown", failure_result)
+    lesson_list = [] if result["lesson"] is None else [result["lesson"]]
+    passed = (
+        result["trace"]["generation_status"] == "unknown_failure_reason"
+        and result["trace"]["reason"] == "unknown_failure_reason"
+        and result["trace"]["source_failure_reason"] == "unmapped_obstacle_shadow"
+        and result["trace"]["executable_action"] is None
+        and result["lesson"] is None
+        and find_applicable_lesson(lesson_list, {"action": "pick_up", "object_id": "cube_001"}) is None
+        and "turn(east)" not in str(result)
+    )
+    return _result("unknown_failure_reason_boundary", passed, result["trace"])
 
 
 def smoke_state_core() -> dict:
@@ -550,6 +573,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_phase_minus_one_negative_controls(),
         smoke_phase_minus_one_lesson_causality(),
         smoke_lesson_generation_determinism(),
+        smoke_unknown_failure_reason_boundary(),
         smoke_state_persistence(),
         smoke_concept_layer(),
         smoke_state_core(),

@@ -15,6 +15,7 @@ ASHL Core Lab 是 ASHL Core／D清音 的最小 Python 實驗專案，用來驗�
 - Phase -1.1 Negative Controls v1.5
 - Phase -1.2 Lesson Causality Test v1.6
 - v1.7a Known Failure Reason Determinism Test
+- v1.7b Unknown Failure Reason Boundary Test
 - Integrated Loop v0.1
 - Persistent Candidate Layer v0.2
 - Correction Label v0.3
@@ -151,6 +152,25 @@ v1.7a 只驗證已知 `failure_reason = not_facing_east` 的 lesson generation �
 - v1.6 Phase -1.2 Lesson Causality Test：已完成
 - v1.7a Known Failure Reason Determinism Test：本包
 - v1.7b Unknown Failure Reason Boundary Test：下一步
+- v1.8 Minimal Teaching CLI：延後
+- v1.9 Multi-lesson Conflict / Priority：延後
+- v2.0 Stale / Supersede：延後
+
+## v1.7b Unknown Failure Reason Boundary Test
+
+v1.7b 只驗證格式正確但未知的 `failure_reason = unmapped_obstacle_shadow` 會被明確標記為 unknown。
+- unknown failure_reason 會回傳 `generation_status = unknown_failure_reason`。
+- 不生成 executable action。
+- 不產生 active lesson。
+- 不改變 behavior，不 fallback 成 `not_facing_east`。
+- 不產生 `turn(east)`。
+- 本包不測 malformed / empty / ambiguous failure_reason。
+- 不證明開放式泛化能力，不做 multi-lesson conflict / priority。
+
+目前順序：
+- v1.6 Phase -1.2 Lesson Causality Test：已完成
+- v1.7a Known Failure Reason Determinism Test：已完成
+- v1.7b Unknown Failure Reason Boundary Test：本包
 - v1.8 Minimal Teaching CLI：延後
 - v1.9 Multi-lesson Conflict / Priority：延後
 - v2.0 Stale / Supersede：延後
