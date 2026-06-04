@@ -4,6 +4,8 @@ from pathlib import Path
 
 from ashl_core.integrated_loop import IntegratedLoop, run_turn
 from ashl_core.persistence import read_jsonl
+from ashl_core.candidate_review import append_candidate_review, build_candidate_review
+from ashl_core.rule_candidates import append_rule_candidate
 
 
 class IntegratedLoopTests(unittest.TestCase):
@@ -143,6 +145,37 @@ class IntegratedLoopTests(unittest.TestCase):
             self.assertEqual(len(rows), 1)
             self.assertIn("不能判斷", result["final_output"])
             self.assertFalse((Path(tmp) / "rule_candidates.jsonl").exists())
+
+    def test_approved_trial_rule_adds_trace_suggestion_without_applying(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            candidate = {
+                "id": "rule_cand_sleep",
+                "type": "rule_candidate",
+                "status": "candidate",
+                "candidate_kind": "concept_counterexample",
+                "target_phrase": "睡眠模式",
+                "wrong_event": "user.fatigue_signaled",
+                "correct_event": "technical.topic_discussed",
+                "not_event": "user.fatigue_signaled",
+                "prefer_event": "technical.topic_discussed",
+                "confidence": 0.3,
+                "audit_required": True,
+                "created_at": "2026-06-04T00:00:00+00:00",
+            }
+            append_rule_candidate(tmp, candidate)
+            append_candidate_review(tmp, build_candidate_review(candidate, "approved_for_trial"))
+
+            result = run_turn("睡眠模式這個功能怎麼設計？", data_dir=tmp)
+            final_events = [event["name"] for event in result["concept_result"]["final_events"]]
+
+            self.assertEqual(len(result["trial_rules"]), 1)
+            self.assertEqual(len(result["trial_suggestions"]), 1)
+            self.assertFalse(result["trial_rules"][0]["active"])
+            self.assertFalse(result["trial_suggestions"][0]["applied"])
+            self.assertIn("technical.topic_discussed", final_events)
+            self.assertNotIn("user.fatigue_signaled", final_events)
+            self.assertEqual(result["decision"]["intent"], "answer_normally")
+            self.assertIn("正常", result["final_output"])
 
 
 if __name__ == "__main__":

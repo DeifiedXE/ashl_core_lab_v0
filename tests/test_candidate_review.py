@@ -104,6 +104,7 @@ class CandidateReviewTests(unittest.TestCase):
         self.assertEqual(candidate["status"], "candidate")
         self.assertEqual(get_candidate_current_status(candidate, [review]), "approved_for_trial")
         self.assertNotEqual(candidate["status"], "active")
+        self.assertNotIn("active", review)
 
 
 if __name__ == "__main__":

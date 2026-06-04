@@ -19,7 +19,9 @@ from ashl_core.guard import guard_output
 from ashl_core.integrated_loop import run_turn
 from ashl_core.persistence import append_jsonl, read_jsonl
 from ashl_core.perception import perceive
+from ashl_core.rule_candidates import append_rule_candidate
 from ashl_core.state_core import StateCore
+from ashl_core.trial_rules import build_trial_suggestions, list_approved_trial_candidates, build_trial_rule_view
 
 
 REPORT_PATH = Path("smoke_test_report.json")
@@ -219,6 +221,43 @@ def smoke_candidate_review() -> dict:
         return _result("candidate_review", passed, {"review": review, "candidates": candidates})
 
 
+def smoke_trial_rule() -> dict:
+    with tempfile.TemporaryDirectory() as tmp:
+        candidate = {
+            "id": "rule_cand_sleep",
+            "type": "rule_candidate",
+            "status": "candidate",
+            "candidate_kind": "concept_counterexample",
+            "target_phrase": "睡眠模式",
+            "wrong_event": "user.fatigue_signaled",
+            "correct_event": "technical.topic_discussed",
+            "not_event": "user.fatigue_signaled",
+            "prefer_event": "technical.topic_discussed",
+            "confidence": 0.3,
+            "audit_required": True,
+            "created_at": "2026-06-04T00:00:00+00:00",
+        }
+        append_rule_candidate(tmp, candidate)
+        review = build_candidate_review(candidate, "approved_for_trial", note="smoke trial")
+        append_candidate_review(tmp, review)
+        approved = list_approved_trial_candidates(tmp)
+        trial_rules = [build_trial_rule_view(item) for item in approved]
+        suggestions = build_trial_suggestions(
+            "睡眠模式這個功能怎麼設計？",
+            [{"name": "user.fatigue_signaled"}, {"name": "technical.topic_discussed"}],
+            trial_rules,
+        )
+        passed = (
+            len(approved) == 1
+            and len(trial_rules) == 1
+            and trial_rules[0]["active"] is False
+            and trial_rules[0]["status"] == "trial_view"
+            and len(suggestions) == 1
+            and suggestions[0]["applied"] is False
+        )
+        return _result("trial_rule", passed, {"trial_rules": trial_rules, "suggestions": suggestions})
+
+
 def run_smoke_tests() -> list[dict]:
     return [
         smoke_concept_layer(),
@@ -233,6 +272,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_correction_label(),
         smoke_rule_candidate(),
         smoke_candidate_review(),
+        smoke_trial_rule(),
     ]
 
 

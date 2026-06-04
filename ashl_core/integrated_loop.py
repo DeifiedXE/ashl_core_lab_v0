@@ -17,6 +17,7 @@ from .perception import perceive
 from .rule_candidates import append_rule_candidate, build_rule_candidate_from_correction
 from .state_core import StateCore
 from .thoughts import generate_thoughts
+from .trial_rules import build_trial_rule_view, build_trial_suggestions, list_approved_trial_candidates
 
 
 _OPS = {
@@ -77,6 +78,13 @@ class IntegratedLoop:
         pending_correction: dict[str, Any] | None = None,
     ) -> dict[str, Any]:
         perception_result = perceive(text)
+        trial_candidates = list_approved_trial_candidates(data_dir)
+        trial_rules = [
+            trial_rule
+            for trial_rule in (build_trial_rule_view(candidate) for candidate in trial_candidates)
+            if trial_rule is not None
+        ]
+        trial_suggestions = build_trial_suggestions(text, perception_result["candidate_events"], trial_rules)
         concept_result = apply_concepts(perception_result)
         state_result = self.state_core.apply(concept_result["final_events"])
         states = state_result["after"]
@@ -135,6 +143,8 @@ class IntegratedLoop:
             "correction_pending": correction_pending,
             "correction_label": correction_label,
             "rule_candidate": rule_candidate,
+            "trial_rules": trial_rules,
+            "trial_suggestions": trial_suggestions,
         }
 
     def run_script(self, inputs: list[str], data_dir: str | Path = "data") -> list[dict[str, Any]]:

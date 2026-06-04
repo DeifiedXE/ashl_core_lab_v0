@@ -102,6 +102,21 @@ Candidate Review v0.5 新增 append-only 候選審核日誌。
 - `rejected`
 - `approved_for_trial`
 
+## Trial Rule Layer v0.6
+
+Trial Rule Layer v0.6 會讀取 current status 為 `approved_for_trial` 的 rule candidate，建立 trial rule view，並在 Integrated Loop trace 中產生 `trial_suggestions`。
+
+- `approved_for_trial` 只會產生 trial rule view。
+- trial rule view 的 `active` 固定是 `false`。
+- trial rule view 的 `status` 固定是 `trial_view`。
+- `trial_suggestions` 只出現在 trace。
+- 本階段不套用 trial rule。
+- 本階段不修改 Concept Layer。
+- 本階段不修改 `final_events`。
+- 本階段不修改 decision。
+- 本階段不修改 final output。
+- 本階段不建立 active rule。
+
 ## 專案結構
 
 ```text
@@ -112,6 +127,7 @@ ashl_core/
   memory_candidates.py
   persistence.py
   rule_candidates.py
+  trial_rules.py
   perception.py
   concepts.py
   state_core.py
@@ -127,6 +143,7 @@ tests/
   test_memory_candidates.py
   test_persistence.py
   test_rule_candidates.py
+  test_trial_rules.py
   test_integrated_loop.py
   test_smoke.py
   test_concepts.py
