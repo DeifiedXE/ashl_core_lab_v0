@@ -11,6 +11,7 @@ ASHL Core Lab 是 ASHL Core／D清音 的最小 Python 實驗專案，用來驗�
 - State Persistence v1.1
 - Standing Task Sandbox v1.2
 - Experience Log v1.3
+- Phase -1 Lesson Contribution Test v1.4
 - Integrated Loop v0.1
 - Persistent Candidate Layer v0.2
 - Correction Label v0.3
@@ -104,6 +105,15 @@ Experience Log 讓 standing task trace 可以轉成可回放的經驗紀錄。
 - 只有 `persist_experience=True` 才寫入 `experience_events.jsonl` 與 `lesson_candidates.jsonl`。
 - `lesson_candidate` 仍是候選，不是 Long-term Memory。
 - 本包不做 promotion、不改 Integrated Loop。
+
+## Phase -1 Lesson Contribution Test v1.4
+
+Phase -1 用一個荒謬規則測試 lesson layer 是否有獨立貢獻。
+- 有 lesson 組會載入 `lesson_001`，先 `turn(east)` 再 `pick_up cube_001`，預期成功。
+- 無 lesson 控制組不可看到 lesson、east、facing、failure reason，預期失敗。
+- 工具可見但規則不可見組可以看到 `turn` 工具，但不得穩定猜中 `turn(east)`。
+- runner 保存 decision input snapshot，並用 deterministic leakage check 驗證沒有提示洩漏。
+- 本階段不使用 LLM 自由推理、不做 lesson review、不做 promotion、不改 Integrated Loop。
 
 ## Correction / Rule / Trial Flow
 

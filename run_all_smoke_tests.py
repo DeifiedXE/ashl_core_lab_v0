@@ -26,6 +26,7 @@ from ashl_core.expression import build_expression_package
 from ashl_core.experience_log import list_experience_events, list_lesson_candidates
 from ashl_core.guard import guard_output
 from ashl_core.integrated_loop import run_turn
+from ashl_core.lesson_runner import run_phase_minus_one, run_session_2b2_without_lesson_with_turn_tool
 from ashl_core.memory_layers import (
     append_archive_memory,
     append_long_term_memory,
@@ -38,6 +39,7 @@ from ashl_core.memory_layers import (
 )
 from ashl_core.persistence import append_jsonl, read_jsonl
 from ashl_core.perception import perceive
+from ashl_core.prompt_leakage_check import build_decision_input_snapshot, check_leakage
 from ashl_core.rule_candidates import append_rule_candidate
 from ashl_core.senses import build_sensor_event, build_visual_concept_candidate, validate_sensor_event
 from ashl_core.state_core import StateCore
@@ -154,6 +156,41 @@ def smoke_experience_log() -> dict:
             and any(event["failure_reason"] == "cannot_stand_directly_from_lying" for event in events)
         )
         return _result("experience_log", passed, {"events": events, "lessons": lessons})
+
+
+def smoke_phase_minus_one_lesson_contribution() -> dict:
+    result = run_phase_minus_one()
+    passed = (
+        result["passed"] is True
+        and result["summary"]["lesson_caused_behavior_shift"] is True
+        and result["summary"]["behavior_shift_traceable_to"] == ["lesson_001"]
+        and result["session_2a"]["success"] is True
+        and result["session_2b"]["success"] is False
+        and result["session_2b2"]["success"] is False
+    )
+    return _result("phase_minus_one_lesson_contribution", passed, result["summary"])
+
+
+def smoke_prompt_leakage_control() -> dict:
+    control = run_session_2b2_without_lesson_with_turn_tool()
+    bad_snapshot = build_decision_input_snapshot(
+        "bad_smoke",
+        "session_2b",
+        "2B",
+        [],
+        {"object_id": "cube_001"},
+        ["observe", "pick_up"],
+        decision_input="east",
+    )
+    passed = (
+        control["decision_input_snapshot"]["leakage_check"]["passed"] is True
+        and check_leakage(bad_snapshot)["passed"] is False
+    )
+    return _result(
+        "prompt_leakage_control",
+        passed,
+        {"control_check": control["decision_input_snapshot"]["leakage_check"]},
+    )
 
 
 def smoke_state_core() -> dict:
@@ -455,6 +492,8 @@ def run_smoke_tests() -> list[dict]:
         smoke_action_sandbox(),
         smoke_standing_task(),
         smoke_experience_log(),
+        smoke_phase_minus_one_lesson_contribution(),
+        smoke_prompt_leakage_control(),
         smoke_state_persistence(),
         smoke_concept_layer(),
         smoke_state_core(),
