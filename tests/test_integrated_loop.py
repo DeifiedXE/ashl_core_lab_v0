@@ -1,6 +1,9 @@
+import tempfile
 import unittest
+from pathlib import Path
 
 from ashl_core.integrated_loop import IntegratedLoop, run_turn
+from ashl_core.persistence import read_jsonl
 
 
 class IntegratedLoopTests(unittest.TestCase):
@@ -55,6 +58,26 @@ class IntegratedLoopTests(unittest.TestCase):
 
         self.assertEqual(len(results), 2)
         self.assertEqual(results[0]["decision"]["intent"], "refocus")
+
+
+    def test_memory_candidate_writes_jsonl_with_tmp_data_dir(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            result = run_turn("記住，以後 ASHL Core 先走實驗路線", data_dir=tmp)
+            rows = read_jsonl(Path(tmp) / "memory_candidates.jsonl")
+
+            self.assertIsNotNone(result["memory_candidate"])
+            self.assertEqual(len(rows), 1)
+            self.assertEqual(rows[0]["type"], "memory_candidate")
+
+    def test_correction_pending_writes_jsonl_with_tmp_data_dir(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            previous = run_turn("睡眠模式這個功能怎麼設計？", data_dir=tmp)
+            result = run_turn("不是，我是在說睡眠模式功能。", data_dir=tmp, previous_trace=previous)
+            rows = read_jsonl(Path(tmp) / "correction_log.jsonl")
+
+            self.assertIsNotNone(result["correction_pending"])
+            self.assertEqual(len(rows), 1)
+            self.assertEqual(rows[0]["type"], "correction.pending")
 
 
 if __name__ == "__main__":

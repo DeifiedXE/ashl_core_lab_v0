@@ -1,15 +1,18 @@
-"""ASHL Core integrated loop v0.1."""
+"""ASHL Core integrated loop v0.2."""
 
 from __future__ import annotations
 
 import ast
 import operator
+from pathlib import Path
 from typing import Any
 
 from .concepts import apply_concepts
+from .correction import create_correction_pending, is_correction_request
 from .deliberation import deliberate
 from .expression import build_expression_package
 from .guard import guard_output
+from .memory_candidates import create_memory_candidate
 from .perception import perceive
 from .state_core import StateCore
 from .thoughts import generate_thoughts
@@ -65,7 +68,12 @@ class IntegratedLoop:
     def __init__(self) -> None:
         self.state_core = StateCore()
 
-    def run_turn(self, text: str) -> dict[str, Any]:
+    def run_turn(
+        self,
+        text: str,
+        data_dir: str | Path = "data",
+        previous_trace: dict[str, Any] | None = None,
+    ) -> dict[str, Any]:
         perception_result = perceive(text)
         concept_result = apply_concepts(perception_result)
         state_result = self.state_core.apply(concept_result["final_events"])
@@ -75,6 +83,20 @@ class IntegratedLoop:
         expression_package = build_expression_package(decision["intent"], text, states)
         raw_output = mock_llm(expression_package)
         guard_result = guard_output(raw_output, expression_package)
+        final_output = guard_result["final_output"]
+
+        thought_types = {thought["type"] for thought in thoughts}
+        memory_candidate = None
+        correction_pending = None
+
+        if decision["intent"] == "self_check" and "memory_candidate_possible" in thought_types:
+            memory_candidate = create_memory_candidate(text, data_dir)
+
+        if previous_trace is not None and is_correction_request(text):
+            correction_pending = create_correction_pending(previous_trace, text, data_dir)
+            raw_output = "Correction pending created; waiting for user label before applying any rule."
+            guard_result = {"passed": True, "failures": [], "final_output": raw_output}
+            final_output = raw_output
 
         return {
             "input": text,
@@ -86,16 +108,22 @@ class IntegratedLoop:
             "expression_package": expression_package,
             "raw_output": raw_output,
             "guard_result": guard_result,
-            "final_output": guard_result["final_output"],
+            "final_output": final_output,
+            "memory_candidate": memory_candidate,
+            "correction_pending": correction_pending,
         }
 
-    def run_script(self, inputs: list[str]) -> list[dict[str, Any]]:
-        return [self.run_turn(text) for text in inputs]
+    def run_script(self, inputs: list[str], data_dir: str | Path = "data") -> list[dict[str, Any]]:
+        return [self.run_turn(text, data_dir=data_dir) for text in inputs]
 
 
-def run_turn(text: str) -> dict[str, Any]:
-    return IntegratedLoop().run_turn(text)
+def run_turn(
+    text: str,
+    data_dir: str | Path = "data",
+    previous_trace: dict[str, Any] | None = None,
+) -> dict[str, Any]:
+    return IntegratedLoop().run_turn(text, data_dir=data_dir, previous_trace=previous_trace)
 
 
-def run_script(inputs: list[str]) -> list[dict[str, Any]]:
-    return IntegratedLoop().run_script(inputs)
+def run_script(inputs: list[str], data_dir: str | Path = "data") -> list[dict[str, Any]]:
+    return IntegratedLoop().run_script(inputs, data_dir=data_dir)

@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
-"""ASHL Core integrated loop v0.1 smoke runner."""
+"""ASHL Core v0.2 smoke runner."""
 
 from __future__ import annotations
 
 import json
+import tempfile
 from pathlib import Path
 
 from ashl_core.concepts import apply_concepts
@@ -11,6 +12,7 @@ from ashl_core.deliberation import deliberate
 from ashl_core.expression import build_expression_package
 from ashl_core.guard import guard_output
 from ashl_core.integrated_loop import run_turn
+from ashl_core.persistence import append_jsonl, read_jsonl
 from ashl_core.perception import perceive
 from ashl_core.state_core import StateCore
 
@@ -51,15 +53,16 @@ def smoke_expression_guard() -> dict:
 
 
 def smoke_correction_prompt() -> dict:
-    previous = run_turn("睡眠模式這個功能怎麼設計？")
-    correction = {
-        "type": "correction.pending",
-        "previous_input": previous["input"],
-        "previous_intent": previous["decision"]["intent"],
-        "user_correction": "不是，我是在說睡眠模式功能。",
-        "needs_user_label": True,
-        "options": ["event_mismatch", "reaction_strength_mismatch", "expression_mismatch"],
-    }
+    with tempfile.TemporaryDirectory() as tmp:
+        previous = run_turn("睡眠模式這個功能怎麼設計？", data_dir=tmp)
+        correction = {
+            "type": "correction.pending",
+            "previous_input": previous["input"],
+            "previous_intent": previous["decision"]["intent"],
+            "user_correction": "不是，我是在說睡眠模式功能。",
+            "needs_user_label": True,
+            "options": ["event_mismatch", "reaction_strength_mismatch", "expression_mismatch"],
+        }
     passed = correction["needs_user_label"] and "event_mismatch" in correction["options"]
     return _result("correction_prompt", passed, correction)
 
@@ -87,26 +90,64 @@ def smoke_integrated_loop() -> dict:
     details = []
     passed = True
 
-    for text, expected_intent, expected_signal in cases:
-        result = run_turn(text)
-        final_event_names = [event["name"] for event in result["concept_result"]["final_events"]]
-        output = result["final_output"]
-        signal_ok = expected_signal in output or expected_signal in final_event_names
-        case_ok = result["decision"]["intent"] == expected_intent and signal_ok
-        passed = passed and case_ok
-        details.append(
-            {
-                "input": text,
-                "intent": result["decision"]["intent"],
-                "final_events": final_event_names,
-                "final_output": output,
-                "passed": case_ok,
-            }
-        )
+    with tempfile.TemporaryDirectory() as tmp:
+        for text, expected_intent, expected_signal in cases:
+            result = run_turn(text, data_dir=tmp)
+            final_event_names = [event["name"] for event in result["concept_result"]["final_events"]]
+            output = result["final_output"]
+            signal_ok = expected_signal in output or expected_signal in final_event_names
+            case_ok = result["decision"]["intent"] == expected_intent and signal_ok
+            passed = passed and case_ok
+            details.append(
+                {
+                    "input": text,
+                    "intent": result["decision"]["intent"],
+                    "final_events": final_event_names,
+                    "final_output": output,
+                    "passed": case_ok,
+                }
+            )
 
     fatigue_case = details[-1]
     passed = passed and "self_check" not in fatigue_case["final_output"]
     return _result("integrated_loop", passed, {"cases": details})
+
+
+def smoke_persistence() -> dict:
+    with tempfile.TemporaryDirectory() as tmp:
+        path = Path(tmp) / "nested" / "items.jsonl"
+        append_jsonl(path, {"text": "清音"})
+        rows = read_jsonl(path)
+        passed = rows == [{"text": "清音"}] and read_jsonl(Path(tmp) / "missing.jsonl") == []
+        return _result("persistence", passed, {"rows": rows})
+
+
+def smoke_memory_candidate() -> dict:
+    with tempfile.TemporaryDirectory() as tmp:
+        result = run_turn("記住，以後 ASHL Core 先走實驗路線", data_dir=tmp)
+        rows = read_jsonl(Path(tmp) / "memory_candidates.jsonl")
+        passed = (
+            result["decision"]["intent"] == "self_check"
+            and result["memory_candidate"] is not None
+            and len(rows) == 1
+            and rows[0]["status"] == "candidate"
+            and rows[0]["audit_required"] is True
+        )
+        return _result("memory_candidate", passed, {"trace_candidate": result["memory_candidate"], "rows": rows})
+
+
+def smoke_correction_pending() -> dict:
+    with tempfile.TemporaryDirectory() as tmp:
+        previous = run_turn("睡眠模式這個功能怎麼設計？", data_dir=tmp)
+        result = run_turn("不是，我是在說睡眠模式功能。", data_dir=tmp, previous_trace=previous)
+        rows = read_jsonl(Path(tmp) / "correction_log.jsonl")
+        passed = (
+            result["correction_pending"] is not None
+            and len(rows) == 1
+            and rows[0]["type"] == "correction.pending"
+            and "event_mismatch" in rows[0]["options"]
+        )
+        return _result("correction_pending", passed, {"trace_pending": result["correction_pending"], "rows": rows})
 
 
 def run_smoke_tests() -> list[dict]:
@@ -117,6 +158,9 @@ def run_smoke_tests() -> list[dict]:
         smoke_correction_prompt(),
         smoke_deliberation(),
         smoke_integrated_loop(),
+        smoke_persistence(),
+        smoke_memory_candidate(),
+        smoke_correction_pending(),
     ]
 
 

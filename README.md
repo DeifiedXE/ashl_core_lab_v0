@@ -14,10 +14,13 @@ ASHL Core Lab v0.1 是 ASHL Core 的最小 Python 專案雛形，用來驗證 In
 - smoke runner
 - unittest
 - decision priority 修正
+- Persistent Candidate Layer v0.2
+- JSONL Persistence Helper
+- Memory Candidate v0.1
+- Correction Pending Log v0.1
 
 尚未完成：
 
-- Memory Candidate
 - Correction Label
 - Rule Candidate
 - Mood Layer
@@ -25,6 +28,29 @@ ASHL Core Lab v0.1 是 ASHL Core 的最小 Python 專案雛形，用來驗證 In
 - Tool Adapter
 
 本階段不接真 LLM、Web、工具系統、GUI、TTS、資料庫，也不自動固化記憶。
+
+## Persistent Candidate Layer v0.2
+
+v0.2 新增最小持久化候選層，使用 JSONL 作為實驗用 artifact 格式。
+
+- `data/memory_candidates.jsonl`：記錄 memory candidate，只是候選，不代表已寫入長期記憶。
+- `data/correction_log.jsonl`：記錄 `correction.pending`，只等待人工標記，不會自動套用規則。
+- 測試預設使用暫存資料夾，避免污染 repo 的 `data/`。
+- `data/*.jsonl` 被 `.gitignore` 忽略，避免把本機實驗資料提交進版控。
+
+本層仍然不做：
+
+- LLM
+- Web
+- 外接工具系統
+- GUI
+- TTS
+- Mood Layer
+- SQLite
+- 長期資料庫
+- 自動固化記憶
+- Rule Candidate
+- Correction Label Apply
 
 ## 專案結構
 
@@ -53,6 +79,9 @@ docs/
 
 examples/
   core_sample.ashl
+
+data/
+  .gitkeep
 
 run_all_smoke_tests.py
 ```
