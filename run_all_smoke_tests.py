@@ -28,6 +28,7 @@ from ashl_core.guard import guard_output
 from ashl_core.integrated_loop import run_turn
 from ashl_core.lesson_runner import (
     run_phase_minus_one,
+    run_lesson_causality_test,
     run_phase_minus_one_negative_controls,
     run_session_2b2_without_lesson_with_turn_tool,
 )
@@ -207,6 +208,21 @@ def smoke_phase_minus_one_negative_controls() -> dict:
         and result["summary"]["no_unrelated_lesson_trigger"] is True
     )
     return _result("phase_minus_one_negative_controls", passed, result["summary"])
+
+
+def smoke_phase_minus_one_lesson_causality() -> dict:
+    result = run_lesson_causality_test()
+    passed = (
+        result["passed"] is True
+        and result["active"]["result"] == "success"
+        and result["active"]["used_lesson_ids"] == ["lesson_001"]
+        and result["disabled"]["result"] == "failed"
+        and result["disabled"]["used_lesson_ids"] == []
+        and result["re_enabled"]["result"] == "success"
+        and result["removed"]["result"] == "failed"
+        and result["summary"]["causal_control_passed"] is True
+    )
+    return _result("phase_minus_one_lesson_causality", passed, result["summary"])
 
 
 def smoke_state_core() -> dict:
@@ -511,6 +527,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_phase_minus_one_lesson_contribution(),
         smoke_prompt_leakage_control(),
         smoke_phase_minus_one_negative_controls(),
+        smoke_phase_minus_one_lesson_causality(),
         smoke_state_persistence(),
         smoke_concept_layer(),
         smoke_state_core(),

@@ -5,6 +5,9 @@ from __future__ import annotations
 from typing import Any
 
 
+VALID_LESSON_STATUSES = {"active", "disabled"}
+
+
 def build_lesson_from_failure(session_id: str, failure_result: dict[str, Any]) -> dict[str, Any] | None:
     if failure_result.get("failure_reason") != "not_facing_east":
         return None
@@ -27,6 +30,26 @@ def build_lesson_from_failure(session_id: str, failure_result: dict[str, Any]) -
 
 def list_active_lessons(lessons: list[dict[str, Any]]) -> list[dict[str, Any]]:
     return [lesson for lesson in lessons if lesson.get("status") == "active"]
+
+
+def set_lesson_status(lesson: dict[str, Any], status: str) -> dict[str, Any] | None:
+    if status not in VALID_LESSON_STATUSES:
+        return None
+    updated = dict(lesson)
+    updated["status"] = status
+    return updated
+
+
+def disable_lesson(lesson: dict[str, Any]) -> dict[str, Any]:
+    return set_lesson_status(lesson, "disabled")
+
+
+def enable_lesson(lesson: dict[str, Any]) -> dict[str, Any]:
+    return set_lesson_status(lesson, "active")
+
+
+def remove_lesson(lessons: list[dict[str, Any]], lesson_id: str) -> list[dict[str, Any]]:
+    return [lesson for lesson in lessons if lesson.get("lesson_id") != lesson_id]
 
 
 def find_applicable_lesson(lessons: list[dict[str, Any]], goal: dict[str, Any]) -> dict[str, Any] | None:

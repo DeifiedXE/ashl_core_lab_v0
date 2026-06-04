@@ -13,6 +13,7 @@ ASHL Core Lab 是 ASHL Core／D清音 的最小 Python 實驗專案，用來驗�
 - Experience Log v1.3
 - Phase -1 Lesson Contribution Test v1.4
 - Phase -1.1 Negative Controls v1.5
+- Phase -1.2 Lesson Causality Test v1.6
 - Integrated Loop v0.1
 - Persistent Candidate Layer v0.2
 - Correction Label v0.3
@@ -125,6 +126,16 @@ Phase -1.1 補強 lesson_001 的負控制，確認它不會過度泛化。
 - 不套用錯誤 condition，例如 `turn(west)`。
 - 不套用 unrelated lesson。
 - 本階段仍不做 lesson review、promotion、removal 或 replay。
+
+## Phase -1.2 Lesson Causality Test v1.6
+
+Phase -1.2 測試 `lesson_001` 的狀態變化是否對行為造成可追蹤的因果控制。
+- `active` 時成功，且使用 `lesson_001`。
+- `disabled` 時失敗，且不使用 lesson。
+- `re-enabled` 時再次成功，且再次使用 `lesson_001`。
+- `removed` 時失敗，且不使用 lesson。
+- disabled / removed 時不得出現 `turn(east)`。
+- 本階段不做 lesson review、promotion、CLI 或 Long-term Memory。
 
 ## Correction / Rule / Trial Flow
 

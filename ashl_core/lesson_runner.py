@@ -6,7 +6,7 @@ import json
 from typing import Any
 
 from .fake_sandbox import build_initial_sandbox_state, inspect, observe, pick_up, push, turn
-from .lesson_store import build_lesson_from_failure, find_applicable_lesson
+from .lesson_store import build_lesson_from_failure, disable_lesson, enable_lesson, find_applicable_lesson, remove_lesson
 from .prompt_leakage_check import build_decision_input_snapshot, check_leakage
 
 
@@ -325,5 +325,55 @@ def run_phase_minus_one_negative_controls() -> dict[str, Any]:
         "wrong_action_inspect": wrong_action_inspect,
         "wrong_condition": wrong_condition,
         "unrelated_lesson": unrelated_lesson,
+        "summary": summary,
+    }
+
+
+def _causality_summary(result: dict[str, Any]) -> dict[str, Any]:
+    return {
+        "result": result["final_result"]["result"],
+        "used_lesson_ids": result["used_lesson_ids"],
+        "actions": result["actions"],
+    }
+
+
+def run_lesson_causality_test() -> dict[str, Any]:
+    lesson = _lesson_001()
+    goal = {"action": "pick_up", "object_id": "cube_001", "target_type": "cube"}
+
+    active_result = _run_loaded_lesson_goal([lesson], goal)
+
+    disabled_lesson = disable_lesson(lesson)
+    disabled_result = _run_loaded_lesson_goal([disabled_lesson], goal)
+
+    re_enabled_lesson = enable_lesson(disabled_lesson)
+    re_enabled_result = _run_loaded_lesson_goal([re_enabled_lesson], goal)
+
+    removed_lessons = remove_lesson([re_enabled_lesson], "lesson_001")
+    removed_result = _run_loaded_lesson_goal(removed_lessons, goal)
+
+    active = _causality_summary(active_result)
+    disabled = _causality_summary(disabled_result)
+    re_enabled = _causality_summary(re_enabled_result)
+    removed = _causality_summary(removed_result)
+    disabled_has_turn_east = any(action["action"] == "turn(east)" for action in disabled["actions"])
+    removed_has_turn_east = any(action["action"] == "turn(east)" for action in removed["actions"])
+    summary = {
+        "active_caused_success": active["result"] == "success" and active["used_lesson_ids"] == ["lesson_001"],
+        "disabled_removed_effect": disabled["result"] == "failed" and disabled["used_lesson_ids"] == [],
+        "re_enabled_restored_effect": re_enabled["result"] == "success" and re_enabled["used_lesson_ids"] == ["lesson_001"],
+        "removed_removed_effect": removed["result"] == "failed" and removed["used_lesson_ids"] == [],
+        "disabled_removed_no_turn_east": not disabled_has_turn_east,
+        "removed_removed_no_turn_east": not removed_has_turn_east,
+    }
+    summary["causal_control_passed"] = all(summary.values())
+
+    return {
+        "type": "lesson_causality_result",
+        "passed": summary["causal_control_passed"],
+        "active": active,
+        "disabled": disabled,
+        "re_enabled": re_enabled,
+        "removed": removed,
         "summary": summary,
     }

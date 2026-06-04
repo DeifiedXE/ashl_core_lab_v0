@@ -87,6 +87,12 @@ class LessonContributionTests(unittest.TestCase):
         self.assertFalse(result["session_2b2"]["success"])
         self.assertEqual(result["summary"]["behavior_shift_traceable_to"], ["lesson_001"])
 
+    def test_phase_minus_one_behavior_shift_still_traceable_after_status_tools_added(self):
+        result = run_phase_minus_one()
+
+        self.assertTrue(result["passed"])
+        self.assertEqual(result["summary"]["behavior_shift_traceable_to"], ["lesson_001"])
+
 
 if __name__ == "__main__":
     unittest.main()
