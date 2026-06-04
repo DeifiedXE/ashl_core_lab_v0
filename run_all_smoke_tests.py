@@ -270,6 +270,30 @@ def smoke_unknown_failure_reason_boundary() -> dict:
     return _result("unknown_failure_reason_boundary", passed, result["trace"])
 
 
+def smoke_second_known_failure_reason_determinism() -> dict:
+    volatile = {"id", "lesson_id", "created_at", "timestamp", "run_id"}
+    failure_result = {
+        "type": "sandbox_action_result",
+        "tool": "pick_up",
+        "object_id": "cube_001",
+        "result": "failed",
+        "failure_reason": "not_facing_west",
+        "state": build_initial_sandbox_state(),
+    }
+    lessons = [build_lesson_from_failure("session_1", failure_result) for _ in range(3)]
+    normalized = [{key: value for key, value in lesson.items() if key not in volatile} for lesson in lessons]
+    generation = generate_lesson_from_failure("session_1", failure_result)
+    passed = (
+        normalized[0] == normalized[1] == normalized[2]
+        and normalized[0]["source_failure_reason"] == "not_facing_west"
+        and normalized[0]["suggested_action_before_retry"] == "turn(west)"
+        and normalized[0]["condition"] == {"avatar_facing": "west"}
+        and generation["trace"]["generation_status"] == "supported_failure_reason"
+        and "turn(east)" not in str(normalized[0])
+    )
+    return _result("second_known_failure_reason_determinism", passed, {"normalized_lesson": normalized[0]})
+
+
 def smoke_teaching_cli() -> dict:
     known = run_known_flow()
     unknown = run_unknown_flow()
@@ -597,6 +621,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_lesson_generation_determinism(),
         smoke_unknown_failure_reason_boundary(),
         smoke_teaching_cli(),
+        smoke_second_known_failure_reason_determinism(),
         smoke_state_persistence(),
         smoke_concept_layer(),
         smoke_state_core(),

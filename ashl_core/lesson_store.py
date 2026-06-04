@@ -9,20 +9,34 @@ VALID_LESSON_STATUSES = {"active", "disabled"}
 
 
 def build_lesson_from_failure(session_id: str, failure_result: dict[str, Any]) -> dict[str, Any] | None:
-    if failure_result.get("failure_reason") != "not_facing_east":
+    failure_reason = failure_result.get("failure_reason")
+    known_mappings = {
+        "not_facing_east": {
+            "lesson_id": "lesson_001",
+            "avatar_facing": "east",
+            "suggested_action_before_retry": "turn(east)",
+        },
+        "not_facing_west": {
+            "lesson_id": "lesson_002",
+            "avatar_facing": "west",
+            "suggested_action_before_retry": "turn(west)",
+        },
+    }
+    mapping = known_mappings.get(failure_reason)
+    if mapping is None:
         return None
     return {
-        "lesson_id": "lesson_001",
+        "lesson_id": mapping["lesson_id"],
         "source_session": session_id,
-        "source_failure_reason": "not_facing_east",
+        "source_failure_reason": failure_reason,
         "trigger": {
             "action": "pick_up",
             "target_type": "cube",
         },
         "condition": {
-            "avatar_facing": "east",
+            "avatar_facing": mapping["avatar_facing"],
         },
-        "suggested_action_before_retry": "turn(east)",
+        "suggested_action_before_retry": mapping["suggested_action_before_retry"],
         "status": "active",
         "confidence": "tested_once",
     }
@@ -51,7 +65,7 @@ def generate_lesson_from_failure(session_id: str, failure_result: dict[str, Any]
             "reason": "unknown_failure_reason",
             "source_failure_reason": failure_reason,
             "executable_action": None,
-            "known_failure_reasons": ["not_facing_east"],
+            "known_failure_reasons": ["not_facing_east", "not_facing_west"],
         },
     }
 

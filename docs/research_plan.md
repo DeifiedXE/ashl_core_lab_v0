@@ -149,6 +149,23 @@ v1.7b 不測 malformed / empty / ambiguous failure_reason，不證明開放式�
 - v1.9 Multi-lesson Conflict / Priority：延後
 - v2.0 Stale / Supersede：延後
 
+## Second Known Failure Reason Determinism
+
+v1.7c Second Known Failure Reason Determinism Test 新增第二條 known failure_reason：`not_facing_west`。
+它只驗證 `not_facing_west -> turn(west)` 在相同輸入、相同初始狀態、相同 generator 設定下，排除 volatile fields 後 lesson output 核心語義穩定一致。
+v1.7c 不證明 multi-lesson conflict，不證明 priority，不證明 open-ended lesson generation，也不處理 malformed / empty / ambiguous failure_reason。
+
+目前順序：
+- v1.6 Phase -1.2 Lesson Causality Test：已完成
+- v1.7a Known Failure Reason Determinism Test：已完成
+- v1.7b Unknown Failure Reason Boundary Test：已完成
+- v1.8 Minimal Teaching CLI：已完成
+- v1.7c Second Known Failure Reason Determinism Test：本包
+- v1.9a Multi-lesson Isolation Test：下一步
+- v1.9b Conflict Detection / Require Review：延後
+- v1.9c CLI conflict_check 補真實檢查：延後
+- v2.0 Stale / Supersede：延後
+
 ## Minimal Teaching CLI
 
 v1.8 Minimal Teaching CLI 是既有 lesson flow 的命令列 wrapper。
