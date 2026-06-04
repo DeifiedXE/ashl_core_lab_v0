@@ -150,6 +150,26 @@ def smoke_correction_pending() -> dict:
         return _result("correction_pending", passed, {"trace_pending": result["correction_pending"], "rows": rows})
 
 
+def smoke_correction_label() -> dict:
+    with tempfile.TemporaryDirectory() as tmp:
+        previous = run_turn("睡眠模式這個功能怎麼設計？", data_dir=tmp)
+        pending_result = run_turn("不是，我是在說睡眠模式功能。", data_dir=tmp, previous_trace=previous)
+        label_result = run_turn(
+            "判斷錯",
+            data_dir=tmp,
+            pending_correction=pending_result["correction_pending"],
+        )
+        rows = read_jsonl(Path(tmp) / "correction_log.jsonl")
+        passed = (
+            label_result["correction_label"] is not None
+            and label_result["correction_label"]["type"] == "correction.event_mismatch"
+            and label_result["correction_label"]["status"] == "labeled"
+            and len(rows) == 2
+            and not (Path(tmp) / "rule_candidates.jsonl").exists()
+        )
+        return _result("correction_label", passed, {"trace_label": label_result["correction_label"], "rows": rows})
+
+
 def run_smoke_tests() -> list[dict]:
     return [
         smoke_concept_layer(),
@@ -161,6 +181,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_persistence(),
         smoke_memory_candidate(),
         smoke_correction_pending(),
+        smoke_correction_label(),
     ]
 
 

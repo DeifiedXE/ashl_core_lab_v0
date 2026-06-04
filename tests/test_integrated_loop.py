@@ -21,11 +21,12 @@ class IntegratedLoopTests(unittest.TestCase):
         self.assertTrue("回到主線" in result["final_output"] or "拉回主線" in result["final_output"])
 
     def test_case_3_memory_candidate(self):
-        result = run_turn("記住，以後 ASHL Core 先走實驗路線")
+        with tempfile.TemporaryDirectory() as tmp:
+            result = run_turn("記住，以後 ASHL Core 先走實驗路線", data_dir=tmp)
 
-        self.assertEqual(result["decision"]["intent"], "self_check")
-        self.assertIn("候選", result["final_output"])
-        self.assertTrue("不直接寫死" in result["final_output"] or "不直接固化" in result["final_output"])
+            self.assertEqual(result["decision"]["intent"], "self_check")
+            self.assertIn("候選", result["final_output"])
+            self.assertTrue("不直接寫死" in result["final_output"] or "不直接固化" in result["final_output"])
 
     def test_case_4_identity_protest(self):
         result = run_turn("清音只是普通工具")
@@ -59,7 +60,6 @@ class IntegratedLoopTests(unittest.TestCase):
         self.assertEqual(len(results), 2)
         self.assertEqual(results[0]["decision"]["intent"], "refocus")
 
-
     def test_memory_candidate_writes_jsonl_with_tmp_data_dir(self):
         with tempfile.TemporaryDirectory() as tmp:
             result = run_turn("記住，以後 ASHL Core 先走實驗路線", data_dir=tmp)
@@ -76,8 +76,54 @@ class IntegratedLoopTests(unittest.TestCase):
             rows = read_jsonl(Path(tmp) / "correction_log.jsonl")
 
             self.assertIsNotNone(result["correction_pending"])
+            self.assertIsNone(result["correction_label"])
             self.assertEqual(len(rows), 1)
             self.assertEqual(rows[0]["type"], "correction.pending")
+            self.assertIn("判斷錯", result["final_output"])
+
+    def test_correction_label_event_mismatch_flow(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            previous = run_turn("睡眠模式這個功能怎麼設計？", data_dir=tmp)
+            pending_trace = run_turn("不是，我是在說睡眠模式功能。", data_dir=tmp, previous_trace=previous)
+            result = run_turn("判斷錯", data_dir=tmp, pending_correction=pending_trace["correction_pending"])
+            rows = read_jsonl(Path(tmp) / "correction_log.jsonl")
+
+            self.assertIsNotNone(result["correction_label"])
+            self.assertEqual(result["correction_label"]["type"], "correction.event_mismatch")
+            self.assertEqual(rows[-1]["status"], "labeled")
+            self.assertIn("判斷錯", result["final_output"])
+
+    def test_correction_label_expression_flow(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            previous = run_turn("睡眠模式這個功能怎麼設計？", data_dir=tmp)
+            pending_trace = run_turn("不是，我是在說睡眠模式功能。", data_dir=tmp, previous_trace=previous)
+            result = run_turn("說法不對", data_dir=tmp, pending_correction=pending_trace["correction_pending"])
+
+            self.assertIsNotNone(result["correction_label"])
+            self.assertEqual(result["correction_label"]["type"], "correction.expression_mismatch")
+            self.assertIn("說法", result["final_output"])
+
+    def test_correction_label_reaction_strength_flow(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            previous = run_turn("睡眠模式這個功能怎麼設計？", data_dir=tmp)
+            pending_trace = run_turn("不是，我是在說睡眠模式功能。", data_dir=tmp, previous_trace=previous)
+            result = run_turn("反應太強", data_dir=tmp, pending_correction=pending_trace["correction_pending"])
+
+            self.assertIsNotNone(result["correction_label"])
+            self.assertEqual(result["correction_label"]["type"], "correction.reaction_strength_mismatch")
+            self.assertIn("反應", result["final_output"])
+
+    def test_correction_label_unknown_flow(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            previous = run_turn("睡眠模式這個功能怎麼設計？", data_dir=tmp)
+            pending_trace = run_turn("不是，我是在說睡眠模式功能。", data_dir=tmp, previous_trace=previous)
+            result = run_turn("不知道", data_dir=tmp, pending_correction=pending_trace["correction_pending"])
+            rows = read_jsonl(Path(tmp) / "correction_log.jsonl")
+
+            self.assertIsNone(result["correction_label"])
+            self.assertEqual(len(rows), 1)
+            self.assertIn("不能判斷", result["final_output"])
+            self.assertFalse((Path(tmp) / "rule_candidates.jsonl").exists())
 
 
 if __name__ == "__main__":

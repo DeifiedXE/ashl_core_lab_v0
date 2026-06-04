@@ -8,7 +8,7 @@ from pathlib import Path
 from typing import Any
 
 from .concepts import apply_concepts
-from .correction import create_correction_pending, is_correction_request
+from .correction import create_correction_label, create_correction_pending, is_correction_request
 from .deliberation import deliberate
 from .expression import build_expression_package
 from .guard import guard_output
@@ -73,6 +73,7 @@ class IntegratedLoop:
         text: str,
         data_dir: str | Path = "data",
         previous_trace: dict[str, Any] | None = None,
+        pending_correction: dict[str, Any] | None = None,
     ) -> dict[str, Any]:
         perception_result = perceive(text)
         concept_result = apply_concepts(perception_result)
@@ -88,13 +89,26 @@ class IntegratedLoop:
         thought_types = {thought["type"] for thought in thoughts}
         memory_candidate = None
         correction_pending = None
+        correction_label = None
 
-        if decision["intent"] == "self_check" and "memory_candidate_possible" in thought_types:
+        if pending_correction is not None:
+            correction_label = create_correction_label(pending_correction, text, data_dir)
+            if correction_label is None:
+                raw_output = "我還不能判斷這是哪一類修正。請選「判斷錯」、「反應太強/太弱」或「說法不對」。"
+            elif correction_label["label"] == "event_mismatch":
+                raw_output = "收到，已標記為判斷錯。"
+            elif correction_label["label"] == "reaction_strength_mismatch":
+                raw_output = "收到，已標記為反應強度問題。"
+            else:
+                raw_output = "收到，已標記為說法問題。"
+            guard_result = {"passed": True, "failures": [], "final_output": raw_output}
+            final_output = raw_output
+        elif decision["intent"] == "self_check" and "memory_candidate_possible" in thought_types:
             memory_candidate = create_memory_candidate(text, data_dir)
 
-        if previous_trace is not None and is_correction_request(text):
+        if pending_correction is None and previous_trace is not None and is_correction_request(text):
             correction_pending = create_correction_pending(previous_trace, text, data_dir)
-            raw_output = "Correction pending created; waiting for user label before applying any rule."
+            raw_output = "收到，進入修正。剛剛是我「判斷錯」、「反應太強/太弱」，還是「說法不對」？"
             guard_result = {"passed": True, "failures": [], "final_output": raw_output}
             final_output = raw_output
 
@@ -111,6 +125,7 @@ class IntegratedLoop:
             "final_output": final_output,
             "memory_candidate": memory_candidate,
             "correction_pending": correction_pending,
+            "correction_label": correction_label,
         }
 
     def run_script(self, inputs: list[str], data_dir: str | Path = "data") -> list[dict[str, Any]]:
@@ -121,8 +136,14 @@ def run_turn(
     text: str,
     data_dir: str | Path = "data",
     previous_trace: dict[str, Any] | None = None,
+    pending_correction: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
-    return IntegratedLoop().run_turn(text, data_dir=data_dir, previous_trace=previous_trace)
+    return IntegratedLoop().run_turn(
+        text,
+        data_dir=data_dir,
+        previous_trace=previous_trace,
+        pending_correction=pending_correction,
+    )
 
 
 def run_script(inputs: list[str], data_dir: str | Path = "data") -> list[dict[str, Any]]:
