@@ -24,6 +24,7 @@ from ashl_core.core_seed import (
 from ashl_core.deliberation import deliberate
 from ashl_core.expression import build_expression_package
 from ashl_core.experience_log import list_experience_events, list_lesson_candidates
+from ashl_core.fake_sandbox import build_initial_sandbox_state, pick_up
 from ashl_core.guard import guard_output
 from ashl_core.integrated_loop import run_turn
 from ashl_core.lesson_runner import (
@@ -32,6 +33,7 @@ from ashl_core.lesson_runner import (
     run_phase_minus_one_negative_controls,
     run_session_2b2_without_lesson_with_turn_tool,
 )
+from ashl_core.lesson_store import build_lesson_from_failure
 from ashl_core.memory_layers import (
     append_archive_memory,
     append_long_term_memory,
@@ -223,6 +225,25 @@ def smoke_phase_minus_one_lesson_causality() -> dict:
         and result["summary"]["causal_control_passed"] is True
     )
     return _result("phase_minus_one_lesson_causality", passed, result["summary"])
+
+
+def smoke_lesson_generation_determinism() -> dict:
+    volatile = {"id", "lesson_id", "created_at", "timestamp", "run_id"}
+
+    def generate() -> dict:
+        failure = pick_up(build_initial_sandbox_state(), "cube_001")
+        return build_lesson_from_failure("session_1", failure)
+
+    lessons = [generate() for _ in range(3)]
+    normalized = [{key: value for key, value in lesson.items() if key not in volatile} for lesson in lessons]
+    passed = (
+        normalized[0] == normalized[1] == normalized[2]
+        and normalized[0]["source_failure_reason"] == "not_facing_east"
+        and normalized[0]["suggested_action_before_retry"] == "turn(east)"
+        and normalized[0]["condition"] == {"avatar_facing": "east"}
+        and normalized[0]["status"] == "active"
+    )
+    return _result("lesson_generation_determinism", passed, {"normalized_lesson": normalized[0]})
 
 
 def smoke_state_core() -> dict:
@@ -528,6 +549,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_prompt_leakage_control(),
         smoke_phase_minus_one_negative_controls(),
         smoke_phase_minus_one_lesson_causality(),
+        smoke_lesson_generation_determinism(),
         smoke_state_persistence(),
         smoke_concept_layer(),
         smoke_state_core(),

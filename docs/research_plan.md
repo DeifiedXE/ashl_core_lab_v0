@@ -140,3 +140,15 @@ where.exe py
 State Persistence v1.1 已建立基礎版本，用於保存 `state_snapshot.json`、`session_summary.json`、`last_trace_summary.json`。
 這是 D清音狀態連續性的基礎：重開後可以讀回最近狀態、session 摘要與 last trace 摘要。
 State Persistence 不是 Long-term Memory，不會自動固化記憶，也不會修改 Concept Layer、rules、final output 或 state effects。
+
+## Lesson Generation Determinism
+
+v1.6 Phase -1.2 Lesson Causality Test 已完成，已驗證 `lesson_001` 的 active / disabled / re-enabled / removed 狀態會造成可追蹤、可逆的行為差異。
+v1.7a Known Failure Reason Determinism Test 用 `not_facing_east` 建立乾淨基準：相同 failure_reason、相同初始狀態、相同 generator 設定下，排除 volatile fields 後，lesson output 的核心語義欄位必須穩定一致。
+v1.7a 不測 unknown failure_reason，不證明開放式泛化能力；v1.7b 才進入 Unknown Failure Reason Boundary Test。
+
+後續順序：
+- v1.7b Unknown Failure Reason Boundary Test：下一步
+- v1.8 Minimal Teaching CLI：延後
+- v1.9 Multi-lesson Conflict / Priority：延後
+- v2.0 Stale / Supersede：延後
