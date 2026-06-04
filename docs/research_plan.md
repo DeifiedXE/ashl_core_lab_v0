@@ -149,6 +149,20 @@ v1.7b 不測 malformed / empty / ambiguous failure_reason，不證明開放式�
 - v1.9 Multi-lesson Conflict / Priority：延後
 - v2.0 Stale / Supersede：延後
 
+## Minimal Teaching CLI
+
+v1.8 Minimal Teaching CLI 是既有 lesson flow 的命令列 wrapper。
+它只證明 CLI 可以穩定操作 known flow、unknown boundary flow，以及 enable / disable / re-enable 的因果控制。
+v1.8 不新增 lesson generation 能力，不新增 failure_reason，不證明 conflict / priority，不證明 stale / supersede，也不處理 malformed / empty / ambiguous failure_reason。
+
+目前順序：
+- v1.6 Phase -1.2 Lesson Causality Test：已完成
+- v1.7a Known Failure Reason Determinism Test：已完成
+- v1.7b Unknown Failure Reason Boundary Test：已完成
+- v1.8 Minimal Teaching CLI：本包
+- v1.9 Multi-lesson Conflict / Priority：延後
+- v2.0 Stale / Supersede：延後
+
 ## State Persistence
 
 State Persistence v1.1 已建立基礎版本，用於保存 `state_snapshot.json`、`session_summary.json`、`last_trace_summary.json`。

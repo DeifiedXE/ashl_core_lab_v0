@@ -56,6 +56,7 @@ from ashl_core.state_persistence import (
     read_state_snapshot,
 )
 from ashl_core.standing_task import run_standing_task
+from ashl_core.teaching_cli import run_disable_reenable_flow, run_known_flow, run_unknown_flow
 from ashl_core.trial_feedback import append_trial_feedback, build_trial_feedback, summarize_trial_feedback
 from ashl_core.trial_rules import build_trial_suggestions, list_approved_trial_candidates, build_trial_rule_view
 
@@ -267,6 +268,27 @@ def smoke_unknown_failure_reason_boundary() -> dict:
         and "turn(east)" not in str(result)
     )
     return _result("unknown_failure_reason_boundary", passed, result["trace"])
+
+
+def smoke_teaching_cli() -> dict:
+    known = run_known_flow()
+    unknown = run_unknown_flow()
+    causal = run_disable_reenable_flow()
+    passed = (
+        known["status"] == "ok"
+        and known["failure_reason"] == "not_facing_east"
+        and known["behavior_after"] == "success"
+        and known["conflict_check"] == "not_implemented"
+        and unknown["generation_status"] == "unknown_failure_reason"
+        and unknown["lesson"] is None
+        and unknown["executable_action"] is None
+        and unknown["behavior_changed"] is False
+        and "turn(east)" not in str(unknown)
+        and causal["enabled_result"] == "success"
+        and causal["disabled_result"] == "failed"
+        and causal["reenabled_result"] == "success"
+    )
+    return _result("teaching_cli", passed, {"known": known["status"], "unknown": unknown["generation_status"]})
 
 
 def smoke_state_core() -> dict:
@@ -574,6 +596,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_phase_minus_one_lesson_causality(),
         smoke_lesson_generation_determinism(),
         smoke_unknown_failure_reason_boundary(),
+        smoke_teaching_cli(),
         smoke_state_persistence(),
         smoke_concept_layer(),
         smoke_state_core(),
