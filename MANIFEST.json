@@ -1,0 +1,20 @@
+{
+  "project": "ASHL Core Lab v0",
+  "created_files": [
+    "README.md",
+    "ashl_concept_layer_v01.py",
+    "ashl_core_v01.py",
+    "ashl_correction_prompt_v01.py",
+    "ashl_deliberation_v01.py",
+    "ashl_expression_guard_v01.py",
+    "ashl_expression_v02.py",
+    "examples/core_sample.ashl",
+    "logs/ashl_concept_layer_v01_log.json",
+    "logs/ashl_core_v01_simulation_log.json",
+    "logs/ashl_correction_prompt_v01_log.json",
+    "logs/ashl_deliberation_v01_log.json",
+    "logs/ashl_expression_guard_v01_log.json",
+    "logs/ashl_expression_v02_simulation_log.json"
+  ],
+  "note": "Experimental prototype package. No real LLM dependency. Use as sandbox seed."
+}

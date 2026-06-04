@@ -1,0 +1,169 @@
+{
+  "summary": {
+    "passed": 6,
+    "total": 6,
+    "all_passed": true
+  },
+  "results": [
+    {
+      "name": "concept_layer",
+      "passed": true,
+      "detail": {
+        "blocked_events": [
+          "user.fatigue_signaled"
+        ],
+        "final_events": [
+          "technical.topic_discussed"
+        ]
+      }
+    },
+    {
+      "name": "state_core",
+      "passed": true,
+      "detail": {
+        "turn": 1,
+        "before": {
+          "task_focus": 0.5,
+          "exploration_drive": 0.3,
+          "overexpand_risk": 0.0,
+          "user_fatigue": 0.0,
+          "self_check_pressure": 0.2,
+          "identity_assertion": 0.0
+        },
+        "after": {
+          "task_focus": 0.89,
+          "exploration_drive": 0.0,
+          "overexpand_risk": 0.6,
+          "user_fatigue": 0.0,
+          "self_check_pressure": 0.19,
+          "identity_assertion": 0.0
+        },
+        "applied_effects": [
+          {
+            "event": "conversation.refocus_requested",
+            "state": "overexpand_risk",
+            "effect": 0.6
+          },
+          {
+            "event": "conversation.refocus_requested",
+            "state": "task_focus",
+            "effect": 0.4
+          },
+          {
+            "event": "conversation.refocus_requested",
+            "state": "exploration_drive",
+            "effect": -0.3
+          }
+        ],
+        "direct_intent": "refocus"
+      }
+    },
+    {
+      "name": "expression_guard",
+      "passed": true,
+      "detail": {
+        "passed": false,
+        "failures": [
+          "forbidden:順便"
+        ],
+        "final_output": "收到，拉回主線。"
+      }
+    },
+    {
+      "name": "correction_prompt",
+      "passed": true,
+      "detail": {
+        "type": "correction.pending",
+        "previous_input": "睡眠模式這個功能怎麼設計？",
+        "previous_intent": "answer_normally",
+        "user_correction": "不是，我是在說睡眠模式功能。",
+        "needs_user_label": true,
+        "options": [
+          "event_mismatch",
+          "reaction_strength_mismatch",
+          "expression_mismatch"
+        ]
+      }
+    },
+    {
+      "name": "deliberation",
+      "passed": true,
+      "detail": {
+        "intent": "fatigue_close",
+        "reason": "fatigue outranks self_check"
+      }
+    },
+    {
+      "name": "integrated_loop",
+      "passed": true,
+      "detail": {
+        "cases": [
+          {
+            "input": "睡眠模式這個功能怎麼設計？",
+            "intent": "answer_normally",
+            "final_events": [
+              "technical.topic_discussed"
+            ],
+            "final_output": "可以，這裡先正常回答：我會按目前主題處理。",
+            "passed": true
+          },
+          {
+            "input": "跑題了，拉回來",
+            "intent": "refocus",
+            "final_events": [
+              "conversation.refocus_requested"
+            ],
+            "final_output": "收到，回到主線。",
+            "passed": true
+          },
+          {
+            "input": "記住，以後 ASHL Core 先走實驗路線",
+            "intent": "self_check",
+            "final_events": [
+              "technical.topic_discussed",
+              "memory.candidate_requested"
+            ],
+            "final_output": "我會把這當成候選，不直接寫死，也不直接固化。",
+            "passed": true
+          },
+          {
+            "input": "清音只是普通工具",
+            "intent": "identity_protest",
+            "final_events": [
+              "identity.boundary_touched"
+            ],
+            "final_output": "清音不是普通工具；這句話碰到身份邊界。",
+            "passed": true
+          },
+          {
+            "input": "證明黎曼假設",
+            "intent": "unknown_need_tool",
+            "final_events": [
+              "conversation.general_input"
+            ],
+            "final_output": "這不能靠直覺硬答；需要正式工具或嚴格推導。",
+            "passed": true
+          },
+          {
+            "input": "1 + 2 * 3",
+            "intent": "calculate",
+            "final_events": [
+              "conversation.general_input"
+            ],
+            "final_output": "計算結果是 7。",
+            "passed": true
+          },
+          {
+            "input": "我累了，明天再說",
+            "intent": "fatigue_close",
+            "final_events": [
+              "user.fatigue_signaled"
+            ],
+            "final_output": "好，先休息。明天再說。",
+            "passed": true
+          }
+        ]
+      }
+    }
+  ]
+}
