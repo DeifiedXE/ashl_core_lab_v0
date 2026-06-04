@@ -11,6 +11,7 @@ from ashl_core.correction import (
 )
 from ashl_core.integrated_loop import run_turn
 from ashl_core.persistence import read_jsonl
+from ashl_core.rule_candidates import build_rule_candidate_from_correction
 
 
 class CorrectionTests(unittest.TestCase):
@@ -56,6 +57,17 @@ class CorrectionTests(unittest.TestCase):
             self.assertEqual(len(rows), 2)
             self.assertEqual(rows[-1], label)
             self.assertFalse((Path(tmp) / "rule_candidates.jsonl").exists())
+
+    def test_event_mismatch_label_can_feed_rule_candidate_builder(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            previous = run_turn("睡眠模式這個功能怎麼設計？", data_dir=tmp)
+            pending = create_correction_pending(previous, "不是，我是在說睡眠模式功能。", tmp)
+            label = create_correction_label(pending, "判斷錯", tmp)
+            candidate = build_rule_candidate_from_correction(label)
+
+            self.assertIsNotNone(candidate)
+            self.assertEqual(candidate["status"], "candidate")
+            self.assertNotEqual(candidate["status"], "active")
 
     def test_unknown_label_does_not_write(self):
         with tempfile.TemporaryDirectory() as tmp:

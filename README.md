@@ -19,10 +19,10 @@ ASHL Core Lab 是 ASHL Core 的最小 Python 實驗專案，用來驗證可觀�
 - Memory Candidate v0.1
 - Correction Pending Log v0.1
 - Correction Label v0.3
+- Rule Candidate v0.4
 
 尚未完成：
 
-- Rule Candidate
 - Rule Apply
 - Concept Counterexample
 - Mood Layer
@@ -37,6 +37,7 @@ v0.2 新增最小持久化候選層，使用 JSONL 作為實驗用 artifact 格�
 
 - `data/memory_candidates.jsonl`：記錄 memory candidate，只是候選，不代表已寫入長期記憶。
 - `data/correction_log.jsonl`：記錄 correction pending 與正式 correction label。
+- `data/rule_candidates.jsonl`：記錄候選規則與候選概念反例。
 - 測試預設使用暫存資料夾，避免污染 repo 的 `data/`。
 - `data/*.jsonl` 被 `.gitignore` 忽略，避免把本機實驗資料提交進版控。
 
@@ -64,6 +65,23 @@ v0.2 新增最小持久化候選層，使用 JSONL 作為實驗用 artifact 格�
 - 自動修改狀態層
 - 自動啟用規則
 
+## Rule Candidate v0.4
+
+Rule Candidate v0.4 會在 `correction.event_mismatch` 產生後，建立候選規則或候選概念反例，並寫入 `data/rule_candidates.jsonl`。
+
+- `rule_candidates.jsonl` 是候選規則/候選反例日誌。
+- 本階段不自動啟用規則。
+- 本階段不直接修改 Concept Layer。
+- 本階段不修改 `concepts.py`。
+- 所有候選都需要 audit。
+- 這是「學習前的候選神經芽」，不是正式學習完成。
+
+目前只有 `correction.event_mismatch` 會產生 rule candidate。
+
+- `correction.reaction_strength_mismatch` 不產生 rule candidate。
+- `correction.expression_mismatch` 不產生 rule candidate。
+- unknown label 不產生 rule candidate。
+
 ## 專案結構
 
 ```text
@@ -72,6 +90,7 @@ ashl_core/
   correction.py
   memory_candidates.py
   persistence.py
+  rule_candidates.py
   perception.py
   concepts.py
   state_core.py
@@ -85,6 +104,7 @@ tests/
   test_correction.py
   test_memory_candidates.py
   test_persistence.py
+  test_rule_candidates.py
   test_integrated_loop.py
   test_smoke.py
   test_concepts.py

@@ -93,6 +93,23 @@ class IntegratedLoopTests(unittest.TestCase):
             self.assertEqual(rows[-1]["status"], "labeled")
             self.assertIn("判斷錯", result["final_output"])
 
+    def test_event_mismatch_creates_rule_candidate(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            previous = run_turn("睡眠模式這個功能怎麼設計？", data_dir=tmp)
+            pending_trace = run_turn("不是，我是在說睡眠模式功能。", data_dir=tmp, previous_trace=previous)
+            result = run_turn("判斷錯", data_dir=tmp, pending_correction=pending_trace["correction_pending"])
+            rows = read_jsonl(Path(tmp) / "rule_candidates.jsonl")
+
+            self.assertIsNotNone(result["rule_candidate"])
+            self.assertEqual(len(rows), 1)
+            self.assertEqual(rows[0], result["rule_candidate"])
+            self.assertIn(
+                result["rule_candidate"]["candidate_kind"],
+                ["concept_counterexample", "event_mapping_or_counterexample"],
+            )
+            self.assertEqual(result["rule_candidate"]["status"], "candidate")
+            self.assertTrue(result["rule_candidate"]["audit_required"])
+
     def test_correction_label_expression_flow(self):
         with tempfile.TemporaryDirectory() as tmp:
             previous = run_turn("睡眠模式這個功能怎麼設計？", data_dir=tmp)
@@ -100,6 +117,7 @@ class IntegratedLoopTests(unittest.TestCase):
             result = run_turn("說法不對", data_dir=tmp, pending_correction=pending_trace["correction_pending"])
 
             self.assertIsNotNone(result["correction_label"])
+            self.assertIsNone(result["rule_candidate"])
             self.assertEqual(result["correction_label"]["type"], "correction.expression_mismatch")
             self.assertIn("說法", result["final_output"])
 
@@ -110,6 +128,7 @@ class IntegratedLoopTests(unittest.TestCase):
             result = run_turn("反應太強", data_dir=tmp, pending_correction=pending_trace["correction_pending"])
 
             self.assertIsNotNone(result["correction_label"])
+            self.assertIsNone(result["rule_candidate"])
             self.assertEqual(result["correction_label"]["type"], "correction.reaction_strength_mismatch")
             self.assertIn("反應", result["final_output"])
 

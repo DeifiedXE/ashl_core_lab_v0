@@ -165,9 +165,28 @@ def smoke_correction_label() -> dict:
             and label_result["correction_label"]["type"] == "correction.event_mismatch"
             and label_result["correction_label"]["status"] == "labeled"
             and len(rows) == 2
-            and not (Path(tmp) / "rule_candidates.jsonl").exists()
         )
         return _result("correction_label", passed, {"trace_label": label_result["correction_label"], "rows": rows})
+
+
+def smoke_rule_candidate() -> dict:
+    with tempfile.TemporaryDirectory() as tmp:
+        previous = run_turn("睡眠模式這個功能怎麼設計？", data_dir=tmp)
+        pending_result = run_turn("不是，我是在說睡眠模式功能。", data_dir=tmp, previous_trace=previous)
+        label_result = run_turn(
+            "判斷錯",
+            data_dir=tmp,
+            pending_correction=pending_result["correction_pending"],
+        )
+        rows = read_jsonl(Path(tmp) / "rule_candidates.jsonl")
+        passed = (
+            label_result["rule_candidate"] is not None
+            and len(rows) == 1
+            and rows[0]["type"] == "rule_candidate"
+            and rows[0]["status"] == "candidate"
+            and rows[0]["audit_required"] is True
+        )
+        return _result("rule_candidate", passed, {"trace_candidate": label_result["rule_candidate"], "rows": rows})
 
 
 def run_smoke_tests() -> list[dict]:
@@ -182,6 +201,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_memory_candidate(),
         smoke_correction_pending(),
         smoke_correction_label(),
+        smoke_rule_candidate(),
     ]
 
 

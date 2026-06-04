@@ -1,4 +1,4 @@
-"""ASHL Core integrated loop v0.2."""
+"""ASHL Core integrated loop v0.4."""
 
 from __future__ import annotations
 
@@ -14,6 +14,7 @@ from .expression import build_expression_package
 from .guard import guard_output
 from .memory_candidates import create_memory_candidate
 from .perception import perceive
+from .rule_candidates import append_rule_candidate, build_rule_candidate_from_correction
 from .state_core import StateCore
 from .thoughts import generate_thoughts
 
@@ -90,6 +91,7 @@ class IntegratedLoop:
         memory_candidate = None
         correction_pending = None
         correction_label = None
+        rule_candidate = None
 
         if pending_correction is not None:
             correction_label = create_correction_label(pending_correction, text, data_dir)
@@ -101,6 +103,12 @@ class IntegratedLoop:
                 raw_output = "收到，已標記為反應強度問題。"
             else:
                 raw_output = "收到，已標記為說法問題。"
+
+            if correction_label is not None:
+                rule_candidate = build_rule_candidate_from_correction(correction_label)
+                if rule_candidate is not None:
+                    append_rule_candidate(data_dir, rule_candidate)
+
             guard_result = {"passed": True, "failures": [], "final_output": raw_output}
             final_output = raw_output
         elif decision["intent"] == "self_check" and "memory_candidate_possible" in thought_types:
@@ -126,6 +134,7 @@ class IntegratedLoop:
             "memory_candidate": memory_candidate,
             "correction_pending": correction_pending,
             "correction_label": correction_label,
+            "rule_candidate": rule_candidate,
         }
 
     def run_script(self, inputs: list[str], data_dir: str | Path = "data") -> list[dict[str, Any]]:
