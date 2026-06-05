@@ -33,6 +33,7 @@ from ashl_core.failure_events import (
 )
 from ashl_core.guard import guard_output
 from ashl_core.integrated_loop import run_turn
+from ashl_core.lesson_candidate_drafts import build_lesson_candidate_draft_trace
 from ashl_core.lesson_runner import (
     run_phase_minus_one,
     run_lesson_causality_test,
@@ -1086,6 +1087,38 @@ def smoke_lesson_candidate_builder_contract_audit() -> dict:
         and "v2.7d-1 Lesson Candidate Builder Contract Audit" in research_plan
     )
     return _result("lesson_candidate_builder_contract_audit", passed, {"doc": str(doc_path)})
+
+
+def smoke_lesson_candidate_draft_schema_trace() -> dict:
+    event = build_failure_event(
+        motivation_type="sandbox_task",
+        motivation_source="smoke",
+        goal={"goal_type": "pick_up_object"},
+        action_intent={"action_type": "pick_up", "target_id": "cube_001"},
+        expected_outcome={"type": "object_state", "expected_state": "held"},
+        actual_outcome={"type": "object_state", "actual_state": "not_moved"},
+        evaluator_source="sandbox_checker",
+        mismatch=True,
+        failure_reason_id="object_not_picked_up",
+        failure_type="action_result_mismatch",
+        needs_review=True,
+        failure_event_id="failure_smoke_001",
+    )
+    normalized = normalize_failure_event_trace(event)
+    bridge = build_lesson_candidate_input_trace(normalized)
+    draft = build_lesson_candidate_draft_trace(bridge)
+    passed = (
+        draft["draft_trace"] is True
+        and draft["not_a_lesson_candidate"] is True
+        and draft["needs_review"] is True
+        and draft["not_approved"] is True
+        and draft["not_active"] is True
+        and draft["not_selection_eligible"] is True
+        and draft["proposed_action_correction"]["review_required"] is True
+        and draft["proposed_action_correction"]["authority"] == "draft_correction_not_executable"
+        and draft["evidence_refs"]["authority"] == "evidence_pointers_not_proof"
+    )
+    return _result("lesson_candidate_draft_schema_trace", passed, draft)
 
 
 def smoke_phase0_trust_curiosity_personality_boundary_docs() -> dict:
@@ -2445,6 +2478,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_failure_event_bridge_audit_regression(),
         smoke_lesson_candidate_builder_contract_docs(),
         smoke_lesson_candidate_builder_contract_audit(),
+        smoke_lesson_candidate_draft_schema_trace(),
         smoke_phase0_trust_curiosity_personality_boundary_docs(),
         smoke_teaching_cli_conflict_check(),
         smoke_cross_task_shared_prerequisite_isolation(),

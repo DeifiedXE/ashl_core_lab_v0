@@ -695,6 +695,34 @@ Non-goals:
 - no selection / activation / conflict behavior changes
 - no Long-term Memory write
 
+## v2.8a Lesson Candidate Draft Schema Trace-only
+
+Status: completed / trace-only.
+
+Goal:
+Define and test a trace-only lesson_candidate_draft schema.
+
+Scope:
+- build lesson_candidate_draft from lesson_candidate_input_trace
+- require every draft field to declare source / authority / review_required
+- reject TBD / unknown field sources
+- keep draft review-gated
+- keep draft not approved / not active / not selection eligible / not internalized
+- prevent semantic_key from becoming proof or eligibility source
+- prevent proposed_action_correction from becoming executable action
+- prevent evidence_refs from becoming proof or approval
+
+Non-goals:
+- no lesson_candidate builder runtime
+- no approved lesson_candidate creation
+- no lesson_store write
+- no manual review runtime
+- no sandbox runtime
+- no evaluator runtime
+- no selection / activation / conflict behavior changes
+- no Long-term Memory write
+- no internalization
+
 ## Minimal Teaching CLI
 
 v1.8 Minimal Teaching CLI 是既有 lesson flow 的命令列 wrapper。

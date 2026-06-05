@@ -832,3 +832,10 @@ v2.7a adds `ashl_core.failure_events` as a trace-only failure_event schema found
 - Confirms evidence_refs are evidence pointers, not proof.
 - Confirms proposed_action_correction is not executable action.
 - Confirms proposed_applicability_conditions are not verified applicability proof.
+
+## v2.8a Lesson Candidate Draft Schema Trace-only
+
+- Adds trace-only `lesson_candidate_draft` schema.
+- Requires every draft field to declare source and review_required.
+- Keeps draft not approved, not active, not selection eligible, not internalized.
+- Does not write `lesson_store` or Long-term Memory.
