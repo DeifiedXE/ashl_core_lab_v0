@@ -26,6 +26,7 @@ ASHL Core Lab 是 ASHL Core／D清音 的最小 Python 實驗專案，用來驗�
 - v2.0b Supersede Link
 - v2.0c CLI lifecycle display
 - v2.1a Supersede Replacement Suggestion
+- v2.1b Strict Supersede Selection Activation
 - Integrated Loop v0.1
 - Persistent Candidate Layer v0.2
 - Correction Label v0.3
@@ -378,6 +379,25 @@ Current order:
 - v2.0c CLI lifecycle display：已完成
 - v2.1a Supersede Replacement Suggestion：本包
 - v2.1b Supersede Selection Activation：下一步候選
+## v2.1b Strict Supersede Selection Activation
+
+v2.1b adds strict supersede selection activation.
+- Supersede link is metadata, not authorization.
+- Activation only applies when the old lesson is skipped because it is stale.
+- Replacement candidate must pass normal selection eligibility.
+- Activation trace records every condition: old stale, superseded_by, candidate exists, candidate active, candidate not stale, candidate eligible, source, applied state, and failed conditions.
+- Activation does not add priority.
+- Activation does not auto-resolve conflicts.
+- Activation does not enable or disable lessons.
+- Activation does not auto-mark stale.
+- Conflict logic does not know or prefer supersede links.
+- Multi-layer supersede chain is not supported.
+- Lifecycle write CLI remains unsupported.
+
+Current order:
+- v2.1a Supersede Replacement Suggestion：已完成
+- v2.1b Strict Supersede Selection Activation：本包
+- v2.1c Activation Audit / Edge Case Hardening：下一步候選
 ## Correction / Rule / Trial Flow
 
 - correction pending 只記錄使用者糾正。

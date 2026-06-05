@@ -97,6 +97,19 @@ def _lesson_matches_context(lesson: dict[str, Any], context: dict[str, Any] | No
     )
 
 
+def _lesson_matches_selection_context(lesson: dict[str, Any], selection_context: dict[str, Any] | None) -> bool:
+    if selection_context is None:
+        return True
+    kind = selection_context.get("kind")
+    if kind == "context":
+        return _lesson_matches_context(lesson, selection_context.get("context"))
+    if kind == "decision_point":
+        return lesson.get("decision_point") == selection_context.get("decision_point")
+    if kind == "failure_reason":
+        return lesson.get("source_failure_reason") == selection_context.get("failure_reason")
+    return False
+
+
 def build_replacement_suggestions(
     lessons: list[dict[str, Any]],
     skipped_lessons: list[dict[str, str]],
@@ -153,6 +166,70 @@ def build_replacement_suggestions(
             }
         )
     return suggestions
+
+
+def build_strict_supersede_activations(
+    lessons: list[dict[str, Any]],
+    skipped_lessons: list[dict[str, str]],
+    selection_context: dict[str, Any] | None = None,
+    selected_lesson_id: str | None = None,
+    conflict_detected: bool = False,
+) -> list[dict[str, Any]]:
+    by_id = {lesson.get("lesson_id"): lesson for lesson in lessons}
+    activations = []
+    for skipped in skipped_lessons:
+        source_lesson = by_id.get(skipped.get("lesson_id"))
+        if skipped.get("skipped_reason") != "stale" or source_lesson is None:
+            continue
+
+        candidate_id = source_lesson.get("superseded_by")
+        if not candidate_id:
+            continue
+
+        candidate = by_id.get(candidate_id)
+        old_lesson_stale = source_lesson.get("stale") is True
+        old_lesson_has_superseded_by = bool(candidate_id)
+        candidate_exists = candidate is not None
+        candidate_active = candidate.get("status") == "active" if candidate_exists else False
+        candidate_not_stale = candidate.get("stale") is not True if candidate_exists else False
+        candidate_eligible = (
+            candidate_exists
+            and candidate_active
+            and candidate_not_stale
+            and _lesson_matches_selection_context(candidate, selection_context)
+        )
+
+        condition_values = {
+            "old_lesson_stale": old_lesson_stale,
+            "old_lesson_has_superseded_by": old_lesson_has_superseded_by,
+            "candidate_exists": candidate_exists,
+            "candidate_active": candidate_active,
+            "candidate_not_stale": candidate_not_stale,
+            "candidate_eligible": candidate_eligible,
+        }
+        failed_conditions = [name for name, value in condition_values.items() if value is not True]
+        if conflict_detected and candidate_eligible:
+            failed_conditions.append("conflict_unresolved")
+        if candidate_eligible and selected_lesson_id != candidate_id and not conflict_detected:
+            failed_conditions.append("candidate_selected")
+
+        activations.append(
+            {
+                "source_lesson_id": source_lesson.get("lesson_id"),
+                "candidate_lesson_id": candidate_id,
+                "old_lesson_stale": old_lesson_stale,
+                "old_lesson_has_superseded_by": old_lesson_has_superseded_by,
+                "candidate_exists": candidate_exists,
+                "candidate_active": candidate_active,
+                "candidate_not_stale": candidate_not_stale,
+                "candidate_eligible": candidate_eligible,
+                "activation_source": "supersede_link",
+                "activation_applied": candidate_eligible and selected_lesson_id == candidate_id and not conflict_detected,
+                "failed_conditions": failed_conditions,
+                "chain_followed": False,
+            }
+        )
+    return activations
 
 
 def set_lesson_stale(lesson: dict[str, Any], stale: bool) -> dict[str, Any]:
@@ -246,17 +323,26 @@ def find_applicable_lesson(lessons: list[dict[str, Any]], goal: dict[str, Any]) 
 
 def select_lesson_for_failure_reason(lessons: list[dict[str, Any]], failure_reason: str) -> dict[str, Any]:
     skipped_lessons = _stale_skips(lessons)
+    selection_context = {"kind": "failure_reason", "failure_reason": failure_reason}
     matches = [
         lesson
         for lesson in list_selectable_lessons(lessons)
         if lesson.get("source_failure_reason") == failure_reason
     ]
     selected = matches[0] if len(matches) == 1 else None
+    supersede_activations = build_strict_supersede_activations(
+        lessons,
+        skipped_lessons,
+        selection_context,
+        selected_lesson_id=selected.get("lesson_id") if selected else None,
+    )
     return {
         "type": "lesson_selection_result",
         "active_lesson_ids": [lesson.get("lesson_id") for lesson in list_active_lessons(lessons)],
         "skipped_lessons": skipped_lessons,
         "replacement_suggestions": build_replacement_suggestions(lessons, skipped_lessons),
+        "supersede_activations": supersede_activations,
+        "supersede_activation": supersede_activations[0] if supersede_activations else None,
         "matched_failure_reason": failure_reason,
         "selected_lesson_id": selected.get("lesson_id") if selected else None,
         "selected_action": selected.get("suggested_action_before_retry") if selected else None,
@@ -273,17 +359,27 @@ def select_lesson_for_decision_point(lessons: list[dict[str, Any]], decision_poi
     active_lessons = list_active_lessons(lessons)
     skipped_lessons = _stale_skips(lessons)
     replacement_suggestions = build_replacement_suggestions(lessons, skipped_lessons)
+    selection_context = {"kind": "decision_point", "decision_point": decision_point}
     matches = [lesson for lesson in list_selectable_lessons(lessons) if lesson.get("decision_point") == decision_point]
     actions = [lesson.get("suggested_action_before_retry") for lesson in matches if lesson.get("suggested_action_before_retry")]
     lesson_ids = [lesson.get("lesson_id") for lesson in matches]
 
     if len(matches) >= 2 and _actions_are_incompatible(actions):
+        supersede_activations = build_strict_supersede_activations(
+            lessons,
+            skipped_lessons,
+            selection_context,
+            selected_lesson_id=None,
+            conflict_detected=True,
+        )
         return {
             "type": "lesson_selection_result",
             "decision_point": decision_point,
             "active_lesson_ids": [lesson.get("lesson_id") for lesson in active_lessons],
             "skipped_lessons": skipped_lessons,
             "replacement_suggestions": replacement_suggestions,
+            "supersede_activations": supersede_activations,
+            "supersede_activation": supersede_activations[0] if supersede_activations else None,
             "matched_lesson_ids": lesson_ids,
             "conflict_detected": True,
             "conflict_resolution": "require_review",
@@ -298,12 +394,20 @@ def select_lesson_for_decision_point(lessons: list[dict[str, Any]], decision_poi
         }
 
     selected = matches[0] if len(matches) == 1 else None
+    supersede_activations = build_strict_supersede_activations(
+        lessons,
+        skipped_lessons,
+        selection_context,
+        selected_lesson_id=selected.get("lesson_id") if selected else None,
+    )
     return {
         "type": "lesson_selection_result",
         "decision_point": decision_point,
         "active_lesson_ids": [lesson.get("lesson_id") for lesson in active_lessons],
         "skipped_lessons": skipped_lessons,
         "replacement_suggestions": replacement_suggestions,
+        "supersede_activations": supersede_activations,
+        "supersede_activation": supersede_activations[0] if supersede_activations else None,
         "matched_lesson_ids": lesson_ids,
         "conflict_detected": False,
         "conflict_resolution": None,
@@ -322,6 +426,7 @@ def select_lesson_for_context(lessons: list[dict[str, Any]], context: dict[str, 
     active_lessons = list_active_lessons(lessons)
     skipped_lessons = _stale_skips(lessons)
     replacement_suggestions = build_replacement_suggestions(lessons, skipped_lessons, context)
+    selection_context = {"kind": "context", "context": context}
     task = context.get("task")
     object_id = context.get("object_id")
     decision_point = context.get("decision_point")
@@ -333,6 +438,12 @@ def select_lesson_for_context(lessons: list[dict[str, Any]], context: dict[str, 
         and lesson.get("object_id", "cube_001") == object_id
     ]
     selected = matches[0] if len(matches) == 1 else None
+    supersede_activations = build_strict_supersede_activations(
+        lessons,
+        skipped_lessons,
+        selection_context,
+        selected_lesson_id=selected.get("lesson_id") if selected else None,
+    )
     return {
         "type": "lesson_context_selection_result",
         "matched_task": task,
@@ -341,6 +452,8 @@ def select_lesson_for_context(lessons: list[dict[str, Any]], context: dict[str, 
         "active_lesson_ids": [lesson.get("lesson_id") for lesson in active_lessons],
         "skipped_lessons": skipped_lessons,
         "replacement_suggestions": replacement_suggestions,
+        "supersede_activations": supersede_activations,
+        "supersede_activation": supersede_activations[0] if supersede_activations else None,
         "matched_lesson_ids": [lesson.get("lesson_id") for lesson in matches],
         "selected_lesson_id": selected.get("lesson_id") if selected else None,
         "selected_action": selected.get("suggested_action_before_retry") if selected else None,

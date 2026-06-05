@@ -634,6 +634,75 @@ def smoke_supersede_replacement_suggestion() -> dict:
     )
 
 
+def smoke_strict_supersede_activation() -> dict:
+    old_lesson = build_lesson_from_failure("session_east", pick_up(build_initial_sandbox_state(), "cube_001"))
+    old_lesson["object_id"] = "cube_001"
+    old_lesson = mark_lesson_stale(old_lesson)
+    replacement = {
+        "lesson_id": "lesson_004",
+        "source_session": "manual_fixture",
+        "source_failure_reason": "not_facing_east_refined",
+        "trigger": {"action": "pick_up", "target_type": "cube"},
+        "decision_point": "before_retry_pick_up_cube",
+        "object_id": "cube_001",
+        "condition": {"avatar_facing": "east"},
+        "suggested_action_before_retry": "turn(east)",
+        "status": "active",
+        "stale": False,
+        "confidence": "manual_fixture",
+    }
+    context = {"task": "pick_up", "object_id": "cube_001", "decision_point": "before_retry_pick_up_cube"}
+    active_link = link_lesson_supersede(old_lesson, replacement)
+    activated = select_lesson_for_context([active_link["old_lesson"], active_link["new_lesson"]], context)
+
+    inactive_replacement = dict(replacement)
+    inactive_replacement["status"] = "inactive"
+    inactive_link = link_lesson_supersede(old_lesson, inactive_replacement)
+    inactive = select_lesson_for_context([inactive_link["old_lesson"], inactive_link["new_lesson"]], context)
+
+    west_failure = {
+        "type": "sandbox_action_result",
+        "tool": "pick_up",
+        "object_id": "cube_001",
+        "result": "failed",
+        "failure_reason": "not_facing_west",
+        "state": build_initial_sandbox_state(),
+    }
+    west_lesson = build_lesson_from_failure("session_west", west_failure)
+    conflict = select_lesson_for_decision_point(
+        [active_link["old_lesson"], active_link["new_lesson"], west_lesson],
+        "before_retry_pick_up_cube",
+    )
+    active_trace = activated["supersede_activation"]
+    inactive_trace = inactive["supersede_activation"]
+    conflict_trace = conflict["supersede_activation"]
+    passed = (
+        activated["selected_lesson_id"] == "lesson_004"
+        and active_trace["activation_applied"] is True
+        and active_trace["old_lesson_stale"] is True
+        and active_trace["old_lesson_has_superseded_by"] is True
+        and active_trace["candidate_exists"] is True
+        and active_trace["candidate_active"] is True
+        and active_trace["candidate_not_stale"] is True
+        and active_trace["candidate_eligible"] is True
+        and active_trace["activation_source"] == "supersede_link"
+        and active_trace["failed_conditions"] == []
+        and inactive["selected_lesson_id"] is None
+        and inactive_trace["activation_applied"] is False
+        and "candidate_active" in inactive_trace["failed_conditions"]
+        and conflict["conflict_detected"] is True
+        and conflict["conflict_resolution"] == "require_review"
+        and conflict["selected_lesson_id"] is None
+        and conflict_trace["activation_applied"] is False
+        and "conflict_unresolved" in conflict_trace["failed_conditions"]
+    )
+    return _result(
+        "strict_supersede_activation",
+        passed,
+        {"activated": activated, "inactive": inactive, "conflict": conflict},
+    )
+
+
 def smoke_teaching_cli() -> dict:
     known = run_known_flow()
     unknown = run_unknown_flow()
@@ -990,6 +1059,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_supersede_link(),
         smoke_cli_lifecycle_display(),
         smoke_supersede_replacement_suggestion(),
+        smoke_strict_supersede_activation(),
         smoke_state_persistence(),
         smoke_concept_layer(),
         smoke_state_core(),

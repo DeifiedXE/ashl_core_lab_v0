@@ -279,6 +279,19 @@ Current order:
 - v2.0c CLI lifecycle display：已完成
 - v2.1a Supersede Replacement Suggestion：本包
 - v2.1b Supersede Selection Activation：下一步候選
+## Strict Supersede Selection Activation
+
+v2.1b adds strict supersede selection activation.
+Supersede link is metadata, not authorization, and the replacement candidate must pass normal selection eligibility.
+
+Activation only applies when the old lesson is skipped because it is stale. The activation trace records every condition: old lesson stale, old lesson has superseded_by, candidate exists, candidate active, candidate not stale, candidate eligible, activation source, activation_applied, failed_conditions, and chain_followed.
+
+v2.1b does not add priority, does not auto-resolve conflicts, does not enable or disable lessons, does not auto-mark stale, does not let conflict logic prefer supersede links, does not support multi-layer supersede chains, and does not add lifecycle write CLI.
+
+Current order:
+- v2.1a Supersede Replacement Suggestion：已完成
+- v2.1b Strict Supersede Selection Activation：本包
+- v2.1c Activation Audit / Edge Case Hardening：下一步候選
 ## Minimal Teaching CLI
 
 v1.8 Minimal Teaching CLI 是既有 lesson flow 的命令列 wrapper。
