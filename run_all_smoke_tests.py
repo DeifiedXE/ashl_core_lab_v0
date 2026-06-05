@@ -1256,6 +1256,113 @@ def smoke_review_gated_selection_eligibility() -> dict:
     )
 
 
+def smoke_review_gated_selection_audit() -> dict:
+    candidate = {
+        "lesson_id": "lesson_004",
+        "source_session": "manual_fixture",
+        "source_failure_reason": "not_facing_east_refined",
+        "trigger": {"action": "pick_up", "target_type": "cube"},
+        "decision_point": "before_retry_pick_up_cube",
+        "object_id": "cube_001",
+        "condition": {"avatar_facing": "east"},
+        "suggested_action_before_retry": "turn(east)",
+        "status": "active",
+        "stale": False,
+        "stale_reason": None,
+        "confidence": "manual_fixture",
+        "requires_review": True,
+    }
+    context = {"task": "pick_up", "object_id": "cube_001", "decision_point": "before_retry_pick_up_cube"}
+    review = create_review_item(
+        target_type="conflict",
+        target_id="conflict_001",
+        source_lesson_id=None,
+        candidate_lesson_id="lesson_004",
+        reason="conflict_requires_manual_review",
+        notes="audit note",
+        review_id="review_001",
+    )
+    review_before = dict(review)
+    approved = mark_review_approved(review)
+    rejected = mark_review_rejected(review)
+    approved_result = select_lesson_for_context([candidate], context, review_items=[approved])
+    rejected_result = select_lesson_for_context([candidate], context, review_items=[rejected])
+
+    legacy = build_lesson_from_failure("session_east", pick_up(build_initial_sandbox_state(), "cube_001"))
+    legacy["object_id"] = "cube_001"
+    legacy["compatibility_approved"] = True
+    legacy_result = select_lesson_for_context([legacy], context, review_items=[])
+    misleading = create_review_item(
+        target_type="conflict",
+        target_id="conflict_001",
+        source_lesson_id=None,
+        candidate_lesson_id="lesson_other",
+        reason="lesson_004 appears in text only",
+        notes="lesson_004 appears in notes only",
+        review_id="review_misleading",
+    )
+    misleading_gate = evaluate_review_gate(candidate, [mark_review_approved(misleading)])
+    conflict_before = select_lesson_for_decision_point(
+        [
+            build_lesson_from_failure("session_east", pick_up(build_initial_sandbox_state(), "cube_001")),
+            build_lesson_from_failure(
+                "session_west",
+                {
+                    "type": "sandbox_action_result",
+                    "tool": "pick_up",
+                    "object_id": "cube_001",
+                    "result": "failed",
+                    "failure_reason": "not_facing_west",
+                    "state": build_initial_sandbox_state(),
+                },
+            ),
+        ],
+        "before_retry_pick_up_cube",
+    )
+    conflict_after = select_lesson_for_decision_point(
+        [
+            build_lesson_from_failure("session_east", pick_up(build_initial_sandbox_state(), "cube_001")),
+            build_lesson_from_failure(
+                "session_west",
+                {
+                    "type": "sandbox_action_result",
+                    "tool": "pick_up",
+                    "object_id": "cube_001",
+                    "result": "failed",
+                    "failure_reason": "not_facing_west",
+                    "state": build_initial_sandbox_state(),
+                },
+            ),
+        ],
+        "before_retry_pick_up_cube",
+        review_items=[mark_review_approved(create_review_item("conflict", "conflict_001", None, "lesson_001", "review"))],
+    )
+
+    passed = (
+        approved_result["review_gates"][0]["review_gate_passed"] is True
+        and rejected_result["review_gates"][0]["review_gate_passed"] is False
+        and rejected_result["selected_lesson_id"] is None
+        and review["review_state"] == review_before["review_state"]
+        and review["approval_state"] == review_before["approval_state"]
+        and legacy_result["review_gates"][0]["requires_review"] is False
+        and legacy_result["selected_lesson_id"] == "lesson_001"
+        and "compatibility_approved" not in legacy_result["review_gates"][0]
+        and misleading_gate["matched_review_id"] is None
+        and misleading_gate["reason"] == "missing_required_review"
+        and conflict_before["conflict_detected"] == conflict_after["conflict_detected"]
+        and conflict_after["conflict_resolution"] == "require_review"
+    )
+    return _result(
+        "review_gated_selection_audit",
+        passed,
+        {
+            "approved_gate": approved_result["review_gates"][0],
+            "rejected_gate": rejected_result["review_gates"][0],
+            "legacy_gate": legacy_result["review_gates"][0],
+        },
+    )
+
+
 def smoke_teaching_cli() -> dict:
     known = run_known_flow()
     unknown = run_unknown_flow()
@@ -1620,6 +1727,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_manual_review_decision_cli(),
         smoke_manual_review_decision_audit(),
         smoke_review_gated_selection_eligibility(),
+        smoke_review_gated_selection_audit(),
         smoke_state_persistence(),
         smoke_concept_layer(),
         smoke_state_core(),

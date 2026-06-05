@@ -382,6 +382,19 @@ Current order:
 - v2.3d Manual Review Decision Audit / Regression：已完成
 - v2.4a Review-Gated Selection Eligibility：本包
 - v2.4b Review Gate Regression / Audit：後續評估
+## Review-Gated Eligibility Audit / Regression
+
+v2.4b is audit / regression only.
+No new review gate behavior is added.
+
+The audit confirms that approved review only passes the review gate, does not grant priority, and does not bypass normal selection eligibility. Rejected review does not mark stale or disable lessons. Approval does not affect conflict behavior or strict supersede activation conditions.
+
+Legacy lessons are not reclassified. `compatibility_approved` upgrade path, batch review query, new review write CLI, automatic conflict resolution, automatic stale, and priority are not implemented.
+
+Current order:
+- v2.4a Review-Gated Selection Eligibility：已完成
+- v2.4b Review-Gated Eligibility Audit / Regression：本包
+- v2.5 Review Gate Integration Planning：後續評估
 ## Minimal Teaching CLI
 
 v1.8 Minimal Teaching CLI 是既有 lesson flow 的命令列 wrapper。

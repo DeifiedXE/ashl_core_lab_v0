@@ -34,6 +34,7 @@ ASHL Core Lab 是 ASHL Core／D清音 的最小 Python 實驗專案，用來驗�
 - v2.3c Manual Review Decision CLI
 - v2.3d Manual Review Decision Audit / Regression
 - v2.4a Review-Gated Selection Eligibility
+- v2.4b Review-Gated Eligibility Audit / Regression
 - Integrated Loop v0.1
 - Persistent Candidate Layer v0.2
 - Correction Label v0.3
@@ -523,6 +524,22 @@ v2.4a adds review-gated selection eligibility.
 - Approval does not bypass normal selection eligibility.
 - Batch review query is not implemented.
 - Legacy `compatibility_approved` upgrade path is not implemented in this package.
+- No new review write CLI is added.
+
+## v2.4b Review-Gated Eligibility Audit / Regression
+
+v2.4b is audit / regression only.
+- No new review gate behavior is added.
+- Approved review only passes the review gate.
+- Approved review does not grant priority.
+- Approved review does not bypass normal selection eligibility.
+- Rejected review does not mark stale.
+- Rejected review does not disable lessons.
+- Approval does not affect conflict behavior.
+- Approval does not affect strict supersede activation conditions.
+- Legacy lessons are not reclassified.
+- `compatibility_approved` upgrade path is not implemented.
+- Batch review query is not implemented.
 - No new review write CLI is added.
 
 ## Correction / Rule / Trial Flow
