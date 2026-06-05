@@ -1062,6 +1062,32 @@ def smoke_lesson_candidate_builder_contract_docs() -> dict:
     return _result("lesson_candidate_builder_contract_docs", passed, {"doc": str(doc_path)})
 
 
+def smoke_lesson_candidate_builder_contract_audit() -> dict:
+    doc_path = Path("docs/lesson_candidate_builder_contract_audit_v0_1.md")
+    readme_path = Path("README.md")
+    research_plan_path = Path("docs/research_plan.md")
+    doc = doc_path.read_text(encoding="utf-8") if doc_path.exists() else ""
+    readme = readme_path.read_text(encoding="utf-8") if readme_path.exists() else ""
+    research_plan = research_plan_path.read_text(encoding="utf-8") if research_plan_path.exists() else ""
+    required_terms = [
+        "Audit result",
+        "builder output must be review-gated",
+        "evidence_refs are evidence pointers, not proof or approval",
+        "proposed_action_correction is a review-gated draft, not an executable action",
+        "proposed_applicability_conditions are draft conditions, not verified applicability proof",
+        "semantic_key is not proof",
+        "ASHL Core provides evidence.",
+        "Qingyin Memory Layers decide memory admission.",
+    ]
+    passed = (
+        doc_path.exists()
+        and all(term in doc for term in required_terms)
+        and "lesson_candidate_builder_contract_audit_v0_1.md" in readme
+        and "v2.7d-1 Lesson Candidate Builder Contract Audit" in research_plan
+    )
+    return _result("lesson_candidate_builder_contract_audit", passed, {"doc": str(doc_path)})
+
+
 def smoke_phase0_trust_curiosity_personality_boundary_docs() -> dict:
     doc_path = Path("docs/phase0_trust_curiosity_personality_boundary_v0_1.md")
     readme_path = Path("README.md")
@@ -2418,6 +2444,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_failure_event_to_lesson_candidate_input_bridge_trace(),
         smoke_failure_event_bridge_audit_regression(),
         smoke_lesson_candidate_builder_contract_docs(),
+        smoke_lesson_candidate_builder_contract_audit(),
         smoke_phase0_trust_curiosity_personality_boundary_docs(),
         smoke_teaching_cli_conflict_check(),
         smoke_cross_task_shared_prerequisite_isolation(),

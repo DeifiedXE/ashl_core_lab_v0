@@ -667,6 +667,34 @@ Non-goals:
 - no learned_principle generation runtime
 - no internalization
 
+## v2.7d-1 Lesson Candidate Builder Contract Audit
+
+Status: completed / docs-only / audit-only.
+
+Goal:
+Audit the lesson_candidate builder contract before defining lesson_candidate draft schema.
+
+Scope:
+- confirm builder output must remain review-gated
+- confirm proposed_lesson_summary is not authoritative lesson
+- confirm proposed_action_correction is not executable action
+- confirm proposed_applicability_conditions are not verified applicability proof
+- confirm evidence_refs are evidence pointers, not proof or approval
+- confirm semantic_key remains non-authoritative and review-required
+- confirm evaluator_source remains observable evidence, not absolute truth
+- confirm Long-term Memory / learned_principle are not smuggled into builder output
+
+Non-goals:
+- no lesson_candidate builder runtime
+- no build_lesson_candidate()
+- no lesson_candidate draft schema implementation
+- no lesson_store write
+- no manual review runtime
+- no sandbox runtime
+- no evaluator runtime
+- no selection / activation / conflict behavior changes
+- no Long-term Memory write
+
 ## Minimal Teaching CLI
 
 v1.8 Minimal Teaching CLI 是既有 lesson flow 的命令列 wrapper。

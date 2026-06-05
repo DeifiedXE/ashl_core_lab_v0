@@ -823,3 +823,12 @@ v2.7a adds `ashl_core.failure_events` as a trace-only failure_event schema found
 - Keeps `semantic_key` non-authoritative and review-required.
 - Requires builder output to remain review-gated.
 - Does not implement builder runtime or write `lesson_store`.
+
+## v2.7d-1 Lesson Candidate Builder Contract Audit
+
+- `docs/lesson_candidate_builder_contract_audit_v0_1.md`
+- Audits the lesson_candidate builder contract before draft schema work.
+- Confirms builder output remains review-gated.
+- Confirms evidence_refs are evidence pointers, not proof.
+- Confirms proposed_action_correction is not executable action.
+- Confirms proposed_applicability_conditions are not verified applicability proof.
