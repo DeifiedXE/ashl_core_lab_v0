@@ -37,6 +37,7 @@ from ashl_core.lesson_store import (
     build_lesson_from_failure,
     disable_lesson,
     enable_lesson,
+    evaluate_review_gate,
     find_applicable_lesson,
     generate_lesson_from_failure,
     link_lesson_supersede,
@@ -60,6 +61,7 @@ from ashl_core.manual_review import (
     build_review_trace,
     create_review_item,
     mark_review_approved,
+    mark_review_rejected,
 )
 from ashl_core.persistence import append_jsonl, read_jsonl
 from ashl_core.perception import perceive
@@ -1163,6 +1165,97 @@ def smoke_manual_review_decision_audit() -> dict:
     )
 
 
+def smoke_review_gated_selection_eligibility() -> dict:
+    candidate = {
+        "lesson_id": "lesson_004",
+        "source_session": "manual_fixture",
+        "source_failure_reason": "not_facing_east_refined",
+        "trigger": {"action": "pick_up", "target_type": "cube"},
+        "decision_point": "before_retry_pick_up_cube",
+        "object_id": "cube_001",
+        "condition": {"avatar_facing": "east"},
+        "suggested_action_before_retry": "turn(east)",
+        "status": "active",
+        "stale": False,
+        "stale_reason": None,
+        "confidence": "manual_fixture",
+        "requires_review": True,
+    }
+    context = {"task": "pick_up", "object_id": "cube_001", "decision_point": "before_retry_pick_up_cube"}
+    review = create_review_item(
+        target_type="conflict",
+        target_id="conflict_001",
+        source_lesson_id=None,
+        candidate_lesson_id="lesson_004",
+        reason="conflict_requires_manual_review",
+        review_id="review_001",
+    )
+    approved = mark_review_approved(review)
+    rejected = mark_review_rejected(review)
+    approved_selection = select_lesson_for_context([candidate], context, review_items=[approved])
+    rejected_selection = select_lesson_for_context([candidate], context, review_items=[rejected])
+    missing_selection = select_lesson_for_context([candidate], context, review_items=[])
+    optional_candidate = dict(candidate)
+    optional_candidate["requires_review"] = False
+    optional_selection = select_lesson_for_context([optional_candidate], context)
+
+    stale_old = build_lesson_from_failure("session_east", pick_up(build_initial_sandbox_state(), "cube_001"))
+    stale_old["object_id"] = "cube_001"
+    stale_old = mark_lesson_stale(stale_old)
+    link = link_lesson_supersede(stale_old, candidate)
+    activation_rejected = select_lesson_for_context(
+        [link["old_lesson"], link["new_lesson"]],
+        context,
+        review_items=[create_review_item("conflict", "conflict_001", "lesson_001", "lesson_004", "review", review_id="review_pending")],
+    )
+    known = generate_lesson_from_failure("session_known", pick_up(build_initial_sandbox_state(), "cube_001"))
+    unknown = generate_lesson_from_failure(
+        "session_unknown",
+        {
+            "type": "sandbox_action_result",
+            "tool": "pick_up",
+            "object_id": "cube_001",
+            "result": "failed",
+            "failure_reason": "unmapped_obstacle_shadow",
+            "state": build_initial_sandbox_state(),
+        },
+    )
+
+    approved_gate = approved_selection["review_gates"][0]
+    rejected_gate = rejected_selection["review_gates"][0]
+    missing_gate = missing_selection["review_gates"][0]
+    optional_gate = optional_selection["review_gates"][0]
+    passed = (
+        approved_gate["review_gate_passed"] is True
+        and approved_gate["reason"] == "approved_review_allows_selection_eligibility"
+        and approved_selection["selected_lesson_id"] == "lesson_004"
+        and rejected_gate["review_gate_passed"] is False
+        and rejected_gate["reason"] == "rejected_review_blocks_selection_eligibility"
+        and rejected_selection["selected_lesson_id"] is None
+        and missing_gate["matched_review_id"] is None
+        and missing_gate["review_state"] is None
+        and missing_gate["approval_state"] is None
+        and missing_gate["reason"] == "missing_required_review"
+        and optional_gate["included_in_selection_eligibility"] is False
+        and optional_selection["selected_lesson_id"] == "lesson_004"
+        and activation_rejected["supersede_activation"]["activation_source"] == "supersede_link"
+        and activation_rejected["supersede_activation"]["review_gate"]["reason"] == "review_not_approved"
+        and activation_rejected["supersede_activation"]["activation_applied"] is False
+        and evaluate_review_gate(candidate, [create_review_item("conflict", "conflict_001", None, "lesson_other", "mentions lesson_004")])[
+            "reason"
+        ]
+        == "missing_required_review"
+        and known["trace"]["generation_status"] == "supported_failure_reason"
+        and unknown["trace"]["generation_status"] == "unknown_failure_reason"
+        and unknown["lesson"] is None
+    )
+    return _result(
+        "review_gated_selection_eligibility",
+        passed,
+        {"approved_gate": approved_gate, "rejected_gate": rejected_gate, "missing_gate": missing_gate},
+    )
+
+
 def smoke_teaching_cli() -> dict:
     known = run_known_flow()
     unknown = run_unknown_flow()
@@ -1526,6 +1619,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_manual_review_cli_display(),
         smoke_manual_review_decision_cli(),
         smoke_manual_review_decision_audit(),
+        smoke_review_gated_selection_eligibility(),
         smoke_state_persistence(),
         smoke_concept_layer(),
         smoke_state_core(),

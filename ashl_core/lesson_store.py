@@ -79,6 +79,107 @@ def list_selectable_lessons(lessons: list[dict[str, Any]]) -> list[dict[str, Any
     return [lesson for lesson in list_active_lessons(lessons) if lesson.get("stale") is not True]
 
 
+def _review_matches_candidate(review: dict[str, Any], lesson: dict[str, Any]) -> bool:
+    if review.get("candidate_lesson_id") != lesson.get("lesson_id"):
+        return False
+
+    supersedes = lesson.get("supersedes")
+    if supersedes is not None and review.get("source_lesson_id") != supersedes:
+        return False
+
+    target_type = lesson.get("review_target_type")
+    if target_type is not None and review.get("target_type") != target_type:
+        return False
+
+    target_id = lesson.get("review_target_id")
+    if target_id is not None and review.get("target_id") != target_id:
+        return False
+
+    return True
+
+
+def evaluate_review_gate(
+    candidate_lesson: dict[str, Any],
+    review_items: list[dict[str, Any]] | None = None,
+) -> dict[str, Any]:
+    requires_review = candidate_lesson.get("requires_review") is True
+    candidate_id = candidate_lesson.get("lesson_id")
+    if not requires_review:
+        return {
+            "candidate_lesson_id": candidate_id,
+            "requires_review": False,
+            "matched_review_id": None,
+            "review_state": None,
+            "approval_state": None,
+            "review_gate_passed": True,
+            "included_in_selection_eligibility": False,
+            "conflict_changed": False,
+            "activation_changed": False,
+            "reason": "review_gate_not_required",
+        }
+
+    matched_review = None
+    for review in review_items or []:
+        if _review_matches_candidate(review, candidate_lesson):
+            matched_review = review
+            break
+
+    if matched_review is None:
+        return {
+            "candidate_lesson_id": candidate_id,
+            "requires_review": True,
+            "matched_review_id": None,
+            "review_state": None,
+            "approval_state": None,
+            "review_gate_passed": False,
+            "included_in_selection_eligibility": True,
+            "conflict_changed": False,
+            "activation_changed": False,
+            "reason": "missing_required_review",
+        }
+
+    review_state = matched_review.get("review_state")
+    approval_state = matched_review.get("approval_state")
+    approved = review_state == "reviewed" and approval_state == "approved"
+    if approved:
+        reason = "approved_review_allows_selection_eligibility"
+    elif review_state == "reviewed" and approval_state == "rejected":
+        reason = "rejected_review_blocks_selection_eligibility"
+    else:
+        reason = "review_not_approved"
+
+    return {
+        "candidate_lesson_id": candidate_id,
+        "requires_review": True,
+        "matched_review_id": matched_review.get("id"),
+        "review_state": review_state,
+        "approval_state": approval_state,
+        "review_gate_passed": approved,
+        "included_in_selection_eligibility": True,
+        "conflict_changed": False,
+        "activation_changed": False,
+        "reason": reason,
+    }
+
+
+def _review_gate_passes(lesson: dict[str, Any], review_items: list[dict[str, Any]] | None = None) -> bool:
+    return evaluate_review_gate(lesson, review_items)["review_gate_passed"] is True
+
+
+def _selectable_lessons_with_review_gate(
+    lessons: list[dict[str, Any]],
+    review_items: list[dict[str, Any]] | None = None,
+) -> list[dict[str, Any]]:
+    return [lesson for lesson in list_selectable_lessons(lessons) if _review_gate_passes(lesson, review_items)]
+
+
+def _review_gate_traces(
+    lessons: list[dict[str, Any]],
+    review_items: list[dict[str, Any]] | None = None,
+) -> list[dict[str, Any]]:
+    return [evaluate_review_gate(lesson, review_items) for lesson in list_active_lessons(lessons)]
+
+
 def _stale_skips(lessons: list[dict[str, Any]]) -> list[dict[str, str]]:
     return [
         {"lesson_id": lesson.get("lesson_id"), "skipped_reason": "stale"}
@@ -174,6 +275,7 @@ def build_strict_supersede_activations(
     selection_context: dict[str, Any] | None = None,
     selected_lesson_id: str | None = None,
     conflict_detected: bool = False,
+    review_items: list[dict[str, Any]] | None = None,
 ) -> list[dict[str, Any]]:
     by_id = {lesson.get("lesson_id"): lesson for lesson in lessons}
     activations = []
@@ -197,7 +299,9 @@ def build_strict_supersede_activations(
             and candidate_active
             and candidate_not_stale
             and _lesson_matches_selection_context(candidate, selection_context)
+            and _review_gate_passes(candidate, review_items)
         )
+        review_gate = evaluate_review_gate(candidate, review_items) if candidate_exists else None
 
         condition_values = {
             "old_lesson_stale": old_lesson_stale,
@@ -223,6 +327,7 @@ def build_strict_supersede_activations(
                 "candidate_active": candidate_active,
                 "candidate_not_stale": candidate_not_stale,
                 "candidate_eligible": candidate_eligible,
+                "review_gate": review_gate,
                 "activation_source": "supersede_link",
                 "activation_applied": candidate_eligible and selected_lesson_id == candidate_id and not conflict_detected,
                 "failed_conditions": failed_conditions,
@@ -321,12 +426,16 @@ def find_applicable_lesson(lessons: list[dict[str, Any]], goal: dict[str, Any]) 
     return None
 
 
-def select_lesson_for_failure_reason(lessons: list[dict[str, Any]], failure_reason: str) -> dict[str, Any]:
+def select_lesson_for_failure_reason(
+    lessons: list[dict[str, Any]],
+    failure_reason: str,
+    review_items: list[dict[str, Any]] | None = None,
+) -> dict[str, Any]:
     skipped_lessons = _stale_skips(lessons)
     selection_context = {"kind": "failure_reason", "failure_reason": failure_reason}
     matches = [
         lesson
-        for lesson in list_selectable_lessons(lessons)
+        for lesson in _selectable_lessons_with_review_gate(lessons, review_items)
         if lesson.get("source_failure_reason") == failure_reason
     ]
     selected = matches[0] if len(matches) == 1 else None
@@ -335,11 +444,13 @@ def select_lesson_for_failure_reason(lessons: list[dict[str, Any]], failure_reas
         skipped_lessons,
         selection_context,
         selected_lesson_id=selected.get("lesson_id") if selected else None,
+        review_items=review_items,
     )
     return {
         "type": "lesson_selection_result",
         "active_lesson_ids": [lesson.get("lesson_id") for lesson in list_active_lessons(lessons)],
         "skipped_lessons": skipped_lessons,
+        "review_gates": _review_gate_traces(lessons, review_items),
         "replacement_suggestions": build_replacement_suggestions(lessons, skipped_lessons),
         "supersede_activations": supersede_activations,
         "supersede_activation": supersede_activations[0] if supersede_activations else None,
@@ -355,12 +466,21 @@ def _actions_are_incompatible(actions: list[str]) -> bool:
     return "turn(east)" in actions and "turn(west)" in actions
 
 
-def select_lesson_for_decision_point(lessons: list[dict[str, Any]], decision_point: str) -> dict[str, Any]:
+def select_lesson_for_decision_point(
+    lessons: list[dict[str, Any]],
+    decision_point: str,
+    review_items: list[dict[str, Any]] | None = None,
+) -> dict[str, Any]:
     active_lessons = list_active_lessons(lessons)
     skipped_lessons = _stale_skips(lessons)
     replacement_suggestions = build_replacement_suggestions(lessons, skipped_lessons)
+    review_gates = _review_gate_traces(lessons, review_items)
     selection_context = {"kind": "decision_point", "decision_point": decision_point}
-    matches = [lesson for lesson in list_selectable_lessons(lessons) if lesson.get("decision_point") == decision_point]
+    matches = [
+        lesson
+        for lesson in _selectable_lessons_with_review_gate(lessons, review_items)
+        if lesson.get("decision_point") == decision_point
+    ]
     actions = [lesson.get("suggested_action_before_retry") for lesson in matches if lesson.get("suggested_action_before_retry")]
     lesson_ids = [lesson.get("lesson_id") for lesson in matches]
 
@@ -371,12 +491,14 @@ def select_lesson_for_decision_point(lessons: list[dict[str, Any]], decision_poi
             selection_context,
             selected_lesson_id=None,
             conflict_detected=True,
+            review_items=review_items,
         )
         return {
             "type": "lesson_selection_result",
             "decision_point": decision_point,
             "active_lesson_ids": [lesson.get("lesson_id") for lesson in active_lessons],
             "skipped_lessons": skipped_lessons,
+            "review_gates": review_gates,
             "replacement_suggestions": replacement_suggestions,
             "supersede_activations": supersede_activations,
             "supersede_activation": supersede_activations[0] if supersede_activations else None,
@@ -399,12 +521,14 @@ def select_lesson_for_decision_point(lessons: list[dict[str, Any]], decision_poi
         skipped_lessons,
         selection_context,
         selected_lesson_id=selected.get("lesson_id") if selected else None,
+        review_items=review_items,
     )
     return {
         "type": "lesson_selection_result",
         "decision_point": decision_point,
         "active_lesson_ids": [lesson.get("lesson_id") for lesson in active_lessons],
         "skipped_lessons": skipped_lessons,
+        "review_gates": review_gates,
         "replacement_suggestions": replacement_suggestions,
         "supersede_activations": supersede_activations,
         "supersede_activation": supersede_activations[0] if supersede_activations else None,
@@ -422,17 +546,22 @@ def select_lesson_for_decision_point(lessons: list[dict[str, Any]], decision_poi
     }
 
 
-def select_lesson_for_context(lessons: list[dict[str, Any]], context: dict[str, Any]) -> dict[str, Any]:
+def select_lesson_for_context(
+    lessons: list[dict[str, Any]],
+    context: dict[str, Any],
+    review_items: list[dict[str, Any]] | None = None,
+) -> dict[str, Any]:
     active_lessons = list_active_lessons(lessons)
     skipped_lessons = _stale_skips(lessons)
     replacement_suggestions = build_replacement_suggestions(lessons, skipped_lessons, context)
+    review_gates = _review_gate_traces(lessons, review_items)
     selection_context = {"kind": "context", "context": context}
     task = context.get("task")
     object_id = context.get("object_id")
     decision_point = context.get("decision_point")
     matches = [
         lesson
-        for lesson in list_selectable_lessons(lessons)
+        for lesson in _selectable_lessons_with_review_gate(lessons, review_items)
         if lesson.get("decision_point") == decision_point
         and lesson.get("trigger", {}).get("action") == task
         and lesson.get("object_id", "cube_001") == object_id
@@ -443,6 +572,7 @@ def select_lesson_for_context(lessons: list[dict[str, Any]], context: dict[str, 
         skipped_lessons,
         selection_context,
         selected_lesson_id=selected.get("lesson_id") if selected else None,
+        review_items=review_items,
     )
     return {
         "type": "lesson_context_selection_result",
@@ -451,6 +581,7 @@ def select_lesson_for_context(lessons: list[dict[str, Any]], context: dict[str, 
         "decision_point": decision_point,
         "active_lesson_ids": [lesson.get("lesson_id") for lesson in active_lessons],
         "skipped_lessons": skipped_lessons,
+        "review_gates": review_gates,
         "replacement_suggestions": replacement_suggestions,
         "supersede_activations": supersede_activations,
         "supersede_activation": supersede_activations[0] if supersede_activations else None,

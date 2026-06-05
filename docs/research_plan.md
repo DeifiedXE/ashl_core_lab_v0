@@ -367,6 +367,21 @@ Current order:
 - v2.3c Manual Review Decision CLI：已完成
 - v2.3d Manual Review Decision Audit / Regression：本包
 - v2.4 Manual Review Persistence or Gate Design：後續評估
+## Review-Gated Selection Eligibility
+
+v2.4a adds review-gated selection eligibility.
+Selection eligibility can read manual review metadata only for candidate lessons explicitly marked with `requires_review = true`.
+
+Approved review may allow the review gate to pass. Rejected review blocks review-gated eligibility. `pending_review` / `unreviewed` / missing review do not pass the review gate.
+
+Approval does not affect conflict behavior, does not affect strict supersede activation conditions, does not grant priority, and does not bypass normal selection eligibility. Rejection does not mark stale and does not disable lessons.
+
+Batch review query, legacy `compatibility_approved` upgrade path, new review write CLI, automatic conflict resolution, and priority are not implemented in this package.
+
+Current order:
+- v2.3d Manual Review Decision Audit / Regression：已完成
+- v2.4a Review-Gated Selection Eligibility：本包
+- v2.4b Review Gate Regression / Audit：後續評估
 ## Minimal Teaching CLI
 
 v1.8 Minimal Teaching CLI 是既有 lesson flow 的命令列 wrapper。
