@@ -419,6 +419,21 @@ Current order:
 - v2.4c Conflict ID Stability Check：已完成
 - v2.5a Conflict Review Resolution Preview：本包
 - v2.5b Conflict Preview Audit / Regression：後續評估
+## Conflict Review Preview Audit / Regression
+
+v2.5b is audit / regression only.
+No new conflict resolution capability is added.
+
+Conflict review preview remains trace-only and `resolution_preview_applied` remains false. Approval does not resolve conflicts and approved candidate does not automatically win conflict. Rejection does not disable lessons and does not mark stale.
+
+Matching uses `stable_conflict_key` / explicit metadata only. Notes / reason text matching is prohibited. Fallback search is prohibited. Runtime `conflict_id` cannot be the only matching anchor. Review-gated selection eligibility remains unchanged.
+
+Approval-driven and rejection-driven conflict resolution are not implemented.
+
+Current order:
+- v2.5a Conflict Review Resolution Preview：已完成
+- v2.5b Conflict Review Preview Audit / Regression：本包
+- v2.6 Conflict Resolution Activation Design：後續評估
 ## Minimal Teaching CLI
 
 v1.8 Minimal Teaching CLI 是既有 lesson flow 的命令列 wrapper。

@@ -511,6 +511,89 @@ def smoke_conflict_review_resolution_preview() -> dict:
     )
 
 
+def smoke_conflict_review_preview_audit() -> dict:
+    east = build_lesson_from_failure("session_east", pick_up(build_initial_sandbox_state(), "cube_001"))
+    west = build_lesson_from_failure(
+        "session_west",
+        {
+            "type": "sandbox_action_result",
+            "tool": "pick_up",
+            "object_id": "cube_001",
+            "result": "failed",
+            "failure_reason": "not_facing_west",
+            "state": build_initial_sandbox_state(),
+        },
+    )
+    baseline = select_lesson_for_decision_point([east, west], "before_retry_pick_up_cube")
+    approved = mark_review_approved(
+        create_review_item("conflict", baseline["stable_conflict_key"], "lesson_001", "lesson_002", "review", review_id="review_approved")
+    )
+    rejected = mark_review_rejected(
+        create_review_item("conflict", baseline["stable_conflict_key"], "lesson_001", "lesson_002", "review", review_id="review_rejected")
+    )
+    approved_result = select_lesson_for_decision_point([east, west], "before_retry_pick_up_cube", review_items=[approved])
+    rejected_result = select_lesson_for_decision_point([east, west], "before_retry_pick_up_cube", review_items=[rejected])
+    missing_result = select_lesson_for_decision_point([east, west], "before_retry_pick_up_cube", review_items=[])
+    runtime_only = mark_review_approved(
+        create_review_item("conflict", "runtime_conflict_001", "lesson_001", "lesson_002", "review", review_id="review_runtime")
+    )
+    runtime_only["runtime_conflict_id"] = baseline["conflict_id"]
+    runtime_result = select_lesson_for_decision_point([east, west], "before_retry_pick_up_cube", review_items=[runtime_only])
+
+    candidate = {
+        "lesson_id": "lesson_004",
+        "source_session": "manual_fixture",
+        "source_failure_reason": "not_facing_east_refined",
+        "trigger": {"action": "pick_up", "target_type": "cube"},
+        "decision_point": "before_retry_pick_up_cube",
+        "object_id": "cube_001",
+        "condition": {"avatar_facing": "east"},
+        "suggested_action_before_retry": "turn(east)",
+        "status": "active",
+        "stale": False,
+        "requires_review": True,
+    }
+    context = {"task": "pick_up", "object_id": "cube_001", "decision_point": "before_retry_pick_up_cube"}
+    gate_approved = mark_review_approved(create_review_item("conflict", "conflict_001", None, "lesson_004", "review"))
+    gate_rejected = mark_review_rejected(create_review_item("conflict", "conflict_001", None, "lesson_004", "review"))
+    gate_approved_result = select_lesson_for_context([candidate], context, review_items=[gate_approved])
+    gate_rejected_result = select_lesson_for_context([candidate], context, review_items=[gate_rejected])
+
+    approved_preview = approved_result["conflict_review_resolution_preview"]
+    rejected_preview = rejected_result["conflict_review_resolution_preview"]
+    missing_preview = missing_result["conflict_review_resolution_preview"]
+    required_preview_fields = {
+        "conflict_id",
+        "stable_conflict_key",
+        "matched_review_items",
+        "resolution_preview_applied",
+        "conflict_changed",
+        "selection_changed",
+        "activation_changed",
+        "reason",
+    }
+    passed = (
+        required_preview_fields.issubset(approved_preview.keys())
+        and approved_preview["matched_review_items"][0]["preview_suggestion"] == "candidate_has_human_approval"
+        and rejected_preview["matched_review_items"][0]["preview_suggestion"] == "candidate_has_human_rejection"
+        and approved_preview["resolution_preview_applied"] is False
+        and rejected_preview["resolution_preview_applied"] is False
+        and approved_preview["conflict_changed"] is False
+        and approved_result["selected_lesson_id"] is None
+        and rejected_result["selected_lesson_id"] is None
+        and missing_preview["matched_review_items"] == []
+        and missing_preview["reason"] == "no_matching_review_item"
+        and runtime_result["conflict_review_resolution_preview"]["matched_review_items"] == []
+        and gate_approved_result["review_gates"][0]["review_gate_passed"] is True
+        and gate_rejected_result["review_gates"][0]["review_gate_passed"] is False
+    )
+    return _result(
+        "conflict_review_preview_audit",
+        passed,
+        {"approved_preview": approved_preview, "rejected_preview": rejected_preview, "missing_preview": missing_preview},
+    )
+
+
 def smoke_cross_task_shared_prerequisite_isolation() -> dict:
     lesson_001 = build_lesson_from_failure("session_cube_001", pick_up(build_initial_sandbox_state(), "cube_001"))
     lesson_001["object_id"] = "cube_001"
@@ -1829,6 +1912,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_conflict_detection_require_review(),
         smoke_conflict_id_stability(),
         smoke_conflict_review_resolution_preview(),
+        smoke_conflict_review_preview_audit(),
         smoke_teaching_cli_conflict_check(),
         smoke_cross_task_shared_prerequisite_isolation(),
         smoke_manual_stale_marking(),

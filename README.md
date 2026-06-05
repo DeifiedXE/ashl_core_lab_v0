@@ -37,6 +37,7 @@ ASHL Core Lab 是 ASHL Core／D清音 的最小 Python 實驗專案，用來驗�
 - v2.4b Review-Gated Eligibility Audit / Regression
 - v2.4c Conflict ID Stability Check
 - v2.5a Conflict Review Resolution Preview
+- v2.5b Conflict Review Preview Audit / Regression
 - Integrated Loop v0.1
 - Persistent Candidate Layer v0.2
 - Correction Label v0.3
@@ -572,6 +573,24 @@ v2.5a adds conflict review resolution preview.
 - Matching uses `stable_conflict_key` / explicit metadata only.
 - Notes / reason text matching is prohibited.
 - Fallback search is prohibited.
+- Review-gated selection eligibility remains unchanged.
+- Approval-driven conflict resolution is not implemented.
+- Rejection-driven conflict resolution is not implemented.
+
+## v2.5b Conflict Review Preview Audit / Regression
+
+v2.5b is audit / regression only.
+- No new conflict resolution capability is added.
+- Conflict review preview remains trace-only.
+- `resolution_preview_applied` remains false.
+- Approval does not resolve conflicts.
+- Approved candidate does not automatically win conflict.
+- Rejection does not disable lessons.
+- Rejection does not mark stale.
+- Matching uses `stable_conflict_key` / explicit metadata only.
+- Notes / reason text matching is prohibited.
+- Fallback search is prohibited.
+- Runtime `conflict_id` cannot be the only matching anchor.
 - Review-gated selection eligibility remains unchanged.
 - Approval-driven conflict resolution is not implemented.
 - Rejection-driven conflict resolution is not implemented.
