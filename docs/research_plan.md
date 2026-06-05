@@ -472,6 +472,16 @@ The instinct / lesson relation assumption states that the lesson layer remains t
 
 No runtime behavior changed. No activation behavior was added. No Phase 0 runtime integration was implemented. v2.6b dry-run remains completed, and v2.6c activation remains deferred.
 
+## Phase 0 Behavior / Curiosity Assumption Docs
+
+v2.6c-1 is docs-only behavior / curiosity assumption integration.
+
+This package adds the Phase 0 minimal behavior set and curiosity design assumption v0.1. It documents why Qingyin acts, where motivation comes from, how curiosity is triggered, the minimal behavior set, and how curiosity may connect to the failure_reason / lesson_candidate loop.
+
+The document records three motivation sources: external teaching motivation, instinct / curiosity motivation, and need motivation. It also records the minimal behavior names `observe`, `approach`, `avoid`, and `ask_for_help` as design assumptions only.
+
+No runtime behavior changed. No curiosity runtime, attention weight runtime, motivation runtime, Phase 0 sandbox runtime, evaluator implementation, or perception implementation was added. Selection, conflict, review, activation, known / unknown failure_reason behavior, and v2.6b dry-run behavior remain unchanged.
+
 ## Minimal Teaching CLI
 
 v1.8 Minimal Teaching CLI 是既有 lesson flow 的命令列 wrapper。

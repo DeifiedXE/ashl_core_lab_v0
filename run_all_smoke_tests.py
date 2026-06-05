@@ -732,6 +732,37 @@ def smoke_phase0_integration_assumption_docs() -> dict:
     )
 
 
+def smoke_phase0_behavior_curiosity_assumption_docs() -> dict:
+    behavior_doc_path = Path("docs/phase0_behavior_curiosity_assumption_v0_1.md")
+    readme_path = Path("README.md")
+    research_plan_path = Path("docs/research_plan.md")
+
+    behavior_doc = behavior_doc_path.read_text(encoding="utf-8") if behavior_doc_path.exists() else ""
+    readme = readme_path.read_text(encoding="utf-8") if readme_path.exists() else ""
+    research_plan = research_plan_path.read_text(encoding="utf-8") if research_plan_path.exists() else ""
+
+    passed = (
+        behavior_doc_path.exists()
+        and "phase0_behavior_curiosity_assumption_v0_1.md" in readme
+        and "v2.6c-1" in research_plan
+        and "External teaching motivation" in behavior_doc
+        and "Instinct / curiosity motivation" in behavior_doc
+        and "Need motivation" in behavior_doc
+        and "`observe`" in behavior_doc
+        and "`approach`" in behavior_doc
+        and "`avoid`" in behavior_doc
+        and "`ask_for_help`" in behavior_doc
+        and "failure_reason" in behavior_doc
+        and "lesson_candidate" in behavior_doc
+        and "similar situation" in behavior_doc
+    )
+    return _result(
+        "phase0_behavior_curiosity_assumption_docs",
+        passed,
+        {"behavior_doc": str(behavior_doc_path)},
+    )
+
+
 def smoke_cross_task_shared_prerequisite_isolation() -> dict:
     lesson_001 = build_lesson_from_failure("session_cube_001", pick_up(build_initial_sandbox_state(), "cube_001"))
     lesson_001["object_id"] = "cube_001"
@@ -2054,6 +2085,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_conflict_review_resolution_preconditions(),
         smoke_conflict_review_resolution_dry_run(),
         smoke_phase0_integration_assumption_docs(),
+        smoke_phase0_behavior_curiosity_assumption_docs(),
         smoke_teaching_cli_conflict_check(),
         smoke_cross_task_shared_prerequisite_isolation(),
         smoke_manual_stale_marking(),
