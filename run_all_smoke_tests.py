@@ -36,6 +36,7 @@ from ashl_core.lesson_runner import (
 from ashl_core.lesson_store import (
     build_lesson_from_failure,
     build_conflict_review_resolution_preconditions,
+    build_conflict_review_resolution_dry_run,
     build_stable_conflict_key,
     disable_lesson,
     enable_lesson,
@@ -649,6 +650,56 @@ def smoke_conflict_review_resolution_preconditions() -> dict:
         "conflict_review_resolution_preconditions",
         passed,
         {"all_met": all_met, "rejected": rejected_block, "conflicting": conflicting, "multiple": multiple},
+    )
+
+
+def smoke_conflict_review_resolution_dry_run() -> dict:
+    east = build_lesson_from_failure("session_east", pick_up(build_initial_sandbox_state(), "cube_001"))
+    west = build_lesson_from_failure(
+        "session_west",
+        {
+            "type": "sandbox_action_result",
+            "tool": "pick_up",
+            "object_id": "cube_001",
+            "result": "failed",
+            "failure_reason": "not_facing_west",
+            "state": build_initial_sandbox_state(),
+        },
+    )
+    trace = select_lesson_for_decision_point([east, west], "before_retry_pick_up_cube")
+    approved = mark_review_approved(
+        create_review_item("conflict", trace["stable_conflict_key"], "lesson_001", "lesson_002", "review", review_id="review_approved")
+    )
+    rejected = mark_review_rejected(
+        create_review_item("conflict", trace["stable_conflict_key"], "lesson_001", "lesson_002", "review", review_id="review_rejected")
+    )
+    approved_other = mark_review_approved(
+        create_review_item("conflict", trace["stable_conflict_key"], "lesson_002", "lesson_001", "review", review_id="review_other")
+    )
+    success = build_conflict_review_resolution_dry_run(trace, [approved], candidate_lesson_id="lesson_002")
+    missing = build_conflict_review_resolution_dry_run(trace, [], candidate_lesson_id="lesson_002")
+    rejected_block = build_conflict_review_resolution_dry_run(trace, [rejected], candidate_lesson_id="lesson_002")
+    conflicting = build_conflict_review_resolution_dry_run(trace, [approved, rejected], candidate_lesson_id="lesson_002")
+    multiple = build_conflict_review_resolution_dry_run(trace, [approved, approved_other], candidate_lesson_id="lesson_002")
+    passed = (
+        success["dry_run_would_resolve"] is True
+        and success["dry_run_winner_candidate_id"] == "lesson_002"
+        and success["resolution_applied"] is False
+        and success["conflict_changed"] is False
+        and success["selection_changed"] is False
+        and success["activation_changed"] is False
+        and missing["dry_run_would_resolve"] is False
+        and missing["dry_run_winner_candidate_id"] is None
+        and missing["dry_run_blocked_reason"] is not None
+        and rejected_block["dry_run_blocked_reason"] == "rejected_review_blocks_resolution"
+        and conflicting["dry_run_blocked_reason"] == "blocked_by_conflicting_reviews"
+        and multiple["dry_run_blocked_reason"] == "blocked_by_multiple_approvals"
+        and multiple["dry_run_winner_candidate_id"] is None
+    )
+    return _result(
+        "conflict_review_resolution_dry_run",
+        passed,
+        {"success": success, "missing": missing, "rejected": rejected_block, "conflicting": conflicting, "multiple": multiple},
     )
 
 
@@ -1972,6 +2023,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_conflict_review_resolution_preview(),
         smoke_conflict_review_preview_audit(),
         smoke_conflict_review_resolution_preconditions(),
+        smoke_conflict_review_resolution_dry_run(),
         smoke_teaching_cli_conflict_check(),
         smoke_cross_task_shared_prerequisite_isolation(),
         smoke_manual_stale_marking(),

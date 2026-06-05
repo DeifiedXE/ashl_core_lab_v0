@@ -39,6 +39,7 @@ ASHL Core Lab 是 ASHL Core／D清音 的最小 Python 實驗專案，用來驗�
 - v2.5a Conflict Review Resolution Preview
 - v2.5b Conflict Review Preview Audit / Regression
 - v2.6a Conflict Review Resolution Preconditions
+- v2.6b Conflict Review Resolution Dry Run
 - Integrated Loop v0.1
 - Persistent Candidate Layer v0.2
 - Correction Label v0.3
@@ -607,6 +608,26 @@ v2.6a adds conflict review resolution preconditions.
 - Rejected reviews do not mark stale.
 - Conflicting reviews block resolution.
 - Multiple approved candidates block resolution.
+- Approval does not resolve conflicts.
+- Approved candidate does not automatically win conflict.
+- Matching uses `stable_conflict_key` / explicit metadata only.
+- Notes / reason text matching is prohibited.
+- Fallback search is prohibited.
+- Runtime `conflict_id` cannot be the only matching anchor.
+
+## v2.6b Conflict Review Resolution Dry Run
+
+v2.6b adds conflict review resolution dry-run.
+- This package does not activate conflict resolution.
+- Dry-run does not change conflict result.
+- Dry-run does not change selection result.
+- Dry-run does not change strict supersede activation.
+- `resolution_applied` remains false.
+- Rejected reviews are blockers only.
+- Rejected reviews do not disable lessons.
+- Rejected reviews do not mark stale.
+- Conflicting reviews block dry-run resolution.
+- Multiple approved candidates block dry-run resolution.
 - Approval does not resolve conflicts.
 - Approved candidate does not automatically win conflict.
 - Matching uses `stable_conflict_key` / explicit metadata only.

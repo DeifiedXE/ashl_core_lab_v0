@@ -607,6 +607,39 @@ def build_conflict_review_resolution_preconditions(
     }
 
 
+def build_conflict_review_resolution_dry_run(
+    conflict_trace: dict[str, Any],
+    review_items: list[dict[str, Any]] | None = None,
+    candidate_lesson_id: str | None = None,
+) -> dict[str, Any]:
+    preconditions = build_conflict_review_resolution_preconditions(
+        conflict_trace,
+        review_items,
+        candidate_lesson_id=candidate_lesson_id,
+    )
+    dry_run_would_resolve = preconditions["all_preconditions_met"] is True
+    dry_run_winner_candidate_id = preconditions["candidate_lesson_id"] if dry_run_would_resolve else None
+    dry_run_blocked_reason = None
+    if not dry_run_would_resolve:
+        dry_run_blocked_reason = preconditions["blocked_reason"] or "preconditions_not_met"
+
+    return {
+        "conflict_id": preconditions["conflict_id"],
+        "stable_conflict_key": preconditions["stable_conflict_key"],
+        "dry_run_would_resolve": dry_run_would_resolve,
+        "dry_run_winner_candidate_id": dry_run_winner_candidate_id,
+        "dry_run_blocked_reason": dry_run_blocked_reason,
+        "all_preconditions_met": preconditions["all_preconditions_met"],
+        "failed_preconditions": list(preconditions["failed_preconditions"]),
+        "conflict_changed": False,
+        "resolution_applied": False,
+        "selection_changed": False,
+        "activation_changed": False,
+        "reason": "dry_run_trace_only" if dry_run_would_resolve else "dry_run_blocked_by_preconditions",
+        "preconditions": preconditions,
+    }
+
+
 def select_lesson_for_decision_point(
     lessons: list[dict[str, Any]],
     decision_point: str,
