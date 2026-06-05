@@ -24,6 +24,7 @@ ASHL Core Lab 是 ASHL Core／D清音 的最小 Python 實驗專案，用來驗�
 - v1.9d Cross-task Shared Prerequisite Isolation Test
 - v2.0a Manual Stale Marking
 - v2.0b Supersede Link
+- v2.0c CLI lifecycle display
 - Integrated Loop v0.1
 - Persistent Candidate Layer v0.2
 - Correction Label v0.3
@@ -333,9 +334,30 @@ v2.0b only records supersede links as lifecycle metadata.
 
 Current order:
 - v2.0a Manual Stale Marking：已完成
-- v2.0b Supersede Link：本包
-- v2.0c CLI lifecycle display：下一步
+- v2.0b Supersede Link：已完成
+- v2.0c CLI lifecycle display：本包
 - v2.1 Stale / Supersede activation behavior：延後
+## v2.0c CLI lifecycle display
+
+v2.0c adds read-only CLI lifecycle display through `run-lifecycle-display`.
+- It shows lesson id, status, stale, stale_reason, superseded_by, supersedes, selection eligibility, skipped reason, and conflict participation.
+- It does not modify stale state.
+- It does not create or modify supersede links.
+- It does not change selection behavior.
+- It does not change conflict behavior.
+- It does not add lifecycle write commands.
+- Lifecycle activation is deferred to v2.1 or later.
+
+Example:
+```powershell
+py -3 -m ashl_core.teaching_cli run-lifecycle-display
+```
+
+Current order:
+- v2.0a Manual Stale Marking：已完成
+- v2.0b Supersede Link：已完成
+- v2.0c CLI lifecycle display：本包
+- v2.1 Stale / Supersede activation behavior：下一步候選
 ## Correction / Rule / Trial Flow
 
 - correction pending 只記錄使用者糾正。

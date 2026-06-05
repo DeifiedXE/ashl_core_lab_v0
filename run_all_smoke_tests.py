@@ -68,7 +68,13 @@ from ashl_core.state_persistence import (
     read_state_snapshot,
 )
 from ashl_core.standing_task import run_standing_task
-from ashl_core.teaching_cli import run_conflict_check_flow, run_disable_reenable_flow, run_known_flow, run_unknown_flow
+from ashl_core.teaching_cli import (
+    run_conflict_check_flow,
+    run_disable_reenable_flow,
+    run_known_flow,
+    run_lifecycle_display,
+    run_unknown_flow,
+)
 from ashl_core.trial_feedback import append_trial_feedback, build_trial_feedback, summarize_trial_feedback
 from ashl_core.trial_rules import build_trial_suggestions, list_approved_trial_candidates, build_trial_rule_view
 
@@ -516,6 +522,52 @@ def smoke_supersede_link() -> dict:
     )
 
 
+def smoke_cli_lifecycle_display() -> dict:
+    old_lesson = build_lesson_from_failure("session_east", pick_up(build_initial_sandbox_state(), "cube_001"))
+    old_lesson["object_id"] = "cube_001"
+    old_lesson["stale"] = True
+    old_lesson["stale_reason"] = "manual: obsolete wording"
+    new_lesson = {
+        "lesson_id": "lesson_004",
+        "source_session": "manual_fixture",
+        "source_failure_reason": "not_facing_east_refined",
+        "trigger": {"action": "pick_up", "target_type": "cube"},
+        "decision_point": "before_retry_pick_up_cube",
+        "object_id": "cube_001",
+        "condition": {"avatar_facing": "east"},
+        "suggested_action_before_retry": "turn(east)",
+        "status": "inactive",
+        "stale": False,
+        "stale_reason": None,
+        "confidence": "manual_fixture",
+    }
+    link = link_lesson_supersede(old_lesson, new_lesson)
+    lessons = [link["old_lesson"], link["new_lesson"]]
+    context = {"task": "pick_up", "object_id": "cube_001", "decision_point": "before_retry_pick_up_cube"}
+    before = select_lesson_for_context(lessons, context)
+    before_conflict = select_lesson_for_decision_point(lessons, "before_retry_pick_up_cube")
+    display = run_lifecycle_display(lessons, context)
+    after = select_lesson_for_context(lessons, context)
+    after_conflict = select_lesson_for_decision_point(lessons, "before_retry_pick_up_cube")
+    passed = (
+        display["read_only"] is True
+        and "Lesson Lifecycle" in display["display"]
+        and "stale: true" in display["display"]
+        and "stale_reason: manual: obsolete wording" in display["display"]
+        and "superseded_by: lesson_004" in display["display"]
+        and "supersedes: lesson_001" in display["display"]
+        and before == after
+        and before_conflict == after_conflict
+        and display["selection_trace"] == before
+        and display["conflict_check"]["conflict_detected"] is False
+    )
+    return _result(
+        "cli_lifecycle_display",
+        passed,
+        {"display": display["display"], "selection": display["selection_trace"], "conflict": display["conflict_check"]},
+    )
+
+
 def smoke_teaching_cli() -> dict:
     known = run_known_flow()
     unknown = run_unknown_flow()
@@ -870,6 +922,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_cross_task_shared_prerequisite_isolation(),
         smoke_manual_stale_marking(),
         smoke_supersede_link(),
+        smoke_cli_lifecycle_display(),
         smoke_state_persistence(),
         smoke_concept_layer(),
         smoke_state_core(),

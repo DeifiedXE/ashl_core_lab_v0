@@ -8,7 +8,12 @@ from typing import Any
 
 from .fake_sandbox import build_initial_sandbox_state, observe, pick_up
 from .lesson_runner import run_lesson_causality_test, run_session_2a_with_lesson
-from .lesson_store import build_lesson_from_failure, generate_lesson_from_failure, select_lesson_for_decision_point
+from .lesson_store import (
+    build_lesson_from_failure,
+    generate_lesson_from_failure,
+    select_lesson_for_context,
+    select_lesson_for_decision_point,
+)
 
 
 DECISION_POINT = "before_retry_pick_up_cube"
@@ -49,6 +54,108 @@ def _format_conflict_check(selection: dict[str, Any]) -> dict[str, Any]:
         "selected_lesson_id": selection.get("selected_lesson_id"),
         "selected_action": selection.get("selected_action"),
         "behavior_changed": selection.get("behavior_changed", False),
+    }
+
+
+def _default_lifecycle_lessons() -> list[dict[str, Any]]:
+    old_lesson = build_lesson_from_failure("session_east", pick_up(build_initial_sandbox_state(), "cube_001"))
+    old_lesson["object_id"] = "cube_001"
+    old_lesson["stale"] = True
+    old_lesson["stale_reason"] = "manual: obsolete wording"
+    old_lesson["superseded_by"] = "lesson_004"
+    new_lesson = {
+        "lesson_id": "lesson_004",
+        "source_session": "manual_fixture",
+        "source_failure_reason": "not_facing_east_refined",
+        "trigger": {"action": "pick_up", "target_type": "cube"},
+        "decision_point": DECISION_POINT,
+        "object_id": "cube_001",
+        "condition": {"avatar_facing": "east"},
+        "suggested_action_before_retry": "turn(east)",
+        "status": "inactive",
+        "stale": False,
+        "stale_reason": None,
+        "supersedes": "lesson_001",
+        "confidence": "manual_fixture",
+    }
+    return [old_lesson, new_lesson]
+
+
+def _lesson_lifecycle_entry(
+    lesson: dict[str, Any],
+    selection: dict[str, Any] | None = None,
+    conflict: dict[str, Any] | None = None,
+) -> dict[str, Any]:
+    lesson_id = lesson.get("lesson_id")
+    skipped_reason = None
+    if selection is not None:
+        skipped_reason = next(
+            (
+                item.get("skipped_reason")
+                for item in selection.get("skipped_lessons", [])
+                if item.get("lesson_id") == lesson_id
+            ),
+            None,
+        )
+    if skipped_reason is None and lesson.get("status") != "active":
+        skipped_reason = "inactive"
+
+    participates_in_conflict = False
+    if conflict is not None:
+        participates_in_conflict = lesson_id in conflict.get("conflicting_lesson_ids", [])
+
+    return {
+        "lesson_id": lesson_id,
+        "status": lesson.get("status"),
+        "stale": lesson.get("stale", False),
+        "stale_reason": lesson.get("stale_reason"),
+        "superseded_by": lesson.get("superseded_by"),
+        "supersedes": lesson.get("supersedes"),
+        "eligible_for_selection": lesson_id == (selection or {}).get("selected_lesson_id"),
+        "skipped_reason": skipped_reason,
+        "participates_in_conflict": participates_in_conflict,
+    }
+
+
+def _format_lifecycle_display(entries: list[dict[str, Any]]) -> str:
+    lines = ["Lesson Lifecycle"]
+    for entry in entries:
+        lines.extend(
+            [
+                "",
+                f"- id: {entry['lesson_id']}",
+                f"  status: {entry['status']}",
+                f"  stale: {str(entry['stale']).lower()}",
+                f"  stale_reason: {entry['stale_reason'] or 'none'}",
+                f"  superseded_by: {entry['superseded_by'] or 'none'}",
+                f"  supersedes: {entry['supersedes'] or 'none'}",
+                f"  eligible_for_selection: {str(entry['eligible_for_selection']).lower()}",
+                f"  skipped_reason: {entry['skipped_reason'] or 'none'}",
+                f"  participates_in_conflict: {str(entry['participates_in_conflict']).lower()}",
+            ]
+        )
+    return "\n".join(lines)
+
+
+def run_lifecycle_display(
+    lessons: list[dict[str, Any]] | None = None,
+    context: dict[str, Any] | None = None,
+    decision_point: str = DECISION_POINT,
+) -> dict[str, Any]:
+    lesson_snapshot = [dict(lesson) for lesson in (lessons if lessons is not None else _default_lifecycle_lessons())]
+    context = context or {"task": "pick_up", "object_id": "cube_001", "decision_point": decision_point}
+    selection = select_lesson_for_context(lesson_snapshot, context)
+    conflict = select_lesson_for_decision_point(lesson_snapshot, decision_point)
+    entries = [_lesson_lifecycle_entry(lesson, selection=selection, conflict=conflict) for lesson in lesson_snapshot]
+    return {
+        "command": "run-lifecycle-display",
+        "status": "ok",
+        "read_only": True,
+        "lessons": entries,
+        "display": _format_lifecycle_display(entries),
+        "selection_trace": selection,
+        "conflict_check": _format_conflict_check(conflict),
+        "notes": ["Lifecycle display is read-only and does not mutate lesson metadata."],
     }
 
 
@@ -147,6 +254,8 @@ def run_command(command: str) -> dict[str, Any]:
         return run_disable_reenable_flow()
     if command == "run-conflict-check-flow":
         return run_conflict_check_flow()
+    if command == "run-lifecycle-display":
+        return run_lifecycle_display()
     return {
         "command": command,
         "status": "error",
@@ -158,7 +267,13 @@ def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description="ASHL Core minimal teaching CLI")
     parser.add_argument(
         "command",
-        choices=["run-known-flow", "run-unknown-flow", "run-disable-reenable-flow", "run-conflict-check-flow"],
+        choices=[
+            "run-known-flow",
+            "run-unknown-flow",
+            "run-disable-reenable-flow",
+            "run-conflict-check-flow",
+            "run-lifecycle-display",
+        ],
     )
     args = parser.parse_args(argv)
     print(json.dumps(run_command(args.command), ensure_ascii=False, indent=2))

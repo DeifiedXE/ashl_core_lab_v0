@@ -249,9 +249,21 @@ v2.0b does not disable old lessons, does not enable new lessons, does not archiv
 
 Current order:
 - v2.0a Manual Stale Marking：已完成
-- v2.0b Supersede Link：本包
-- v2.0c CLI lifecycle display：下一步
+- v2.0b Supersede Link：已完成
+- v2.0c CLI lifecycle display：本包
 - v2.1 Stale / Supersede activation behavior：延後
+## CLI lifecycle display
+
+v2.0c adds a read-only CLI lifecycle display command, `run-lifecycle-display`.
+It can show lesson id, status, stale, stale_reason, superseded_by, supersedes, selection eligibility, skipped reason, and conflict participation.
+
+v2.0c does not modify stale state, does not create or modify supersede links, does not change selection behavior, does not change conflict behavior, and does not add lifecycle write commands. Lifecycle activation is deferred to v2.1 or later.
+
+Current order:
+- v2.0a Manual Stale Marking：已完成
+- v2.0b Supersede Link：已完成
+- v2.0c CLI lifecycle display：本包
+- v2.1 Stale / Supersede activation behavior：下一步候選
 ## Minimal Teaching CLI
 
 v1.8 Minimal Teaching CLI 是既有 lesson flow 的命令列 wrapper。
