@@ -460,6 +460,18 @@ Current order:
 - v2.6a Conflict Review Resolution Preconditions：已完成
 - v2.6b Conflict Review Resolution Dry Run：本包
 - v2.6c Conflict Review Dry Run Audit / Regression：後續評估
+## Phase 0 Integration Assumption Docs
+
+v2.6c-0 is docs / assumption integration.
+
+This package adds the failure_reason design assumption v0.1 and the instinct / lesson layer relation assumption v0.1. It also adds a docs-only smoke check for the Phase 0 integration assumption documents.
+
+The failure_reason assumption states that failure reasons should be derived from expected outcome vs actual outcome contrast, and that the result should be structured, traceable, and reviewable.
+
+The instinct / lesson relation assumption states that the lesson layer remains traceable and reviewable, may assist or compete with future instinct / drive behavior, and may only become instinct-like through future familiarity-based internalization gates.
+
+No runtime behavior changed. No activation behavior was added. No Phase 0 runtime integration was implemented. v2.6b dry-run remains completed, and v2.6c activation remains deferred.
+
 ## Minimal Teaching CLI
 
 v1.8 Minimal Teaching CLI 是既有 lesson flow 的命令列 wrapper。

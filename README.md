@@ -753,3 +753,10 @@ py -3 -m unittest discover
 where.exe python
 where.exe py
 ```
+
+## Phase 0 Integration Assumptions
+
+- `docs/failure_reason_design_assumption_v0_1.md`
+- `docs/instinct_lesson_layer_relation_assumption_v0_1.md`
+
+These documents define the current assumptions for how Phase 0 action failures connect to lesson generation, and how the lesson layer interacts with instinct / drive behavior. They are design assumptions only and do not imply runtime implementation.

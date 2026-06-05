@@ -703,6 +703,35 @@ def smoke_conflict_review_resolution_dry_run() -> dict:
     )
 
 
+def smoke_phase0_integration_assumption_docs() -> dict:
+    failure_doc_path = Path("docs/failure_reason_design_assumption_v0_1.md")
+    relation_doc_path = Path("docs/instinct_lesson_layer_relation_assumption_v0_1.md")
+    readme_path = Path("README.md")
+    research_plan_path = Path("docs/research_plan.md")
+
+    failure_doc = failure_doc_path.read_text(encoding="utf-8") if failure_doc_path.exists() else ""
+    relation_doc = relation_doc_path.read_text(encoding="utf-8") if relation_doc_path.exists() else ""
+    readme = readme_path.read_text(encoding="utf-8") if readme_path.exists() else ""
+    research_plan = research_plan_path.read_text(encoding="utf-8") if research_plan_path.exists() else ""
+
+    passed = (
+        failure_doc_path.exists()
+        and relation_doc_path.exists()
+        and "Phase 0 Integration Assumptions" in readme
+        and "v2.6c-0" in research_plan
+        and "structured" in failure_doc
+        and "traceable" in failure_doc
+        and "reviewable" in failure_doc
+        and "familiarity-based internalization" in relation_doc
+        and "evaluator must detect mismatch" in relation_doc
+    )
+    return _result(
+        "phase0_integration_assumption_docs",
+        passed,
+        {"failure_doc": str(failure_doc_path), "relation_doc": str(relation_doc_path)},
+    )
+
+
 def smoke_cross_task_shared_prerequisite_isolation() -> dict:
     lesson_001 = build_lesson_from_failure("session_cube_001", pick_up(build_initial_sandbox_state(), "cube_001"))
     lesson_001["object_id"] = "cube_001"
@@ -2024,6 +2053,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_conflict_review_preview_audit(),
         smoke_conflict_review_resolution_preconditions(),
         smoke_conflict_review_resolution_dry_run(),
+        smoke_phase0_integration_assumption_docs(),
         smoke_teaching_cli_conflict_check(),
         smoke_cross_task_shared_prerequisite_isolation(),
         smoke_manual_stale_marking(),
