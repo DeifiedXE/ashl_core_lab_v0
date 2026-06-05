@@ -482,6 +482,16 @@ The document records three motivation sources: external teaching motivation, ins
 
 No runtime behavior changed. No curiosity runtime, attention weight runtime, motivation runtime, Phase 0 sandbox runtime, evaluator implementation, or perception implementation was added. Selection, conflict, review, activation, known / unknown failure_reason behavior, and v2.6b dry-run behavior remain unchanged.
 
+## Phase 0 Failure Event Interface Assumption Docs
+
+v2.6c-2 is docs-only.
+
+This package adds the Phase 0 failure_event interface assumption doc. It defines the motivation -> goal -> action_intent -> expected_outcome -> actual_outcome -> evaluator -> failure_event -> failure_reason -> lesson_candidate chain.
+
+The document states that Phase 0 should pass structured failure_event data into the lesson layer rather than raw natural language failure text.
+
+No runtime behavior changed. No evaluator implementation was added. No Phase 0 sandbox runtime integration was implemented. No lesson_candidate builder runtime was implemented. v2.6c activation remains deferred.
+
 ## Minimal Teaching CLI
 
 v1.8 Minimal Teaching CLI 是既有 lesson flow 的命令列 wrapper。
