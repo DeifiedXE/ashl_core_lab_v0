@@ -532,6 +532,32 @@ This package adds `ashl_core.failure_events`, `build_failure_event`, and `valida
 
 No Phase 0 sandbox runtime was implemented. No evaluator implementation was added. No lesson_candidate builder runtime was added. No conflict review resolution activation was added. v2.6c assumption docs remain the design source.
 
+## v2.7b-0 Phase 0 Trust / Curiosity / Personality Boundary Docs
+
+Status: docs-only.
+
+Goal: Define boundary assumptions before Failure Event Normalization Trace and Failure Event to Lesson Candidate Input Bridge.
+
+Scope:
+- evaluator as observable evidence, not absolute truth
+- evaluator error handled by human correction / user review
+- no infinite evaluator reviewer chain
+- failure_event review path placeholder: user_review / human_teacher_review, paired_subject_template_review, deferred_review
+- curiosity_probe must be triggered by monitored event, not LLM-only declaration
+- personality weight may auto-adjust but every adjustment must leave trace
+- confirmation and trace are separate concerns
+
+Non-goals:
+- no runtime implementation
+- no evaluator trust runtime
+- no failure_event review runtime
+- no paired subject runtime
+- no curiosity runtime
+- no personality weight runtime
+- no lesson_candidate builder runtime
+- no Long-term Memory write
+- no selection / activation / conflict / review behavior changes
+
 ## Minimal Teaching CLI
 
 v1.8 Minimal Teaching CLI 是既有 lesson flow 的命令列 wrapper。

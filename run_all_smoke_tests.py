@@ -931,6 +931,30 @@ def smoke_failure_event_schema_foundation() -> dict:
     )
 
 
+def smoke_phase0_trust_curiosity_personality_boundary_docs() -> dict:
+    doc_path = Path("docs/phase0_trust_curiosity_personality_boundary_v0_1.md")
+    readme_path = Path("README.md")
+    research_plan_path = Path("docs/research_plan.md")
+
+    doc = doc_path.read_text(encoding="utf-8") if doc_path.exists() else ""
+    readme = readme_path.read_text(encoding="utf-8") if readme_path.exists() else ""
+    research_plan = research_plan_path.read_text(encoding="utf-8") if research_plan_path.exists() else ""
+
+    required_terms = [
+        "evaluator judgment is observable evidence, not absolute truth.",
+        "confirmation is not always required.",
+        "trace is always required.",
+        "LLM may describe curiosity, but must not be the authoritative source of novelty.",
+    ]
+    passed = (
+        doc_path.exists()
+        and all(term in doc for term in required_terms)
+        and "phase0_trust_curiosity_personality_boundary_v0_1.md" in readme
+        and "v2.7b-0" in research_plan
+    )
+    return _result("phase0_trust_curiosity_personality_boundary_docs", passed, {"doc": str(doc_path)})
+
+
 def smoke_cross_task_shared_prerequisite_isolation() -> dict:
     lesson_001 = build_lesson_from_failure("session_cube_001", pick_up(build_initial_sandbox_state(), "cube_001"))
     lesson_001["object_id"] = "cube_001"
@@ -2259,6 +2283,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_lesson_memory_layer_relation_docs(),
         smoke_phase0_assumption_consistency_audit(),
         smoke_failure_event_schema_foundation(),
+        smoke_phase0_trust_curiosity_personality_boundary_docs(),
         smoke_teaching_cli_conflict_check(),
         smoke_cross_task_shared_prerequisite_isolation(),
         smoke_manual_stale_marking(),

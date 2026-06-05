@@ -761,6 +761,8 @@ where.exe py
 - `docs/perception_layer_design_assumption_v0_1.md`
 - `docs/phase0_behavior_curiosity_assumption_v0_1.md`
 - `docs/phase0_failure_event_interface_assumption_v0_1.md`
+- `docs/phase0_trust_curiosity_personality_boundary_v0_1.md`
+  - Defines Phase 0 evaluator trust boundary, failure_event review path boundary, curiosity monitored-event boundary, and personality weight trace boundary.
 
 These documents define the current assumptions for how Phase 0 action failures connect to lesson generation, and how the lesson layer interacts with instinct / drive behavior. They are design assumptions only and do not imply runtime implementation.
 
