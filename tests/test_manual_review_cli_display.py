@@ -171,8 +171,6 @@ class ManualReviewCliDisplayTests(unittest.TestCase):
 
         self.assertIn("run-review-display", help_text)
         for phrase in [
-            "approve",
-            "reject",
             "resolve-conflict",
             "apply-review",
             "enable-lesson",

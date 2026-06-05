@@ -175,8 +175,6 @@ class ManualReviewStateTests(unittest.TestCase):
         )
         help_text = process.stdout.lower()
         for phrase in [
-            "approve",
-            "reject",
             "resolve-conflict",
             "apply-review",
             "enable-lesson",

@@ -55,7 +55,12 @@ def get_review_item(items: list[dict[str, Any]], review_id: str) -> dict[str, An
     return None
 
 
-def set_review_state(item: dict[str, Any], review_state: str, approval_state: str | None = None) -> dict[str, Any] | None:
+def set_review_state(
+    item: dict[str, Any],
+    review_state: str,
+    approval_state: str | None = None,
+    notes: str | None = None,
+) -> dict[str, Any] | None:
     if review_state not in ALLOWED_REVIEW_STATES:
         return None
     if approval_state is not None and approval_state not in ALLOWED_APPROVAL_STATES:
@@ -65,16 +70,18 @@ def set_review_state(item: dict[str, Any], review_state: str, approval_state: st
     updated["review_state"] = review_state
     if approval_state is not None:
         updated["approval_state"] = approval_state
+    if notes is not None:
+        updated["notes"] = notes
     updated["updated_at"] = _now_iso()
     return updated
 
 
-def mark_review_approved(item: dict[str, Any]) -> dict[str, Any]:
-    return set_review_state(item, "reviewed", "approved")
+def mark_review_approved(item: dict[str, Any], notes: str | None = None) -> dict[str, Any]:
+    return set_review_state(item, "reviewed", "approved", notes)
 
 
-def mark_review_rejected(item: dict[str, Any]) -> dict[str, Any]:
-    return set_review_state(item, "reviewed", "rejected")
+def mark_review_rejected(item: dict[str, Any], notes: str | None = None) -> dict[str, Any]:
+    return set_review_state(item, "reviewed", "rejected", notes)
 
 
 def build_review_trace(item: dict[str, Any]) -> dict[str, Any]:

@@ -343,6 +343,17 @@ Current order:
 - v2.3a Manual Review State Foundation：已完成
 - v2.3b Manual Review CLI Display：本包
 - v2.3c Manual Review Persistence or Gate Design：後續評估
+## Manual Review Decision CLI
+
+v2.3c adds metadata-only manual review decision CLI.
+`run-review-approve` and `run-review-reject` update only review item metadata: review_state and approval_state, plus optional notes.
+
+Approval does not change selection behavior. Rejection does not disable lessons. Review decisions do not change conflict behavior or strict supersede activation. Lesson lifecycle write CLI remains unsupported. Automatic conflict resolution and priority are not implemented.
+
+Current order:
+- v2.3b Manual Review CLI Display：已完成
+- v2.3c Manual Review Decision CLI：本包
+- v2.3d Manual Review Persistence or Gate Design：後續評估
 ## Minimal Teaching CLI
 
 v1.8 Minimal Teaching CLI 是既有 lesson flow 的命令列 wrapper。

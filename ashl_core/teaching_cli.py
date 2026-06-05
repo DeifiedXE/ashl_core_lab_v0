@@ -14,7 +14,7 @@ from .lesson_store import (
     select_lesson_for_context,
     select_lesson_for_decision_point,
 )
-from .manual_review import build_review_trace, create_review_item
+from .manual_review import build_review_trace, create_review_item, get_review_item, mark_review_approved, mark_review_rejected
 
 
 DECISION_POINT = "before_retry_pick_up_cube"
@@ -205,6 +205,62 @@ def run_review_display(items: list[dict[str, Any]] | None = None) -> dict[str, A
     }
 
 
+def _run_review_decision(
+    command: str,
+    decision: str,
+    items: list[dict[str, Any]] | None = None,
+    review_id: str = "review_001",
+    notes: str | None = None,
+) -> dict[str, Any]:
+    review_items = [dict(item) for item in (items if items is not None else _default_review_items())]
+    item = get_review_item(review_items, review_id)
+    if item is None:
+        return {
+            "command": command,
+            "status": "not_found",
+            "error": f"Review item not found: {review_id}",
+            "review_id": review_id,
+            "review_items": review_items,
+            "read_only_lessons": True,
+            "notes": ["Review decision did not mutate lessons, selection, conflict, or activation."],
+        }
+
+    updated = mark_review_approved(item, notes) if decision == "approved" else mark_review_rejected(item, notes)
+    updated_items = [updated if existing.get("id") == review_id else dict(existing) for existing in review_items]
+    display = run_review_display(updated_items)
+    return {
+        "command": command,
+        "status": "ok",
+        "decision": decision,
+        "review_id": review_id,
+        "review_item": updated,
+        "review_items": updated_items,
+        "display": display["display"],
+        "review_trace": build_review_trace(updated),
+        "read_only_lessons": True,
+        "selection_behavior_changed": False,
+        "conflict_behavior_changed": False,
+        "activation_behavior_changed": False,
+        "notes": ["Review decision is metadata-only and does not mutate lesson behavior."],
+    }
+
+
+def run_review_approve(
+    items: list[dict[str, Any]] | None = None,
+    review_id: str = "review_001",
+    notes: str | None = None,
+) -> dict[str, Any]:
+    return _run_review_decision("run-review-approve", "approved", items, review_id, notes)
+
+
+def run_review_reject(
+    items: list[dict[str, Any]] | None = None,
+    review_id: str = "review_001",
+    notes: str | None = None,
+) -> dict[str, Any]:
+    return _run_review_decision("run-review-reject", "rejected", items, review_id, notes)
+
+
 def run_lifecycle_display(
     lessons: list[dict[str, Any]] | None = None,
     context: dict[str, Any] | None = None,
@@ -328,6 +384,10 @@ def run_command(command: str) -> dict[str, Any]:
         return run_lifecycle_display()
     if command == "run-review-display":
         return run_review_display()
+    if command == "run-review-approve":
+        return run_review_approve()
+    if command == "run-review-reject":
+        return run_review_reject()
     return {
         "command": command,
         "status": "error",
@@ -346,10 +406,20 @@ def main(argv: list[str] | None = None) -> int:
             "run-conflict-check-flow",
             "run-lifecycle-display",
             "run-review-display",
+            "run-review-approve",
+            "run-review-reject",
         ],
     )
+    parser.add_argument("--review-id", default="review_001")
+    parser.add_argument("--notes", default=None)
     args = parser.parse_args(argv)
-    print(json.dumps(run_command(args.command), ensure_ascii=False, indent=2))
+    if args.command == "run-review-approve":
+        result = run_review_approve(review_id=args.review_id, notes=args.notes)
+    elif args.command == "run-review-reject":
+        result = run_review_reject(review_id=args.review_id, notes=args.notes)
+    else:
+        result = run_command(args.command)
+    print(json.dumps(result, ensure_ascii=False, indent=2))
     return 0
 
 
