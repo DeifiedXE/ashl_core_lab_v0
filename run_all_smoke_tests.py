@@ -1068,6 +1068,101 @@ def smoke_manual_review_decision_cli() -> dict:
     )
 
 
+def smoke_manual_review_decision_audit() -> dict:
+    review = create_review_item(
+        target_type="conflict",
+        target_id="conflict_001",
+        source_lesson_id="lesson_001",
+        candidate_lesson_id="lesson_004",
+        reason="conflict_requires_manual_review",
+        notes="initial note",
+        review_id="review_001",
+    )
+    approved_once = run_review_approve([review], notes="first approval")
+    approved_twice = run_review_approve(approved_once["review_items"], notes="second approval")
+    rejected_after_approve = run_review_reject(approved_twice["review_items"], notes="then rejected")
+    missing = run_review_reject([review], review_id="review_missing")
+    display = run_review_display(rejected_after_approve["review_items"])
+
+    old_lesson = build_lesson_from_failure("session_east", pick_up(build_initial_sandbox_state(), "cube_001"))
+    old_lesson["object_id"] = "cube_001"
+    old_lesson = mark_lesson_stale(old_lesson)
+    old_lesson["stale_reason"] = "manual: decision audit fixture"
+    candidate = {
+        "lesson_id": "lesson_004",
+        "source_session": "manual_fixture",
+        "source_failure_reason": "not_facing_east_refined",
+        "trigger": {"action": "pick_up", "target_type": "cube"},
+        "decision_point": "before_retry_pick_up_cube",
+        "object_id": "cube_001",
+        "condition": {"avatar_facing": "east"},
+        "suggested_action_before_retry": "turn(east)",
+        "status": "active",
+        "stale": False,
+        "stale_reason": None,
+        "confidence": "manual_fixture",
+    }
+    context = {"task": "pick_up", "object_id": "cube_001", "decision_point": "before_retry_pick_up_cube"}
+    link = link_lesson_supersede(old_lesson, candidate)
+    lessons = [link["old_lesson"], link["new_lesson"]]
+    before_selection = select_lesson_for_context(lessons, context)
+    run_review_approve([review])
+    after_selection = select_lesson_for_context(lessons, context)
+
+    west_failure = {
+        "type": "sandbox_action_result",
+        "tool": "pick_up",
+        "object_id": "cube_001",
+        "result": "failed",
+        "failure_reason": "not_facing_west",
+        "state": build_initial_sandbox_state(),
+    }
+    conflict_lessons = [
+        build_lesson_from_failure("session_east", pick_up(build_initial_sandbox_state(), "cube_001")),
+        build_lesson_from_failure("session_west", west_failure),
+    ]
+    before_conflict = select_lesson_for_decision_point(conflict_lessons, "before_retry_pick_up_cube")
+    run_review_reject([review])
+    after_conflict = select_lesson_for_decision_point(conflict_lessons, "before_retry_pick_up_cube")
+
+    known = generate_lesson_from_failure("session_known", pick_up(build_initial_sandbox_state(), "cube_001"))
+    unknown = generate_lesson_from_failure(
+        "session_unknown",
+        {
+            "type": "sandbox_action_result",
+            "tool": "pick_up",
+            "object_id": "cube_001",
+            "result": "failed",
+            "failure_reason": "unmapped_obstacle_shadow",
+            "state": build_initial_sandbox_state(),
+        },
+    )
+    passed = (
+        approved_twice["review_item"]["approval_state"] == "approved"
+        and approved_twice["review_item"]["notes"] == "second approval"
+        and len(approved_twice["review_items"]) == 1
+        and rejected_after_approve["review_item"]["approval_state"] == "rejected"
+        and rejected_after_approve["review_item"]["notes"] == "then rejected"
+        and rejected_after_approve["review_item"]["source_lesson_id"] == "lesson_001"
+        and missing["status"] == "not_found"
+        and missing["review_items"][0]["approval_state"] == "unreviewed"
+        and "approval_state: rejected" in display["display"]
+        and before_selection == after_selection
+        and before_selection["supersede_activation"]["activation_applied"] is True
+        and before_conflict == after_conflict
+        and after_conflict["conflict_detected"] is True
+        and after_conflict["conflict_resolution"] == "require_review"
+        and known["trace"]["generation_status"] == "supported_failure_reason"
+        and unknown["trace"]["generation_status"] == "unknown_failure_reason"
+        and unknown["lesson"] is None
+    )
+    return _result(
+        "manual_review_decision_audit",
+        passed,
+        {"approved_twice": approved_twice, "rejected": rejected_after_approve, "missing": missing},
+    )
+
+
 def smoke_teaching_cli() -> dict:
     known = run_known_flow()
     unknown = run_unknown_flow()
@@ -1430,6 +1525,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_manual_review_state_foundation(),
         smoke_manual_review_cli_display(),
         smoke_manual_review_decision_cli(),
+        smoke_manual_review_decision_audit(),
         smoke_state_persistence(),
         smoke_concept_layer(),
         smoke_state_core(),

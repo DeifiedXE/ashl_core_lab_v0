@@ -32,6 +32,7 @@ ASHL Core Lab 是 ASHL Core／D清音 的最小 Python 實驗專案，用來驗�
 - v2.3a Manual Review State Foundation
 - v2.3b Manual Review CLI Display
 - v2.3c Manual Review Decision CLI
+- v2.3d Manual Review Decision Audit / Regression
 - Integrated Loop v0.1
 - Persistent Candidate Layer v0.2
 - Correction Label v0.3
@@ -492,6 +493,21 @@ py -3 -m ashl_core.teaching_cli run-review-approve
 py -3 -m ashl_core.teaching_cli run-review-reject
 py -3 -m ashl_core.teaching_cli run-review-approve --review-id review_missing
 ```
+## v2.3d Manual Review Decision Audit / Regression
+
+v2.3d is audit / regression only.
+- No new review capability is added.
+- Approve / reject remains metadata-only.
+- Approval does not change selection behavior.
+- Rejection does not disable lessons.
+- Review decision does not change conflict behavior.
+- Review decision does not change strict supersede activation.
+- Lesson lifecycle write CLI remains unsupported.
+- Approval-driven behavior is not implemented.
+- Rejection-driven behavior is not implemented.
+- Automatic conflict resolution is not implemented.
+- Priority is not implemented.
+
 ## Correction / Rule / Trial Flow
 
 - correction pending 只記錄使用者糾正。

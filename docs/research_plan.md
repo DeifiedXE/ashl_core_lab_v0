@@ -354,6 +354,19 @@ Current order:
 - v2.3b Manual Review CLI Display：已完成
 - v2.3c Manual Review Decision CLI：本包
 - v2.3d Manual Review Persistence or Gate Design：後續評估
+## Manual Review Decision Audit / Regression
+
+v2.3d is audit / regression only.
+No new review capability is added.
+
+Approve / reject remains metadata-only. Approval does not change selection behavior. Rejection does not disable lessons. Review decisions do not change conflict behavior or strict supersede activation. Lesson lifecycle write CLI remains unsupported.
+
+Approval-driven behavior, rejection-driven behavior, automatic conflict resolution, and priority are not implemented.
+
+Current order:
+- v2.3c Manual Review Decision CLI：已完成
+- v2.3d Manual Review Decision Audit / Regression：本包
+- v2.4 Manual Review Persistence or Gate Design：後續評估
 ## Minimal Teaching CLI
 
 v1.8 Minimal Teaching CLI 是既有 lesson flow 的命令列 wrapper。
