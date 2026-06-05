@@ -504,6 +504,16 @@ The lesson / memory relation assumption states that lesson is action correction 
 
 No runtime behavior changed. No perception runtime, perceptual_code runtime, lesson_to_memory_promotion runtime, Long-term Memory write runtime, memory review runtime, or memory_contrast_set runtime was added. Selection, conflict, review, activation, and known / unknown failure_reason behavior remain unchanged. v2.6c activation remains deferred.
 
+## Lesson / Memory Responsibility Boundary
+
+v2.6c-4 clarifies the lesson_to_memory_promotion responsibility boundary and checks line ending status.
+
+ASHL Core provides evidence. Qingyin Memory Layers decide memory admission.
+
+ASHL Core may provide learned_principle_candidate and source evidence, but it does not directly write Long-term Memory. Long-term Memory admission remains the responsibility of Qingyin Memory Layers.
+
+No runtime behavior changed. No lesson_to_memory_promotion runtime, Long-term Memory write runtime, memory review runtime, memory_contrast_set runtime, selection change, conflict change, review change, activation change, or known / unknown failure_reason behavior change was added. The line ending dirty state described in the work package was not reproduced in this checkout before edits; git status was clean.
+
 ## Minimal Teaching CLI
 
 v1.8 Minimal Teaching CLI 是既有 lesson flow 的命令列 wrapper。

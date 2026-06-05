@@ -89,6 +89,17 @@ approved lesson
 
 `lesson_to_memory_promotion` is the proposed future process for moving from lesson evidence to a memory candidate.
 
+Responsibility boundary:
+
+```text
+ASHL Core provides evidence.
+Qingyin Memory Layers decide memory admission.
+```
+
+ASHL Core may provide a `learned_principle_candidate`, source lesson ids, usage evidence, challenge evidence, review evidence, conflict state, stale state, and supersede state.
+
+Qingyin Memory Layers own the final decision about whether anything becomes Long-term Memory. ASHL Core does not directly write Long-term Memory.
+
 It should require:
 
 - source lesson
@@ -101,6 +112,8 @@ It should require:
 - human review
 
 This document does not implement lesson_to_memory_promotion runtime.
+
+This document does not implement Long-term Memory admission. The promotion boundary is intentionally split so that the lesson layer remains an evidence provider, while Memory Layers remain responsible for memory admission, persistence, and later memory review.
 
 ## Stale / Supersede and Memory Review
 
@@ -121,6 +134,8 @@ These are assumption terms only. This package does not implement memory review r
 This assumption explicitly rejects:
 
 - lesson approved means automatic Long-term Memory write
+- ASHL Core directly writes Long-term Memory
+- learned_principle_candidate is automatically admitted into Long-term Memory
 - Long-term Memory automatically controls lesson selection
 - lesson stale / supersede automatically rewrites Long-term Memory
 - Long-term Memory is directly treated as action rule
@@ -131,7 +146,9 @@ This assumption explicitly rejects:
 
 - This document does not implement lesson_to_memory_promotion runtime.
 - This document does not implement learned_principle generation.
+- This document does not implement learned_principle_candidate admission.
 - This document does not implement Long-term Memory write runtime.
+- This document does not let ASHL Core directly write Long-term Memory.
 - This document does not implement memory review runtime.
 - This document does not implement memory_contrast_set runtime.
 - This document does not implement lesson / memory automatic synchronization.
