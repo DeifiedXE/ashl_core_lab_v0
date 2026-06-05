@@ -640,6 +640,33 @@ Non-goals:
 - no Long-term Memory write
 - no selection / activation / conflict behavior changes
 
+## v2.7d Lesson Candidate Builder Contract Docs
+
+Status: completed / docs-only / contract-only.
+
+Goal:
+Define the future lesson_candidate builder contract before runtime implementation.
+
+Scope:
+- define builder input from `lesson_candidate_input_trace`
+- define field source / authority boundary
+- define `semantic_key` as non-authoritative review-required hint
+- define minimal builder output contract
+- require builder output to remain review-gated
+- preserve Long-term Memory responsibility boundary
+
+Non-goals:
+- no lesson_candidate builder runtime
+- no lesson_candidate creation
+- no lesson_store write
+- no manual review runtime
+- no sandbox runtime
+- no evaluator runtime
+- no selection / activation / conflict behavior changes
+- no Long-term Memory write
+- no learned_principle generation runtime
+- no internalization
+
 ## Minimal Teaching CLI
 
 v1.8 Minimal Teaching CLI 是既有 lesson flow 的命令列 wrapper。

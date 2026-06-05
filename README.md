@@ -814,3 +814,12 @@ v2.7a adds `ashl_core.failure_events` as a trace-only failure_event schema found
 - Confirms bridge output is not `lesson_candidate`.
 - Confirms `semantic_key` remains non-authoritative and review-required.
 - Confirms bridge trace fields have explicit source / authority boundaries before v2.7d.
+
+## v2.7d Lesson Candidate Builder Contract Docs
+
+- `docs/lesson_candidate_builder_contract_v0_1.md`
+- Defines the future lesson_candidate builder contract.
+- Keeps `lesson_candidate_input_trace` as preparation evidence, not `lesson_candidate`.
+- Keeps `semantic_key` non-authoritative and review-required.
+- Requires builder output to remain review-gated.
+- Does not implement builder runtime or write `lesson_store`.
