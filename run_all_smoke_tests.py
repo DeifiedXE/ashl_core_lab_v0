@@ -56,6 +56,11 @@ from ashl_core.memory_layers import (
     read_working_memory_snapshot,
     write_working_memory_snapshot,
 )
+from ashl_core.manual_review import (
+    build_review_trace,
+    create_review_item,
+    mark_review_approved,
+)
 from ashl_core.persistence import append_jsonl, read_jsonl
 from ashl_core.perception import perceive
 from ashl_core.prompt_leakage_check import build_decision_input_snapshot, check_leakage
@@ -879,6 +884,78 @@ def smoke_activation_regression_suite() -> dict:
     )
 
 
+def smoke_manual_review_state_foundation() -> dict:
+    review = create_review_item(
+        target_type="conflict",
+        target_id="conflict_001",
+        source_lesson_id="lesson_001",
+        candidate_lesson_id="lesson_004",
+        reason="conflict_requires_manual_review",
+        review_id="review_001",
+    )
+    approved = mark_review_approved(review)
+    trace = build_review_trace(approved)
+
+    old_lesson = build_lesson_from_failure("session_east", pick_up(build_initial_sandbox_state(), "cube_001"))
+    old_lesson["object_id"] = "cube_001"
+    old_lesson["stale_reason"] = None
+    old_lesson = mark_lesson_stale(old_lesson)
+    old_lesson["stale_reason"] = "manual: review fixture"
+    candidate = {
+        "lesson_id": "lesson_004",
+        "source_session": "manual_fixture",
+        "source_failure_reason": "not_facing_east_refined",
+        "trigger": {"action": "pick_up", "target_type": "cube"},
+        "decision_point": "before_retry_pick_up_cube",
+        "object_id": "cube_001",
+        "condition": {"avatar_facing": "east"},
+        "suggested_action_before_retry": "turn(east)",
+        "status": "active",
+        "stale": False,
+        "stale_reason": None,
+        "confidence": "manual_fixture",
+    }
+    context = {"task": "pick_up", "object_id": "cube_001", "decision_point": "before_retry_pick_up_cube"}
+    link = link_lesson_supersede(old_lesson, candidate)
+    lessons = [link["old_lesson"], link["new_lesson"]]
+    before_selection = select_lesson_for_context(lessons, context)
+    after_selection = select_lesson_for_context(lessons, context)
+
+    west_failure = {
+        "type": "sandbox_action_result",
+        "tool": "pick_up",
+        "object_id": "cube_001",
+        "result": "failed",
+        "failure_reason": "not_facing_west",
+        "state": build_initial_sandbox_state(),
+    }
+    conflict_lessons = [
+        build_lesson_from_failure("session_east", pick_up(build_initial_sandbox_state(), "cube_001")),
+        build_lesson_from_failure("session_west", west_failure),
+    ]
+    before_conflict = select_lesson_for_decision_point(conflict_lessons, "before_retry_pick_up_cube")
+    after_conflict = select_lesson_for_decision_point(conflict_lessons, "before_retry_pick_up_cube")
+
+    passed = (
+        review["review_state"] == "pending_review"
+        and review["approval_state"] == "unreviewed"
+        and approved["review_state"] == "reviewed"
+        and approved["approval_state"] == "approved"
+        and trace["metadata_only"] is True
+        and trace["selection_behavior_changed"] is False
+        and before_selection == after_selection
+        and before_selection["supersede_activation"]["activation_applied"] is True
+        and before_conflict == after_conflict
+        and before_conflict["conflict_detected"] is True
+        and before_conflict["conflict_resolution"] == "require_review"
+    )
+    return _result(
+        "manual_review_state_foundation",
+        passed,
+        {"review": review, "approved": approved, "trace": trace},
+    )
+
+
 def smoke_teaching_cli() -> dict:
     known = run_known_flow()
     unknown = run_unknown_flow()
@@ -1238,6 +1315,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_strict_supersede_activation(),
         smoke_activation_audit(),
         smoke_activation_regression_suite(),
+        smoke_manual_review_state_foundation(),
         smoke_state_persistence(),
         smoke_concept_layer(),
         smoke_state_core(),

@@ -319,6 +319,17 @@ Current order:
 - v2.1c Activation Audit / Edge Case Hardening：已完成
 - v2.2 Activation Regression Suite：本包
 - v2.2 Manual Review / Approval Gate：後續評估
+## Manual Review State Foundation
+
+v2.3a adds manual review state foundation.
+Review metadata can record pending_review / reviewed and unreviewed / approved / rejected state, but it is metadata only.
+
+Review metadata does not change selection behavior, does not change conflict behavior, and does not change strict supersede activation. Approval / rejection does not automatically select lessons, disable lessons, resolve conflicts, mark stale, or add priority. Lifecycle write CLI remains unsupported.
+
+Current order:
+- v2.2 Activation Regression Suite：已完成
+- v2.3a Manual Review State Foundation：本包
+- v2.3b Manual Review Persistence / Gate Design：後續評估
 ## Minimal Teaching CLI
 
 v1.8 Minimal Teaching CLI 是既有 lesson flow 的命令列 wrapper。
