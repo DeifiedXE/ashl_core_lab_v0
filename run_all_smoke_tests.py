@@ -39,6 +39,7 @@ from ashl_core.lesson_store import (
     enable_lesson,
     find_applicable_lesson,
     generate_lesson_from_failure,
+    link_lesson_supersede,
     mark_lesson_stale,
     select_lesson_for_decision_point,
     select_lesson_for_failure_reason,
@@ -457,6 +458,64 @@ def smoke_manual_stale_marking() -> dict:
     )
 
 
+def smoke_supersede_link() -> dict:
+    old_lesson = build_lesson_from_failure("session_east", pick_up(build_initial_sandbox_state(), "cube_001"))
+    old_lesson["object_id"] = "cube_001"
+    old_lesson["stale"] = False
+    new_lesson = {
+        "lesson_id": "lesson_004",
+        "source_session": "manual_fixture",
+        "source_failure_reason": "not_facing_east_refined",
+        "trigger": {"action": "pick_up", "target_type": "cube"},
+        "decision_point": "before_retry_pick_up_cube",
+        "object_id": "cube_001",
+        "condition": {"avatar_facing": "east"},
+        "suggested_action_before_retry": "turn(east)",
+        "status": "inactive",
+        "stale": False,
+        "confidence": "manual_fixture",
+    }
+    context = {"task": "pick_up", "object_id": "cube_001", "decision_point": "before_retry_pick_up_cube"}
+    before = select_lesson_for_context([old_lesson, new_lesson], context)
+    link = link_lesson_supersede(old_lesson, new_lesson)
+    after = select_lesson_for_context([link["old_lesson"], link["new_lesson"]], context)
+    stale_link = link_lesson_supersede(mark_lesson_stale(old_lesson), new_lesson)
+    stale_result = select_lesson_for_context([stale_link["old_lesson"], stale_link["new_lesson"]], context)
+    west_failure = {
+        "type": "sandbox_action_result",
+        "tool": "pick_up",
+        "object_id": "cube_001",
+        "result": "failed",
+        "failure_reason": "not_facing_west",
+        "state": build_initial_sandbox_state(),
+    }
+    west_lesson = build_lesson_from_failure("session_west", west_failure)
+    conflict_result = select_lesson_for_decision_point(
+        [stale_link["old_lesson"], stale_link["new_lesson"], west_lesson],
+        "before_retry_pick_up_cube",
+    )
+    trace = link["trace"]
+    passed = (
+        link["old_lesson"]["superseded_by"] == "lesson_004"
+        and link["new_lesson"]["supersedes"] == "lesson_001"
+        and trace["supersede_linked"] is True
+        and trace["status_changed"] is False
+        and trace["selection_behavior_changed"] is False
+        and before["selected_lesson_id"] == "lesson_001"
+        and after["selected_lesson_id"] == "lesson_001"
+        and after["selected_action"] == "turn(east)"
+        and stale_result["selected_lesson_id"] is None
+        and stale_result["skipped_lessons"] == [{"lesson_id": "lesson_001", "skipped_reason": "stale"}]
+        and conflict_result["conflict_detected"] is False
+        and conflict_result["selected_lesson_id"] == "lesson_002"
+    )
+    return _result(
+        "supersede_link",
+        passed,
+        {"link": trace, "before": before, "after": after, "stale": stale_result, "conflict": conflict_result},
+    )
+
+
 def smoke_teaching_cli() -> dict:
     known = run_known_flow()
     unknown = run_unknown_flow()
@@ -810,6 +869,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_teaching_cli_conflict_check(),
         smoke_cross_task_shared_prerequisite_isolation(),
         smoke_manual_stale_marking(),
+        smoke_supersede_link(),
         smoke_state_persistence(),
         smoke_concept_layer(),
         smoke_state_core(),

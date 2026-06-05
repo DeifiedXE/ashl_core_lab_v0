@@ -23,6 +23,7 @@ ASHL Core Lab 是 ASHL Core／D清音 的最小 Python 實驗專案，用來驗�
 - v1.9c CLI conflict_check 真實檢查
 - v1.9d Cross-task Shared Prerequisite Isolation Test
 - v2.0a Manual Stale Marking
+- v2.0b Supersede Link
 - Integrated Loop v0.1
 - Persistent Candidate Layer v0.2
 - Correction Label v0.3
@@ -315,6 +316,26 @@ v2.0a 只證明人工 stale 標記會讓 lesson 被 selection helper 跳過，�
 - v2.0c CLI lifecycle display：延後
 - v2.1 Stale / Supersede activation behavior：延後
 
+## v2.0b Supersede Link
+
+v2.0b only records supersede links as lifecycle metadata.
+- `old_lesson.superseded_by = new_lesson_id`
+- `new_lesson.supersedes = old_lesson_id`
+- Trace/read result shows `old_lesson_id`, `new_lesson_id`, `old_superseded_by`, `new_supersedes`, `status_changed = false`, and `selection_behavior_changed = false`.
+- It does not change lesson activation.
+- It does not disable old lessons.
+- It does not enable new lessons.
+- It does not archive old lessons.
+- It does not change selection behavior.
+- It does not override stale behavior.
+- It does not add CLI lifecycle display.
+- Supersede activation behavior is deferred to v2.1 or later.
+
+Current order:
+- v2.0a Manual Stale Marking：已完成
+- v2.0b Supersede Link：本包
+- v2.0c CLI lifecycle display：下一步
+- v2.1 Stale / Supersede activation behavior：延後
 ## Correction / Rule / Trial Flow
 
 - correction pending 只記錄使用者糾正。

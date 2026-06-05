@@ -237,6 +237,21 @@ v2.0a 不做自動 stale，不做時間過期，不做 unused-count / failure-co
 - v2.0c CLI lifecycle display：延後
 - v2.1 Stale / Supersede activation behavior：延後
 
+## Supersede Link
+
+v2.0b Supersede Link only records lifecycle metadata:
+- `old_lesson.superseded_by = new_lesson_id`
+- `new_lesson.supersedes = old_lesson_id`
+- trace/read result can show the link and confirm `status_changed = false`
+- trace/read result can show `selection_behavior_changed = false`
+
+v2.0b does not disable old lessons, does not enable new lessons, does not archive old lessons, does not change selection behavior, does not override stale behavior, and does not update CLI lifecycle display. Supersede activation behavior is deferred to v2.1 or later.
+
+Current order:
+- v2.0a Manual Stale Marking：已完成
+- v2.0b Supersede Link：本包
+- v2.0c CLI lifecycle display：下一步
+- v2.1 Stale / Supersede activation behavior：延後
 ## Minimal Teaching CLI
 
 v1.8 Minimal Teaching CLI 是既有 lesson flow 的命令列 wrapper。

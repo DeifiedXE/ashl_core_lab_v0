@@ -101,6 +101,41 @@ def unmark_lesson_stale(lesson: dict[str, Any]) -> dict[str, Any]:
     return set_lesson_stale(lesson, False)
 
 
+def link_lesson_supersede(old_lesson: dict[str, Any], new_lesson: dict[str, Any]) -> dict[str, Any]:
+    old_id = old_lesson.get("lesson_id")
+    new_id = new_lesson.get("lesson_id")
+    updated_old = dict(old_lesson)
+    updated_new = dict(new_lesson)
+
+    old_status = old_lesson.get("status")
+    new_status = new_lesson.get("status")
+    old_stale = old_lesson.get("stale")
+    new_stale = new_lesson.get("stale")
+
+    updated_old["superseded_by"] = new_id
+    updated_new["supersedes"] = old_id
+
+    return {
+        "type": "lesson_supersede_link_result",
+        "supersede_linked": old_id is not None and new_id is not None,
+        "old_lesson": updated_old,
+        "new_lesson": updated_new,
+        "trace": {
+            "supersede_linked": old_id is not None and new_id is not None,
+            "old_lesson_id": old_id,
+            "new_lesson_id": new_id,
+            "old_superseded_by": updated_old.get("superseded_by"),
+            "new_supersedes": updated_new.get("supersedes"),
+            "old_status_changed": updated_old.get("status") != old_status,
+            "new_status_changed": updated_new.get("status") != new_status,
+            "status_changed": updated_old.get("status") != old_status or updated_new.get("status") != new_status,
+            "old_stale_changed": updated_old.get("stale") != old_stale,
+            "new_stale_changed": updated_new.get("stale") != new_stale,
+            "selection_behavior_changed": False,
+        },
+    }
+
+
 def set_lesson_status(lesson: dict[str, Any], status: str) -> dict[str, Any] | None:
     if status not in VALID_LESSON_STATUSES:
         return None
