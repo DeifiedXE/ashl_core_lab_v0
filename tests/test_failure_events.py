@@ -288,6 +288,9 @@ class FailureEventTests(unittest.TestCase):
         bridge = build_lesson_candidate_input_trace(normalize_failure_event_trace(_valid_event()))
 
         self.assertNotIn("lesson_candidate", bridge)
+        self.assertNotIn("approved_lesson", bridge)
+        self.assertNotIn("eligible_lesson", bridge)
+        self.assertNotIn("active_lesson", bridge)
         self.assertTrue(bridge["not_a_lesson_candidate"])
         self.assertFalse(bridge["lesson_candidate_created"])
         self.assertFalse(bridge["lesson_store_written"])
@@ -313,6 +316,9 @@ class FailureEventTests(unittest.TestCase):
         self.assertNotEqual(semantic_key["authority"], "proof")
         self.assertNotIn("eligible", semantic_key)
         self.assertNotIn("eligibility", semantic_key)
+        self.assertNotIn("eligible", bridge)
+        self.assertNotIn("eligibility", bridge)
+        self.assertNotIn("selection_eligible", bridge)
 
     def test_bridge_rejects_non_normalized_input(self):
         with self.assertRaises(ValueError):
@@ -320,6 +326,43 @@ class FailureEventTests(unittest.TestCase):
 
         with self.assertRaises(ValueError):
             build_lesson_candidate_input_trace({"type": "raw_failure_event"})
+
+    def test_missing_expected_outcome_cannot_enter_bridge(self):
+        event = _valid_event(expected_outcome=None)
+        validation = validate_failure_event(event)
+        normalized = normalize_failure_event_trace(event)
+
+        self.assertFalse(validation["valid_failure_event"])
+        self.assertFalse(normalized["valid_normalized_failure_event"])
+        with self.assertRaises(ValueError):
+            build_lesson_candidate_input_trace(normalized)
+
+    def test_missing_actual_outcome_cannot_enter_bridge(self):
+        event = _valid_event(actual_outcome=None)
+        validation = validate_failure_event(event)
+        normalized = normalize_failure_event_trace(event)
+
+        self.assertFalse(validation["valid_failure_event"])
+        self.assertFalse(normalized["valid_normalized_failure_event"])
+        with self.assertRaises(ValueError):
+            build_lesson_candidate_input_trace(normalized)
+
+    def test_llm_only_raw_description_cannot_authorize_failure_reason_at_bridge(self):
+        event = _valid_event(evaluator_source="llm")
+        event["raw_failure_description"] = "The object probably failed because it felt blocked."
+        event["llm_summary"] = "Likely pickup failure."
+
+        validation = validate_failure_event(event)
+        normalized = normalize_failure_event_trace(event)
+
+        self.assertTrue(validation["llm_authoritative_source"])
+        self.assertFalse(validation["authoritative_failure_reason_allowed"])
+        self.assertFalse(normalized["valid_normalized_failure_event"])
+        self.assertTrue(normalized["llm_authoritative_source"])
+        self.assertNotIn("authoritative_failure_reason", normalized)
+        self.assertNotIn("normalized_failure_reason", normalized)
+        with self.assertRaises(ValueError):
+            build_lesson_candidate_input_trace(normalized)
 
 
 if __name__ == "__main__":

@@ -611,6 +611,35 @@ Non-goals:
 - no Long-term Memory write
 - no selection / activation / conflict behavior changes
 
+## v2.7c-1 Failure Event Bridge Audit / Regression Hardening
+
+Status: completed / audit-regression-only.
+
+Goal:
+Audit and harden the trace-only pipeline before defining lesson_candidate builder contract.
+
+Scope:
+- confirm bridge output is not lesson_candidate
+- confirm bridge does not write lesson_store
+- confirm needs_review is preserved
+- confirm evaluator_source is preserved
+- confirm semantic_key is non-authoritative and review-required
+- confirm missing expected_outcome / actual_outcome cannot produce normalized_failure_event
+- confirm LLM-only raw description cannot become authoritative failure_reason at bridge stage
+- audit lesson_candidate_input_trace field source / authority boundaries
+- include similar_context_hint audit in this package
+
+Non-goals:
+- no lesson_candidate builder runtime
+- no lesson_store write
+- no manual review runtime
+- no sandbox runtime
+- no evaluator runtime
+- no curiosity / novelty runtime
+- no personality weight runtime
+- no Long-term Memory write
+- no selection / activation / conflict behavior changes
+
 ## Minimal Teaching CLI
 
 v1.8 Minimal Teaching CLI 是既有 lesson flow 的命令列 wrapper。

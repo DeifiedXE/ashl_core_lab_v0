@@ -807,3 +807,10 @@ v2.7a adds `ashl_core.failure_events` as a trace-only failure_event schema found
 - Does not write `lesson_store`.
 - Adds source boundary for `similar_context_hint`.
 - Keeps semantic hints non-authoritative and review-required.
+
+## v2.7c-1 Failure Event Bridge Audit / Regression Hardening
+
+- Adds audit and regression checks for the `failure_event` -> `normalized_failure_event` -> `lesson_candidate_input_trace` pipeline.
+- Confirms bridge output is not `lesson_candidate`.
+- Confirms `semantic_key` remains non-authoritative and review-required.
+- Confirms bridge trace fields have explicit source / authority boundaries before v2.7d.

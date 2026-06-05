@@ -172,6 +172,7 @@ def normalize_failure_event_trace(failure_event: dict) -> dict[str, Any]:
     """
 
     event = dict(failure_event or {})
+    validation_trace = validate_failure_event(event)
     source_event_id = _normalized_scalar(event.get("failure_event_id") or event.get("id"))
     motivation_type = _normalized_scalar(event.get("motivation_type"))
     goal_type = _structured_type(event.get("goal"), ("goal_type", "type"))
@@ -209,6 +210,8 @@ def normalize_failure_event_trace(failure_event: dict) -> dict[str, Any]:
         "failure_norm_key": "|".join(normalization_key_parts),
         "authority_boundary": "trace_only",
         "normalization_authority": "not_authoritative",
+        "valid_normalized_failure_event": validation_trace["valid_failure_event"],
+        "validation_reason": validation_trace["reason"],
         "llm_authoritative_source": evaluator_source == "llm",
         "source_boundary": "structured_fields_only",
         "lesson_candidate_created": False,
@@ -266,6 +269,8 @@ def build_lesson_candidate_input_trace(normalized_failure_event: dict) -> dict[s
     normalized = dict(normalized_failure_event or {})
     if normalized.get("normalized") is not True:
         raise ValueError("non-normalized input must not be used as lesson candidate input")
+    if normalized.get("valid_normalized_failure_event") is False:
+        raise ValueError("invalid normalized failure event must not be used as lesson candidate input")
 
     return {
         "type": "lesson_candidate_input_trace",

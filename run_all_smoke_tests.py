@@ -995,6 +995,49 @@ def smoke_failure_event_to_lesson_candidate_input_bridge_trace() -> dict:
     return _result("failure_event_to_lesson_candidate_input_bridge_trace", passed, bridge)
 
 
+def smoke_failure_event_bridge_audit_regression() -> dict:
+    audit_path = Path("docs/failure_event_bridge_audit_v0_1.md")
+    audit_doc = audit_path.read_text(encoding="utf-8") if audit_path.exists() else ""
+    event = build_failure_event(
+        motivation_type="sandbox_task",
+        motivation_source="smoke",
+        goal={"goal_type": "pick_up_object"},
+        action_intent={"action_type": "pick_up", "target_id": "cube_001"},
+        expected_outcome={"type": "object_state", "expected_state": "held"},
+        actual_outcome={"type": "object_state", "actual_state": "not_moved"},
+        evaluator_source="sandbox_checker",
+        mismatch=True,
+        failure_reason_id="object_not_picked_up",
+        failure_type="action_result_mismatch",
+        needs_review=True,
+        failure_event_id="failure_smoke_001",
+    )
+    validation = validate_failure_event(event)
+    normalized = normalize_failure_event_trace(event)
+    bridge = build_lesson_candidate_input_trace(normalized)
+    semantic_key = bridge["similar_context_hint"]["semantic_key"]
+    passed = (
+        validation["valid_failure_event"] is True
+        and normalized["valid_normalized_failure_event"] is True
+        and bridge["not_a_lesson_candidate"] is True
+        and "lesson_candidate" not in bridge
+        and "approved_lesson" not in bridge
+        and "eligible_lesson" not in bridge
+        and "active_lesson" not in bridge
+        and bridge["needs_review"] is True
+        and bridge["evaluator_source"] == "sandbox_checker"
+        and semantic_key["authority"] == "non_authoritative_review_required"
+        and audit_path.exists()
+        and "Audit result: PASS" in audit_doc
+        and "semantic_key is not proof" in audit_doc
+    )
+    return _result(
+        "failure_event_bridge_audit_regression",
+        passed,
+        {"audit_doc": str(audit_path), "bridge": bridge},
+    )
+
+
 def smoke_phase0_trust_curiosity_personality_boundary_docs() -> dict:
     doc_path = Path("docs/phase0_trust_curiosity_personality_boundary_v0_1.md")
     readme_path = Path("README.md")
@@ -2349,6 +2392,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_failure_event_schema_foundation(),
         smoke_failure_event_normalization_trace(),
         smoke_failure_event_to_lesson_candidate_input_bridge_trace(),
+        smoke_failure_event_bridge_audit_regression(),
         smoke_phase0_trust_curiosity_personality_boundary_docs(),
         smoke_teaching_cli_conflict_check(),
         smoke_cross_task_shared_prerequisite_isolation(),
