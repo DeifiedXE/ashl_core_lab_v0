@@ -78,6 +78,7 @@ from ashl_core.teaching_cli import (
     run_disable_reenable_flow,
     run_known_flow,
     run_lifecycle_display,
+    run_review_display,
     run_unknown_flow,
 )
 from ashl_core.trial_feedback import append_trial_feedback, build_trial_feedback, summarize_trial_feedback
@@ -956,6 +957,58 @@ def smoke_manual_review_state_foundation() -> dict:
     )
 
 
+def smoke_manual_review_cli_display() -> dict:
+    review = create_review_item(
+        target_type="conflict",
+        target_id="conflict_001",
+        source_lesson_id="lesson_001",
+        candidate_lesson_id="lesson_004",
+        reason="conflict_requires_manual_review",
+        review_id="review_001",
+    )
+    display = run_review_display([review])
+    empty = run_review_display([])
+
+    old_lesson = build_lesson_from_failure("session_east", pick_up(build_initial_sandbox_state(), "cube_001"))
+    old_lesson["object_id"] = "cube_001"
+    selection_before = select_lesson_for_context([old_lesson], {"task": "pick_up", "object_id": "cube_001", "decision_point": "before_retry_pick_up_cube"})
+    run_review_display([review])
+    selection_after = select_lesson_for_context([old_lesson], {"task": "pick_up", "object_id": "cube_001", "decision_point": "before_retry_pick_up_cube"})
+
+    west_failure = {
+        "type": "sandbox_action_result",
+        "tool": "pick_up",
+        "object_id": "cube_001",
+        "result": "failed",
+        "failure_reason": "not_facing_west",
+        "state": build_initial_sandbox_state(),
+    }
+    conflict_lessons = [
+        build_lesson_from_failure("session_east", pick_up(build_initial_sandbox_state(), "cube_001")),
+        build_lesson_from_failure("session_west", west_failure),
+    ]
+    conflict_before = select_lesson_for_decision_point(conflict_lessons, "before_retry_pick_up_cube")
+    run_review_display([review])
+    conflict_after = select_lesson_for_decision_point(conflict_lessons, "before_retry_pick_up_cube")
+
+    passed = (
+        display["read_only"] is True
+        and "Manual Review Items" in display["display"]
+        and "id: review_001" in display["display"]
+        and "approval_state: unreviewed" in display["display"]
+        and empty["display"] == "No manual review items."
+        and selection_before == selection_after
+        and conflict_before == conflict_after
+        and conflict_after["conflict_detected"] is True
+        and conflict_after["conflict_resolution"] == "require_review"
+    )
+    return _result(
+        "manual_review_cli_display",
+        passed,
+        {"display": display["display"], "empty": empty["display"]},
+    )
+
+
 def smoke_teaching_cli() -> dict:
     known = run_known_flow()
     unknown = run_unknown_flow()
@@ -1316,6 +1369,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_activation_audit(),
         smoke_activation_regression_suite(),
         smoke_manual_review_state_foundation(),
+        smoke_manual_review_cli_display(),
         smoke_state_persistence(),
         smoke_concept_layer(),
         smoke_state_core(),

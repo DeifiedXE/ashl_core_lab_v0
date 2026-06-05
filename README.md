@@ -30,6 +30,7 @@ ASHL Core Lab 是 ASHL Core／D清音 的最小 Python 實驗專案，用來驗�
 - v2.1c Activation Audit / Edge Case Hardening
 - v2.2 Activation Regression Suite
 - v2.3a Manual Review State Foundation
+- v2.3b Manual Review CLI Display
 - Integrated Loop v0.1
 - Persistent Candidate Layer v0.2
 - Correction Label v0.3
@@ -452,6 +453,24 @@ Current order:
 - v2.2 Activation Regression Suite：已完成
 - v2.3a Manual Review State Foundation：本包
 - v2.3b Manual Review Persistence / Gate Design：後續評估
+## v2.3b Manual Review CLI Display
+
+v2.3b adds read-only manual review CLI display.
+- `run-review-display` shows manual review items and review traces.
+- CLI display does not modify review metadata.
+- CLI display does not modify lesson metadata.
+- CLI display does not change selection behavior.
+- CLI display does not change conflict behavior.
+- CLI display does not change strict supersede activation.
+- Test 5 / 6 / 7 are read-only guard tests for preventing future display side effects.
+- CLI approve / reject is not implemented.
+- Automatic conflict resolution is not implemented.
+- Priority is not implemented.
+
+Example:
+```powershell
+py -3 -m ashl_core.teaching_cli run-review-display
+```
 ## Correction / Rule / Trial Flow
 
 - correction pending 只記錄使用者糾正。

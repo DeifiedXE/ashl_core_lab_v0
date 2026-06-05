@@ -330,6 +330,19 @@ Current order:
 - v2.2 Activation Regression Suite：已完成
 - v2.3a Manual Review State Foundation：本包
 - v2.3b Manual Review Persistence / Gate Design：後續評估
+## Manual Review CLI Display
+
+v2.3b adds read-only manual review CLI display.
+`run-review-display` shows manual review items, review_state, approval_state, target metadata, lesson ids, reason, notes, and read-only review trace.
+
+CLI display does not modify review metadata, does not modify lesson metadata, does not change selection behavior, does not change conflict behavior, and does not change strict supersede activation.
+
+Test 5 / 6 / 7 are read-only guard tests for preventing future display side effects. CLI approve / reject, automatic conflict resolution, and priority are not implemented.
+
+Current order:
+- v2.3a Manual Review State Foundation：已完成
+- v2.3b Manual Review CLI Display：本包
+- v2.3c Manual Review Persistence or Gate Design：後續評估
 ## Minimal Teaching CLI
 
 v1.8 Minimal Teaching CLI 是既有 lesson flow 的命令列 wrapper。

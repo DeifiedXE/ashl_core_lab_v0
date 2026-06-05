@@ -14,6 +14,7 @@ from .lesson_store import (
     select_lesson_for_context,
     select_lesson_for_decision_point,
 )
+from .manual_review import build_review_trace, create_review_item
 
 
 DECISION_POINT = "before_retry_pick_up_cube"
@@ -154,6 +155,56 @@ def _format_lifecycle_display(entries: list[dict[str, Any]], suggestions: list[d
     return "\n".join(lines)
 
 
+def _default_review_items() -> list[dict[str, Any]]:
+    return [
+        create_review_item(
+            target_type="conflict",
+            target_id="conflict_001",
+            source_lesson_id="lesson_001",
+            candidate_lesson_id="lesson_004",
+            reason="conflict_requires_manual_review",
+            review_id="review_001",
+        )
+    ]
+
+
+def _format_review_display(items: list[dict[str, Any]]) -> str:
+    if not items:
+        return "No manual review items."
+
+    lines = ["Manual Review Items"]
+    for item in items:
+        lines.extend(
+            [
+                "",
+                f"- id: {item.get('id')}",
+                f"  target_type: {item.get('target_type')}",
+                f"  target_id: {item.get('target_id')}",
+                f"  source_lesson_id: {item.get('source_lesson_id')}",
+                f"  candidate_lesson_id: {item.get('candidate_lesson_id')}",
+                f"  review_state: {item.get('review_state')}",
+                f"  approval_state: {item.get('approval_state')}",
+                f"  reason: {item.get('reason')}",
+                f"  notes: {item.get('notes') or 'none'}",
+            ]
+        )
+    return "\n".join(lines)
+
+
+def run_review_display(items: list[dict[str, Any]] | None = None) -> dict[str, Any]:
+    review_items = [dict(item) for item in (items if items is not None else _default_review_items())]
+    traces = [build_review_trace(item) for item in review_items]
+    return {
+        "command": "run-review-display",
+        "status": "ok",
+        "read_only": True,
+        "review_items": review_items,
+        "review_traces": traces,
+        "display": _format_review_display(review_items),
+        "notes": ["Manual review display is read-only and does not mutate review or lesson metadata."],
+    }
+
+
 def run_lifecycle_display(
     lessons: list[dict[str, Any]] | None = None,
     context: dict[str, Any] | None = None,
@@ -275,6 +326,8 @@ def run_command(command: str) -> dict[str, Any]:
         return run_conflict_check_flow()
     if command == "run-lifecycle-display":
         return run_lifecycle_display()
+    if command == "run-review-display":
+        return run_review_display()
     return {
         "command": command,
         "status": "error",
@@ -292,6 +345,7 @@ def main(argv: list[str] | None = None) -> int:
             "run-disable-reenable-flow",
             "run-conflict-check-flow",
             "run-lifecycle-display",
+            "run-review-display",
         ],
     )
     args = parser.parse_args(argv)
