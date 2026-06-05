@@ -117,7 +117,7 @@ def _lesson_lifecycle_entry(
     }
 
 
-def _format_lifecycle_display(entries: list[dict[str, Any]]) -> str:
+def _format_lifecycle_display(entries: list[dict[str, Any]], suggestions: list[dict[str, Any]] | None = None) -> str:
     lines = ["Lesson Lifecycle"]
     for entry in entries:
         lines.extend(
@@ -134,6 +134,23 @@ def _format_lifecycle_display(entries: list[dict[str, Any]]) -> str:
                 f"  participates_in_conflict: {str(entry['participates_in_conflict']).lower()}",
             ]
         )
+    if suggestions:
+        lines.extend(["", "Replacement Suggestions"])
+        for suggestion in suggestions:
+            lines.extend(
+                [
+                    "",
+                    f"- source_lesson_id: {suggestion['source_lesson_id']}",
+                    f"  superseded_by: {suggestion['superseded_by']}",
+                    f"  candidate_lesson_id: {suggestion['candidate_lesson_id']}",
+                    f"  candidate_exists: {str(suggestion['candidate_exists']).lower()}",
+                    f"  candidate_status: {suggestion['candidate_status'] or 'none'}",
+                    f"  candidate_stale: {str(suggestion['candidate_stale']).lower()}",
+                    f"  candidate_eligible: {str(suggestion['candidate_eligible']).lower()}",
+                    f"  activation_applied: {str(suggestion['activation_applied']).lower()}",
+                    f"  reason: {suggestion['reason']}",
+                ]
+            )
     return "\n".join(lines)
 
 
@@ -146,13 +163,15 @@ def run_lifecycle_display(
     context = context or {"task": "pick_up", "object_id": "cube_001", "decision_point": decision_point}
     selection = select_lesson_for_context(lesson_snapshot, context)
     conflict = select_lesson_for_decision_point(lesson_snapshot, decision_point)
+    replacement_suggestions = selection.get("replacement_suggestions", [])
     entries = [_lesson_lifecycle_entry(lesson, selection=selection, conflict=conflict) for lesson in lesson_snapshot]
     return {
         "command": "run-lifecycle-display",
         "status": "ok",
         "read_only": True,
         "lessons": entries,
-        "display": _format_lifecycle_display(entries),
+        "replacement_suggestions": replacement_suggestions,
+        "display": _format_lifecycle_display(entries, replacement_suggestions),
         "selection_trace": selection,
         "conflict_check": _format_conflict_check(conflict),
         "notes": ["Lifecycle display is read-only and does not mutate lesson metadata."],

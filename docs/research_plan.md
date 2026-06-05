@@ -264,6 +264,21 @@ Current order:
 - v2.0b Supersede Link：已完成
 - v2.0c CLI lifecycle display：本包
 - v2.1 Stale / Supersede activation behavior：下一步候選
+## Supersede Replacement Suggestion
+
+v2.1a adds trace-only supersede replacement suggestions.
+`replacement_suggestions` are produced only when a lesson is skipped because it is stale and that source lesson has `superseded_by`.
+
+The suggestion records the stale source lesson, replacement candidate id, candidate existence, candidate status, candidate stale state, candidate eligibility, and a reason. `activation_applied` remains false.
+
+v2.1a does not change selection behavior, does not change conflict behavior, does not activate supersede links, does not automatically select replacement lessons, and does not add lifecycle write CLI commands. Actual supersede selection activation is deferred to v2.1b or later.
+
+Current order:
+- v2.0a Manual Stale Marking：已完成
+- v2.0b Supersede Link：已完成
+- v2.0c CLI lifecycle display：已完成
+- v2.1a Supersede Replacement Suggestion：本包
+- v2.1b Supersede Selection Activation：下一步候選
 ## Minimal Teaching CLI
 
 v1.8 Minimal Teaching CLI 是既有 lesson flow 的命令列 wrapper。

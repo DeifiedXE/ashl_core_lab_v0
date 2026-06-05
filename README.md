@@ -25,6 +25,7 @@ ASHL Core Lab 是 ASHL Core／D清音 的最小 Python 實驗專案，用來驗�
 - v2.0a Manual Stale Marking
 - v2.0b Supersede Link
 - v2.0c CLI lifecycle display
+- v2.1a Supersede Replacement Suggestion
 - Integrated Loop v0.1
 - Persistent Candidate Layer v0.2
 - Correction Label v0.3
@@ -358,6 +359,25 @@ Current order:
 - v2.0b Supersede Link：已完成
 - v2.0c CLI lifecycle display：本包
 - v2.1 Stale / Supersede activation behavior：下一步候選
+## v2.1a Supersede Replacement Suggestion
+
+v2.1a adds trace-only supersede replacement suggestions.
+- `replacement_suggestions` appear when a stale skipped lesson has `superseded_by`.
+- The trace can show the stale source lesson, replacement candidate id, candidate existence, status, stale state, eligibility, and reason.
+- `activation_applied` is always false.
+- `replacement_suggestion` does not change selection behavior.
+- `replacement_suggestion` does not change conflict behavior.
+- `replacement_suggestion` does not activate supersede links.
+- `replacement_suggestion` does not automatically select replacement lessons.
+- It does not add lifecycle write CLI commands.
+- Actual supersede selection activation is deferred to v2.1b or later.
+
+Current order:
+- v2.0a Manual Stale Marking：已完成
+- v2.0b Supersede Link：已完成
+- v2.0c CLI lifecycle display：已完成
+- v2.1a Supersede Replacement Suggestion：本包
+- v2.1b Supersede Selection Activation：下一步候選
 ## Correction / Rule / Trial Flow
 
 - correction pending 只記錄使用者糾正。

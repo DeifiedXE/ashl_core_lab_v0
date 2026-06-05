@@ -87,6 +87,74 @@ def _stale_skips(lessons: list[dict[str, Any]]) -> list[dict[str, str]]:
     ]
 
 
+def _lesson_matches_context(lesson: dict[str, Any], context: dict[str, Any] | None) -> bool:
+    if context is None:
+        return True
+    return (
+        lesson.get("decision_point") == context.get("decision_point")
+        and lesson.get("trigger", {}).get("action") == context.get("task")
+        and lesson.get("object_id", "cube_001") == context.get("object_id")
+    )
+
+
+def build_replacement_suggestions(
+    lessons: list[dict[str, Any]],
+    skipped_lessons: list[dict[str, str]],
+    context: dict[str, Any] | None = None,
+) -> list[dict[str, Any]]:
+    by_id = {lesson.get("lesson_id"): lesson for lesson in lessons}
+    suggestions = []
+    for skipped in skipped_lessons:
+        if skipped.get("skipped_reason") != "stale":
+            continue
+
+        source_lesson = by_id.get(skipped.get("lesson_id"))
+        if source_lesson is None:
+            continue
+
+        replacement_id = source_lesson.get("superseded_by")
+        if not replacement_id:
+            continue
+
+        candidate = by_id.get(replacement_id)
+        candidate_exists = candidate is not None
+        candidate_status = candidate.get("status") if candidate_exists else None
+        candidate_stale = candidate.get("stale") is True if candidate_exists else None
+        candidate_eligible = (
+            candidate_exists
+            and candidate_status == "active"
+            and candidate_stale is False
+            and _lesson_matches_context(candidate, context)
+        )
+
+        if not candidate_exists:
+            reason = "replacement_candidate_missing"
+        elif candidate_stale:
+            reason = "replacement_candidate_stale"
+        elif candidate_status != "active":
+            reason = "replacement_candidate_not_active"
+        elif not _lesson_matches_context(candidate, context):
+            reason = "replacement_candidate_not_context_eligible"
+        else:
+            reason = "trace_only_supersede_replacement_suggestion"
+
+        suggestions.append(
+            {
+                "source_lesson_id": source_lesson.get("lesson_id"),
+                "source_skipped_reason": skipped.get("skipped_reason"),
+                "superseded_by": replacement_id,
+                "candidate_lesson_id": replacement_id,
+                "candidate_exists": candidate_exists,
+                "candidate_status": candidate_status,
+                "candidate_stale": candidate_stale,
+                "candidate_eligible": candidate_eligible,
+                "activation_applied": False,
+                "reason": reason,
+            }
+        )
+    return suggestions
+
+
 def set_lesson_stale(lesson: dict[str, Any], stale: bool) -> dict[str, Any]:
     updated = dict(lesson)
     updated["stale"] = bool(stale)
@@ -177,6 +245,7 @@ def find_applicable_lesson(lessons: list[dict[str, Any]], goal: dict[str, Any]) 
 
 
 def select_lesson_for_failure_reason(lessons: list[dict[str, Any]], failure_reason: str) -> dict[str, Any]:
+    skipped_lessons = _stale_skips(lessons)
     matches = [
         lesson
         for lesson in list_selectable_lessons(lessons)
@@ -186,7 +255,8 @@ def select_lesson_for_failure_reason(lessons: list[dict[str, Any]], failure_reas
     return {
         "type": "lesson_selection_result",
         "active_lesson_ids": [lesson.get("lesson_id") for lesson in list_active_lessons(lessons)],
-        "skipped_lessons": _stale_skips(lessons),
+        "skipped_lessons": skipped_lessons,
+        "replacement_suggestions": build_replacement_suggestions(lessons, skipped_lessons),
         "matched_failure_reason": failure_reason,
         "selected_lesson_id": selected.get("lesson_id") if selected else None,
         "selected_action": selected.get("suggested_action_before_retry") if selected else None,
@@ -202,6 +272,7 @@ def _actions_are_incompatible(actions: list[str]) -> bool:
 def select_lesson_for_decision_point(lessons: list[dict[str, Any]], decision_point: str) -> dict[str, Any]:
     active_lessons = list_active_lessons(lessons)
     skipped_lessons = _stale_skips(lessons)
+    replacement_suggestions = build_replacement_suggestions(lessons, skipped_lessons)
     matches = [lesson for lesson in list_selectable_lessons(lessons) if lesson.get("decision_point") == decision_point]
     actions = [lesson.get("suggested_action_before_retry") for lesson in matches if lesson.get("suggested_action_before_retry")]
     lesson_ids = [lesson.get("lesson_id") for lesson in matches]
@@ -212,6 +283,7 @@ def select_lesson_for_decision_point(lessons: list[dict[str, Any]], decision_poi
             "decision_point": decision_point,
             "active_lesson_ids": [lesson.get("lesson_id") for lesson in active_lessons],
             "skipped_lessons": skipped_lessons,
+            "replacement_suggestions": replacement_suggestions,
             "matched_lesson_ids": lesson_ids,
             "conflict_detected": True,
             "conflict_resolution": "require_review",
@@ -231,6 +303,7 @@ def select_lesson_for_decision_point(lessons: list[dict[str, Any]], decision_poi
         "decision_point": decision_point,
         "active_lesson_ids": [lesson.get("lesson_id") for lesson in active_lessons],
         "skipped_lessons": skipped_lessons,
+        "replacement_suggestions": replacement_suggestions,
         "matched_lesson_ids": lesson_ids,
         "conflict_detected": False,
         "conflict_resolution": None,
@@ -248,6 +321,7 @@ def select_lesson_for_decision_point(lessons: list[dict[str, Any]], decision_poi
 def select_lesson_for_context(lessons: list[dict[str, Any]], context: dict[str, Any]) -> dict[str, Any]:
     active_lessons = list_active_lessons(lessons)
     skipped_lessons = _stale_skips(lessons)
+    replacement_suggestions = build_replacement_suggestions(lessons, skipped_lessons, context)
     task = context.get("task")
     object_id = context.get("object_id")
     decision_point = context.get("decision_point")
@@ -266,6 +340,7 @@ def select_lesson_for_context(lessons: list[dict[str, Any]], context: dict[str, 
         "decision_point": decision_point,
         "active_lesson_ids": [lesson.get("lesson_id") for lesson in active_lessons],
         "skipped_lessons": skipped_lessons,
+        "replacement_suggestions": replacement_suggestions,
         "matched_lesson_ids": [lesson.get("lesson_id") for lesson in matches],
         "selected_lesson_id": selected.get("lesson_id") if selected else None,
         "selected_action": selected.get("suggested_action_before_retry") if selected else None,
