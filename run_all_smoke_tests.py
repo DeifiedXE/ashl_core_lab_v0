@@ -801,6 +801,61 @@ def smoke_phase0_failure_event_interface_docs() -> dict:
     )
 
 
+def smoke_perception_assumption_docs() -> dict:
+    doc_path = Path("docs/perception_layer_design_assumption_v0_1.md")
+    readme_path = Path("README.md")
+    research_plan_path = Path("docs/research_plan.md")
+
+    doc = doc_path.read_text(encoding="utf-8") if doc_path.exists() else ""
+    readme = readme_path.read_text(encoding="utf-8") if readme_path.exists() else ""
+    research_plan = research_plan_path.read_text(encoding="utf-8") if research_plan_path.exists() else ""
+
+    required_terms = [
+        "symbol grounding",
+        "perception_input",
+        "perceptual_features",
+        "perceptual_code",
+        "action_context",
+        "failure_reason",
+        "lesson_candidate",
+        "does not add perception runtime",
+    ]
+    passed = (
+        doc_path.exists()
+        and "perception_layer_design_assumption_v0_1.md" in readme
+        and "v2.6c-3" in research_plan
+        and all(term in doc for term in required_terms)
+    )
+    return _result("perception_assumption_docs", passed, {"doc": str(doc_path)})
+
+
+def smoke_lesson_memory_layer_relation_docs() -> dict:
+    doc_path = Path("docs/lesson_memory_layer_relation_assumption_v0_1.md")
+    readme_path = Path("README.md")
+    research_plan_path = Path("docs/research_plan.md")
+
+    doc = doc_path.read_text(encoding="utf-8") if doc_path.exists() else ""
+    readme = readme_path.read_text(encoding="utf-8") if readme_path.exists() else ""
+    research_plan = research_plan_path.read_text(encoding="utf-8") if research_plan_path.exists() else ""
+
+    required_terms = [
+        "lesson is action correction knowledge",
+        "Long-term Memory is reviewed continuity memory",
+        "lesson is not automatically memory",
+        "learned_principle",
+        "lesson_to_memory_promotion",
+        "memory_may_need_review",
+        "design assumption",
+    ]
+    passed = (
+        doc_path.exists()
+        and "lesson_memory_layer_relation_assumption_v0_1.md" in readme
+        and "v2.6c-3" in research_plan
+        and all(term in doc for term in required_terms)
+    )
+    return _result("lesson_memory_layer_relation_docs", passed, {"doc": str(doc_path)})
+
+
 def smoke_cross_task_shared_prerequisite_isolation() -> dict:
     lesson_001 = build_lesson_from_failure("session_cube_001", pick_up(build_initial_sandbox_state(), "cube_001"))
     lesson_001["object_id"] = "cube_001"
@@ -2125,6 +2180,8 @@ def run_smoke_tests() -> list[dict]:
         smoke_phase0_integration_assumption_docs(),
         smoke_phase0_behavior_curiosity_assumption_docs(),
         smoke_phase0_failure_event_interface_docs(),
+        smoke_perception_assumption_docs(),
+        smoke_lesson_memory_layer_relation_docs(),
         smoke_teaching_cli_conflict_check(),
         smoke_cross_task_shared_prerequisite_isolation(),
         smoke_manual_stale_marking(),

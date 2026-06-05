@@ -492,6 +492,18 @@ The document states that Phase 0 should pass structured failure_event data into 
 
 No runtime behavior changed. No evaluator implementation was added. No Phase 0 sandbox runtime integration was implemented. No lesson_candidate builder runtime was implemented. v2.6c activation remains deferred.
 
+## Perception and Lesson / Memory Relation Assumption Docs
+
+v2.6c-3 is docs-only.
+
+This package reconciles the missing perception assumption docs and adds the lesson / memory layer relation assumption doc.
+
+The perception assumption describes how perception_input may become perceptual_features, perceptual_code, action_context, expected_outcome, actual_outcome, failure_reason, and lesson_candidate. It explicitly does not add perception runtime or visual input runtime.
+
+The lesson / memory relation assumption states that lesson is action correction knowledge, while Long-term Memory is reviewed continuity memory. It defines learned_principle and lesson_to_memory_promotion as future assumption terms only.
+
+No runtime behavior changed. No perception runtime, perceptual_code runtime, lesson_to_memory_promotion runtime, Long-term Memory write runtime, memory review runtime, or memory_contrast_set runtime was added. Selection, conflict, review, activation, and known / unknown failure_reason behavior remain unchanged. v2.6c activation remains deferred.
+
 ## Minimal Teaching CLI
 
 v1.8 Minimal Teaching CLI 是既有 lesson flow 的命令列 wrapper。

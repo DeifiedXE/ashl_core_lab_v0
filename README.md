@@ -758,7 +758,14 @@ where.exe py
 
 - `docs/failure_reason_design_assumption_v0_1.md`
 - `docs/instinct_lesson_layer_relation_assumption_v0_1.md`
+- `docs/perception_layer_design_assumption_v0_1.md`
 - `docs/phase0_behavior_curiosity_assumption_v0_1.md`
 - `docs/phase0_failure_event_interface_assumption_v0_1.md`
 
 These documents define the current assumptions for how Phase 0 action failures connect to lesson generation, and how the lesson layer interacts with instinct / drive behavior. They are design assumptions only and do not imply runtime implementation.
+
+## Memory / Lesson Relation Assumptions
+
+- `docs/lesson_memory_layer_relation_assumption_v0_1.md`
+
+This document defines the current assumption for how the ASHL Core lesson layer relates to Qingyin Long-term Memory. It is design-only and does not imply lesson-to-memory promotion, memory writes, or memory review runtime.
