@@ -703,6 +703,96 @@ def smoke_strict_supersede_activation() -> dict:
     )
 
 
+def smoke_activation_audit() -> dict:
+    old_lesson = build_lesson_from_failure("session_east", pick_up(build_initial_sandbox_state(), "cube_001"))
+    old_lesson["object_id"] = "cube_001"
+    old_lesson["stale_reason"] = None
+    old_lesson = mark_lesson_stale(old_lesson)
+    old_lesson["stale_reason"] = "manual: audit fixture"
+    replacement = {
+        "lesson_id": "lesson_004",
+        "source_session": "manual_fixture",
+        "source_failure_reason": "not_facing_east_refined",
+        "trigger": {"action": "pick_up", "target_type": "cube"},
+        "decision_point": "before_retry_pick_up_cube",
+        "object_id": "cube_001",
+        "condition": {"avatar_facing": "east"},
+        "suggested_action_before_retry": "turn(east)",
+        "status": "active",
+        "stale": False,
+        "stale_reason": None,
+        "confidence": "manual_fixture",
+    }
+    context = {"task": "pick_up", "object_id": "cube_001", "decision_point": "before_retry_pick_up_cube"}
+    link = link_lesson_supersede(old_lesson, replacement)
+    lessons = [link["old_lesson"], link["new_lesson"]]
+    before = json.dumps(lessons, sort_keys=True)
+    success = select_lesson_for_context(lessons, context)
+    after = json.dumps(lessons, sort_keys=True)
+
+    failed_candidate = dict(replacement)
+    failed_candidate["status"] = "inactive"
+    failed_candidate["stale"] = True
+    failed_candidate["object_id"] = "cube_002"
+    failed_link = link_lesson_supersede(old_lesson, failed_candidate)
+    failed = select_lesson_for_context([failed_link["old_lesson"], failed_link["new_lesson"]], context)
+
+    west_failure = {
+        "type": "sandbox_action_result",
+        "tool": "pick_up",
+        "object_id": "cube_001",
+        "result": "failed",
+        "failure_reason": "not_facing_west",
+        "state": build_initial_sandbox_state(),
+    }
+    west_lesson = build_lesson_from_failure("session_west", west_failure)
+    conflict = select_lesson_for_decision_point([link["old_lesson"], link["new_lesson"], west_lesson], "before_retry_pick_up_cube")
+    lifecycle = run_lifecycle_display(lessons, context)
+
+    activation = success["supersede_activation"]
+    suggestion = success["replacement_suggestions"][0]
+    failed_activation = failed["supersede_activation"]
+    conflict_activation = conflict["supersede_activation"]
+    required = {
+        "source_lesson_id",
+        "candidate_lesson_id",
+        "old_lesson_stale",
+        "old_lesson_has_superseded_by",
+        "candidate_exists",
+        "candidate_active",
+        "candidate_not_stale",
+        "candidate_eligible",
+        "activation_source",
+        "activation_applied",
+        "failed_conditions",
+    }
+    passed = (
+        required.issubset(activation.keys())
+        and activation["activation_applied"] is True
+        and activation["failed_conditions"] == []
+        and activation["activation_source"] == "supersede_link"
+        and before == after
+        and failed_activation["activation_applied"] is False
+        and "candidate_active" in failed_activation["failed_conditions"]
+        and "candidate_not_stale" in failed_activation["failed_conditions"]
+        and "candidate_eligible" in failed_activation["failed_conditions"]
+        and conflict["conflict_detected"] is True
+        and conflict["conflict_resolution"] == "require_review"
+        and conflict["selected_lesson_id"] is None
+        and conflict_activation["activation_applied"] is False
+        and "conflict_unresolved" in conflict_activation["failed_conditions"]
+        and suggestion["candidate_lesson_id"] == activation["candidate_lesson_id"]
+        and suggestion["candidate_exists"] == activation["candidate_exists"]
+        and suggestion["candidate_eligible"] == activation["candidate_eligible"]
+        and lifecycle["read_only"] is True
+    )
+    return _result(
+        "activation_audit",
+        passed,
+        {"success": activation, "failed": failed_activation, "conflict": conflict_activation},
+    )
+
+
 def smoke_teaching_cli() -> dict:
     known = run_known_flow()
     unknown = run_unknown_flow()
@@ -1060,6 +1150,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_cli_lifecycle_display(),
         smoke_supersede_replacement_suggestion(),
         smoke_strict_supersede_activation(),
+        smoke_activation_audit(),
         smoke_state_persistence(),
         smoke_concept_layer(),
         smoke_state_core(),

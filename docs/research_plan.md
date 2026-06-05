@@ -292,6 +292,20 @@ Current order:
 - v2.1a Supersede Replacement Suggestion：已完成
 - v2.1b Strict Supersede Selection Activation：本包
 - v2.1c Activation Audit / Edge Case Hardening：下一步候選
+## Activation Audit / Edge Case Hardening
+
+v2.1c is audit / hardening only.
+No new activation capability is added, and activation conditions are not relaxed.
+
+This stage tests strict activation invariants, lifecycle metadata immutability during activation, conflict isolation, CLI read-only guarantees, trace completeness, failed condition reporting, and the unsupported multi-layer supersede chain boundary.
+
+Conflict logic remains independent from supersede link. Priority, automatic conflict resolution, lifecycle write CLI, fallback search, and known / unknown failure_reason behavior changes remain unsupported.
+
+Current order:
+- v2.1b Strict Supersede Selection Activation：已完成
+- v2.1c Activation Audit / Edge Case Hardening：本包
+- Update log generation：下一步候選
+- v2.2 Manual Review / Approval Gate or Activation Regression Suite：後續評估
 ## Minimal Teaching CLI
 
 v1.8 Minimal Teaching CLI 是既有 lesson flow 的命令列 wrapper。
