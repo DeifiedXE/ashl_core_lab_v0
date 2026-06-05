@@ -466,6 +466,15 @@ def _actions_are_incompatible(actions: list[str]) -> bool:
     return "turn(east)" in actions and "turn(west)" in actions
 
 
+def build_stable_conflict_key(
+    lesson_ids: list[str],
+    decision_point: str,
+    conflict_type: str = "incompatible_actions",
+) -> str:
+    sorted_lesson_ids = sorted(str(lesson_id) for lesson_id in lesson_ids if lesson_id)
+    return f"conflict:{decision_point}:{conflict_type}:{'+'.join(sorted_lesson_ids)}"
+
+
 def select_lesson_for_decision_point(
     lessons: list[dict[str, Any]],
     decision_point: str,
@@ -485,6 +494,7 @@ def select_lesson_for_decision_point(
     lesson_ids = [lesson.get("lesson_id") for lesson in matches]
 
     if len(matches) >= 2 and _actions_are_incompatible(actions):
+        stable_conflict_key = build_stable_conflict_key(lesson_ids, decision_point)
         supersede_activations = build_strict_supersede_activations(
             lessons,
             skipped_lessons,
@@ -503,6 +513,10 @@ def select_lesson_for_decision_point(
             "supersede_activations": supersede_activations,
             "supersede_activation": supersede_activations[0] if supersede_activations else None,
             "matched_lesson_ids": lesson_ids,
+            "conflict_id": stable_conflict_key,
+            "conflict_id_stable": True,
+            "stable_conflict_key": stable_conflict_key,
+            "stability_source": "deterministic_conflict_metadata",
             "conflict_detected": True,
             "conflict_resolution": "require_review",
             "review_required": True,

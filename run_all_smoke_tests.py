@@ -35,6 +35,7 @@ from ashl_core.lesson_runner import (
 )
 from ashl_core.lesson_store import (
     build_lesson_from_failure,
+    build_stable_conflict_key,
     disable_lesson,
     enable_lesson,
     evaluate_review_gate,
@@ -394,6 +395,45 @@ def smoke_conflict_detection_require_review() -> dict:
         "conflict_detection_require_review",
         passed,
         {"conflict": conflict, "disabled": disabled, "reenabled": reenabled},
+    )
+
+
+def smoke_conflict_id_stability() -> dict:
+    east = build_lesson_from_failure("session_east", pick_up(build_initial_sandbox_state(), "cube_001"))
+    west = build_lesson_from_failure(
+        "session_west",
+        {
+            "type": "sandbox_action_result",
+            "tool": "pick_up",
+            "object_id": "cube_001",
+            "result": "failed",
+            "failure_reason": "not_facing_west",
+            "state": build_initial_sandbox_state(),
+        },
+    )
+    first = select_lesson_for_decision_point([east, west], "before_retry_pick_up_cube")
+    second = select_lesson_for_decision_point([east, west], "before_retry_pick_up_cube")
+    reversed_order = select_lesson_for_decision_point([west, east], "before_retry_pick_up_cube")
+    west_alt = dict(west)
+    west_alt["lesson_id"] = "lesson_005"
+    different = select_lesson_for_decision_point([east, west_alt], "before_retry_pick_up_cube")
+    expected_key = build_stable_conflict_key(["lesson_002", "lesson_001"], "before_retry_pick_up_cube")
+    passed = (
+        first["conflict_detected"] is True
+        and first["stable_conflict_key"] == second["stable_conflict_key"]
+        and first["stable_conflict_key"] == reversed_order["stable_conflict_key"]
+        and first["stable_conflict_key"] == expected_key
+        and first["conflict_id"] == first["stable_conflict_key"]
+        and first["conflict_id_stable"] is True
+        and first["stability_source"] == "deterministic_conflict_metadata"
+        and different["stable_conflict_key"] != first["stable_conflict_key"]
+        and first["conflict_resolution"] == "require_review"
+        and first["selected_lesson_id"] is None
+    )
+    return _result(
+        "conflict_id_stability",
+        passed,
+        {"stable_conflict_key": first.get("stable_conflict_key"), "different_key": different.get("stable_conflict_key")},
     )
 
 
@@ -1713,6 +1753,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_second_known_failure_reason_determinism(),
         smoke_multi_lesson_isolation(),
         smoke_conflict_detection_require_review(),
+        smoke_conflict_id_stability(),
         smoke_teaching_cli_conflict_check(),
         smoke_cross_task_shared_prerequisite_isolation(),
         smoke_manual_stale_marking(),

@@ -35,6 +35,7 @@ ASHL Core Lab 是 ASHL Core／D清音 的最小 Python 實驗專案，用來驗�
 - v2.3d Manual Review Decision Audit / Regression
 - v2.4a Review-Gated Selection Eligibility
 - v2.4b Review-Gated Eligibility Audit / Regression
+- v2.4c Conflict ID Stability Check
 - Integrated Loop v0.1
 - Persistent Candidate Layer v0.2
 - Correction Label v0.3
@@ -541,6 +542,20 @@ v2.4b is audit / regression only.
 - `compatibility_approved` upgrade path is not implemented.
 - Batch review query is not implemented.
 - No new review write CLI is added.
+
+## v2.4c Conflict ID Stability Check
+
+v2.4c confirms conflict id stability and adds a deterministic `stable_conflict_key`.
+- `stable_conflict_key` is generated from explicit deterministic conflict metadata.
+- `stable_conflict_key` is for a future matching anchor only.
+- Runtime `conflict_id` and `stable_conflict_key` are shown separately in conflict trace.
+- Conflict review resolution preview is not implemented.
+- Review matching is not implemented.
+- Notes / reason text matching is prohibited.
+- Fallback search is prohibited.
+- Stable key does not change conflict behavior.
+- Stable key does not change selection behavior.
+- Stable key does not change strict supersede activation.
 
 ## Correction / Rule / Trial Flow
 

@@ -395,6 +395,17 @@ Current order:
 - v2.4a Review-Gated Selection Eligibility：已完成
 - v2.4b Review-Gated Eligibility Audit / Regression：本包
 - v2.5 Review Gate Integration Planning：後續評估
+## Conflict ID Stability Check
+
+v2.4c confirms conflict id stability and adds deterministic `stable_conflict_key` when needed.
+The stable key is generated from explicit deterministic conflict metadata and is intended only as a future matching anchor.
+
+Conflict review resolution preview is not implemented. Review matching is not implemented. Notes / reason text matching and fallback search are prohibited. Stable key does not change conflict behavior, selection behavior, or strict supersede activation.
+
+Current order:
+- v2.4b Review-Gated Eligibility Audit / Regression：已完成
+- v2.4c Conflict ID Stability Check：本包
+- v2.5a Conflict Review Resolution Preview：後續評估
 ## Minimal Teaching CLI
 
 v1.8 Minimal Teaching CLI 是既有 lesson flow 的命令列 wrapper。
