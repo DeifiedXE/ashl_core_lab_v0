@@ -584,6 +584,33 @@ Non-goals:
 - no selection / activation / conflict behavior changes
 - no LLM-only authoritative failure or novelty source
 
+## v2.7c Failure Event to Lesson Candidate Input Bridge Trace-only
+
+Status: completed / trace-only.
+
+Goal:
+Create a trace-only input bridge from normalized `failure_event` to lesson candidate input view.
+
+Scope:
+- build `lesson_candidate_input_trace` from normalized `failure_event`
+- preserve `evaluator_source`
+- preserve `needs_review` / `review_state`
+- preserve authority boundary
+- add `similar_context_hint` source / authority boundary
+- keep `semantic_key` non-authoritative and review-required
+- ensure bridge output is not `lesson_candidate`
+
+Non-goals:
+- no lesson_candidate builder runtime
+- no lesson_store write
+- no manual review runtime
+- no sandbox runtime
+- no evaluator runtime
+- no curiosity / novelty runtime
+- no personality weight runtime
+- no Long-term Memory write
+- no selection / activation / conflict behavior changes
+
 ## Minimal Teaching CLI
 
 v1.8 Minimal Teaching CLI 是既有 lesson flow 的命令列 wrapper。

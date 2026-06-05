@@ -215,3 +215,79 @@ def normalize_failure_event_trace(failure_event: dict) -> dict[str, Any]:
         "side_effects": [],
         "reason": "deterministic_trace_view_not_authority_source",
     }
+
+
+def _similar_context_hint_from_normalized(normalized_failure_event: Mapping[str, Any]) -> dict[str, Any]:
+    structure_parts = [
+        normalized_failure_event.get("goal_type"),
+        normalized_failure_event.get("action_type"),
+        normalized_failure_event.get("expected_outcome_type"),
+        normalized_failure_event.get("actual_outcome_type"),
+        normalized_failure_event.get("mismatch_type"),
+    ]
+    structure_value = "|".join(_normalized_scalar(part) for part in structure_parts)
+    causal_value = _normalized_scalar(
+        normalized_failure_event.get("failure_reason_type") or normalized_failure_event.get("mismatch_type")
+    )
+    repetition_value = _normalized_scalar(normalized_failure_event.get("repetition_key") or "not_evaluated")
+
+    return {
+        "structure_key": {
+            "value": structure_value,
+            "source": "schema_fields",
+            "authority": "deterministic_hint",
+        },
+        "causal_key": {
+            "value": causal_value,
+            "source": "mismatch_type",
+            "authority": "structured_hint",
+        },
+        "repetition_key": {
+            "value": repetition_value,
+            "source": "event_history_or_missing",
+            "authority": "trace_hint",
+        },
+        "semantic_key": {
+            "value": None,
+            "source": "not_provided",
+            "authority": "non_authoritative_review_required",
+        },
+    }
+
+
+def build_lesson_candidate_input_trace(normalized_failure_event: dict) -> dict[str, Any]:
+    """Build a trace-only lesson candidate input view from a normalized failure event.
+
+    This function must not create a lesson_candidate.
+    This function must not write to lesson_store.
+    This function must not mutate the input.
+    """
+
+    normalized = dict(normalized_failure_event or {})
+    if normalized.get("normalized") is not True:
+        raise ValueError("non-normalized input must not be used as lesson candidate input")
+
+    return {
+        "type": "lesson_candidate_input_trace",
+        "bridge_trace": True,
+        "bridge_type": "failure_event_to_lesson_candidate_input",
+        "source_normalized": True,
+        "source_event_id": _normalized_scalar(normalized.get("source_event_id")),
+        "source_failure_norm_key": _normalized_scalar(normalized.get("failure_norm_key")),
+        "motivation_type": _normalized_scalar(normalized.get("motivation_type")),
+        "goal_type": _normalized_scalar(normalized.get("goal_type")),
+        "action_type": _normalized_scalar(normalized.get("action_type")),
+        "expected_outcome_type": _normalized_scalar(normalized.get("expected_outcome_type")),
+        "actual_outcome_type": _normalized_scalar(normalized.get("actual_outcome_type")),
+        "mismatch_type": _normalized_scalar(normalized.get("mismatch_type")),
+        "evaluator_source": _normalized_scalar(normalized.get("evaluator_source")),
+        "needs_review": bool(normalized.get("needs_review")),
+        "review_state": _normalized_scalar(normalized.get("review_state")),
+        "similar_context_hint": _similar_context_hint_from_normalized(normalized),
+        "authority_boundary": "trace_only_input_view",
+        "not_a_lesson_candidate": True,
+        "lesson_candidate_created": False,
+        "lesson_store_written": False,
+        "side_effects": [],
+        "reason": "lesson_candidate_input_trace_is_preparation_evidence_not_a_lesson_candidate",
+    }

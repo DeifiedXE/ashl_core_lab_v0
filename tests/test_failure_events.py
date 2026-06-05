@@ -2,7 +2,12 @@ import copy
 import unittest
 
 from ashl_core.fake_sandbox import build_initial_sandbox_state, pick_up
-from ashl_core.failure_events import build_failure_event, normalize_failure_event_trace, validate_failure_event
+from ashl_core.failure_events import (
+    build_failure_event,
+    build_lesson_candidate_input_trace,
+    normalize_failure_event_trace,
+    validate_failure_event,
+)
 from ashl_core.lesson_store import (
     build_conflict_review_resolution_dry_run,
     build_lesson_from_failure,
@@ -244,6 +249,77 @@ class FailureEventTests(unittest.TestCase):
         self.assertEqual(trace["authority_boundary"], "trace_only")
         self.assertIn("missing", trace["failure_norm_key"])
         self.assertNotIn("lesson_candidate", trace)
+
+    def test_bridge_returns_trace_only_input_view(self):
+        normalized = normalize_failure_event_trace(_valid_event(needs_review=True))
+
+        bridge = build_lesson_candidate_input_trace(normalized)
+
+        self.assertTrue(bridge["bridge_trace"])
+        self.assertEqual(bridge["bridge_type"], "failure_event_to_lesson_candidate_input")
+        self.assertEqual(bridge["authority_boundary"], "trace_only_input_view")
+        self.assertTrue(bridge["not_a_lesson_candidate"])
+        self.assertEqual(bridge["type"], "lesson_candidate_input_trace")
+
+    def test_bridge_does_not_mutate_normalized_input(self):
+        normalized = normalize_failure_event_trace(_valid_event(needs_review=True))
+        before = copy.deepcopy(normalized)
+
+        build_lesson_candidate_input_trace(normalized)
+
+        self.assertEqual(normalized, before)
+
+    def test_bridge_preserves_needs_review(self):
+        normalized = normalize_failure_event_trace(_valid_event(needs_review=True, review_state="pending_review"))
+
+        bridge = build_lesson_candidate_input_trace(normalized)
+
+        self.assertTrue(bridge["needs_review"])
+        self.assertEqual(bridge["review_state"], "pending_review")
+
+    def test_bridge_preserves_evaluator_source(self):
+        normalized = normalize_failure_event_trace(_valid_event(evaluator_source="sandbox_checker"))
+
+        bridge = build_lesson_candidate_input_trace(normalized)
+
+        self.assertEqual(bridge["evaluator_source"], "sandbox_checker")
+
+    def test_bridge_does_not_create_lesson_candidate(self):
+        bridge = build_lesson_candidate_input_trace(normalize_failure_event_trace(_valid_event()))
+
+        self.assertNotIn("lesson_candidate", bridge)
+        self.assertTrue(bridge["not_a_lesson_candidate"])
+        self.assertFalse(bridge["lesson_candidate_created"])
+        self.assertFalse(bridge["lesson_store_written"])
+        self.assertEqual(bridge["side_effects"], [])
+
+    def test_bridge_similar_context_hint_records_source_and_authority(self):
+        bridge = build_lesson_candidate_input_trace(normalize_failure_event_trace(_valid_event()))
+        hint = bridge["similar_context_hint"]
+
+        self.assertEqual(hint["structure_key"]["source"], "schema_fields")
+        self.assertEqual(hint["structure_key"]["authority"], "deterministic_hint")
+        self.assertEqual(hint["causal_key"]["source"], "mismatch_type")
+        self.assertEqual(hint["causal_key"]["authority"], "structured_hint")
+        self.assertEqual(hint["semantic_key"]["source"], "not_provided")
+        self.assertEqual(hint["semantic_key"]["authority"], "non_authoritative_review_required")
+
+    def test_bridge_semantic_key_is_not_proof_or_eligibility(self):
+        bridge = build_lesson_candidate_input_trace(normalize_failure_event_trace(_valid_event()))
+        semantic_key = bridge["similar_context_hint"]["semantic_key"]
+
+        self.assertIsNone(semantic_key["value"])
+        self.assertNotEqual(semantic_key["authority"], "deterministic_hint")
+        self.assertNotEqual(semantic_key["authority"], "proof")
+        self.assertNotIn("eligible", semantic_key)
+        self.assertNotIn("eligibility", semantic_key)
+
+    def test_bridge_rejects_non_normalized_input(self):
+        with self.assertRaises(ValueError):
+            build_lesson_candidate_input_trace(_valid_event())
+
+        with self.assertRaises(ValueError):
+            build_lesson_candidate_input_trace({"type": "raw_failure_event"})
 
 
 if __name__ == "__main__":

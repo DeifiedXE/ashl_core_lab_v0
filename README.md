@@ -798,3 +798,12 @@ v2.7a adds `ashl_core.failure_events` as a trace-only failure_event schema found
 - Does not create `lesson_candidate`.
 - Does not connect sandbox runtime.
 - Preserves evaluator / review / boundary assumptions.
+
+## v2.7c Failure Event to Lesson Candidate Input Bridge Trace-only
+
+- Adds trace-only input bridge from normalized `failure_event` to lesson candidate input view.
+- `lesson_candidate_input_trace` is preparation evidence, not a `lesson_candidate`.
+- Does not create `lesson_candidate`.
+- Does not write `lesson_store`.
+- Adds source boundary for `similar_context_hint`.
+- Keeps semantic hints non-authoritative and review-required.

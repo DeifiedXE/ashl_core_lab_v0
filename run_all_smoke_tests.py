@@ -25,7 +25,12 @@ from ashl_core.deliberation import deliberate
 from ashl_core.expression import build_expression_package
 from ashl_core.experience_log import list_experience_events, list_lesson_candidates
 from ashl_core.fake_sandbox import build_initial_sandbox_state, pick_up
-from ashl_core.failure_events import build_failure_event, normalize_failure_event_trace, validate_failure_event
+from ashl_core.failure_events import (
+    build_failure_event,
+    build_lesson_candidate_input_trace,
+    normalize_failure_event_trace,
+    validate_failure_event,
+)
 from ashl_core.guard import guard_output
 from ashl_core.integrated_loop import run_turn
 from ashl_core.lesson_runner import (
@@ -957,6 +962,37 @@ def smoke_failure_event_normalization_trace() -> dict:
         and trace["lesson_candidate_created"] is False
     )
     return _result("failure_event_normalization_trace", passed, trace)
+
+
+def smoke_failure_event_to_lesson_candidate_input_bridge_trace() -> dict:
+    event = build_failure_event(
+        motivation_type="sandbox_task",
+        motivation_source="smoke",
+        goal={"goal_type": "pick_up_object"},
+        action_intent={"action_type": "pick_up", "target_id": "cube_001"},
+        expected_outcome={"type": "object_state", "expected_state": "held"},
+        actual_outcome={"type": "object_state", "actual_state": "not_moved"},
+        evaluator_source="sandbox_checker",
+        mismatch=True,
+        failure_reason_id="object_not_picked_up",
+        failure_type="action_result_mismatch",
+        needs_review=True,
+        failure_event_id="failure_smoke_001",
+    )
+    normalized = normalize_failure_event_trace(event)
+    bridge = build_lesson_candidate_input_trace(normalized)
+    semantic_key = bridge["similar_context_hint"]["semantic_key"]
+    passed = (
+        bridge["bridge_trace"] is True
+        and bridge["not_a_lesson_candidate"] is True
+        and bridge["needs_review"] is True
+        and bridge["evaluator_source"] == "sandbox_checker"
+        and semantic_key["authority"] == "non_authoritative_review_required"
+        and "lesson_candidate" not in bridge
+        and bridge["lesson_candidate_created"] is False
+        and bridge["lesson_store_written"] is False
+    )
+    return _result("failure_event_to_lesson_candidate_input_bridge_trace", passed, bridge)
 
 
 def smoke_phase0_trust_curiosity_personality_boundary_docs() -> dict:
@@ -2312,6 +2348,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_phase0_assumption_consistency_audit(),
         smoke_failure_event_schema_foundation(),
         smoke_failure_event_normalization_trace(),
+        smoke_failure_event_to_lesson_candidate_input_bridge_trace(),
         smoke_phase0_trust_curiosity_personality_boundary_docs(),
         smoke_teaching_cli_conflict_check(),
         smoke_cross_task_shared_prerequisite_isolation(),
