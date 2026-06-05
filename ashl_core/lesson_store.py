@@ -475,6 +475,58 @@ def build_stable_conflict_key(
     return f"conflict:{decision_point}:{conflict_type}:{'+'.join(sorted_lesson_ids)}"
 
 
+def build_conflict_review_resolution_preview(
+    conflict_trace: dict[str, Any],
+    review_items: list[dict[str, Any]] | None = None,
+) -> dict[str, Any]:
+    stable_conflict_key = conflict_trace.get("stable_conflict_key")
+    lesson_ids = set(conflict_trace.get("conflicting_lesson_ids", []))
+    matched_review_items = []
+    for review in review_items or []:
+        if review.get("target_type") != "conflict":
+            continue
+        if review.get("target_id") != stable_conflict_key:
+            continue
+
+        source_lesson_id = review.get("source_lesson_id")
+        candidate_lesson_id = review.get("candidate_lesson_id")
+        if source_lesson_id not in lesson_ids or candidate_lesson_id not in lesson_ids:
+            continue
+
+        approval_state = review.get("approval_state")
+        if approval_state == "approved":
+            preview_suggestion = "candidate_has_human_approval"
+        elif approval_state == "rejected":
+            preview_suggestion = "candidate_has_human_rejection"
+        else:
+            preview_suggestion = "candidate_review_not_final"
+
+        matched_review_items.append(
+            {
+                "review_id": review.get("id"),
+                "target_type": review.get("target_type"),
+                "target_id": review.get("target_id"),
+                "source_lesson_id": source_lesson_id,
+                "candidate_lesson_id": candidate_lesson_id,
+                "review_state": review.get("review_state"),
+                "approval_state": approval_state,
+                "notes": review.get("notes"),
+                "preview_suggestion": preview_suggestion,
+            }
+        )
+
+    return {
+        "conflict_id": conflict_trace.get("conflict_id"),
+        "stable_conflict_key": stable_conflict_key,
+        "matched_review_items": matched_review_items,
+        "resolution_preview_applied": False,
+        "conflict_changed": False,
+        "selection_changed": False,
+        "activation_changed": False,
+        "reason": "trace_only_conflict_review_resolution_preview" if matched_review_items else "no_matching_review_item",
+    }
+
+
 def select_lesson_for_decision_point(
     lessons: list[dict[str, Any]],
     decision_point: str,
@@ -503,7 +555,7 @@ def select_lesson_for_decision_point(
             conflict_detected=True,
             review_items=review_items,
         )
-        return {
+        result = {
             "type": "lesson_selection_result",
             "decision_point": decision_point,
             "active_lesson_ids": [lesson.get("lesson_id") for lesson in active_lessons],
@@ -528,6 +580,8 @@ def select_lesson_for_decision_point(
             "selected_lesson": None,
             "behavior_changed": False,
         }
+        result["conflict_review_resolution_preview"] = build_conflict_review_resolution_preview(result, review_items)
+        return result
 
     selected = matches[0] if len(matches) == 1 else None
     supersede_activations = build_strict_supersede_activations(

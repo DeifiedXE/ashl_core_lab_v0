@@ -437,6 +437,80 @@ def smoke_conflict_id_stability() -> dict:
     )
 
 
+def smoke_conflict_review_resolution_preview() -> dict:
+    east = build_lesson_from_failure("session_east", pick_up(build_initial_sandbox_state(), "cube_001"))
+    west_failure = {
+        "type": "sandbox_action_result",
+        "tool": "pick_up",
+        "object_id": "cube_001",
+        "result": "failed",
+        "failure_reason": "not_facing_west",
+        "state": build_initial_sandbox_state(),
+    }
+    west = build_lesson_from_failure("session_west", west_failure)
+    baseline = select_lesson_for_decision_point([east, west], "before_retry_pick_up_cube")
+    approved = mark_review_approved(
+        create_review_item(
+            target_type="conflict",
+            target_id=baseline["stable_conflict_key"],
+            source_lesson_id="lesson_001",
+            candidate_lesson_id="lesson_002",
+            reason="conflict_requires_manual_review",
+            notes="human approved candidate",
+            review_id="review_approved",
+        )
+    )
+    rejected = mark_review_rejected(
+        create_review_item(
+            target_type="conflict",
+            target_id=baseline["stable_conflict_key"],
+            source_lesson_id="lesson_001",
+            candidate_lesson_id="lesson_002",
+            reason="conflict_requires_manual_review",
+            notes="human rejected candidate",
+            review_id="review_rejected",
+        )
+    )
+    approved_result = select_lesson_for_decision_point([east, west], "before_retry_pick_up_cube", review_items=[approved])
+    rejected_result = select_lesson_for_decision_point([east, west], "before_retry_pick_up_cube", review_items=[rejected])
+    missing_result = select_lesson_for_decision_point([east, west], "before_retry_pick_up_cube", review_items=[])
+    misleading = mark_review_approved(
+        create_review_item(
+            target_type="conflict",
+            target_id="conflict:wrong",
+            source_lesson_id="lesson_001",
+            candidate_lesson_id="lesson_002",
+            reason=baseline["stable_conflict_key"],
+            notes=baseline["stable_conflict_key"],
+            review_id="review_misleading",
+        )
+    )
+    misleading_result = select_lesson_for_decision_point([east, west], "before_retry_pick_up_cube", review_items=[misleading])
+
+    approved_preview = approved_result["conflict_review_resolution_preview"]
+    rejected_preview = rejected_result["conflict_review_resolution_preview"]
+    missing_preview = missing_result["conflict_review_resolution_preview"]
+    passed = (
+        approved_preview["matched_review_items"][0]["preview_suggestion"] == "candidate_has_human_approval"
+        and rejected_preview["matched_review_items"][0]["preview_suggestion"] == "candidate_has_human_rejection"
+        and approved_preview["resolution_preview_applied"] is False
+        and approved_preview["conflict_changed"] is False
+        and approved_preview["selection_changed"] is False
+        and approved_preview["activation_changed"] is False
+        and approved_result["conflict_detected"] == baseline["conflict_detected"]
+        and approved_result["selected_lesson_id"] is None
+        and rejected_result["selected_lesson_id"] is None
+        and missing_preview["matched_review_items"] == []
+        and missing_preview["reason"] == "no_matching_review_item"
+        and misleading_result["conflict_review_resolution_preview"]["matched_review_items"] == []
+    )
+    return _result(
+        "conflict_review_resolution_preview",
+        passed,
+        {"approved_preview": approved_preview, "rejected_preview": rejected_preview, "missing_preview": missing_preview},
+    )
+
+
 def smoke_cross_task_shared_prerequisite_isolation() -> dict:
     lesson_001 = build_lesson_from_failure("session_cube_001", pick_up(build_initial_sandbox_state(), "cube_001"))
     lesson_001["object_id"] = "cube_001"
@@ -1754,6 +1828,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_multi_lesson_isolation(),
         smoke_conflict_detection_require_review(),
         smoke_conflict_id_stability(),
+        smoke_conflict_review_resolution_preview(),
         smoke_teaching_cli_conflict_check(),
         smoke_cross_task_shared_prerequisite_isolation(),
         smoke_manual_stale_marking(),

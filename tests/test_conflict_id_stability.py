@@ -154,8 +154,9 @@ class ConflictIdStabilityTests(unittest.TestCase):
         before = copy.deepcopy(review)
         result = conflict_selection()
 
-        self.assertNotIn("conflict_review_resolution_preview", result)
-        self.assertNotIn("matched_review_id", result)
+        self.assertIn("conflict_review_resolution_preview", result)
+        self.assertEqual(result["conflict_review_resolution_preview"]["matched_review_items"], [])
+        self.assertEqual(result["conflict_review_resolution_preview"]["reason"], "no_matching_review_item")
         self.assertEqual(review, before)
 
     def test_known_unknown_failure_reason_behavior_remains_unchanged(self):
