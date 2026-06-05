@@ -793,6 +793,92 @@ def smoke_activation_audit() -> dict:
     )
 
 
+def smoke_activation_regression_suite() -> dict:
+    old_lesson = build_lesson_from_failure("session_east", pick_up(build_initial_sandbox_state(), "cube_001"))
+    old_lesson["object_id"] = "cube_001"
+    old_lesson["stale_reason"] = None
+    old_lesson = mark_lesson_stale(old_lesson)
+    old_lesson["stale_reason"] = "manual: regression fixture"
+    candidate = {
+        "lesson_id": "lesson_004",
+        "source_session": "manual_fixture",
+        "source_failure_reason": "not_facing_east_refined",
+        "trigger": {"action": "pick_up", "target_type": "cube"},
+        "decision_point": "before_retry_pick_up_cube",
+        "object_id": "cube_001",
+        "condition": {"avatar_facing": "east"},
+        "suggested_action_before_retry": "turn(east)",
+        "status": "active",
+        "stale": False,
+        "stale_reason": None,
+        "confidence": "manual_fixture",
+    }
+    context = {"task": "pick_up", "object_id": "cube_001", "decision_point": "before_retry_pick_up_cube"}
+    link = link_lesson_supersede(old_lesson, candidate)
+    lessons = [link["old_lesson"], link["new_lesson"]]
+    before = json.dumps(lessons, sort_keys=True)
+    success = select_lesson_for_context(lessons, context)
+    after = json.dumps(lessons, sort_keys=True)
+
+    missing = dict(link["old_lesson"])
+    missing["superseded_by"] = "lesson_missing"
+    missing_result = select_lesson_for_context([missing], context)
+
+    ineligible_candidate = dict(candidate)
+    ineligible_candidate["object_id"] = "cube_002"
+    ineligible_link = link_lesson_supersede(old_lesson, ineligible_candidate)
+    ineligible = select_lesson_for_context([ineligible_link["old_lesson"], ineligible_link["new_lesson"]], context)
+
+    west_failure = {
+        "type": "sandbox_action_result",
+        "tool": "pick_up",
+        "object_id": "cube_001",
+        "result": "failed",
+        "failure_reason": "not_facing_west",
+        "state": build_initial_sandbox_state(),
+    }
+    conflict = select_lesson_for_decision_point(
+        [link["old_lesson"], link["new_lesson"], build_lesson_from_failure("session_west", west_failure)],
+        "before_retry_pick_up_cube",
+    )
+    known = generate_lesson_from_failure("session_known", pick_up(build_initial_sandbox_state(), "cube_001"))
+    unknown = generate_lesson_from_failure(
+        "session_unknown",
+        {
+            "type": "sandbox_action_result",
+            "tool": "pick_up",
+            "object_id": "cube_001",
+            "result": "failed",
+            "failure_reason": "unmapped_obstacle_shadow",
+            "state": build_initial_sandbox_state(),
+        },
+    )
+    activation = success["supersede_activation"]
+    suggestion = success["replacement_suggestions"][0]
+    passed = (
+        activation["activation_applied"] is True
+        and success["selected_lesson_id"] == "lesson_004"
+        and activation["failed_conditions"] == []
+        and before == after
+        and missing_result["supersede_activation"]["candidate_exists"] is False
+        and missing_result["supersede_activation"]["activation_applied"] is False
+        and ineligible["supersede_activation"]["candidate_eligible"] is False
+        and ineligible["supersede_activation"]["activation_applied"] is False
+        and conflict["conflict_detected"] is True
+        and conflict["conflict_resolution"] == "require_review"
+        and conflict["supersede_activation"]["activation_applied"] is False
+        and suggestion["candidate_lesson_id"] == activation["candidate_lesson_id"]
+        and known["trace"]["generation_status"] == "supported_failure_reason"
+        and unknown["trace"]["generation_status"] == "unknown_failure_reason"
+        and unknown["lesson"] is None
+    )
+    return _result(
+        "activation_regression_suite",
+        passed,
+        {"success": activation, "missing": missing_result["supersede_activation"], "conflict": conflict},
+    )
+
+
 def smoke_teaching_cli() -> dict:
     known = run_known_flow()
     unknown = run_unknown_flow()
@@ -1151,6 +1237,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_supersede_replacement_suggestion(),
         smoke_strict_supersede_activation(),
         smoke_activation_audit(),
+        smoke_activation_regression_suite(),
         smoke_state_persistence(),
         smoke_concept_layer(),
         smoke_state_core(),

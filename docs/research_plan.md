@@ -306,6 +306,19 @@ Current order:
 - v2.1c Activation Audit / Edge Case Hardening：本包
 - Update log generation：下一步候選
 - v2.2 Manual Review / Approval Gate or Activation Regression Suite：後續評估
+## Activation Regression Suite
+
+v2.2 adds a long-term activation regression suite.
+No new activation capability is added, and strict activation conditions remain unchanged.
+
+The suite protects the v2.1 strict supersede activation invariants before later Manual Review / Approval Gate work. Supersede link remains metadata, not authorization. Conflict logic remains independent from supersede relation. Lifecycle metadata remains immutable during activation. CLI lifecycle display remains read-only. Multi-layer supersede chain remains unsupported.
+
+Manual Review / Approval Gate, review state, approval state, priority, automatic conflict resolution, automatic stale, lifecycle write CLI, fallback search, and known / unknown failure_reason behavior changes are not implemented in this package.
+
+Current order:
+- v2.1c Activation Audit / Edge Case Hardening：已完成
+- v2.2 Activation Regression Suite：本包
+- v2.2 Manual Review / Approval Gate：後續評估
 ## Minimal Teaching CLI
 
 v1.8 Minimal Teaching CLI 是既有 lesson flow 的命令列 wrapper。

@@ -28,6 +28,7 @@ ASHL Core Lab 是 ASHL Core／D清音 的最小 Python 實驗專案，用來驗�
 - v2.1a Supersede Replacement Suggestion
 - v2.1b Strict Supersede Selection Activation
 - v2.1c Activation Audit / Edge Case Hardening
+- v2.2 Activation Regression Suite
 - Integrated Loop v0.1
 - Persistent Candidate Layer v0.2
 - Correction Label v0.3
@@ -416,6 +417,23 @@ Current order:
 - v2.1c Activation Audit / Edge Case Hardening：本包
 - Update log generation：下一步候選
 - v2.2 Manual Review / Approval Gate or Activation Regression Suite：後續評估
+## v2.2 Activation Regression Suite
+
+v2.2 adds a long-term activation regression suite.
+- No new activation capability is added.
+- Strict activation conditions remain unchanged.
+- Supersede link remains metadata, not authorization.
+- Conflict logic remains independent from supersede relation.
+- Lifecycle metadata remains immutable during activation.
+- CLI lifecycle display remains read-only.
+- Multi-layer supersede chain remains unsupported.
+- Manual Review / Approval Gate is not implemented in this package.
+- Known / unknown failure_reason behavior remains unchanged.
+
+Current order:
+- v2.1c Activation Audit / Edge Case Hardening：已完成
+- v2.2 Activation Regression Suite：本包
+- v2.2 Manual Review / Approval Gate：後續評估
 ## Correction / Rule / Trial Flow
 
 - correction pending 只記錄使用者糾正。
