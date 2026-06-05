@@ -2,7 +2,7 @@ import copy
 import unittest
 
 from ashl_core.fake_sandbox import build_initial_sandbox_state, pick_up
-from ashl_core.failure_events import build_failure_event, validate_failure_event
+from ashl_core.failure_events import build_failure_event, normalize_failure_event_trace, validate_failure_event
 from ashl_core.lesson_store import (
     build_conflict_review_resolution_dry_run,
     build_lesson_from_failure,
@@ -183,6 +183,67 @@ class FailureEventTests(unittest.TestCase):
 
         self.assertTrue(smoke_lesson_memory_layer_relation_docs()["passed"])
         self.assertTrue(smoke_phase0_assumption_consistency_audit()["passed"])
+
+    def test_normalization_does_not_mutate_failure_event(self):
+        event = _valid_event(needs_review=True)
+        before = copy.deepcopy(event)
+
+        normalize_failure_event_trace(event)
+
+        self.assertEqual(event, before)
+
+    def test_normalization_returns_deterministic_view(self):
+        first_event = _valid_event(raw_event_ref={"transient": "first"})
+        second_event = _valid_event(raw_event_ref={"transient": "second"}, human_notes="Different raw note")
+
+        first = normalize_failure_event_trace(first_event)
+        second = normalize_failure_event_trace(second_event)
+
+        self.assertEqual(first["failure_norm_key"], second["failure_norm_key"])
+        self.assertEqual(first["motivation_type"], second["motivation_type"])
+        self.assertEqual(first["goal_type"], second["goal_type"])
+        self.assertEqual(first["action_type"], second["action_type"])
+        self.assertEqual(first["expected_outcome_type"], second["expected_outcome_type"])
+        self.assertEqual(first["actual_outcome_type"], second["actual_outcome_type"])
+        self.assertEqual(first["mismatch_type"], second["mismatch_type"])
+        self.assertEqual(first["evaluator_source"], second["evaluator_source"])
+
+    def test_normalization_preserves_needs_review_boundary(self):
+        trace = normalize_failure_event_trace(_valid_event(needs_review=True, review_state="pending_review"))
+
+        self.assertTrue(trace["needs_review"])
+        self.assertEqual(trace["review_state"], "pending_review")
+        self.assertEqual(trace["authority_boundary"], "trace_only")
+
+    def test_normalization_preserves_evaluator_source_boundary(self):
+        trace = normalize_failure_event_trace(_valid_event(evaluator_source="sandbox_checker"))
+
+        self.assertEqual(trace["evaluator_source"], "sandbox_checker")
+        self.assertEqual(trace["normalization_authority"], "not_authoritative")
+
+    def test_normalization_does_not_create_lesson_candidate_or_side_effects(self):
+        trace = normalize_failure_event_trace(_valid_event())
+
+        self.assertNotIn("lesson_candidate", trace)
+        self.assertFalse(trace["lesson_candidate_created"])
+        self.assertEqual(trace["side_effects"], [])
+
+    def test_normalization_does_not_make_llm_only_event_authoritative(self):
+        trace = normalize_failure_event_trace(
+            _valid_event(
+                evaluator_source="llm",
+                expected_outcome=None,
+                actual_outcome=None,
+                raw_event_ref="I think the cube failed because it looked stuck.",
+            )
+        )
+
+        self.assertTrue(trace["normalized"])
+        self.assertTrue(trace["llm_authoritative_source"])
+        self.assertEqual(trace["normalization_authority"], "not_authoritative")
+        self.assertEqual(trace["authority_boundary"], "trace_only")
+        self.assertIn("missing", trace["failure_norm_key"])
+        self.assertNotIn("lesson_candidate", trace)
 
 
 if __name__ == "__main__":

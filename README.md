@@ -790,3 +790,11 @@ v2.7a adds `ashl_core.failure_events` as a trace-only failure_event schema found
 - No lesson_candidate builder runtime is added.
 - `failure_events` does not modify selection, conflict, review, or activation behavior.
 - LLM-only evaluator output cannot authorize a failure_reason.
+
+## v2.7b Failure Event Normalization Trace
+
+- Adds a trace-only deterministic normalization view for structured `failure_event`.
+- `normalized_failure_event` is a deterministic trace view, not a new authority source.
+- Does not create `lesson_candidate`.
+- Does not connect sandbox runtime.
+- Preserves evaluator / review / boundary assumptions.

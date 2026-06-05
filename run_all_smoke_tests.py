@@ -25,7 +25,7 @@ from ashl_core.deliberation import deliberate
 from ashl_core.expression import build_expression_package
 from ashl_core.experience_log import list_experience_events, list_lesson_candidates
 from ashl_core.fake_sandbox import build_initial_sandbox_state, pick_up
-from ashl_core.failure_events import build_failure_event, validate_failure_event
+from ashl_core.failure_events import build_failure_event, normalize_failure_event_trace, validate_failure_event
 from ashl_core.guard import guard_output
 from ashl_core.integrated_loop import run_turn
 from ashl_core.lesson_runner import (
@@ -929,6 +929,34 @@ def smoke_failure_event_schema_foundation() -> dict:
         passed,
         {"valid": valid_trace, "missing_expected": missing_trace, "llm": llm_trace},
     )
+
+
+def smoke_failure_event_normalization_trace() -> dict:
+    event = build_failure_event(
+        motivation_type="sandbox_task",
+        motivation_source="smoke",
+        goal={"goal_type": "pick_up_object"},
+        action_intent={"action_type": "pick_up", "target_id": "cube_001"},
+        expected_outcome={"type": "object_state", "expected_state": "held"},
+        actual_outcome={"type": "object_state", "actual_state": "not_moved"},
+        evaluator_source="sandbox_checker",
+        mismatch=True,
+        failure_reason_id="object_not_picked_up",
+        failure_type="action_result_mismatch",
+        needs_review=True,
+        failure_event_id="failure_smoke_001",
+    )
+    trace = normalize_failure_event_trace(event)
+    passed = (
+        trace["normalized"] is True
+        and trace["evaluator_source"] == "sandbox_checker"
+        and trace["needs_review"] is True
+        and trace["authority_boundary"] == "trace_only"
+        and trace["normalization_authority"] == "not_authoritative"
+        and "lesson_candidate" not in trace
+        and trace["lesson_candidate_created"] is False
+    )
+    return _result("failure_event_normalization_trace", passed, trace)
 
 
 def smoke_phase0_trust_curiosity_personality_boundary_docs() -> dict:
@@ -2283,6 +2311,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_lesson_memory_layer_relation_docs(),
         smoke_phase0_assumption_consistency_audit(),
         smoke_failure_event_schema_foundation(),
+        smoke_failure_event_normalization_trace(),
         smoke_phase0_trust_curiosity_personality_boundary_docs(),
         smoke_teaching_cli_conflict_check(),
         smoke_cross_task_shared_prerequisite_isolation(),

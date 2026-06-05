@@ -558,6 +558,32 @@ Non-goals:
 - no Long-term Memory write
 - no selection / activation / conflict / review behavior changes
 
+## v2.7b Failure Event Normalization Trace
+
+Status: completed / trace-only.
+
+Goal:
+Create a deterministic trace-only normalized view for structured `failure_event`.
+
+Scope:
+- normalize structured `failure_event` fields into stable trace view
+- preserve `evaluator_source`
+- preserve `needs_review` / review boundary
+- generate deterministic normalization key from structured fields
+- ensure normalized view is not a new authority source
+
+Non-goals:
+- no sandbox runtime
+- no evaluator runtime
+- no failure_event review runtime
+- no curiosity runtime
+- no novelty runtime
+- no personality weight runtime
+- no lesson_candidate builder
+- no Long-term Memory write
+- no selection / activation / conflict behavior changes
+- no LLM-only authoritative failure or novelty source
+
 ## Minimal Teaching CLI
 
 v1.8 Minimal Teaching CLI 是既有 lesson flow 的命令列 wrapper。

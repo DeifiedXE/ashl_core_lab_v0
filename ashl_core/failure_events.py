@@ -16,6 +16,33 @@ REQUIRED_FAILURE_EVENT_FIELDS = [
     "mismatch",
 ]
 
+_MISSING_NORMALIZED_VALUE = "missing"
+
+
+def _normalized_scalar(value: Any) -> str:
+    if value is None or value == "":
+        return _MISSING_NORMALIZED_VALUE
+    if isinstance(value, bool):
+        return "true" if value else "false"
+    return str(value).strip() or _MISSING_NORMALIZED_VALUE
+
+
+def _structured_type(value: Any, preferred_keys: tuple[str, ...]) -> str:
+    if isinstance(value, Mapping):
+        for key in preferred_keys:
+            if value.get(key) is not None and value.get(key) != "":
+                return _normalized_scalar(value.get(key))
+        return "structured"
+    return _normalized_scalar(value)
+
+
+def _mismatch_type(value: Any) -> str:
+    if value is True:
+        return "mismatch_true"
+    if value is False:
+        return "mismatch_false"
+    return _normalized_scalar(value)
+
 
 def build_failure_event(
     *,
@@ -133,4 +160,58 @@ def validate_failure_event(event: Mapping[str, Any]) -> dict[str, Any]:
         "similar_context_hint_present": isinstance(similar_context_hint, Mapping),
         "similar_context_hint_keys": sorted(similar_context_hint.keys()) if isinstance(similar_context_hint, Mapping) else [],
         "reason": reason,
+    }
+
+
+def normalize_failure_event_trace(failure_event: dict) -> dict[str, Any]:
+    """Return a deterministic trace-only normalized view of a failure_event.
+
+    This helper must not mutate the input event.
+    It must not produce lesson candidates.
+    It must not perform runtime review, evaluator, sandbox, or memory behavior.
+    """
+
+    event = dict(failure_event or {})
+    source_event_id = _normalized_scalar(event.get("failure_event_id") or event.get("id"))
+    motivation_type = _normalized_scalar(event.get("motivation_type"))
+    goal_type = _structured_type(event.get("goal"), ("goal_type", "type"))
+    action_type = _structured_type(event.get("action_intent"), ("action_type", "type", "action"))
+    expected_outcome_type = _structured_type(event.get("expected_outcome"), ("expected_outcome_type", "type"))
+    actual_outcome_type = _structured_type(event.get("actual_outcome"), ("actual_outcome_type", "type"))
+    mismatch_type = _mismatch_type(event.get("mismatch"))
+    evaluator_source = _normalized_scalar(event.get("evaluator_source"))
+    needs_review = bool(event.get("needs_review"))
+    review_state = _normalized_scalar(event.get("review_state") or ("pending_review" if needs_review else "not_required"))
+
+    normalization_key_parts = [
+        motivation_type,
+        goal_type,
+        action_type,
+        expected_outcome_type,
+        actual_outcome_type,
+        mismatch_type,
+        evaluator_source,
+    ]
+
+    return {
+        "type": "normalized_failure_event_trace",
+        "normalized": True,
+        "source_event_id": source_event_id,
+        "motivation_type": motivation_type,
+        "goal_type": goal_type,
+        "action_type": action_type,
+        "expected_outcome_type": expected_outcome_type,
+        "actual_outcome_type": actual_outcome_type,
+        "mismatch_type": mismatch_type,
+        "evaluator_source": evaluator_source,
+        "needs_review": needs_review,
+        "review_state": review_state,
+        "failure_norm_key": "|".join(normalization_key_parts),
+        "authority_boundary": "trace_only",
+        "normalization_authority": "not_authoritative",
+        "llm_authoritative_source": evaluator_source == "llm",
+        "source_boundary": "structured_fields_only",
+        "lesson_candidate_created": False,
+        "side_effects": [],
+        "reason": "deterministic_trace_view_not_authority_source",
     }
