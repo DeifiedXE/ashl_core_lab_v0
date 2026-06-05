@@ -777,3 +777,14 @@ Responsibility boundary: ASHL Core provides learned_principle_candidate and sour
 - `docs/phase0_assumption_consistency_audit_v0_1.md`
 
 This audit document records the current consistency check across Phase 0 / Memory assumption docs. It is docs-only and does not imply runtime implementation.
+
+## Phase 0 Failure Event Schema Foundation
+
+v2.7a adds `ashl_core.failure_events` as a trace-only failure_event schema foundation.
+
+- Validation is trace-only.
+- No Phase 0 sandbox runtime is added.
+- No evaluator runtime is added.
+- No lesson_candidate builder runtime is added.
+- `failure_events` does not modify selection, conflict, review, or activation behavior.
+- LLM-only evaluator output cannot authorize a failure_reason.

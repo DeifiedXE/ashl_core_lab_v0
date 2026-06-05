@@ -524,6 +524,14 @@ The audit result is PASS. No design contradiction was found among the current Ph
 
 No runtime behavior changed. No new runtime implementation was added. v2.6c activation remains deferred.
 
+## Phase 0 Failure Event Schema Foundation
+
+v2.7a adds Phase 0 failure_event schema foundation.
+
+This package adds `ashl_core.failure_events`, `build_failure_event`, and `validate_failure_event`. Validation returns a structured trace that records whether a failure_event is valid, whether authoritative failure_reason is allowed, and why an event is valid, invalid, unclassified, or non-failure.
+
+No Phase 0 sandbox runtime was implemented. No evaluator implementation was added. No lesson_candidate builder runtime was added. No conflict review resolution activation was added. v2.6c assumption docs remain the design source.
+
 ## Minimal Teaching CLI
 
 v1.8 Minimal Teaching CLI 是既有 lesson flow 的命令列 wrapper。
