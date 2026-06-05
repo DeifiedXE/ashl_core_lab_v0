@@ -514,6 +514,16 @@ ASHL Core may provide learned_principle_candidate and source evidence, but it do
 
 No runtime behavior changed. No lesson_to_memory_promotion runtime, Long-term Memory write runtime, memory review runtime, memory_contrast_set runtime, selection change, conflict change, review change, activation change, or known / unknown failure_reason behavior change was added. The line ending dirty state described in the work package was not reproduced in this checkout before edits; git status was clean.
 
+## Phase 0 Assumption Consistency Audit
+
+v2.6c-5 is docs-only / audit-only.
+
+This package adds the Phase 0 assumption consistency audit doc. It checks failure_reason, failure_event, instinct / lesson, curiosity, similar-context, perception, and lesson / memory relation assumptions.
+
+The audit result is PASS. No design contradiction was found among the current Phase 0 / Memory assumption docs.
+
+No runtime behavior changed. No new runtime implementation was added. v2.6c activation remains deferred.
+
 ## Minimal Teaching CLI
 
 v1.8 Minimal Teaching CLI 是既有 lesson flow 的命令列 wrapper。

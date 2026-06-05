@@ -771,3 +771,9 @@ These documents define the current assumptions for how Phase 0 action failures c
 This document defines the current assumption for how the ASHL Core lesson layer relates to Qingyin Long-term Memory. It is design-only and does not imply lesson-to-memory promotion, memory writes, or memory review runtime.
 
 Responsibility boundary: ASHL Core provides learned_principle_candidate and source evidence; Qingyin Memory Layers decide memory admission. ASHL Core does not directly write Long-term Memory.
+
+## Phase 0 / Memory Assumption Audit
+
+- `docs/phase0_assumption_consistency_audit_v0_1.md`
+
+This audit document records the current consistency check across Phase 0 / Memory assumption docs. It is docs-only and does not imply runtime implementation.

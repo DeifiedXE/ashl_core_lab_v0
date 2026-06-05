@@ -860,6 +860,38 @@ def smoke_lesson_memory_layer_relation_docs() -> dict:
     return _result("lesson_memory_layer_relation_docs", passed, {"doc": str(doc_path)})
 
 
+def smoke_phase0_assumption_consistency_audit() -> dict:
+    doc_path = Path("docs/phase0_assumption_consistency_audit_v0_1.md")
+    readme_path = Path("README.md")
+    research_plan_path = Path("docs/research_plan.md")
+
+    doc = doc_path.read_text(encoding="utf-8") if doc_path.exists() else ""
+    readme = readme_path.read_text(encoding="utf-8") if readme_path.exists() else ""
+    research_plan = research_plan_path.read_text(encoding="utf-8") if research_plan_path.exists() else ""
+
+    required_terms = [
+        "Audit result: PASS",
+        "No contradiction found in failure_reason assumptions",
+        "No contradiction found in failure_event interface assumptions",
+        "No contradiction found in instinct / lesson relation assumptions",
+        "No contradiction found in curiosity / behavior assumptions",
+        "No contradiction found in similar-context assumptions",
+        "No contradiction found in perception assumptions",
+        "No contradiction found in lesson / memory relation assumptions",
+        "Runtime boundary remains docs-only",
+        "ASHL Core provides evidence",
+        "Qingyin Memory Layers decide memory admission",
+        "LLM is not the authoritative failure_reason source",
+    ]
+    passed = (
+        doc_path.exists()
+        and "phase0_assumption_consistency_audit_v0_1.md" in readme
+        and "v2.6c-5" in research_plan
+        and all(term in doc for term in required_terms)
+    )
+    return _result("phase0_assumption_consistency_audit", passed, {"doc": str(doc_path)})
+
+
 def smoke_cross_task_shared_prerequisite_isolation() -> dict:
     lesson_001 = build_lesson_from_failure("session_cube_001", pick_up(build_initial_sandbox_state(), "cube_001"))
     lesson_001["object_id"] = "cube_001"
@@ -2186,6 +2218,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_phase0_failure_event_interface_docs(),
         smoke_perception_assumption_docs(),
         smoke_lesson_memory_layer_relation_docs(),
+        smoke_phase0_assumption_consistency_audit(),
         smoke_teaching_cli_conflict_check(),
         smoke_cross_task_shared_prerequisite_isolation(),
         smoke_manual_stale_marking(),
