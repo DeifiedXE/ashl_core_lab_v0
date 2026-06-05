@@ -434,6 +434,19 @@ Current order:
 - v2.5a Conflict Review Resolution Preview：已完成
 - v2.5b Conflict Review Preview Audit / Regression：本包
 - v2.6 Conflict Resolution Activation Design：後續評估
+## Conflict Review Resolution Preconditions
+
+v2.6a adds conflict review resolution preconditions.
+This package does not perform dry-run and does not activate conflict resolution. `resolution_activation_applied` remains false.
+
+Rejected reviews are blockers only: they do not disable lessons, mark stale, make candidates fail, or resolve conflict. Conflicting reviews and multiple approved candidates block resolution. Approval does not resolve conflicts and approved candidate does not automatically win conflict.
+
+Matching uses `stable_conflict_key` / explicit metadata only. Notes / reason text matching and fallback search are prohibited. Runtime `conflict_id` cannot be the only matching anchor.
+
+Current order:
+- v2.5b Conflict Review Preview Audit / Regression：已完成
+- v2.6a Conflict Review Resolution Preconditions：本包
+- v2.6b Conflict Review Resolution Dry Run：後續評估
 ## Minimal Teaching CLI
 
 v1.8 Minimal Teaching CLI 是既有 lesson flow 的命令列 wrapper。

@@ -35,6 +35,7 @@ from ashl_core.lesson_runner import (
 )
 from ashl_core.lesson_store import (
     build_lesson_from_failure,
+    build_conflict_review_resolution_preconditions,
     build_stable_conflict_key,
     disable_lesson,
     enable_lesson,
@@ -591,6 +592,63 @@ def smoke_conflict_review_preview_audit() -> dict:
         "conflict_review_preview_audit",
         passed,
         {"approved_preview": approved_preview, "rejected_preview": rejected_preview, "missing_preview": missing_preview},
+    )
+
+
+def smoke_conflict_review_resolution_preconditions() -> dict:
+    east = build_lesson_from_failure("session_east", pick_up(build_initial_sandbox_state(), "cube_001"))
+    west = build_lesson_from_failure(
+        "session_west",
+        {
+            "type": "sandbox_action_result",
+            "tool": "pick_up",
+            "object_id": "cube_001",
+            "result": "failed",
+            "failure_reason": "not_facing_west",
+            "state": build_initial_sandbox_state(),
+        },
+    )
+    trace = select_lesson_for_decision_point([east, west], "before_retry_pick_up_cube")
+    approved = mark_review_approved(
+        create_review_item("conflict", trace["stable_conflict_key"], "lesson_001", "lesson_002", "review", review_id="review_approved")
+    )
+    rejected = mark_review_rejected(
+        create_review_item("conflict", trace["stable_conflict_key"], "lesson_001", "lesson_002", "review", review_id="review_rejected")
+    )
+    approved_other = mark_review_approved(
+        create_review_item("conflict", trace["stable_conflict_key"], "lesson_002", "lesson_001", "review", review_id="review_other")
+    )
+
+    all_met = build_conflict_review_resolution_preconditions(trace, [approved], candidate_lesson_id="lesson_002")
+    rejected_block = build_conflict_review_resolution_preconditions(trace, [rejected], candidate_lesson_id="lesson_002")
+    conflicting = build_conflict_review_resolution_preconditions(trace, [approved, rejected], candidate_lesson_id="lesson_002")
+    multiple = build_conflict_review_resolution_preconditions(trace, [approved, approved_other], candidate_lesson_id="lesson_002")
+    runtime_only = mark_review_approved(
+        create_review_item("conflict", "runtime_conflict_001", "lesson_001", "lesson_002", "review", review_id="review_runtime")
+    )
+    runtime_only["runtime_conflict_id"] = trace["conflict_id"]
+    runtime_block = build_conflict_review_resolution_preconditions(trace, [runtime_only], candidate_lesson_id="lesson_002")
+
+    passed = (
+        all_met["all_preconditions_met"] is True
+        and all_met["failed_preconditions"] == []
+        and all_met["resolution_activation_applied"] is False
+        and all_met["conflict_changed"] is False
+        and all_met["selection_changed"] is False
+        and all_met["activation_changed"] is False
+        and rejected_block["blocked_reason"] == "rejected_review_blocks_resolution"
+        and rejected_block["all_preconditions_met"] is False
+        and conflicting["blocked_reason"] == "blocked_by_conflicting_reviews"
+        and "no_conflicting_review_for_same_conflict_candidate" in conflicting["failed_preconditions"]
+        and multiple["blocked_reason"] == "blocked_by_multiple_approvals"
+        and "exactly_one_approved_candidate" in multiple["failed_preconditions"]
+        and runtime_block["preconditions"]["target_id_matches_stable_conflict_key"] is False
+        and runtime_block["resolution_activation_applied"] is False
+    )
+    return _result(
+        "conflict_review_resolution_preconditions",
+        passed,
+        {"all_met": all_met, "rejected": rejected_block, "conflicting": conflicting, "multiple": multiple},
     )
 
 
@@ -1913,6 +1971,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_conflict_id_stability(),
         smoke_conflict_review_resolution_preview(),
         smoke_conflict_review_preview_audit(),
+        smoke_conflict_review_resolution_preconditions(),
         smoke_teaching_cli_conflict_check(),
         smoke_cross_task_shared_prerequisite_isolation(),
         smoke_manual_stale_marking(),

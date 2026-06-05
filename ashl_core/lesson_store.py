@@ -527,6 +527,86 @@ def build_conflict_review_resolution_preview(
     }
 
 
+def build_conflict_review_resolution_preconditions(
+    conflict_trace: dict[str, Any],
+    review_items: list[dict[str, Any]] | None = None,
+    candidate_lesson_id: str | None = None,
+) -> dict[str, Any]:
+    stable_conflict_key = conflict_trace.get("stable_conflict_key")
+    conflict_lesson_ids = set(conflict_trace.get("conflicting_lesson_ids", []))
+    candidate_id = candidate_lesson_id
+    if candidate_id is None:
+        candidate_id = next(iter(sorted(conflict_lesson_ids)), None)
+
+    source_candidates = sorted(lesson_id for lesson_id in conflict_lesson_ids if lesson_id != candidate_id)
+    source_id = source_candidates[0] if source_candidates else None
+    relevant_reviews = [
+        review
+        for review in review_items or []
+        if review.get("target_type") == "conflict"
+        and review.get("target_id") == stable_conflict_key
+        and review.get("candidate_lesson_id") == candidate_id
+        and review.get("source_lesson_id") in conflict_lesson_ids
+    ]
+    matching_reviews = [review for review in relevant_reviews if review.get("source_lesson_id") == source_id]
+    selected_review = matching_reviews[0] if matching_reviews else None
+
+    candidate_reviews = relevant_reviews
+    approved_candidates = {
+        review.get("candidate_lesson_id")
+        for review in review_items or []
+        if review.get("target_type") == "conflict"
+        and review.get("target_id") == stable_conflict_key
+        and review.get("review_state") == "reviewed"
+        and review.get("approval_state") == "approved"
+    }
+    candidate_has_approved = any(
+        review.get("review_state") == "reviewed" and review.get("approval_state") == "approved"
+        for review in candidate_reviews
+    )
+    candidate_has_rejected = any(
+        review.get("review_state") == "reviewed" and review.get("approval_state") == "rejected"
+        for review in candidate_reviews
+    )
+
+    preconditions = {
+        "stable_conflict_key_exists": bool(stable_conflict_key),
+        "matching_review_item_exists": selected_review is not None,
+        "review_state_is_reviewed": selected_review.get("review_state") == "reviewed" if selected_review else False,
+        "approval_state_is_approved": selected_review.get("approval_state") == "approved" if selected_review else False,
+        "target_type_is_conflict": selected_review.get("target_type") == "conflict" if selected_review else False,
+        "target_id_matches_stable_conflict_key": selected_review.get("target_id") == stable_conflict_key if selected_review else False,
+        "source_lesson_id_matches": selected_review.get("source_lesson_id") == source_id if selected_review else False,
+        "candidate_lesson_id_matches": selected_review.get("candidate_lesson_id") == candidate_id if selected_review else False,
+        "no_conflicting_review_for_same_conflict_candidate": not (candidate_has_approved and candidate_has_rejected),
+        "exactly_one_approved_candidate": len(approved_candidates) == 1,
+    }
+    failed_preconditions = [name for name, value in preconditions.items() if value is not True]
+
+    blocked_reason = None
+    if not preconditions["no_conflicting_review_for_same_conflict_candidate"]:
+        blocked_reason = "blocked_by_conflicting_reviews"
+    elif not preconditions["exactly_one_approved_candidate"] and len(approved_candidates) > 1:
+        blocked_reason = "blocked_by_multiple_approvals"
+    elif candidate_has_rejected and not candidate_has_approved:
+        blocked_reason = "rejected_review_blocks_resolution"
+
+    return {
+        "conflict_id": conflict_trace.get("conflict_id"),
+        "stable_conflict_key": stable_conflict_key,
+        "candidate_lesson_id": candidate_id,
+        "preconditions": preconditions,
+        "all_preconditions_met": len(failed_preconditions) == 0,
+        "failed_preconditions": failed_preconditions,
+        "blocked_reason": blocked_reason,
+        "resolution_activation_applied": False,
+        "conflict_changed": False,
+        "selection_changed": False,
+        "activation_changed": False,
+        "reason": "activation_preconditions_trace_only",
+    }
+
+
 def select_lesson_for_decision_point(
     lessons: list[dict[str, Any]],
     decision_point: str,
