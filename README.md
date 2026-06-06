@@ -994,6 +994,18 @@ v2.7a adds `ashl_core.failure_events` as a trace-only failure_event schema found
 - Allows Qingyin to propose hard consolidation but not complete it alone.
 - Does not implement soft / hard consolidation runtime.
 
+## v2.9e Voice Instinct Assumption Index
+
+- `docs/voice_instinct_assumption_v0_1.md`
+- Defines voice as instinct, not skill.
+- Places voice instinct in the expressive layer of Qingyin's artificial instinct system.
+- Maps voice learning onto the existing action learning pattern: actual_output / expected_output / mismatch / failure_reason / lesson_candidate / review.
+- Clarifies early vocal imitation is not language understanding.
+- Defines initial voice tone as designer-provided starting direction, not final identity.
+- Defines Qingyin's voice as her developmental result, not a real-person voice clone.
+- Marks voice instinct trigger conditions as future Audio Sense-dependent design.
+- Does not implement STT / TTS / Audio Sense / voice training runtime.
+
 ## v2.9c-1 Equivocation Handling / Trace Trust Boundary Correction
 
 - `docs/equivocation_trace_trust_boundary_correction_v0_1.md`

@@ -1183,6 +1183,36 @@ Non-goals:
 - no Memory Layer write
 - no selection / activation / conflict behavior changes
 
+## v2.9e Voice Instinct Assumption Index
+
+Status: completed / docs-only / assumption-index
+
+Goal:
+Index voice instinct assumptions into Phase 0 / Core Instinct / Audio Sense docs.
+
+Scope:
+- define voice as instinct, not skill
+- place voice instinct in expressive instinct layer
+- map voice learning to action learning pattern
+- distinguish vocal imitation from language understanding
+- define voice tone direction as young, gentle, and quiet
+- clarify initial voice tone is designer-provided starting direction, not final identity
+- clarify Qingyin's voice belongs to her developmental result
+- prohibit real-person voice cloning
+- mark voice instinct trigger conditions as future Audio Sense-dependent design
+- define possible future trigger sources without making runtime rules
+
+Non-goals:
+- no voice instinct runtime
+- no STT runtime
+- no TTS runtime
+- no Audio Sense runtime
+- no voice training
+- no voice cloning
+- no Core Seed runtime changes
+- no Memory Layer behavior changes
+- no lesson_store write
+
 ## v2.9c-1 Equivocation Handling / Trace Trust Boundary Correction
 
 Status: completed / docs-only / correction-only

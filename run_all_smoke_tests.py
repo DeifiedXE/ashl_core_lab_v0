@@ -1801,6 +1801,35 @@ def smoke_equivocation_trace_trust_boundary_correction_docs() -> dict:
     )
     return _result("equivocation_trace_trust_boundary_correction_docs", passed, {"doc": str(doc_path)})
 
+def smoke_voice_instinct_assumption_docs() -> dict:
+    doc_path = Path("docs/voice_instinct_assumption_v0_1.md")
+    readme_path = Path("README.md")
+    research_plan_path = Path("docs/research_plan.md")
+    doc = doc_path.read_text(encoding="utf-8") if doc_path.exists() else ""
+    readme = readme_path.read_text(encoding="utf-8") if readme_path.exists() else ""
+    research_plan = research_plan_path.read_text(encoding="utf-8") if research_plan_path.exists() else ""
+    required_terms = [
+        '發聲是本能，不是技能',
+        '發聲本能是清音人工本能層的一部分',
+        '發聲學習和行動學習使用相同的機制',
+        '清音學說話不等於清音理解語言',
+        '稚嫩但溫和文靜',
+        '初始音色由設計者設定基本參數方向',
+        '初始設定是起點，不是終點',
+        '「音色是清音自己的」指的是發展結果，不是初始狀態',
+        '發聲本能不是持續運作',
+        '發聲本能也不是完全被動等待',
+        '觸發條件待 Audio Sense 接入後定義',
+        '清音的音色不是克隆真實人聲',
+    ]
+    passed = (
+        doc_path.exists()
+        and all(term in doc for term in required_terms)
+        and "voice_instinct_assumption_v0_1.md" in readme
+        and "v2.9e Voice Instinct Assumption Index" in research_plan
+    )
+    return _result("voice_instinct_assumption_docs", passed, {"doc": str(doc_path)})
+
 def smoke_phase0_trust_curiosity_personality_boundary_docs() -> dict:
     doc_path = Path("docs/phase0_trust_curiosity_personality_boundary_v0_1.md")
     readme_path = Path("README.md")
@@ -3179,6 +3208,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_core_seed_design_spirit_supplement_docs(),
         smoke_memory_paranoia_misinformation_equivocation_assumption_docs(),
         smoke_equivocation_trace_trust_boundary_correction_docs(),
+        smoke_voice_instinct_assumption_docs(),
         smoke_phase0_trust_curiosity_personality_boundary_docs(),
         smoke_teaching_cli_conflict_check(),
         smoke_cross_task_shared_prerequisite_isolation(),
