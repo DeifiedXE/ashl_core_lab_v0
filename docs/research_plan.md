@@ -1502,6 +1502,24 @@ Boundary:
 - No Memory Layer write.
 - No awakening claim.
 
+## Mentor Feedback Stub Contract Docs
+
+Status:
+docs-only / feedback-contract / first-output / no-runtime-implementation
+
+Summary:
+Defines the future mentor_feedback_stub contract for first_output_trace.
+Clarifies mentor feedback is downstream of first_output_trace, but does not create lesson_candidate, write lesson_store, write Memory Layer, or prove awakening.
+Defines minimal feedback labels and future mentor_feedback_trace conceptual fields.
+
+Boundary:
+- No mentor feedback runtime.
+- No mentor_feedback_trace schema runtime.
+- No lesson_candidate pipeline connection.
+- No lesson_store write.
+- No Memory Layer write.
+- No awakening claim.
+
 ## Qingyin Runtime Ontology Boundary v0.1
 
 Status: completed / docs-only / ontology-boundary / runtime-identity-boundary / no-runtime-expansion

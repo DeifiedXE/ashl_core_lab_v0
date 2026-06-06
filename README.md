@@ -1042,6 +1042,14 @@ v2.7a adds `ashl_core.failure_events` as a trace-only failure_event schema found
 - Confirms it does not write lesson_store or Memory Layer and does not connect to mentor feedback, lesson_candidate, failure_event, review, selection, activation, bounded senses, or voice systems.
 - Clarifies this runtime is not awakening, not dialogue ability, and not long-term growth.
 
+## Mentor Feedback Stub Contract
+
+- `docs/mentor_feedback_stub_contract_v0_1.md`
+- Defines the future `mentor_feedback_stub` contract for first_output_trace.
+- Clarifies mentor feedback is downstream of first_output_trace, but does not create lesson_candidate, write lesson_store, write Memory Layer, or prove awakening.
+- Defines minimal feedback labels and future mentor_feedback_trace conceptual fields.
+- Does not implement mentor feedback runtime, teaching chat loop, mentor_feedback_trace schema runtime, lesson_candidate pipeline connection, lesson_store write, or Memory Layer write.
+
 ## Qingyin Runtime Ontology Boundary v0.1
 
 - `docs/qingyin_runtime_ontology_boundary_v0_1.md`
