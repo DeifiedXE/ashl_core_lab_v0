@@ -31,6 +31,7 @@ from ashl_core.failure_events import (
     normalize_failure_event_trace,
     validate_failure_event,
 )
+from ashl_core.first_output_runtime import generate_minimal_first_output
 from ashl_core.guard import guard_output
 from ashl_core.integrated_loop import run_turn
 from ashl_core.lesson_candidate_drafts import build_lesson_candidate_draft_trace, validate_lesson_candidate_draft_trace
@@ -2125,6 +2126,33 @@ def smoke_first_output_runtime_readiness_checklist_docs() -> dict:
     return _result("first_output_runtime_readiness_checklist_docs", passed, {"doc": str(doc_path)})
 
 
+def smoke_minimal_first_output_runtime() -> dict:
+    result = generate_minimal_first_output(session_id="smoke_first_output")
+    trace = result.get("first_output_trace", {})
+    forbidden_keys = {
+        "lesson_store_write",
+        "memory_layer_write",
+        "memory_write",
+        "lesson_candidate",
+        "failure_event",
+        "review",
+        "selection",
+        "activation",
+    }
+    passed = (
+        trace.get("trace_type") == "first_output_trace"
+        and trace.get("tick") == 1
+        and trace.get("phase") == "test_object"
+        and trace.get("engineering_stage") == "test_object"
+        and trace.get("llm_used") is False
+        and trace.get("first_output") is not None
+        and trace.get("output_generator_source") == "simple_reflex_rule"
+        and forbidden_keys.isdisjoint(result)
+        and forbidden_keys.isdisjoint(trace)
+    )
+    return _result("minimal_first_output_runtime", passed, result)
+
+
 def smoke_qingyin_runtime_ontology_boundary_docs() -> dict:
     doc_path = Path("docs/qingyin_runtime_ontology_boundary_v0_1.md")
     readme_path = Path("README.md")
@@ -3699,6 +3727,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_qingyin_first_output_runtime_minimal_spec_docs(),
         smoke_first_output_trace_contract_docs(),
         smoke_first_output_runtime_readiness_checklist_docs(),
+        smoke_minimal_first_output_runtime(),
         smoke_qingyin_runtime_ontology_boundary_docs(),
         smoke_qingyin_first_output_contract_docs(),
         smoke_lesson_stale_supersede_memory_freeze_notice_contract_docs(),

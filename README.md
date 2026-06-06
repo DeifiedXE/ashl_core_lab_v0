@@ -1025,6 +1025,14 @@ v2.7a adds `ashl_core.failure_events` as a trace-only failure_event schema found
 - Confirms Minimal First Output Runtime v0 must not write lesson_store or Memory Layer, must not connect to lesson_candidate pipeline, and must not claim Qingyin is awake.
 - Does not implement runtime, first_output generator, state store, trace schema runtime, mentor feedback runtime, bounded senses runtime, or lesson_candidate pipeline connection.
 
+## Minimal First Output Runtime v0
+
+- Provides a minimal non-LLM first_output runtime for test-object engineering verification.
+- Generates one fixed-reflex first_output: `*`.
+- Records a `first_output_trace` with `llm_used=false`, `phase=test_object`, and `engineering_stage=test_object`.
+- This is not awakening, dialogue ability, learning, or long-term growth.
+- Does not connect mentor feedback, failure_event, lesson_candidate, review, selection, activation, lesson_store, Memory Layer, bounded senses, or any LLM API.
+
 ## Qingyin Runtime Ontology Boundary v0.1
 
 - `docs/qingyin_runtime_ontology_boundary_v0_1.md`

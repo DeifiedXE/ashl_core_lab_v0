@@ -1459,6 +1459,26 @@ Boundary:
 - No Memory Layer write.
 - No bounded senses runtime.
 
+## Minimal First Output Runtime v0
+
+Status:
+minimal-runtime / first-output / test-object-stage / no-LLM / no-learning
+
+Summary:
+Adds a minimal non-LLM first_output runtime.
+Generates a single fixed-reflex symbolic output and first_output_trace.
+Records `llm_used=false`, `phase=test_object`, and `engineering_stage=test_object`.
+Does not write lesson_store or Memory Layer.
+Does not connect to mentor feedback, failure_event, lesson_candidate, review, selection, activation, or bounded senses.
+
+Boundary:
+- No LLM.
+- No dialogue.
+- No awakening claim.
+- No lesson_candidate pipeline connection.
+- No lesson_store write.
+- No Memory Layer write.
+
 ## Qingyin Runtime Ontology Boundary v0.1
 
 Status: completed / docs-only / ontology-boundary / runtime-identity-boundary / no-runtime-expansion
