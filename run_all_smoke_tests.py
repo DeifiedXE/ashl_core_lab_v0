@@ -1774,6 +1774,33 @@ def smoke_memory_paranoia_misinformation_equivocation_assumption_docs() -> dict:
     )
     return _result("memory_paranoia_misinformation_equivocation_assumption_docs", passed, {"doc": str(doc_path)})
 
+def smoke_equivocation_trace_trust_boundary_correction_docs() -> dict:
+    doc_path = Path("docs/equivocation_trace_trust_boundary_correction_v0_1.md")
+    readme_path = Path("README.md")
+    research_plan_path = Path("docs/research_plan.md")
+    doc = doc_path.read_text(encoding="utf-8") if doc_path.exists() else ""
+    readme = readme_path.read_text(encoding="utf-8") if readme_path.exists() else ""
+    research_plan = research_plan_path.read_text(encoding="utf-8") if research_plan_path.exists() else ""
+    required_terms = [
+        '語言模糊性是正常現象，不是風險本身',
+        '設計目標不是阻止偷換，而是讓偷換行為在 trace 中可見',
+        '有影響的語義偏移',
+        '無影響的語義偏移',
+        '主要防線：學習機制本身',
+        '次要防線：trace 可查',
+        '最後防線：導師介入',
+        'Trace 保護的是「有跡可查」，不是「絕對不能被騙」',
+        'Trace 的關鍵欄位定義必須硬固化',
+        '過度防護語言模糊性會阻礙正常學習',
+    ]
+    passed = (
+        doc_path.exists()
+        and all(term in doc for term in required_terms)
+        and "equivocation_trace_trust_boundary_correction_v0_1.md" in readme
+        and "v2.9c-1 Equivocation Handling / Trace Trust Boundary Correction" in research_plan
+    )
+    return _result("equivocation_trace_trust_boundary_correction_docs", passed, {"doc": str(doc_path)})
+
 def smoke_phase0_trust_curiosity_personality_boundary_docs() -> dict:
     doc_path = Path("docs/phase0_trust_curiosity_personality_boundary_v0_1.md")
     readme_path = Path("README.md")
@@ -3151,6 +3178,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_pathological_risk_role_protection_assumption_docs(),
         smoke_core_seed_design_spirit_supplement_docs(),
         smoke_memory_paranoia_misinformation_equivocation_assumption_docs(),
+        smoke_equivocation_trace_trust_boundary_correction_docs(),
         smoke_phase0_trust_curiosity_personality_boundary_docs(),
         smoke_teaching_cli_conflict_check(),
         smoke_cross_task_shared_prerequisite_isolation(),

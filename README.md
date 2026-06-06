@@ -994,6 +994,17 @@ v2.7a adds `ashl_core.failure_events` as a trace-only failure_event schema found
 - Allows Qingyin to propose hard consolidation but not complete it alone.
 - Does not implement soft / hard consolidation runtime.
 
+## v2.9c-1 Equivocation Handling / Trace Trust Boundary Correction
+
+- `docs/equivocation_trace_trust_boundary_correction_v0_1.md`
+- Corrects v2.9c equivocation handling priority.
+- Clarifies that language ambiguity is normal learning behavior, not risk by itself.
+- Defines prediction error / learning mechanism as primary defense for impactful semantic drift.
+- Defines trace as secondary retrospective tool, not primary protection.
+- Defines mentor intervention as final defense, not continuous monitoring.
+- Preserves hard-consolidated operational definitions for healthy rebellion and paranoia.
+- Does not implement equivocation detection runtime or prediction error tracking.
+
 ## v2.9c Memory Paranoia / Misinformation / Equivocation Risk Assumption Index
 
 - `docs/memory_paranoia_misinformation_equivocation_risk_assumption_v0_1.md`

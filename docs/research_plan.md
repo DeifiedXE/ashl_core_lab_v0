@@ -1183,6 +1183,33 @@ Non-goals:
 - no Memory Layer write
 - no selection / activation / conflict behavior changes
 
+## v2.9c-1 Equivocation Handling / Trace Trust Boundary Correction
+
+Status: completed / docs-only / correction-only
+
+Goal:
+Correct v2.9c equivocation handling and trace trust boundary.
+
+Scope:
+- clarify that language ambiguity is normal learning behavior, not risk by itself
+- distinguish normal linguistic imprecision from harmful semantic drift
+- define impactful semantic drift as prediction-error-visible
+- define non-impactful semantic drift as harmless
+- define learning mechanism / prediction error as primary defense
+- define trace as secondary retrospective tool
+- define mentor intervention as final defense
+- preserve hard-consolidated definitions for healthy rebellion / paranoia
+- define trace key field semantics as hard-consolidated
+
+Non-goals:
+- no equivocation detection runtime
+- no prediction error tracker runtime
+- no trace semantic validation runtime
+- no external mentor monitor runtime
+- no Core Seed runtime changes
+- no Memory Layer behavior changes
+- no lesson_store write
+
 ## v2.9c Memory Paranoia / Misinformation / Equivocation Risk Assumption Index
 
 Status: completed / docs-only / assumption-index
