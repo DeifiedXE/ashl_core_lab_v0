@@ -1436,6 +1436,29 @@ Boundary:
 - No Memory Layer write.
 - No review / lesson / selection / activation / conflict behavior changes.
 
+## First Output Runtime Readiness Checklist Docs
+
+Status:
+docs-only / readiness-checklist / first-output / no-runtime-implementation
+
+Summary:
+Adds a readiness checklist for planning Minimal First Output Runtime v0.
+Confirms first_output non-LLM source boundaries, trace contract, `llm_used = false`, test-object engineering boundary, no lesson_store write, no Memory Layer write, no lesson_candidate pipeline connection, no mentor feedback runtime, and no awakening claim.
+
+Readiness result:
+READY_FOR_MINIMAL_FIRST_OUTPUT_RUNTIME_V0
+
+Boundary:
+- No runtime.
+- No first_output generator.
+- No state store.
+- No trace schema runtime.
+- No mentor feedback runtime.
+- No lesson_candidate pipeline connection.
+- No lesson_store write.
+- No Memory Layer write.
+- No bounded senses runtime.
+
 ## Qingyin Runtime Ontology Boundary v0.1
 
 Status: completed / docs-only / ontology-boundary / runtime-identity-boundary / no-runtime-expansion

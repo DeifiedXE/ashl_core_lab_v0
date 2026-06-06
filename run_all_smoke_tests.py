@@ -2094,6 +2094,37 @@ def smoke_first_output_trace_contract_docs() -> dict:
     return _result("first_output_trace_contract_docs", passed, {"doc": str(doc_path)})
 
 
+def smoke_first_output_runtime_readiness_checklist_docs() -> dict:
+    doc_path = Path("docs/first_output_runtime_readiness_checklist_v0_1.md")
+    readme_path = Path("README.md")
+    research_plan_path = Path("docs/research_plan.md")
+    doc = doc_path.read_text(encoding="utf-8") if doc_path.exists() else ""
+    readme = readme_path.read_text(encoding="utf-8") if readme_path.exists() else ""
+    research_plan = research_plan_path.read_text(encoding="utf-8") if research_plan_path.exists() else ""
+    required_terms = [
+        "Readiness result: READY_FOR_MINIMAL_FIRST_OUTPUT_RUNTIME_V0",
+        "Requirement: first_output must be generated without LLM output.",
+        "Requirement: first_output source must be ASHL Core rule, state, seed, or bounded randomness.",
+        "Requirement: first_output_trace minimum fields are defined.",
+        "Requirement: llm_used must be false.",
+        "Requirement: first_output remains test-object engineering verification, not awakening.",
+        "Requirement: Minimal First Output Runtime v0 must not write lesson_store.",
+        "Requirement: Minimal First Output Runtime v0 must not write Memory Layer.",
+        "Requirement: Minimal First Output Runtime v0 must not connect to lesson_candidate pipeline.",
+        "Requirement: Mentor feedback runtime remains deferred.",
+        "Requirement: Bounded senses / Screen Sense / Camera Sense remain deferred.",
+        "Requirement: Minimal First Output Runtime v0 must not claim Qingyin is awake.",
+        "This readiness result only authorizes planning a minimal first_output runtime package.",
+    ]
+    passed = (
+        doc_path.exists()
+        and all(term in doc for term in required_terms)
+        and "first_output_runtime_readiness_checklist_v0_1.md" in readme
+        and "First Output Runtime Readiness Checklist Docs" in research_plan
+    )
+    return _result("first_output_runtime_readiness_checklist_docs", passed, {"doc": str(doc_path)})
+
+
 def smoke_qingyin_runtime_ontology_boundary_docs() -> dict:
     doc_path = Path("docs/qingyin_runtime_ontology_boundary_v0_1.md")
     readme_path = Path("README.md")
@@ -3667,6 +3698,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_voice_instinct_audio_sense_boundary_audit_docs(),
         smoke_qingyin_first_output_runtime_minimal_spec_docs(),
         smoke_first_output_trace_contract_docs(),
+        smoke_first_output_runtime_readiness_checklist_docs(),
         smoke_qingyin_runtime_ontology_boundary_docs(),
         smoke_qingyin_first_output_contract_docs(),
         smoke_lesson_stale_supersede_memory_freeze_notice_contract_docs(),

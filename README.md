@@ -1016,6 +1016,15 @@ v2.7a adds `ashl_core.failure_events` as a trace-only failure_event schema found
 - Keeps mentor feedback and lesson_candidate input consideration downstream.
 - Does not implement runtime, first_output generator, state store, trace schema runtime, lesson_store write, or Memory Layer write.
 
+## First Output Runtime Readiness Checklist
+
+- `docs/first_output_runtime_readiness_checklist_v0_1.md`
+- Adds a docs-only readiness checklist for planning Minimal First Output Runtime v0.
+- Records `Readiness result: READY_FOR_MINIMAL_FIRST_OUTPUT_RUNTIME_V0`.
+- Confirms first_output non-LLM source boundaries, trace contract, `llm_used = false`, and test-object engineering boundary.
+- Confirms Minimal First Output Runtime v0 must not write lesson_store or Memory Layer, must not connect to lesson_candidate pipeline, and must not claim Qingyin is awake.
+- Does not implement runtime, first_output generator, state store, trace schema runtime, mentor feedback runtime, bounded senses runtime, or lesson_candidate pipeline connection.
+
 ## Qingyin Runtime Ontology Boundary v0.1
 
 - `docs/qingyin_runtime_ontology_boundary_v0_1.md`
