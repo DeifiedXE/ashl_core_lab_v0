@@ -900,6 +900,35 @@ Non-goals:
 - no Long-term Memory write
 - no Memory Layer write
 
+## v2.8c-1 Review Task Audit / Regression
+
+Status: completed / audit-regression-only.
+
+Goal:
+Audit and harden review_task_trace after v2.8c.
+
+Scope:
+- confirm review_task_trace is not review decision
+- confirm completion / closed / done does not imply approval
+- confirm reviewer_identity cannot be injected from LLM / queue / draft input
+- confirm reviewer_identity_context source restrictions
+- confirm semantic_key remains secondary optional hint
+- confirm source_failure_norm_key outranks semantic_key
+- confirm injected review decision fields do not affect output
+- confirm no selection-facing read APIs
+- confirm review_task_trace does not enter memory_contrast_set
+- record future rejected / deferred proposed fields masking boundary
+
+Non-goals:
+- no manual_review runtime
+- no review decision creation
+- no approved / rejected / deferred review result runtime
+- no approved lesson_candidate creation
+- no lesson_store write
+- no Memory Layer write
+- no selection / activation / conflict behavior changes
+- no rejected / deferred proposed fields masking runtime
+
 ## Minimal Teaching CLI
 
 v1.8 Minimal Teaching CLI 是既有 lesson flow 的命令列 wrapper。

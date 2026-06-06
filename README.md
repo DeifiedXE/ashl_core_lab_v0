@@ -894,3 +894,14 @@ v2.7a adds `ashl_core.failure_events` as a trace-only failure_event schema found
 - Requires reviewer_identity to come from runtime/session context, not LLM-generated content.
 - Keeps semantic_key as secondary optional hint below source_failure_norm_key.
 - Does not add manual_review runtime, review decision creation, draft mutation, selection-facing read APIs, lesson_store writes, or Memory Layer writes.
+
+## v2.8c-1 Review Task Audit / Regression
+
+- `docs/review_task_trace_audit_v0_1.md`
+- Audits `review_task_trace` after v2.8c.
+- Confirms `review_task_trace` is not review decision.
+- Confirms completion / closed / done does not imply approval.
+- Confirms reviewer_identity cannot be injected from LLM / queue / draft input.
+- Confirms semantic_key remains secondary optional hint below source_failure_norm_key.
+- Confirms review_task_trace does not enter selection-facing APIs or memory_contrast_set.
+- Records future rejected / deferred proposed fields masking boundary.

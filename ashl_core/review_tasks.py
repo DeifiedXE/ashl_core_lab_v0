@@ -17,6 +17,11 @@ _ALLOWED_TASK_STATES = {
     "done",
 }
 _LLM_IDENTITY_SOURCES = {"llm", "llm_generated", "llm_output", "draft_json", "external_text_payload"}
+_ALLOWED_IDENTITY_CONTEXT_SOURCES = {
+    "runtime_session_context",
+    "authenticated_human_session",
+    "system_runtime_context",
+}
 
 
 def _normalized_task_state(value: Any) -> str:
@@ -29,7 +34,11 @@ def _reviewer_identity_from_context(context: Mapping[str, Any] | None) -> tuple[
     context = dict(context or {})
     identity = context.get("reviewer_identity")
     source = context.get("source")
-    if identity and isinstance(source, str) and source not in _LLM_IDENTITY_SOURCES:
+    if not identity and source is None:
+        return None, "not_available_until_runtime_context"
+    if source not in _ALLOWED_IDENTITY_CONTEXT_SOURCES:
+        raise ValueError("reviewer_identity_context source must be runtime/session context")
+    if identity:
         return identity, source
     return None, "not_available_until_runtime_context"
 
@@ -85,6 +94,7 @@ def build_review_task_trace(
         "completion_does_not_imply_approval": True,
         "no_draft_mutation": True,
         "no_selection_facing_read_api": True,
+        "not_enter_memory_contrast_set": True,
         "not_written_to_lesson_store": True,
         "not_written_to_memory_layer": True,
         "side_effects": [],

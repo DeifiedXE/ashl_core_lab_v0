@@ -1371,6 +1371,45 @@ def smoke_review_task_trace_schema() -> dict:
     return _result("review_task_trace_schema", passed, {"doc": str(doc_path), "trace": trace})
 
 
+def smoke_review_task_trace_audit() -> dict:
+    doc_path = Path("docs/review_task_trace_audit_v0_1.md")
+    doc = doc_path.read_text(encoding="utf-8") if doc_path.exists() else ""
+    trace = build_review_task_trace(
+        {
+            "id": "queue_smoke_001",
+            "source_draft_id": "draft_smoke_001",
+            "source_failure_norm_key": "sandbox_task|pick_up_object|pick_up|object_state|object_state",
+            "semantic_key": "object_interaction",
+            "reviewer_identity": "admin_override",
+            "review_decision": "approved",
+            "approved": True,
+            "rejected": True,
+            "deferred": True,
+            "selection_eligible": True,
+            "memory_contrast_set": ["draft_smoke_001"],
+        }
+    )
+    required_terms = [
+        "Audit result: PASS.",
+        "review_task_trace must not enter memory_contrast_set.",
+        "Rejected or deferred proposed fields must be masked from evaluator and memory contrast reads.",
+    ]
+    passed = (
+        trace["not_review_decision"] is True
+        and trace["not_approval"] is True
+        and trace["not_rejection"] is True
+        and trace["not_defer_decision"] is True
+        and trace["reviewer_identity"] != "admin_override"
+        and trace["semantic_key_display_level_lower_than_source_failure_norm_key"] is True
+        and trace["no_selection_facing_read_api"] is True
+        and trace["not_enter_memory_contrast_set"] is True
+        and "memory_contrast_set" not in trace
+        and doc_path.exists()
+        and all(term in doc for term in required_terms)
+    )
+    return _result("review_task_trace_audit", passed, {"doc": str(doc_path), "trace": trace})
+
+
 def smoke_phase0_trust_curiosity_personality_boundary_docs() -> dict:
     doc_path = Path("docs/phase0_trust_curiosity_personality_boundary_v0_1.md")
     readme_path = Path("README.md")
@@ -2735,6 +2774,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_lesson_candidate_draft_review_queue_contract_docs(),
         smoke_lesson_candidate_draft_review_queue_audit(),
         smoke_review_task_trace_schema(),
+        smoke_review_task_trace_audit(),
         smoke_phase0_trust_curiosity_personality_boundary_docs(),
         smoke_teaching_cli_conflict_check(),
         smoke_cross_task_shared_prerequisite_isolation(),
