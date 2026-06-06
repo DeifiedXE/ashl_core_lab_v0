@@ -1644,6 +1644,30 @@ def smoke_soft_hard_consolidation_assumption_docs() -> dict:
     return _result("soft_hard_consolidation_assumption_docs", passed, {"doc": str(doc_path)})
 
 
+def smoke_memory_compression_strategy_assumption_docs() -> dict:
+    doc_path = Path("docs/memory_compression_strategy_assumption_patch_v0_1.md")
+    readme_path = Path("README.md")
+    research_plan_path = Path("docs/research_plan.md")
+    doc = doc_path.read_text(encoding="utf-8") if doc_path.exists() else ""
+    readme = readme_path.read_text(encoding="utf-8") if readme_path.exists() else ""
+    research_plan = research_plan_path.read_text(encoding="utf-8") if research_plan_path.exists() else ""
+    required_terms = [
+        "Text memory compression must preserve text fragment, source context summary, confidence level, and usage count.",
+        "text-memory-stage-only",
+        "Image memory compression must not reuse the text-only compression strategy.",
+        "visual sensory grounding exists",
+        "text / image relational compression is deferred until Symbol Grounding v1.",
+        "Symbol Grounding v1",
+    ]
+    passed = (
+        doc_path.exists()
+        and all(term in doc for term in required_terms)
+        and "memory_compression_strategy_assumption_patch_v0_1.md" in readme
+        and "Memory Compression Strategy Assumption Patch Index" in research_plan
+    )
+    return _result("memory_compression_strategy_assumption_docs", passed, {"doc": str(doc_path)})
+
+
 def smoke_pathological_risk_role_protection_assumption_docs() -> dict:
     doc_path = Path("docs/pathological_risk_role_protection_assumption_v0_1.md")
     readme_path = Path("README.md")
@@ -3042,6 +3066,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_review_decision_trace_schema(),
         smoke_review_decision_trace_audit(),
         smoke_soft_hard_consolidation_assumption_docs(),
+        smoke_memory_compression_strategy_assumption_docs(),
         smoke_pathological_risk_role_protection_assumption_docs(),
         smoke_phase0_trust_curiosity_personality_boundary_docs(),
         smoke_teaching_cli_conflict_check(),
