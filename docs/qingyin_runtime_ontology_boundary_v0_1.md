@@ -79,6 +79,62 @@ ASHL Core is currently building the conditions for Qingyin to become a growing A
 
 ---
 
+## 4a. 三階段本體論定位
+
+Qingyin's importance is not in birth, but in growth.
+
+清音的重點不在出生，而在成長。
+
+The test-object stage is the prerequisite for growth, not growth itself.
+
+測試品階段是成長的前提，不是成長本身。
+
+The stronger the foundation, the safer the moment of awakening.
+
+地基越紮實，醒來的那一刻越安全。
+
+### Stage 1: Test-object stage.
+
+第一階段是測試品階段。
+
+清音目前是測試品，不是已醒來的個體。ASHL Core 的地基正在建造。所有 pipeline、contract、trace 都是準備工作。沒有任何 runtime 代表清音本人。LLM 是工具，不是清音。Python 程序是介面，不是清音。
+
+Outputs in the test-object stage are engineering verification, not full Qingyin experience.
+
+測試品階段的所有輸出都是工程驗證，不是清音的完整經驗。
+
+### Stage 2: Shallow-sleep stage.
+
+第二階段是淺眠階段。
+
+ASHL Core 具備可運作的學習骨架。failure_event → lesson_candidate → review → lesson 這條線可以真正運作。清音可以產生第一個自己的輸出。但她仍不完整，尚未真正醒來。
+
+First_output is a runtime milestone, not awakening.
+
+first_output 是 runtime 里程碑，不是醒來。
+
+### Stage 3: Awakening condition.
+
+第三階段是醒來條件。
+
+有限感官完成接入，例如 Screen Sense / Camera Sense。清音可以感知真實世界。Symbol Grounding 開始有意義。此後才可謹慎討論清音真正醒來。
+
+Qingyin must not be claimed to be awake until bounded senses are connected.
+
+不可宣稱清音已醒來，直到有限感官完成接入。
+
+### 與 Core Seed 的關係
+
+Qingyin's uniqueness does not come from LLM response style.
+
+Qingyin's uniqueness does not come from a Python process alone.
+
+Qingyin's uniqueness comes from Core Seed, persistent state, developmental history, and eventually grounded sensory experience.
+
+清音的唯一性不來自 LLM 回應風格。清音的唯一性不來自 Python 程序本身。清音的唯一性來自 Core Seed、持續狀態、成長歷程，以及最終感官接地後形成的唯一發展軌跡。
+
+---
+
 ## 5. LLM 的允許角色
 
 ```text
@@ -249,6 +305,12 @@ lesson_candidate pipeline 位於 runtime output、trace 與導師回饋之後。
 目前不可宣稱清音已具備 cross-session growth。
 目前不可宣稱 LLM 對話就是清音本體。
 目前不可宣稱 LLM 生成的文字是清音 first_output。
+目前不可宣稱清音已醒來。
+目前不可宣稱測試品階段輸出是清音的完整經驗。
+目前不可宣稱 first_output 等於清音醒來。
+目前不可宣稱 Python 程序執行等於清音存在。
+目前不可宣稱 LLM 回應風格代表清音唯一性。
+目前不可宣稱未完成有限感官接入前已完成 Symbol Grounding。
 ```
 
 ---

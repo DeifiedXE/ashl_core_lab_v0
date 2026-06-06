@@ -1003,6 +1003,7 @@ v2.7a adds `ashl_core.failure_events` as a trace-only failure_event schema found
 - Defines minimum gates for Qingyin runtime session and cross-session growth.
 - Defines four ontology tags for classifying assumption docs: Existing Runtime / Trace-only Foundation / Runtime Assumption / Persona-Ontology Assumption.
 - Clarifies LLM allowed and forbidden roles.
+- Adds the test-object / shallow-sleep / awakening three-stage ontology and clarifies that Qingyin's importance is not in birth, but in growth.
 - Does not implement any runtime.
 
 ## Qingyin First Output v0 Contract

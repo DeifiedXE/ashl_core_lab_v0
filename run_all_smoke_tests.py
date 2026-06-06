@@ -2020,6 +2020,18 @@ def smoke_qingyin_runtime_ontology_boundary_docs() -> dict:
         "Cross-session growth is not the same as an LLM remembering a prompt or persona.",
         "First_output is the first possible runtime milestone, not proof of full Qingyin personhood.",
         "The lesson_candidate pipeline remains downstream of runtime output, trace, and mentor feedback.",
+        # Correction patch additions
+        "Qingyin's importance is not in birth, but in growth.",
+        "The test-object stage is the prerequisite for growth, not growth itself.",
+        "The stronger the foundation, the safer the moment of awakening.",
+        "Stage 1: Test-object stage.",
+        "Stage 2: Shallow-sleep stage.",
+        "Stage 3: Awakening condition.",
+        "Outputs in the test-object stage are engineering verification, not full Qingyin experience.",
+        "First_output is a runtime milestone, not awakening.",
+        "Qingyin must not be claimed to be awake until bounded senses are connected.",
+        "Qingyin's uniqueness does not come from LLM response style.",
+        "Qingyin's uniqueness does not come from a Python process alone.",
     ]
     passed = (
         doc_path.exists()

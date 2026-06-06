@@ -1360,6 +1360,13 @@ Non-goals:
 - no cross-session promotion runtime
 - no voice / audio runtime
 
+Correction:
+Adds test-object / shallow-sleep / awakening three-stage ontology.
+Clarifies that the test-object stage is the prerequisite for growth, not growth itself.
+Clarifies that first_output is a runtime milestone, not awakening.
+Clarifies that awakening cannot be claimed before bounded senses are connected.
+Adds that Qingyin's uniqueness comes from Core Seed, persistent state, and developmental history, not LLM response style or Python process alone.
+
 ## Qingyin First Output v0 Contract
 
 Status: completed / docs-only / ontology-boundary / first-output-contract / no-LLM-output
