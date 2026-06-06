@@ -1136,6 +1136,15 @@ v2.7a adds `ashl_core.failure_events` as a trace-only failure_event schema found
 - `run-minimal-interaction` remains non-persistent by default; `--persist` enables append-only trace persistence and `--data-dir` can point tests at a temporary directory.
 - This is not lesson_store write, not Memory Layer write, not lesson_candidate creation, not failure_event / review / selection / activation, and not awakening evidence.
 
+## Append-only Persistence Runtime Audit
+
+- `docs/append_only_persistence_runtime_audit_v0_1.md`
+- Audits append-only JSONL persistence runtime at commit `468d4e2`.
+- Records `Audit result: PASS`.
+- Confirms first_output and mentor_feedback trace targets, append-only behavior, no overwrite, no silent correction, and no input mutation.
+- Confirms invalid trace boundaries are rejected and persistence remains outside lesson_store, Memory Layer, lesson_candidate creation, and awakening evidence.
+- Does not change persistence runtime behavior, add replay / readback runtime, or connect LLM / teaching chat / free text conversation.
+
 ## Qingyin Runtime Ontology Boundary v0.1
 
 - `docs/qingyin_runtime_ontology_boundary_v0_1.md`

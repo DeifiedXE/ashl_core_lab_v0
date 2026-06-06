@@ -3806,6 +3806,42 @@ def smoke_first_output_feedback_append_only_persistence() -> dict:
         )
 
 
+def smoke_append_only_persistence_runtime_audit_docs() -> dict:
+    doc_path = Path("docs/append_only_persistence_runtime_audit_v0_1.md")
+    readme_path = Path("README.md")
+    research_plan_path = Path("docs/research_plan.md")
+    doc = doc_path.read_text(encoding="utf-8") if doc_path.exists() else ""
+    readme = readme_path.read_text(encoding="utf-8") if readme_path.exists() else ""
+    research_plan = research_plan_path.read_text(encoding="utf-8") if research_plan_path.exists() else ""
+    required_terms = [
+        "commit: 468d4e2",
+        "Audit result: PASS",
+        "append-only persistence writes first_output_trace to data/first_output_traces.jsonl",
+        "append-only persistence writes mentor_feedback_trace to data/mentor_feedback_traces.jsonl",
+        "append-only persistence does not overwrite existing JSONL lines",
+        "append-only persistence does not silently correct records",
+        "correction must be a new trace",
+        "append-only persistence does not mutate input traces",
+        "append-only persistence rejects missing required fields",
+        "append-only persistence rejects invalid trace_type",
+        "append-only persistence rejects first_output_trace with llm_used=true",
+        "append-only persistence rejects mentor_feedback_trace with creates_lesson_candidate=true",
+        "append-only persistence rejects mentor_feedback_trace with writes_lesson_store=true",
+        "append-only persistence rejects mentor_feedback_trace with writes_memory_layer=true",
+        "append-only persistence is not lesson_store write",
+        "append-only persistence is not Memory Layer write",
+        "append-only persistence is not lesson_candidate creation",
+        "append-only persistence is not awakening evidence",
+    ]
+    passed = (
+        doc_path.exists()
+        and all(term in doc for term in required_terms)
+        and "append_only_persistence_runtime_audit_v0_1.md" in readme
+        and "Append-only Persistence Runtime Audit Docs" in research_plan
+    )
+    return _result("append_only_persistence_runtime_audit_docs", passed, {"doc": str(doc_path)})
+
+
 def smoke_state_core() -> dict:
     core = StateCore()
     result = core.apply(
@@ -4182,6 +4218,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_first_output_feedback_append_only_persistence_spec_docs(),
         smoke_first_output_feedback_persistence_readiness_checklist_docs(),
         smoke_first_output_feedback_append_only_persistence(),
+        smoke_append_only_persistence_runtime_audit_docs(),
         smoke_cross_task_shared_prerequisite_isolation(),
         smoke_manual_stale_marking(),
         smoke_supersede_link(),

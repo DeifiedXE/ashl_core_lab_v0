@@ -1761,6 +1761,29 @@ No teaching chat loop.
 No free text conversation.
 No awakening claim.
 
+## Append-only Persistence Runtime Audit Docs
+
+Status:
+docs-only / runtime-audit / append-only-persistence / no-runtime-change
+
+Summary:
+Audits First Output + Mentor Feedback Append-only Persistence v0 at commit 468d4e2.
+Records `Audit result: PASS`.
+Confirms first_output_trace writes to data/first_output_traces.jsonl and mentor_feedback_trace writes to data/mentor_feedback_traces.jsonl.
+Confirms append-only behavior, no overwrite, no silent correction, correction as a new trace, no input mutation, and strict rejection of unsafe trace boundaries.
+Confirms persistence is not lesson_store write, not Memory Layer write, not lesson_candidate creation, and not awakening evidence.
+
+Boundary:
+No persistence runtime behavior changes.
+No replay / readback runtime.
+No lesson_store write.
+No Memory Layer write.
+No lesson_candidate pipeline connection.
+No LLM.
+No teaching chat loop.
+No free text conversation.
+No awakening claim.
+
 ## Qingyin Runtime Ontology Boundary v0.1
 
 Status: completed / docs-only / ontology-boundary / runtime-identity-boundary / no-runtime-expansion
