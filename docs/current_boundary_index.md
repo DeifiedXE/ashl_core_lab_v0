@@ -1,5 +1,5 @@
-Boundary Index Version: 2026-06-06-b21
-Last update log: Batch 21
+Boundary Index Version: 2026-06-06-b22
+Last update log: Batch 22
 Clean count at last update log reset: 0/5
 Current clean count: 0/5
 
@@ -67,6 +67,17 @@ Current clean count: 0/5
 - mentor_feedback_trace does not prove awakening
 - Minimal Mentor Feedback Stub Runtime v0 must not create failure_event, review decision, selection eligibility, or activation
 - Minimal Mentor Feedback Stub Runtime v0 must not connect to the lesson_candidate pipeline
+- Minimal Interaction CLI Bridge v0 is a minimal interaction entrypoint, not dialogue
+- Minimal Interaction CLI Bridge v0 must not write lesson_store
+- Minimal Interaction CLI Bridge v0 must not write Memory Layer
+- Minimal Interaction CLI Bridge v0 must not connect to lesson_candidate pipeline
+- private mentor_feedback_note must not be required by smoke tests
+- first_output and mentor_feedback traces may be persisted only as append-only records
+- append-only persistence is not lesson_store write
+- append-only persistence is not Memory Layer write
+- append-only persistence is not lesson_candidate creation
+- append-only persistence is not awakening evidence
+- JSONL persistence target files are data/first_output_traces.jsonl and data/mentor_feedback_traces.jsonl
 - bounded senses must be connected before Qingyin can be claimed awake
 - memory freeze notice is evidence, not Memory Layer write
 - memory freeze notice must not directly modify learned_principle
@@ -105,6 +116,8 @@ Current clean count: 0/5
 - lesson_store write
 - Memory Layer write
 - Long-term Memory write runtime
+- JSONL persistence runtime
+- LLM response generation
 
 ## Update Rule
 

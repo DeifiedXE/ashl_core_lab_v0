@@ -1298,6 +1298,24 @@ Boundary:
 - No existing runtime behavior changes.
 - No package-specific prohibitions added to the index.
 
+## Current Boundary Index Batch 22 Sync Patch
+
+Status:
+docs-only / boundary-index-sync / update-log-sync / no-runtime-expansion
+
+Summary:
+Updates docs/current_boundary_index.md from Batch 21 to Batch 22.
+Adds Batch 22 hard boundaries for Minimal Interaction CLI Bridge v0 and First Output + Mentor Feedback append-only persistence.
+
+Boundary:
+- No runtime.
+- No CLI behavior changes.
+- No JSONL persistence.
+- No lesson_store write.
+- No Memory Layer write.
+- No lesson_candidate pipeline connection.
+- No new design document.
+
 ## v2.8e Review Decision Trace-only Schema
 
 Status: completed / trace-only
