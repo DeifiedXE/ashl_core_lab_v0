@@ -960,6 +960,37 @@ Non-goals:
 - no partial approval
 - no rejected / deferred proposed fields masking runtime
 
+## v2.8d-1 Review Decision Contract Audit / Regression
+
+Status: completed / docs-only / audit-regression-only.
+
+Goal:
+Audit and harden the review_decision contract before masking and identity binding docs.
+
+Scope:
+- confirm review_decision is historical event record, not live lesson object
+- confirm approved does not create active lesson
+- confirm approved does not grant lesson_store write permission
+- confirm approved does not directly grant selection eligibility
+- confirm Review Decision service is zero-permission to lesson_store
+- confirm rejected / deferred proposed fields masking boundary
+- confirm deferred is not soft approval
+- confirm partial / conditional approval is not allowed
+- confirm decision fields do not imply runtime permission / activation / override
+- confirm review_task completion is not review_decision creation
+- confirm decision_status is the only review verdict field
+
+Non-goals:
+- no manual_review runtime
+- no review decision runtime
+- no approved / rejected / deferred result runtime
+- no lesson_candidate creation
+- no lesson_store write
+- no Memory Layer write
+- no selection / activation / conflict behavior changes
+- no masking runtime
+- no identity / session binding runtime
+
 ## v2.9a Pathological Risk / Actor Role / Protection Assumption Index
 
 Status: completed / docs-only / assumption-index.

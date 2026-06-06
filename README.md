@@ -917,6 +917,16 @@ v2.7a adds `ashl_core.failure_events` as a trace-only failure_event schema found
 - Disallows partial approval.
 - Does not implement manual_review runtime, review decision runtime, lesson_store writes, selection eligibility, activation, conflict logic, or Memory Layer writes.
 
+## v2.8d-1 Review Decision Contract Audit / Regression
+
+- `docs/review_decision_contract_audit_v0_1.md`
+- Audits `review_decision` contract after v2.8d.
+- Confirms approved does not create active lesson, write lesson_store, or grant selection eligibility.
+- Confirms rejected / deferred proposed fields masking boundary.
+- Confirms deferred is not soft approval.
+- Confirms partial approval is not allowed.
+- Confirms decision fields do not imply runtime permission / activation / override.
+
 ## v2.9a Pathological Risk / Actor Role / Protection Assumption Index
 
 - `docs/pathological_risk_role_protection_assumption_v0_1.md`
