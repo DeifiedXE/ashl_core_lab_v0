@@ -414,5 +414,98 @@ class FailureEventTests(unittest.TestCase):
             build_lesson_candidate_input_trace(normalized)
 
 
+class TestSystemFaultBothUnknown(unittest.TestCase):
+    """v2.11a: When both expected and actual are unknown-like (strict), trigger system_fault."""
+
+    def _base_event(self, expected, actual):
+        return build_failure_event(
+            trace_id="trace_sf_001",
+            failure_event_id="fe_sf_001",
+            motivation_type="sandbox_task",
+            goal="test_goal",
+            action_intent={"action_type": "test_action"},
+            expected_outcome=expected,
+            actual_outcome=actual,
+            evaluator_source="human",
+            mismatch=True,
+            failure_reason_id="test_fault_reason",
+        )
+
+    # 8.1 None / None
+    def test_none_none_triggers_system_fault(self):
+        event = self._base_event(None, None)
+        validation = validate_failure_event(event)
+        self.assertFalse(validation["valid_failure_event"])
+        self.assertFalse(validation["authoritative_failure_reason_allowed"])
+        self.assertEqual(validation["event_classification"], "system_fault")
+        self.assertEqual(validation["reason"], "insufficient_expected_actual_contrast")
+
+    # 8.2 "unknown" / "unknown"
+    def test_unknown_string_triggers_system_fault(self):
+        event = self._base_event("unknown", "unknown")
+        validation = validate_failure_event(event)
+        self.assertFalse(validation["valid_failure_event"])
+        self.assertFalse(validation["authoritative_failure_reason_allowed"])
+        self.assertEqual(validation["event_classification"], "system_fault")
+        self.assertEqual(validation["reason"], "insufficient_expected_actual_contrast")
+
+    # 8.3 "" / "   "
+    def test_empty_and_whitespace_triggers_system_fault(self):
+        event = self._base_event("", "   ")
+        validation = validate_failure_event(event)
+        self.assertFalse(validation["valid_failure_event"])
+        self.assertFalse(validation["authoritative_failure_reason_allowed"])
+        self.assertEqual(validation["event_classification"], "system_fault")
+        self.assertEqual(validation["reason"], "insufficient_expected_actual_contrast")
+
+    # 8.4 "UNKNOWN" / "Unknown"
+    def test_mixed_case_unknown_triggers_system_fault(self):
+        event = self._base_event("UNKNOWN", "Unknown")
+        validation = validate_failure_event(event)
+        self.assertFalse(validation["valid_failure_event"])
+        self.assertFalse(validation["authoritative_failure_reason_allowed"])
+        self.assertEqual(validation["event_classification"], "system_fault")
+        self.assertEqual(validation["reason"], "insufficient_expected_actual_contrast")
+
+    # 8.5 0 / 0 — must NOT trigger system_fault via unknown-like rule
+    def test_zero_zero_not_system_fault_from_unknown_rule(self):
+        event = self._base_event(0, 0)
+        validation = validate_failure_event(event)
+        self.assertNotEqual(validation["event_classification"], "system_fault")
+        self.assertNotEqual(validation.get("reason"), "insufficient_expected_actual_contrast")
+
+    # 8.5 False / False — must NOT trigger system_fault via unknown-like rule
+    def test_false_false_not_system_fault_from_unknown_rule(self):
+        event = self._base_event(False, False)
+        validation = validate_failure_event(event)
+        self.assertNotEqual(validation["event_classification"], "system_fault")
+        self.assertNotEqual(validation.get("reason"), "insufficient_expected_actual_contrast")
+
+    # 8.5 [] / [] — must NOT trigger system_fault via unknown-like rule
+    def test_empty_list_not_system_fault_from_unknown_rule(self):
+        event = self._base_event([], [])
+        validation = validate_failure_event(event)
+        self.assertNotEqual(validation["event_classification"], "system_fault")
+        self.assertNotEqual(validation.get("reason"), "insufficient_expected_actual_contrast")
+
+    # 8.5 {} / {} — must NOT trigger system_fault via unknown-like rule
+    def test_empty_dict_not_system_fault_from_unknown_rule(self):
+        event = self._base_event({}, {})
+        validation = validate_failure_event(event)
+        self.assertNotEqual(validation["event_classification"], "system_fault")
+        self.assertNotEqual(validation.get("reason"), "insufficient_expected_actual_contrast")
+
+    # system_fault must not produce authoritative failure_reason
+    def test_system_fault_not_authoritative(self):
+        event = self._base_event(None, None)
+        validation = validate_failure_event(event)
+        normalized = normalize_failure_event_trace(event)
+        self.assertFalse(validation["authoritative_failure_reason_allowed"])
+        self.assertFalse(normalized["valid_normalized_failure_event"])
+        self.assertNotIn("authoritative_failure_reason", normalized)
+        with self.assertRaises(ValueError):
+            build_lesson_candidate_input_trace(normalized)
+
+
 if __name__ == "__main__":
     unittest.main()

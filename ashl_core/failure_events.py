@@ -19,6 +19,23 @@ REQUIRED_FAILURE_EVENT_FIELDS = [
 _MISSING_NORMALIZED_VALUE = "missing"
 _UNKNOWN_VALUES = {None, "", "unknown", "not_available", "missing", "null"}
 
+# Strict unknown-like values for the system_fault: both-unknown check.
+# Intentionally excludes 0, False, [], and {}.
+_STRICT_UNKNOWN_STRINGS = {"", "unknown"}
+
+
+def _is_strict_unknown(value: Any) -> bool:
+    """Return True only for None, empty string, whitespace-only string, or 'unknown' (any case).
+
+    Does NOT treat 0, False, [], or {} as unknown-like.
+    Used exclusively for the system_fault insufficient_expected_actual_contrast check.
+    """
+    if value is None:
+        return True
+    if isinstance(value, str):
+        return value.strip().lower() in _STRICT_UNKNOWN_STRINGS
+    return False
+
 
 def _normalized_scalar(value: Any) -> str:
     if value is None or value == "":
@@ -40,7 +57,11 @@ def _is_unknown_value(value: Any) -> bool:
             if isinstance(item, Mapping) and _is_unknown_value(item):
                 return True
         return all(_is_unknown_value(item) for item in value.values())
-    return value in _UNKNOWN_VALUES
+    try:
+        return value in _UNKNOWN_VALUES
+    except TypeError:
+        # Unhashable types (e.g. list) are never unknown-like.
+        return False
 
 
 def _structured_type(value: Any, preferred_keys: tuple[str, ...]) -> str:
@@ -131,8 +152,14 @@ def validate_failure_event(event: Mapping[str, Any]) -> dict[str, Any]:
     unknown_expected_actual = _is_unknown_value(event.get("expected_outcome")) and _is_unknown_value(
         event.get("actual_outcome")
     )
+    both_strict_unknown = _is_strict_unknown(event.get("expected_outcome")) and _is_strict_unknown(
+        event.get("actual_outcome")
+    )
 
-    if not has_expected_actual_contrast:
+    if both_strict_unknown:
+        classification = "system_fault"
+        reason = "insufficient_expected_actual_contrast"
+    elif not has_expected_actual_contrast:
         classification = "unclassified_event"
         reason = "missing_expected_actual_contrast"
     elif unknown_expected_actual:
