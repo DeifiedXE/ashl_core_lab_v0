@@ -1114,6 +1114,46 @@ Non-goals:
 - no tool permission runtime
 - no review / lesson / selection / activation / conflict behavior changes
 
+## Formal Lesson Candidate Creation Contract Docs
+
+Status:
+docs-only / contract-only / formal-lesson-candidate-boundary
+
+Summary:
+Defines the future contract for formal lesson_candidate creation.
+Clarifies creation requires structured evidence, validated boundaries, and review-ready trace.
+Clarifies formal lesson_candidate creation is not approval, lesson_store write, activation, selection eligibility, or Memory Layer promotion.
+Clarifies sandbox trace and voice output trace may support creation only as evidence.
+
+Boundary:
+- No formal lesson_candidate creation runtime.
+- No automatic lesson_candidate builder.
+- No lesson_store write.
+- No Memory Layer write.
+- No activation runtime.
+- No selection eligibility runtime.
+- No sandbox runtime.
+- No voice / audio runtime.
+
+Non-goals:
+- no formal lesson_candidate creation runtime
+- no formal lesson_candidate schema runtime
+- no automatic lesson_candidate builder
+- no failure_event automatic builder runtime
+- no evaluator runtime
+- no lesson_store write
+- no Memory Layer write
+- no Long-term Memory write runtime
+- no review decision runtime
+- no selection eligibility runtime
+- no activation runtime
+- no sandbox runtime
+- no voice instinct runtime
+- no Audio Sense / STT / TTS runtime
+- no voice trigger runtime
+- no voice input-output loop
+- no review / lesson / selection / activation / conflict behavior changes
+
 ## v2.8e Review Decision Trace-only Schema
 
 Status: completed / trace-only
