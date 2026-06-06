@@ -1220,6 +1220,45 @@ Non-goals:
 - no Memory Layer write
 - no self-modification runtime
 
+## v2.10c Sandbox Safety Audit Docs
+
+Status:
+docs-only / audit-only / sandbox-safety-boundary
+
+Summary:
+Audits v2.10a sandbox boundary assumptions and v2.10b sandbox failure trace contract.
+Confirms sandbox docs do not authorize runtime, external tools, real-world actions, lesson_store write, Memory Layer write, automatic failure_reason, direct lesson_candidate creation, executable repair, or memory promotion.
+
+Audit result:
+PASS
+
+Boundary:
+- No sandbox runtime.
+- No sandbox safety enforcement runtime.
+- No sandbox action runner.
+- No sandbox trace schema runtime.
+- No evaluator runtime.
+- No automatic failure_event builder.
+- No automatic lesson_candidate builder.
+- No lesson_store write.
+- No Memory Layer write.
+- No review / selection / activation behavior change.
+
+Non-goals:
+- no sandbox runtime
+- no sandbox action runner
+- no sandbox safety enforcement runtime
+- no sandbox trace schema runtime
+- no external tool runtime
+- no real-world action capability
+- no evaluator runtime
+- no failure_event automatic builder runtime
+- no lesson_candidate automatic builder runtime
+- no lesson_store write
+- no Memory Layer write
+- no Long-term Memory write runtime
+- no review / lesson / selection / activation / conflict behavior changes
+
 ## v2.10a Sandbox Boundary / Capability Assumption Docs
 
 Status: completed / docs-only / assumption-boundary / sandbox-prep

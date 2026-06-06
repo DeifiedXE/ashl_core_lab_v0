@@ -52,6 +52,7 @@ ASHL Core Lab 是 ASHL Core／D清音 的最小 Python 實驗專案，用來驗�
 - unittest
 - v2.10a Sandbox Boundary / Capability Assumption Docs
 - v2.10b Sandbox Failure / Trace Contract Docs
+- v2.10c Sandbox Safety Audit Docs
 
 ## 尚未完成
 
@@ -1006,6 +1007,16 @@ v2.7a adds `ashl_core.failure_events` as a trace-only failure_event schema found
 - Clarifies sandbox trace may support later failure_event construction but must not bypass failure_event validation.
 - Defines sandbox-to-failure_event bridge path: requires structured failure_event, normalize, lesson_candidate pipeline, review gate.
 - Does not implement sandbox runtime, trace schema runtime, or evaluator runtime.
+
+## v2.10c Sandbox Safety Audit Docs
+
+- `docs/sandbox_safety_audit_v0_1.md`
+- Audits v2.10a sandbox boundary assumptions and v2.10b sandbox failure trace contract.
+- Confirms sandbox docs do not authorize sandbox runtime, external tools, or real-world actions.
+- Confirms sandbox trace does not bypass failure_event validation or review gate.
+- Confirms sandbox docs do not authorize lesson_store write, Memory Layer write, executable repair, direct lesson_candidate creation, or memory promotion.
+- Records `Audit result: PASS`.
+- Does not implement sandbox runtime, evaluator runtime, failure_event builder runtime, lesson_candidate builder runtime, review / selection / activation behavior changes, or Memory Layer writes.
 
 ## v2.10a Sandbox Boundary / Capability Assumption Docs
 

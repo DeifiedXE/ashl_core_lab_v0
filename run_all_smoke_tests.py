@@ -1885,6 +1885,37 @@ def smoke_sandbox_boundary_capability_assumption_docs() -> dict:
     return _result("sandbox_boundary_capability_assumption_docs", passed, {"doc": str(doc_path)})
 
 
+def smoke_sandbox_safety_audit_docs() -> dict:
+    doc_path = Path("docs/sandbox_safety_audit_v0_1.md")
+    readme_path = Path("README.md")
+    research_plan_path = Path("docs/research_plan.md")
+    doc = doc_path.read_text(encoding="utf-8") if doc_path.exists() else ""
+    readme = readme_path.read_text(encoding="utf-8") if readme_path.exists() else ""
+    research_plan = research_plan_path.read_text(encoding="utf-8") if research_plan_path.exists() else ""
+    required_terms = [
+        "Audit result: PASS",
+        "Sandbox docs do not authorize sandbox runtime.",
+        "Sandbox docs do not authorize real-world action capability.",
+        "Sandbox trace does not bypass failure_event validation.",
+        "Sandbox trace does not bypass review gate.",
+        "Sandbox docs do not authorize lesson_store write.",
+        "Sandbox docs do not authorize Memory Layer write or promotion.",
+        "Sandbox repair suggestion remains non-executable.",
+        "No structured failure_event, no authoritative failure_reason.",
+        "No expected_outcome / actual_outcome contrast, no authoritative failure.",
+        "LLM-only explanation must not become authoritative failure_reason.",
+        "ASHL Core provides evidence.",
+        "D Qingyin Memory Layers decide memory admission.",
+    ]
+    passed = (
+        doc_path.exists()
+        and all(term in doc for term in required_terms)
+        and "sandbox_safety_audit_v0_1.md" in readme
+        and "v2.10c Sandbox Safety Audit Docs" in research_plan
+    )
+    return _result("sandbox_safety_audit_docs", passed, {"doc": str(doc_path)})
+
+
 def smoke_phase0_trust_curiosity_personality_boundary_docs() -> dict:
     doc_path = Path("docs/phase0_trust_curiosity_personality_boundary_v0_1.md")
     readme_path = Path("README.md")
@@ -3266,6 +3297,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_voice_instinct_assumption_docs(),
         smoke_sandbox_boundary_capability_assumption_docs(),
         smoke_sandbox_failure_trace_contract_docs(),
+        smoke_sandbox_safety_audit_docs(),
         smoke_phase0_trust_curiosity_personality_boundary_docs(),
         smoke_teaching_cli_conflict_check(),
         smoke_cross_task_shared_prerequisite_isolation(),
