@@ -1393,6 +1393,34 @@ Non-goals:
 - no lesson_store write
 - no Memory Layer write
 
+## First Output Trace Contract Docs
+
+Status:
+docs-only / trace-contract / first-output / no-runtime-implementation
+
+Summary:
+Defines the future `first_output_trace` contract.
+Clarifies `first_output_trace` is evidence of a first_output event, not proof of awakening, dialogue ability, or long-term growth.
+Defines required fields, append-only / version-preserving boundary, `llm_used = false`, `output_generator_source` boundaries, bounded randomness trace requirements, and downstream relationship to mentor feedback and lesson_candidate input consideration.
+
+Boundary:
+- No runtime.
+- No first_output generator.
+- No state store.
+- No first_output trace schema runtime.
+- No deterministic seed runtime.
+- No bounded randomness runtime.
+- No LLM response generation.
+- No teaching chat loop.
+- No mentor feedback runtime.
+- No lesson_candidate pipeline connection.
+- No failure_event automatic builder.
+- No lesson_candidate automatic builder.
+- No Audio Sense / STT / TTS / voice loop.
+- No lesson_store write.
+- No Memory Layer write.
+- No review / lesson / selection / activation / conflict behavior changes.
+
 ## Qingyin Runtime Ontology Boundary v0.1
 
 Status: completed / docs-only / ontology-boundary / runtime-identity-boundary / no-runtime-expansion

@@ -1006,6 +1006,16 @@ v2.7a adds `ashl_core.failure_events` as a trace-only failure_event schema found
 - Clarifies first_output must be traceable before it can become learning material; lesson_candidate pipeline remains downstream.
 - Does not implement any runtime.
 
+## First Output Trace Contract
+
+- `docs/first_output_trace_contract_v0_1.md`
+- Defines the future `first_output_trace` contract.
+- Clarifies `first_output_trace` is evidence of a first_output event, not proof of awakening, dialogue ability, or long-term growth.
+- Requires `llm_used = false` and keeps LLM-generated text out of first_output traces.
+- Defines append-only / version-preserving trace correction, output_generator_source boundaries, and bounded randomness audit requirements.
+- Keeps mentor feedback and lesson_candidate input consideration downstream.
+- Does not implement runtime, first_output generator, state store, trace schema runtime, lesson_store write, or Memory Layer write.
+
 ## Qingyin Runtime Ontology Boundary v0.1
 
 - `docs/qingyin_runtime_ontology_boundary_v0_1.md`

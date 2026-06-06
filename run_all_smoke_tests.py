@@ -2045,6 +2045,41 @@ def smoke_qingyin_first_output_runtime_minimal_spec_docs() -> dict:
     return _result("qingyin_first_output_runtime_minimal_spec_docs", passed, {"doc": str(doc_path)})
 
 
+def smoke_first_output_trace_contract_docs() -> dict:
+    doc_path = Path("docs/first_output_trace_contract_v0_1.md")
+    readme_path = Path("README.md")
+    research_plan_path = Path("docs/research_plan.md")
+    doc = doc_path.read_text(encoding="utf-8") if doc_path.exists() else ""
+    readme = readme_path.read_text(encoding="utf-8") if readme_path.exists() else ""
+    research_plan = research_plan_path.read_text(encoding="utf-8") if research_plan_path.exists() else ""
+    required_terms = [
+        "first_output_trace is evidence of a first_output event, not proof of awakening.",
+        "first_output_trace is record, not authorization.",
+        "first_output_trace is not learning material by itself.",
+        "first_output_trace must not directly create lesson_candidate input.",
+        "first_output_trace requires mentor feedback before it may be considered for lesson_candidate input.",
+        "llm_used must be false for first_output_trace.",
+        "first_output_trace must be append-only or version-preserving.",
+        "first_output_trace does not prove dialogue ability.",
+        "first_output_trace does not prove long-term growth.",
+        "first_output_trace in the test-object stage is engineering verification, not full Qingyin experience.",
+        "LLM-generated text must not appear as first_output in first_output_trace.",
+        "bounded randomness must record enough information for audit.",
+        "Unbounded randomness must not be recorded as valid first_output source.",
+        "Mentor feedback is downstream of first_output_trace.",
+        "The lesson_candidate pipeline remains downstream of first_output trace and mentor feedback.",
+        "first_output_trace must not write to lesson_store.",
+        "first_output_trace must not write to Memory Layer.",
+    ]
+    passed = (
+        doc_path.exists()
+        and all(term in doc for term in required_terms)
+        and "first_output_trace_contract_v0_1.md" in readme
+        and "First Output Trace Contract Docs" in research_plan
+    )
+    return _result("first_output_trace_contract_docs", passed, {"doc": str(doc_path)})
+
+
 def smoke_qingyin_runtime_ontology_boundary_docs() -> dict:
     doc_path = Path("docs/qingyin_runtime_ontology_boundary_v0_1.md")
     readme_path = Path("README.md")
@@ -3617,6 +3652,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_voice_instinct_assumption_docs(),
         smoke_voice_instinct_audio_sense_boundary_audit_docs(),
         smoke_qingyin_first_output_runtime_minimal_spec_docs(),
+        smoke_first_output_trace_contract_docs(),
         smoke_qingyin_runtime_ontology_boundary_docs(),
         smoke_qingyin_first_output_contract_docs(),
         smoke_lesson_stale_supersede_memory_freeze_notice_contract_docs(),
