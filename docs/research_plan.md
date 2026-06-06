@@ -1195,6 +1195,33 @@ Non-goals:
 - no voice input-output loop
 - no review / lesson / selection / activation / conflict behavior changes
 
+## Current Boundary Index Docs
+
+Status:
+docs-only / boundary-index / no-runtime-expansion
+
+Summary:
+Adds docs/current_boundary_index.md as a short, versioned, low-token source of global hard boundaries for future work packages.
+Defines that the boundary index must be updated every time an Update Log is generated.
+Future work packages must check the first-line Boundary Index Version before starting.
+
+Boundary:
+- No runtime.
+- No existing design document content changes.
+- No new boundary design decisions.
+- No package-specific prohibitions added to the index.
+
+Non-goals:
+- no runtime
+- no changes to existing detailed boundary docs
+- no new boundary decisions beyond the indexed current global hard boundaries
+- no v2.11a Unknown Expected / Actual System Fault Patch
+- no required field strict validation patch
+- no Memory Layer freeze notice
+- no formal lesson_candidate positive spec
+- no pipeline transition docs
+- no sandbox allowed_action_set Gmod deferral
+
 ## v2.8e Review Decision Trace-only Schema
 
 Status: completed / trace-only

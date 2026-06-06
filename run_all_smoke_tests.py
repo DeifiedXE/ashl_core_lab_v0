@@ -1747,6 +1747,38 @@ def smoke_formal_lesson_candidate_creation_boundary_audit_docs() -> dict:
     return _result("formal_lesson_candidate_creation_boundary_audit_docs", passed, {"doc": str(doc_path)})
 
 
+def smoke_current_boundary_index_docs() -> dict:
+    doc_path = Path("docs/current_boundary_index.md")
+    readme_path = Path("README.md")
+    research_plan_path = Path("docs/research_plan.md")
+    doc = doc_path.read_text(encoding="utf-8") if doc_path.exists() else ""
+    readme = readme_path.read_text(encoding="utf-8") if readme_path.exists() else ""
+    research_plan = research_plan_path.read_text(encoding="utf-8") if research_plan_path.exists() else ""
+    required_terms = [
+        "Boundary Index Version: 2026-06-06-b17",
+        "# Global Hard Boundaries",
+        "# Currently Deferred Areas",
+        "# Update Rule",
+        "trace is evidence, not approval",
+        "trace is record, not authorization",
+        "no lesson_store write unless explicitly authorized by a future dedicated package",
+        "no Memory Layer write unless explicitly authorized by a future dedicated package",
+        "formal lesson_candidate creation is not lesson approval",
+        "ASHL Core provides evidence; Qingyin Memory Layers decide memory admission",
+        "bidirectional voice interaction",
+        "This file must be updated every time an Update Log is generated.",
+    ]
+    line_count = len(doc.splitlines()) if doc else 0
+    passed = (
+        doc_path.exists()
+        and all(term in doc for term in required_terms)
+        and line_count <= 150
+        and "current_boundary_index.md" in readme
+        and "Current Boundary Index Docs" in research_plan
+    )
+    return _result("current_boundary_index_docs", passed, {"doc": str(doc_path), "line_count": line_count})
+
+
 def smoke_memory_compression_strategy_assumption_docs() -> dict:
     doc_path = Path("docs/memory_compression_strategy_assumption_patch_v0_1.md")
     readme_path = Path("README.md")
@@ -3428,6 +3460,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_review_decision_trace_integration_boundary_docs(),
         smoke_formal_lesson_candidate_creation_contract_docs(),
         smoke_formal_lesson_candidate_creation_boundary_audit_docs(),
+        smoke_current_boundary_index_docs(),
         smoke_soft_hard_consolidation_assumption_docs(),
         smoke_memory_compression_strategy_assumption_docs(),
         smoke_pathological_risk_role_protection_assumption_docs(),

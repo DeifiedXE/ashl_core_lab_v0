@@ -57,6 +57,7 @@ ASHL Core Lab 是 ASHL Core／D清音 的最小 Python 實驗專案，用來驗�
 - v2.8f Review Decision Trace Integration Boundary Docs
 - Formal Lesson Candidate Creation Contract Docs
 - Formal Lesson Candidate Creation Boundary Audit Docs
+- Current Boundary Index Docs
 
 ## 尚未完成
 
@@ -990,6 +991,15 @@ v2.7a adds `ashl_core.failure_events` as a trace-only failure_event schema found
 - Confirms raw natural language complaints and LLM-only explanations cannot directly create formal lesson_candidate.
 - Records `Audit result: PASS`.
 - Does not implement formal lesson_candidate creation runtime, automatic lesson_candidate builder, failure_event builder runtime, evaluator runtime, review decision runtime, selection eligibility runtime, activation runtime, sandbox runtime, voice / audio runtime, lesson_store writes, or Memory Layer writes.
+
+## Current Boundary Index Docs
+
+- `docs/current_boundary_index.md`
+- Adds a short, versioned, low-token source of global hard boundaries for future work packages.
+- Records `Boundary Index Version: 2026-06-06-b17`.
+- Lists current global hard boundaries and deferred areas.
+- Requires the file to be updated every time an Update Log is generated.
+- Does not add runtime behavior, modify existing design document content, or introduce new boundary design decisions.
 
 ## v2.8e Review Decision Trace-only Schema
 
