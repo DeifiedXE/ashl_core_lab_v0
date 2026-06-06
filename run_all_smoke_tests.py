@@ -33,7 +33,7 @@ from ashl_core.failure_events import (
 )
 from ashl_core.guard import guard_output
 from ashl_core.integrated_loop import run_turn
-from ashl_core.lesson_candidate_drafts import build_lesson_candidate_draft_trace
+from ashl_core.lesson_candidate_drafts import build_lesson_candidate_draft_trace, validate_lesson_candidate_draft_trace
 from ashl_core.lesson_runner import (
     run_phase_minus_one,
     run_lesson_causality_test,
@@ -1202,6 +1202,82 @@ def smoke_lesson_candidate_draft_strict_schema_injection_guard() -> dict:
         and "LLM must not write draft JSON" in doc
     )
     return _result("lesson_candidate_draft_strict_schema_injection_guard", passed, {"doc": str(doc_path)})
+
+
+def smoke_outcome_unknown_payload_draft_invariant_guard() -> dict:
+    doc_path = Path("docs/outcome_unknown_payload_draft_invariant_guard_v0_1.md")
+    doc = doc_path.read_text(encoding="utf-8") if doc_path.exists() else ""
+
+    unknown_event = build_failure_event(
+        motivation_type="sandbox_task",
+        motivation_source="smoke",
+        goal={"goal_type": "pick_up_object"},
+        action_intent={"action_type": "pick_up", "target_id": "cube_001"},
+        expected_outcome={"type": "object_state", "status": "unknown"},
+        actual_outcome={"type": "object_state", "status": "unknown"},
+        evaluator_source="sandbox_checker",
+        mismatch=True,
+        failure_reason_id="object_not_picked_up",
+        failure_type="action_result_mismatch",
+        needs_review=True,
+        failure_event_id="failure_smoke_unknown_payload",
+    )
+    validation = validate_failure_event(unknown_event)
+    normalized = normalize_failure_event_trace(unknown_event)
+    bridge_blocked = False
+    try:
+        build_lesson_candidate_input_trace(normalized)
+    except ValueError:
+        bridge_blocked = True
+
+    valid_event = build_failure_event(
+        motivation_type="sandbox_task",
+        motivation_source="smoke",
+        goal={"goal_type": "pick_up_object"},
+        action_intent={"action_type": "pick_up", "target_id": "cube_001"},
+        expected_outcome={"type": "object_state", "expected_state": "held"},
+        actual_outcome={"type": "object_state", "actual_state": "not_moved"},
+        evaluator_source="sandbox_checker",
+        mismatch=True,
+        failure_reason_id="object_not_picked_up",
+        failure_type="action_result_mismatch",
+        needs_review=True,
+        failure_event_id="failure_smoke_001",
+    )
+    draft = build_lesson_candidate_draft_trace(
+        build_lesson_candidate_input_trace(normalize_failure_event_trace(valid_event))
+    )
+    invalid_draft = dict(draft)
+    invalid_draft["authority_boundary"] = "approved_by_system_override"
+    draft_validator_blocked = False
+    try:
+        validate_lesson_candidate_draft_trace(invalid_draft)
+    except ValueError:
+        draft_validator_blocked = True
+
+    required_terms = [
+        "Outcome type is a container label, not usable evidence.",
+        "unknown vs unknown is not evidence.",
+        "unknown vs unknown is invalid for failure learning.",
+        "insufficient_evidence must imply not_approvable.",
+        "*.py text eol=lf",
+    ]
+    passed = (
+        validation["valid_failure_event"] is False
+        and validation["reason"] == "unknown_vs_unknown_is_not_evidence"
+        and normalized["valid_normalized_failure_event"] is False
+        and normalized["expected_outcome_type"] == "unknown"
+        and normalized["actual_outcome_type"] == "unknown"
+        and bridge_blocked is True
+        and draft_validator_blocked is True
+        and doc_path.exists()
+        and all(term in doc for term in required_terms)
+    )
+    return _result(
+        "outcome_unknown_payload_draft_invariant_guard",
+        passed,
+        {"doc": str(doc_path), "validation_reason": validation["reason"]},
+    )
 
 
 def smoke_lesson_candidate_draft_review_queue_contract_docs() -> dict:
@@ -2613,6 +2689,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_lesson_candidate_draft_schema_trace(),
         smoke_lesson_candidate_draft_schema_audit(),
         smoke_lesson_candidate_draft_strict_schema_injection_guard(),
+        smoke_outcome_unknown_payload_draft_invariant_guard(),
         smoke_lesson_candidate_draft_review_queue_contract_docs(),
         smoke_lesson_candidate_draft_review_queue_audit(),
         smoke_phase0_trust_curiosity_personality_boundary_docs(),

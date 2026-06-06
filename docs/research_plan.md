@@ -783,6 +783,36 @@ Non-goals:
 - no Long-term Memory write
 - no internalization
 
+## v2.8a-3 Outcome Unknown Payload / Draft Invariant Guard
+
+Status: completed / guard-hardening.
+
+Goal:
+Harden the failure_event and lesson_candidate_draft path against typed unknown outcome payloads and draft invariant drift.
+
+Scope:
+- treat outcome type as a container label, not usable evidence
+- treat expected_outcome / actual_outcome with unknown, not_available, missing, or null status as unknown even when type exists
+- block unknown vs unknown from becoming valid failure learning evidence
+- prevent invalid typed unknown outcome traces from producing bridge / draft output
+- validate top-level lesson_candidate_draft trace invariants
+- require insufficient_evidence to imply not_approvable
+- keep unknown / not_available core evidence non-actionable and human-diagnosis-required
+- add LF line ending policy for common source and documentation files
+
+Non-goals:
+- no lesson_candidate builder runtime
+- no approved lesson_candidate creation
+- no lesson_store write
+- no review queue runtime
+- no manual_review runtime
+- no sandbox runtime
+- no evaluator runtime
+- no selection / activation / conflict / review behavior changes
+- no Long-term Memory write
+- no Memory Layer write
+- no familiarity score, internalization gate, or instinct-like behavior layer
+
 ## v2.8b Lesson Candidate Draft Review Queue Contract Docs
 
 Status: completed / docs-only / contract-only.

@@ -54,6 +54,11 @@ def _is_unknown_value(value: Any) -> bool:
     if isinstance(value, Mapping):
         if not value:
             return True
+        if "status" in value and _is_unknown_value(value.get("status")):
+            return True
+        for item in value.values():
+            if isinstance(item, Mapping) and _is_unknown_value(item):
+                return True
         return all(_is_unknown_value(item) for item in value.values())
     if isinstance(value, list):
         if not value:
@@ -89,6 +94,12 @@ def validate_lesson_candidate_draft_trace(draft: Mapping[str, Any]) -> None:
     extra_keys = set(draft.keys()) - ALLOWED_DRAFT_KEYS
     if extra_keys:
         raise ValueError(f"lesson_candidate_draft contains forbidden extra fields: {sorted(extra_keys)}")
+    if draft.get("type") != "lesson_candidate_draft_trace":
+        raise ValueError("type must be lesson_candidate_draft_trace")
+    if draft.get("draft_type") != "lesson_candidate_draft":
+        raise ValueError("draft_type must be lesson_candidate_draft")
+    if draft.get("review_state") != "pending":
+        raise ValueError("review_state must be pending")
     for key in MAIN_DRAFT_FIELDS:
         validate_draft_field(draft.get(key) or {})
     required_true_flags = [
@@ -107,6 +118,8 @@ def validate_lesson_candidate_draft_trace(draft: Mapping[str, Any]) -> None:
             raise ValueError(f"{key} must be True")
     if draft.get("authority_boundary") != "trace_only_draft":
         raise ValueError("authority_boundary must be trace_only_draft")
+    if draft.get("insufficient_evidence") is True and draft.get("not_approvable") is not True:
+        raise ValueError("insufficient_evidence must imply not_approvable")
 
 
 def _require_bridge_trace(lesson_candidate_input_trace: Mapping[str, Any]) -> dict[str, Any]:

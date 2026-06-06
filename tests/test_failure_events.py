@@ -364,6 +364,55 @@ class FailureEventTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             build_lesson_candidate_input_trace(normalized)
 
+    def test_typed_unknown_outcomes_are_invalid_for_failure_learning(self):
+        event = _valid_event(
+            expected_outcome={"type": "object_state", "status": "unknown"},
+            actual_outcome={"type": "object_state", "status": "unknown"},
+        )
+
+        validation = validate_failure_event(event)
+        normalized = normalize_failure_event_trace(event)
+
+        self.assertFalse(validation["valid_failure_event"])
+        self.assertFalse(validation["authoritative_failure_reason_allowed"])
+        self.assertEqual(validation["reason"], "unknown_vs_unknown_is_not_evidence")
+        self.assertFalse(normalized["valid_normalized_failure_event"])
+        self.assertEqual(normalized["expected_outcome_type"], "unknown")
+        self.assertEqual(normalized["actual_outcome_type"], "unknown")
+        with self.assertRaises(ValueError):
+            build_lesson_candidate_input_trace(normalized)
+
+    def test_typed_not_available_outcomes_are_invalid_for_failure_learning(self):
+        event = _valid_event(
+            expected_outcome={"type": "action_result", "status": "not_available"},
+            actual_outcome={"type": "action_result", "status": "not_available"},
+        )
+
+        validation = validate_failure_event(event)
+        normalized = normalize_failure_event_trace(event)
+
+        self.assertFalse(validation["valid_failure_event"])
+        self.assertEqual(validation["reason"], "unknown_vs_unknown_is_not_evidence")
+        self.assertFalse(normalized["valid_normalized_failure_event"])
+        with self.assertRaises(ValueError):
+            build_lesson_candidate_input_trace(normalized)
+
+    def test_nested_unknown_status_outcomes_are_invalid_even_with_type(self):
+        event = _valid_event(
+            expected_outcome={"type": "perception_result", "value": {"status": "unknown"}},
+            actual_outcome={"type": "perception_result", "value": {"status": "unknown"}},
+        )
+
+        validation = validate_failure_event(event)
+        normalized = normalize_failure_event_trace(event)
+
+        self.assertFalse(validation["valid_failure_event"])
+        self.assertFalse(validation["authoritative_failure_reason_allowed"])
+        self.assertEqual(validation["reason"], "unknown_vs_unknown_is_not_evidence")
+        self.assertFalse(normalized["valid_normalized_failure_event"])
+        with self.assertRaises(ValueError):
+            build_lesson_candidate_input_trace(normalized)
+
 
 if __name__ == "__main__":
     unittest.main()

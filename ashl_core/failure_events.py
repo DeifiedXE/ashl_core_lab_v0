@@ -34,6 +34,11 @@ def _is_unknown_value(value: Any) -> bool:
     if isinstance(value, Mapping):
         if not value:
             return True
+        if "status" in value and _is_unknown_value(value.get("status")):
+            return True
+        for item in value.values():
+            if isinstance(item, Mapping) and _is_unknown_value(item):
+                return True
         return all(_is_unknown_value(item) for item in value.values())
     return value in _UNKNOWN_VALUES
 

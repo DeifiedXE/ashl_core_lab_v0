@@ -856,6 +856,15 @@ v2.7a adds `ashl_core.failure_events` as a trace-only failure_event schema found
 - Prohibits LLM-generated draft JSON.
 - Ensures unknown evidence cannot produce actionable correction.
 
+## v2.8a-3 Outcome Unknown Payload / Draft Invariant Guard
+
+- Blocks typed unknown outcomes from becoming valid failure learning evidence.
+- Treats outcome `type` as a container label, not usable evidence.
+- Hardens top-level `lesson_candidate_draft` invariants.
+- Requires `insufficient_evidence` to imply `not_approvable`.
+- Adds repository LF line ending policy through `.gitattributes`.
+- Does not change runtime selection, conflict, review, activation, lesson_store, or memory behavior.
+
 ## v2.8b Lesson Candidate Draft Review Queue Contract Docs
 
 - `docs/lesson_candidate_draft_review_queue_contract_v0_1.md`

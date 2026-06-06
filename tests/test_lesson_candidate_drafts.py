@@ -311,6 +311,57 @@ class LessonCandidateDraftTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             validate_lesson_candidate_draft_trace(draft)
 
+    def test_validator_rejects_non_draft_trace_type(self):
+        draft = build_lesson_candidate_draft_trace(_bridge_trace())
+
+        for invalid_type in ["lesson_candidate", "approved_lesson", None]:
+            invalid = copy.deepcopy(draft)
+            invalid["type"] = invalid_type
+            with self.assertRaises(ValueError):
+                validate_lesson_candidate_draft_trace(invalid)
+
+    def test_validator_rejects_non_draft_type(self):
+        draft = build_lesson_candidate_draft_trace(_bridge_trace())
+
+        for invalid_draft_type in ["approved_lesson_candidate", "lesson_candidate", None]:
+            invalid = copy.deepcopy(draft)
+            invalid["draft_type"] = invalid_draft_type
+            with self.assertRaises(ValueError):
+                validate_lesson_candidate_draft_trace(invalid)
+
+    def test_validator_rejects_non_pending_review_state(self):
+        draft = build_lesson_candidate_draft_trace(_bridge_trace())
+
+        for invalid_review_state in ["approved", "reviewed", "active", None]:
+            invalid = copy.deepcopy(draft)
+            invalid["review_state"] = invalid_review_state
+            with self.assertRaises(ValueError):
+                validate_lesson_candidate_draft_trace(invalid)
+
+    def test_validator_rejects_authority_boundary_override(self):
+        draft = build_lesson_candidate_draft_trace(_bridge_trace())
+
+        for invalid_boundary in ["approved_by_system_override", "active", None]:
+            invalid = copy.deepcopy(draft)
+            invalid["authority_boundary"] = invalid_boundary
+            with self.assertRaises(ValueError):
+                validate_lesson_candidate_draft_trace(invalid)
+
+    def test_insufficient_evidence_must_imply_not_approvable(self):
+        draft = build_lesson_candidate_draft_trace(_bridge_trace())
+        draft["insufficient_evidence"] = True
+        draft["not_approvable"] = False
+
+        with self.assertRaises(ValueError):
+            validate_lesson_candidate_draft_trace(draft)
+
+    def test_validator_rejects_lesson_candidate_identity_flip(self):
+        draft = build_lesson_candidate_draft_trace(_bridge_trace())
+        draft["not_a_lesson_candidate"] = False
+
+        with self.assertRaises(ValueError):
+            validate_lesson_candidate_draft_trace(draft)
+
 
 if __name__ == "__main__":
     unittest.main()
