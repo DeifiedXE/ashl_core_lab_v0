@@ -1619,6 +1619,31 @@ def smoke_review_decision_trace_audit() -> dict:
     return _result("review_decision_trace_audit", passed, {"doc": str(doc_path)})
 
 
+def smoke_memory_compression_strategy_assumption_docs() -> dict:
+    doc_path = Path("docs/memory_compression_strategy_assumption_patch_v0_1.md")
+    readme_path = Path("README.md")
+    research_plan_path = Path("docs/research_plan.md")
+    doc = doc_path.read_text(encoding="utf-8") if doc_path.exists() else ""
+    readme = readme_path.read_text(encoding="utf-8") if readme_path.exists() else ""
+    research_plan = research_plan_path.read_text(encoding="utf-8") if research_plan_path.exists() else ""
+    required_terms = [
+        "Text memory compression must preserve text fragment, source context summary, confidence level, and usage count.",
+        "本策略僅適用於文字記憶階段",
+        "圖像記憶壓縮延後到圖像感官完成後再設計",
+        "Image memory compression must not reuse the text-only compression strategy.",
+        "圖像 + 文字 的物體概念整體",
+        "Symbol Grounding v1 完成後",
+        "文字 / 圖像關聯壓縮 = 不提前定義",
+    ]
+    passed = (
+        doc_path.exists()
+        and all(term in doc for term in required_terms)
+        and "memory_compression_strategy_assumption_patch_v0_1.md" in readme
+        and "Memory Compression Strategy Assumption Patch Index" in research_plan
+    )
+    return _result("memory_compression_strategy_assumption_docs", passed, {"doc": str(doc_path)})
+
+
 def smoke_soft_hard_consolidation_assumption_docs() -> dict:
     doc_path = Path("docs/soft_hard_consolidation_assumption_v0_1.md")
     readme_path = Path("README.md")
@@ -1642,30 +1667,6 @@ def smoke_soft_hard_consolidation_assumption_docs() -> dict:
         and "v2.9b Soft / Hard Consolidation Assumption Index" in research_plan
     )
     return _result("soft_hard_consolidation_assumption_docs", passed, {"doc": str(doc_path)})
-
-
-def smoke_memory_compression_strategy_assumption_docs() -> dict:
-    doc_path = Path("docs/memory_compression_strategy_assumption_patch_v0_1.md")
-    readme_path = Path("README.md")
-    research_plan_path = Path("docs/research_plan.md")
-    doc = doc_path.read_text(encoding="utf-8") if doc_path.exists() else ""
-    readme = readme_path.read_text(encoding="utf-8") if readme_path.exists() else ""
-    research_plan = research_plan_path.read_text(encoding="utf-8") if research_plan_path.exists() else ""
-    required_terms = [
-        "Text memory compression must preserve text fragment, source context summary, confidence level, and usage count.",
-        "text-memory-stage-only",
-        "Image memory compression must not reuse the text-only compression strategy.",
-        "visual sensory grounding exists",
-        "text / image relational compression is deferred until Symbol Grounding v1.",
-        "Symbol Grounding v1",
-    ]
-    passed = (
-        doc_path.exists()
-        and all(term in doc for term in required_terms)
-        and "memory_compression_strategy_assumption_patch_v0_1.md" in readme
-        and "Memory Compression Strategy Assumption Patch Index" in research_plan
-    )
-    return _result("memory_compression_strategy_assumption_docs", passed, {"doc": str(doc_path)})
 
 
 def smoke_pathological_risk_role_protection_assumption_docs() -> dict:

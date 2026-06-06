@@ -1,40 +1,50 @@
-# ASHL Core / Qingyin Memory Compression Strategy Assumption Patch v0.1
+# ASHL Core/D清音：記憶壓縮策略設計假設 v0.1 補丁
 
-## Purpose
+## 目的
 
-This document records the Phase 0 / Memory Economy assumption patch for memory compression strategy.
+本文補充記憶壓縮策略在現階段的適用範圍與壓縮單位。
 
-It is an assumption document only. It does not implement memory compression runtime, Memory Layer behavior, Symbol Grounding runtime, or lesson_store writes.
+本文是設計假設補丁，不是 runtime 實作。
 
-The purpose is to define the current safe boundary:
+本補丁核心目標是避免文字記憶壓縮策略被誤用到未來的圖像記憶或 Symbol Grounding 階段。
 
-- text memory compression can be discussed as a text-stage assumption
-- image memory compression remains deferred
-- text / image relational compression remains deferred until Symbol Grounding v1
-- ASHL Core must not treat the text-only strategy as a universal compression method
+---
 
-## Text-Stage Memory Compression Boundary
+## 一、現階段壓縮單位
 
-The current strategy is text-memory-stage-only.
+現階段只處理文字記憶階段。
 
-It applies only to text-stage memory compression assumptions. It does not define runtime compression behavior.
+文字記憶的最小壓縮單位為：
 
-The text memory compression unit is:
+- 文字片段
+- 來源情境摘要
+- 信心等級
+- 使用次數
 
-```text
-text fragment
-+ source context summary
-+ confidence level
-+ usage count
-```
+細節內容可以被壓縮，但以上四項必須保留。
 
 Text memory compression must preserve text fragment, source context summary, confidence level, and usage count.
 
-Details may be compressed, shortened, or summarized in future designs, but provenance and confidence context must not be dropped. A compressed text memory that loses where it came from, how confident it is, or how often it has been used is not acceptable under this assumption.
+---
 
-## Applies To
+## 二、不得只保留結論
 
-This assumption applies to:
+文字記憶如果只保留壓縮後的結論，會失去來源與可信度脈絡。
+
+壓縮後的記憶不能只剩下結論，而必須保留：
+
+- 這段記憶來自哪裡
+- 它在什麼情境下形成
+- 目前可信度如何
+- 它被使用過幾次
+
+---
+
+## 三、文字記憶階段限定
+
+本策略僅適用於文字記憶階段。
+
+此階段的壓縮對象是：
 
 - text memory
 - text fragment
@@ -42,28 +52,35 @@ This assumption applies to:
 - document-derived memory
 - textual lesson / note / assumption summary
 
-This assumption does not apply to:
+不得將本策略直接套用到：
 
 - image memory
 - visual impression
 - object concept memory
 - multimodal symbol grounding memory
 
-## Image Memory Compression Boundary
+---
 
-Image memory compression is not defined in this patch.
+## 四、圖像記憶壓縮
+
+圖像記憶壓縮延後到圖像感官完成後再設計。
 
 Image memory compression must not reuse the text-only compression strategy.
 
-Image memory compression is deferred until visual sensory grounding exists. The system must not create an image memory compression schema, visual impression compression schema, object concept compression schema, or multimodal compression schema from the text-stage strategy alone.
+現階段不得：
 
-The reason is simple: text can preserve a fragment and context summary, but image memory needs grounded visual evidence and object relations that do not yet exist in Phase 0 runtime.
+- 沿用文字壓縮策略到圖像記憶
+- 用文字片段壓縮邏輯直接處理圖像
+- 把圖像記憶降格成單純文字標籤
+- 提前定義圖像記憶壓縮 schema
 
-## Text / Image Relational Compression Boundary
+---
 
-Text / image relational compression is not yet defined.
+## 五、未來圖像記憶壓縮方向
 
-The future relational compression unit may need to connect:
+未來圖像記憶壓縮單位是：圖像 + 文字 的物體概念整體。
+
+可能包含：
 
 - visual impression
 - object identity / label
@@ -71,48 +88,29 @@ The future relational compression unit may need to connect:
 - interaction history
 - grounding evidence
 
-This is not a text memory problem alone. It requires Symbol Grounding v1 or later.
+此處只記錄方向，不定 schema。
 
-Therefore, text / image relational compression is deferred until Symbol Grounding v1.
+---
 
-## Symbol Grounding v1 Boundary
+## 六、與 Symbol Grounding 的關係
 
-Before Symbol Grounding v1:
+Symbol Grounding v1 完成後，才統一考慮文字記憶與圖像記憶的關聯壓縮方式。
 
-```text
-text memory compression = text-stage assumption only
-image memory compression = undefined sensory-memory boundary
-text / image relational compression = undefined cross-modal boundary
-```
+在 Symbol Grounding v1 完成前：
 
-Symbol Grounding v1 is the earliest stage where cross-modal text / image memory compression can be designed responsibly.
+- 文字記憶壓縮 = 文字階段限定
+- 圖像記憶壓縮 = 延後設計
+- 文字 / 圖像關聯壓縮 = 不提前定義
 
-## Non-Goals
+---
 
-This patch does not implement:
+## 七、目前不可宣稱
 
-- memory compression runtime
-- text memory compression runtime
-- image memory compression runtime
-- multimodal compression runtime
-- Symbol Grounding runtime
-- Memory Layer behavior changes
-- Memory Economy runtime
-- lesson_store writes
-- Long-term Memory writes
-- image memory compression schema
-- visual impression compression schema
-- object concept compression schema
-- text / image relational compression schema
+目前不可宣稱：
 
-## Invariant
-
-ASHL Core may document compression assumptions, but it must not silently convert them into runtime memory behavior.
-
-The current invariant is:
-
-```text
-text-stage compression assumptions may be indexed;
-image and multimodal compression remain deferred;
-runtime Memory Layer behavior remains unchanged.
-```
+- 已支援記憶壓縮 runtime
+- 已支援圖像記憶壓縮
+- 已支援圖像 + 文字物體概念壓縮
+- 已完成 Symbol Grounding v1
+- 文字記憶壓縮策略可直接套用到圖像記憶
+- 文字標籤等同於圖像概念

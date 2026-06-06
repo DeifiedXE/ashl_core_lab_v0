@@ -1106,6 +1106,32 @@ Non-goals:
 - no Memory Layer write
 - no selection / activation / conflict behavior changes
 
+## Memory Compression Strategy Assumption Patch Index
+
+Status: completed / docs-only / assumption-index
+
+Goal:
+Index memory compression strategy assumptions into Phase 0 / Memory Economy docs.
+
+Scope:
+- define text-stage memory compression unit
+- require text fragment / source context summary / confidence level / usage count to be preserved
+- clarify that detail can be compressed but provenance and confidence context cannot be dropped
+- mark the strategy as text-memory-stage-only
+- defer image memory compression until visual sensory grounding exists
+- prohibit applying text-only compression strategy to image memory
+- defer text / image relational compression until Symbol Grounding v1
+
+Non-goals:
+- no memory compression runtime
+- no text memory compression runtime
+- no image memory compression runtime
+- no multimodal compression schema
+- no Symbol Grounding runtime
+- no Memory Layer behavior changes
+- no lesson_store write
+- no Memory Economy runtime
+
 ## v2.9b Soft / Hard Consolidation Assumption Index
 
 Status: completed / docs-only / assumption-index
