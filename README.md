@@ -50,6 +50,7 @@ ASHL Core Lab 是 ASHL Core／D清音 的最小 Python 實驗專案，用來驗�
 - Core Senses Design v0.8
 - smoke runner
 - unittest
+- v2.10a Sandbox Boundary / Capability Assumption Docs
 
 ## 尚未完成
 
@@ -993,6 +994,16 @@ v2.7a adds `ashl_core.failure_events` as a trace-only failure_event schema found
 - Requires Core Seed, review flow, self-modification boundary, and soft/hard boundary definition to be hard-consolidated.
 - Allows Qingyin to propose hard consolidation but not complete it alone.
 - Does not implement soft / hard consolidation runtime.
+
+## v2.10a Sandbox Boundary / Capability Assumption Docs
+
+- `docs/sandbox_boundary_capability_assumption_v0_1.md`
+- Defines sandbox as observable, replayable, limited, interruptible, and trace-producing experimental environment.
+- Clarifies sandbox result / success / failure / repair / trace are not equivalent to lesson, approved knowledge, failure_reason, executable action, or memory promotion.
+- Defines sandbox isolation boundary: no lesson_store write, no Memory Layer write, no real-world actions.
+- Defines sandbox-to-lesson path: sandbox output may provide evidence only; must pass through failure_event / lesson_candidate / review pipeline.
+- Lists pre-conditions required before any future sandbox runtime implementation.
+- Does not implement sandbox runtime, external tool runtime, or real-world action capability.
 
 ## v2.9e Voice Instinct Assumption Index
 

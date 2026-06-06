@@ -1183,6 +1183,36 @@ Non-goals:
 - no Memory Layer write
 - no selection / activation / conflict behavior changes
 
+## v2.10a Sandbox Boundary / Capability Assumption Docs
+
+Status: completed / docs-only / assumption-boundary / sandbox-prep
+
+Goal:
+Define sandbox design boundary to prevent future sandbox runtime from becoming free runtime, lesson_store write channel, Memory Layer write channel, or real-world action capability.
+
+Summary:
+Defines sandbox as observable, replayable, limited, interruptible, and trace-producing.
+Clarifies sandbox result / success / failure / repair / trace are not equivalent to lesson, approved knowledge, failure_reason, executable action, or memory promotion.
+
+Boundary:
+- No sandbox runtime.
+- No real-world action capability.
+- No lesson_store write.
+- No Memory Layer write.
+- No review / selection / activation behavior change.
+
+Non-goals:
+- no sandbox runtime
+- no external tool runtime
+- no real-world action capability
+- no sandbox action runner
+- no environment executor
+- no evaluator runtime
+- no lesson_store write
+- no Memory Layer write
+- no Core Seed update runtime
+- no self-modification runtime
+
 ## v2.9e Voice Instinct Assumption Index
 
 Status: completed / docs-only / assumption-index

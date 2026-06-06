@@ -1830,6 +1830,33 @@ def smoke_voice_instinct_assumption_docs() -> dict:
     )
     return _result("voice_instinct_assumption_docs", passed, {"doc": str(doc_path)})
 
+def smoke_sandbox_boundary_capability_assumption_docs() -> dict:
+    doc_path = Path("docs/sandbox_boundary_capability_assumption_v0_1.md")
+    readme_path = Path("README.md")
+    research_plan_path = Path("docs/research_plan.md")
+    doc = doc_path.read_text(encoding="utf-8") if doc_path.exists() else ""
+    readme = readme_path.read_text(encoding="utf-8") if readme_path.exists() else ""
+    research_plan = research_plan_path.read_text(encoding="utf-8") if research_plan_path.exists() else ""
+    required_terms = [
+        "sandbox result is not a lesson",
+        "sandbox success is not approved knowledge",
+        "sandbox failure is not automatic failure_reason",
+        "sandbox repair is not executable action",
+        "sandbox trace is not memory promotion",
+        "sandbox exploration is not authorized runtime behavior",
+        "A sandbox is an observable, replayable, limited, interruptible, trace-producing experimental environment.",
+        "A sandbox must not perform real-world actions.",
+        "A sandbox is not free runtime.",
+    ]
+    passed = (
+        doc_path.exists()
+        and all(term in doc for term in required_terms)
+        and "sandbox_boundary_capability_assumption_v0_1.md" in readme
+        and "v2.10a Sandbox Boundary / Capability Assumption Docs" in research_plan
+    )
+    return _result("sandbox_boundary_capability_assumption_docs", passed, {"doc": str(doc_path)})
+
+
 def smoke_phase0_trust_curiosity_personality_boundary_docs() -> dict:
     doc_path = Path("docs/phase0_trust_curiosity_personality_boundary_v0_1.md")
     readme_path = Path("README.md")
@@ -3209,6 +3236,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_memory_paranoia_misinformation_equivocation_assumption_docs(),
         smoke_equivocation_trace_trust_boundary_correction_docs(),
         smoke_voice_instinct_assumption_docs(),
+        smoke_sandbox_boundary_capability_assumption_docs(),
         smoke_phase0_trust_curiosity_personality_boundary_docs(),
         smoke_teaching_cli_conflict_check(),
         smoke_cross_task_shared_prerequisite_isolation(),
