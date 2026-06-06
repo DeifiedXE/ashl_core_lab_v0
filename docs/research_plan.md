@@ -1319,6 +1319,52 @@ Non-goals:
 - no Memory Layer behavior changes
 - no lesson_store write
 
+## v2.9e-1 Voice Instinct / Audio Sense Boundary Audit Docs
+
+Status:
+docs-only / audit-only / voice-audio-boundary
+
+Summary:
+Audits v2.9e Voice Instinct assumptions against Audio Sense, STT, TTS, voice training, voice cloning, failure_event, lesson_candidate, review, and Memory Layer boundaries.
+Confirms Voice Instinct docs do not authorize runtime, Audio Sense, STT/TTS, voice training, real-person speaker imitation, direct failure_reason, direct lesson_candidate creation, or Memory Layer write.
+
+Audit result:
+PASS
+
+Boundary:
+- No voice instinct runtime.
+- No Audio Sense runtime.
+- No STT runtime.
+- No TTS runtime.
+- No voice training runtime.
+- No voice cloning / real-person speaker imitation.
+- No voice output runner.
+- No audio input runner.
+- No automatic failure_event builder.
+- No automatic lesson_candidate builder.
+- No lesson_store write.
+- No Memory Layer write.
+
+Non-goals:
+- no voice instinct runtime
+- no Audio Sense runtime
+- no STT runtime
+- no TTS runtime
+- no voice training runtime
+- no voice cloning / speaker imitation / real-person voice copy
+- no voice output runner
+- no audio input runner
+- no speech recognition integration
+- no speech synthesis integration
+- no voice trace schema runtime
+- no evaluator runtime
+- no failure_event automatic builder runtime
+- no lesson_candidate automatic builder runtime
+- no lesson_store write
+- no Memory Layer write
+- no Core Seed / Memory Layer / lesson_store behavior changes
+- no review / lesson / selection / activation / conflict behavior changes
+
 ## v2.9c-1 Equivocation Handling / Trace Trust Boundary Correction
 
 Status: completed / docs-only / correction-only

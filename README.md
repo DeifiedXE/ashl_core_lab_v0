@@ -53,6 +53,7 @@ ASHL Core Lab 是 ASHL Core／D清音 的最小 Python 實驗專案，用來驗�
 - v2.10a Sandbox Boundary / Capability Assumption Docs
 - v2.10b Sandbox Failure / Trace Contract Docs
 - v2.10c Sandbox Safety Audit Docs
+- v2.9e-1 Voice Instinct / Audio Sense Boundary Audit Docs
 
 ## 尚未完成
 
@@ -1039,6 +1040,17 @@ v2.7a adds `ashl_core.failure_events` as a trace-only failure_event schema found
 - Defines Qingyin's voice as her developmental result, not a real-person voice clone.
 - Marks voice instinct trigger conditions as future Audio Sense-dependent design.
 - Does not implement STT / TTS / Audio Sense / voice training runtime.
+
+## v2.9e-1 Voice Instinct / Audio Sense Boundary Audit Docs
+
+- `docs/voice_instinct_audio_sense_boundary_audit_v0_1.md`
+- Audits v2.9e Voice Instinct assumptions against Audio Sense, STT, TTS, voice training, voice cloning, failure_event, lesson_candidate, review, and Memory Layer boundaries.
+- Confirms Voice Instinct docs do not authorize voice instinct runtime, Audio Sense runtime, STT / TTS runtime, voice training runtime, or real-person speaker imitation.
+- Confirms early voice imitation is not language understanding.
+- Confirms initial voice parameters are starting conditions, not Qingyin's final voice identity.
+- Confirms voice output mismatch must still pass through failure_event / lesson_candidate / review boundaries before learning.
+- Records `Audit result: PASS`.
+- Does not implement voice instinct runtime, Audio Sense runtime, STT / TTS runtime, voice training runtime, voice cloning, lesson_store writes, or Memory Layer writes.
 
 ## v2.9c-1 Equivocation Handling / Trace Trust Boundary Correction
 

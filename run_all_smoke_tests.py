@@ -1830,6 +1830,42 @@ def smoke_voice_instinct_assumption_docs() -> dict:
     )
     return _result("voice_instinct_assumption_docs", passed, {"doc": str(doc_path)})
 
+
+def smoke_voice_instinct_audio_sense_boundary_audit_docs() -> dict:
+    doc_path = Path("docs/voice_instinct_audio_sense_boundary_audit_v0_1.md")
+    readme_path = Path("README.md")
+    research_plan_path = Path("docs/research_plan.md")
+    doc = doc_path.read_text(encoding="utf-8") if doc_path.exists() else ""
+    readme = readme_path.read_text(encoding="utf-8") if readme_path.exists() else ""
+    research_plan = research_plan_path.read_text(encoding="utf-8") if research_plan_path.exists() else ""
+    required_terms = [
+        "Audit result: PASS",
+        "Voice Instinct docs do not authorize voice instinct runtime.",
+        "Voice Instinct docs do not authorize Audio Sense runtime.",
+        "Voice Instinct docs do not authorize STT runtime.",
+        "Voice Instinct docs do not authorize TTS runtime.",
+        "Voice Instinct docs do not authorize voice training runtime.",
+        "Voice Instinct docs do not authorize voice cloning or real-person speaker imitation.",
+        "Qingyin's voice is not a clone of a real person's voice.",
+        "Early voice imitation is not language understanding.",
+        "Initial voice parameters are starting conditions, not Qingyin's final voice identity.",
+        "Voice instinct trigger conditions remain undefined until Audio Sense boundary is defined.",
+        "Voice output mismatch must not bypass failure_event validation.",
+        "Voice output mismatch must not directly create formal lesson_candidate.",
+        "Voice output trace is evidence, not approval.",
+        "Voice output trace must not write to Memory Layer directly.",
+        "ASHL Core provides evidence.",
+        "D Qingyin Memory Layers decide memory admission.",
+    ]
+    passed = (
+        doc_path.exists()
+        and all(term in doc for term in required_terms)
+        and "voice_instinct_audio_sense_boundary_audit_v0_1.md" in readme
+        and "v2.9e-1 Voice Instinct / Audio Sense Boundary Audit Docs" in research_plan
+    )
+    return _result("voice_instinct_audio_sense_boundary_audit_docs", passed, {"doc": str(doc_path)})
+
+
 def smoke_sandbox_failure_trace_contract_docs() -> dict:
     doc_path = Path("docs/sandbox_failure_trace_contract_v0_1.md")
     readme_path = Path("README.md")
@@ -3295,6 +3331,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_memory_paranoia_misinformation_equivocation_assumption_docs(),
         smoke_equivocation_trace_trust_boundary_correction_docs(),
         smoke_voice_instinct_assumption_docs(),
+        smoke_voice_instinct_audio_sense_boundary_audit_docs(),
         smoke_sandbox_boundary_capability_assumption_docs(),
         smoke_sandbox_failure_trace_contract_docs(),
         smoke_sandbox_safety_audit_docs(),
