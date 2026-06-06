@@ -723,6 +723,36 @@ Non-goals:
 - no Long-term Memory write
 - no internalization
 
+## v2.8a-1 Lesson Candidate Draft Schema Audit / Regression
+
+Status: completed / audit-regression-only.
+
+Goal:
+Audit and harden the lesson_candidate_draft schema after v2.8a.
+
+Scope:
+- confirm draft is not approved / active / selection eligible / internalized
+- confirm draft does not write lesson_store or Long-term Memory
+- confirm every main field declares source / authority / review_required
+- confirm every main field has review_required = true
+- prevent review_required = false without explicit reviewed authority path
+- confirm semantic_key is not proof or eligibility source
+- confirm evidence_refs are not proof or approval
+- confirm proposed_action_correction is not executable action
+- confirm proposed_applicability_conditions are not verified applicability proof
+- confirm non-bridge input cannot produce draft
+
+Non-goals:
+- no lesson_candidate builder runtime
+- no approved lesson_candidate creation
+- no lesson_store write
+- no manual review runtime
+- no sandbox runtime
+- no evaluator runtime
+- no selection / activation / conflict behavior changes
+- no Long-term Memory write
+- no internalization
+
 ## Minimal Teaching CLI
 
 v1.8 Minimal Teaching CLI 是既有 lesson flow 的命令列 wrapper。

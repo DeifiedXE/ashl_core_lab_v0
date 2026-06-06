@@ -839,3 +839,10 @@ v2.7a adds `ashl_core.failure_events` as a trace-only failure_event schema found
 - Requires every draft field to declare source and review_required.
 - Keeps draft not approved, not active, not selection eligible, not internalized.
 - Does not write `lesson_store` or Long-term Memory.
+
+## v2.8a-1 Lesson Candidate Draft Schema Audit / Regression
+
+- Audits `lesson_candidate_draft` schema after v2.8a.
+- Confirms draft remains review-gated and not approved / active / selection eligible.
+- Confirms every main draft field keeps source / authority / review_required.
+- Adds `review_required = false` guard.

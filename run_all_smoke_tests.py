@@ -1121,6 +1121,46 @@ def smoke_lesson_candidate_draft_schema_trace() -> dict:
     return _result("lesson_candidate_draft_schema_trace", passed, draft)
 
 
+def smoke_lesson_candidate_draft_schema_audit() -> dict:
+    audit_path = Path("docs/lesson_candidate_draft_schema_audit_v0_1.md")
+    audit_doc = audit_path.read_text(encoding="utf-8") if audit_path.exists() else ""
+    event = build_failure_event(
+        motivation_type="sandbox_task",
+        motivation_source="smoke",
+        goal={"goal_type": "pick_up_object"},
+        action_intent={"action_type": "pick_up", "target_id": "cube_001"},
+        expected_outcome={"type": "object_state", "expected_state": "held"},
+        actual_outcome={"type": "object_state", "actual_state": "not_moved"},
+        evaluator_source="sandbox_checker",
+        mismatch=True,
+        failure_reason_id="object_not_picked_up",
+        failure_type="action_result_mismatch",
+        needs_review=True,
+        failure_event_id="failure_smoke_001",
+    )
+    draft = build_lesson_candidate_draft_trace(
+        build_lesson_candidate_input_trace(normalize_failure_event_trace(event))
+    )
+    main_fields = [
+        "proposed_lesson_summary",
+        "proposed_applicability_conditions",
+        "proposed_action_correction",
+        "evidence_refs",
+        "similar_context_hint_refs",
+        "evaluator_source",
+    ]
+    passed = (
+        draft["not_approved"] is True
+        and draft["not_active"] is True
+        and draft["not_selection_eligible"] is True
+        and all(draft[field]["review_required"] is True for field in main_fields)
+        and audit_path.exists()
+        and "review_required is a review gate, not a convenience flag" in audit_doc
+        and "review_required must not be set to false without an explicit reviewed authority path" in audit_doc
+    )
+    return _result("lesson_candidate_draft_schema_audit", passed, {"doc": str(audit_path), "draft": draft})
+
+
 def smoke_phase0_trust_curiosity_personality_boundary_docs() -> dict:
     doc_path = Path("docs/phase0_trust_curiosity_personality_boundary_v0_1.md")
     readme_path = Path("README.md")
@@ -2479,6 +2519,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_lesson_candidate_builder_contract_docs(),
         smoke_lesson_candidate_builder_contract_audit(),
         smoke_lesson_candidate_draft_schema_trace(),
+        smoke_lesson_candidate_draft_schema_audit(),
         smoke_phase0_trust_curiosity_personality_boundary_docs(),
         smoke_teaching_cli_conflict_check(),
         smoke_cross_task_shared_prerequisite_isolation(),
