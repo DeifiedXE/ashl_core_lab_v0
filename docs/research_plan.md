@@ -1183,6 +1183,43 @@ Non-goals:
 - no Memory Layer write
 - no selection / activation / conflict behavior changes
 
+## v2.10b Sandbox Failure / Trace Contract Docs
+
+Status: completed / docs-only / contract-boundary / sandbox-failure-trace-prep
+
+Goal:
+Define sandbox failure / trace contract to clarify how sandbox failure differs from authoritative failure_reason, and how sandbox trace may serve as evidence without bypassing the failure_event / lesson_candidate / review pipeline.
+
+Summary:
+Defines sandbox failure as observed experimental mismatch inside a bounded sandbox.
+Clarifies sandbox failure is not authoritative failure_reason.
+Clarifies sandbox trace is evidence, not approval.
+Defines future sandbox failure trace minimum fields.
+Clarifies sandbox trace may support later failure_event construction but must not bypass validation.
+
+Boundary:
+- No sandbox runtime.
+- No sandbox trace schema runtime.
+- No evaluator runtime.
+- No automatic failure_event builder.
+- No automatic lesson_candidate builder.
+- No lesson_store write.
+- No Memory Layer write.
+- No review / selection / activation behavior change.
+
+Non-goals:
+- no sandbox runtime
+- no sandbox action runner
+- no sandbox trace schema runtime
+- no external tool runtime
+- no real-world action capability
+- no evaluator runtime
+- no failure_event automatic builder runtime
+- no lesson_candidate automatic builder runtime
+- no lesson_store write
+- no Memory Layer write
+- no self-modification runtime
+
 ## v2.10a Sandbox Boundary / Capability Assumption Docs
 
 Status: completed / docs-only / assumption-boundary / sandbox-prep

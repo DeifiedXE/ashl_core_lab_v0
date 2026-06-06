@@ -51,6 +51,7 @@ ASHL Core Lab 是 ASHL Core／D清音 的最小 Python 實驗專案，用來驗�
 - smoke runner
 - unittest
 - v2.10a Sandbox Boundary / Capability Assumption Docs
+- v2.10b Sandbox Failure / Trace Contract Docs
 
 ## 尚未完成
 
@@ -994,6 +995,17 @@ v2.7a adds `ashl_core.failure_events` as a trace-only failure_event schema found
 - Requires Core Seed, review flow, self-modification boundary, and soft/hard boundary definition to be hard-consolidated.
 - Allows Qingyin to propose hard consolidation but not complete it alone.
 - Does not implement soft / hard consolidation runtime.
+
+## v2.10b Sandbox Failure / Trace Contract Docs
+
+- `docs/sandbox_failure_trace_contract_v0_1.md`
+- Defines sandbox failure as observed experimental mismatch inside a bounded sandbox.
+- Clarifies sandbox failure is not authoritative failure_reason.
+- Clarifies sandbox trace is evidence, not approval.
+- Defines minimum fields for future sandbox failure trace schema.
+- Clarifies sandbox trace may support later failure_event construction but must not bypass failure_event validation.
+- Defines sandbox-to-failure_event bridge path: requires structured failure_event, normalize, lesson_candidate pipeline, review gate.
+- Does not implement sandbox runtime, trace schema runtime, or evaluator runtime.
 
 ## v2.10a Sandbox Boundary / Capability Assumption Docs
 

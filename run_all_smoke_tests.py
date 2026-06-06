@@ -1830,6 +1830,34 @@ def smoke_voice_instinct_assumption_docs() -> dict:
     )
     return _result("voice_instinct_assumption_docs", passed, {"doc": str(doc_path)})
 
+def smoke_sandbox_failure_trace_contract_docs() -> dict:
+    doc_path = Path("docs/sandbox_failure_trace_contract_v0_1.md")
+    readme_path = Path("README.md")
+    research_plan_path = Path("docs/research_plan.md")
+    doc = doc_path.read_text(encoding="utf-8") if doc_path.exists() else ""
+    readme = readme_path.read_text(encoding="utf-8") if readme_path.exists() else ""
+    research_plan = research_plan_path.read_text(encoding="utf-8") if research_plan_path.exists() else ""
+    required_terms = [
+        "Sandbox failure is an observed experimental mismatch inside a bounded sandbox.",
+        "Sandbox failure is not authoritative failure_reason.",
+        "Sandbox trace is evidence, not approval.",
+        "Sandbox trace may support later failure_event construction, but must not bypass failure_event validation.",
+        "Sandbox failure must not directly create formal lesson_candidate.",
+        "Sandbox failure trace must not write to Memory Layer directly.",
+        "Sandbox repair suggestion is not executable action.",
+        "No structured failure_event, no authoritative failure_reason.",
+        "No expected_outcome / actual_outcome contrast, no authoritative failure.",
+        "LLM-only explanation must not become authoritative failure_reason.",
+    ]
+    passed = (
+        doc_path.exists()
+        and all(term in doc for term in required_terms)
+        and "sandbox_failure_trace_contract_v0_1.md" in readme
+        and "v2.10b Sandbox Failure / Trace Contract Docs" in research_plan
+    )
+    return _result("sandbox_failure_trace_contract_docs", passed, {"doc": str(doc_path)})
+
+
 def smoke_sandbox_boundary_capability_assumption_docs() -> dict:
     doc_path = Path("docs/sandbox_boundary_capability_assumption_v0_1.md")
     readme_path = Path("README.md")
@@ -3237,6 +3265,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_equivocation_trace_trust_boundary_correction_docs(),
         smoke_voice_instinct_assumption_docs(),
         smoke_sandbox_boundary_capability_assumption_docs(),
+        smoke_sandbox_failure_trace_contract_docs(),
         smoke_phase0_trust_curiosity_personality_boundary_docs(),
         smoke_teaching_cli_conflict_check(),
         smoke_cross_task_shared_prerequisite_isolation(),
