@@ -1464,6 +1464,30 @@ def smoke_review_decision_contract_audit() -> dict:
     return _result("review_decision_contract_audit", passed, {"doc": str(doc_path)})
 
 
+def smoke_rejected_deferred_proposed_fields_masking_contract_docs() -> dict:
+    doc_path = Path("docs/rejected_deferred_proposed_fields_masking_contract_v0_1.md")
+    readme_path = Path("README.md")
+    research_plan_path = Path("docs/research_plan.md")
+    doc = doc_path.read_text(encoding="utf-8") if doc_path.exists() else ""
+    readme = readme_path.read_text(encoding="utf-8") if readme_path.exists() else ""
+    research_plan = research_plan_path.read_text(encoding="utf-8") if research_plan_path.exists() else ""
+    required_terms = [
+        "Rejected or deferred proposed fields must be masked from evaluator and memory contrast reads.",
+        "Masked means not reusable as lesson content.",
+        "Debug logs must not preserve rejected or deferred proposed field content.",
+        "Deferred proposed fields must be masked.",
+        "masked_fields_summary may list field names only.",
+        "Masking applies to downstream-readable outputs.",
+    ]
+    passed = (
+        doc_path.exists()
+        and all(term in doc for term in required_terms)
+        and "rejected_deferred_proposed_fields_masking_contract_v0_1.md" in readme
+        and "v2.8d-2 Rejected / Deferred Proposed Fields Masking Contract Docs" in research_plan
+    )
+    return _result("rejected_deferred_proposed_fields_masking_contract_docs", passed, {"doc": str(doc_path)})
+
+
 def smoke_pathological_risk_role_protection_assumption_docs() -> dict:
     doc_path = Path("docs/pathological_risk_role_protection_assumption_v0_1.md")
     readme_path = Path("README.md")
@@ -2857,6 +2881,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_review_task_trace_audit(),
         smoke_review_decision_contract_docs(),
         smoke_review_decision_contract_audit(),
+        smoke_rejected_deferred_proposed_fields_masking_contract_docs(),
         smoke_pathological_risk_role_protection_assumption_docs(),
         smoke_phase0_trust_curiosity_personality_boundary_docs(),
         smoke_teaching_cli_conflict_check(),

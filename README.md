@@ -927,6 +927,15 @@ v2.7a adds `ashl_core.failure_events` as a trace-only failure_event schema found
 - Confirms partial approval is not allowed.
 - Confirms decision fields do not imply runtime permission / activation / override.
 
+## v2.8d-2 Rejected / Deferred Proposed Fields Masking Contract Docs
+
+- `docs/rejected_deferred_proposed_fields_masking_contract_v0_1.md`
+- Defines downstream-readable masking boundary for rejected / deferred proposed fields.
+- Ensures rejected / deferred proposed fields cannot be read by evaluator or memory_contrast_set.
+- Defines allowed safe fields and `masked_fields_summary`.
+- Prohibits debug logs from preserving proposed field content.
+- Confirms deferred is not soft approval.
+
 ## v2.9a Pathological Risk / Actor Role / Protection Assumption Index
 
 - `docs/pathological_risk_role_protection_assumption_v0_1.md`

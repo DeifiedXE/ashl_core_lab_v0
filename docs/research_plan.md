@@ -991,6 +991,33 @@ Non-goals:
 - no masking runtime
 - no identity / session binding runtime
 
+## v2.8d-2 Rejected / Deferred Proposed Fields Masking Contract Docs
+
+Status: completed / docs-only / contract-only.
+
+Goal:
+Define the masking boundary for proposed fields after rejected / deferred review decisions.
+
+Scope:
+- define rejected / deferred proposed fields must be masked from evaluator and memory_contrast_set reads
+- define fields that must be masked
+- define safe fields that may remain visible
+- define allowed masking representations
+- prohibit debug logs from preserving proposed field content
+- confirm deferred is not soft approval
+- confirm masking cannot be bypassed by task_completed / reason / priority / manual_note
+
+Non-goals:
+- no masking runtime
+- no review decision runtime
+- no manual_review runtime
+- no evaluator runtime changes
+- no memory_contrast_set runtime changes
+- no approved / rejected / deferred result runtime
+- no lesson_store write
+- no Memory Layer write
+- no selection / activation / conflict behavior changes
+
 ## v2.9a Pathological Risk / Actor Role / Protection Assumption Index
 
 Status: completed / docs-only / assumption-index.
