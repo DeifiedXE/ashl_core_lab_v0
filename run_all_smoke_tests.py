@@ -2243,6 +2243,41 @@ def smoke_mentor_feedback_stub_contract_docs() -> dict:
     return _result("mentor_feedback_stub_contract_docs", passed, {"doc": str(doc_path)})
 
 
+def smoke_mentor_feedback_trace_contract_docs() -> dict:
+    doc_path = Path("docs/mentor_feedback_trace_contract_v0_1.md")
+    readme_path = Path("README.md")
+    research_plan_path = Path("docs/research_plan.md")
+    doc = doc_path.read_text(encoding="utf-8") if doc_path.exists() else ""
+    readme = readme_path.read_text(encoding="utf-8") if readme_path.exists() else ""
+    research_plan = research_plan_path.read_text(encoding="utf-8") if research_plan_path.exists() else ""
+    required_terms = [
+        "mentor_feedback_trace is a feedback record, not feedback runtime.",
+        "mentor_feedback_trace is downstream of first_output_trace.",
+        "mentor_feedback_trace is not lesson_candidate input by itself.",
+        "mentor_feedback_trace must not directly create lesson_candidate.",
+        "mentor_feedback_trace must not write to lesson_store.",
+        "mentor_feedback_trace must not write to Memory Layer.",
+        "mentor_feedback_trace in the test-object stage is engineering supervision, not full Qingyin experience.",
+        "mentor_feedback_trace does not prove awakening.",
+        "mentor_feedback_trace may make first_output_trace eligible for later lesson_candidate input consideration, but does not create lesson_candidate.",
+        "mentor_feedback_trace must be append-only or version-preserving.",
+        "creates_lesson_candidate must be false for mentor_feedback_trace.",
+        "writes_lesson_store must be false for mentor_feedback_trace.",
+        "writes_memory_layer must be false for mentor_feedback_trace.",
+        "mentor_feedback_trace must reference exactly one source_first_output_trace_id.",
+        "mentor_feedback_trace must not exist without a source first_output_trace.",
+        "ASHL Core provides evidence.",
+        "D皜 Memory Layers decide memory admission.",
+    ]
+    passed = (
+        doc_path.exists()
+        and all(term in doc for term in required_terms)
+        and "mentor_feedback_trace_contract_v0_1.md" in readme
+        and "Mentor Feedback Trace Contract Docs" in research_plan
+    )
+    return _result("mentor_feedback_trace_contract_docs", passed, {"doc": str(doc_path)})
+
+
 def smoke_qingyin_runtime_ontology_boundary_docs() -> dict:
     doc_path = Path("docs/qingyin_runtime_ontology_boundary_v0_1.md")
     readme_path = Path("README.md")
@@ -3820,6 +3855,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_minimal_first_output_runtime(),
         smoke_minimal_first_output_runtime_audit_docs(),
         smoke_mentor_feedback_stub_contract_docs(),
+        smoke_mentor_feedback_trace_contract_docs(),
         smoke_qingyin_runtime_ontology_boundary_docs(),
         smoke_qingyin_first_output_contract_docs(),
         smoke_lesson_stale_supersede_memory_freeze_notice_contract_docs(),
