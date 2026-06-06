@@ -363,5 +363,50 @@ class LessonCandidateDraftTests(unittest.TestCase):
             validate_lesson_candidate_draft_trace(draft)
 
 
+class TestRequiredDraftFieldRejection(unittest.TestCase):
+    """v2.11b: Missing required draft fields must be rejected; no silent default-filling."""
+
+    def test_missing_main_draft_field_raises_error(self):
+        # Each main draft field is required; if missing from the built draft it must raise.
+        for field in MAIN_DRAFT_FIELDS:
+            with self.subTest(field=field):
+                draft = build_lesson_candidate_draft_trace(_bridge_trace())
+                del draft[field]
+                with self.assertRaises(ValueError):
+                    validate_lesson_candidate_draft_trace(draft)
+
+    def test_draft_field_missing_value_key_raises_error(self):
+        # If a draft field dict is missing the "value" key, it must raise, not silently pass.
+        draft = build_lesson_candidate_draft_trace(_bridge_trace())
+        bad_field = {k: v for k, v in draft["proposed_lesson_summary"].items() if k != "value"}
+        draft["proposed_lesson_summary"] = bad_field
+        with self.assertRaises(ValueError):
+            validate_lesson_candidate_draft_trace(draft)
+
+    def test_draft_field_none_source_is_rejected(self):
+        # source=None is in INVALID_DRAFT_FIELD_SOURCES; must not silently pass.
+        draft = build_lesson_candidate_draft_trace(_bridge_trace())
+        bad_field = dict(draft["evaluator_source"])
+        bad_field["source"] = None
+        draft["evaluator_source"] = bad_field
+        with self.assertRaises(ValueError):
+            validate_lesson_candidate_draft_trace(draft)
+
+    def test_draft_field_unknown_source_is_rejected(self):
+        # source="unknown" is in INVALID_DRAFT_FIELD_SOURCES; must not silently pass.
+        draft = build_lesson_candidate_draft_trace(_bridge_trace())
+        bad_field = dict(draft["evaluator_source"])
+        bad_field["source"] = "unknown"
+        draft["evaluator_source"] = bad_field
+        with self.assertRaises(ValueError):
+            validate_lesson_candidate_draft_trace(draft)
+
+    def test_valid_draft_with_all_required_fields_passes(self):
+        # Sanity check: a properly built draft passes validation without error.
+        draft = build_lesson_candidate_draft_trace(_bridge_trace())
+        # Should not raise
+        validate_lesson_candidate_draft_trace(draft)
+
+
 if __name__ == "__main__":
     unittest.main()

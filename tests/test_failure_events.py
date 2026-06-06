@@ -414,6 +414,94 @@ class FailureEventTests(unittest.TestCase):
             build_lesson_candidate_input_trace(normalized)
 
 
+class TestRequiredFieldStrictValidation(unittest.TestCase):
+    """v2.11b: Missing required fields must be rejected; no default-filling allowed."""
+
+    # 8.1 - existing coverage at test_missing_expected_outcome_blocks_authoritative_failure
+    # and test_missing_expected_outcome_cannot_enter_bridge; confirm here explicitly.
+    def test_missing_expected_outcome_is_invalid_not_default_filled(self):
+        event = _valid_event(expected_outcome=None)
+        validation = validate_failure_event(event)
+        normalized = normalize_failure_event_trace(event)
+
+        self.assertFalse(validation["valid_failure_event"])
+        self.assertFalse(validation["authoritative_failure_reason_allowed"])
+        self.assertIn("expected_outcome", validation["missing_required_fields"])
+        # must not be default-filled in normalized output — must remain "missing"
+        self.assertEqual(normalized["expected_outcome_type"], "missing")
+        self.assertFalse(normalized["valid_normalized_failure_event"])
+        with self.assertRaises(ValueError):
+            build_lesson_candidate_input_trace(normalized)
+
+    # 8.2
+    def test_missing_actual_outcome_is_invalid_not_default_filled(self):
+        event = _valid_event(actual_outcome=None)
+        validation = validate_failure_event(event)
+        normalized = normalize_failure_event_trace(event)
+
+        self.assertFalse(validation["valid_failure_event"])
+        self.assertFalse(validation["authoritative_failure_reason_allowed"])
+        self.assertIn("actual_outcome", validation["missing_required_fields"])
+        self.assertEqual(normalized["actual_outcome_type"], "missing")
+        self.assertFalse(normalized["valid_normalized_failure_event"])
+        with self.assertRaises(ValueError):
+            build_lesson_candidate_input_trace(normalized)
+
+    # 8.3
+    def test_missing_evaluator_source_is_invalid_and_blocks_pipeline(self):
+        event = _valid_event(evaluator_source=None)
+        validation = validate_failure_event(event)
+        normalized = normalize_failure_event_trace(event)
+
+        self.assertFalse(validation["valid_failure_event"])
+        self.assertFalse(validation["authoritative_failure_reason_allowed"])
+        self.assertIn("evaluator_source", validation["missing_required_fields"])
+        # must not be default-filled — normalized evaluator_source must be "missing"
+        self.assertEqual(normalized["evaluator_source"], "missing")
+        self.assertFalse(normalized["valid_normalized_failure_event"])
+        with self.assertRaises(ValueError):
+            build_lesson_candidate_input_trace(normalized)
+
+    # 8.4
+    def test_missing_action_intent_is_invalid_and_blocks_pipeline(self):
+        event = _valid_event(action_intent=None)
+        validation = validate_failure_event(event)
+        normalized = normalize_failure_event_trace(event)
+
+        self.assertFalse(validation["valid_failure_event"])
+        self.assertFalse(validation["authoritative_failure_reason_allowed"])
+        self.assertIn("action_intent", validation["missing_required_fields"])
+        self.assertEqual(normalized["action_type"], "missing")
+        self.assertFalse(normalized["valid_normalized_failure_event"])
+        with self.assertRaises(ValueError):
+            build_lesson_candidate_input_trace(normalized)
+
+    # 8.5
+    def test_missing_mismatch_is_invalid_and_blocks_pipeline(self):
+        event = _valid_event(mismatch=None)
+        validation = validate_failure_event(event)
+        normalized = normalize_failure_event_trace(event)
+
+        self.assertFalse(validation["valid_failure_event"])
+        self.assertFalse(validation["authoritative_failure_reason_allowed"])
+        self.assertIn("mismatch", validation["missing_required_fields"])
+        self.assertFalse(normalized["valid_normalized_failure_event"])
+        with self.assertRaises(ValueError):
+            build_lesson_candidate_input_trace(normalized)
+
+    # 8.6 optional field (e.g. human_notes) must not be mistakenly required
+    def test_missing_optional_field_does_not_fail_validation(self):
+        # human_notes is optional — its absence must not cause validation failure
+        event = _valid_event()
+        event_dict = dict(event)
+        event_dict.pop("human_notes", None)  # ensure it's absent if it was set
+
+        validation = validate_failure_event(event_dict)
+        self.assertNotIn("human_notes", validation["missing_required_fields"])
+        # valid event with all required fields present should still pass
+        self.assertTrue(validation["valid_failure_event"])
+
+
 class TestSystemFaultBothUnknown(unittest.TestCase):
     """v2.11a: When both expected and actual are unknown-like (strict), trigger system_fault."""
 
