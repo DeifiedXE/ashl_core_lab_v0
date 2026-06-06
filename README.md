@@ -986,17 +986,6 @@ v2.7a adds `ashl_core.failure_events` as a trace-only failure_event schema found
 - Allows Qingyin to propose hard consolidation but not complete it alone.
 - Does not implement soft / hard consolidation runtime.
 
-## Memory Compression Strategy Assumption Patch Index
-
-- `docs/memory_compression_strategy_assumption_patch_v0_1.md`
-- Defines text-stage memory compression assumptions.
-- Requires text memory compression to preserve text fragment, source context summary, confidence level, and usage count.
-- Marks the strategy as text-memory-stage-only.
-- Defers image memory compression until visual sensory grounding exists.
-- Prohibits reusing text-only compression strategy for image memory.
-- Defers text / image relational compression until Symbol Grounding v1.
-- Does not implement memory compression runtime.
-
 ## v2.9a Pathological Risk / Actor Role / Protection Assumption Index
 
 - `docs/pathological_risk_role_protection_assumption_v0_1.md`
