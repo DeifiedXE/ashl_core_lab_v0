@@ -1410,6 +1410,32 @@ def smoke_review_task_trace_audit() -> dict:
     return _result("review_task_trace_audit", passed, {"doc": str(doc_path), "trace": trace})
 
 
+def smoke_review_decision_contract_docs() -> dict:
+    doc_path = Path("docs/review_decision_contract_v0_1.md")
+    readme_path = Path("README.md")
+    research_plan_path = Path("docs/research_plan.md")
+    doc = doc_path.read_text(encoding="utf-8") if doc_path.exists() else ""
+    readme = readme_path.read_text(encoding="utf-8") if readme_path.exists() else ""
+    research_plan = research_plan_path.read_text(encoding="utf-8") if research_plan_path.exists() else ""
+    required_terms = [
+        "review_decision is a historical event record, not a live lesson object.",
+        "review_decision has no runtime execution permission and no state-machine mutation privilege.",
+        "approved decision does not create an active lesson.",
+        "approved decision does not grant lesson_store write permission.",
+        "approved decision does not directly grant selection eligibility.",
+        "Rejected or deferred proposed fields must be masked from evaluator and memory contrast reads.",
+        "Partial approval is not allowed.",
+        "Decision fields must not imply runtime permission, state activation, or system override.",
+    ]
+    passed = (
+        doc_path.exists()
+        and all(term in doc for term in required_terms)
+        and "review_decision_contract_v0_1.md" in readme
+        and "v2.8d Review Decision Contract Docs" in research_plan
+    )
+    return _result("review_decision_contract_docs", passed, {"doc": str(doc_path)})
+
+
 def smoke_phase0_trust_curiosity_personality_boundary_docs() -> dict:
     doc_path = Path("docs/phase0_trust_curiosity_personality_boundary_v0_1.md")
     readme_path = Path("README.md")
@@ -2775,6 +2801,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_lesson_candidate_draft_review_queue_audit(),
         smoke_review_task_trace_schema(),
         smoke_review_task_trace_audit(),
+        smoke_review_decision_contract_docs(),
         smoke_phase0_trust_curiosity_personality_boundary_docs(),
         smoke_teaching_cli_conflict_check(),
         smoke_cross_task_shared_prerequisite_isolation(),

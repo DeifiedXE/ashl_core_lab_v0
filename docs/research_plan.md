@@ -929,6 +929,37 @@ Non-goals:
 - no selection / activation / conflict behavior changes
 - no rejected / deferred proposed fields masking runtime
 
+## v2.8d Review Decision Contract Docs
+
+Status: completed / docs-only / contract-only.
+
+Goal:
+Define review_decision contract before any review decision runtime exists.
+
+Scope:
+- define review_decision as historical event record, not live lesson object
+- define decision_status as approved / rejected / deferred only
+- separate review_task completion from review_decision creation
+- ensure approved does not create active lesson
+- ensure approved does not grant lesson_store write permission
+- ensure approved does not grant selection eligibility
+- define rejected / deferred proposed fields masking boundary
+- define deferred as not soft approval
+- record decision_authority / reviewer_identity / reviewer_session binding as future runtime boundary
+- prohibit decision fields from implying runtime permission, activation, selection, bypass, or override
+
+Non-goals:
+- no manual_review runtime
+- no review decision runtime
+- no review decision creation helper
+- no approved / rejected / deferred result runtime
+- no lesson_candidate creation
+- no lesson_store write
+- no Memory Layer write
+- no selection / activation / conflict behavior changes
+- no partial approval
+- no rejected / deferred proposed fields masking runtime
+
 ## Minimal Teaching CLI
 
 v1.8 Minimal Teaching CLI 是既有 lesson flow 的命令列 wrapper。

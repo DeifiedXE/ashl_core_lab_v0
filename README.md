@@ -905,3 +905,14 @@ v2.7a adds `ashl_core.failure_events` as a trace-only failure_event schema found
 - Confirms semantic_key remains secondary optional hint below source_failure_norm_key.
 - Confirms review_task_trace does not enter selection-facing APIs or memory_contrast_set.
 - Records future rejected / deferred proposed fields masking boundary.
+
+## v2.8d Review Decision Contract Docs
+
+- `docs/review_decision_contract_v0_1.md`
+- Defines `review_decision` as a historical event record, not a live lesson object.
+- Keeps review decision docs-only / contract-only.
+- Defines `decision_status` as approved / rejected / deferred only.
+- Ensures approved does not create active lesson, write lesson_store, or grant selection eligibility.
+- Defines rejected / deferred proposed fields masking boundary.
+- Disallows partial approval.
+- Does not implement manual_review runtime, review decision runtime, lesson_store writes, selection eligibility, activation, conflict logic, or Memory Layer writes.
