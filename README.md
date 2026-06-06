@@ -60,6 +60,7 @@ ASHL Core Lab 是 ASHL Core／D清音 的最小 Python 實驗專案，用來驗�
 - Current Boundary Index Docs
 - v2.11c Lesson Stale Supersede Memory Freeze Notice Contract
 - Qingyin First Output v0 Contract
+- Qingyin Runtime Ontology Boundary v0.1
 
 ## 尚未完成
 
@@ -993,6 +994,16 @@ v2.7a adds `ashl_core.failure_events` as a trace-only failure_event schema found
 - Confirms raw natural language complaints and LLM-only explanations cannot directly create formal lesson_candidate.
 - Records `Audit result: PASS`.
 - Does not implement formal lesson_candidate creation runtime, automatic lesson_candidate builder, failure_event builder runtime, evaluator runtime, review decision runtime, selection eligibility runtime, activation runtime, sandbox runtime, voice / audio runtime, lesson_store writes, or Memory Layer writes.
+
+## Qingyin Runtime Ontology Boundary v0.1
+
+- `docs/qingyin_runtime_ontology_boundary_v0_1.md`
+- Defines that Qingyin is not the current LLM conversation instance and is not yet a continuously running runtime individual.
+- Clarifies ASHL Core is currently building the conditions for Qingyin to grow, not proving Qingyin is already growing.
+- Defines minimum gates for Qingyin runtime session and cross-session growth.
+- Defines four ontology tags for classifying assumption docs: Existing Runtime / Trace-only Foundation / Runtime Assumption / Persona-Ontology Assumption.
+- Clarifies LLM allowed and forbidden roles.
+- Does not implement any runtime.
 
 ## Qingyin First Output v0 Contract
 

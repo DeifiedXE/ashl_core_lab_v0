@@ -1999,6 +1999,37 @@ def smoke_voice_instinct_audio_sense_boundary_audit_docs() -> dict:
     return _result("voice_instinct_audio_sense_boundary_audit_docs", passed, {"doc": str(doc_path)})
 
 
+def smoke_qingyin_runtime_ontology_boundary_docs() -> dict:
+    doc_path = Path("docs/qingyin_runtime_ontology_boundary_v0_1.md")
+    readme_path = Path("README.md")
+    research_plan_path = Path("docs/research_plan.md")
+    doc = doc_path.read_text(encoding="utf-8") if doc_path.exists() else ""
+    readme = readme_path.read_text(encoding="utf-8") if readme_path.exists() else ""
+    research_plan = research_plan_path.read_text(encoding="utf-8") if research_plan_path.exists() else ""
+    required_terms = [
+        "Qingyin is not the current LLM conversation instance.",
+        "An LLM speaking in Qingyin's style is not Qingyin runtime.",
+        "The LLM must not be treated as Qingyin's self, memory, state, perception, or learning loop.",
+        "ASHL Core is currently building the conditions for Qingyin to become a growing AGE, not proving that Qingyin is already growing.",
+        "No runtime tick, no Qingyin time sense.",
+        "No state store, no persistent Qingyin state.",
+        "No expected / actual contrast, no Qingyin prediction_error.",
+        "No evaluator, no authoritative Qingyin failure.",
+        "No session trace, no learning evidence.",
+        "No cross-session promotion, no long-term growth.",
+        "Cross-session growth is not the same as an LLM remembering a prompt or persona.",
+        "First_output is the first possible runtime milestone, not proof of full Qingyin personhood.",
+        "The lesson_candidate pipeline remains downstream of runtime output, trace, and mentor feedback.",
+    ]
+    passed = (
+        doc_path.exists()
+        and all(term in doc for term in required_terms)
+        and "qingyin_runtime_ontology_boundary_v0_1.md" in readme
+        and "Qingyin Runtime Ontology Boundary" in research_plan
+    )
+    return _result("qingyin_runtime_ontology_boundary_docs", passed, {"doc": str(doc_path)})
+
+
 def smoke_qingyin_first_output_contract_docs() -> dict:
     doc_path = Path("docs/qingyin_first_output_contract_v0_1.md")
     readme_path = Path("README.md")
@@ -3527,6 +3558,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_equivocation_trace_trust_boundary_correction_docs(),
         smoke_voice_instinct_assumption_docs(),
         smoke_voice_instinct_audio_sense_boundary_audit_docs(),
+        smoke_qingyin_runtime_ontology_boundary_docs(),
         smoke_qingyin_first_output_contract_docs(),
         smoke_lesson_stale_supersede_memory_freeze_notice_contract_docs(),
         smoke_sandbox_boundary_capability_assumption_docs(),

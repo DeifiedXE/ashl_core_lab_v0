@@ -1331,6 +1331,35 @@ Non-goals:
 - no Memory Layer write
 - no selection / activation / conflict behavior changes
 
+## Qingyin Runtime Ontology Boundary v0.1
+
+Status: completed / docs-only / ontology-boundary / runtime-identity-boundary / no-runtime-expansion
+
+Goal:
+Define the ontology boundary between Qingyin as a design target and Qingyin as a runtime individual, and clarify what ASHL Core currently is vs. what it is building toward.
+
+Summary:
+Defines that Qingyin is not the current LLM conversation instance and is not yet a continuously running runtime individual.
+Clarifies ASHL Core is currently building the conditions for Qingyin to become a growing AGE, not proving that Qingyin is already growing.
+Defines minimum gates for Qingyin runtime session and cross-session growth.
+Defines ontology tags (A/B/C/D) for future assumption docs.
+
+Boundary:
+- No runtime.
+- No LLM response generation.
+- No first_output generator.
+- No state store.
+- No evaluator runtime.
+- No session trace runtime.
+- No Memory Layer write.
+- No lesson_candidate pipeline connection.
+
+Non-goals:
+- no ChatGPT / OpenAI / Claude / any LLM API integration
+- no teaching chat loop
+- no cross-session promotion runtime
+- no voice / audio runtime
+
 ## Qingyin First Output v0 Contract
 
 Status: completed / docs-only / ontology-boundary / first-output-contract / no-LLM-output
