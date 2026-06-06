@@ -1100,6 +1100,15 @@ v2.7a adds `ashl_core.failure_events` as a trace-only failure_event schema found
   - engineering_stage: `test_object`
 - This is not dialogue, not learning, not Memory Layer write, and not awakening.
 
+## Minimal Interaction CLI Bridge Audit
+
+- `docs/minimal_interaction_cli_bridge_audit_v0_1.md`
+- Audits Minimal Interaction CLI Bridge v0.
+- Records `Audit result: PASS`.
+- Confirms command `run-minimal-interaction` produces first_output, first_output_trace, and mentor_feedback_trace.
+- Confirms default `mentor_feedback_label` is `observed` and `--notes` is preserved in mentor_feedback_trace.
+- Confirms the CLI bridge does not use LLM, create lesson_candidate, write lesson_store, write Memory Layer, or claim awakening.
+
 ## Qingyin Runtime Ontology Boundary v0.1
 
 - `docs/qingyin_runtime_ontology_boundary_v0_1.md`

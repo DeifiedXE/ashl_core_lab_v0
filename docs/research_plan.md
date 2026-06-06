@@ -1654,6 +1654,30 @@ No lesson_store write.
 No Memory Layer write.
 No awakening claim.
 
+## Minimal Interaction CLI Bridge Audit Docs
+
+Status:
+docs-only / runtime-audit / cli-bridge / no-runtime-expansion
+
+Summary:
+Audits Minimal Interaction CLI Bridge v0.
+Confirms command run-minimal-interaction produces first_output, first_output_trace, and mentor_feedback_trace.
+Confirms default mentor_feedback_label is observed and notes are preserved in mentor_feedback_trace.
+Confirms it does not use LLM, create lesson_candidate, write lesson_store, write Memory Layer, or claim awakening.
+
+Audit result:
+PASS
+
+Boundary:
+No CLI behavior changes.
+No runtime expansion.
+No LLM.
+No teaching chat loop.
+No lesson_candidate pipeline connection.
+No lesson_store write.
+No Memory Layer write.
+No awakening claim.
+
 ## Qingyin Runtime Ontology Boundary v0.1
 
 Status: completed / docs-only / ontology-boundary / runtime-identity-boundary / no-runtime-expansion
