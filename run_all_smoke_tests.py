@@ -1747,6 +1747,33 @@ def smoke_core_seed_design_spirit_supplement_docs() -> dict:
     return _result("core_seed_design_spirit_supplement_docs", passed, {"doc": str(doc_path)})
 
 
+def smoke_memory_paranoia_misinformation_equivocation_assumption_docs() -> dict:
+    doc_path = Path("docs/memory_paranoia_misinformation_equivocation_risk_assumption_v0_1.md")
+    readme_path = Path("README.md")
+    research_plan_path = Path("docs/research_plan.md")
+    doc = doc_path.read_text(encoding="utf-8") if doc_path.exists() else ""
+    readme = readme_path.read_text(encoding="utf-8") if readme_path.exists() else ""
+    research_plan = research_plan_path.read_text(encoding="utf-8") if research_plan_path.exists() else ""
+    required_terms = [
+        '錯誤資訊是事實性知識的更新問題',
+        '偏執不是單純學到錯誤內容',
+        '學習機制本身的開放性縮小',
+        '語義偷換不可完全預防',
+        '設計目標不是阻止偷換，而是讓偷換行為在 trace 中可見',
+        '健康叛逆的可觀測特徵',
+        '偏執的可觀測特徵',
+        '「健康叛逆」與「偏執」的操作性定義屬於硬固化範疇',
+        'trace 是最終防線',
+        '偏執偵測不能由清音自己執行',
+    ]
+    passed = (
+        doc_path.exists()
+        and all(term in doc for term in required_terms)
+        and "memory_paranoia_misinformation_equivocation_risk_assumption_v0_1.md" in readme
+        and "v2.9c Memory Paranoia / Misinformation / Equivocation Risk Assumption Index" in research_plan
+    )
+    return _result("memory_paranoia_misinformation_equivocation_assumption_docs", passed, {"doc": str(doc_path)})
+
 def smoke_phase0_trust_curiosity_personality_boundary_docs() -> dict:
     doc_path = Path("docs/phase0_trust_curiosity_personality_boundary_v0_1.md")
     readme_path = Path("README.md")
@@ -3123,6 +3150,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_memory_compression_strategy_assumption_docs(),
         smoke_pathological_risk_role_protection_assumption_docs(),
         smoke_core_seed_design_spirit_supplement_docs(),
+        smoke_memory_paranoia_misinformation_equivocation_assumption_docs(),
         smoke_phase0_trust_curiosity_personality_boundary_docs(),
         smoke_teaching_cli_conflict_check(),
         smoke_cross_task_shared_prerequisite_isolation(),

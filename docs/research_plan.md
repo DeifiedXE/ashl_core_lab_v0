@@ -1183,6 +1183,33 @@ Non-goals:
 - no Memory Layer write
 - no selection / activation / conflict behavior changes
 
+## v2.9c Memory Paranoia / Misinformation / Equivocation Risk Assumption Index
+
+Status: completed / docs-only / assumption-index
+
+Goal:
+Index misinformation, paranoia, healthy rebellion boundary, and equivocation risk assumptions into Phase 0 / Memory Economy docs.
+
+Scope:
+- define misinformation as factual knowledge update problem
+- define paranoia as learning-mechanism openness collapse
+- define value knowledge as high-risk area
+- define healthy rebellion vs paranoia observable differences
+- define equivocation as unavoidable semantic drift risk
+- require equivocation to be trace-visible
+- mark healthy rebellion / paranoia operational definitions as hard-consolidated
+- define paranoia early warning signs
+- require external mentor observation for paranoia warning
+
+Non-goals:
+- no paranoia detection runtime
+- no prediction error tracker runtime
+- no equivocation detection runtime
+- no Core Seed runtime changes
+- no soft / hard consolidation runtime changes
+- no Memory Layer behavior changes
+- no lesson_store write
+
 ## v2.9d Core Seed Design Spirit Supplement
 
 Status: completed / docs-only / hard-consolidation-related supplement

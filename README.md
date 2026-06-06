@@ -994,6 +994,18 @@ v2.7a adds `ashl_core.failure_events` as a trace-only failure_event schema found
 - Allows Qingyin to propose hard consolidation but not complete it alone.
 - Does not implement soft / hard consolidation runtime.
 
+## v2.9c Memory Paranoia / Misinformation / Equivocation Risk Assumption Index
+
+- `docs/memory_paranoia_misinformation_equivocation_risk_assumption_v0_1.md`
+- Defines misinformation as factual knowledge update problem.
+- Defines paranoia as learning-mechanism openness collapse, not merely incorrect content.
+- Defines value knowledge as a high-risk area for paranoia.
+- Adds operational distinction between healthy rebellion and paranoia.
+- Adds equivocation handling: semantic drift cannot be fully prevented, but must be trace-visible.
+- Marks healthy rebellion / paranoia operational definitions as hard-consolidated concepts.
+- Requires paranoia warning signs to be observed by external mentor, not Qingyin herself.
+- Does not implement paranoia detection runtime or prediction error tracking.
+
 ## v2.9d Core Seed Design Spirit Supplement
 
 - `docs/core_seed_design_spirit_supplement_v0_1.md`
