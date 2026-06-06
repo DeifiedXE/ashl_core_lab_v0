@@ -916,3 +916,13 @@ v2.7a adds `ashl_core.failure_events` as a trace-only failure_event schema found
 - Defines rejected / deferred proposed fields masking boundary.
 - Disallows partial approval.
 - Does not implement manual_review runtime, review decision runtime, lesson_store writes, selection eligibility, activation, conflict logic, or Memory Layer writes.
+
+## v2.9a Pathological Risk / Actor Role / Protection Assumption Index
+
+- `docs/pathological_risk_role_protection_assumption_v0_1.md`
+- Adds pathological risk, actor role, and protection mechanism assumptions.
+- Defines mentor / cursor_mr / system_limit / self_choice actor boundaries.
+- Defines functional depression as prediction-failure-driven action collapse.
+- Incorporates Maier & Seligman 2016: passivity is the default response; control must be learned.
+- Requires protected success contexts to preserve traceable action_candidate -> outcome causality.
+- Does not implement deprivation_error, learning_progress, curiosity satisfaction, actor_trust_delta, or protection runtime.

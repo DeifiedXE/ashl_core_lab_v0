@@ -960,6 +960,35 @@ Non-goals:
 - no partial approval
 - no rejected / deferred proposed fields masking runtime
 
+## v2.9a Pathological Risk / Actor Role / Protection Assumption Index
+
+Status: completed / docs-only / assumption-index.
+
+Goal:
+Index pathological risk, actor role, and protection mechanism assumptions into Phase 0 docs.
+
+Scope:
+- define mentor / cursor_mr / system_limit / self_choice role boundaries
+- define cursor_mr must not be played by mentor
+- define functional depression as prediction-failure-driven action collapse
+- incorporate Maier & Seligman 2016 passivity / control correction
+- define protection as maintaining learning capacity, not emotional comfort
+- require successful protection contexts to preserve action_candidate -> outcome causality
+- prohibit system-provided success results from counting as learning_progress / control restoration
+
+Non-goals:
+- no deprivation_error runtime
+- no learning_progress monitor runtime
+- no curiosity satisfaction floor runtime
+- no cursor_mr safety gate runtime
+- no automatic protection protocol runtime
+- no actor_trust_delta runtime
+- no mentor / cursor_mr actor runtime
+- no review decision / review task / lesson_candidate_draft runtime changes
+- no lesson_store write
+- no Memory Layer write
+- no selection / activation / conflict / review logic changes
+
 ## Minimal Teaching CLI
 
 v1.8 Minimal Teaching CLI 是既有 lesson flow 的命令列 wrapper。
