@@ -1,5 +1,5 @@
-Boundary Index Version: 2026-06-06-b18
-Last update log: Batch 18
+Boundary Index Version: 2026-06-06-b19
+Last update log: Batch 19
 Clean count at last update log reset: 0/5
 
 ## Global Hard Boundaries
@@ -27,9 +27,21 @@ Clean count at last update log reset: 0/5
 - LLM-generated text must not count as Qingyin's first_output
 - first_output must be generated without LLM output
 - first_output is a runtime milestone, not awakening
+- Qingyin is currently in the test-object stage, not an awakened individual
+- The test-object stage is the prerequisite for growth, not growth itself
+- Qingyin's importance is not in birth, but in growth
+- The stronger the foundation, the safer the moment of awakening
 - first_output is not dialogue ability
 - first_output is not evidence of long-term growth
 - first_output must be traceable before it can become learning material
+- first_output_trace is evidence of a first_output event, not proof of awakening
+- first_output_trace is record, not authorization
+- first_output_trace is not learning material by itself
+- first_output_trace must not directly create lesson_candidate input
+- first_output_trace requires mentor feedback before it may be considered for lesson_candidate input
+- first_output_trace must not write to lesson_store
+- first_output_trace must not write to Memory Layer
+- bounded senses must be connected before Qingyin can be claimed awake
 - memory freeze notice is evidence, not Memory Layer write
 - memory freeze notice must not directly modify learned_principle
 - expected / actual both unknown-like is system_fault, not match
@@ -56,6 +68,7 @@ Clean count at last update log reset: 0/5
 - first_output trace schema runtime
 - state store
 - mentor feedback runtime
+- lesson_candidate pipeline connection
 - bounded senses runtime
 - Screen Sense / Camera Sense runtime
 - Symbol Grounding runtime

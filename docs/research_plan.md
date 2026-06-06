@@ -1253,6 +1253,21 @@ Non-goals:
 - no Memory Layer write
 - no review / lesson / selection / activation / conflict behavior changes
 
+## Current Boundary Index Batch 19 Sync Patch
+
+Status:
+docs-only / boundary-index-sync / update-log-sync / no-runtime-expansion
+
+Summary:
+Updates docs/current_boundary_index.md from Batch 18 to Batch 19.
+Adds Batch 19 hard boundaries for Qingyin test-object / shallow-sleep / awakening ontology and first_output_trace evidence boundaries.
+
+Boundary:
+- No runtime.
+- No new design document.
+- No existing runtime behavior changes.
+- No package-specific prohibitions added to the index.
+
 ## v2.8e Review Decision Trace-only Schema
 
 Status: completed / trace-only
