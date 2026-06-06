@@ -1713,6 +1713,40 @@ def smoke_formal_lesson_candidate_creation_contract_docs() -> dict:
     return _result("formal_lesson_candidate_creation_contract_docs", passed, {"doc": str(doc_path)})
 
 
+def smoke_formal_lesson_candidate_creation_boundary_audit_docs() -> dict:
+    doc_path = Path("docs/formal_lesson_candidate_creation_boundary_audit_v0_1.md")
+    readme_path = Path("README.md")
+    research_plan_path = Path("docs/research_plan.md")
+    doc = doc_path.read_text(encoding="utf-8") if doc_path.exists() else ""
+    readme = readme_path.read_text(encoding="utf-8") if readme_path.exists() else ""
+    research_plan = research_plan_path.read_text(encoding="utf-8") if research_plan_path.exists() else ""
+    required_terms = [
+        "Audit result: PASS",
+        "Formal lesson_candidate creation contract does not authorize runtime.",
+        "Formal lesson_candidate creation contract does not bypass failure_event validation.",
+        "lesson_candidate_input_trace remains evidence preparation, not formal creation.",
+        "Formal lesson_candidate creation contract does not bypass review gate.",
+        "Formal lesson_candidate creation contract does not authorize lesson_store write.",
+        "Formal lesson_candidate creation contract does not authorize Memory Layer write or promotion.",
+        "Formal lesson_candidate creation contract does not authorize selection eligibility or activation.",
+        "Sandbox trace remains evidence-only.",
+        "Voice output trace remains evidence-only.",
+        "Review decision trace remains cold audit evidence.",
+        "Raw natural language complaint must not directly create formal lesson_candidate.",
+        "LLM-only explanation must not directly create formal lesson_candidate.",
+        "Bidirectional voice interaction remains deferred.",
+        "ASHL Core provides evidence.",
+        "D Qingyin Memory Layers decide memory admission.",
+    ]
+    passed = (
+        doc_path.exists()
+        and all(term in doc for term in required_terms)
+        and "formal_lesson_candidate_creation_boundary_audit_v0_1.md" in readme
+        and "Formal Lesson Candidate Creation Boundary Audit Docs" in research_plan
+    )
+    return _result("formal_lesson_candidate_creation_boundary_audit_docs", passed, {"doc": str(doc_path)})
+
+
 def smoke_memory_compression_strategy_assumption_docs() -> dict:
     doc_path = Path("docs/memory_compression_strategy_assumption_patch_v0_1.md")
     readme_path = Path("README.md")
@@ -3393,6 +3427,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_review_decision_trace_audit(),
         smoke_review_decision_trace_integration_boundary_docs(),
         smoke_formal_lesson_candidate_creation_contract_docs(),
+        smoke_formal_lesson_candidate_creation_boundary_audit_docs(),
         smoke_soft_hard_consolidation_assumption_docs(),
         smoke_memory_compression_strategy_assumption_docs(),
         smoke_pathological_risk_role_protection_assumption_docs(),

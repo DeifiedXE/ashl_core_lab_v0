@@ -1154,6 +1154,47 @@ Non-goals:
 - no voice input-output loop
 - no review / lesson / selection / activation / conflict behavior changes
 
+## Formal Lesson Candidate Creation Boundary Audit Docs
+
+Status:
+docs-only / audit-only / formal-lesson-candidate-boundary
+
+Summary:
+Audits the formal lesson_candidate creation contract against failure_event validation, lesson_candidate_input_trace, review gate, lesson_store, Memory Layer, selection eligibility, activation, sandbox trace, voice output trace, and review_decision_trace boundaries.
+Confirms the contract does not authorize runtime, builders, lesson_store write, Memory Layer write, activation, selection eligibility, or direct creation from raw natural language / LLM-only explanation / sandbox trace / voice output trace / review_decision_trace.
+
+Audit result:
+PASS
+
+Boundary:
+- No formal lesson_candidate creation runtime.
+- No automatic lesson_candidate builder.
+- No lesson_store write.
+- No Memory Layer write.
+- No activation runtime.
+- No selection eligibility runtime.
+- No sandbox runtime.
+- No voice / audio runtime.
+
+Non-goals:
+- no formal lesson_candidate creation runtime
+- no formal lesson_candidate schema runtime
+- no automatic lesson_candidate builder
+- no failure_event automatic builder runtime
+- no evaluator runtime
+- no lesson_store write
+- no Memory Layer write
+- no Long-term Memory write runtime
+- no review decision runtime
+- no selection eligibility runtime
+- no activation runtime
+- no sandbox runtime
+- no voice instinct runtime
+- no Audio Sense / STT / TTS runtime
+- no voice trigger runtime
+- no voice input-output loop
+- no review / lesson / selection / activation / conflict behavior changes
+
 ## v2.8e Review Decision Trace-only Schema
 
 Status: completed / trace-only

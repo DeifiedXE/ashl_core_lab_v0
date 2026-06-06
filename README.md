@@ -56,6 +56,7 @@ ASHL Core Lab 是 ASHL Core／D清音 的最小 Python 實驗專案，用來驗�
 - v2.9e-1 Voice Instinct / Audio Sense Boundary Audit Docs
 - v2.8f Review Decision Trace Integration Boundary Docs
 - Formal Lesson Candidate Creation Contract Docs
+- Formal Lesson Candidate Creation Boundary Audit Docs
 
 ## 尚未完成
 
@@ -979,6 +980,16 @@ v2.7a adds `ashl_core.failure_events` as a trace-only failure_event schema found
 - Clarifies sandbox trace and voice output trace may support creation only as evidence.
 - Requires failure_event validation and review boundaries to remain intact.
 - Does not implement formal lesson_candidate creation runtime, automatic lesson_candidate builder, lesson_store writes, Memory Layer writes, selection eligibility runtime, activation runtime, sandbox runtime, or voice / audio runtime.
+
+## Formal Lesson Candidate Creation Boundary Audit Docs
+
+- `docs/formal_lesson_candidate_creation_boundary_audit_v0_1.md`
+- Audits the formal lesson_candidate creation contract against failure_event validation, lesson_candidate_input_trace, review gate, lesson_store, Memory Layer, selection eligibility, activation, sandbox trace, voice output trace, and review_decision_trace boundaries.
+- Confirms the contract does not authorize runtime, schema runtime, automatic builders, lesson_store write, Memory Layer write, activation, or selection eligibility.
+- Confirms sandbox trace, voice output trace, and review_decision_trace remain evidence-only and cannot directly create formal lesson_candidate.
+- Confirms raw natural language complaints and LLM-only explanations cannot directly create formal lesson_candidate.
+- Records `Audit result: PASS`.
+- Does not implement formal lesson_candidate creation runtime, automatic lesson_candidate builder, failure_event builder runtime, evaluator runtime, review decision runtime, selection eligibility runtime, activation runtime, sandbox runtime, voice / audio runtime, lesson_store writes, or Memory Layer writes.
 
 ## v2.8e Review Decision Trace-only Schema
 
