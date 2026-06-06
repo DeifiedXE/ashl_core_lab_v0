@@ -1018,6 +1018,33 @@ Non-goals:
 - no Memory Layer write
 - no selection / activation / conflict behavior changes
 
+## v2.8d-3 Decision Authority / Reviewer Identity / Session Binding Contract Docs
+
+Status: completed / docs-only / contract-only
+
+Goal:
+Define decision_authority / reviewer_identity / reviewer_session_token binding before review_decision_trace schema.
+
+Scope:
+- define decision_authority as review verdict authority only
+- define reviewer_identity source boundary
+- define reviewer_session_token source boundary
+- require decision_authority / reviewer_identity / reviewer_session_token binding before runtime decision creation
+- prohibit LLM / draft / queue / external text identity injection
+- prohibit free-text decision_authority
+- clarify authority does not grant lesson_store write / activation / selection eligibility / override permission
+
+Non-goals:
+- no auth runtime
+- no session runtime
+- no manual_review runtime
+- no review decision runtime
+- no identity verification runtime
+- no approved / rejected / deferred result runtime
+- no lesson_store write
+- no Memory Layer write
+- no selection / activation / conflict behavior changes
+
 ## v2.9a Pathological Risk / Actor Role / Protection Assumption Index
 
 Status: completed / docs-only / assumption-index.

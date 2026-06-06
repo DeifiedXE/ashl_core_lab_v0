@@ -936,6 +936,15 @@ v2.7a adds `ashl_core.failure_events` as a trace-only failure_event schema found
 - Prohibits debug logs from preserving proposed field content.
 - Confirms deferred is not soft approval.
 
+## v2.8d-3 Decision Authority / Reviewer Identity / Session Binding Contract Docs
+
+- `docs/decision_authority_reviewer_identity_session_binding_contract_v0_1.md`
+- Defines decision_authority / reviewer_identity / reviewer_session_token binding boundary.
+- Requires reviewer_identity and reviewer_session_token to come from runtime/session context.
+- Prohibits LLM / draft / queue / external text identity injection.
+- Defines decision_authority as review verdict authority only, not runtime capability.
+- Does not implement auth, session, manual_review, or review decision runtime.
+
 ## v2.9a Pathological Risk / Actor Role / Protection Assumption Index
 
 - `docs/pathological_risk_role_protection_assumption_v0_1.md`
