@@ -783,6 +783,34 @@ Non-goals:
 - no Long-term Memory write
 - no internalization
 
+## v2.8b Lesson Candidate Draft Review Queue Contract Docs
+
+Status: completed / docs-only / contract-only.
+
+Goal:
+Define review_queue_entry / review_task contract for lesson_candidate_draft without implementing review runtime.
+
+Scope:
+- define review_queue_entry as queue marker, not review decision
+- define review_task as to-do item, not review decision
+- clarify review_task completion does not imply approval
+- ensure queue can reference draft but cannot mutate draft
+- prohibit queue from changing review_required / approved / active / selection_eligible state
+- require no selection-facing read APIs
+- prohibit unreviewed drafts from being archived into any Memory Layer
+- define semantic_key presentation boundary to avoid authority anchoring
+
+Non-goals:
+- no review queue runtime
+- no review_task runtime
+- no manual_review runtime
+- no review decision creation
+- no approved lesson_candidate creation
+- no lesson_store write
+- no selection / activation / conflict behavior changes
+- no Long-term Memory write
+- no Memory Layer write
+
 ## Minimal Teaching CLI
 
 v1.8 Minimal Teaching CLI 是既有 lesson flow 的命令列 wrapper。

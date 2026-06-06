@@ -855,3 +855,12 @@ v2.7a adds `ashl_core.failure_events` as a trace-only failure_event schema found
 - Rejects or marks all-null / all-unknown evidence as `insufficient_evidence`.
 - Prohibits LLM-generated draft JSON.
 - Ensures unknown evidence cannot produce actionable correction.
+
+## v2.8b Lesson Candidate Draft Review Queue Contract Docs
+
+- `docs/lesson_candidate_draft_review_queue_contract_v0_1.md`
+- Defines `review_queue_entry` / `review_task` contract for `lesson_candidate_draft`.
+- Keeps queue entry and review_task as non-decision markers.
+- Requires no selection-facing read APIs.
+- Prohibits unreviewed drafts from being archived into any Memory Layer.
+- Requires `semantic_key` presentation to avoid authority anchoring.
