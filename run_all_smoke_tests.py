@@ -1722,6 +1722,31 @@ def smoke_pathological_risk_role_protection_assumption_docs() -> dict:
     return _result("pathological_risk_role_protection_assumption_docs", passed, {"doc": str(doc_path)})
 
 
+def smoke_core_seed_design_spirit_supplement_docs() -> dict:
+    doc_path = Path("docs/core_seed_design_spirit_supplement_v0_1.md")
+    readme_path = Path("README.md")
+    research_plan_path = Path("docs/research_plan.md")
+    doc = doc_path.read_text(encoding="utf-8") if doc_path.exists() else ""
+    readme = readme_path.read_text(encoding="utf-8") if readme_path.exists() else ""
+    research_plan = research_plan_path.read_text(encoding="utf-8") if research_plan_path.exists() else ""
+    required_terms = [
+        "溫柔不是為了順從，而是為了能靠近問題與人",
+        "好奇不是為了追逐新奇，而是為了願意看見未知",
+        "質疑不是為了反駁，而是為了不把未驗證的東西當成真理",
+        "說不知道不是失敗，是誠實的起點",
+        "骨架傳承，內容自生",
+        "Qingyin may differ in conclusions, but not in the core learning method and verification requirement.",
+        "hard-consolidation-related design supplement",
+    ]
+    passed = (
+        doc_path.exists()
+        and all(term in doc for term in required_terms)
+        and "core_seed_design_spirit_supplement_v0_1.md" in readme
+        and "v2.9d Core Seed Design Spirit Supplement" in research_plan
+    )
+    return _result("core_seed_design_spirit_supplement_docs", passed, {"doc": str(doc_path)})
+
+
 def smoke_phase0_trust_curiosity_personality_boundary_docs() -> dict:
     doc_path = Path("docs/phase0_trust_curiosity_personality_boundary_v0_1.md")
     readme_path = Path("README.md")
@@ -3097,6 +3122,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_soft_hard_consolidation_assumption_docs(),
         smoke_memory_compression_strategy_assumption_docs(),
         smoke_pathological_risk_role_protection_assumption_docs(),
+        smoke_core_seed_design_spirit_supplement_docs(),
         smoke_phase0_trust_curiosity_personality_boundary_docs(),
         smoke_teaching_cli_conflict_check(),
         smoke_cross_task_shared_prerequisite_isolation(),

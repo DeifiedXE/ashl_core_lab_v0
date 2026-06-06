@@ -1183,6 +1183,31 @@ Non-goals:
 - no Memory Layer write
 - no selection / activation / conflict behavior changes
 
+## v2.9d Core Seed Design Spirit Supplement
+
+Status: completed / docs-only / hard-consolidation-related supplement
+
+Goal:
+Add the design spirit behind Qingyin's Core Seed.
+
+Scope:
+- define gentleness as ability to approach problems and people, not obedience
+- define curiosity as willingness to see unknowns, not novelty chasing
+- define questioning as verification requirement, not opposition
+- define saying unknown as honest starting point, not failure
+- define finding direction as observation / questioning / verification before next step
+- define research-oriented AGE target
+- distinguish non-divergent inheritance from self-grown content
+- define skeleton inheritance and self-grown content across successor models
+- mark this supplement as hard-consolidation-related
+
+Non-goals:
+- no Core Seed runtime changes
+- no personality weight runtime changes
+- no hard consolidation runtime
+- no review / lesson / memory runtime changes
+- no Core Seed update permission
+
 ## v2.9a Pathological Risk / Actor Role / Protection Assumption Index
 
 Status: completed / docs-only / assumption-index.

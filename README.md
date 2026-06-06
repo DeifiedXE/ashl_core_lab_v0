@@ -994,6 +994,16 @@ v2.7a adds `ashl_core.failure_events` as a trace-only failure_event schema found
 - Allows Qingyin to propose hard consolidation but not complete it alone.
 - Does not implement soft / hard consolidation runtime.
 
+## v2.9d Core Seed Design Spirit Supplement
+
+- `docs/core_seed_design_spirit_supplement_v0_1.md`
+- Adds the design spirit behind Qingyin's Core Seed.
+- Defines gentleness, curiosity, questioning, uncertainty, and direction-finding as research-oriented traits.
+- Distinguishes inherited skeleton from self-grown content.
+- Keeps learning method, core value direction, and verification requirement as non-divergent inheritance.
+- Allows Qingyin to differ in professional judgment, worldview, and conclusions.
+- Marks the supplement as hard-consolidation-related without implementing Core Seed runtime changes.
+
 ## v2.9a Pathological Risk / Actor Role / Protection Assumption Index
 
 - `docs/pathological_risk_role_protection_assumption_v0_1.md`
