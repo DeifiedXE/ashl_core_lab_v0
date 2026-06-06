@@ -1033,6 +1033,15 @@ v2.7a adds `ashl_core.failure_events` as a trace-only failure_event schema found
 - This is not awakening, dialogue ability, learning, or long-term growth.
 - Does not connect mentor feedback, failure_event, lesson_candidate, review, selection, activation, lesson_store, Memory Layer, bounded senses, or any LLM API.
 
+## Minimal First Output Runtime Audit
+
+- `docs/minimal_first_output_runtime_audit_v0_1.md`
+- Audits Minimal First Output Runtime v0.
+- Records `Audit result: PASS`.
+- Confirms the first_output is non-LLM, `llm_used=false`, test_object stage, and trace-only evidence.
+- Confirms it does not write lesson_store or Memory Layer and does not connect to mentor feedback, lesson_candidate, failure_event, review, selection, activation, bounded senses, or voice systems.
+- Clarifies this runtime is not awakening, not dialogue ability, and not long-term growth.
+
 ## Qingyin Runtime Ontology Boundary v0.1
 
 - `docs/qingyin_runtime_ontology_boundary_v0_1.md`
