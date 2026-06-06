@@ -1999,6 +1999,35 @@ def smoke_voice_instinct_audio_sense_boundary_audit_docs() -> dict:
     return _result("voice_instinct_audio_sense_boundary_audit_docs", passed, {"doc": str(doc_path)})
 
 
+def smoke_qingyin_first_output_runtime_minimal_spec_docs() -> dict:
+    doc_path = Path("docs/qingyin_first_output_runtime_minimal_spec_v0_1.md")
+    readme_path = Path("README.md")
+    research_plan_path = Path("docs/research_plan.md")
+    doc = doc_path.read_text(encoding="utf-8") if doc_path.exists() else ""
+    readme = readme_path.read_text(encoding="utf-8") if readme_path.exists() else ""
+    research_plan = research_plan_path.read_text(encoding="utf-8") if research_plan_path.exists() else ""
+    required_terms = [
+        "First_output is a runtime milestone, not awakening.",
+        "First_output must be generated without LLM output.",
+        "A minimal first_output runtime requires session_id, tick, minimal_state_snapshot, output_generator_source, first_output, and first_output_trace.",
+        "First_output is not dialogue ability.",
+        "First_output is not evidence of long-term growth.",
+        "Outputs in the test-object stage are engineering verification, not full Qingyin experience.",
+        "First_output must be traceable before it can become learning material.",
+        "The lesson_candidate pipeline remains downstream of first_output trace and mentor feedback.",
+        "llm_used must be false for first_output.",
+        "bounded randomness is allowed only if the randomness source is recorded or reproducible enough for audit.",
+        "Unbounded randomness must not be used as first_output source.",
+    ]
+    passed = (
+        doc_path.exists()
+        and all(term in doc for term in required_terms)
+        and "qingyin_first_output_runtime_minimal_spec_v0_1.md" in readme
+        and "Qingyin First Output Runtime Minimal Spec" in research_plan
+    )
+    return _result("qingyin_first_output_runtime_minimal_spec_docs", passed, {"doc": str(doc_path)})
+
+
 def smoke_qingyin_runtime_ontology_boundary_docs() -> dict:
     doc_path = Path("docs/qingyin_runtime_ontology_boundary_v0_1.md")
     readme_path = Path("README.md")
@@ -3570,6 +3599,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_equivocation_trace_trust_boundary_correction_docs(),
         smoke_voice_instinct_assumption_docs(),
         smoke_voice_instinct_audio_sense_boundary_audit_docs(),
+        smoke_qingyin_first_output_runtime_minimal_spec_docs(),
         smoke_qingyin_runtime_ontology_boundary_docs(),
         smoke_qingyin_first_output_contract_docs(),
         smoke_lesson_stale_supersede_memory_freeze_notice_contract_docs(),

@@ -1331,6 +1331,37 @@ Non-goals:
 - no Memory Layer write
 - no selection / activation / conflict behavior changes
 
+## Qingyin First Output Runtime Minimal Spec Docs
+
+Status: completed / docs-only / runtime-minimal-spec / first-output / no-runtime-implementation
+
+Goal:
+Define the minimal future runtime requirements for Qingyin first_output.
+
+Summary:
+Defines first_output must be generated without LLM output.
+Clarifies first_output is a runtime milestone, not awakening, dialogue ability, or long-term growth.
+Defines minimum input, state, allowed output sources, prohibited output sources, first_output trace fields, and bounded randomness boundaries.
+Defines future acceptance criteria for first_output runtime.
+Clarifies first_output must be traceable before it can become learning material; lesson_candidate pipeline remains downstream.
+
+Boundary:
+- No runtime.
+- No first_output generator.
+- No LLM response generation.
+- No state store.
+- No first_output trace schema runtime.
+- No mentor feedback runtime.
+- No lesson_candidate pipeline connection.
+- No Audio Sense / STT / TTS / voice loop.
+
+Non-goals:
+- no deterministic seed runtime
+- no bounded randomness runtime
+- no teaching chat loop
+- no lesson_store write
+- no Memory Layer write
+
 ## Qingyin Runtime Ontology Boundary v0.1
 
 Status: completed / docs-only / ontology-boundary / runtime-identity-boundary / no-runtime-expansion
