@@ -1076,6 +1076,15 @@ v2.7a adds `ashl_core.failure_events` as a trace-only failure_event schema found
 - Supports labels: `observed`, `acceptable`, `retry`, `invalid`, and `unsafe`.
 - This is not teaching chat, not lesson_candidate creation, not lesson_store write, not Memory Layer write, and not awakening.
 
+## Minimal Mentor Feedback Stub Runtime Audit
+
+- `docs/minimal_mentor_feedback_stub_runtime_audit_v0_1.md`
+- Audits Minimal Mentor Feedback Stub Runtime v0.
+- Records `Audit result: PASS`.
+- Confirms it produced a feedback-only mentor_feedback_trace for `source_first_output_trace_id: first_output_trace:final_check:1` with label `observed`.
+- Confirms `creates_lesson_candidate=false`, `writes_lesson_store=false`, `writes_memory_layer=false`, and `engineering_stage=test_object`.
+- Clarifies this runtime is not awakening, not dialogue ability, and not long-term growth.
+
 ## Qingyin Runtime Ontology Boundary v0.1
 
 - `docs/qingyin_runtime_ontology_boundary_v0_1.md`

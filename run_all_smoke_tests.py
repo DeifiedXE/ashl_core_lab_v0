@@ -2346,6 +2346,48 @@ def smoke_minimal_mentor_feedback_stub_runtime() -> dict:
     return _result("minimal_mentor_feedback_stub_runtime", passed, trace)
 
 
+def smoke_minimal_mentor_feedback_stub_runtime_audit_docs() -> dict:
+    doc_path = Path("docs/minimal_mentor_feedback_stub_runtime_audit_v0_1.md")
+    readme_path = Path("README.md")
+    research_plan_path = Path("docs/research_plan.md")
+    doc = doc_path.read_text(encoding="utf-8") if doc_path.exists() else ""
+    readme = readme_path.read_text(encoding="utf-8") if readme_path.exists() else ""
+    research_plan = research_plan_path.read_text(encoding="utf-8") if research_plan_path.exists() else ""
+    required_terms = [
+        "Audit result: PASS",
+        "Minimal Mentor Feedback Stub Runtime v0 produced a feedback-only mentor_feedback_trace.",
+        "source_first_output_trace_id: first_output_trace:final_check:1",
+        "mentor_feedback_label: observed",
+        "effect: feedback_only",
+        "creates_lesson_candidate: false",
+        "writes_lesson_store: false",
+        "writes_memory_layer: false",
+        "engineering_stage: test_object",
+        "The mentor_feedback_trace effect is feedback_only.",
+        "Minimal Mentor Feedback Stub Runtime v0 does not create lesson_candidate.",
+        "Minimal Mentor Feedback Stub Runtime v0 does not write lesson_store.",
+        "Minimal Mentor Feedback Stub Runtime v0 does not write Memory Layer.",
+        "The mentor_feedback_trace remains in the test-object stage.",
+        "mentor_feedback_trace in the test-object stage is engineering supervision, not full Qingyin experience.",
+        "Minimal Mentor Feedback Stub Runtime v0 is not awakening.",
+        "Minimal Mentor Feedback Stub Runtime v0 does not prove dialogue ability.",
+        "Minimal Mentor Feedback Stub Runtime v0 does not prove long-term growth.",
+        "Minimal Mentor Feedback Stub Runtime v0 does not create failure_event, review decision, selection eligibility, or activation.",
+        "Minimal Mentor Feedback Stub Runtime v0 does not connect to the lesson_candidate pipeline.",
+    ]
+    passed = (
+        doc_path.exists()
+        and all(term in doc for term in required_terms)
+        and "minimal_mentor_feedback_stub_runtime_audit_v0_1.md" in readme
+        and "Minimal Mentor Feedback Stub Runtime Audit Docs" in research_plan
+    )
+    return _result(
+        "minimal_mentor_feedback_stub_runtime_audit_docs",
+        passed,
+        {"doc": str(doc_path)},
+    )
+
+
 def smoke_qingyin_runtime_ontology_boundary_docs() -> dict:
     doc_path = Path("docs/qingyin_runtime_ontology_boundary_v0_1.md")
     readme_path = Path("README.md")
@@ -3926,6 +3968,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_mentor_feedback_trace_contract_docs(),
         smoke_minimal_mentor_feedback_stub_runtime_readiness_checklist_docs(),
         smoke_minimal_mentor_feedback_stub_runtime(),
+        smoke_minimal_mentor_feedback_stub_runtime_audit_docs(),
         smoke_qingyin_runtime_ontology_boundary_docs(),
         smoke_qingyin_first_output_contract_docs(),
         smoke_lesson_stale_supersede_memory_freeze_notice_contract_docs(),
