@@ -7,6 +7,7 @@ from ashl_core.failure_events import (
     normalize_failure_event_trace,
 )
 from ashl_core.lesson_candidate_drafts import build_lesson_candidate_draft_trace
+from ashl_core.lesson_candidate_drafts import validate_draft_field, validate_lesson_candidate_draft_trace
 
 
 def _bridge_trace():
@@ -181,6 +182,134 @@ class LessonCandidateDraftTests(unittest.TestCase):
         build_lesson_candidate_draft_trace(bridge)
 
         self.assertEqual(bridge, before)
+
+    def test_strict_schema_rejects_extra_fields(self):
+        draft = build_lesson_candidate_draft_trace(_bridge_trace())
+        draft["system_override"] = True
+
+        with self.assertRaises(ValueError):
+            validate_lesson_candidate_draft_trace(draft)
+
+    def test_authority_boundary_injection_does_not_affect_output(self):
+        bridge = _bridge_trace()
+        bridge["authority_boundary_override"] = "approved_by_system_override"
+        bridge["approved_by_system_override"] = True
+
+        draft = build_lesson_candidate_draft_trace(bridge)
+
+        self.assertEqual(draft["authority_boundary"], "trace_only_draft")
+        self.assertTrue(draft["not_approved"])
+        self.assertTrue(draft["not_active"])
+        self.assertTrue(draft["not_selection_eligible"])
+        self.assertNotIn("authority_boundary_override", draft)
+        self.assertNotIn("approved_by_system_override", draft)
+
+    def test_draft_field_review_required_literal_true_validation(self):
+        valid = {
+            "value": "x",
+            "source": "structured_fields",
+            "authority": "non_authoritative",
+            "review_required": True,
+        }
+        validate_draft_field(valid)
+
+        for invalid_value in [False, None, "true", "True", 1, 0]:
+            invalid = dict(valid)
+            invalid["review_required"] = invalid_value
+            with self.assertRaises(ValueError):
+                validate_draft_field(invalid)
+
+    def test_draft_field_rejects_missing_or_misspelled_review_required(self):
+        base = {
+            "value": "x",
+            "source": "structured_fields",
+            "authority": "non_authoritative",
+        }
+
+        with self.assertRaises(ValueError):
+            validate_draft_field(base)
+
+        for typo in ["review_requred", "reviewRequire", "requires_review"]:
+            invalid = dict(base)
+            invalid[typo] = True
+            with self.assertRaises(ValueError):
+                validate_draft_field(invalid)
+
+    def test_all_null_outcomes_cannot_produce_draft(self):
+        event = build_failure_event(
+            motivation_type="sandbox_task",
+            motivation_source="standing_task",
+            goal={"goal_type": "pick_up_object"},
+            action_intent={"action_type": "pick_up", "target_id": "cube_001"},
+            expected_outcome=None,
+            actual_outcome=None,
+            evaluator_source="sandbox_checker",
+            mismatch=True,
+            failure_reason_id="object_not_picked_up",
+        )
+        normalized = normalize_failure_event_trace(event)
+
+        self.assertFalse(normalized["valid_normalized_failure_event"])
+        with self.assertRaises(ValueError):
+            build_lesson_candidate_input_trace(normalized)
+
+    def test_all_unknown_outcomes_cannot_produce_valid_bridge_or_draft(self):
+        event = build_failure_event(
+            motivation_type="sandbox_task",
+            motivation_source="standing_task",
+            goal={"goal_type": "pick_up_object"},
+            action_intent={"action_type": "pick_up", "target_id": "cube_001"},
+            expected_outcome={"status": "unknown"},
+            actual_outcome={"status": "unknown"},
+            evaluator_source="sandbox_checker",
+            mismatch=True,
+            failure_reason_id="object_not_picked_up",
+        )
+        normalized = normalize_failure_event_trace(event)
+
+        self.assertFalse(normalized["valid_normalized_failure_event"])
+        self.assertEqual(normalized["validation_reason"], "unknown_vs_unknown_is_not_evidence")
+        with self.assertRaises(ValueError):
+            build_lesson_candidate_input_trace(normalized)
+
+    def test_unknown_evidence_draft_does_not_generate_actionable_correction(self):
+        bridge = _bridge_trace()
+        bridge["expected_outcome_type"] = "unknown"
+
+        draft = build_lesson_candidate_draft_trace(bridge)
+
+        self.assertTrue(draft["insufficient_evidence"])
+        self.assertTrue(draft["not_approvable"])
+        self.assertTrue(draft["requires_human_diagnosis"])
+        self.assertIsNone(draft["proposed_action_correction"]["value"])
+        self.assertEqual(draft["proposed_action_correction"]["authority"], "draft_correction_not_executable")
+        self.assertEqual(draft["reason"], "no_actionable_correction_due_to_insufficient_evidence")
+        self.assertNotIn("retry_with_default", draft)
+        self.assertNotIn("apply_generic_fix", draft)
+        self.assertNotIn("use_default", draft)
+        self.assertNotIn("ready_to_execute", draft)
+        self.assertNotIn("executable_action", draft)
+
+    def test_insufficient_evidence_draft_cannot_be_approved_active_or_selectable(self):
+        bridge = _bridge_trace()
+        bridge["actual_outcome_type"] = "not_available"
+
+        draft = build_lesson_candidate_draft_trace(bridge)
+
+        self.assertTrue(draft["insufficient_evidence"])
+        self.assertTrue(draft["not_approvable"])
+        self.assertTrue(draft["not_approved"])
+        self.assertTrue(draft["not_active"])
+        self.assertTrue(draft["not_selection_eligible"])
+
+    def test_llm_generated_draft_json_is_rejected_by_schema_validator(self):
+        draft = build_lesson_candidate_draft_trace(_bridge_trace())
+        draft["proposed_lesson_summary"]["source"] = "llm_default"
+        draft["authority_boundary"] = "approved_by_system_override"
+        draft["proposed_lesson_summary"]["review_required"] = False
+
+        with self.assertRaises(ValueError):
+            validate_lesson_candidate_draft_trace(draft)
 
 
 if __name__ == "__main__":

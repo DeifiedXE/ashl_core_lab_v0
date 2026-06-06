@@ -7,6 +7,59 @@ from typing import Any, Mapping
 
 
 INVALID_DRAFT_FIELD_SOURCES = {"TBD", "unknown", "inferred_without_trace", "llm_default", None, ""}
+UNKNOWN_VALUES = {None, "", "unknown", "not_available", "missing", "null"}
+_DRAFT_FIELD_KEYS = {"value", "source", "authority", "review_required"}
+MAIN_DRAFT_FIELDS = {
+    "proposed_lesson_summary",
+    "proposed_applicability_conditions",
+    "proposed_action_correction",
+    "evidence_refs",
+    "similar_context_hint_refs",
+    "evaluator_source",
+}
+ALLOWED_DRAFT_KEYS = {
+    "type",
+    "draft_trace",
+    "draft_type",
+    "source_input_trace_id",
+    "source_event_id",
+    "source_failure_norm_key",
+    "proposed_lesson_summary",
+    "proposed_applicability_conditions",
+    "proposed_action_correction",
+    "evidence_refs",
+    "similar_context_hint_refs",
+    "evaluator_source",
+    "insufficient_evidence",
+    "not_approvable",
+    "requires_human_diagnosis",
+    "needs_review",
+    "review_state",
+    "not_approved",
+    "not_active",
+    "not_selection_eligible",
+    "not_internalized",
+    "not_written_to_lesson_store",
+    "not_written_to_long_term_memory",
+    "authority_boundary",
+    "not_a_lesson_candidate",
+    "side_effects",
+    "reason",
+}
+
+
+def _is_unknown_value(value: Any) -> bool:
+    if isinstance(value, str):
+        return value.strip().lower() in UNKNOWN_VALUES
+    if isinstance(value, Mapping):
+        if not value:
+            return True
+        return all(_is_unknown_value(item) for item in value.values())
+    if isinstance(value, list):
+        if not value:
+            return True
+        return all(_is_unknown_value(item) for item in value)
+    return value in UNKNOWN_VALUES
 
 
 def _field(value: Any, source: str, authority: str) -> dict[str, Any]:
@@ -18,6 +71,42 @@ def _field(value: Any, source: str, authority: str) -> dict[str, Any]:
         "authority": authority,
         "review_required": True,
     }
+
+
+def validate_draft_field(field: Mapping[str, Any]) -> None:
+    if set((field or {}).keys()) != _DRAFT_FIELD_KEYS:
+        raise ValueError("Draft field contains missing or extra keys.")
+    if field.get("review_required") is not True:
+        raise ValueError("review_required must be True.")
+    if field.get("source") in INVALID_DRAFT_FIELD_SOURCES:
+        raise ValueError("draft field source must be explicit and traceable")
+    if not field.get("authority"):
+        raise ValueError("draft field authority is required")
+
+
+def validate_lesson_candidate_draft_trace(draft: Mapping[str, Any]) -> None:
+    draft = dict(draft or {})
+    extra_keys = set(draft.keys()) - ALLOWED_DRAFT_KEYS
+    if extra_keys:
+        raise ValueError(f"lesson_candidate_draft contains forbidden extra fields: {sorted(extra_keys)}")
+    for key in MAIN_DRAFT_FIELDS:
+        validate_draft_field(draft.get(key) or {})
+    required_true_flags = [
+        "draft_trace",
+        "not_a_lesson_candidate",
+        "needs_review",
+        "not_approved",
+        "not_active",
+        "not_selection_eligible",
+        "not_internalized",
+        "not_written_to_lesson_store",
+        "not_written_to_long_term_memory",
+    ]
+    for key in required_true_flags:
+        if draft.get(key) is not True:
+            raise ValueError(f"{key} must be True")
+    if draft.get("authority_boundary") != "trace_only_draft":
+        raise ValueError("authority_boundary must be trace_only_draft")
 
 
 def _require_bridge_trace(lesson_candidate_input_trace: Mapping[str, Any]) -> dict[str, Any]:
@@ -33,6 +122,17 @@ def _require_bridge_trace(lesson_candidate_input_trace: Mapping[str, Any]) -> di
     return trace
 
 
+def _bridge_has_insufficient_evidence(bridge: Mapping[str, Any]) -> bool:
+    core_keys = [
+        "goal_type",
+        "action_type",
+        "expected_outcome_type",
+        "actual_outcome_type",
+        "mismatch_type",
+    ]
+    return any(_is_unknown_value(bridge.get(key)) for key in core_keys)
+
+
 def build_lesson_candidate_draft_trace(lesson_candidate_input_trace: dict) -> dict[str, Any]:
     """Build a trace-only lesson candidate draft from lesson_candidate_input_trace.
 
@@ -45,6 +145,7 @@ def build_lesson_candidate_draft_trace(lesson_candidate_input_trace: dict) -> di
     bridge = _require_bridge_trace(lesson_candidate_input_trace)
     similar_context_hint = deepcopy(bridge.get("similar_context_hint") or {})
     semantic_key = similar_context_hint.get("semantic_key") if isinstance(similar_context_hint, Mapping) else None
+    insufficient_evidence = _bridge_has_insufficient_evidence(bridge)
 
     applicability_conditions = [
         {"field": "goal_type", "value": bridge.get("goal_type")},
@@ -53,19 +154,21 @@ def build_lesson_candidate_draft_trace(lesson_candidate_input_trace: dict) -> di
         {"field": "actual_outcome_type", "value": bridge.get("actual_outcome_type")},
         {"field": "mismatch_type", "value": bridge.get("mismatch_type")},
     ]
-    action_correction = {
-        "action_type": bridge.get("action_type"),
-        "mismatch_type": bridge.get("mismatch_type"),
-        "expected_outcome_type": bridge.get("expected_outcome_type"),
-        "actual_outcome_type": bridge.get("actual_outcome_type"),
-    }
+    action_correction = None
+    if not insufficient_evidence:
+        action_correction = {
+            "action_type": bridge.get("action_type"),
+            "mismatch_type": bridge.get("mismatch_type"),
+            "expected_outcome_type": bridge.get("expected_outcome_type"),
+            "actual_outcome_type": bridge.get("actual_outcome_type"),
+        }
     evidence_refs = [
         {"kind": "source_event_id", "value": bridge.get("source_event_id")},
         {"kind": "source_failure_norm_key", "value": bridge.get("source_failure_norm_key")},
         {"kind": "lesson_candidate_input_trace", "value": bridge.get("type")},
     ]
 
-    return {
+    draft = {
         "type": "lesson_candidate_draft_trace",
         "draft_trace": True,
         "draft_type": "lesson_candidate_draft",
@@ -107,6 +210,9 @@ def build_lesson_candidate_draft_trace(lesson_candidate_input_trace: dict) -> di
             "lesson_candidate_input_trace.evaluator_source",
             "observable_evidence_not_absolute_truth",
         ),
+        "insufficient_evidence": insufficient_evidence,
+        "not_approvable": insufficient_evidence,
+        "requires_human_diagnosis": insufficient_evidence,
         "needs_review": True,
         "review_state": "pending",
         "not_approved": True,
@@ -118,5 +224,11 @@ def build_lesson_candidate_draft_trace(lesson_candidate_input_trace: dict) -> di
         "authority_boundary": "trace_only_draft",
         "not_a_lesson_candidate": True,
         "side_effects": [],
-        "reason": "lesson_candidate_draft_is_review_gated_trace_not_approved_candidate",
+        "reason": (
+            "no_actionable_correction_due_to_insufficient_evidence"
+            if insufficient_evidence
+            else "lesson_candidate_draft_is_review_gated_trace_not_approved_candidate"
+        ),
     }
+    validate_lesson_candidate_draft_trace(draft)
+    return draft

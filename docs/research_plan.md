@@ -753,6 +753,36 @@ Non-goals:
 - no Long-term Memory write
 - no internalization
 
+## v2.8a-2 Lesson Candidate Draft Strict Schema / Injection Guard
+
+Status: completed / guard-hardening.
+
+Goal:
+Harden lesson_candidate_draft schema against injection, missing authority fields, all-null outcomes, and LLM-generated draft JSON.
+
+Scope:
+- forbid extra schema fields
+- require review_required to behave as Literal[True]
+- prevent authority_boundary injection / override
+- prevent review_required false override
+- reject or guard missing authority-critical fields
+- ensure expected_outcome and actual_outcome both null / unknown are invalid for failure learning
+- mark unknown / not_available core evidence as insufficient_evidence
+- prevent unknown evidence from generating actionable correction
+- prohibit LLM from directly writing draft JSON
+- keep draft not approved / not active / not selection eligible
+
+Non-goals:
+- no lesson_candidate builder runtime
+- no approved lesson_candidate creation
+- no lesson_store write
+- no manual review runtime
+- no sandbox runtime
+- no evaluator runtime
+- no selection / activation / conflict behavior changes
+- no Long-term Memory write
+- no internalization
+
 ## Minimal Teaching CLI
 
 v1.8 Minimal Teaching CLI 是既有 lesson flow 的命令列 wrapper。

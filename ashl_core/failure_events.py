@@ -17,6 +17,7 @@ REQUIRED_FAILURE_EVENT_FIELDS = [
 ]
 
 _MISSING_NORMALIZED_VALUE = "missing"
+_UNKNOWN_VALUES = {None, "", "unknown", "not_available", "missing", "null"}
 
 
 def _normalized_scalar(value: Any) -> str:
@@ -27,11 +28,25 @@ def _normalized_scalar(value: Any) -> str:
     return str(value).strip() or _MISSING_NORMALIZED_VALUE
 
 
+def _is_unknown_value(value: Any) -> bool:
+    if isinstance(value, str):
+        return value.strip().lower() in _UNKNOWN_VALUES
+    if isinstance(value, Mapping):
+        if not value:
+            return True
+        return all(_is_unknown_value(item) for item in value.values())
+    return value in _UNKNOWN_VALUES
+
+
 def _structured_type(value: Any, preferred_keys: tuple[str, ...]) -> str:
     if isinstance(value, Mapping):
+        if _is_unknown_value(value):
+            return "unknown"
         for key in preferred_keys:
             if value.get(key) is not None and value.get(key) != "":
                 return _normalized_scalar(value.get(key))
+        if _is_unknown_value(value.get("status")):
+            return "unknown"
         return "structured"
     return _normalized_scalar(value)
 
@@ -108,10 +123,16 @@ def validate_failure_event(event: Mapping[str, Any]) -> dict[str, Any]:
         missing_for_authority.append("failure_reason_id")
 
     has_expected_actual_contrast = _has_value(event, "expected_outcome") and _has_value(event, "actual_outcome")
+    unknown_expected_actual = _is_unknown_value(event.get("expected_outcome")) and _is_unknown_value(
+        event.get("actual_outcome")
+    )
 
     if not has_expected_actual_contrast:
         classification = "unclassified_event"
         reason = "missing_expected_actual_contrast"
+    elif unknown_expected_actual:
+        classification = "invalid_failure_event"
+        reason = "unknown_vs_unknown_is_not_evidence"
     elif mismatch is False:
         classification = "non_failure_event"
         reason = "no_mismatch_not_failure"

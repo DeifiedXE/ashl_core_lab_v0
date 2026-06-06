@@ -846,3 +846,12 @@ v2.7a adds `ashl_core.failure_events` as a trace-only failure_event schema found
 - Confirms draft remains review-gated and not approved / active / selection eligible.
 - Confirms every main draft field keeps source / authority / review_required.
 - Adds `review_required = false` guard.
+
+## v2.8a-2 Lesson Candidate Draft Strict Schema / Injection Guard
+
+- Hardens `lesson_candidate_draft` against injected authority fields and extra-field injection.
+- Requires `review_required` to behave as `Literal[True]`.
+- Keeps `authority_boundary` and `review_required` internally generated.
+- Rejects or marks all-null / all-unknown evidence as `insufficient_evidence`.
+- Prohibits LLM-generated draft JSON.
+- Ensures unknown evidence cannot produce actionable correction.
