@@ -1018,6 +1018,38 @@ Non-goals:
 - no Memory Layer write
 - no selection / activation / conflict behavior changes
 
+## v2.8e-1 Review Decision Trace Audit / Regression
+
+Status: completed / audit-regression-only
+
+Goal:
+Audit and harden review_decision_trace after v2.8e.
+
+Scope:
+- confirm approved trace grants no runtime permission
+- confirm approved trace grants no lesson_store write permission
+- confirm approved trace grants no selection eligibility or activation
+- confirm rejected / deferred traces contain no reusable proposed content
+- confirm masked_fields_summary contains field names only
+- confirm rejected / deferred traces require masking_policy_ref
+- confirm all decision traces require authority_binding_policy_ref
+- confirm partial / conditional approval is rejected
+- confirm review_task completion cannot create review_decision_trace
+- record future runtime selector trace isolation boundary
+- record future authority / identity / session binding runtime boundary
+
+Non-goals:
+- no manual_review runtime
+- no review decision runtime
+- no approved / rejected / deferred result runtime
+- no approved lesson_candidate creation
+- no lesson_store write
+- no Memory Layer write
+- no selection / activation / conflict behavior changes
+- no masking runtime
+- no auth/session runtime
+- no runtime selector implementation
+
 ## v2.8e Review Decision Trace-only Schema
 
 Status: completed / trace-only

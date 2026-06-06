@@ -1562,6 +1562,63 @@ def smoke_review_decision_trace_schema() -> dict:
     return _result("review_decision_trace_schema", passed, {"doc": str(doc_path), "approved": approved})
 
 
+def smoke_review_decision_trace_audit() -> dict:
+    from ashl_core.review_decisions import build_review_decision_trace
+    from ashl_core.review_tasks import build_review_task_trace
+
+    doc_path = Path("docs/review_decision_trace_audit_v0_1.md")
+    doc = doc_path.read_text(encoding="utf-8") if doc_path.exists() else ""
+    readme_path = Path("README.md")
+    research_plan_path = Path("docs/research_plan.md")
+    readme = readme_path.read_text(encoding="utf-8") if readme_path.exists() else ""
+    research_plan = research_plan_path.read_text(encoding="utf-8") if research_plan_path.exists() else ""
+
+    task_entry = {
+        "id": "queue_audit_001",
+        "source_draft_id": "draft_audit_001",
+        "source_failure_norm_key": "sandbox_task|pick_up_object|pick_up|object_state|object_state",
+        "semantic_key": "object_interaction",
+        "task_state": "created",
+    }
+    task = build_review_task_trace(task_entry)
+    approved = build_review_decision_trace(task, decision_status="approved", reason="audit_smoke")
+
+    rejected_entry = dict(task_entry)
+    rejected_entry["proposed_action_correction"] = "retry_with_default"
+    rejected_task = build_review_task_trace(rejected_entry)
+    rejected = build_review_decision_trace(rejected_task, decision_status="rejected", reason="audit_smoke")
+
+    partial_failed = False
+    try:
+        build_review_decision_trace(task, decision_status="partial_approved", reason="audit_smoke")
+    except ValueError:
+        partial_failed = True
+
+    required_doc_terms = [
+        "approved trace is still cold trace, not runtime permission.",
+        "rejected / deferred traces must not contain reusable proposed content.",
+        "Future runtime selector must not read review_decision_trace as decision input.",
+        "Future runtime decision creation must validate decision_authority / reviewer_identity / reviewer_session_token binding.",
+    ]
+
+    passed = (
+        approved["no_lesson_store_write_permission"] is True
+        and approved["no_selection_eligibility"] is True
+        and approved["no_activation"] is True
+        and approved["authority_binding_policy_ref"] is not None
+        and rejected["masking_policy_ref"] is not None
+        and "retry_with_default" not in str(rejected)
+        and isinstance(rejected["masked_fields_summary"], list)
+        and all(isinstance(x, str) for x in rejected["masked_fields_summary"])
+        and partial_failed is True
+        and doc_path.exists()
+        and all(term in doc for term in required_doc_terms)
+        and "review_decision_trace_audit_v0_1.md" in readme
+        and "v2.8e-1 Review Decision Trace Audit / Regression" in research_plan
+    )
+    return _result("review_decision_trace_audit", passed, {"doc": str(doc_path)})
+
+
 def smoke_pathological_risk_role_protection_assumption_docs() -> dict:
     doc_path = Path("docs/pathological_risk_role_protection_assumption_v0_1.md")
     readme_path = Path("README.md")
@@ -2958,6 +3015,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_rejected_deferred_proposed_fields_masking_contract_docs(),
         smoke_decision_authority_reviewer_identity_session_binding_contract_docs(),
         smoke_review_decision_trace_schema(),
+        smoke_review_decision_trace_audit(),
         smoke_pathological_risk_role_protection_assumption_docs(),
         smoke_phase0_trust_curiosity_personality_boundary_docs(),
         smoke_teaching_cli_conflict_check(),

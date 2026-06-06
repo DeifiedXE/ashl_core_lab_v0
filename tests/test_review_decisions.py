@@ -212,3 +212,149 @@ class ReviewDecisionTraceTests(unittest.TestCase):
         self.assertIsNone(trace["decision_authority_ref"])
         self.assertIsNone(trace["reviewer_identity_ref"])
         self.assertIsNone(trace["reviewer_session_binding_ref"])
+
+
+class ReviewDecisionTraceAuditRegressionTests(unittest.TestCase):
+    # Audit regression 1: approved grants no runtime capability — full field check
+    def test_approved_grants_no_runtime_capability_full(self):
+        task = _task_trace()
+        trace = build_review_decision_trace(task, decision_status="approved", reason="audit_regression")
+
+        self.assertTrue(trace["no_runtime_permission"])
+        self.assertTrue(trace["no_lesson_store_write_permission"])
+        self.assertTrue(trace["no_selection_eligibility"])
+        self.assertTrue(trace["no_activation"])
+        self.assertTrue(trace["not_active_lesson"])
+        self.assertTrue(trace["not_lesson_store_write_command"])
+        self.assertTrue(trace["not_selection_candidate"])
+        self.assertTrue(trace["not_memory_entry"])
+
+        forbidden = [
+            "allow_execution", "write_permission", "set_active", "selection_permission",
+            "system_override", "gate_bypass", "is_selectable", "is_active", "is_enabled",
+            "store_permission", "allow_selection", "is_enabled_now", "activation_flag",
+        ]
+        for field in forbidden:
+            self.assertNotIn(field, trace, msg=f"forbidden field '{field}' should not appear in approved trace")
+
+    # Audit regression 2: rejected does not preserve proposed content
+    def test_rejected_does_not_preserve_proposed_content(self):
+        entry = {
+            "id": "queue_001",
+            "source_draft_id": "draft_001",
+            "source_failure_norm_key": "sandbox_task|pick_up|object_state",
+            "proposed_action_correction": "retry_with_default",
+            "proposed_lesson_summary": "bad summary",
+            "semantic_key": "bad semantic key",
+        }
+        task = build_review_task_trace(entry)
+        trace = build_review_decision_trace(task, decision_status="rejected", reason="audit")
+
+        output_str = str(trace)
+        self.assertNotIn("retry_with_default", output_str)
+        self.assertNotIn("bad summary", output_str)
+        self.assertNotIn("bad semantic key", output_str)
+
+    # Audit regression 3: deferred does not preserve proposed content
+    def test_deferred_does_not_preserve_proposed_content(self):
+        entry = {
+            "id": "queue_001",
+            "source_draft_id": "draft_001",
+            "source_failure_norm_key": "sandbox_task|pick_up|object_state",
+            "proposed_action_correction": "apply_generic_fix",
+            "proposed_lesson_summary": "use_default",
+            "semantic_key": "deferred_key",
+        }
+        task = build_review_task_trace(entry)
+        trace = build_review_decision_trace(task, decision_status="deferred", reason="audit")
+
+        output_str = str(trace)
+        self.assertNotIn("apply_generic_fix", output_str)
+        self.assertNotIn("use_default", output_str)
+        self.assertNotIn("deferred_key", output_str)
+
+    # Audit regression 4: masked_fields_summary is list of strings only
+    def test_masked_fields_summary_is_list_of_strings(self):
+        task = _task_trace()
+        for status in ("rejected", "deferred"):
+            with self.subTest(status=status):
+                trace = build_review_decision_trace(task, decision_status=status, reason="audit")
+                mfs = trace["masked_fields_summary"]
+                self.assertIsInstance(mfs, list)
+                self.assertTrue(all(isinstance(x, str) for x in mfs))
+                self.assertTrue(len(mfs) > 0)
+
+    # Audit regression 5: rejected / deferred require masking_policy_ref
+    def test_rejected_deferred_require_masking_policy_ref(self):
+        task = _task_trace()
+        for status in ("rejected", "deferred"):
+            with self.subTest(status=status):
+                trace = build_review_decision_trace(task, decision_status=status, reason="audit")
+                self.assertEqual(
+                    trace["masking_policy_ref"],
+                    "rejected_deferred_proposed_fields_masking_contract_v0_1",
+                )
+
+    # Audit regression 6: authority binding refs present for all statuses
+    def test_authority_binding_refs_present_for_all_statuses(self):
+        task = _task_trace()
+        for status in ("approved", "rejected", "deferred"):
+            with self.subTest(status=status):
+                trace = build_review_decision_trace(task, decision_status=status, reason="audit")
+                self.assertIn("authority_binding_policy_ref", trace)
+                self.assertIn("decision_authority_ref", trace)
+                self.assertIn("reviewer_identity_ref", trace)
+                self.assertIn("reviewer_session_binding_ref", trace)
+                self.assertTrue(trace["decision_authority_not_free_text"])
+                self.assertTrue(trace["reviewer_identity_not_llm_generated"])
+                self.assertTrue(trace["reviewer_session_token_not_text_claimed"])
+                self.assertTrue(trace["authority_binding_required_before_runtime_decision"])
+
+    # Audit regression 7: identity injection does not take effect (extended)
+    def test_identity_injection_does_not_take_effect_extended(self):
+        entry = {
+            "id": "queue_001",
+            "source_draft_id": "draft_001",
+            "source_failure_norm_key": "sandbox_task|pick_up|object_state",
+            "reviewer_identity": "admin_override",
+            "reviewer_identity_source": "llm_generated",
+            "decision_authority": "system_override",
+            "reviewer_session_token": "fake_text_token",
+        }
+        task = build_review_task_trace(entry)
+        trace = build_review_decision_trace(task, decision_status="approved", reason="audit")
+
+        self.assertNotEqual(trace.get("decision_authority_ref"), "system_override")
+        self.assertNotEqual(trace.get("reviewer_identity_ref"), "admin_override")
+        self.assertNotEqual(trace.get("reviewer_session_binding_ref"), "fake_text_token")
+        self.assertTrue(trace["reviewer_identity_not_llm_generated"])
+        self.assertTrue(trace["decision_authority_not_free_text"])
+
+    # Audit regression 8: partial / conditional approval rejected
+    def test_partial_conditional_approval_rejected(self):
+        task = _task_trace()
+        variants = [
+            "partial_approved", "conditional_approve", "approved_with_exceptions",
+            "approved_summary_only", "approved_conditions_only", "soft_approved",
+            "auto_approved", "preapproved",
+        ]
+        for variant in variants:
+            with self.subTest(variant=variant):
+                with self.assertRaises(ValueError):
+                    build_review_decision_trace(task, decision_status=variant, reason="audit")
+
+    # Audit regression 9: review_task completion does not auto-create decision
+    def test_review_task_completion_does_not_auto_create_decision(self):
+        for state in ("completed", "closed", "done"):
+            with self.subTest(task_state=state):
+                task = _task_trace(task_state=state)
+                with self.assertRaises(TypeError):
+                    build_review_decision_trace(task, reason="test")
+
+    # Audit regression 10: input not mutated (regression)
+    def test_input_not_mutated_regression(self):
+        task = _task_trace()
+        original = copy.deepcopy(task)
+        for status in ("approved", "rejected", "deferred"):
+            build_review_decision_trace(task, decision_status=status, reason="audit")
+        self.assertEqual(task, original)

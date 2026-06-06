@@ -936,6 +936,16 @@ v2.7a adds `ashl_core.failure_events` as a trace-only failure_event schema found
 - Prohibits debug logs from preserving proposed field content.
 - Confirms deferred is not soft approval.
 
+## v2.8e-1 Review Decision Trace Audit / Regression
+
+- `docs/review_decision_trace_audit_v0_1.md`
+- Audits review_decision_trace after v2.8e.
+- Confirms approved trace grants no lesson_store write / selection eligibility / activation.
+- Confirms rejected / deferred traces preserve no reusable proposed content.
+- Confirms masking_policy_ref and authority_binding_policy_ref are required.
+- Confirms partial / conditional approval is rejected.
+- Records future runtime selector trace isolation and future authority / identity / session binding checks.
+
 ## v2.8e Review Decision Trace-only Schema
 
 - `docs/review_decision_trace_schema_v0_1.md`
