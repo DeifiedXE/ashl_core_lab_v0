@@ -1018,6 +1018,35 @@ Non-goals:
 - no Memory Layer write
 - no selection / activation / conflict behavior changes
 
+## v2.8e Review Decision Trace-only Schema
+
+Status: completed / trace-only
+
+Goal:
+Define trace-only review_decision_trace schema after review decision contract, masking contract, and authority binding contract.
+
+Scope:
+- define review_decision_trace as trace-only historical event record
+- support decision_status approved / rejected / deferred only
+- prohibit partial / conditional approval
+- ensure approved grants no lesson_store write / activation / selection eligibility
+- require rejected / deferred masking policy ref
+- require masked_fields_summary to contain field names only
+- require decision authority / reviewer identity / session binding refs
+- prohibit runtime permission / activation / override fields
+- separate review_task completion from decision creation
+
+Non-goals:
+- no manual_review runtime
+- no review decision runtime
+- no approved / rejected / deferred result runtime
+- no approved lesson_candidate creation
+- no lesson_store write
+- no Memory Layer write
+- no selection / activation / conflict behavior changes
+- no masking runtime
+- no auth/session runtime
+
 ## v2.8d-3 Decision Authority / Reviewer Identity / Session Binding Contract Docs
 
 Status: completed / docs-only / contract-only
