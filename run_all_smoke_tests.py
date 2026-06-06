@@ -3709,6 +3709,34 @@ def smoke_first_output_feedback_append_only_persistence_spec_docs() -> dict:
     return _result("first_output_feedback_append_only_persistence_spec_docs", passed, {"doc": str(doc_path)})
 
 
+def smoke_first_output_feedback_persistence_readiness_checklist_docs() -> dict:
+    doc_path = Path("docs/first_output_feedback_persistence_readiness_checklist_v0_1.md")
+    readme_path = Path("README.md")
+    research_plan_path = Path("docs/research_plan.md")
+    doc = doc_path.read_text(encoding="utf-8") if doc_path.exists() else ""
+    readme = readme_path.read_text(encoding="utf-8") if readme_path.exists() else ""
+    research_plan = research_plan_path.read_text(encoding="utf-8") if research_plan_path.exists() else ""
+    required_terms = [
+        "Readiness result: READY_FOR_FIRST_OUTPUT_FEEDBACK_APPEND_ONLY_PERSISTENCE_V0",
+        "data/first_output_traces.jsonl",
+        "data/mentor_feedback_traces.jsonl",
+        "no overwrite",
+        "no silent correction",
+        "correction must be new trace",
+        "persistence is not lesson_store write",
+        "persistence is not Memory Layer write",
+        "persistence is not lesson_candidate creation",
+        "persistence is not awakening evidence",
+    ]
+    passed = (
+        doc_path.exists()
+        and all(term in doc for term in required_terms)
+        and "first_output_feedback_persistence_readiness_checklist_v0_1.md" in readme
+        and "First Output + Mentor Feedback Persistence Readiness Checklist Docs" in research_plan
+    )
+    return _result("first_output_feedback_persistence_readiness_checklist_docs", passed, {"doc": str(doc_path)})
+
+
 def smoke_state_core() -> dict:
     core = StateCore()
     result = core.apply(
@@ -4083,6 +4111,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_minimal_interaction_cli_bridge(),
         smoke_minimal_interaction_cli_bridge_audit_docs(),
         smoke_first_output_feedback_append_only_persistence_spec_docs(),
+        smoke_first_output_feedback_persistence_readiness_checklist_docs(),
         smoke_cross_task_shared_prerequisite_isolation(),
         smoke_manual_stale_marking(),
         smoke_supersede_link(),

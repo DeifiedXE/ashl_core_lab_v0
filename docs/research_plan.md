@@ -1698,6 +1698,29 @@ No Memory Layer write.
 No lesson_candidate pipeline connection.
 No awakening claim.
 
+## First Output + Mentor Feedback Persistence Readiness Checklist Docs
+
+Status:
+docs-only / readiness-checklist / first-output-to-feedback-persistence / no-runtime-implementation
+
+Summary:
+Adds a readiness checklist for planning First Output + Mentor Feedback Append-only Persistence Runtime v0.
+Confirms first_output_trace exists, mentor_feedback_trace exists, append-only persistence spec exists, target files are defined, and append-only requirements are established.
+Confirms persistence is not lesson_store write, not Memory Layer write, not lesson_candidate creation, and not awakening evidence.
+
+Readiness result:
+READY_FOR_FIRST_OUTPUT_FEEDBACK_APPEND_ONLY_PERSISTENCE_V0
+
+Boundary:
+No JSONL write.
+No runtime.
+No persistence runtime.
+No first_output / mentor_feedback / CLI behavior changes.
+No lesson_store write.
+No Memory Layer write.
+No lesson_candidate pipeline connection.
+No awakening claim.
+
 ## Qingyin Runtime Ontology Boundary v0.1
 
 Status: completed / docs-only / ontology-boundary / runtime-identity-boundary / no-runtime-expansion

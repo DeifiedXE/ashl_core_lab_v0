@@ -1118,6 +1118,15 @@ v2.7a adds `ashl_core.failure_events` as a trace-only failure_event schema found
 - Clarifies persistence is not lesson_store write, not Memory Layer write, not lesson_candidate creation, and not awakening evidence.
 - Does not implement JSONL writes or persistence runtime.
 
+## First Output + Mentor Feedback Persistence Readiness Checklist
+
+- `docs/first_output_feedback_persistence_readiness_checklist_v0_1.md`
+- Adds a docs-only readiness checklist for planning First Output + Mentor Feedback Append-only Persistence Runtime v0.
+- Records `Readiness result: READY_FOR_FIRST_OUTPUT_FEEDBACK_APPEND_ONLY_PERSISTENCE_V0`.
+- Confirms first_output_trace, mentor_feedback_trace, append-only persistence spec, and target JSONL paths are defined.
+- Confirms no overwrite, no silent correction, correction as a new trace, and raw trace preservation.
+- Does not write JSONL, implement persistence runtime, write lesson_store, write Memory Layer, connect lesson_candidate pipeline, or claim awakening.
+
 ## Qingyin Runtime Ontology Boundary v0.1
 
 - `docs/qingyin_runtime_ontology_boundary_v0_1.md`
