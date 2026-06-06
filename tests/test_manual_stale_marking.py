@@ -3,6 +3,8 @@ import unittest
 from ashl_core.fake_sandbox import build_initial_sandbox_state, pick_up, turn
 from ashl_core.lesson_store import (
     build_lesson_from_failure,
+    build_memory_freeze_notice,
+    link_lesson_supersede,
     mark_lesson_stale,
     select_lesson_for_context,
     select_lesson_for_decision_point,
@@ -92,6 +94,77 @@ class ManualStaleMarkingTests(unittest.TestCase):
         self.assertFalse(result["conflict_detected"])
         self.assertEqual(result["selected_lesson_id"], "lesson_002")
         self.assertEqual(result["selected_action"], "turn(west)")
+
+
+class MemoryFreezeNoticeTests(unittest.TestCase):
+    """v2.11c: build_memory_freeze_notice is a pure-data helper; evidence only, no side effects."""
+
+    def test_stale_lesson_produces_memory_freeze_required_notice(self):
+        stale = mark_lesson_stale(_lesson_001())
+        notice = build_memory_freeze_notice(stale, "lesson marked stale by teacher")
+
+        self.assertEqual(notice["notice_type"], "memory_freeze_required")
+        self.assertEqual(notice["source_lesson_id"], "lesson_001")
+        self.assertEqual(notice["lesson_lifecycle_state"], "stale")
+        self.assertEqual(notice["stale_or_supersede_reason"], "lesson marked stale by teacher")
+        self.assertEqual(notice["target"], "learned_principle")
+        self.assertEqual(notice["effect"], "evidence_only")
+        self.assertFalse(notice["direct_memory_write"])
+
+    def test_superseded_lesson_produces_memory_freeze_required_notice(self):
+        lesson_001 = _lesson_001()
+        lesson_002 = _lesson_002()
+        result = link_lesson_supersede(lesson_001, lesson_002)
+        old_lesson = result["old_lesson"]
+        notice = build_memory_freeze_notice(old_lesson, "superseded by lesson_002")
+
+        self.assertEqual(notice["notice_type"], "memory_freeze_required")
+        self.assertEqual(notice["source_lesson_id"], "lesson_001")
+        self.assertEqual(notice["lesson_lifecycle_state"], "superseded")
+        self.assertEqual(notice["superseded_by_lesson_id"], "lesson_002")
+        self.assertEqual(notice["stale_or_supersede_reason"], "superseded by lesson_002")
+        self.assertFalse(notice["direct_memory_write"])
+
+    def test_notice_preserves_source_lesson_id_and_reason(self):
+        stale = mark_lesson_stale(_lesson_001())
+        notice = build_memory_freeze_notice(stale, "stale_reason_preserved")
+
+        self.assertEqual(notice["source_lesson_id"], stale["lesson_id"])
+        self.assertEqual(notice["stale_or_supersede_reason"], "stale_reason_preserved")
+
+    def test_notice_direct_memory_write_is_false(self):
+        stale = mark_lesson_stale(_lesson_001())
+        notice = build_memory_freeze_notice(stale, "test")
+
+        self.assertFalse(notice["direct_memory_write"])
+        self.assertFalse(notice["lesson_store_write"])
+
+    def test_notice_does_not_change_selection_eligibility_or_activation(self):
+        stale = mark_lesson_stale(_lesson_001())
+        notice = build_memory_freeze_notice(stale, "test")
+
+        self.assertFalse(notice["selection_eligibility_changed"])
+        self.assertFalse(notice["activation_changed"])
+
+    def test_notice_effect_is_evidence_only(self):
+        stale = mark_lesson_stale(_lesson_001())
+        notice = build_memory_freeze_notice(stale, "test")
+
+        self.assertEqual(notice["effect"], "evidence_only")
+        self.assertEqual(notice["authority_boundary"], "notice_evidence_only")
+
+    def test_notice_does_not_mutate_lesson(self):
+        import copy
+        stale = mark_lesson_stale(_lesson_001())
+        before = copy.deepcopy(stale)
+        build_memory_freeze_notice(stale, "test")
+
+        self.assertEqual(stale, before)
+
+    def test_non_stale_lesson_lifecycle_state_is_reported(self):
+        lesson = _lesson_001()  # not stale, not superseded
+        notice = build_memory_freeze_notice(lesson, "manual check")
+        self.assertEqual(notice["lesson_lifecycle_state"], "not_stale_not_superseded")
 
 
 if __name__ == "__main__":

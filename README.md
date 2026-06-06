@@ -58,6 +58,7 @@ ASHL Core Lab 是 ASHL Core／D清音 的最小 Python 實驗專案，用來驗�
 - Formal Lesson Candidate Creation Contract Docs
 - Formal Lesson Candidate Creation Boundary Audit Docs
 - Current Boundary Index Docs
+- v2.11c Lesson Stale Supersede Memory Freeze Notice Contract
 
 ## 尚未完成
 
@@ -991,6 +992,16 @@ v2.7a adds `ashl_core.failure_events` as a trace-only failure_event schema found
 - Confirms raw natural language complaints and LLM-only explanations cannot directly create formal lesson_candidate.
 - Records `Audit result: PASS`.
 - Does not implement formal lesson_candidate creation runtime, automatic lesson_candidate builder, failure_event builder runtime, evaluator runtime, review decision runtime, selection eligibility runtime, activation runtime, sandbox runtime, voice / audio runtime, lesson_store writes, or Memory Layer writes.
+
+## v2.11c Lesson Stale Supersede Memory Freeze Notice Contract
+
+- `docs/lesson_stale_supersede_memory_freeze_notice_contract_v0_1.md`
+- Defines memory_freeze_required notice as evidence, not Memory Layer write.
+- Clarifies ASHL Core provides evidence; D清音 Memory Layers decide memory freeze application.
+- Adds pure-data `build_memory_freeze_notice` helper to lesson_store.py (no side effects, no Memory Layer write).
+- Notice preserves source_lesson_id and stale_or_supersede_reason.
+- Notice does not change selection eligibility, activation state, or lesson_store.
+- Does not implement Memory Layer freeze runtime or Long-term Memory write runtime.
 
 ## Current Boundary Index Docs
 

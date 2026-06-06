@@ -398,6 +398,51 @@ def disable_lesson(lesson: dict[str, Any]) -> dict[str, Any]:
     return set_lesson_status(lesson, "disabled")
 
 
+def build_memory_freeze_notice(
+    lesson: dict[str, Any],
+    stale_or_supersede_reason: str,
+) -> dict[str, Any]:
+    """Build a trace-only memory_freeze_required notice for a stale or superseded lesson.
+
+    This function is a pure data helper with no side effects.
+    It must not write to Memory Layer.
+    It must not write to lesson_store.
+    It must not modify learned_principle.
+    It must not change selection eligibility or activation state.
+
+    The notice is evidence only. ASHL Core provides evidence.
+    D清音 Memory Layers decide memory admission and memory freeze application.
+    """
+    lesson_id = lesson.get("lesson_id")
+    is_stale = lesson.get("stale") is True
+    superseded_by = lesson.get("superseded_by")
+    is_superseded = superseded_by is not None
+
+    if is_stale and is_superseded:
+        lifecycle_state = "stale_and_superseded"
+    elif is_superseded:
+        lifecycle_state = "superseded"
+    elif is_stale:
+        lifecycle_state = "stale"
+    else:
+        lifecycle_state = "not_stale_not_superseded"
+
+    return {
+        "notice_type": "memory_freeze_required",
+        "source_lesson_id": lesson_id,
+        "lesson_lifecycle_state": lifecycle_state,
+        "stale_or_supersede_reason": stale_or_supersede_reason,
+        "superseded_by_lesson_id": superseded_by,
+        "target": "learned_principle",
+        "effect": "evidence_only",
+        "direct_memory_write": False,
+        "lesson_store_write": False,
+        "selection_eligibility_changed": False,
+        "activation_changed": False,
+        "authority_boundary": "notice_evidence_only",
+    }
+
+
 def enable_lesson(lesson: dict[str, Any]) -> dict[str, Any]:
     return set_lesson_status(lesson, "active")
 

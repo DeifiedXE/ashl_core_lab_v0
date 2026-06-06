@@ -1999,6 +1999,36 @@ def smoke_voice_instinct_audio_sense_boundary_audit_docs() -> dict:
     return _result("voice_instinct_audio_sense_boundary_audit_docs", passed, {"doc": str(doc_path)})
 
 
+def smoke_lesson_stale_supersede_memory_freeze_notice_contract_docs() -> dict:
+    doc_path = Path("docs/lesson_stale_supersede_memory_freeze_notice_contract_v0_1.md")
+    readme_path = Path("README.md")
+    research_plan_path = Path("docs/research_plan.md")
+    doc = doc_path.read_text(encoding="utf-8") if doc_path.exists() else ""
+    readme = readme_path.read_text(encoding="utf-8") if readme_path.exists() else ""
+    research_plan = research_plan_path.read_text(encoding="utf-8") if research_plan_path.exists() else ""
+    required_terms = [
+        "Memory freeze notice is evidence, not Memory Layer write.",
+        "Lesson stale may require memory_freeze_required notice.",
+        "Lesson superseded may require memory_freeze_required notice.",
+        "Memory freeze notice must not directly modify learned_principle.",
+        "Memory freeze notice must preserve source_lesson_id.",
+        "Memory freeze notice must preserve stale_or_supersede_reason.",
+        "ASHL Core provides evidence.",
+        "D清音 Memory Layers decide memory admission.",
+        "D清音 Memory Layers decide memory freeze application.",
+        "Memory freeze notice must not change selection eligibility.",
+        "Memory freeze notice must not activate or deactivate lessons.",
+        "Memory freeze notice must not write to lesson_store.",
+    ]
+    passed = (
+        doc_path.exists()
+        and all(term in doc for term in required_terms)
+        and "lesson_stale_supersede_memory_freeze_notice_contract_v0_1.md" in readme
+        and "v2.11c Lesson Stale Supersede Memory Freeze Notice Contract" in research_plan
+    )
+    return _result("lesson_stale_supersede_memory_freeze_notice_contract_docs", passed, {"doc": str(doc_path)})
+
+
 def smoke_sandbox_failure_trace_contract_docs() -> dict:
     doc_path = Path("docs/sandbox_failure_trace_contract_v0_1.md")
     readme_path = Path("README.md")
@@ -3469,6 +3499,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_equivocation_trace_trust_boundary_correction_docs(),
         smoke_voice_instinct_assumption_docs(),
         smoke_voice_instinct_audio_sense_boundary_audit_docs(),
+        smoke_lesson_stale_supersede_memory_freeze_notice_contract_docs(),
         smoke_sandbox_boundary_capability_assumption_docs(),
         smoke_sandbox_failure_trace_contract_docs(),
         smoke_sandbox_safety_audit_docs(),

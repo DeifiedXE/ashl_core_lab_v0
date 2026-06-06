@@ -1331,6 +1331,37 @@ Non-goals:
 - no Memory Layer write
 - no selection / activation / conflict behavior changes
 
+## v2.11c Lesson Stale Supersede Memory Freeze Notice Contract
+
+Status: completed / contract-only / cross-layer-boundary / memory-freeze-notice / no-direct-memory-write
+
+Goal:
+Define memory_freeze_required notice contract for lesson stale / superseded events.
+Establish that ASHL Core provides evidence; D清音 Memory Layers decide memory freeze application.
+
+Summary:
+Defines memory_freeze_required notice as evidence, not Memory Layer write.
+Adds pure-data build_memory_freeze_notice helper to lesson_store.py.
+Notice preserves source_lesson_id and stale_or_supersede_reason.
+Notice does not change selection eligibility, activation state, or lesson_store.
+
+Boundary:
+- No Memory Layer freeze runtime.
+- No Long-term Memory write runtime.
+- No learned_principle direct modification.
+- No lesson_store write from notice.
+- No selection eligibility change.
+- No activation change.
+- No review decision runtime change.
+
+Non-goals:
+- no Memory Layer API integration
+- no Memory Layer freeze runtime
+- no learned_principle modification
+- no lesson_store write runtime
+- no selection eligibility runtime
+- no activation runtime
+
 ## v2.10b Sandbox Failure / Trace Contract Docs
 
 Status: completed / docs-only / contract-boundary / sandbox-failure-trace-prep
