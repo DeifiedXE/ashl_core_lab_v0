@@ -77,6 +77,7 @@ from ashl_core.persistence import append_jsonl, read_jsonl
 from ashl_core.perception import perceive
 from ashl_core.prompt_leakage_check import build_decision_input_snapshot, check_leakage
 from ashl_core.rule_candidates import append_rule_candidate
+from ashl_core.review_tasks import build_review_task_trace
 from ashl_core.senses import build_sensor_event, build_visual_concept_candidate, validate_sensor_event
 from ashl_core.state_core import StateCore
 from ashl_core.state_persistence import (
@@ -1327,6 +1328,47 @@ def smoke_lesson_candidate_draft_review_queue_audit() -> dict:
         and "v2.8b-1 Review Queue Contract Audit / Regression" in research_plan
     )
     return _result("lesson_candidate_draft_review_queue_audit", passed, {"doc": str(doc_path)})
+
+
+def smoke_review_task_trace_schema() -> dict:
+    doc_path = Path("docs/review_task_trace_schema_v0_1.md")
+    doc = doc_path.read_text(encoding="utf-8") if doc_path.exists() else ""
+    trace = build_review_task_trace(
+        {
+            "id": "queue_smoke_001",
+            "source_draft_id": "draft_smoke_001",
+            "source_failure_norm_key": "sandbox_task|pick_up_object|pick_up|object_state|object_state",
+            "semantic_key": "object_interaction",
+            "reviewer_identity": "admin_override",
+            "reviewer_identity_source": "llm_generated",
+            "review_decision": "approved",
+            "approved": True,
+            "selection_eligible": True,
+        }
+    )
+    required_terms = [
+        "review_task_trace is a trace-only to-do record, not a review decision.",
+        "review_task completion does not imply approval.",
+        "reviewer_identity must be supplied by runtime/session context, not LLM-generated content.",
+        "semantic_key display level must be lower than source_failure_norm_key.",
+        "source_failure_norm_key must outrank semantic_key in review task presentation.",
+    ]
+    passed = (
+        trace["type"] == "review_task_trace"
+        and trace["trace_only"] is True
+        and trace["not_review_decision"] is True
+        and trace["not_approval"] is True
+        and trace["reviewer_identity"] != "admin_override"
+        and trace["reviewer_identity_not_llm_generated"] is True
+        and trace["semantic_key_display_level_lower_than_source_failure_norm_key"] is True
+        and trace["no_selection_facing_read_api"] is True
+        and trace["not_written_to_memory_layer"] is True
+        and "approved" not in trace
+        and "selection_eligible" not in trace
+        and doc_path.exists()
+        and all(term in doc for term in required_terms)
+    )
+    return _result("review_task_trace_schema", passed, {"doc": str(doc_path), "trace": trace})
 
 
 def smoke_phase0_trust_curiosity_personality_boundary_docs() -> dict:
@@ -2692,6 +2734,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_outcome_unknown_payload_draft_invariant_guard(),
         smoke_lesson_candidate_draft_review_queue_contract_docs(),
         smoke_lesson_candidate_draft_review_queue_audit(),
+        smoke_review_task_trace_schema(),
         smoke_phase0_trust_curiosity_personality_boundary_docs(),
         smoke_teaching_cli_conflict_check(),
         smoke_cross_task_shared_prerequisite_isolation(),

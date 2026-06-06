@@ -884,3 +884,13 @@ v2.7a adds `ashl_core.failure_events` as a trace-only failure_event schema found
 - Confirms queue metrics may expose counts only, never draft content or draft keys.
 - Confirms timeout / expired drafts cannot be archived into any Memory Layer.
 - Confirms `semantic_key` presentation remains secondary and non-authoritative.
+
+## v2.8c Review Task Trace-only Schema
+
+- `docs/review_task_trace_schema_v0_1.md`
+- Defines trace-only `review_task_trace` schema.
+- Keeps `review_task_trace` as a to-do record, not a review decision.
+- Ensures review_task completion does not imply approval.
+- Requires reviewer_identity to come from runtime/session context, not LLM-generated content.
+- Keeps semantic_key as secondary optional hint below source_failure_norm_key.
+- Does not add manual_review runtime, review decision creation, draft mutation, selection-facing read APIs, lesson_store writes, or Memory Layer writes.

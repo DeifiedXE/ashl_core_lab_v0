@@ -870,6 +870,36 @@ Non-goals:
 - no Memory Layer write
 - no selection / activation / conflict behavior changes
 
+## v2.8c Review Task Trace-only Schema
+
+Status: completed / trace-only.
+
+Goal:
+Define trace-only review_task schema without implementing manual review runtime.
+
+Scope:
+- define review_task_trace as trace-only to-do record
+- ensure review_task_trace is not review decision
+- ensure review_task completion does not imply approval
+- define reviewer_identity source boundary
+- prohibit LLM-generated reviewer_identity
+- keep semantic_key as secondary optional hint
+- ensure semantic_key display level is lower than source_failure_norm_key
+- keep review_task_trace isolated from selection/action/runtime contexts
+- prevent lesson_store and Memory Layer writes
+
+Non-goals:
+- no manual_review runtime
+- no review decision creation
+- no approved / rejected / deferred review result
+- no approved lesson_candidate creation
+- no lesson_store write
+- no review queue runtime expansion
+- no draft mutation
+- no selection / activation / conflict / review behavior changes
+- no Long-term Memory write
+- no Memory Layer write
+
 ## Minimal Teaching CLI
 
 v1.8 Minimal Teaching CLI 是既有 lesson flow 的命令列 wrapper。
