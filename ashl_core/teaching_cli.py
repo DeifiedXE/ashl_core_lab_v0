@@ -17,6 +17,7 @@ from .lesson_store import (
 )
 from .manual_review import build_review_trace, create_review_item, get_review_item, mark_review_approved, mark_review_rejected
 from .mentor_feedback_runtime import build_minimal_mentor_feedback_trace
+from .trace_persistence import append_first_output_trace, append_mentor_feedback_trace
 
 
 DECISION_POINT = "before_retry_pick_up_cube"
@@ -378,6 +379,8 @@ def run_minimal_interaction(
     feedback_label: str = "observed",
     mentor_source: str = "mentor",
     note: str | None = None,
+    persist: bool = False,
+    data_dir: str = "data",
 ) -> dict[str, Any]:
     first_output_result = generate_minimal_first_output(session_id=session_id)
     first_output_trace = first_output_result["first_output_trace"]
@@ -389,12 +392,26 @@ def run_minimal_interaction(
         mentor_source=mentor_source,
         mentor_feedback_note=note,
     )
+    persistence = {"enabled": False}
+    if persist:
+        first_output_append = append_first_output_trace(first_output_trace, data_dir)
+        mentor_feedback_append = append_mentor_feedback_trace(mentor_feedback_trace, data_dir)
+        persistence = {
+            "enabled": True,
+            "first_output": first_output_append,
+            "mentor_feedback": mentor_feedback_append,
+            "append_only": True,
+            "writes_lesson_store": False,
+            "writes_memory_layer": False,
+            "creates_lesson_candidate": False,
+        }
     return {
         "command": "run-minimal-interaction",
         "flow": "minimal_interaction_cli_bridge_v0",
         "status": "ok",
         "first_output_result": first_output_result,
         "mentor_feedback_trace": mentor_feedback_trace,
+        "persistence": persistence,
         "boundary": {
             "llm_used": first_output_result["llm_used"],
             "writes_lesson_store": mentor_feedback_trace["writes_lesson_store"],
@@ -454,6 +471,8 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--session-id", default="final_check")
     parser.add_argument("--feedback-label", default="observed")
     parser.add_argument("--mentor-source", default="mentor")
+    parser.add_argument("--persist", action="store_true")
+    parser.add_argument("--data-dir", default="data")
     args = parser.parse_args(argv)
     if args.command == "run-review-approve":
         result = run_review_approve(review_id=args.review_id, notes=args.notes)
@@ -465,6 +484,8 @@ def main(argv: list[str] | None = None) -> int:
             feedback_label=args.feedback_label,
             mentor_source=args.mentor_source,
             note=args.notes,
+            persist=args.persist,
+            data_dir=args.data_dir,
         )
     else:
         result = run_command(args.command)

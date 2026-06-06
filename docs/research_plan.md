@@ -1739,6 +1739,28 @@ No Memory Layer write.
 No lesson_candidate pipeline connection.
 No awakening claim.
 
+## First Output + Mentor Feedback Append-only Persistence v0
+
+Status:
+minimal-runtime / append-only-persistence / first-output-to-feedback / no-learning
+
+Summary:
+Adds append-only JSONL persistence helpers for first_output_trace and mentor_feedback_trace.
+Writes one raw trace per JSONL line to data/first_output_traces.jsonl and data/mentor_feedback_traces.jsonl.
+Creates the target data directory if missing.
+Rejects unsafe trace values instead of silently correcting them.
+`run-minimal-interaction` remains non-persistent by default; `--persist` enables append-only trace persistence.
+
+Boundary:
+No lesson_store write.
+No Memory Layer write.
+No lesson_candidate creation.
+No failure_event / review / selection / activation behavior.
+No LLM.
+No teaching chat loop.
+No free text conversation.
+No awakening claim.
+
 ## Qingyin Runtime Ontology Boundary v0.1
 
 Status: completed / docs-only / ontology-boundary / runtime-identity-boundary / no-runtime-expansion

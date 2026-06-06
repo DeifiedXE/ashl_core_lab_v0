@@ -1127,6 +1127,15 @@ v2.7a adds `ashl_core.failure_events` as a trace-only failure_event schema found
 - Confirms no overwrite, no silent correction, correction as a new trace, and raw trace preservation.
 - Does not write JSONL, implement persistence runtime, write lesson_store, write Memory Layer, connect lesson_candidate pipeline, or claim awakening.
 
+## First Output + Mentor Feedback Append-only Persistence v0
+
+- Provides append-only JSONL helpers for `first_output_trace` and `mentor_feedback_trace`.
+- Targets `data/first_output_traces.jsonl` and `data/mentor_feedback_traces.jsonl`.
+- Creates the target data directory if missing and appends one JSON object per line.
+- Validates trace boundaries and rejects unsafe values such as `llm_used=true`, lesson candidate creation, lesson_store writes, or Memory Layer writes.
+- `run-minimal-interaction` remains non-persistent by default; `--persist` enables append-only trace persistence and `--data-dir` can point tests at a temporary directory.
+- This is not lesson_store write, not Memory Layer write, not lesson_candidate creation, not failure_event / review / selection / activation, and not awakening evidence.
+
 ## Qingyin Runtime Ontology Boundary v0.1
 
 - `docs/qingyin_runtime_ontology_boundary_v0_1.md`

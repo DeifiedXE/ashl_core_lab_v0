@@ -99,6 +99,7 @@ from ashl_core.teaching_cli import (
     run_review_reject,
     run_unknown_flow,
 )
+from ashl_core.trace_persistence import append_first_output_trace, append_mentor_feedback_trace
 from ashl_core.trial_feedback import append_trial_feedback, build_trial_feedback, summarize_trial_feedback
 from ashl_core.trial_rules import build_trial_suggestions, list_approved_trial_candidates, build_trial_rule_view
 
@@ -3750,6 +3751,61 @@ def smoke_first_output_feedback_persistence_readiness_checklist_docs() -> dict:
     return _result("first_output_feedback_persistence_readiness_checklist_docs", passed, {"doc": str(doc_path)})
 
 
+def smoke_first_output_feedback_append_only_persistence() -> dict:
+    with tempfile.TemporaryDirectory() as tmp:
+        first_output_result = generate_minimal_first_output(session_id="smoke_persistence")
+        first_output_trace = first_output_result["first_output_trace"]
+        mentor_feedback_trace = build_minimal_mentor_feedback_trace(
+            source_first_output_trace_id=first_output_trace["trace_id"],
+            session_id=first_output_trace["session_id"],
+            tick=first_output_trace["tick"],
+            mentor_feedback_label="observed",
+        )
+        first_before = dict(first_output_trace)
+        mentor_before = dict(mentor_feedback_trace)
+
+        first_summary = append_first_output_trace(first_output_trace, tmp)
+        second_first_summary = append_first_output_trace(first_output_trace, tmp)
+        mentor_summary = append_mentor_feedback_trace(mentor_feedback_trace, tmp)
+        second_mentor_summary = append_mentor_feedback_trace(mentor_feedback_trace, tmp)
+
+        first_path = Path(tmp) / "first_output_traces.jsonl"
+        mentor_path = Path(tmp) / "mentor_feedback_traces.jsonl"
+        first_rows = [json.loads(line) for line in first_path.read_text(encoding="utf-8").splitlines()]
+        mentor_rows = [json.loads(line) for line in mentor_path.read_text(encoding="utf-8").splitlines()]
+
+        passed = (
+            first_path.exists()
+            and mentor_path.exists()
+            and len(first_rows) == 2
+            and len(mentor_rows) == 2
+            and first_rows == [first_output_trace, first_output_trace]
+            and mentor_rows == [mentor_feedback_trace, mentor_feedback_trace]
+            and first_output_trace == first_before
+            and mentor_feedback_trace == mentor_before
+            and first_summary["append_only"] is True
+            and second_first_summary["overwrite"] is False
+            and mentor_summary["mutates_input"] is False
+            and second_mentor_summary["append_only"] is True
+            and first_output_trace["llm_used"] is False
+            and mentor_feedback_trace["creates_lesson_candidate"] is False
+            and mentor_feedback_trace["writes_lesson_store"] is False
+            and mentor_feedback_trace["writes_memory_layer"] is False
+        )
+        return _result(
+            "first_output_feedback_append_only_persistence",
+            passed,
+            {
+                "first_output_path": str(first_path),
+                "mentor_feedback_path": str(mentor_path),
+                "first_output_lines": len(first_rows),
+                "mentor_feedback_lines": len(mentor_rows),
+                "append_only": True,
+                "repo_data_used": False,
+            },
+        )
+
+
 def smoke_state_core() -> dict:
     core = StateCore()
     result = core.apply(
@@ -4125,6 +4181,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_minimal_interaction_cli_bridge_audit_docs(),
         smoke_first_output_feedback_append_only_persistence_spec_docs(),
         smoke_first_output_feedback_persistence_readiness_checklist_docs(),
+        smoke_first_output_feedback_append_only_persistence(),
         smoke_cross_task_shared_prerequisite_isolation(),
         smoke_manual_stale_marking(),
         smoke_supersede_link(),

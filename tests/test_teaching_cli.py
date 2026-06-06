@@ -1,7 +1,9 @@
 import json
 import subprocess
 import sys
+import tempfile
 import unittest
+from pathlib import Path
 
 from ashl_core.teaching_cli import (
     run_conflict_check_flow,
@@ -135,6 +137,7 @@ class TeachingCliTests(unittest.TestCase):
         self.assertNotIn("review_decision", result)
         self.assertNotIn("selection_eligibility", result)
         self.assertNotIn("activation", result)
+        self.assertFalse(result["persistence"]["enabled"])
 
     def test_minimal_interaction_cli_bridge_accepts_optional_label(self):
         result = run_minimal_interaction(feedback_label="acceptable")
@@ -173,6 +176,40 @@ class TeachingCliTests(unittest.TestCase):
         result = json.loads(process.stdout)
 
         self.assertEqual(result["mentor_feedback_trace"]["mentor_feedback_label"], "acceptable")
+
+    def test_minimal_interaction_cli_bridge_persist_writes_append_only_jsonl(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            result = run_minimal_interaction(persist=True, data_dir=tmp)
+
+            self.assertTrue(result["persistence"]["enabled"])
+            self.assertTrue(result["persistence"]["append_only"])
+            self.assertFalse(result["persistence"]["writes_lesson_store"])
+            self.assertFalse(result["persistence"]["writes_memory_layer"])
+            self.assertFalse(result["persistence"]["creates_lesson_candidate"])
+            self.assertTrue((Path(tmp) / "first_output_traces.jsonl").exists())
+            self.assertTrue((Path(tmp) / "mentor_feedback_traces.jsonl").exists())
+
+    def test_module_cli_minimal_interaction_persist_accepts_data_dir(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            process = subprocess.run(
+                [
+                    sys.executable,
+                    "-m",
+                    "ashl_core.teaching_cli",
+                    "run-minimal-interaction",
+                    "--persist",
+                    "--data-dir",
+                    tmp,
+                ],
+                check=True,
+                capture_output=True,
+                text=True,
+            )
+            result = json.loads(process.stdout)
+
+            self.assertTrue(result["persistence"]["enabled"])
+            self.assertEqual(len((Path(tmp) / "first_output_traces.jsonl").read_text(encoding="utf-8").splitlines()), 1)
+            self.assertEqual(len((Path(tmp) / "mentor_feedback_traces.jsonl").read_text(encoding="utf-8").splitlines()), 1)
 
 
 if __name__ == "__main__":
