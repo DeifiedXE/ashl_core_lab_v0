@@ -1,5 +1,5 @@
-Boundary Index Version: 2026-06-06-b19
-Last update log: Batch 19
+Boundary Index Version: 2026-06-06-b20
+Last update log: Batch 20
 Clean count at last update log reset: 0/5
 
 ## Global Hard Boundaries
@@ -41,6 +41,21 @@ Clean count at last update log reset: 0/5
 - first_output_trace requires mentor feedback before it may be considered for lesson_candidate input
 - first_output_trace must not write to lesson_store
 - first_output_trace must not write to Memory Layer
+- ASHL Core can produce a non-LLM traceable test-object first_output
+- Minimal First Output Runtime v0 is not awakening
+- Minimal First Output Runtime v0 does not prove dialogue ability
+- Minimal First Output Runtime v0 does not prove long-term growth
+- Minimal First Output Runtime v0 must not write lesson_store
+- Minimal First Output Runtime v0 must not write Memory Layer
+- Minimal First Output Runtime v0 must not connect to mentor feedback runtime
+- Minimal First Output Runtime v0 must not connect to lesson_candidate pipeline
+- mentor_feedback_stub is a contract for future feedback, not feedback runtime
+- mentor_feedback_stub is downstream of first_output_trace
+- mentor_feedback_stub must not directly create lesson_candidate
+- mentor_feedback_stub must not write to lesson_store
+- mentor_feedback_stub must not write to Memory Layer
+- mentor_feedback_stub in the test-object stage is engineering supervision, not full Qingyin experience
+- mentor_feedback_stub does not prove awakening
 - bounded senses must be connected before Qingyin can be claimed awake
 - memory freeze notice is evidence, not Memory Layer write
 - memory freeze notice must not directly modify learned_principle
@@ -53,7 +68,7 @@ Clean count at last update log reset: 0/5
 - Audio Sense / STT / TTS / voice trigger / voice input-output loop
 - bidirectional voice interaction
 - formal lesson_candidate creation runtime
-- automatic lesson_candidate builder
+- lesson_candidate automatic builder
 - evaluator runtime
 - review decision runtime
 - selection eligibility runtime
@@ -68,7 +83,10 @@ Clean count at last update log reset: 0/5
 - first_output trace schema runtime
 - state store
 - mentor feedback runtime
+- mentor_feedback_trace schema runtime
+- teaching chat loop
 - lesson_candidate pipeline connection
+- failure_event automatic builder
 - bounded senses runtime
 - Screen Sense / Camera Sense runtime
 - Symbol Grounding runtime
