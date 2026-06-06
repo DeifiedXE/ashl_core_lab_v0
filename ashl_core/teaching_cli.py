@@ -7,6 +7,7 @@ import json
 from typing import Any
 
 from .fake_sandbox import build_initial_sandbox_state, observe, pick_up
+from .first_output_runtime import generate_minimal_first_output
 from .lesson_runner import run_lesson_causality_test, run_session_2a_with_lesson
 from .lesson_store import (
     build_lesson_from_failure,
@@ -15,6 +16,7 @@ from .lesson_store import (
     select_lesson_for_decision_point,
 )
 from .manual_review import build_review_trace, create_review_item, get_review_item, mark_review_approved, mark_review_rejected
+from .mentor_feedback_runtime import build_minimal_mentor_feedback_trace
 
 
 DECISION_POINT = "before_retry_pick_up_cube"
@@ -371,6 +373,40 @@ def run_conflict_check_flow() -> dict[str, Any]:
     }
 
 
+def run_minimal_interaction(
+    session_id: str = "final_check",
+    feedback_label: str = "observed",
+    mentor_source: str = "mentor",
+    note: str | None = None,
+) -> dict[str, Any]:
+    first_output_result = generate_minimal_first_output(session_id=session_id)
+    first_output_trace = first_output_result["first_output_trace"]
+    mentor_feedback_trace = build_minimal_mentor_feedback_trace(
+        source_first_output_trace_id=first_output_trace["trace_id"],
+        session_id=first_output_trace["session_id"],
+        tick=first_output_trace["tick"],
+        mentor_feedback_label=feedback_label,
+        mentor_source=mentor_source,
+        mentor_feedback_note=note,
+    )
+    return {
+        "command": "run-minimal-interaction",
+        "flow": "minimal_interaction_cli_bridge_v0",
+        "status": "ok",
+        "first_output_result": first_output_result,
+        "mentor_feedback_trace": mentor_feedback_trace,
+        "boundary": {
+            "llm_used": first_output_result["llm_used"],
+            "writes_lesson_store": mentor_feedback_trace["writes_lesson_store"],
+            "writes_memory_layer": mentor_feedback_trace["writes_memory_layer"],
+            "creates_lesson_candidate": mentor_feedback_trace["creates_lesson_candidate"],
+            "engineering_stage": mentor_feedback_trace["engineering_stage"],
+            "awakening_claim": False,
+        },
+        "notes": ["Minimal interaction flow is test-object engineering verification, not dialogue or learning."],
+    }
+
+
 def run_command(command: str) -> dict[str, Any]:
     if command == "run-known-flow":
         return run_known_flow()
@@ -388,6 +424,8 @@ def run_command(command: str) -> dict[str, Any]:
         return run_review_approve()
     if command == "run-review-reject":
         return run_review_reject()
+    if command == "run-minimal-interaction":
+        return run_minimal_interaction()
     return {
         "command": command,
         "status": "error",
@@ -408,15 +446,26 @@ def main(argv: list[str] | None = None) -> int:
             "run-review-display",
             "run-review-approve",
             "run-review-reject",
+            "run-minimal-interaction",
         ],
     )
     parser.add_argument("--review-id", default="review_001")
     parser.add_argument("--notes", default=None)
+    parser.add_argument("--session-id", default="final_check")
+    parser.add_argument("--feedback-label", default="observed")
+    parser.add_argument("--mentor-source", default="mentor")
     args = parser.parse_args(argv)
     if args.command == "run-review-approve":
         result = run_review_approve(review_id=args.review_id, notes=args.notes)
     elif args.command == "run-review-reject":
         result = run_review_reject(review_id=args.review_id, notes=args.notes)
+    elif args.command == "run-minimal-interaction":
+        result = run_minimal_interaction(
+            session_id=args.session_id,
+            feedback_label=args.feedback_label,
+            mentor_source=args.mentor_source,
+            note=args.notes,
+        )
     else:
         result = run_command(args.command)
     print(json.dumps(result, ensure_ascii=False, indent=2))

@@ -1085,6 +1085,21 @@ v2.7a adds `ashl_core.failure_events` as a trace-only failure_event schema found
 - Confirms `creates_lesson_candidate=false`, `writes_lesson_store=false`, `writes_memory_layer=false`, and `engineering_stage=test_object`.
 - Clarifies this runtime is not awakening, not dialogue ability, and not long-term growth.
 
+## Minimal Interaction CLI Bridge v0
+
+- Provides a minimal CLI command that runs:
+  `first_output -> first_output_trace -> mentor_feedback_trace`.
+- Command: `py -3 -m ashl_core.teaching_cli run-minimal-interaction`
+- Default flow:
+  - first_output: `*`
+  - mentor_feedback_label: `observed`
+  - llm_used: `false`
+  - creates_lesson_candidate: `false`
+  - writes_lesson_store: `false`
+  - writes_memory_layer: `false`
+  - engineering_stage: `test_object`
+- This is not dialogue, not learning, not Memory Layer write, and not awakening.
+
 ## Qingyin Runtime Ontology Boundary v0.1
 
 - `docs/qingyin_runtime_ontology_boundary_v0_1.md`

@@ -93,6 +93,7 @@ from ashl_core.teaching_cli import (
     run_disable_reenable_flow,
     run_known_flow,
     run_lifecycle_display,
+    run_minimal_interaction,
     run_review_approve,
     run_review_display,
     run_review_reject,
@@ -3621,6 +3622,34 @@ def smoke_teaching_cli_conflict_check() -> dict:
     return _result("teaching_cli_conflict_check", passed, conflict)
 
 
+def smoke_minimal_interaction_cli_bridge() -> dict:
+    result = run_minimal_interaction()
+    first_output = result["first_output_result"]
+    first_output_trace = first_output["first_output_trace"]
+    mentor_feedback_trace = result["mentor_feedback_trace"]
+    boundary = result["boundary"]
+    forbidden_output_terms = ["Qingyin is awake", "Qingyin can talk", "Qingyin has memory", "Qingyin has learned"]
+    passed = (
+        result["flow"] == "minimal_interaction_cli_bridge_v0"
+        and result["status"] == "ok"
+        and first_output["first_output"] == "*"
+        and first_output_trace["trace_type"] == "first_output_trace"
+        and first_output_trace["llm_used"] is False
+        and first_output_trace["engineering_stage"] == "test_object"
+        and mentor_feedback_trace["trace_type"] == "mentor_feedback_trace"
+        and mentor_feedback_trace["mentor_feedback_label"] == "observed"
+        and mentor_feedback_trace["effect"] == "feedback_only"
+        and mentor_feedback_trace["creates_lesson_candidate"] is False
+        and mentor_feedback_trace["writes_lesson_store"] is False
+        and mentor_feedback_trace["writes_memory_layer"] is False
+        and boundary["llm_used"] is False
+        and boundary["awakening_claim"] is False
+        and "lesson_candidate" not in result
+        and all(term not in json.dumps(result, ensure_ascii=False) for term in forbidden_output_terms)
+    )
+    return _result("minimal_interaction_cli_bridge", passed, result)
+
+
 def smoke_state_core() -> dict:
     core = StateCore()
     result = core.apply(
@@ -3992,6 +4021,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_sandbox_safety_audit_docs(),
         smoke_phase0_trust_curiosity_personality_boundary_docs(),
         smoke_teaching_cli_conflict_check(),
+        smoke_minimal_interaction_cli_bridge(),
         smoke_cross_task_shared_prerequisite_isolation(),
         smoke_manual_stale_marking(),
         smoke_supersede_link(),

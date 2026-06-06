@@ -7,6 +7,7 @@ from ashl_core.teaching_cli import (
     run_conflict_check_flow,
     run_disable_reenable_flow,
     run_known_flow,
+    run_minimal_interaction,
     run_unknown_flow,
 )
 
@@ -92,6 +93,86 @@ class TeachingCliTests(unittest.TestCase):
         self.assertEqual(result["command"], "run-conflict-check-flow")
         self.assertTrue(result["conflict_check"]["implemented"])
         self.assertTrue(result["conflict_check"]["conflict_detected"])
+
+    def test_minimal_interaction_cli_bridge_returns_ok_flow(self):
+        result = run_minimal_interaction()
+
+        self.assertEqual(result["command"], "run-minimal-interaction")
+        self.assertEqual(result["flow"], "minimal_interaction_cli_bridge_v0")
+        self.assertEqual(result["status"], "ok")
+
+    def test_minimal_interaction_cli_bridge_includes_first_output(self):
+        result = run_minimal_interaction()
+        first_output = result["first_output_result"]
+        trace = first_output["first_output_trace"]
+
+        self.assertEqual(first_output["first_output"], "*")
+        self.assertEqual(trace["trace_type"], "first_output_trace")
+        self.assertIs(trace["llm_used"], False)
+        self.assertEqual(trace["engineering_stage"], "test_object")
+
+    def test_minimal_interaction_cli_bridge_includes_mentor_feedback_trace(self):
+        result = run_minimal_interaction()
+        trace = result["mentor_feedback_trace"]
+
+        self.assertEqual(trace["trace_type"], "mentor_feedback_trace")
+        self.assertEqual(trace["source_first_output_trace_id"], "first_output_trace:final_check:1")
+        self.assertEqual(trace["mentor_feedback_label"], "observed")
+        self.assertEqual(trace["effect"], "feedback_only")
+
+    def test_minimal_interaction_cli_bridge_does_not_create_learning_outputs(self):
+        result = run_minimal_interaction()
+        trace = result["mentor_feedback_trace"]
+        boundary = result["boundary"]
+
+        self.assertIs(trace["creates_lesson_candidate"], False)
+        self.assertIs(trace["writes_lesson_store"], False)
+        self.assertIs(trace["writes_memory_layer"], False)
+        self.assertIs(boundary["llm_used"], False)
+        self.assertIs(boundary["awakening_claim"], False)
+        self.assertNotIn("lesson_candidate", result)
+        self.assertNotIn("failure_event", result)
+        self.assertNotIn("review_decision", result)
+        self.assertNotIn("selection_eligibility", result)
+        self.assertNotIn("activation", result)
+
+    def test_minimal_interaction_cli_bridge_accepts_optional_label(self):
+        result = run_minimal_interaction(feedback_label="acceptable")
+
+        self.assertEqual(result["mentor_feedback_trace"]["mentor_feedback_label"], "acceptable")
+
+    def test_module_cli_minimal_interaction_outputs_json(self):
+        process = subprocess.run(
+            [sys.executable, "-m", "ashl_core.teaching_cli", "run-minimal-interaction"],
+            check=True,
+            capture_output=True,
+            text=True,
+        )
+        result = json.loads(process.stdout)
+
+        self.assertEqual(result["flow"], "minimal_interaction_cli_bridge_v0")
+        self.assertEqual(result["status"], "ok")
+        self.assertEqual(result["first_output_result"]["first_output"], "*")
+        self.assertEqual(result["mentor_feedback_trace"]["mentor_feedback_label"], "observed")
+        self.assertFalse(result["boundary"]["awakening_claim"])
+
+    def test_module_cli_minimal_interaction_accepts_feedback_label(self):
+        process = subprocess.run(
+            [
+                sys.executable,
+                "-m",
+                "ashl_core.teaching_cli",
+                "run-minimal-interaction",
+                "--feedback-label",
+                "acceptable",
+            ],
+            check=True,
+            capture_output=True,
+            text=True,
+        )
+        result = json.loads(process.stdout)
+
+        self.assertEqual(result["mentor_feedback_trace"]["mentor_feedback_label"], "acceptable")
 
 
 if __name__ == "__main__":

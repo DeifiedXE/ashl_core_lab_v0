@@ -1633,6 +1633,27 @@ No lesson_store write.
 No Memory Layer write.
 No awakening claim.
 
+## Minimal Interaction CLI Bridge v0
+
+Status:
+minimal-runtime / cli-bridge / first-output-to-feedback / no-learning
+
+Summary:
+Adds a CLI command to trigger the minimal interaction flow:
+first_output -> first_output_trace -> mentor_feedback_trace.
+The bridge uses existing non-LLM first_output runtime and mentor feedback stub runtime.
+Default feedback label is observed.
+Outputs JSON and does not write lesson_store, Memory Layer, lesson_candidate, failure_event, review, selection, or activation.
+
+Boundary:
+No LLM.
+No teaching chat loop.
+No free text conversation.
+No lesson_candidate pipeline connection.
+No lesson_store write.
+No Memory Layer write.
+No awakening claim.
+
 ## Qingyin Runtime Ontology Boundary v0.1
 
 Status: completed / docs-only / ontology-boundary / runtime-identity-boundary / no-runtime-expansion
