@@ -1222,6 +1222,37 @@ Non-goals:
 - no pipeline transition docs
 - no sandbox allowed_action_set Gmod deferral
 
+## Current Boundary Index Batch 18 Sync Patch
+
+Status:
+docs-only / boundary-index-sync / update-log-sync / no-runtime-expansion
+
+Summary:
+Updates docs/current_boundary_index.md from Batch 17 to Batch 18.
+Adds Batch 18 hard boundaries for Qingyin non-LLM first_output, runtime ontology, memory freeze notice evidence-only, unknown expected/actual system_fault, and required field strict validation.
+
+Boundary:
+- No runtime.
+- No new design document.
+- No existing runtime behavior changes.
+- No package-specific prohibitions added to the index.
+
+Non-goals:
+- no runtime
+- no first_output generator
+- no state store
+- no first_output trace schema runtime
+- no bounded senses runtime
+- no Screen Sense / Camera Sense runtime
+- no Symbol Grounding runtime
+- no LLM response generation
+- no teaching chat loop
+- no mentor feedback runtime
+- no lesson_candidate pipeline connection
+- no lesson_store write
+- no Memory Layer write
+- no review / lesson / selection / activation / conflict behavior changes
+
 ## v2.8e Review Decision Trace-only Schema
 
 Status: completed / trace-only

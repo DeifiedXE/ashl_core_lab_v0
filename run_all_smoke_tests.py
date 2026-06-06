@@ -1755,7 +1755,9 @@ def smoke_current_boundary_index_docs() -> dict:
     readme = readme_path.read_text(encoding="utf-8") if readme_path.exists() else ""
     research_plan = research_plan_path.read_text(encoding="utf-8") if research_plan_path.exists() else ""
     required_terms = [
-        "Boundary Index Version: 2026-06-06-b17",
+        "Boundary Index Version: 2026-06-06-b18",
+        "Last update log: Batch 18",
+        "Clean count at last update log reset: 0/5",
         "# Global Hard Boundaries",
         "# Currently Deferred Areas",
         "# Update Rule",
@@ -1766,6 +1768,21 @@ def smoke_current_boundary_index_docs() -> dict:
         "formal lesson_candidate creation is not lesson approval",
         "ASHL Core provides evidence; Qingyin Memory Layers decide memory admission",
         "bidirectional voice interaction",
+        "Qingyin is not the current LLM conversation instance",
+        "An LLM speaking in Qingyin's style is not Qingyin runtime",
+        "LLM-generated text must not count as Qingyin's first_output",
+        "first_output must be generated without LLM output",
+        "first_output is a runtime milestone, not awakening",
+        "first_output is not dialogue ability",
+        "first_output is not evidence of long-term growth",
+        "memory freeze notice is evidence, not Memory Layer write",
+        "expected / actual both unknown-like is system_fault, not match",
+        "missing required fields must be rejected, not default-filled",
+        "Qingyin runtime",
+        "first_output runtime",
+        "first_output generator",
+        "Screen Sense / Camera Sense runtime",
+        "Symbol Grounding runtime",
         "This file must be updated every time an Update Log is generated.",
     ]
     line_count = len(doc.splitlines()) if doc else 0

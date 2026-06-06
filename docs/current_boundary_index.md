@@ -1,6 +1,6 @@
-Boundary Index Version: 2026-06-06-b17
-Last update log: Batch 17
-Current clean count: 0/5
+Boundary Index Version: 2026-06-06-b18
+Last update log: Batch 18
+Clean count at last update log reset: 0/5
 
 ## Global Hard Boundaries
 
@@ -21,6 +21,19 @@ Current clean count: 0/5
 - sandbox result is not a lesson
 - sandbox trace is not memory promotion
 - sandbox repair suggestion is not executable action
+- Qingyin is not the current LLM conversation instance
+- An LLM speaking in Qingyin's style is not Qingyin runtime
+- The LLM must not be treated as Qingyin's self, memory, state, perception, or learning loop
+- LLM-generated text must not count as Qingyin's first_output
+- first_output must be generated without LLM output
+- first_output is a runtime milestone, not awakening
+- first_output is not dialogue ability
+- first_output is not evidence of long-term growth
+- first_output must be traceable before it can become learning material
+- memory freeze notice is evidence, not Memory Layer write
+- memory freeze notice must not directly modify learned_principle
+- expected / actual both unknown-like is system_fault, not match
+- missing required fields must be rejected, not default-filled
 
 ## Currently Deferred Areas
 
@@ -37,6 +50,15 @@ Current clean count: 0/5
 - soft / hard consolidation runtime
 - Core Seed update runtime
 - self-modification runtime
+- Qingyin runtime
+- first_output runtime
+- first_output generator
+- first_output trace schema runtime
+- state store
+- mentor feedback runtime
+- bounded senses runtime
+- Screen Sense / Camera Sense runtime
+- Symbol Grounding runtime
 
 ## Update Rule
 
