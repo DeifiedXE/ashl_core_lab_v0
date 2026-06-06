@@ -1074,6 +1074,46 @@ Non-goals:
 - no auth/session runtime
 - no runtime selector implementation
 
+## v2.8f Review Decision Trace Integration Boundary Docs
+
+Status:
+docs-only / boundary-integration / review-trace-audit
+
+Summary:
+Integrates review_decision_trace, sandbox trace, and voice output trace boundaries.
+Confirms trace is evidence, not approval; record, not authorization; audit material, not runtime action.
+Clarifies review_decision_trace must not activate lessons, grant selection eligibility, authorize runtime behavior, write to lesson_store, or write to Memory Layer.
+Records bidirectional voice interaction as deferred until consultant review.
+
+Boundary:
+- No runtime.
+- No review decision runtime.
+- No selection eligibility runtime.
+- No activation runtime.
+- No lesson_store write.
+- No Memory Layer write.
+- No sandbox runtime.
+- No Audio Sense / STT / TTS / voice trigger / voice input-output loop.
+
+Non-goals:
+- no runtime
+- no review decision runtime
+- no selection eligibility runtime
+- no activation runtime
+- no lesson_store write
+- no Memory Layer write
+- no sandbox runtime
+- no voice instinct runtime
+- no Audio Sense runtime
+- no STT runtime
+- no TTS runtime
+- no voice trigger runtime
+- no voice input-output loop
+- no voice output runner
+- no audio input runner
+- no tool permission runtime
+- no review / lesson / selection / activation / conflict behavior changes
+
 ## v2.8e Review Decision Trace-only Schema
 
 Status: completed / trace-only

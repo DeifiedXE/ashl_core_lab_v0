@@ -1646,6 +1646,41 @@ def smoke_review_decision_trace_audit() -> dict:
     return _result("review_decision_trace_audit", passed, {"doc": str(doc_path)})
 
 
+def smoke_review_decision_trace_integration_boundary_docs() -> dict:
+    doc_path = Path("docs/review_decision_trace_integration_boundary_v0_1.md")
+    readme_path = Path("README.md")
+    research_plan_path = Path("docs/research_plan.md")
+    doc = doc_path.read_text(encoding="utf-8") if doc_path.exists() else ""
+    readme = readme_path.read_text(encoding="utf-8") if readme_path.exists() else ""
+    research_plan = research_plan_path.read_text(encoding="utf-8") if research_plan_path.exists() else ""
+    required_terms = [
+        "Review decision trace is cold audit evidence, not permission.",
+        "Trace is evidence, not approval.",
+        "Trace is record, not authorization.",
+        "Trace is audit material, not runtime action.",
+        "Review decision trace must not activate lessons.",
+        "Review decision trace must not grant selection eligibility.",
+        "Review decision trace must not authorize runtime behavior.",
+        "Review decision trace must not write to lesson_store.",
+        "Review decision trace must not write to Memory Layer.",
+        "Sandbox trace must not become review permission.",
+        "Sandbox trace must not bypass review_decision boundaries.",
+        "Voice output trace must not become review permission.",
+        "Voice output trace must not bypass review_decision boundaries.",
+        "Bidirectional voice interaction is deferred.",
+        "Audio Sense / STT / TTS / voice trigger / voice input-output loop are deferred until consultant review.",
+        "ASHL Core provides evidence.",
+        "D Qingyin Memory Layers decide memory admission.",
+    ]
+    passed = (
+        doc_path.exists()
+        and all(term in doc for term in required_terms)
+        and "review_decision_trace_integration_boundary_v0_1.md" in readme
+        and "v2.8f Review Decision Trace Integration Boundary Docs" in research_plan
+    )
+    return _result("review_decision_trace_integration_boundary_docs", passed, {"doc": str(doc_path)})
+
+
 def smoke_memory_compression_strategy_assumption_docs() -> dict:
     doc_path = Path("docs/memory_compression_strategy_assumption_patch_v0_1.md")
     readme_path = Path("README.md")
@@ -3324,6 +3359,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_decision_authority_reviewer_identity_session_binding_contract_docs(),
         smoke_review_decision_trace_schema(),
         smoke_review_decision_trace_audit(),
+        smoke_review_decision_trace_integration_boundary_docs(),
         smoke_soft_hard_consolidation_assumption_docs(),
         smoke_memory_compression_strategy_assumption_docs(),
         smoke_pathological_risk_role_protection_assumption_docs(),

@@ -54,6 +54,7 @@ ASHL Core Lab 是 ASHL Core／D清音 的最小 Python 實驗專案，用來驗�
 - v2.10b Sandbox Failure / Trace Contract Docs
 - v2.10c Sandbox Safety Audit Docs
 - v2.9e-1 Voice Instinct / Audio Sense Boundary Audit Docs
+- v2.8f Review Decision Trace Integration Boundary Docs
 
 ## 尚未完成
 
@@ -957,6 +958,16 @@ v2.7a adds `ashl_core.failure_events` as a trace-only failure_event schema found
 - Confirms masking_policy_ref and authority_binding_policy_ref are required.
 - Confirms partial / conditional approval is rejected.
 - Records future runtime selector trace isolation and future authority / identity / session binding checks.
+
+## v2.8f Review Decision Trace Integration Boundary Docs
+
+- `docs/review_decision_trace_integration_boundary_v0_1.md`
+- Integrates review_decision_trace, sandbox trace, and voice output trace boundaries.
+- Confirms trace is evidence, not approval; record, not authorization; audit material, not runtime action.
+- Clarifies review_decision_trace must not activate lessons, grant selection eligibility, authorize runtime behavior, write to lesson_store, or write to Memory Layer.
+- Clarifies sandbox trace and voice output trace must not become review permission or bypass review_decision boundaries.
+- Records bidirectional voice interaction as deferred until consultant review.
+- Does not implement runtime, review decision runtime, selection eligibility runtime, activation runtime, sandbox runtime, Audio Sense / STT / TTS runtime, voice trigger runtime, or voice input-output loop.
 
 ## v2.8e Review Decision Trace-only Schema
 
