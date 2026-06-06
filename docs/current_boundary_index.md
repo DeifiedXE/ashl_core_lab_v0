@@ -1,6 +1,7 @@
-Boundary Index Version: 2026-06-06-b20
-Last update log: Batch 20
+Boundary Index Version: 2026-06-06-b21
+Last update log: Batch 21
 Clean count at last update log reset: 0/5
+Current clean count: 0/5
 
 ## Global Hard Boundaries
 
@@ -56,6 +57,16 @@ Clean count at last update log reset: 0/5
 - mentor_feedback_stub must not write to Memory Layer
 - mentor_feedback_stub in the test-object stage is engineering supervision, not full Qingyin experience
 - mentor_feedback_stub does not prove awakening
+- ASHL Core can produce a minimal mentor_feedback_trace for the first non-LLM first_output
+- mentor_feedback_trace is a feedback record, not feedback runtime
+- mentor_feedback_trace is downstream of first_output_trace
+- mentor_feedback_trace must not directly create lesson_candidate
+- mentor_feedback_trace must not write to lesson_store
+- mentor_feedback_trace must not write to Memory Layer
+- mentor_feedback_trace in the test-object stage is engineering supervision, not full Qingyin experience
+- mentor_feedback_trace does not prove awakening
+- Minimal Mentor Feedback Stub Runtime v0 must not create failure_event, review decision, selection eligibility, or activation
+- Minimal Mentor Feedback Stub Runtime v0 must not connect to the lesson_candidate pipeline
 - bounded senses must be connected before Qingyin can be claimed awake
 - memory freeze notice is evidence, not Memory Layer write
 - memory freeze notice must not directly modify learned_principle
@@ -85,11 +96,15 @@ Clean count at last update log reset: 0/5
 - mentor feedback runtime
 - mentor_feedback_trace schema runtime
 - teaching chat loop
+- free text conversation
 - lesson_candidate pipeline connection
 - failure_event automatic builder
 - bounded senses runtime
 - Screen Sense / Camera Sense runtime
 - Symbol Grounding runtime
+- lesson_store write
+- Memory Layer write
+- Long-term Memory write runtime
 
 ## Update Rule
 

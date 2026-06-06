@@ -1283,6 +1283,21 @@ Boundary:
 - No existing runtime behavior changes.
 - No package-specific prohibitions added to the index.
 
+## Current Boundary Index Batch 21 Sync Patch
+
+Status:
+docs-only / boundary-index-sync / update-log-sync / no-runtime-expansion
+
+Summary:
+Updates docs/current_boundary_index.md from Batch 20 to Batch 21.
+Adds Batch 21 hard boundaries for mentor_feedback_trace, Minimal Mentor Feedback Stub Runtime v0, and the first minimal interaction loop.
+
+Boundary:
+- No runtime.
+- No new design document.
+- No existing runtime behavior changes.
+- No package-specific prohibitions added to the index.
+
 ## v2.8e Review Decision Trace-only Schema
 
 Status: completed / trace-only
