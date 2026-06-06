@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import sys
 from typing import Any
 
 from .fake_sandbox import build_initial_sandbox_state, observe, pick_up
@@ -381,8 +382,9 @@ def run_minimal_interaction(
     note: str | None = None,
     persist: bool = False,
     data_dir: str = "data",
+    state_key: str | None = None,
 ) -> dict[str, Any]:
-    first_output_result = generate_minimal_first_output(session_id=session_id)
+    first_output_result = generate_minimal_first_output(session_id=session_id, state_key=state_key)
     first_output_trace = first_output_result["first_output_trace"]
     mentor_feedback_trace = build_minimal_mentor_feedback_trace(
         source_first_output_trace_id=first_output_trace["trace_id"],
@@ -473,6 +475,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--mentor-source", default="mentor")
     parser.add_argument("--persist", action="store_true")
     parser.add_argument("--data-dir", default="data")
+    parser.add_argument("--state-key", default=None)
     args = parser.parse_args(argv)
     if args.command == "run-review-approve":
         result = run_review_approve(review_id=args.review_id, notes=args.notes)
@@ -486,9 +489,12 @@ def main(argv: list[str] | None = None) -> int:
             note=args.notes,
             persist=args.persist,
             data_dir=args.data_dir,
+            state_key=args.state_key,
         )
     else:
         result = run_command(args.command)
+    if hasattr(sys.stdout, "reconfigure"):
+        sys.stdout.reconfigure(encoding="utf-8")
     print(json.dumps(result, ensure_ascii=False, indent=2))
     return 0
 

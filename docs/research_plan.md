@@ -1527,6 +1527,30 @@ Boundary:
 - No lesson_store write.
 - No Memory Layer write.
 
+## Minimal Non-LLM Utterance Map v0
+
+Status:
+minimal-runtime / non-llm-utterance-map / first-output / no-learning
+
+Summary:
+Adds a fixed non-LLM state_key to utterance map to the minimal first_output runtime.
+Default state_key None still produces first_output `*`.
+Supported state keys are unknown, observed, retry, and quiet.
+Mapped output traces record `utterance_source=utterance_map`, `state_key`, and `llm_used=false`.
+The minimal interaction CLI accepts `--state-key unknown`; with `--persist`, the persisted JSONL trace preserves the utterance map metadata.
+
+Boundary:
+No LLM / prompt / API.
+No dialogue capability.
+No teaching chat loop.
+No rule engine.
+No grammar parser.
+No NLP inference.
+No lesson_candidate pipeline connection.
+No lesson_store write.
+No Memory Layer write.
+No awakening evidence.
+
 ## Minimal First Output Runtime Audit Docs
 
 Status:

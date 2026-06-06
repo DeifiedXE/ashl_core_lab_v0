@@ -1033,6 +1033,15 @@ v2.7a adds `ashl_core.failure_events` as a trace-only failure_event schema found
 - This is not awakening, dialogue ability, learning, or long-term growth.
 - Does not connect mentor feedback, failure_event, lesson_candidate, review, selection, activation, lesson_store, Memory Layer, bounded senses, or any LLM API.
 
+## Minimal Non-LLM Utterance Map v0
+
+- Adds a fixed non-LLM `state_key -> utterance` map to the minimal first_output runtime.
+- Default `state_key=None` still produces `first_output: *`.
+- Supported keys are `unknown`, `observed`, `retry`, and `quiet`.
+- Mapped outputs record `utterance_source=utterance_map`, the selected `state_key`, and `llm_used=false` in `first_output_trace`.
+- `run-minimal-interaction --state-key unknown` can emit and, with `--persist`, append the mapped trace to JSONL.
+- This does not add LLM, prompt/API use, rule engine, grammar parser, NLP, teaching chat loop, lesson_candidate pipeline, lesson_store write, Memory Layer write, or awakening evidence.
+
 ## Minimal First Output Runtime Audit
 
 - `docs/minimal_first_output_runtime_audit_v0_1.md`

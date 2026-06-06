@@ -12,6 +12,7 @@ from ashl_core.teaching_cli import (
     run_minimal_interaction,
     run_unknown_flow,
 )
+from ashl_core.first_output_runtime import UTTERANCE_MAP
 
 
 class TeachingCliTests(unittest.TestCase):
@@ -77,6 +78,7 @@ class TeachingCliTests(unittest.TestCase):
             check=True,
             capture_output=True,
             text=True,
+            encoding="utf-8",
         )
         result = json.loads(process.stdout)
 
@@ -89,6 +91,7 @@ class TeachingCliTests(unittest.TestCase):
             check=True,
             capture_output=True,
             text=True,
+            encoding="utf-8",
         )
         result = json.loads(process.stdout)
 
@@ -172,10 +175,34 @@ class TeachingCliTests(unittest.TestCase):
             check=True,
             capture_output=True,
             text=True,
+            encoding="utf-8",
         )
         result = json.loads(process.stdout)
 
         self.assertEqual(result["mentor_feedback_trace"]["mentor_feedback_label"], "acceptable")
+
+    def test_module_cli_minimal_interaction_accepts_state_key_unknown(self):
+        process = subprocess.run(
+            [
+                sys.executable,
+                "-m",
+                "ashl_core.teaching_cli",
+                "run-minimal-interaction",
+                "--state-key",
+                "unknown",
+            ],
+            check=True,
+            capture_output=True,
+            text=True,
+            encoding="utf-8",
+        )
+        result = json.loads(process.stdout)
+        trace = result["first_output_result"]["first_output_trace"]
+
+        self.assertEqual(result["first_output_result"]["first_output"], UTTERANCE_MAP["unknown"])
+        self.assertEqual(trace["state_key"], "unknown")
+        self.assertEqual(trace["utterance_source"], "utterance_map")
+        self.assertIs(trace["llm_used"], False)
 
     def test_minimal_interaction_cli_bridge_persist_writes_append_only_jsonl(self):
         with tempfile.TemporaryDirectory() as tmp:
@@ -204,12 +231,44 @@ class TeachingCliTests(unittest.TestCase):
                 check=True,
                 capture_output=True,
                 text=True,
+                encoding="utf-8",
             )
             result = json.loads(process.stdout)
 
             self.assertTrue(result["persistence"]["enabled"])
             self.assertEqual(len((Path(tmp) / "first_output_traces.jsonl").read_text(encoding="utf-8").splitlines()), 1)
             self.assertEqual(len((Path(tmp) / "mentor_feedback_traces.jsonl").read_text(encoding="utf-8").splitlines()), 1)
+
+    def test_module_cli_minimal_interaction_persist_with_state_key_writes_utterance_trace(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            process = subprocess.run(
+                [
+                    sys.executable,
+                    "-m",
+                    "ashl_core.teaching_cli",
+                    "run-minimal-interaction",
+                    "--state-key",
+                    "unknown",
+                    "--persist",
+                    "--data-dir",
+                    tmp,
+                ],
+                check=True,
+                capture_output=True,
+                text=True,
+                encoding="utf-8",
+            )
+            result = json.loads(process.stdout)
+            first_rows = [
+                json.loads(line)
+                for line in (Path(tmp) / "first_output_traces.jsonl").read_text(encoding="utf-8").splitlines()
+            ]
+
+            self.assertTrue(result["persistence"]["enabled"])
+            self.assertEqual(first_rows[0]["first_output"], UTTERANCE_MAP["unknown"])
+            self.assertEqual(first_rows[0]["state_key"], "unknown")
+            self.assertEqual(first_rows[0]["utterance_source"], "utterance_map")
+            self.assertIs(first_rows[0]["llm_used"], False)
 
 
 if __name__ == "__main__":

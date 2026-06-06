@@ -4,6 +4,8 @@
 from __future__ import annotations
 
 import json
+import subprocess
+import sys
 import tempfile
 from pathlib import Path
 
@@ -31,7 +33,7 @@ from ashl_core.failure_events import (
     normalize_failure_event_trace,
     validate_failure_event,
 )
-from ashl_core.first_output_runtime import generate_minimal_first_output
+from ashl_core.first_output_runtime import UTTERANCE_MAP, generate_minimal_first_output
 from ashl_core.guard import guard_output
 from ashl_core.integrated_loop import run_turn
 from ashl_core.lesson_candidate_drafts import build_lesson_candidate_draft_trace, validate_lesson_candidate_draft_trace
@@ -2206,6 +2208,74 @@ def smoke_minimal_first_output_runtime() -> dict:
     return _result("minimal_first_output_runtime", passed, result)
 
 
+def smoke_minimal_non_llm_utterance_map() -> dict:
+    default_result = generate_minimal_first_output(session_id="smoke_utterance_default")
+    unknown_result = generate_minimal_first_output(session_id="smoke_utterance_unknown", state_key="unknown")
+    observed_result = generate_minimal_first_output(session_id="smoke_utterance_observed", state_key="observed")
+    retry_result = generate_minimal_first_output(session_id="smoke_utterance_retry", state_key="retry")
+    quiet_result = generate_minimal_first_output(session_id="smoke_utterance_quiet", state_key="quiet")
+    invalid_raised = False
+    try:
+        generate_minimal_first_output(state_key="random_invalid")
+    except ValueError:
+        invalid_raised = True
+
+    with tempfile.TemporaryDirectory() as tmp:
+        process = subprocess.run(
+            [
+                sys.executable,
+                "-m",
+                "ashl_core.teaching_cli",
+                "run-minimal-interaction",
+                "--state-key",
+                "unknown",
+                "--persist",
+                "--data-dir",
+                tmp,
+            ],
+            check=True,
+            capture_output=True,
+            text=True,
+            encoding="utf-8",
+        )
+        cli_result = json.loads(process.stdout)
+        persisted_rows = [
+            json.loads(line)
+            for line in (Path(tmp) / "first_output_traces.jsonl").read_text(encoding="utf-8").splitlines()
+        ]
+
+    unknown_trace = unknown_result["first_output_trace"]
+    passed = (
+        default_result["first_output"] == "*"
+        and unknown_result["first_output"] == UTTERANCE_MAP["unknown"]
+        and observed_result["first_output"] == UTTERANCE_MAP["observed"]
+        and retry_result["first_output"] == UTTERANCE_MAP["retry"]
+        and quiet_result["first_output"] == UTTERANCE_MAP["quiet"]
+        and invalid_raised
+        and unknown_trace["utterance_source"] == "utterance_map"
+        and unknown_trace["state_key"] == "unknown"
+        and unknown_trace["llm_used"] is False
+        and cli_result["first_output_result"]["first_output"] == UTTERANCE_MAP["unknown"]
+        and cli_result["first_output_result"]["first_output_trace"]["state_key"] == "unknown"
+        and cli_result["first_output_result"]["first_output_trace"]["utterance_source"] == "utterance_map"
+        and persisted_rows[0]["first_output"] == UTTERANCE_MAP["unknown"]
+        and persisted_rows[0]["state_key"] == "unknown"
+        and persisted_rows[0]["utterance_source"] == "utterance_map"
+        and persisted_rows[0]["llm_used"] is False
+    )
+    return _result(
+        "minimal_non_llm_utterance_map",
+        passed,
+        {
+            "state_key": "unknown",
+            "first_output": unknown_result["first_output"],
+            "utterance_source": unknown_trace["utterance_source"],
+            "llm_used": unknown_trace["llm_used"],
+            "persisted": cli_result["persistence"]["enabled"],
+        },
+    )
+
+
 def smoke_minimal_first_output_runtime_audit_docs() -> dict:
     doc_path = Path("docs/minimal_first_output_runtime_audit_v0_1.md")
     readme_path = Path("README.md")
@@ -4199,6 +4269,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_first_output_trace_contract_docs(),
         smoke_first_output_runtime_readiness_checklist_docs(),
         smoke_minimal_first_output_runtime(),
+        smoke_minimal_non_llm_utterance_map(),
         smoke_minimal_first_output_runtime_audit_docs(),
         smoke_mentor_feedback_stub_contract_docs(),
         smoke_mentor_feedback_trace_contract_docs(),
