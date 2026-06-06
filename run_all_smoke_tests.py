@@ -74,6 +74,7 @@ from ashl_core.manual_review import (
     mark_review_approved,
     mark_review_rejected,
 )
+from ashl_core.mentor_feedback_runtime import build_minimal_mentor_feedback_trace
 from ashl_core.persistence import append_jsonl, read_jsonl
 from ashl_core.perception import perceive
 from ashl_core.prompt_leakage_check import build_decision_input_snapshot, check_leakage
@@ -2314,6 +2315,37 @@ def smoke_minimal_mentor_feedback_stub_runtime_readiness_checklist_docs() -> dic
     )
 
 
+def smoke_minimal_mentor_feedback_stub_runtime() -> dict:
+    trace = build_minimal_mentor_feedback_trace(
+        source_first_output_trace_id="first_output_trace:final_check:1",
+        session_id="final_check",
+        tick=1,
+        mentor_feedback_label="observed",
+    )
+    forbidden_keys = {
+        "lesson_candidate",
+        "lesson_store_write",
+        "memory_layer_write",
+        "memory_write",
+        "failure_event",
+        "review",
+        "selection",
+        "activation",
+    }
+    passed = (
+        trace["trace_type"] == "mentor_feedback_trace"
+        and trace["source_first_output_trace_id"] == "first_output_trace:final_check:1"
+        and trace["mentor_feedback_label"] == "observed"
+        and trace["effect"] == "feedback_only"
+        and trace["creates_lesson_candidate"] is False
+        and trace["writes_lesson_store"] is False
+        and trace["writes_memory_layer"] is False
+        and trace["engineering_stage"] == "test_object"
+        and forbidden_keys.isdisjoint(trace)
+    )
+    return _result("minimal_mentor_feedback_stub_runtime", passed, trace)
+
+
 def smoke_qingyin_runtime_ontology_boundary_docs() -> dict:
     doc_path = Path("docs/qingyin_runtime_ontology_boundary_v0_1.md")
     readme_path = Path("README.md")
@@ -3893,6 +3925,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_mentor_feedback_stub_contract_docs(),
         smoke_mentor_feedback_trace_contract_docs(),
         smoke_minimal_mentor_feedback_stub_runtime_readiness_checklist_docs(),
+        smoke_minimal_mentor_feedback_stub_runtime(),
         smoke_qingyin_runtime_ontology_boundary_docs(),
         smoke_qingyin_first_output_contract_docs(),
         smoke_lesson_stale_supersede_memory_freeze_notice_contract_docs(),

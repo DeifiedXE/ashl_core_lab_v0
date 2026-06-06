@@ -1068,6 +1068,14 @@ v2.7a adds `ashl_core.failure_events` as a trace-only failure_event schema found
 - Confirms no lesson_candidate creation, no lesson_store write, no Memory Layer write, no failure_event / review / selection / activation creation, and no awakening / dialogue / growth claim.
 - Does not implement runtime, mentor feedback runtime, mentor_feedback_trace schema runtime, teaching chat loop, lesson_candidate pipeline connection, or any lesson_store / Memory Layer write.
 
+## Minimal Mentor Feedback Stub Runtime v0
+
+- Provides a minimal local mentor_feedback_trace builder for test-object engineering supervision.
+- Creates feedback-only mentor_feedback_trace records for an existing first_output_trace.
+- Accepts `source_first_output_trace_id`, `mentor_feedback_label`, optional note, and `mentor_source`.
+- Supports labels: `observed`, `acceptable`, `retry`, `invalid`, and `unsafe`.
+- This is not teaching chat, not lesson_candidate creation, not lesson_store write, not Memory Layer write, and not awakening.
+
 ## Qingyin Runtime Ontology Boundary v0.1
 
 - `docs/qingyin_runtime_ontology_boundary_v0_1.md`

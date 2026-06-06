@@ -1576,6 +1576,25 @@ No lesson_store write.
 No Memory Layer write.
 No awakening claim.
 
+## Minimal Mentor Feedback Stub Runtime v0
+
+Status:
+minimal-runtime / mentor-feedback / test-object-stage / no-learning
+
+Summary:
+Adds a minimal local mentor_feedback_trace builder.
+Accepts source_first_output_trace_id, mentor_feedback_label, optional note, and mentor_source.
+Returns a feedback-only mentor_feedback_trace with creates_lesson_candidate=false, writes_lesson_store=false, writes_memory_layer=false, engineering_stage=test_object.
+Does not connect to lesson_candidate, failure_event, review, selection, activation, lesson_store, or Memory Layer.
+
+Boundary:
+No LLM.
+No teaching chat loop.
+No lesson_candidate pipeline connection.
+No lesson_store write.
+No Memory Layer write.
+No awakening claim.
+
 ## Qingyin Runtime Ontology Boundary v0.1
 
 Status: completed / docs-only / ontology-boundary / runtime-identity-boundary / no-runtime-expansion
