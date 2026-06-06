@@ -1109,6 +1109,15 @@ v2.7a adds `ashl_core.failure_events` as a trace-only failure_event schema found
 - Confirms default `mentor_feedback_label` is `observed` and `--notes` is preserved in mentor_feedback_trace.
 - Confirms the CLI bridge does not use LLM, create lesson_candidate, write lesson_store, write Memory Layer, or claim awakening.
 
+## First Output + Mentor Feedback Append-only Persistence Spec
+
+- `docs/first_output_feedback_append_only_persistence_spec_v0_1.md`
+- Defines future append-only persistence rules for `first_output_trace` and `mentor_feedback_trace`.
+- Specifies future JSONL targets: `data/first_output_traces.jsonl` and `data/mentor_feedback_traces.jsonl`.
+- Requires append-only, no overwrite, no silent correction, correction as a new trace, and raw trace preservation.
+- Clarifies persistence is not lesson_store write, not Memory Layer write, not lesson_candidate creation, and not awakening evidence.
+- Does not implement JSONL writes or persistence runtime.
+
 ## Qingyin Runtime Ontology Boundary v0.1
 
 - `docs/qingyin_runtime_ontology_boundary_v0_1.md`
