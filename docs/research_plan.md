@@ -811,6 +811,35 @@ Non-goals:
 - no Long-term Memory write
 - no Memory Layer write
 
+## v2.8b-1 Review Queue Contract Audit / Regression
+
+Status: completed / docs-only / audit-only.
+
+Goal:
+Audit and harden the review queue contract before review_task schema work.
+
+Scope:
+- confirm review_queue_entry is not review decision
+- confirm review_task is not review decision
+- confirm review_task completion does not imply approval
+- confirm queue can reference draft but cannot mutate draft
+- confirm no selection-facing read APIs
+- confirm metrics APIs expose integer counts only
+- confirm metrics APIs do not expose draft content or keys
+- confirm timeout / expired drafts do not enter any Memory Layer
+- confirm expired draft debug logs contain identity and time only, not proposed fields
+- confirm semantic_key display level remains lower than source_failure_norm_key
+
+Non-goals:
+- no review queue runtime
+- no review_task runtime
+- no manual_review runtime
+- no review decision creation
+- no approved lesson_candidate creation
+- no lesson_store write
+- no Memory Layer write
+- no selection / activation / conflict behavior changes
+
 ## Minimal Teaching CLI
 
 v1.8 Minimal Teaching CLI 是既有 lesson flow 的命令列 wrapper。

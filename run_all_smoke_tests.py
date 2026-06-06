@@ -1228,6 +1228,31 @@ def smoke_lesson_candidate_draft_review_queue_contract_docs() -> dict:
     return _result("lesson_candidate_draft_review_queue_contract_docs", passed, {"doc": str(doc_path)})
 
 
+def smoke_lesson_candidate_draft_review_queue_audit() -> dict:
+    doc_path = Path("docs/lesson_candidate_draft_review_queue_audit_v0_1.md")
+    readme_path = Path("README.md")
+    research_plan_path = Path("docs/research_plan.md")
+    doc = doc_path.read_text(encoding="utf-8") if doc_path.exists() else ""
+    readme = readme_path.read_text(encoding="utf-8") if readme_path.exists() else ""
+    research_plan = research_plan_path.read_text(encoding="utf-8") if research_plan_path.exists() else ""
+    required_terms = [
+        "Audit result",
+        "Queue metrics may expose counts only, never draft content or draft keys.",
+        "Expired draft debug logs must not contain reusable lesson content.",
+        "semantic_key display level must be lower than source_failure_norm_key.",
+        "Review queue must expose no selection-facing read APIs.",
+        "Unreviewed drafts must not be archived into any Memory Layer.",
+        "review_task completion does not imply approval.",
+    ]
+    passed = (
+        doc_path.exists()
+        and all(term in doc for term in required_terms)
+        and "lesson_candidate_draft_review_queue_audit_v0_1.md" in readme
+        and "v2.8b-1 Review Queue Contract Audit / Regression" in research_plan
+    )
+    return _result("lesson_candidate_draft_review_queue_audit", passed, {"doc": str(doc_path)})
+
+
 def smoke_phase0_trust_curiosity_personality_boundary_docs() -> dict:
     doc_path = Path("docs/phase0_trust_curiosity_personality_boundary_v0_1.md")
     readme_path = Path("README.md")
@@ -2589,6 +2614,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_lesson_candidate_draft_schema_audit(),
         smoke_lesson_candidate_draft_strict_schema_injection_guard(),
         smoke_lesson_candidate_draft_review_queue_contract_docs(),
+        smoke_lesson_candidate_draft_review_queue_audit(),
         smoke_phase0_trust_curiosity_personality_boundary_docs(),
         smoke_teaching_cli_conflict_check(),
         smoke_cross_task_shared_prerequisite_isolation(),

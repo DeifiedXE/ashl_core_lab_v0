@@ -864,3 +864,14 @@ v2.7a adds `ashl_core.failure_events` as a trace-only failure_event schema found
 - Requires no selection-facing read APIs.
 - Prohibits unreviewed drafts from being archived into any Memory Layer.
 - Requires `semantic_key` presentation to avoid authority anchoring.
+
+## v2.8b-1 Review Queue Contract Audit / Regression
+
+- `docs/lesson_candidate_draft_review_queue_audit_v0_1.md`
+- Audits `review_queue_entry` / `review_task` contract after v2.8b.
+- Confirms queue entries and review tasks are not review decisions.
+- Confirms review_task completion does not imply approval.
+- Confirms queue exposes no selection-facing read APIs.
+- Confirms queue metrics may expose counts only, never draft content or draft keys.
+- Confirms timeout / expired drafts cannot be archived into any Memory Layer.
+- Confirms `semantic_key` presentation remains secondary and non-authoritative.
