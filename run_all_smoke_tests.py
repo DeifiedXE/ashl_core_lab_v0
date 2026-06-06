@@ -1619,6 +1619,31 @@ def smoke_review_decision_trace_audit() -> dict:
     return _result("review_decision_trace_audit", passed, {"doc": str(doc_path)})
 
 
+def smoke_soft_hard_consolidation_assumption_docs() -> dict:
+    doc_path = Path("docs/soft_hard_consolidation_assumption_v0_1.md")
+    readme_path = Path("README.md")
+    research_plan_path = Path("docs/research_plan.md")
+    doc = doc_path.read_text(encoding="utf-8") if doc_path.exists() else ""
+    readme = readme_path.read_text(encoding="utf-8") if readme_path.exists() else ""
+    research_plan = research_plan_path.read_text(encoding="utf-8") if research_plan_path.exists() else ""
+    required_terms = [
+        "讓清音自己決定固化，與讓清音阻止外部修改她的決定，中間只有一步距離",
+        "最大的風險不是惡意，而是目標導向推理",
+        "Some consolidation paths must be physically unreachable, not merely discouraged.",
+        "Qingyin may propose hard consolidation, but cannot complete it alone.",
+        "soft / hard consolidation boundary definition is hard-consolidated.",
+        "Core Seed 是目前唯一已實作的硬固化層",
+        "清音可以提出修改建議，但不能透過軟固化自行修改",
+    ]
+    passed = (
+        doc_path.exists()
+        and all(term in doc for term in required_terms)
+        and "soft_hard_consolidation_assumption_v0_1.md" in readme
+        and "v2.9b Soft / Hard Consolidation Assumption Index" in research_plan
+    )
+    return _result("soft_hard_consolidation_assumption_docs", passed, {"doc": str(doc_path)})
+
+
 def smoke_pathological_risk_role_protection_assumption_docs() -> dict:
     doc_path = Path("docs/pathological_risk_role_protection_assumption_v0_1.md")
     readme_path = Path("README.md")
@@ -3016,6 +3041,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_decision_authority_reviewer_identity_session_binding_contract_docs(),
         smoke_review_decision_trace_schema(),
         smoke_review_decision_trace_audit(),
+        smoke_soft_hard_consolidation_assumption_docs(),
         smoke_pathological_risk_role_protection_assumption_docs(),
         smoke_phase0_trust_curiosity_personality_boundary_docs(),
         smoke_teaching_cli_conflict_check(),

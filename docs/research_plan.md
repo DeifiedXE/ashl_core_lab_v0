@@ -1106,6 +1106,33 @@ Non-goals:
 - no Memory Layer write
 - no selection / activation / conflict behavior changes
 
+## v2.9b Soft / Hard Consolidation Assumption Index
+
+Status: completed / docs-only / assumption-index
+
+Goal:
+Index soft / hard consolidation assumptions into Phase 0 docs.
+
+Scope:
+- define soft consolidation as reversible, trace-preserving, Qingyin-proposable adjustment
+- define hard consolidation as externally confirmed, versioned, high-cost boundary change
+- define Core Seed as current hard-consolidated layer
+- define target-directed reasoning risk around review bypass
+- require Core Seed / review flow / self-modification boundary / soft-hard boundary definition to be hard-consolidated
+- state that Qingyin may propose hard consolidation but cannot complete it alone
+- record that some consolidation paths must be physically unreachable, not merely discouraged
+
+Non-goals:
+- no soft consolidation runtime
+- no hard consolidation runtime
+- no Core Seed update runtime
+- no review bypass runtime
+- no self-modification runtime
+- no Memory Economy runtime
+- no lesson_store write
+- no Memory Layer write
+- no selection / activation / conflict behavior changes
+
 ## v2.9a Pathological Risk / Actor Role / Protection Assumption Index
 
 Status: completed / docs-only / assumption-index.

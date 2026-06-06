@@ -965,6 +965,16 @@ v2.7a adds `ashl_core.failure_events` as a trace-only failure_event schema found
 - Defines decision_authority as review verdict authority only, not runtime capability.
 - Does not implement auth, session, manual_review, or review decision runtime.
 
+## v2.9b Soft / Hard Consolidation Assumption Index
+
+- `docs/soft_hard_consolidation_assumption_v0_1.md`
+- Defines soft consolidation and hard consolidation assumptions.
+- Records target-directed reasoning risk around review bypass.
+- Defines Core Seed as current hard-consolidated layer.
+- Requires Core Seed, review flow, self-modification boundary, and soft/hard boundary definition to be hard-consolidated.
+- Allows Qingyin to propose hard consolidation but not complete it alone.
+- Does not implement soft / hard consolidation runtime.
+
 ## v2.9a Pathological Risk / Actor Role / Protection Assumption Index
 
 - `docs/pathological_risk_role_protection_assumption_v0_1.md`
