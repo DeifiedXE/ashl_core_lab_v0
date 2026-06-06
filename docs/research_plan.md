@@ -1536,6 +1536,7 @@ Summary:
 Adds a fixed non-LLM state_key to utterance map to the minimal first_output runtime.
 Default state_key None still produces first_output `*`.
 Supported state keys are unknown, observed, retry, and quiet.
+Current utterances are `unknown -> 我不知道`, `observed -> 看到了`, `retry -> 再一次`, and `quiet -> ……`.
 Mapped output traces record `utterance_source=utterance_map`, `state_key`, and `llm_used=false`.
 The minimal interaction CLI accepts `--state-key unknown`; with `--persist`, the persisted JSONL trace preserves the utterance map metadata.
 

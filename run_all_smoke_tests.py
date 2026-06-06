@@ -2247,6 +2247,13 @@ def smoke_minimal_non_llm_utterance_map() -> dict:
     unknown_trace = unknown_result["first_output_trace"]
     passed = (
         default_result["first_output"] == "*"
+        and UTTERANCE_MAP
+        == {
+            "unknown": "我不知道",
+            "observed": "看到了",
+            "retry": "再一次",
+            "quiet": "……",
+        }
         and unknown_result["first_output"] == UTTERANCE_MAP["unknown"]
         and observed_result["first_output"] == UTTERANCE_MAP["observed"]
         and retry_result["first_output"] == UTTERANCE_MAP["retry"]
@@ -2269,6 +2276,7 @@ def smoke_minimal_non_llm_utterance_map() -> dict:
         {
             "state_key": "unknown",
             "first_output": unknown_result["first_output"],
+            "utterances": dict(UTTERANCE_MAP),
             "utterance_source": unknown_trace["utterance_source"],
             "llm_used": unknown_trace["llm_used"],
             "persisted": cli_result["persistence"]["enabled"],

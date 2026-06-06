@@ -8,10 +8,10 @@ TICK = 1
 FIRST_OUTPUT = "*"
 CORE_SEED_REFERENCE = "core_seed:first_output_v0"
 UTTERANCE_MAP = {
-    "unknown": "???仿?",
-    "observed": "?鈭?",
-    "retry": "??甈?",
-    "quiet": "?色?",
+    "unknown": "我不知道",
+    "observed": "看到了",
+    "retry": "再一次",
+    "quiet": "……",
 }
 
 

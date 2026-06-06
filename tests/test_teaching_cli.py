@@ -199,6 +199,7 @@ class TeachingCliTests(unittest.TestCase):
         result = json.loads(process.stdout)
         trace = result["first_output_result"]["first_output_trace"]
 
+        self.assertEqual(result["first_output_result"]["first_output"], "我不知道")
         self.assertEqual(result["first_output_result"]["first_output"], UTTERANCE_MAP["unknown"])
         self.assertEqual(trace["state_key"], "unknown")
         self.assertEqual(trace["utterance_source"], "utterance_map")
@@ -265,6 +266,7 @@ class TeachingCliTests(unittest.TestCase):
             ]
 
             self.assertTrue(result["persistence"]["enabled"])
+            self.assertEqual(first_rows[0]["first_output"], "我不知道")
             self.assertEqual(first_rows[0]["first_output"], UTTERANCE_MAP["unknown"])
             self.assertEqual(first_rows[0]["state_key"], "unknown")
             self.assertEqual(first_rows[0]["utterance_source"], "utterance_map")

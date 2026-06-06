@@ -23,6 +23,15 @@ class MinimalNonLlmUtteranceMapTests(unittest.TestCase):
         self.assertIs(trace["llm_used"], False)
 
     def test_supported_state_keys_map_to_expected_utterances(self):
+        self.assertEqual(
+            UTTERANCE_MAP,
+            {
+                "unknown": "我不知道",
+                "observed": "看到了",
+                "retry": "再一次",
+                "quiet": "……",
+            },
+        )
         for state_key, utterance in UTTERANCE_MAP.items():
             with self.subTest(state_key=state_key):
                 result = generate_minimal_first_output(state_key=state_key)

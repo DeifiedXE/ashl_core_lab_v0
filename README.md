@@ -1038,6 +1038,7 @@ v2.7a adds `ashl_core.failure_events` as a trace-only failure_event schema found
 - Adds a fixed non-LLM `state_key -> utterance` map to the minimal first_output runtime.
 - Default `state_key=None` still produces `first_output: *`.
 - Supported keys are `unknown`, `observed`, `retry`, and `quiet`.
+- Current utterances are `unknown -> 我不知道`, `observed -> 看到了`, `retry -> 再一次`, and `quiet -> ……`.
 - Mapped outputs record `utterance_source=utterance_map`, the selected `state_key`, and `llm_used=false` in `first_output_trace`.
 - `run-minimal-interaction --state-key unknown` can emit and, with `--persist`, append the mapped trace to JSONL.
 - This does not add LLM, prompt/API use, rule engine, grammar parser, NLP, teaching chat loop, lesson_candidate pipeline, lesson_store write, Memory Layer write, or awakening evidence.
