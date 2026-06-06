@@ -2278,6 +2278,42 @@ def smoke_mentor_feedback_trace_contract_docs() -> dict:
     return _result("mentor_feedback_trace_contract_docs", passed, {"doc": str(doc_path)})
 
 
+def smoke_minimal_mentor_feedback_stub_runtime_readiness_checklist_docs() -> dict:
+    doc_path = Path("docs/minimal_mentor_feedback_stub_runtime_readiness_checklist_v0_1.md")
+    readme_path = Path("README.md")
+    research_plan_path = Path("docs/research_plan.md")
+    doc = doc_path.read_text(encoding="utf-8") if doc_path.exists() else ""
+    readme = readme_path.read_text(encoding="utf-8") if readme_path.exists() else ""
+    research_plan = research_plan_path.read_text(encoding="utf-8") if research_plan_path.exists() else ""
+    required_terms = [
+        "Readiness result: READY_FOR_MINIMAL_MENTOR_FEEDBACK_STUB_RUNTIME_V0",
+        "Requirement: a source first_output_trace exists and can be referenced.",
+        "Requirement: mentor_feedback_stub contract is defined.",
+        "Requirement: mentor_feedback_trace contract is defined.",
+        "Requirement: minimal mentor feedback labels are defined.",
+        "Requirement: mentor_feedback_trace required fields are defined.",
+        "Requirement: mentor feedback effect must be feedback_only.",
+        "Requirement: creates_lesson_candidate must be false.",
+        "Requirement: Minimal Mentor Feedback Stub Runtime v0 must not write lesson_store.",
+        "Requirement: Minimal Mentor Feedback Stub Runtime v0 must not write Memory Layer.",
+        "Requirement: Minimal Mentor Feedback Stub Runtime v0 must not connect to lesson_candidate pipeline.",
+        "Requirement: Minimal Mentor Feedback Stub Runtime v0 must not create failure_event, review decision, selection eligibility, or activation.",
+        "Requirement: Minimal Mentor Feedback Stub Runtime v0 must not claim awakening, dialogue ability, or long-term growth.",
+        "This readiness result only authorizes planning a minimal mentor feedback stub runtime package.",
+    ]
+    passed = (
+        doc_path.exists()
+        and all(term in doc for term in required_terms)
+        and "minimal_mentor_feedback_stub_runtime_readiness_checklist_v0_1.md" in readme
+        and "Minimal Mentor Feedback Stub Runtime Readiness Checklist Docs" in research_plan
+    )
+    return _result(
+        "minimal_mentor_feedback_stub_runtime_readiness_checklist_docs",
+        passed,
+        {"doc": str(doc_path)},
+    )
+
+
 def smoke_qingyin_runtime_ontology_boundary_docs() -> dict:
     doc_path = Path("docs/qingyin_runtime_ontology_boundary_v0_1.md")
     readme_path = Path("README.md")
@@ -3856,6 +3892,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_minimal_first_output_runtime_audit_docs(),
         smoke_mentor_feedback_stub_contract_docs(),
         smoke_mentor_feedback_trace_contract_docs(),
+        smoke_minimal_mentor_feedback_stub_runtime_readiness_checklist_docs(),
         smoke_qingyin_runtime_ontology_boundary_docs(),
         smoke_qingyin_first_output_contract_docs(),
         smoke_lesson_stale_supersede_memory_freeze_notice_contract_docs(),

@@ -1059,6 +1059,15 @@ v2.7a adds `ashl_core.failure_events` as a trace-only failure_event schema found
 - Defines required fields, minimal feedback labels, and append-only / version-preserving boundary.
 - Does not implement mentor feedback runtime, teaching chat loop, mentor_feedback_trace schema runtime, lesson_candidate pipeline connection, lesson_store write, or Memory Layer write.
 
+## Minimal Mentor Feedback Stub Runtime Readiness Checklist
+
+- `docs/minimal_mentor_feedback_stub_runtime_readiness_checklist_v0_1.md`
+- Adds a docs-only readiness checklist for planning Minimal Mentor Feedback Stub Runtime v0.
+- Records `Readiness result: READY_FOR_MINIMAL_MENTOR_FEEDBACK_STUB_RUNTIME_V0`.
+- Confirms source first_output_trace exists, mentor_feedback_stub contract exists, mentor_feedback_trace contract exists, feedback labels are defined, required trace fields are defined, and feedback-only boundaries are established.
+- Confirms no lesson_candidate creation, no lesson_store write, no Memory Layer write, no failure_event / review / selection / activation creation, and no awakening / dialogue / growth claim.
+- Does not implement runtime, mentor feedback runtime, mentor_feedback_trace schema runtime, teaching chat loop, lesson_candidate pipeline connection, or any lesson_store / Memory Layer write.
+
 ## Qingyin Runtime Ontology Boundary v0.1
 
 - `docs/qingyin_runtime_ontology_boundary_v0_1.md`

@@ -1554,6 +1554,28 @@ Boundary:
 - No Memory Layer write.
 - No awakening claim.
 
+## Minimal Mentor Feedback Stub Runtime Readiness Checklist Docs
+
+Status:
+docs-only / readiness-checklist / mentor-feedback / no-runtime-implementation
+
+Summary:
+Adds a readiness checklist for planning Minimal Mentor Feedback Stub Runtime v0.
+Confirms source first_output_trace exists, mentor_feedback_stub contract exists, mentor_feedback_trace contract exists, feedback labels are defined, required trace fields are defined, and feedback-only boundaries are established.
+Confirms no lesson_candidate creation, no lesson_store write, no Memory Layer write, no failure_event/review/selection/activation, and no awakening/dialogue/growth claim.
+
+Readiness result:
+READY_FOR_MINIMAL_MENTOR_FEEDBACK_STUB_RUNTIME_V0
+
+Boundary:
+No runtime.
+No mentor feedback runtime.
+No teaching chat loop.
+No lesson_candidate pipeline connection.
+No lesson_store write.
+No Memory Layer write.
+No awakening claim.
+
 ## Qingyin Runtime Ontology Boundary v0.1
 
 Status: completed / docs-only / ontology-boundary / runtime-identity-boundary / no-runtime-expansion
