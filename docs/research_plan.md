@@ -695,6 +695,30 @@ Non-goals:
 - no selection / activation / conflict behavior changes
 - no Long-term Memory write
 
+## v2.7d-2 Lesson Candidate Builder Literature Reference Supplement
+
+Status: completed / docs-only / reference-only
+
+Goal:
+Add literature references for future lesson_candidate builder implementation.
+
+Scope:
+- add CausalFlow as reference for causal failure attribution and counterfactual repair
+- connect Causal Responsibility Score to failure_reason causal grounding
+- connect Counterfactual Repair to future proposed_action_correction generation
+- add LaGEA as structured feedback schema comparison
+- use LaGEA suggested_fix as a negative reference for direct VLM-generated correction
+- preserve existing docs-only / trace-only boundaries
+
+Non-goals:
+- no lesson_candidate builder runtime
+- no proposed_action_correction runtime
+- no counterfactual repair runtime
+- no Causal Responsibility Score runtime
+- no VLM feedback runtime
+- no LLM / VLM authoritative failure_reason
+- no LLM / VLM approved correction generation
+
 ## v2.8a Lesson Candidate Draft Schema Trace-only
 
 Status: completed / trace-only.

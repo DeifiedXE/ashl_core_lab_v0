@@ -833,6 +833,14 @@ v2.7a adds `ashl_core.failure_events` as a trace-only failure_event schema found
 - Confirms proposed_action_correction is not executable action.
 - Confirms proposed_applicability_conditions are not verified applicability proof.
 
+## v2.7d-2 Lesson Candidate Builder Literature Reference Supplement
+
+- `docs/lesson_candidate_builder_literature_references_v0_1.md`
+- Adds CausalFlow and LaGEA as future lesson_candidate builder references.
+- Uses CausalFlow as support for causal failure_reason and counterfactual repair framing.
+- Uses LaGEA as structured feedback comparison and negative reference for direct VLM suggested_fix.
+- Does not implement lesson_candidate builder runtime or proposed_action_correction runtime.
+
 ## v2.8a Lesson Candidate Draft Schema Trace-only
 
 - Adds trace-only `lesson_candidate_draft` schema.

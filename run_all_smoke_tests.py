@@ -1090,6 +1090,33 @@ def smoke_lesson_candidate_builder_contract_audit() -> dict:
     return _result("lesson_candidate_builder_contract_audit", passed, {"doc": str(doc_path)})
 
 
+def smoke_lesson_candidate_builder_literature_references() -> dict:
+    doc_path = Path("docs/lesson_candidate_builder_literature_references_v0_1.md")
+    readme_path = Path("README.md")
+    research_plan_path = Path("docs/research_plan.md")
+    doc = doc_path.read_text(encoding="utf-8") if doc_path.exists() else ""
+    readme = readme_path.read_text(encoding="utf-8") if readme_path.exists() else ""
+    research_plan = research_plan_path.read_text(encoding="utf-8") if research_plan_path.exists() else ""
+    required_terms = [
+        "CausalFlow: Causal Attribution and Counterfactual Repair for LLM Agent Failures",
+        "arXiv:2605.25338",
+        "Only a step whose counterfactual intervention flips the final outcome",
+        "Counterfactual Repair",
+        "LaGEA: Language Guided Embodied Agents for Robotic Manipulation",
+        "arXiv:2509.23155",
+        "suggested_fix → proposed_action_correction",
+        "proposed_action_correction must be review-gated.",
+        "LLM / VLM may provide non-authoritative hints or wording",
+    ]
+    passed = (
+        doc_path.exists()
+        and all(term in doc for term in required_terms)
+        and "Lesson Candidate Builder Literature Reference Supplement" in readme
+        and "v2.7d-2 Lesson Candidate Builder Literature Reference Supplement" in research_plan
+    )
+    return _result("lesson_candidate_builder_literature_references", passed, {"doc": str(doc_path)})
+
+
 def smoke_lesson_candidate_draft_schema_trace() -> dict:
     event = build_failure_event(
         motivation_type="sandbox_task",
@@ -3052,6 +3079,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_failure_event_bridge_audit_regression(),
         smoke_lesson_candidate_builder_contract_docs(),
         smoke_lesson_candidate_builder_contract_audit(),
+        smoke_lesson_candidate_builder_literature_references(),
         smoke_lesson_candidate_draft_schema_trace(),
         smoke_lesson_candidate_draft_schema_audit(),
         smoke_lesson_candidate_draft_strict_schema_injection_guard(),
