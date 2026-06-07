@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from copy import deepcopy
+import random
 from typing import Any
 
 
@@ -117,6 +118,29 @@ def suggest_next_action_by_outcome_weight(
     if not ranked:
         raise ValueError("candidate_actions must include at least one action")
     return ranked[0]
+
+
+def select_intrinsic_action(
+    state: dict[str, Any],
+    candidate_actions: list[str] | tuple[str, ...],
+    random_seed: int | str | bytes | None = None,
+) -> str:
+    validated_candidates = tuple(validate_allowed_action(action) for action in candidate_actions)
+    if not validated_candidates:
+        raise ValueError("candidate_actions must include at least one action")
+
+    scored_candidates = [
+        (action, score_action_from_history(state, action))
+        for action in validated_candidates
+    ]
+    best_score = max(score for _, score in scored_candidates)
+    best_candidates = [
+        action
+        for action, score in scored_candidates
+        if score == best_score
+    ]
+    rng = random.Random(random_seed)
+    return rng.choice(best_candidates)
 
 
 def apply_tactile_action(state: dict[str, Any], action: str) -> dict[str, Any]:

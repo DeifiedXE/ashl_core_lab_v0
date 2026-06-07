@@ -1784,6 +1784,31 @@ No utterance_map changes.
 No autonomous action generation outside candidate_actions.
 No awakening claim.
 
+## Minimal Intrinsic Action Selection v0
+
+Status:
+minimal-runtime / bounded-selection-helper / intrinsic-action-selection / no-learning
+
+Summary:
+Adds select_intrinsic_action(state, candidate_actions, random_seed=None) for the micro push-box sandbox.
+The helper validates candidate_actions against ALLOWED_ACTION_SET, scores candidates with existing action outcome weights, and uses bounded randomness only among tied best candidates.
+The same random_seed gives the same tied-candidate result, and any selected action must come from candidate_actions.
+Example history push_right -> box_blocked and push_down -> box_pushed with candidates ["push_right", "push_down"] selects push_down.
+
+Boundary:
+No AI solver / pathfinding.
+No goal planning.
+No learning pipeline.
+No lesson_candidate pipeline connection.
+No lesson_store write.
+No Memory Layer write.
+No LLM / teaching chat loop / free text conversation.
+No tactile result mapping changes.
+No utterance_map changes.
+No autonomous action generation outside candidate_actions.
+No new action creation.
+No hidden environment inspection.
+
 ## Sandbox Working State Clear CLI v0
 
 Status:

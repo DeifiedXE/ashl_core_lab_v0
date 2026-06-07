@@ -9,6 +9,7 @@ from ashl_core.micro_push_box_sandbox import (
     build_initial_state,
     rank_candidate_actions_by_outcome_weight,
     score_action_from_history,
+    select_intrinsic_action,
     suggest_next_action_avoiding_repeat_blocked,
     suggest_next_action_by_outcome_weight,
     validate_allowed_action,
@@ -200,6 +201,15 @@ class MicroPushBoxSandboxTests(unittest.TestCase):
             ["push_down", "push_right"],
         )
         self.assertEqual(suggest_next_action_by_outcome_weight(state, ["push_right", "push_down"]), "push_down")
+
+    def test_intrinsic_action_selection_prefers_weighted_outcome_within_candidates(self):
+        state = build_initial_state()
+        state["action_history"] = (
+            {"action": "push_right", "result": "box_blocked", "tick": 1},
+            {"action": "push_down", "result": "box_pushed", "tick": 2},
+        )
+
+        self.assertEqual(select_intrinsic_action(state, ["push_right", "push_down"], random_seed=1), "push_down")
 
     def test_trace_does_not_write_learning_or_memory_outputs(self):
         trace = apply_tactile_action(build_initial_state(), "touch_right")["trace"]

@@ -1101,6 +1101,15 @@ v2.7a adds `ashl_core.failure_events` as a trace-only failure_event schema found
 - Example: history `push_right -> box_blocked`, `push_down -> box_pushed` ranks `push_down` above `push_right`.
 - This is deterministic outcome weighting, not AI solver / pathfinding, goal planning, learning pipeline, lesson_candidate pipeline, lesson_store / Memory Layer write, LLM / teaching chat, tactile result mapping change, or utterance_map change.
 
+## Minimal Intrinsic Action Selection v0
+
+- Adds `select_intrinsic_action(state, candidate_actions, random_seed=None)` for the micro push-box sandbox.
+- Selection is bounded to the supplied `candidate_actions` and validates every candidate against `ALLOWED_ACTION_SET`.
+- Uses existing action outcome weights first, then bounded randomness only among tied best candidates.
+- The same `random_seed` gives the same tied-candidate result; different seeds may vary only within the supplied candidates.
+- Example: history `push_right -> box_blocked`, `push_down -> box_pushed`, candidates `["push_right", "push_down"]` selects `push_down`.
+- This is minimal candidate selection, not AI solver / pathfinding, goal planning, learning pipeline, lesson_candidate pipeline, lesson_store / Memory Layer write, LLM / teaching chat, tactile result mapping change, or utterance_map change.
+
 ## Sandbox Working State Clear CLI v0
 
 - Adds `py -3 -m ashl_core.teaching_cli clear-sandbox-working-state --session-id <session_id>`.

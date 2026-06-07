@@ -74,6 +74,7 @@ from ashl_core.micro_push_box_sandbox import (
     ALLOWED_ACTION_SET,
     apply_tactile_action,
     build_initial_state as build_micro_push_box_state,
+    select_intrinsic_action,
     suggest_next_action_by_outcome_weight,
     suggest_next_action_avoiding_repeat_blocked,
     validate_allowed_action,
@@ -408,6 +409,43 @@ def smoke_minimal_action_outcome_weighting() -> dict:
             "push_down_history_result": "box_pushed",
             "candidate_actions": candidates,
             "suggested_action": suggested,
+        },
+    )
+
+
+def smoke_minimal_intrinsic_action_selection() -> dict:
+    state = build_micro_push_box_state()
+    state["action_history"] = (
+        {"action": "push_right", "result": "box_blocked", "tick": 1},
+        {"action": "push_down", "result": "box_pushed", "tick": 2},
+    )
+    candidates = ["push_right", "push_down"]
+    selected = select_intrinsic_action(state, candidates, random_seed=17)
+    deterministic_a = select_intrinsic_action(build_micro_push_box_state(), ["wait", "touch_right"], random_seed=4)
+    deterministic_b = select_intrinsic_action(build_micro_push_box_state(), ["wait", "touch_right"], random_seed=4)
+
+    invalid_raises = False
+    try:
+        select_intrinsic_action(build_micro_push_box_state(), ["push right"], random_seed=1)
+    except ValueError:
+        invalid_raises = True
+
+    passed = (
+        selected == "push_down"
+        and selected in candidates
+        and deterministic_a == deterministic_b
+        and invalid_raises
+    )
+    return _result(
+        "minimal_intrinsic_action_selection",
+        passed,
+        {
+            "candidate_actions": candidates,
+            "selected_action": selected,
+            "random_seed": 17,
+            "selected_from_candidates": selected in candidates,
+            "push_right_history_result": "box_blocked",
+            "push_down_history_result": "box_pushed",
         },
     )
 
@@ -4542,6 +4580,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_repeated_blocked_action_trace(),
         smoke_minimal_avoid_repeated_blocked_action(),
         smoke_minimal_action_outcome_weighting(),
+        smoke_minimal_intrinsic_action_selection(),
         smoke_clear_sandbox_working_state_cli(),
         smoke_grounded_learning_verification_cli(),
         smoke_standing_task(),
