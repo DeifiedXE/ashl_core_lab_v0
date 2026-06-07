@@ -1359,6 +1359,28 @@ Boundary:
 - No senses runtime / Screen Sense / Camera Sense / Symbol Grounding.
 - No new design document.
 
+## Current Boundary Index Batch 25 Sync Patch
+
+Status:
+docs-only / boundary-index-sync / update-log-sync / no-runtime-expansion
+
+Summary:
+Updates docs/current_boundary_index.md from Batch 24 to Batch 25.
+Adds Batch 25 hard boundaries for repeated blocked action trace readback, repeated blocked action avoidance as candidate bias, grounded learning verification CLI as human-verifiable trace flow, sandbox working-state clear preservation, and suggested_next_action as candidate suggestion.
+Marks intrinsic action selection runtime, action outcome weighting runtime integration, autonomous goal planning, full learning pipeline, and downstream learning connections as deferred.
+
+Boundary:
+- No runtime.
+- No sandbox behavior changes.
+- No CLI behavior changes.
+- No action weighting behavior changes.
+- No lesson_store write.
+- No Memory Layer write.
+- No lesson_candidate pipeline connection.
+- No LLM / teaching chat loop / free text conversation.
+- No autonomous behavior changes.
+- No new design document.
+
 ## v2.8e Review Decision Trace-only Schema
 
 Status: completed / trace-only

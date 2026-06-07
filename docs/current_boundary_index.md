@@ -1,10 +1,8 @@
-Boundary Index Version: 2026-06-06-b24
-Last update log: Batch 24
+Boundary Index Version: 2026-06-06-b25
+Last update log: Batch 25
 Clean count at last update log reset: 0/5
 Current clean count: 0/5
-
 ## Global Hard Boundaries
-
 - trace is evidence, not approval
 - trace is record, not authorization
 - trace is audit material, not runtime action
@@ -97,19 +95,27 @@ Current clean count: 0/5
 - tactile interaction CLI bridge must not write lesson_store
 - tactile interaction CLI bridge must not write Memory Layer
 - tactile interaction does not prove Qingyin understands box, wall, or goal
+- repeated blocked action history is trace readback, not full learning
+- repeated blocked action avoidance is action candidate bias, not solver
+- grounded learning verification CLI is human-verifiable trace flow, not teaching chat
+- clear-sandbox-working-state must preserve append-only traces
+- sandbox working state clear is not memory deletion
+- suggested_next_action is candidate suggestion, not autonomous planning
 - bounded senses must be connected before Qingyin can be claimed awake
 - memory freeze notice is evidence, not Memory Layer write
 - memory freeze notice must not directly modify learned_principle
 - expected / actual both unknown-like is system_fault, not match
 - missing required fields must be rejected, not default-filled
-
 ## Currently Deferred Areas
 
 - sandbox runtime
 - trace replay / readback runtime
 - tactile trace persistence runtime
 - autonomous action selection
+- intrinsic action selection runtime
+- autonomous goal planning / action outcome weighting runtime integration
 - tactile learning
+- full learning pipeline
 - repeated failure adaptation
 - Audio Sense / STT / TTS / voice trigger / voice input-output loop
 - bidirectional voice interaction
@@ -124,24 +130,19 @@ Current clean count: 0/5
 - Core Seed update runtime
 - self-modification runtime
 - Qingyin runtime
-- first_output runtime
-- first_output generator
+- first_output runtime / first_output generator
 - first_output trace schema runtime
 - state store
 - mentor feedback runtime
 - mentor_feedback_trace schema runtime
-- teaching chat loop
-- free text conversation
+- teaching chat loop / free text conversation
 - lesson_candidate pipeline connection
 - failure_event automatic builder
 - bounded senses runtime
 - Screen Sense / Camera Sense runtime
 - Symbol Grounding runtime
-- lesson_store write
-- Memory Layer write
-- Long-term Memory write runtime
+- lesson_store write / Memory Layer write / Long-term Memory write runtime
 - LLM response generation
-
 ## Update Rule
 
 This file must be updated every time an Update Log is generated.
