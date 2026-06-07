@@ -21,29 +21,58 @@ DIRECTIONS = {
     "right": (0, 1),
 }
 
-SUPPORTED_ACTIONS = tuple(
-    f"{prefix}_{direction}"
-    for prefix in ("touch", "move", "push")
-    for direction in ("up", "down", "left", "right")
+ALLOWED_ACTION_SET = frozenset(
+    {
+        "touch_up",
+        "touch_down",
+        "touch_left",
+        "touch_right",
+        "move_up",
+        "move_down",
+        "move_left",
+        "move_right",
+        "push_up",
+        "push_down",
+        "push_left",
+        "push_right",
+        "wait",
+    }
 )
+
+SUPPORTED_ACTIONS = tuple(
+    action
+    for prefix in ("touch", "move", "push")
+    for action in (f"{prefix}_{direction}" for direction in ("up", "down", "left", "right"))
+) + ("wait",)
 
 
 def build_initial_state() -> dict[str, Any]:
     return _state_from_grid(INITIAL_MAP)
 
 
-def apply_tactile_action(state: dict[str, Any], action: str) -> dict[str, Any]:
-    if action not in SUPPORTED_ACTIONS:
+def validate_allowed_action(action: str) -> str:
+    if action not in ALLOWED_ACTION_SET:
         raise ValueError(f"unsupported action: {action}")
+    return action
 
-    prefix, direction = action.split("_", 1)
+
+def apply_tactile_action(state: dict[str, Any], action: str) -> dict[str, Any]:
+    action = validate_allowed_action(action)
+
     before = _snapshot(state)
     after_state = _snapshot(state)
+    result = "empty"
+    contact = "none"
+    blocked = False
+
+    if action == "wait":
+        after_state["tick"] = before["tick"] + 1
+        return _build_trace_result(action, before, after_state, contact, "wait", blocked)
+
+    prefix, direction = action.split("_", 1)
     delta = DIRECTIONS[direction]
     target = _add(before["agent_pos"], delta)
     contact = _contact_at(before, target)
-    result = "empty"
-    blocked = False
 
     if prefix == "touch":
         result, blocked = _touch_result(contact)
@@ -53,6 +82,17 @@ def apply_tactile_action(state: dict[str, Any], action: str) -> dict[str, Any]:
         result, blocked, contact = _push(after_state, target, delta, contact)
 
     after_state["tick"] = before["tick"] + 1
+    return _build_trace_result(action, before, after_state, contact, result, blocked)
+
+
+def _build_trace_result(
+    action: str,
+    before: dict[str, Any],
+    after_state: dict[str, Any],
+    contact: str,
+    result: str,
+    blocked: bool,
+) -> dict[str, Any]:
     trace = {
         "trace_type": "tactile_sandbox_trace",
         "tick": after_state["tick"],

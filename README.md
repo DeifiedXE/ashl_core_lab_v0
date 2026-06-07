@@ -1047,10 +1047,17 @@ v2.7a adds `ashl_core.failure_events` as a trace-only failure_event schema found
 
 - Adds a tiny deterministic 2D tactile sandbox with the map `##### / #...# / #.QB# / #..G# / #####`.
 - Tracks `grid`, `agent_pos`, `box_pos`, `goal_pos`, and `tick`.
-- Supports `touch_*`, `move_*`, and `push_*` actions.
+- Supports a fixed allowed action set: `touch_*`, `move_*`, `push_*`, and `wait`.
 - Emits `tactile_sandbox_trace` records with `before`, `after`, `contact`, `result`, `blocked`, and current positions.
 - Result vocabulary includes `empty`, `wall_blocked`, `box_contact`, `box_pushed`, `box_blocked`, and `goal_reached`.
 - This is not an AI solver, pathfinding, learning, lesson_candidate pipeline, lesson_store write, Memory Layer write, LLM / teaching chat loop, graphics / GUI, or senses runtime.
+
+## Micro Push-Box Allowed Action Set v0
+
+- Defines `ALLOWED_ACTION_SET` as the fixed set of 13 sandbox actions: `touch_up/down/left/right`, `move_up/down/left/right`, `push_up/down/left/right`, and `wait`.
+- Adds `validate_allowed_action(...)`; invalid actions such as diagonal moves, natural language commands, free-form commands, and external tool actions raise `ValueError`.
+- Adds `wait` as a deterministic tactile sandbox action. It increments `tick`, does not move the agent or box, returns `result = wait`, `contact = none`, `blocked = false`, and keeps `trace_type = tactile_sandbox_trace`.
+- This does not add AI solver / pathfinding, learning, tactile result mapping changes, lesson_candidate pipeline, lesson_store / Memory Layer writes, LLM / teaching chat loop, natural language action parsing, or external actions.
 
 ## Tactile Result State Key Mapping v0
 

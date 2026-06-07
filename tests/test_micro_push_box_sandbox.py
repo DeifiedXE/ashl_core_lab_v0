@@ -1,10 +1,12 @@
 import unittest
 
 from ashl_core.micro_push_box_sandbox import (
+    ALLOWED_ACTION_SET,
     INITIAL_MAP,
     SUPPORTED_ACTIONS,
     apply_tactile_action,
     build_initial_state,
+    validate_allowed_action,
 )
 
 
@@ -22,7 +24,40 @@ class MicroPushBoxSandboxTests(unittest.TestCase):
         self.assertIn("touch_right", SUPPORTED_ACTIONS)
         self.assertIn("move_right", SUPPORTED_ACTIONS)
         self.assertIn("push_right", SUPPORTED_ACTIONS)
-        self.assertEqual(len(SUPPORTED_ACTIONS), 12)
+        self.assertIn("wait", SUPPORTED_ACTIONS)
+        self.assertEqual(len(SUPPORTED_ACTIONS), 13)
+
+    def test_allowed_action_set_has_expected_actions(self):
+        self.assertEqual(
+            ALLOWED_ACTION_SET,
+            frozenset(
+                {
+                    "touch_up",
+                    "touch_down",
+                    "touch_left",
+                    "touch_right",
+                    "move_up",
+                    "move_down",
+                    "move_left",
+                    "move_right",
+                    "push_up",
+                    "push_down",
+                    "push_left",
+                    "push_right",
+                    "wait",
+                }
+            ),
+        )
+
+    def test_validate_allowed_action_returns_allowed_action(self):
+        self.assertEqual(validate_allowed_action("touch_right"), "touch_right")
+        self.assertEqual(validate_allowed_action("wait"), "wait")
+
+    def test_validate_allowed_action_rejects_invalid_action(self):
+        for action in ("move_diagonal", "push right", "open_door"):
+            with self.subTest(action=action):
+                with self.assertRaises(ValueError):
+                    validate_allowed_action(action)
 
     def test_touch_box_returns_box_contact_without_moving(self):
         state = build_initial_state()
@@ -91,6 +126,20 @@ class MicroPushBoxSandboxTests(unittest.TestCase):
         self.assertEqual(result["trace"]["result"], "goal_reached")
         self.assertEqual(result["state"]["agent_pos"], (2, 3))
         self.assertEqual(result["state"]["box_pos"], (3, 3))
+
+    def test_wait_increments_tick_without_moving_agent_or_box(self):
+        state = build_initial_state()
+        result = apply_tactile_action(state, "wait")
+        trace = result["trace"]
+
+        self.assertEqual(trace["trace_type"], "tactile_sandbox_trace")
+        self.assertEqual(trace["result"], "wait")
+        self.assertEqual(trace["contact"], "none")
+        self.assertFalse(trace["blocked"])
+        self.assertEqual(trace["tick"], 1)
+        self.assertEqual(result["state"]["agent_pos"], state["agent_pos"])
+        self.assertEqual(result["state"]["box_pos"], state["box_pos"])
+        self.assertEqual(result["state"]["goal_pos"], state["goal_pos"])
 
     def test_trace_includes_before_and_after(self):
         result = apply_tactile_action(build_initial_state(), "touch_right")

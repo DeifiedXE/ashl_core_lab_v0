@@ -70,7 +70,12 @@ from ashl_core.memory_layers import (
     read_working_memory_snapshot,
     write_working_memory_snapshot,
 )
-from ashl_core.micro_push_box_sandbox import apply_tactile_action, build_initial_state as build_micro_push_box_state
+from ashl_core.micro_push_box_sandbox import (
+    ALLOWED_ACTION_SET,
+    apply_tactile_action,
+    build_initial_state as build_micro_push_box_state,
+    validate_allowed_action,
+)
 from ashl_core.manual_review import (
     build_review_trace,
     create_review_item,
@@ -224,6 +229,40 @@ def smoke_micro_push_box_sandbox() -> dict:
             "push_goal_result": push_goal["result"],
             "wall_touch_result": touch_wall["result"],
             "wall_move_result": move_wall["result"],
+        },
+    )
+
+
+def smoke_micro_push_box_allowed_action_set() -> dict:
+    touch_right_passes = validate_allowed_action("touch_right") == "touch_right"
+    wait_trace = apply_tactile_action(build_micro_push_box_state(), "wait")["trace"]
+
+    invalid_results = {}
+    for action in ("move_diagonal", "push right", "open_door"):
+        try:
+            validate_allowed_action(action)
+            invalid_results[action] = False
+        except ValueError:
+            invalid_results[action] = True
+
+    passed = (
+        len(ALLOWED_ACTION_SET) == 13
+        and touch_right_passes
+        and wait_trace["trace_type"] == "tactile_sandbox_trace"
+        and wait_trace["result"] == "wait"
+        and wait_trace["contact"] == "none"
+        and wait_trace["blocked"] is False
+        and wait_trace["tick"] == 1
+        and all(invalid_results.values())
+    )
+    return _result(
+        "micro_push_box_allowed_action_set",
+        passed,
+        {
+            "allowed_action_count": len(ALLOWED_ACTION_SET),
+            "touch_right_passes": touch_right_passes,
+            "wait_result": wait_trace["result"],
+            "invalid_actions_raise": invalid_results,
         },
     )
 
@@ -4326,6 +4365,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_body_state(),
         smoke_action_sandbox(),
         smoke_micro_push_box_sandbox(),
+        smoke_micro_push_box_allowed_action_set(),
         smoke_tactile_result_state_key_mapping(),
         smoke_standing_task(),
         smoke_experience_log(),

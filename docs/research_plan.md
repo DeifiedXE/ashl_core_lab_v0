@@ -1582,7 +1582,7 @@ Summary:
 Adds a tiny deterministic 2D tactile sandbox with one agent, one box, one goal, walls, empty cells, and tactile traces.
 The initial map is `##### / #...# / #.QB# / #..G# / #####`.
 The sandbox tracks grid, agent_pos, box_pos, goal_pos, and tick.
-Supported actions are touch, move, and push in four directions.
+Supported actions are touch, move, and push in four directions, plus wait.
 Each action emits a `tactile_sandbox_trace` with before / after state, contact, result, blocked, agent_pos, box_pos, and goal_pos.
 
 Boundary:
@@ -1595,6 +1595,30 @@ No Memory Layer write.
 No LLM / teaching chat loop / free text conversation.
 No graphics / pygame / GUI.
 No senses runtime / camera / screen.
+No awakening evidence.
+
+## Micro Push-Box Allowed Action Set v0
+
+Status:
+minimal-runtime / tactile-sandbox / fixed-action-set / deterministic-wait / no-parser
+
+Summary:
+Defines the explicit `ALLOWED_ACTION_SET` for the micro push-box sandbox.
+The allowed set contains 13 actions: touch_up/down/left/right, move_up/down/left/right, push_up/down/left/right, and wait.
+Adds `validate_allowed_action(...)` so invalid actions raise ValueError before sandbox execution.
+Adds `wait` as a deterministic action that increments tick, does not move the agent or box, returns result `wait`, contact `none`, blocked false, and trace_type `tactile_sandbox_trace`.
+
+Boundary:
+No AI solver.
+No pathfinding.
+No learning.
+No tactile result mapping changes.
+No lesson_candidate pipeline connection.
+No lesson_store write.
+No Memory Layer write.
+No LLM / teaching chat loop / free text conversation.
+No natural language action parser.
+No external tool actions.
 No awakening evidence.
 
 ## Tactile Result State Key Mapping v0
