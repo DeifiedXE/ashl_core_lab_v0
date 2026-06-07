@@ -98,6 +98,7 @@ from ashl_core.state_persistence import (
 )
 from ashl_core.standing_task import run_standing_task
 from ashl_core.teaching_cli import (
+    run_clear_sandbox_working_state,
     run_conflict_check_flow,
     run_disable_reenable_flow,
     run_known_flow,
@@ -384,6 +385,29 @@ def smoke_minimal_avoid_repeated_blocked_action() -> dict:
             "first_result": first["trace"]["result"],
             "candidate_actions": ["push_right", "wait"],
             "suggested_next_action": suggestion,
+        },
+    )
+
+
+def smoke_clear_sandbox_working_state_cli() -> dict:
+    result = run_clear_sandbox_working_state(session_id="final_check")
+    passed = (
+        result["status"] == "ok"
+        and result["working_state_cleared"] is True
+        and result["append_only_traces_preserved"] is True
+        and "data/first_output_traces.jsonl" in result["preserved"]
+        and "data/mentor_feedback_traces.jsonl" in result["preserved"]
+        and result["boundary"]["deletes_append_only_traces"] is False
+    )
+    return _result(
+        "clear_sandbox_working_state_cli",
+        passed,
+        {
+            "session_id": result["session_id"],
+            "working_state_cleared": result["working_state_cleared"],
+            "append_only_traces_preserved": result["append_only_traces_preserved"],
+            "cleared": result["cleared"],
+            "preserved": result["preserved"],
         },
     )
 
@@ -4455,6 +4479,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_tactile_interaction_cli_bridge(),
         smoke_repeated_blocked_action_trace(),
         smoke_minimal_avoid_repeated_blocked_action(),
+        smoke_clear_sandbox_working_state_cli(),
         smoke_standing_task(),
         smoke_experience_log(),
         smoke_phase_minus_one_lesson_contribution(),

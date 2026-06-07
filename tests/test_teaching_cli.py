@@ -7,6 +7,7 @@ from pathlib import Path
 
 from ashl_core.teaching_cli import (
     run_conflict_check_flow,
+    run_clear_sandbox_working_state,
     run_disable_reenable_flow,
     run_known_flow,
     run_minimal_interaction,
@@ -339,6 +340,39 @@ class TeachingCliTests(unittest.TestCase):
         self.assertEqual(result["tactile_result"], "box_blocked")
         self.assertEqual(result["state_key"], "blocked")
         self.assertEqual(result["utterance"], UTTERANCE_MAP["blocked"])
+
+    def test_clear_sandbox_working_state_returns_ok(self):
+        result = run_clear_sandbox_working_state(session_id="final_check")
+
+        self.assertEqual(result["command"], "clear-sandbox-working-state")
+        self.assertEqual(result["status"], "ok")
+        self.assertEqual(result["session_id"], "final_check")
+        self.assertTrue(result["working_state_cleared"])
+        self.assertTrue(result["append_only_traces_preserved"])
+        self.assertIn("data/first_output_traces.jsonl", result["preserved"])
+        self.assertIn("data/mentor_feedback_traces.jsonl", result["preserved"])
+
+    def test_module_cli_clear_sandbox_working_state_outputs_json(self):
+        process = subprocess.run(
+            [
+                sys.executable,
+                "-m",
+                "ashl_core.teaching_cli",
+                "clear-sandbox-working-state",
+                "--session-id",
+                "final_check",
+            ],
+            check=True,
+            capture_output=True,
+            text=True,
+            encoding="utf-8",
+        )
+        result = json.loads(process.stdout)
+
+        self.assertEqual(result["command"], "clear-sandbox-working-state")
+        self.assertEqual(result["status"], "ok")
+        self.assertEqual(result["session_id"], "final_check")
+        self.assertTrue(result["append_only_traces_preserved"])
 
 
 if __name__ == "__main__":

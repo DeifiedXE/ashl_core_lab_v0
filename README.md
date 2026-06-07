@@ -1093,6 +1093,15 @@ v2.7a adds `ashl_core.failure_events` as a trace-only failure_event schema found
 - Invalid candidate actions raise `ValueError` through the allowed action validation path.
 - This is a deterministic helper, not AI solver / pathfinding, goal planning, learning, lesson_candidate pipeline, lesson_store / Memory Layer write, LLM / teaching chat, tactile result mapping change, or utterance_map change.
 
+## Sandbox Working State Clear CLI v0
+
+- Adds `py -3 -m ashl_core.teaching_cli clear-sandbox-working-state --session-id <session_id>`.
+- Returns JSON with `working_state_cleared = true`, `append_only_traces_preserved = true`, `cleared`, and `preserved`.
+- Clearable working-state categories are `action_history`, `sandbox_session_state`, and `temporary_session_state`.
+- Preserved append-only trace paths include `data/first_output_traces.jsonl` and `data/mentor_feedback_traces.jsonl`.
+- If no persistent sandbox working state exists, the command returns `cleared = []` and `reason = no_persistent_working_state_found`.
+- This does not delete `data/*.jsonl`, append-only traces, lesson_store, Memory Layer data, or `data/`; it does not modify `trace_persistence.py`, add learning, connect lesson_candidate, or use LLM / teaching chat.
+
 ## Minimal First Output Runtime Audit
 
 - `docs/minimal_first_output_runtime_audit_v0_1.md`

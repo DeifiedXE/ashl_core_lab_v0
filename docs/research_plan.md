@@ -1737,6 +1737,30 @@ No utterance_map changes.
 No autonomous action generation outside candidate_actions.
 No awakening claim.
 
+## Sandbox Working State Clear CLI v0
+
+Status:
+cli-wrapper / sandbox-working-state-clear / append-only-traces-preserved / no-runtime-expansion
+
+Summary:
+Adds `clear-sandbox-working-state --session-id <session_id>` to the existing teaching CLI wrapper.
+The command returns JSON with working_state_cleared=true, append_only_traces_preserved=true, cleared, and preserved.
+Clearable working-state categories are action_history, sandbox_session_state, and temporary_session_state.
+Append-only trace paths data/first_output_traces.jsonl and data/mentor_feedback_traces.jsonl are reported as preserved.
+If no persistent sandbox working state exists, the command returns cleared=[] and reason=no_persistent_working_state_found.
+
+Boundary:
+No deletion of data/*.jsonl.
+No deletion of append-only traces.
+No deletion of data/.
+No lesson_store write or deletion.
+No Memory Layer write or deletion.
+No trace_persistence behavior changes.
+No learning.
+No lesson_candidate pipeline connection.
+No LLM / teaching chat loop / free text conversation.
+No awakening claim.
+
 ## Minimal First Output Runtime Audit Docs
 
 Status:

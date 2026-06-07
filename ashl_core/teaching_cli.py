@@ -467,6 +467,40 @@ def run_tactile_interaction(action: str | None = None) -> dict[str, Any]:
     }
 
 
+def run_clear_sandbox_working_state(
+    session_id: str = "final_check",
+    working_state: dict[str, Any] | None = None,
+    data_dir: str = "data",
+) -> dict[str, Any]:
+    clearable_keys = ("action_history", "sandbox_session_state", "temporary_session_state")
+    state = dict(working_state or {})
+    cleared = [key for key in clearable_keys if key in state]
+    reason = None if cleared else "no_persistent_working_state_found"
+    preserved_data_dir = data_dir.rstrip("/\\") or "data"
+    return {
+        "command": "clear-sandbox-working-state",
+        "status": "ok",
+        "session_id": session_id,
+        "working_state_cleared": True,
+        "append_only_traces_preserved": True,
+        "cleared": cleared,
+        "preserved": [
+            f"{preserved_data_dir}/first_output_traces.jsonl",
+            f"{preserved_data_dir}/mentor_feedback_traces.jsonl",
+        ],
+        "reason": reason,
+        "boundary": {
+            "deletes_append_only_traces": False,
+            "deletes_data_dir": False,
+            "writes_lesson_store": False,
+            "writes_memory_layer": False,
+            "creates_lesson_candidate": False,
+            "llm_used": False,
+        },
+        "notes": ["Sandbox working state clear does not delete append-only trace files."],
+    }
+
+
 def _tactile_interaction_boundary(llm_used: bool = False) -> dict[str, bool]:
     return {
         "llm_used": llm_used,
@@ -498,6 +532,8 @@ def run_command(command: str) -> dict[str, Any]:
         return run_minimal_interaction()
     if command == "run-tactile-interaction":
         return run_tactile_interaction()
+    if command == "clear-sandbox-working-state":
+        return run_clear_sandbox_working_state()
     return {
         "command": command,
         "status": "error",
@@ -520,6 +556,7 @@ def main(argv: list[str] | None = None) -> int:
             "run-review-reject",
             "run-minimal-interaction",
             "run-tactile-interaction",
+            "clear-sandbox-working-state",
         ],
     )
     parser.add_argument("--review-id", default="review_001")
@@ -548,6 +585,8 @@ def main(argv: list[str] | None = None) -> int:
         )
     elif args.command == "run-tactile-interaction":
         result = run_tactile_interaction(action=args.action)
+    elif args.command == "clear-sandbox-working-state":
+        result = run_clear_sandbox_working_state(session_id=args.session_id, data_dir=args.data_dir)
     else:
         result = run_command(args.command)
     if hasattr(sys.stdout, "reconfigure"):
