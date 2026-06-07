@@ -1761,6 +1761,31 @@ No lesson_candidate pipeline connection.
 No LLM / teaching chat loop / free text conversation.
 No awakening claim.
 
+## Grounded Learning Verification CLI v0
+
+Status:
+cli-wrapper / grounded-learning-verification / tactile-history-to-suggestion / no-learning-pipeline
+
+Summary:
+Adds `run-grounded-learning-check --actions push_right push_right` to the existing teaching CLI wrapper.
+The flow creates the default micro push-box state, applies each tactile action, maps tactile result to state_key, maps state_key to utterance, preserves trace history, and suggests the next action through the existing repeated-blocked helper.
+The default verification line shows push_right -> box_blocked -> blocked -> 不行 twice, with the second trace recording previous push_right = box_blocked.
+For candidate actions ["push_right", "wait"], the suggested next action is wait.
+
+Boundary:
+No LLM / prompt / API.
+No natural language parser.
+No teaching chat loop.
+No AI solver / pathfinding.
+No actual learning pipeline.
+No lesson_candidate pipeline connection.
+No failure_event / review / selection / activation connection.
+No lesson_store write.
+No Memory Layer write.
+No graphics / GUI.
+No senses runtime / camera / screen.
+No awakening claim.
+
 ## Minimal First Output Runtime Audit Docs
 
 Status:

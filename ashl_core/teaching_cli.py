@@ -18,7 +18,11 @@ from .lesson_store import (
 )
 from .manual_review import build_review_trace, create_review_item, get_review_item, mark_review_approved, mark_review_rejected
 from .mentor_feedback_runtime import build_minimal_mentor_feedback_trace
-from .micro_push_box_sandbox import apply_tactile_action, build_initial_state as build_micro_push_box_state
+from .micro_push_box_sandbox import (
+    apply_tactile_action,
+    build_initial_state as build_micro_push_box_state,
+    suggest_next_action_avoiding_repeat_blocked,
+)
 from .tactile_state_mapping import map_tactile_result_to_state_key
 from .trace_persistence import append_first_output_trace, append_mentor_feedback_trace
 
@@ -501,6 +505,64 @@ def run_clear_sandbox_working_state(
     }
 
 
+def run_grounded_learning_check(actions: list[str] | tuple[str, ...] | None = None) -> dict[str, Any]:
+    action_sequence = list(actions or ["push_right", "push_right"])
+    state = build_micro_push_box_state()
+    steps = []
+    try:
+        for index, action in enumerate(action_sequence, start=1):
+            tactile_result = apply_tactile_action(state, action)
+            state = tactile_result["state"]
+            trace = tactile_result["trace"]
+            state_key = map_tactile_result_to_state_key(trace["result"])
+            first_output_result = generate_minimal_first_output(state_key=state_key)
+            steps.append(
+                {
+                    "step_index": index,
+                    "action": action,
+                    "tactile_result": trace["result"],
+                    "state_key": state_key,
+                    "utterance": first_output_result["first_output"],
+                    "history": trace["history"],
+                    "trace": trace,
+                }
+            )
+        suggested_next_action = suggest_next_action_avoiding_repeat_blocked(state, ["push_right", "wait"])
+    except ValueError as exc:
+        return {
+            "command": "run-grounded-learning-check",
+            "flow": "grounded_learning_verification_cli_v0",
+            "status": "error",
+            "actions": action_sequence,
+            "steps": steps,
+            "error": str(exc),
+            "boundary": _verification_boundary(),
+        }
+
+    return {
+        "command": "run-grounded-learning-check",
+        "flow": "grounded_learning_verification_cli_v0",
+        "status": "ok",
+        "actions": action_sequence,
+        "steps": steps,
+        "suggested_next_action": suggested_next_action,
+        "boundary": _verification_boundary(),
+        "notes": ["Grounded learning verification is evidence-only and does not create learning outputs."],
+    }
+
+
+def _verification_boundary() -> dict[str, bool]:
+    return {
+        "llm_used": False,
+        "creates_lesson_candidate": False,
+        "writes_lesson_store": False,
+        "writes_memory_layer": False,
+        "learning_pipeline_used": False,
+        "teaching_chat_loop_used": False,
+        "awakening_claim": False,
+    }
+
+
 def _tactile_interaction_boundary(llm_used: bool = False) -> dict[str, bool]:
     return {
         "llm_used": llm_used,
@@ -534,6 +596,8 @@ def run_command(command: str) -> dict[str, Any]:
         return run_tactile_interaction()
     if command == "clear-sandbox-working-state":
         return run_clear_sandbox_working_state()
+    if command == "run-grounded-learning-check":
+        return run_grounded_learning_check()
     return {
         "command": command,
         "status": "error",
@@ -557,6 +621,7 @@ def main(argv: list[str] | None = None) -> int:
             "run-minimal-interaction",
             "run-tactile-interaction",
             "clear-sandbox-working-state",
+            "run-grounded-learning-check",
         ],
     )
     parser.add_argument("--review-id", default="review_001")
@@ -568,6 +633,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--data-dir", default="data")
     parser.add_argument("--state-key", default=None)
     parser.add_argument("--action", default=None)
+    parser.add_argument("--actions", nargs="*", default=None)
     args = parser.parse_args(argv)
     if args.command == "run-review-approve":
         result = run_review_approve(review_id=args.review_id, notes=args.notes)
@@ -587,6 +653,8 @@ def main(argv: list[str] | None = None) -> int:
         result = run_tactile_interaction(action=args.action)
     elif args.command == "clear-sandbox-working-state":
         result = run_clear_sandbox_working_state(session_id=args.session_id, data_dir=args.data_dir)
+    elif args.command == "run-grounded-learning-check":
+        result = run_grounded_learning_check(actions=args.actions)
     else:
         result = run_command(args.command)
     if hasattr(sys.stdout, "reconfigure"):

@@ -101,6 +101,7 @@ from ashl_core.teaching_cli import (
     run_clear_sandbox_working_state,
     run_conflict_check_flow,
     run_disable_reenable_flow,
+    run_grounded_learning_check,
     run_known_flow,
     run_lifecycle_display,
     run_minimal_interaction,
@@ -408,6 +409,35 @@ def smoke_clear_sandbox_working_state_cli() -> dict:
             "append_only_traces_preserved": result["append_only_traces_preserved"],
             "cleared": result["cleared"],
             "preserved": result["preserved"],
+        },
+    )
+
+
+def smoke_grounded_learning_verification_cli() -> dict:
+    result = run_grounded_learning_check(actions=["push_right", "push_right"])
+    boundary = result.get("boundary", {})
+    second_history = result["steps"][1]["history"] if result.get("steps") and len(result["steps"]) > 1 else {}
+    passed = (
+        result.get("status") == "ok"
+        and len(result.get("steps", [])) == 2
+        and result["steps"][0]["tactile_result"] == "box_blocked"
+        and second_history.get("same_action_attempted_before") is True
+        and second_history.get("previous_same_action_result") == "box_blocked"
+        and result.get("suggested_next_action") == "wait"
+        and boundary.get("llm_used") is False
+        and boundary.get("creates_lesson_candidate") is False
+        and boundary.get("writes_lesson_store") is False
+        and boundary.get("writes_memory_layer") is False
+    )
+    return _result(
+        "grounded_learning_verification_cli",
+        passed,
+        {
+            "actions": result.get("actions"),
+            "step_count": len(result.get("steps", [])),
+            "second_history": second_history,
+            "suggested_next_action": result.get("suggested_next_action"),
+            "boundary": boundary,
         },
     )
 
@@ -4480,6 +4510,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_repeated_blocked_action_trace(),
         smoke_minimal_avoid_repeated_blocked_action(),
         smoke_clear_sandbox_working_state_cli(),
+        smoke_grounded_learning_verification_cli(),
         smoke_standing_task(),
         smoke_experience_log(),
         smoke_phase_minus_one_lesson_contribution(),

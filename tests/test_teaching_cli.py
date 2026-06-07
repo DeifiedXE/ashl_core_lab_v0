@@ -9,6 +9,7 @@ from ashl_core.teaching_cli import (
     run_conflict_check_flow,
     run_clear_sandbox_working_state,
     run_disable_reenable_flow,
+    run_grounded_learning_check,
     run_known_flow,
     run_minimal_interaction,
     run_tactile_interaction,
@@ -373,6 +374,44 @@ class TeachingCliTests(unittest.TestCase):
         self.assertEqual(result["status"], "ok")
         self.assertEqual(result["session_id"], "final_check")
         self.assertTrue(result["append_only_traces_preserved"])
+
+    def test_grounded_learning_check_returns_repeated_blocked_steps(self):
+        result = run_grounded_learning_check(actions=["push_right", "push_right"])
+
+        self.assertEqual(result["command"], "run-grounded-learning-check")
+        self.assertEqual(result["flow"], "grounded_learning_verification_cli_v0")
+        self.assertEqual(result["status"], "ok")
+        self.assertEqual(len(result["steps"]), 2)
+        self.assertEqual(result["steps"][0]["tactile_result"], "box_blocked")
+        self.assertEqual(result["steps"][0]["state_key"], "blocked")
+        self.assertEqual(result["steps"][0]["utterance"], UTTERANCE_MAP["blocked"])
+        self.assertFalse(result["steps"][0]["history"]["same_action_attempted_before"])
+        self.assertEqual(result["steps"][1]["tactile_result"], "box_blocked")
+        self.assertTrue(result["steps"][1]["history"]["same_action_attempted_before"])
+        self.assertEqual(result["steps"][1]["history"]["previous_same_action_result"], "box_blocked")
+        self.assertEqual(result["suggested_next_action"], "wait")
+
+    def test_module_cli_grounded_learning_check_outputs_json(self):
+        process = subprocess.run(
+            [
+                sys.executable,
+                "-m",
+                "ashl_core.teaching_cli",
+                "run-grounded-learning-check",
+                "--actions",
+                "push_right",
+                "push_right",
+            ],
+            check=True,
+            capture_output=True,
+            text=True,
+            encoding="utf-8",
+        )
+        result = json.loads(process.stdout)
+
+        self.assertEqual(result["status"], "ok")
+        self.assertEqual(result["steps"][1]["history"]["previous_same_action_result"], "box_blocked")
+        self.assertEqual(result["suggested_next_action"], "wait")
 
 
 if __name__ == "__main__":

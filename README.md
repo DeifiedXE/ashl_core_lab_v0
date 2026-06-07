@@ -1102,6 +1102,14 @@ v2.7a adds `ashl_core.failure_events` as a trace-only failure_event schema found
 - If no persistent sandbox working state exists, the command returns `cleared = []` and `reason = no_persistent_working_state_found`.
 - This does not delete `data/*.jsonl`, append-only traces, lesson_store, Memory Layer data, or `data/`; it does not modify `trace_persistence.py`, add learning, connect lesson_candidate, or use LLM / teaching chat.
 
+## Grounded Learning Verification CLI v0
+
+- Adds `py -3 -m ashl_core.teaching_cli run-grounded-learning-check --actions push_right push_right`.
+- The verification flow creates the default micro push-box state, applies each tactile action, maps tactile result to `state_key`, maps `state_key` to utterance, preserves trace history, and suggests the next action through the existing repeated-blocked helper.
+- Default verification shows both `push_right` steps as `box_blocked -> blocked -> 不行`; the second step records previous `push_right = box_blocked`.
+- The suggested next action for candidate actions `["push_right", "wait"]` is `wait`.
+- This is verification evidence only. It does not add LLM / prompt / API use, natural language parser, teaching chat loop, AI solver / pathfinding, actual learning pipeline, lesson_candidate pipeline, failure_event / review / selection / activation, lesson_store / Memory Layer writes, graphics / GUI, or senses runtime.
+
 ## Minimal First Output Runtime Audit
 
 - `docs/minimal_first_output_runtime_audit_v0_1.md`
