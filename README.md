@@ -1085,6 +1085,14 @@ v2.7a adds `ashl_core.failure_events` as a trace-only failure_event schema found
 - Different actions do not count as same-action history.
 - This is trace evidence only. It does not add learning, action selection, avoid-same-action behavior, solver / pathfinding, lesson_candidate pipeline, lesson_store / Memory Layer writes, LLM / teaching chat, or JSONL persistence.
 
+## Minimal Avoid Repeated Blocked Action v0
+
+- Adds `suggest_next_action_avoiding_repeat_blocked(state, candidate_actions)`.
+- The helper scans candidate actions in order and returns the first candidate whose latest same-action history is not `box_blocked`, `wall_blocked`, or `blocked`.
+- If all candidates are blocked, it returns `wait`, which is already an allowed sandbox action.
+- Invalid candidate actions raise `ValueError` through the allowed action validation path.
+- This is a deterministic helper, not AI solver / pathfinding, goal planning, learning, lesson_candidate pipeline, lesson_store / Memory Layer write, LLM / teaching chat, tactile result mapping change, or utterance_map change.
+
 ## Minimal First Output Runtime Audit
 
 - `docs/minimal_first_output_runtime_audit_v0_1.md`

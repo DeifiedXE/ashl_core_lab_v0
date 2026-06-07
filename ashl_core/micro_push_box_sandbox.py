@@ -45,6 +45,8 @@ SUPPORTED_ACTIONS = tuple(
     for action in (f"{prefix}_{direction}" for direction in ("up", "down", "left", "right"))
 ) + ("wait",)
 
+BLOCKED_ACTION_RESULTS = frozenset({"box_blocked", "wall_blocked", "blocked"})
+
 
 def build_initial_state() -> dict[str, Any]:
     return _state_from_grid(INITIAL_MAP)
@@ -54,6 +56,23 @@ def validate_allowed_action(action: str) -> str:
     if action not in ALLOWED_ACTION_SET:
         raise ValueError(f"unsupported action: {action}")
     return action
+
+
+def suggest_next_action_avoiding_repeat_blocked(
+    state: dict[str, Any],
+    candidate_actions: list[str] | tuple[str, ...],
+) -> str:
+    validated_candidates = tuple(validate_allowed_action(action) for action in candidate_actions)
+    blocked_actions = {
+        entry.get("action")
+        for entry in state.get("action_history", ())
+        if entry.get("result") in BLOCKED_ACTION_RESULTS
+    }
+
+    for action in validated_candidates:
+        if action not in blocked_actions:
+            return action
+    return "wait"
 
 
 def apply_tactile_action(state: dict[str, Any], action: str) -> dict[str, Any]:

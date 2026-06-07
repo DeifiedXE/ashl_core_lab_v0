@@ -6,6 +6,7 @@ from ashl_core.micro_push_box_sandbox import (
     SUPPORTED_ACTIONS,
     apply_tactile_action,
     build_initial_state,
+    suggest_next_action_avoiding_repeat_blocked,
     validate_allowed_action,
 )
 
@@ -166,6 +167,14 @@ class MicroPushBoxSandboxTests(unittest.TestCase):
         self.assertEqual(second["trace"]["history"]["previous_same_action_result"], "box_blocked")
         self.assertEqual(second["trace"]["history"]["previous_same_action_tick"], 1)
         self.assertEqual(len(second["state"]["action_history"]), 2)
+
+    def test_suggest_next_action_avoids_repeated_blocked_action(self):
+        first = apply_tactile_action(build_initial_state(), "push_right")
+
+        self.assertEqual(
+            suggest_next_action_avoiding_repeat_blocked(first["state"], ["push_right", "wait"]),
+            "wait",
+        )
 
     def test_trace_does_not_write_learning_or_memory_outputs(self):
         trace = apply_tactile_action(build_initial_state(), "touch_right")["trace"]

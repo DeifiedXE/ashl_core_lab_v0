@@ -74,6 +74,7 @@ from ashl_core.micro_push_box_sandbox import (
     ALLOWED_ACTION_SET,
     apply_tactile_action,
     build_initial_state as build_micro_push_box_state,
+    suggest_next_action_avoiding_repeat_blocked,
     validate_allowed_action,
 )
 from ashl_core.manual_review import (
@@ -367,6 +368,22 @@ def smoke_repeated_blocked_action_trace() -> dict:
             "second_action": second["trace"]["action"],
             "second_result": second["trace"]["result"],
             "history": history,
+        },
+    )
+
+
+def smoke_minimal_avoid_repeated_blocked_action() -> dict:
+    first = apply_tactile_action(build_micro_push_box_state(), "push_right")
+    suggestion = suggest_next_action_avoiding_repeat_blocked(first["state"], ["push_right", "wait"])
+    passed = first["trace"]["result"] == "box_blocked" and suggestion == "wait"
+    return _result(
+        "minimal_avoid_repeated_blocked_action",
+        passed,
+        {
+            "first_action": first["trace"]["action"],
+            "first_result": first["trace"]["result"],
+            "candidate_actions": ["push_right", "wait"],
+            "suggested_next_action": suggestion,
         },
     )
 
@@ -4437,6 +4454,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_tactile_result_state_key_mapping(),
         smoke_tactile_interaction_cli_bridge(),
         smoke_repeated_blocked_action_trace(),
+        smoke_minimal_avoid_repeated_blocked_action(),
         smoke_standing_task(),
         smoke_experience_log(),
         smoke_phase_minus_one_lesson_contribution(),

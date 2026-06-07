@@ -1713,6 +1713,30 @@ No LLM / teaching chat loop / free text conversation.
 No persistence / JSONL write.
 No awakening claim.
 
+## Minimal Avoid Repeated Blocked Action v0
+
+Status:
+minimal-runtime / deterministic-helper / repeated-blocked-action-guard / no-learning
+
+Summary:
+Adds `suggest_next_action_avoiding_repeat_blocked(state, candidate_actions)`.
+The helper scans candidate actions in order and returns the first candidate whose latest same-action history is not box_blocked, wall_blocked, or blocked.
+If all candidates are blocked, the helper returns wait, which is already an allowed sandbox action.
+Invalid candidate actions raise ValueError through the allowed action validation path.
+
+Boundary:
+No AI solver / pathfinding.
+No goal planning.
+No learning pipeline.
+No lesson_candidate pipeline connection.
+No lesson_store write.
+No Memory Layer write.
+No LLM / teaching chat loop / free text conversation.
+No tactile result mapping changes.
+No utterance_map changes.
+No autonomous action generation outside candidate_actions.
+No awakening claim.
+
 ## Minimal First Output Runtime Audit Docs
 
 Status:
