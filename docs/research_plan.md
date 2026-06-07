@@ -1737,6 +1737,31 @@ No utterance_map changes.
 No autonomous action generation outside candidate_actions.
 No awakening claim.
 
+## Minimal Action Outcome Weighting v0
+
+Status:
+minimal-runtime / deterministic-helper / outcome-weighting / no-learning
+
+Summary:
+Adds fixed outcome weights for tactile sandbox results.
+Blocked outcomes score -2, neutral outcomes score 0, box_pushed scores +2, and goal_reached scores +5.
+Adds score_action_from_history, rank_candidate_actions_by_outcome_weight, and suggest_next_action_by_outcome_weight.
+The helpers only read state.action_history, validate candidate actions, preserve stable candidate order on ties, and do not mutate state.
+Example history push_right -> box_blocked and push_down -> box_pushed ranks push_down above push_right.
+
+Boundary:
+No AI solver / pathfinding.
+No goal planning.
+No learning pipeline.
+No lesson_candidate pipeline connection.
+No lesson_store write.
+No Memory Layer write.
+No LLM / teaching chat loop / free text conversation.
+No tactile result mapping changes.
+No utterance_map changes.
+No autonomous action generation outside candidate_actions.
+No awakening claim.
+
 ## Sandbox Working State Clear CLI v0
 
 Status:

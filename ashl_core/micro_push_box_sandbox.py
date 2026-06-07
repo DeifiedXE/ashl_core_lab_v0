@@ -47,6 +47,17 @@ SUPPORTED_ACTIONS = tuple(
 
 BLOCKED_ACTION_RESULTS = frozenset({"box_blocked", "wall_blocked", "blocked"})
 
+OUTCOME_WEIGHTS = {
+    "box_blocked": -2,
+    "wall_blocked": -2,
+    "blocked": -2,
+    "box_contact": 0,
+    "empty": 0,
+    "wait": 0,
+    "box_pushed": 2,
+    "goal_reached": 5,
+}
+
 
 def build_initial_state() -> dict[str, Any]:
     return _state_from_grid(INITIAL_MAP)
@@ -73,6 +84,39 @@ def suggest_next_action_avoiding_repeat_blocked(
         if action not in blocked_actions:
             return action
     return "wait"
+
+
+def score_action_from_history(state: dict[str, Any], action: str) -> int:
+    action = validate_allowed_action(action)
+    for entry in reversed(state.get("action_history", ())):
+        if entry.get("action") == action:
+            return OUTCOME_WEIGHTS.get(entry.get("result"), 0)
+    return 0
+
+
+def rank_candidate_actions_by_outcome_weight(
+    state: dict[str, Any],
+    candidate_actions: list[str] | tuple[str, ...],
+) -> list[str]:
+    validated_candidates = tuple(validate_allowed_action(action) for action in candidate_actions)
+    indexed_scores = [
+        (index, action, score_action_from_history(state, action))
+        for index, action in enumerate(validated_candidates)
+    ]
+    return [
+        action
+        for _, action, _ in sorted(indexed_scores, key=lambda item: (-item[2], item[0]))
+    ]
+
+
+def suggest_next_action_by_outcome_weight(
+    state: dict[str, Any],
+    candidate_actions: list[str] | tuple[str, ...],
+) -> str:
+    ranked = rank_candidate_actions_by_outcome_weight(state, candidate_actions)
+    if not ranked:
+        raise ValueError("candidate_actions must include at least one action")
+    return ranked[0]
 
 
 def apply_tactile_action(state: dict[str, Any], action: str) -> dict[str, Any]:

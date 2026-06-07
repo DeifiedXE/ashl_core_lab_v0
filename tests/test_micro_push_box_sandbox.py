@@ -2,11 +2,15 @@ import unittest
 
 from ashl_core.micro_push_box_sandbox import (
     ALLOWED_ACTION_SET,
+    OUTCOME_WEIGHTS,
     INITIAL_MAP,
     SUPPORTED_ACTIONS,
     apply_tactile_action,
     build_initial_state,
+    rank_candidate_actions_by_outcome_weight,
+    score_action_from_history,
     suggest_next_action_avoiding_repeat_blocked,
+    suggest_next_action_by_outcome_weight,
     validate_allowed_action,
 )
 
@@ -175,6 +179,27 @@ class MicroPushBoxSandboxTests(unittest.TestCase):
             suggest_next_action_avoiding_repeat_blocked(first["state"], ["push_right", "wait"]),
             "wait",
         )
+
+    def test_outcome_weights_include_expected_result_scores(self):
+        self.assertEqual(OUTCOME_WEIGHTS["box_blocked"], -2)
+        self.assertEqual(OUTCOME_WEIGHTS["wall_blocked"], -2)
+        self.assertEqual(OUTCOME_WEIGHTS["box_pushed"], 2)
+        self.assertEqual(OUTCOME_WEIGHTS["goal_reached"], 5)
+
+    def test_outcome_weighting_prefers_pushed_over_blocked(self):
+        state = build_initial_state()
+        state["action_history"] = (
+            {"action": "push_right", "result": "box_blocked", "tick": 1},
+            {"action": "push_down", "result": "box_pushed", "tick": 2},
+        )
+
+        self.assertEqual(score_action_from_history(state, "push_right"), -2)
+        self.assertEqual(score_action_from_history(state, "push_down"), 2)
+        self.assertEqual(
+            rank_candidate_actions_by_outcome_weight(state, ["push_right", "push_down"]),
+            ["push_down", "push_right"],
+        )
+        self.assertEqual(suggest_next_action_by_outcome_weight(state, ["push_right", "push_down"]), "push_down")
 
     def test_trace_does_not_write_learning_or_memory_outputs(self):
         trace = apply_tactile_action(build_initial_state(), "touch_right")["trace"]

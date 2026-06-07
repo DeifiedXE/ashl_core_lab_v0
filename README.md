@@ -1093,6 +1093,14 @@ v2.7a adds `ashl_core.failure_events` as a trace-only failure_event schema found
 - Invalid candidate actions raise `ValueError` through the allowed action validation path.
 - This is a deterministic helper, not AI solver / pathfinding, goal planning, learning, lesson_candidate pipeline, lesson_store / Memory Layer write, LLM / teaching chat, tactile result mapping change, or utterance_map change.
 
+## Minimal Action Outcome Weighting v0
+
+- Adds fixed `OUTCOME_WEIGHTS` for tactile sandbox results: blocked outcomes score negative, neutral outcomes score zero, `box_pushed` scores positive, and `goal_reached` scores highest.
+- Adds `score_action_from_history(...)`, `rank_candidate_actions_by_outcome_weight(...)`, and `suggest_next_action_by_outcome_weight(...)`.
+- Helpers only read `state.action_history`, validate candidate actions, preserve stable candidate order on score ties, and do not mutate state.
+- Example: history `push_right -> box_blocked`, `push_down -> box_pushed` ranks `push_down` above `push_right`.
+- This is deterministic outcome weighting, not AI solver / pathfinding, goal planning, learning pipeline, lesson_candidate pipeline, lesson_store / Memory Layer write, LLM / teaching chat, tactile result mapping change, or utterance_map change.
+
 ## Sandbox Working State Clear CLI v0
 
 - Adds `py -3 -m ashl_core.teaching_cli clear-sandbox-working-state --session-id <session_id>`.

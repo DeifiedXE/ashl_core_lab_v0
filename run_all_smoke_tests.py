@@ -74,6 +74,7 @@ from ashl_core.micro_push_box_sandbox import (
     ALLOWED_ACTION_SET,
     apply_tactile_action,
     build_initial_state as build_micro_push_box_state,
+    suggest_next_action_by_outcome_weight,
     suggest_next_action_avoiding_repeat_blocked,
     validate_allowed_action,
 )
@@ -386,6 +387,27 @@ def smoke_minimal_avoid_repeated_blocked_action() -> dict:
             "first_result": first["trace"]["result"],
             "candidate_actions": ["push_right", "wait"],
             "suggested_next_action": suggestion,
+        },
+    )
+
+
+def smoke_minimal_action_outcome_weighting() -> dict:
+    state = build_micro_push_box_state()
+    state["action_history"] = (
+        {"action": "push_right", "result": "box_blocked", "tick": 1},
+        {"action": "push_down", "result": "box_pushed", "tick": 2},
+    )
+    candidates = ["push_right", "push_down"]
+    suggested = suggest_next_action_by_outcome_weight(state, candidates)
+    passed = suggested == "push_down"
+    return _result(
+        "minimal_action_outcome_weighting",
+        passed,
+        {
+            "push_right_history_result": "box_blocked",
+            "push_down_history_result": "box_pushed",
+            "candidate_actions": candidates,
+            "suggested_action": suggested,
         },
     )
 
@@ -4509,6 +4531,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_tactile_interaction_cli_bridge(),
         smoke_repeated_blocked_action_trace(),
         smoke_minimal_avoid_repeated_blocked_action(),
+        smoke_minimal_action_outcome_weighting(),
         smoke_clear_sandbox_working_state_cli(),
         smoke_grounded_learning_verification_cli(),
         smoke_standing_task(),
