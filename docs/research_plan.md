@@ -1690,6 +1690,29 @@ No graphics / GUI.
 No senses runtime / camera / screen.
 No awakening claim.
 
+## Repeated Blocked Action Trace v0
+
+Status:
+minimal-runtime / tactile-trace-history / repeated-action-evidence / no-learning
+
+Summary:
+Adds in-state `action_history` to the micro push-box sandbox trace flow.
+Each tactile trace includes a `history` block showing whether the same action was attempted before.
+Repeating `push_right` in the default sandbox records the previous same-action result as box_blocked and its tick.
+Different actions do not count as same-action history.
+
+Boundary:
+No learning.
+No action selection.
+No avoid-same-action behavior.
+No AI solver / pathfinding.
+No lesson_candidate pipeline connection.
+No lesson_store write.
+No Memory Layer write.
+No LLM / teaching chat loop / free text conversation.
+No persistence / JSONL write.
+No awakening claim.
+
 ## Minimal First Output Runtime Audit Docs
 
 Status:

@@ -93,6 +93,16 @@ def _build_trace_result(
     result: str,
     blocked: bool,
 ) -> dict[str, Any]:
+    history = _history_for_action(before.get("action_history", ()), action)
+    after_state["action_history"] = tuple(before.get("action_history", ())) + (
+        {
+            "action": action,
+            "result": result,
+            "tick": after_state["tick"],
+            "blocked": blocked,
+            "contact": contact,
+        },
+    )
     trace = {
         "trace_type": "tactile_sandbox_trace",
         "tick": after_state["tick"],
@@ -102,6 +112,7 @@ def _build_trace_result(
         "contact": contact,
         "result": result,
         "blocked": blocked,
+        "history": history,
         "agent_pos": after_state["agent_pos"],
         "box_pos": after_state["box_pos"],
         "goal_pos": after_state["goal_pos"],
@@ -136,6 +147,7 @@ def _state_from_grid(grid: tuple[str, ...]) -> dict[str, Any]:
         "box_pos": box_pos,
         "goal_pos": goal_pos,
         "tick": 0,
+        "action_history": (),
     }
 
 
@@ -145,7 +157,19 @@ def _snapshot(state: dict[str, Any]) -> dict[str, Any]:
     copied["agent_pos"] = tuple(copied["agent_pos"])
     copied["box_pos"] = tuple(copied["box_pos"])
     copied["goal_pos"] = tuple(copied["goal_pos"])
+    copied["action_history"] = tuple(copied.get("action_history", ()))
     return copied
+
+
+def _history_for_action(action_history: tuple[dict[str, Any], ...], action: str) -> dict[str, Any]:
+    for entry in reversed(action_history):
+        if entry.get("action") == action:
+            return {
+                "same_action_attempted_before": True,
+                "previous_same_action_result": entry.get("result"),
+                "previous_same_action_tick": entry.get("tick"),
+            }
+    return {"same_action_attempted_before": False}
 
 
 def _add(pos: tuple[int, int], delta: tuple[int, int]) -> tuple[int, int]:

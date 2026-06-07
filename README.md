@@ -1077,6 +1077,14 @@ v2.7a adds `ashl_core.failure_events` as a trace-only failure_event schema found
 - Invalid actions fail through the allowed action validation path.
 - This does not add LLM / prompt / API use, teaching chat loop, AI solver / pathfinding, learning, lesson_candidate pipeline, failure_event / review / selection / activation, lesson_store / Memory Layer writes, graphics / GUI, or senses runtime.
 
+## Repeated Blocked Action Trace v0
+
+- Adds in-state `action_history` to the micro push-box sandbox trace flow.
+- Each tactile trace includes a `history` block showing whether the same action was attempted before.
+- Repeating `push_right` in the default sandbox records the previous same-action result as `box_blocked` and its tick.
+- Different actions do not count as same-action history.
+- This is trace evidence only. It does not add learning, action selection, avoid-same-action behavior, solver / pathfinding, lesson_candidate pipeline, lesson_store / Memory Layer writes, LLM / teaching chat, or JSONL persistence.
+
 ## Minimal First Output Runtime Audit
 
 - `docs/minimal_first_output_runtime_audit_v0_1.md`

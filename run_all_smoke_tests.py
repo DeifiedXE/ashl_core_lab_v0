@@ -345,6 +345,32 @@ def smoke_tactile_interaction_cli_bridge() -> dict:
     )
 
 
+def smoke_repeated_blocked_action_trace() -> dict:
+    first = apply_tactile_action(build_micro_push_box_state(), "push_right")
+    second = apply_tactile_action(first["state"], "push_right")
+    history = second["trace"]["history"]
+    passed = (
+        first["trace"]["result"] == "box_blocked"
+        and first["trace"]["history"]["same_action_attempted_before"] is False
+        and second["trace"]["result"] == "box_blocked"
+        and history["same_action_attempted_before"] is True
+        and history["previous_same_action_result"] == "box_blocked"
+        and history["previous_same_action_tick"] == 1
+        and len(second["state"]["action_history"]) == 2
+    )
+    return _result(
+        "repeated_blocked_action_trace",
+        passed,
+        {
+            "first_action": first["trace"]["action"],
+            "first_result": first["trace"]["result"],
+            "second_action": second["trace"]["action"],
+            "second_result": second["trace"]["result"],
+            "history": history,
+        },
+    )
+
+
 def smoke_standing_task() -> dict:
     trace = run_standing_task()
     failures = [failure["failure_reason"] for failure in trace["failures"]]
@@ -4410,6 +4436,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_micro_push_box_allowed_action_set(),
         smoke_tactile_result_state_key_mapping(),
         smoke_tactile_interaction_cli_bridge(),
+        smoke_repeated_blocked_action_trace(),
         smoke_standing_task(),
         smoke_experience_log(),
         smoke_phase_minus_one_lesson_contribution(),

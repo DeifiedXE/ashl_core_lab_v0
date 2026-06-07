@@ -19,6 +19,7 @@ class MicroPushBoxSandboxTests(unittest.TestCase):
         self.assertEqual(state["box_pos"], (2, 3))
         self.assertEqual(state["goal_pos"], (3, 3))
         self.assertEqual(state["tick"], 0)
+        self.assertEqual(state["action_history"], ())
 
     def test_supported_actions_include_touch_move_push(self):
         self.assertIn("touch_right", SUPPORTED_ACTIONS)
@@ -152,6 +153,19 @@ class MicroPushBoxSandboxTests(unittest.TestCase):
         self.assertEqual(trace["agent_pos"], trace["after"]["agent_pos"])
         self.assertEqual(trace["box_pos"], trace["after"]["box_pos"])
         self.assertEqual(trace["goal_pos"], trace["after"]["goal_pos"])
+        self.assertEqual(trace["history"], {"same_action_attempted_before": False})
+
+    def test_repeated_action_trace_includes_previous_same_action_result(self):
+        first = apply_tactile_action(build_initial_state(), "push_right")
+        second = apply_tactile_action(first["state"], "push_right")
+
+        self.assertEqual(first["trace"]["result"], "box_blocked")
+        self.assertEqual(first["trace"]["history"], {"same_action_attempted_before": False})
+        self.assertEqual(second["trace"]["result"], "box_blocked")
+        self.assertTrue(second["trace"]["history"]["same_action_attempted_before"])
+        self.assertEqual(second["trace"]["history"]["previous_same_action_result"], "box_blocked")
+        self.assertEqual(second["trace"]["history"]["previous_same_action_tick"], 1)
+        self.assertEqual(len(second["state"]["action_history"]), 2)
 
     def test_trace_does_not_write_learning_or_memory_outputs(self):
         trace = apply_tactile_action(build_initial_state(), "touch_right")["trace"]
