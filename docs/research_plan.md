@@ -1316,6 +1316,27 @@ Boundary:
 - No lesson_candidate pipeline connection.
 - No new design document.
 
+## Current Boundary Index Batch 23 Sync Patch
+
+Status:
+docs-only / boundary-index-sync / update-log-sync / no-runtime-expansion
+
+Summary:
+Updates docs/current_boundary_index.md from Batch 22 to Batch 23.
+Adds Batch 23 hard boundaries for append-only JSONL trace persistence, fixed non-LLM utterance_map output, literal text encoding, and the micro push-box tactile sandbox.
+
+Boundary:
+- No runtime.
+- No JSONL persistence behavior changes.
+- No utterance_map behavior changes.
+- No micro push-box sandbox behavior changes.
+- No lesson_store write.
+- No Memory Layer write.
+- No lesson_candidate pipeline connection.
+- No LLM / teaching chat loop / free text conversation.
+- No senses runtime / Screen Sense / Camera Sense / Symbol Grounding.
+- No new design document.
+
 ## v2.8e Review Decision Trace-only Schema
 
 Status: completed / trace-only

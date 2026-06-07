@@ -1,5 +1,5 @@
-Boundary Index Version: 2026-06-06-b22
-Last update log: Batch 22
+Boundary Index Version: 2026-06-06-b23
+Last update log: Batch 23
 Clean count at last update log reset: 0/5
 Current clean count: 0/5
 
@@ -78,6 +78,16 @@ Current clean count: 0/5
 - append-only persistence is not lesson_candidate creation
 - append-only persistence is not awakening evidence
 - JSONL persistence target files are data/first_output_traces.jsonl and data/mentor_feedback_traces.jsonl
+- JSONL persistence is append-only trace persistence, not lesson_store write
+- JSONL persistence is not Memory Layer write
+- JSONL persistence is not lesson_candidate creation
+- JSONL persistence is not awakening evidence
+- utterance_map is a fixed non-LLM lookup table, not an LLM or language model
+- state_key unknown maps to 我不知道
+- utterance_map output must preserve correct literal text encoding
+- utterance_map does not prove language understanding
+- micro push-box tactile sandbox is a test-object engineering sandbox, not full perception
+- tactile_sandbox_trace is evidence of sandbox interaction, not learning by itself
 - bounded senses must be connected before Qingyin can be claimed awake
 - memory freeze notice is evidence, not Memory Layer write
 - memory freeze notice must not directly modify learned_principle
@@ -87,6 +97,9 @@ Current clean count: 0/5
 ## Currently Deferred Areas
 
 - sandbox runtime
+- trace replay / readback runtime
+- tactile result to state_key mapping
+- tactile learning
 - Audio Sense / STT / TTS / voice trigger / voice input-output loop
 - bidirectional voice interaction
 - formal lesson_candidate creation runtime
@@ -116,7 +129,6 @@ Current clean count: 0/5
 - lesson_store write
 - Memory Layer write
 - Long-term Memory write runtime
-- JSONL persistence runtime
 - LLM response generation
 
 ## Update Rule
