@@ -1043,6 +1043,15 @@ v2.7a adds `ashl_core.failure_events` as a trace-only failure_event schema found
 - `run-minimal-interaction --state-key unknown` can emit and, with `--persist`, append the mapped trace to JSONL.
 - This does not add LLM, prompt/API use, rule engine, grammar parser, NLP, teaching chat loop, lesson_candidate pipeline, lesson_store write, Memory Layer write, or awakening evidence.
 
+## Micro Push-Box Tactile Sandbox v0
+
+- Adds a tiny deterministic 2D tactile sandbox with the map `##### / #...# / #.QB# / #..G# / #####`.
+- Tracks `grid`, `agent_pos`, `box_pos`, `goal_pos`, and `tick`.
+- Supports `touch_*`, `move_*`, and `push_*` actions.
+- Emits `tactile_sandbox_trace` records with `before`, `after`, `contact`, `result`, `blocked`, and current positions.
+- Result vocabulary includes `empty`, `wall_blocked`, `box_contact`, `box_pushed`, `box_blocked`, and `goal_reached`.
+- This is not an AI solver, pathfinding, learning, lesson_candidate pipeline, lesson_store write, Memory Layer write, LLM / teaching chat loop, graphics / GUI, or senses runtime.
+
 ## Minimal First Output Runtime Audit
 
 - `docs/minimal_first_output_runtime_audit_v0_1.md`

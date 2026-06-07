@@ -70,6 +70,7 @@ from ashl_core.memory_layers import (
     read_working_memory_snapshot,
     write_working_memory_snapshot,
 )
+from ashl_core.micro_push_box_sandbox import apply_tactile_action, build_initial_state as build_micro_push_box_state
 from ashl_core.manual_review import (
     build_review_trace,
     create_review_item,
@@ -180,6 +181,50 @@ def smoke_action_sandbox() -> dict:
         and stable["to_state"] == "standing_stable"
     )
     return _result("action_sandbox", passed, {"failed": failed, "stable": stable})
+
+
+def smoke_micro_push_box_sandbox() -> dict:
+    initial_state = build_micro_push_box_state()
+    touch_box = apply_tactile_action(initial_state, "touch_right")["trace"]
+
+    wall_state = build_micro_push_box_state()
+    wall_state["agent_pos"] = (1, 1)
+    touch_wall = apply_tactile_action(wall_state, "touch_left")["trace"]
+    move_wall = apply_tactile_action(wall_state, "move_left")["trace"]
+
+    push_wall = apply_tactile_action(build_micro_push_box_state(), "push_right")["trace"]
+    goal_state = build_micro_push_box_state()
+    goal_state["agent_pos"] = (1, 3)
+    goal_state["box_pos"] = (2, 3)
+    push_goal = apply_tactile_action(goal_state, "push_down")["trace"]
+
+    passed = (
+        touch_box["trace_type"] == "tactile_sandbox_trace"
+        and touch_box["result"] == "box_contact"
+        and touch_box["contact"] == "box"
+        and touch_wall["result"] == "wall_blocked"
+        and move_wall["result"] == "wall_blocked"
+        and push_wall["result"] == "box_blocked"
+        and push_goal["result"] == "goal_reached"
+        and "before" in touch_box
+        and "after" in touch_box
+        and "lesson_candidate" not in touch_box
+        and "memory_layer_write" not in touch_box
+    )
+    return _result(
+        "micro_push_box_sandbox",
+        passed,
+        {
+            "initial_map": ["#####", "#...#", "#.QB#", "#..G#", "#####"],
+            "supported_actions": "touch / move / push",
+            "trace_type": touch_box["trace_type"],
+            "touch_right_result": touch_box["result"],
+            "push_right_result": push_wall["result"],
+            "push_goal_result": push_goal["result"],
+            "wall_touch_result": touch_wall["result"],
+            "wall_move_result": move_wall["result"],
+        },
+    )
 
 
 def smoke_standing_task() -> dict:
@@ -4217,6 +4262,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_memory_layers(),
         smoke_body_state(),
         smoke_action_sandbox(),
+        smoke_micro_push_box_sandbox(),
         smoke_standing_task(),
         smoke_experience_log(),
         smoke_phase_minus_one_lesson_contribution(),

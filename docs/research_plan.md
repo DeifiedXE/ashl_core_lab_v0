@@ -1552,6 +1552,30 @@ No lesson_store write.
 No Memory Layer write.
 No awakening evidence.
 
+## Micro Push-Box Tactile Sandbox v0
+
+Status:
+minimal-runtime / tactile-sandbox / deterministic-grid / no-learning
+
+Summary:
+Adds a tiny deterministic 2D tactile sandbox with one agent, one box, one goal, walls, empty cells, and tactile traces.
+The initial map is `##### / #...# / #.QB# / #..G# / #####`.
+The sandbox tracks grid, agent_pos, box_pos, goal_pos, and tick.
+Supported actions are touch, move, and push in four directions.
+Each action emits a `tactile_sandbox_trace` with before / after state, contact, result, blocked, agent_pos, box_pos, and goal_pos.
+
+Boundary:
+No AI solver.
+No pathfinding.
+No learning.
+No lesson_candidate pipeline connection.
+No lesson_store write.
+No Memory Layer write.
+No LLM / teaching chat loop / free text conversation.
+No graphics / pygame / GUI.
+No senses runtime / camera / screen.
+No awakening evidence.
+
 ## Minimal First Output Runtime Audit Docs
 
 Status:
