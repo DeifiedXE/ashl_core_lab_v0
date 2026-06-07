@@ -1337,6 +1337,28 @@ Boundary:
 - No senses runtime / Screen Sense / Camera Sense / Symbol Grounding.
 - No new design document.
 
+## Current Boundary Index Batch 24 Sync Patch
+
+Status:
+docs-only / boundary-index-sync / update-log-sync / no-runtime-expansion
+
+Summary:
+Updates docs/current_boundary_index.md from Batch 23 to Batch 24.
+Adds Batch 24 hard boundaries for the closed micro push-box allowed_action_set, fixed tactile result to state_key mapping, and deterministic tactile interaction CLI bridge.
+Marks tactile trace persistence, autonomous action selection, repeated failure adaptation, and downstream learning connections as deferred.
+
+Boundary:
+- No runtime.
+- No sandbox behavior changes.
+- No tactile mapping behavior changes.
+- No CLI behavior changes.
+- No lesson_store write.
+- No Memory Layer write.
+- No lesson_candidate pipeline connection.
+- No LLM / teaching chat loop / free text conversation.
+- No senses runtime / Screen Sense / Camera Sense / Symbol Grounding.
+- No new design document.
+
 ## v2.8e Review Decision Trace-only Schema
 
 Status: completed / trace-only

@@ -1,5 +1,5 @@
-Boundary Index Version: 2026-06-06-b23
-Last update log: Batch 23
+Boundary Index Version: 2026-06-06-b24
+Last update log: Batch 24
 Clean count at last update log reset: 0/5
 Current clean count: 0/5
 
@@ -86,8 +86,17 @@ Current clean count: 0/5
 - state_key unknown maps to 我不知道
 - utterance_map output must preserve correct literal text encoding
 - utterance_map does not prove language understanding
+- micro push-box tactile sandbox is a bounded test-object sandbox
 - micro push-box tactile sandbox is a test-object engineering sandbox, not full perception
+- micro push-box allowed_action_set is closed
+- natural language actions are not allowed in micro push-box sandbox
 - tactile_sandbox_trace is evidence of sandbox interaction, not learning by itself
+- tactile result to state_key mapping is a fixed lookup table
+- tactile interaction CLI bridge is deterministic, not autonomous action selection
+- tactile interaction CLI bridge must not connect to lesson_candidate pipeline
+- tactile interaction CLI bridge must not write lesson_store
+- tactile interaction CLI bridge must not write Memory Layer
+- tactile interaction does not prove Qingyin understands box, wall, or goal
 - bounded senses must be connected before Qingyin can be claimed awake
 - memory freeze notice is evidence, not Memory Layer write
 - memory freeze notice must not directly modify learned_principle
@@ -98,8 +107,10 @@ Current clean count: 0/5
 
 - sandbox runtime
 - trace replay / readback runtime
-- tactile result to state_key mapping
+- tactile trace persistence runtime
+- autonomous action selection
 - tactile learning
+- repeated failure adaptation
 - Audio Sense / STT / TTS / voice trigger / voice input-output loop
 - bidirectional voice interaction
 - formal lesson_candidate creation runtime
