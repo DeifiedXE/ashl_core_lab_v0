@@ -102,6 +102,7 @@ from ashl_core.teaching_cli import (
     run_review_reject,
     run_unknown_flow,
 )
+from ashl_core.tactile_state_mapping import map_tactile_result_to_state_key
 from ashl_core.trace_persistence import append_first_output_trace, append_mentor_feedback_trace
 from ashl_core.trial_feedback import append_trial_feedback, build_trial_feedback, summarize_trial_feedback
 from ashl_core.trial_rules import build_trial_suggestions, list_approved_trial_candidates, build_trial_rule_view
@@ -223,6 +224,53 @@ def smoke_micro_push_box_sandbox() -> dict:
             "push_goal_result": push_goal["result"],
             "wall_touch_result": touch_wall["result"],
             "wall_move_result": move_wall["result"],
+        },
+    )
+
+
+def smoke_tactile_result_state_key_mapping() -> dict:
+    mappings = {
+        "wall_blocked": map_tactile_result_to_state_key("wall_blocked"),
+        "box_blocked": map_tactile_result_to_state_key("box_blocked"),
+        "box_contact": map_tactile_result_to_state_key("box_contact"),
+        "box_pushed": map_tactile_result_to_state_key("box_pushed"),
+        "goal_reached": map_tactile_result_to_state_key("goal_reached"),
+        "empty": map_tactile_result_to_state_key("empty"),
+    }
+    invalid_raised = False
+    try:
+        map_tactile_result_to_state_key("random_invalid")
+    except ValueError:
+        invalid_raised = True
+
+    blocked_output = generate_minimal_first_output(state_key=mappings["box_blocked"])
+    observed_output = generate_minimal_first_output(state_key=mappings["goal_reached"])
+    quiet_output = generate_minimal_first_output(state_key=mappings["empty"])
+
+    passed = (
+        mappings["wall_blocked"] == "blocked"
+        and mappings["box_blocked"] == "blocked"
+        and mappings["box_contact"] == "observed"
+        and mappings["box_pushed"] == "observed"
+        and mappings["goal_reached"] == "observed"
+        and mappings["empty"] == "quiet"
+        and invalid_raised
+        and blocked_output["first_output"] == "不行"
+        and observed_output["first_output"] == "看到了"
+        and quiet_output["first_output"] == "……"
+        and blocked_output["first_output_trace"]["utterance_source"] == "utterance_map"
+        and blocked_output["first_output_trace"]["llm_used"] is False
+    )
+    return _result(
+        "tactile_result_state_key_mapping",
+        passed,
+        {
+            "box_blocked": mappings["box_blocked"],
+            "blocked_utterance": blocked_output["first_output"],
+            "goal_reached": mappings["goal_reached"],
+            "observed_utterance": observed_output["first_output"],
+            "empty": mappings["empty"],
+            "quiet_utterance": quiet_output["first_output"],
         },
     )
 
@@ -2271,6 +2319,7 @@ def smoke_minimal_non_llm_utterance_map() -> dict:
     observed_result = generate_minimal_first_output(session_id="smoke_utterance_observed", state_key="observed")
     retry_result = generate_minimal_first_output(session_id="smoke_utterance_retry", state_key="retry")
     quiet_result = generate_minimal_first_output(session_id="smoke_utterance_quiet", state_key="quiet")
+    blocked_result = generate_minimal_first_output(session_id="smoke_utterance_blocked", state_key="blocked")
     invalid_raised = False
     try:
         generate_minimal_first_output(state_key="random_invalid")
@@ -2307,11 +2356,13 @@ def smoke_minimal_non_llm_utterance_map() -> dict:
         and UTTERANCE_MAP
         == {
             "unknown": "我不知道",
+            "blocked": "不行",
             "observed": "看到了",
             "retry": "再一次",
             "quiet": "……",
         }
         and unknown_result["first_output"] == UTTERANCE_MAP["unknown"]
+        and blocked_result["first_output"] == UTTERANCE_MAP["blocked"]
         and observed_result["first_output"] == UTTERANCE_MAP["observed"]
         and retry_result["first_output"] == UTTERANCE_MAP["retry"]
         and quiet_result["first_output"] == UTTERANCE_MAP["quiet"]
@@ -4275,6 +4326,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_body_state(),
         smoke_action_sandbox(),
         smoke_micro_push_box_sandbox(),
+        smoke_tactile_result_state_key_mapping(),
         smoke_standing_task(),
         smoke_experience_log(),
         smoke_phase_minus_one_lesson_contribution(),

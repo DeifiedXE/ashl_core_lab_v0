@@ -1556,8 +1556,8 @@ minimal-runtime / non-llm-utterance-map / first-output / no-learning
 Summary:
 Adds a fixed non-LLM state_key to utterance map to the minimal first_output runtime.
 Default state_key None still produces first_output `*`.
-Supported state keys are unknown, observed, retry, and quiet.
-Current utterances are `unknown -> 我不知道`, `observed -> 看到了`, `retry -> 再一次`, and `quiet -> ……`.
+Supported state keys are unknown, blocked, observed, retry, and quiet.
+Current utterances are `unknown -> 我不知道`, `blocked -> 不行`, `observed -> 看到了`, `retry -> 再一次`, and `quiet -> ……`.
 Mapped output traces record `utterance_source=utterance_map`, `state_key`, and `llm_used=false`.
 The minimal interaction CLI accepts `--state-key unknown`; with `--persist`, the persisted JSONL trace preserves the utterance map metadata.
 
@@ -1595,6 +1595,28 @@ No Memory Layer write.
 No LLM / teaching chat loop / free text conversation.
 No graphics / pygame / GUI.
 No senses runtime / camera / screen.
+No awakening evidence.
+
+## Tactile Result State Key Mapping v0
+
+Status:
+minimal-runtime / tactile-result-mapping / fixed-lookup-table / no-learning
+
+Summary:
+Adds a fixed lookup table from micro push-box tactile result to first_output state_key.
+Mapping: wall_blocked -> blocked, box_blocked -> blocked, box_contact -> observed, box_pushed -> observed, goal_reached -> observed, empty -> quiet.
+Adds `blocked -> 不行` to the non-LLM utterance map.
+Unknown tactile results raise ValueError.
+
+Boundary:
+No learning.
+No AI solver / pathfinding.
+No sandbox behavior changes.
+No lesson_candidate pipeline connection.
+No lesson_store write.
+No Memory Layer write.
+No LLM / teaching chat loop / free text conversation.
+No NLP / grammar parser.
 No awakening evidence.
 
 ## Minimal First Output Runtime Audit Docs

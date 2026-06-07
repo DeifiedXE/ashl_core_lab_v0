@@ -1037,8 +1037,8 @@ v2.7a adds `ashl_core.failure_events` as a trace-only failure_event schema found
 
 - Adds a fixed non-LLM `state_key -> utterance` map to the minimal first_output runtime.
 - Default `state_key=None` still produces `first_output: *`.
-- Supported keys are `unknown`, `observed`, `retry`, and `quiet`.
-- Current utterances are `unknown -> 我不知道`, `observed -> 看到了`, `retry -> 再一次`, and `quiet -> ……`.
+- Supported keys are `unknown`, `blocked`, `observed`, `retry`, and `quiet`.
+- Current utterances are `unknown -> 我不知道`, `blocked -> 不行`, `observed -> 看到了`, `retry -> 再一次`, and `quiet -> ……`.
 - Mapped outputs record `utterance_source=utterance_map`, the selected `state_key`, and `llm_used=false` in `first_output_trace`.
 - `run-minimal-interaction --state-key unknown` can emit and, with `--persist`, append the mapped trace to JSONL.
 - This does not add LLM, prompt/API use, rule engine, grammar parser, NLP, teaching chat loop, lesson_candidate pipeline, lesson_store write, Memory Layer write, or awakening evidence.
@@ -1051,6 +1051,14 @@ v2.7a adds `ashl_core.failure_events` as a trace-only failure_event schema found
 - Emits `tactile_sandbox_trace` records with `before`, `after`, `contact`, `result`, `blocked`, and current positions.
 - Result vocabulary includes `empty`, `wall_blocked`, `box_contact`, `box_pushed`, `box_blocked`, and `goal_reached`.
 - This is not an AI solver, pathfinding, learning, lesson_candidate pipeline, lesson_store write, Memory Layer write, LLM / teaching chat loop, graphics / GUI, or senses runtime.
+
+## Tactile Result State Key Mapping v0
+
+- Adds a fixed lookup table from tactile sandbox result to first_output `state_key`.
+- Mapping: `wall_blocked -> blocked`, `box_blocked -> blocked`, `box_contact -> observed`, `box_pushed -> observed`, `goal_reached -> observed`, `empty -> quiet`.
+- `blocked` maps through the utterance map to `不行`; `observed` maps to `看到了`; `quiet` maps to `……`.
+- Unknown tactile results raise `ValueError`.
+- This does not modify sandbox behavior, add learning, add solver / pathfinding, connect lesson_candidate, write lesson_store or Memory Layer, or add LLM / teaching chat / NLP.
 
 ## Minimal First Output Runtime Audit
 

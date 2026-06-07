@@ -9,6 +9,7 @@ FIRST_OUTPUT = "*"
 CORE_SEED_REFERENCE = "core_seed:first_output_v0"
 UTTERANCE_MAP = {
     "unknown": "我不知道",
+    "blocked": "不行",
     "observed": "看到了",
     "retry": "再一次",
     "quiet": "……",

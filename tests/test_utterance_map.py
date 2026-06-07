@@ -27,6 +27,7 @@ class MinimalNonLlmUtteranceMapTests(unittest.TestCase):
             UTTERANCE_MAP,
             {
                 "unknown": "我不知道",
+                "blocked": "不行",
                 "observed": "看到了",
                 "retry": "再一次",
                 "quiet": "……",
