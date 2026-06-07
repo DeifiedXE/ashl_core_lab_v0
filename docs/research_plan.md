@@ -1643,6 +1643,31 @@ No LLM / teaching chat loop / free text conversation.
 No NLP / grammar parser.
 No awakening evidence.
 
+## Micro Push-Box Tactile Interaction CLI Bridge v0
+
+Status:
+minimal-runtime / tactile-cli-bridge / deterministic-json / no-learning
+
+Summary:
+Adds `run-tactile-interaction --action <action>` to the existing teaching CLI wrapper.
+The flow creates the default micro push-box state, applies the tactile action, reads the tactile result, maps it to a first_output state_key, resolves the utterance through the non-LLM utterance map, and returns JSON.
+The JSON includes tactile_result, state_key, utterance, tactile_sandbox_trace, and boundary flags.
+Default `push_right` maps to box_blocked -> blocked -> 不行.
+Default `touch_right` maps to box_contact -> observed -> 看到了.
+
+Boundary:
+No LLM / prompt / API.
+No teaching chat loop.
+No AI solver / pathfinding.
+No learning.
+No lesson_candidate pipeline connection.
+No failure_event / review / selection / activation connection.
+No lesson_store write.
+No Memory Layer write.
+No graphics / GUI.
+No senses runtime / camera / screen.
+No awakening claim.
+
 ## Minimal First Output Runtime Audit Docs
 
 Status:

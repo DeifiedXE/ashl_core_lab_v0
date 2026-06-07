@@ -10,6 +10,7 @@ from ashl_core.teaching_cli import (
     run_disable_reenable_flow,
     run_known_flow,
     run_minimal_interaction,
+    run_tactile_interaction,
     run_unknown_flow,
 )
 from ashl_core.first_output_runtime import UTTERANCE_MAP
@@ -271,6 +272,73 @@ class TeachingCliTests(unittest.TestCase):
             self.assertEqual(first_rows[0]["state_key"], "unknown")
             self.assertEqual(first_rows[0]["utterance_source"], "utterance_map")
             self.assertIs(first_rows[0]["llm_used"], False)
+
+    def test_tactile_interaction_cli_bridge_push_right_returns_blocked_utterance(self):
+        result = run_tactile_interaction(action="push_right")
+
+        self.assertEqual(result["command"], "run-tactile-interaction")
+        self.assertEqual(result["flow"], "tactile_interaction_cli_bridge_v0")
+        self.assertEqual(result["status"], "ok")
+        self.assertEqual(result["action"], "push_right")
+        self.assertEqual(result["tactile_result"], "box_blocked")
+        self.assertEqual(result["state_key"], "blocked")
+        self.assertEqual(result["utterance"], UTTERANCE_MAP["blocked"])
+        self.assertEqual(result["tactile_sandbox_trace"]["trace_type"], "tactile_sandbox_trace")
+
+    def test_tactile_interaction_cli_bridge_touch_right_returns_observed_utterance(self):
+        result = run_tactile_interaction(action="touch_right")
+
+        self.assertEqual(result["status"], "ok")
+        self.assertEqual(result["tactile_result"], "box_contact")
+        self.assertEqual(result["state_key"], "observed")
+        self.assertEqual(result["utterance"], UTTERANCE_MAP["observed"])
+
+    def test_tactile_interaction_cli_bridge_boundary_has_no_learning_outputs(self):
+        result = run_tactile_interaction(action="push_right")
+        boundary = result["boundary"]
+
+        self.assertIs(boundary["llm_used"], False)
+        self.assertIs(boundary["creates_lesson_candidate"], False)
+        self.assertIs(boundary["writes_lesson_store"], False)
+        self.assertIs(boundary["writes_memory_layer"], False)
+        self.assertIs(boundary["awakening_claim"], False)
+        self.assertNotIn("lesson_candidate", result)
+        self.assertNotIn("failure_event", result)
+        self.assertNotIn("review_decision", result)
+        self.assertNotIn("selection_eligibility", result)
+        self.assertNotIn("activation", result)
+
+    def test_tactile_interaction_cli_bridge_invalid_action_fails(self):
+        result = run_tactile_interaction(action="push right")
+
+        self.assertEqual(result["status"], "error")
+        self.assertEqual(result["flow"], "tactile_interaction_cli_bridge_v0")
+        self.assertEqual(result["action"], "push right")
+        self.assertIn("unsupported action", result["error"])
+        self.assertIs(result["boundary"]["llm_used"], False)
+
+    def test_module_cli_tactile_interaction_outputs_json(self):
+        process = subprocess.run(
+            [
+                sys.executable,
+                "-m",
+                "ashl_core.teaching_cli",
+                "run-tactile-interaction",
+                "--action",
+                "push_right",
+            ],
+            check=True,
+            capture_output=True,
+            text=True,
+            encoding="utf-8",
+        )
+        result = json.loads(process.stdout)
+
+        self.assertEqual(result["flow"], "tactile_interaction_cli_bridge_v0")
+        self.assertEqual(result["status"], "ok")
+        self.assertEqual(result["tactile_result"], "box_blocked")
+        self.assertEqual(result["state_key"], "blocked")
+        self.assertEqual(result["utterance"], UTTERANCE_MAP["blocked"])
 
 
 if __name__ == "__main__":

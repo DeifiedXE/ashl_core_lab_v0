@@ -1067,6 +1067,16 @@ v2.7a adds `ashl_core.failure_events` as a trace-only failure_event schema found
 - Unknown tactile results raise `ValueError`.
 - This does not modify sandbox behavior, add learning, add solver / pathfinding, connect lesson_candidate, write lesson_store or Memory Layer, or add LLM / teaching chat / NLP.
 
+## Micro Push-Box Tactile Interaction CLI Bridge v0
+
+- Adds `py -3 -m ashl_core.teaching_cli run-tactile-interaction --action <action>`.
+- The deterministic CLI flow is: sandbox action -> tactile result -> `state_key` -> utterance map -> JSON output.
+- JSON output includes `tactile_result`, `state_key`, `utterance`, `tactile_sandbox_trace`, and boundary flags.
+- `push_right` in the default sandbox maps to `box_blocked -> blocked -> 不行`; `touch_right` maps to `box_contact -> observed -> 看到了`.
+- Boundary flags remain false for `llm_used`, `creates_lesson_candidate`, `writes_lesson_store`, `writes_memory_layer`, and `awakening_claim`.
+- Invalid actions fail through the allowed action validation path.
+- This does not add LLM / prompt / API use, teaching chat loop, AI solver / pathfinding, learning, lesson_candidate pipeline, failure_event / review / selection / activation, lesson_store / Memory Layer writes, graphics / GUI, or senses runtime.
+
 ## Minimal First Output Runtime Audit
 
 - `docs/minimal_first_output_runtime_audit_v0_1.md`

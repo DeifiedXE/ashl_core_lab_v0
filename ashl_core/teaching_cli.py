@@ -18,6 +18,8 @@ from .lesson_store import (
 )
 from .manual_review import build_review_trace, create_review_item, get_review_item, mark_review_approved, mark_review_rejected
 from .mentor_feedback_runtime import build_minimal_mentor_feedback_trace
+from .micro_push_box_sandbox import apply_tactile_action, build_initial_state as build_micro_push_box_state
+from .tactile_state_mapping import map_tactile_result_to_state_key
 from .trace_persistence import append_first_output_trace, append_mentor_feedback_trace
 
 
@@ -426,6 +428,55 @@ def run_minimal_interaction(
     }
 
 
+def run_tactile_interaction(action: str | None = None) -> dict[str, Any]:
+    if action is None:
+        return {
+            "command": "run-tactile-interaction",
+            "flow": "tactile_interaction_cli_bridge_v0",
+            "status": "error",
+            "error": "missing_action",
+            "boundary": _tactile_interaction_boundary(),
+        }
+
+    try:
+        tactile_result = apply_tactile_action(build_micro_push_box_state(), action)
+        tactile_trace = tactile_result["trace"]
+        state_key = map_tactile_result_to_state_key(tactile_trace["result"])
+        first_output_result = generate_minimal_first_output(state_key=state_key)
+    except ValueError as exc:
+        return {
+            "command": "run-tactile-interaction",
+            "flow": "tactile_interaction_cli_bridge_v0",
+            "status": "error",
+            "action": action,
+            "error": str(exc),
+            "boundary": _tactile_interaction_boundary(),
+        }
+
+    return {
+        "command": "run-tactile-interaction",
+        "flow": "tactile_interaction_cli_bridge_v0",
+        "status": "ok",
+        "action": action,
+        "tactile_result": tactile_trace["result"],
+        "state_key": state_key,
+        "utterance": first_output_result["first_output"],
+        "tactile_sandbox_trace": tactile_trace,
+        "boundary": _tactile_interaction_boundary(llm_used=first_output_result["llm_used"]),
+        "notes": ["Tactile interaction CLI is deterministic and does not create lesson or memory outputs."],
+    }
+
+
+def _tactile_interaction_boundary(llm_used: bool = False) -> dict[str, bool]:
+    return {
+        "llm_used": llm_used,
+        "creates_lesson_candidate": False,
+        "writes_lesson_store": False,
+        "writes_memory_layer": False,
+        "awakening_claim": False,
+    }
+
+
 def run_command(command: str) -> dict[str, Any]:
     if command == "run-known-flow":
         return run_known_flow()
@@ -445,6 +496,8 @@ def run_command(command: str) -> dict[str, Any]:
         return run_review_reject()
     if command == "run-minimal-interaction":
         return run_minimal_interaction()
+    if command == "run-tactile-interaction":
+        return run_tactile_interaction()
     return {
         "command": command,
         "status": "error",
@@ -466,6 +519,7 @@ def main(argv: list[str] | None = None) -> int:
             "run-review-approve",
             "run-review-reject",
             "run-minimal-interaction",
+            "run-tactile-interaction",
         ],
     )
     parser.add_argument("--review-id", default="review_001")
@@ -476,6 +530,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--persist", action="store_true")
     parser.add_argument("--data-dir", default="data")
     parser.add_argument("--state-key", default=None)
+    parser.add_argument("--action", default=None)
     args = parser.parse_args(argv)
     if args.command == "run-review-approve":
         result = run_review_approve(review_id=args.review_id, notes=args.notes)
@@ -491,6 +546,8 @@ def main(argv: list[str] | None = None) -> int:
             data_dir=args.data_dir,
             state_key=args.state_key,
         )
+    elif args.command == "run-tactile-interaction":
+        result = run_tactile_interaction(action=args.action)
     else:
         result = run_command(args.command)
     if hasattr(sys.stdout, "reconfigure"):

@@ -105,6 +105,7 @@ from ashl_core.teaching_cli import (
     run_review_approve,
     run_review_display,
     run_review_reject,
+    run_tactile_interaction,
     run_unknown_flow,
 )
 from ashl_core.tactile_state_mapping import map_tactile_result_to_state_key
@@ -310,6 +311,36 @@ def smoke_tactile_result_state_key_mapping() -> dict:
             "observed_utterance": observed_output["first_output"],
             "empty": mappings["empty"],
             "quiet_utterance": quiet_output["first_output"],
+        },
+    )
+
+
+def smoke_tactile_interaction_cli_bridge() -> dict:
+    result = run_tactile_interaction(action="push_right")
+    boundary = result.get("boundary", {})
+    passed = (
+        result.get("flow") == "tactile_interaction_cli_bridge_v0"
+        and result.get("status") == "ok"
+        and "tactile_result" in result
+        and "state_key" in result
+        and "utterance" in result
+        and "tactile_sandbox_trace" in result
+        and result["tactile_result"] == "box_blocked"
+        and result["state_key"] == "blocked"
+        and boundary.get("llm_used") is False
+        and boundary.get("creates_lesson_candidate") is False
+        and boundary.get("writes_lesson_store") is False
+        and boundary.get("writes_memory_layer") is False
+    )
+    return _result(
+        "tactile_interaction_cli_bridge",
+        passed,
+        {
+            "action": result.get("action"),
+            "tactile_result": result.get("tactile_result"),
+            "state_key": result.get("state_key"),
+            "utterance": result.get("utterance"),
+            "boundary": boundary,
         },
     )
 
@@ -4367,6 +4398,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_micro_push_box_sandbox(),
         smoke_micro_push_box_allowed_action_set(),
         smoke_tactile_result_state_key_mapping(),
+        smoke_tactile_interaction_cli_bridge(),
         smoke_standing_task(),
         smoke_experience_log(),
         smoke_phase_minus_one_lesson_contribution(),
