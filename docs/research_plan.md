@@ -2403,6 +2403,32 @@ No pathfinding / BFS / A*.
 No LLM planning.
 This is not proof of general learning.
 
+## State Snapshot Key v0
+
+Status:
+minimal-runtime / stable-indexing / trace-clarity / no-behavior-change
+
+Summary:
+Adds deterministic state_key derivation for Session Working Memory records.
+The key is derived from state_snapshot and supports level_id, agent_pos, box_pos, and goal_pos.
+Missing optional fields use stable null placeholders.
+Session Working Memory can now query by state_key and state_key plus action.
+run-session-working-memory-trial records now include non-null state_key values.
+
+Boundary:
+state_key is indexing and trace clarity only.
+No action selection changes.
+No goal bias changes.
+No existing dead-end A/B behavior changes.
+No trial runner behavior changes beyond passive state_key output.
+No Long-term Memory write.
+No lesson_store write.
+No Memory Layer write.
+No lesson_candidate pipeline connection.
+No pathfinding / BFS / A*.
+No LLM planning.
+This is not proof of general learning.
+
 ## Micro Navigation Trial Metrics CLI v0
 
 Status:

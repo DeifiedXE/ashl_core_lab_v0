@@ -33,11 +33,13 @@ class SessionWorkingMemoryTrialIntegrationTests(unittest.TestCase):
         self.assertTrue(records)
         for record in records:
             self.assertIn("tick", record)
+            self.assertIn("state_key", record)
             self.assertIn("state_snapshot", record)
             self.assertIn("action", record)
             self.assertIn("outcome_type", record)
             self.assertIn("failure_reasons", record)
             self.assertIn("metadata", record)
+            self.assertIsNotNone(record["state_key"])
             self.assertIsInstance(record["failure_reasons"], list)
 
     def test_trial_records_include_moved_and_dead_end_evidence(self):
@@ -64,12 +66,16 @@ class SessionWorkingMemoryTrialIntegrationTests(unittest.TestCase):
         self.assertIn("query_by_failure_reason_wall_blocked_count", query_summary)
         self.assertIn("query_by_failure_reason_unknown_count", query_summary)
         self.assertIn("query_by_action_move_down_count", query_summary)
+        self.assertIn("query_by_state_key_count", query_summary)
+        self.assertIn("query_by_state_key_action_count", query_summary)
         self.assertEqual(clear_summary["record_count_after_clear"], 0)
         self.assertTrue(clear_summary["cleared"])
 
     def test_boundary_check_rejects_forbidden_sources(self):
         boundary = run_session_working_memory_trial_cli(max_steps=100, max_records=20)["boundary_check"]
 
+        self.assertTrue(boundary["state_key_generated"])
+        self.assertTrue(boundary["state_key_deterministic"])
         self.assertTrue(boundary["session_local_only"])
         self.assertFalse(boundary["persistent_memory_write"])
         self.assertFalse(boundary["lesson_store_write"])
@@ -115,7 +121,9 @@ class SessionWorkingMemoryTrialIntegrationTests(unittest.TestCase):
 
         self.assertEqual(result["flow"], "session_working_memory_trial_integration_v0")
         self.assertTrue(result["records"])
+        self.assertTrue(all(record["state_key"] for record in result["records"]))
         self.assertEqual(result["clear_summary"]["record_count_after_clear"], 0)
+        self.assertTrue(result["boundary_check"]["state_key_generated"])
         self.assertTrue(result["boundary_check"]["session_local_only"])
         self.assertFalse(result["boundary_check"]["memory_layer_write"])
         self.assertFalse(result["boundary_check"]["used_pathfinding"])

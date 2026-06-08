@@ -17,6 +17,24 @@ SUPPORTED_OUTCOME_TYPES = {
 }
 
 
+def build_state_snapshot_key(state_snapshot: dict[str, Any] | None) -> str:
+    if not state_snapshot:
+        return "unknown_state"
+    level_id = state_snapshot.get("level_id", "unknown")
+    agent_pos = _format_position_for_state_key(state_snapshot.get("agent_pos"))
+    box_pos = _format_position_for_state_key(state_snapshot.get("box_pos"))
+    goal_pos = _format_position_for_state_key(state_snapshot.get("goal_pos"))
+    return f"level={level_id}|agent={agent_pos}|box={box_pos}|goal={goal_pos}"
+
+
+def _format_position_for_state_key(position: Any) -> str:
+    if position is None:
+        return "null"
+    if isinstance(position, (list, tuple)) and len(position) == 2:
+        return f"({position[0]},{position[1]})"
+    return str(position)
+
+
 def create_session_working_memory(max_records: int = 20) -> dict[str, Any]:
     if max_records <= 0:
         raise ValueError("max_records must be positive")
@@ -26,6 +44,8 @@ def create_session_working_memory(max_records: int = 20) -> dict[str, Any]:
         "max_records": max_records,
         "records": [],
         "boundary": {
+            "state_key_generated": True,
+            "state_key_deterministic": True,
             "session_local_only": True,
             "persistent_memory_write": False,
             "lesson_store_write": False,
@@ -61,7 +81,7 @@ def build_session_outcome_record(
         raise TypeError("failure_reasons must be a list")
     return {
         "tick": tick,
-        "state_key": state_key,
+        "state_key": state_key or build_state_snapshot_key(state_snapshot),
         "state_snapshot": deepcopy(state_snapshot),
         "action": action,
         "target": deepcopy(target),
@@ -76,7 +96,10 @@ def build_session_outcome_record(
 def append_outcome_record(memory: dict[str, Any], record: dict[str, Any]) -> dict[str, Any]:
     _validate_memory(memory)
     _validate_record(record)
-    memory["records"].append(deepcopy(record))
+    normalized_record = deepcopy(record)
+    if not normalized_record.get("state_key"):
+        normalized_record["state_key"] = build_state_snapshot_key(normalized_record.get("state_snapshot"))
+    memory["records"].append(normalized_record)
     max_records = memory["max_records"]
     if len(memory["records"]) > max_records:
         memory["records"] = memory["records"][-max_records:]
@@ -87,6 +110,7 @@ def query_recent_outcomes(
     memory: dict[str, Any],
     *,
     state_snapshot: dict[str, Any] | None = None,
+    state_key: str | None = None,
     action: str | None = None,
     outcome_type: str | None = None,
 ) -> list[dict[str, Any]]:
@@ -94,6 +118,8 @@ def query_recent_outcomes(
     results = []
     for record in memory["records"]:
         if state_snapshot is not None and record["state_snapshot"] != state_snapshot:
+            continue
+        if state_key is not None and record.get("state_key") != state_key:
             continue
         if action is not None and record["action"] != action:
             continue

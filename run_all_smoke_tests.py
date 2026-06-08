@@ -127,6 +127,13 @@ from ashl_core.prompt_leakage_check import build_decision_input_snapshot, check_
 from ashl_core.rule_candidates import append_rule_candidate
 from ashl_core.review_tasks import build_review_task_trace
 from ashl_core.senses import build_sensor_event, build_visual_concept_candidate, validate_sensor_event
+from ashl_core.session_working_memory import (
+    append_outcome_record,
+    build_session_outcome_record,
+    build_state_snapshot_key,
+    create_session_working_memory,
+    query_recent_outcomes,
+)
 from ashl_core.state_core import StateCore
 from ashl_core.state_persistence import (
     read_last_trace_summary,
@@ -1071,7 +1078,11 @@ def smoke_session_working_memory_demo() -> dict:
         and demo.get("query_by_action_count") == 2
         and demo.get("query_by_outcome_type_count") == 2
         and demo.get("query_by_state_action_count") == 1
+        and demo.get("query_by_state_key_count") == 1
+        and demo.get("query_by_state_key_action_count") == 1
         and demo.get("record_count_after_clear") == 0
+        and boundary.get("state_key_generated") is True
+        and boundary.get("state_key_deterministic") is True
         and boundary.get("session_local_only") is True
         and boundary.get("persistent_memory_write") is False
         and boundary.get("lesson_store_write") is False
@@ -1089,6 +1100,46 @@ def smoke_session_working_memory_demo() -> dict:
             "outcome_types_supported": result.get("outcome_types_supported", []),
             "demo": demo,
             "boundary_check": boundary,
+        },
+    )
+
+
+def smoke_state_snapshot_key() -> dict:
+    first = {"level_id": "demo", "agent_pos": [4, 2], "box_pos": [4, 4]}
+    second = {"box_pos": [4, 4], "agent_pos": [4, 2], "level_id": "demo"}
+    key = build_state_snapshot_key(first)
+    memory = create_session_working_memory()
+    append_outcome_record(
+        memory,
+        build_session_outcome_record(
+            tick=1,
+            state_snapshot=first,
+            action="move_down",
+            outcome_type="blocked",
+            failure_reasons=["wall_blocked"],
+        ),
+    )
+    passed = (
+        key == build_state_snapshot_key(second)
+        and build_state_snapshot_key({"level_id": "demo", "agent_pos": [1, 1]})
+        == "level=demo|agent=(1,1)|box=null|goal=null"
+        and build_state_snapshot_key({}) == "unknown_state"
+        and memory["records"][0]["state_key"] == key
+        and len(query_recent_outcomes(memory, state_key=key)) == 1
+        and len(query_recent_outcomes(memory, state_key=key, action="move_down")) == 1
+        and memory["boundary"].get("state_key_generated") is True
+        and memory["boundary"].get("state_key_deterministic") is True
+        and memory["boundary"].get("action_selection_modified") is False
+    )
+    return _result(
+        "state_snapshot_key",
+        passed,
+        {
+            "state_key": key,
+            "missing_goal_key": build_state_snapshot_key({"level_id": "demo", "agent_pos": [1, 1]}),
+            "empty_key": build_state_snapshot_key({}),
+            "query_by_state_key_count": len(query_recent_outcomes(memory, state_key=key)),
+            "query_by_state_key_action_count": len(query_recent_outcomes(memory, state_key=key, action="move_down")),
         },
     )
 
@@ -1114,6 +1165,7 @@ def smoke_session_working_memory_trial() -> dict:
         and result.get("session_summary", {}).get("ended") is True
         and bool(records)
         and all("outcome_type" in record for record in records)
+        and all(record.get("state_key") for record in records)
         and all(isinstance(record.get("failure_reasons"), list) for record in records)
         and "moved" in outcome_types
         and bool({"blocked", "entered_trap"}.intersection(outcome_types))
@@ -1123,8 +1175,12 @@ def smoke_session_working_memory_trial() -> dict:
         and "query_by_failure_reason_wall_blocked_count" in query
         and "query_by_failure_reason_unknown_count" in query
         and "query_by_action_move_down_count" in query
+        and "query_by_state_key_count" in query
+        and "query_by_state_key_action_count" in query
         and clear.get("cleared") is True
         and clear.get("record_count_after_clear") == 0
+        and boundary.get("state_key_generated") is True
+        and boundary.get("state_key_deterministic") is True
         and boundary.get("session_local_only") is True
         and boundary.get("persistent_memory_write") is False
         and boundary.get("lesson_store_write") is False
@@ -6124,6 +6180,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_valid_dead_end_maps_ab_control(),
         smoke_local_memory_decision_trace_observer(),
         smoke_session_working_memory_demo(),
+        smoke_state_snapshot_key(),
         smoke_session_working_memory_trial(),
         smoke_approach_box_dead_end_memory_control_check(),
         smoke_dead_end_memory_control_trial1_source_audit(),

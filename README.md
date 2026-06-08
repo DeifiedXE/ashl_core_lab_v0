@@ -1256,6 +1256,13 @@ Two-Trial History Boundary:
 - The memory is short-term only and is cleared at session end.
 - This command does not write lesson_store or Memory Layer, does not modify action selection, and is not proof of general learning.
 
+## State Snapshot Key v0
+
+- Session Working Memory now derives stable `state_key` values from `state_snapshot`.
+- `state_key` is for indexing and trace clarity: `state_key + action -> outcome`.
+- Missing optional fields such as `box_pos` or `goal_pos` use stable `null` placeholders.
+- This does not modify action selection, does not write Long-term Memory, and does not connect lesson_store or Memory Layer.
+
 ## Micro Navigation Trial Metrics CLI v0
 
 - Adds `py -3 -m ashl_core.teaching_cli run-navigation-trial-metrics --runs 4 --trial-count 5 --max-steps 10`.

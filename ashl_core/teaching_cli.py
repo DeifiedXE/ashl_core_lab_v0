@@ -2103,6 +2103,9 @@ def demo_session_working_memory_cli(max_records: int = 20) -> dict[str, Any]:
         state_snapshot={"agent_pos": [4, 2], "box_pos": [4, 4], "level_id": "session_memory_demo_v0"},
         action="move_down",
     )
+    sample_state_key = records[-1]["state_key"]
+    query_by_state_key = query_recent_outcomes(memory, state_key=sample_state_key)
+    query_by_state_key_action = query_recent_outcomes(memory, state_key=sample_state_key, action="move_down")
     record_count_before_clear = len(memory["records"])
     clear_session_working_memory(memory)
     return {
@@ -2120,10 +2123,14 @@ def demo_session_working_memory_cli(max_records: int = 20) -> dict[str, Any]:
             "query_by_action_count": len(query_by_action),
             "query_by_outcome_type_count": len(query_by_outcome_type),
             "query_by_state_action_count": len(query_by_state_action),
+            "query_by_state_key_count": len(query_by_state_key),
+            "query_by_state_key_action_count": len(query_by_state_key_action),
             "record_count_before_clear": record_count_before_clear,
             "record_count_after_clear": len(memory["records"]),
         },
         "boundary_check": {
+            "state_key_generated": True,
+            "state_key_deterministic": True,
             "session_local_only": True,
             "persistent_memory_write": False,
             "lesson_store_write": False,
@@ -2234,6 +2241,19 @@ def run_session_working_memory_trial_cli(
     wall_blocked_records = [
         record for record in records_before_clear if "wall_blocked" in record["failure_reasons"]
     ]
+    sample_state_key = None
+    if wall_blocked_records:
+        sample_state_key = wall_blocked_records[0]["state_key"]
+    elif records_before_clear:
+        sample_state_key = records_before_clear[0]["state_key"]
+    query_by_state_key = (
+        query_recent_outcomes(memory, state_key=sample_state_key) if sample_state_key is not None else []
+    )
+    query_by_state_key_action = (
+        query_recent_outcomes(memory, state_key=sample_state_key, action="move_down")
+        if sample_state_key is not None
+        else []
+    )
     clear_session_working_memory(memory)
     record_count_after_clear = len(memory["records"])
     return {
@@ -2262,12 +2282,16 @@ def run_session_working_memory_trial_cli(
                 1 for record in unknown_records if "unknown" in record["failure_reasons"]
             ),
             "query_by_action_move_down_count": len(move_down_records),
+            "query_by_state_key_count": len(query_by_state_key),
+            "query_by_state_key_action_count": len(query_by_state_key_action),
         },
         "clear_summary": {
             "cleared": True,
             "record_count_after_clear": record_count_after_clear,
         },
         "boundary_check": {
+            "state_key_generated": True,
+            "state_key_deterministic": True,
             "session_local_only": True,
             "persistent_memory_write": False,
             "lesson_store_write": False,
