@@ -1219,6 +1219,13 @@ Two-Trial History Boundary:
 - Bad maps are reported honestly rather than forced to pass.
 - This command does not run Two-Trial, does not run A/B memory control, does not use LLM planning, does not use pathfinding / BFS / A*, and is not proof of learning.
 
+## Candidate Map Trial1 ASCII Replay v0
+
+- Adds `py -3 -m ashl_core.teaching_cli replay-dead-end-trial1-candidate-maps --max-steps 100`.
+- Renders Trial 1 for all candidate dead-end maps as ASCII grids, including valid maps and shortcut maps.
+- This is observer output only for inspecting paths before further experiments.
+- This command does not run Two-Trial, does not run A/B memory control, does not use LLM planning, does not use pathfinding / BFS / A*, and is not proof of learning.
+
 ## Micro Navigation Trial Metrics CLI v0
 
 - Adds `py -3 -m ashl_core.teaching_cli run-navigation-trial-metrics --runs 4 --trial-count 5 --max-steps 10`.

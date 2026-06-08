@@ -149,6 +149,7 @@ from ashl_core.teaching_cli import (
     run_approach_box_dead_end_two_trial_ascii_replay_cli,
     run_approach_box_dead_end_memory_control_check_cli,
     validate_dead_end_trial1_maps_cli,
+    run_candidate_dead_end_trial1_ascii_replay_cli,
     run_navigation_multi_goal_metrics_cli,
     run_navigation_obstacle_trial_cli,
     run_navigation_trial_metrics_cli,
@@ -903,6 +904,48 @@ def smoke_dead_end_map_trial1_validation() -> dict:
             "overall_summary": summary,
             "map_statuses": statuses,
             "fixture_loaded": fixture_loaded,
+            "boundary_check": boundary,
+        },
+    )
+
+
+def smoke_candidate_map_trial1_ascii_replay() -> dict:
+    result = run_candidate_dead_end_trial1_ascii_replay_cli(max_steps=100)
+    replays = result.get("replays", [])
+    level_ids = {replay.get("level_id") for replay in replays}
+    boundary = result.get("boundary_check", {})
+    passed = (
+        result.get("flow") == "candidate_map_trial1_ascii_replay_v0"
+        and result.get("command") == "replay-dead-end-trial1-candidate-maps"
+        and result.get("map_count") == 4
+        and level_ids
+        == {
+            "approach_box_dead_end_v0",
+            "user_maze_dead_end_candidate_v0",
+            "mid_branch_dead_end_candidate_v0",
+            "lower_branch_dead_end_candidate_v0",
+        }
+        and all(replay.get("trial_1_frames") for replay in replays)
+        and all(replay["trial_1_frames"][0].get("step_index") == 0 for replay in replays)
+        and all("grid" in replay["trial_1_frames"][0] for replay in replays)
+        and result.get("overall_summary", {}).get("replayed_map_count") == 4
+        and boundary.get("trial1_replay_only") is True
+        and boundary.get("two_trial_run") is False
+        and boundary.get("memory_control_run") is False
+        and boundary.get("replay_output_only") is True
+        and boundary.get("runner_modified") is False
+        and boundary.get("action_selection_modified") is False
+        and boundary.get("used_llm") is False
+        and boundary.get("used_pathfinding") is False
+        and boundary.get("used_lesson_store") is False
+        and boundary.get("used_memory_layer") is False
+    )
+    return _result(
+        "candidate_map_trial1_ascii_replay",
+        passed,
+        {
+            "level_ids": sorted(level_ids),
+            "overall_summary": result.get("overall_summary", {}),
             "boundary_check": boundary,
         },
     )
@@ -5882,6 +5925,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_approach_box_dead_end_two_trial_learning_check(),
         smoke_dead_end_two_trial_ascii_replay(),
         smoke_dead_end_map_trial1_validation(),
+        smoke_candidate_map_trial1_ascii_replay(),
         smoke_approach_box_dead_end_memory_control_check(),
         smoke_dead_end_memory_control_trial1_source_audit(),
         smoke_micro_push_box_sandbox(),

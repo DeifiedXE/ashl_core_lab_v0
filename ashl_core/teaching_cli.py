@@ -2117,6 +2117,263 @@ def validate_dead_end_trial1_maps_cli(runs_per_map: int = 3, max_steps: int = 10
     }
 
 
+def _render_trial1_candidate_grid(map_config: dict[str, Any], agent_pos: list[int]) -> str:
+    if map_config["level_id"] == "approach_box_dead_end_v0":
+        return _render_dead_end_ascii_grid(agent_pos)
+
+    walls = {tuple(pos) for pos in map_config["walls"]}
+    dead_end_positions = {tuple(pos) for pos in map_config["intended_dead_end_positions"]}
+    rows = []
+    for y in range(map_config["height"]):
+        row = []
+        for x in range(map_config["width"]):
+            pos = (x, y)
+            if [x, y] == agent_pos:
+                char = "A"
+            elif [x, y] == map_config["box_pos"]:
+                char = "B"
+            elif pos in dead_end_positions:
+                char = "x"
+            elif pos in walls:
+                char = "#"
+            else:
+                char = "."
+            row.append(char)
+        rows.append("".join(row))
+    return "\n".join(rows)
+
+
+def _candidate_trial1_positions_and_events(map_config: dict[str, Any], max_steps: int) -> list[dict[str, Any]]:
+    if map_config["level_id"] == "approach_box_dead_end_v0":
+        trial = run_approach_box_dead_end_trial_cli(max_steps=max_steps)
+        frames = _build_dead_end_replay_frames("Trial 1", trial, DEAD_END_TRIAL1_REPLAY_POSITIONS)
+        return [
+            {
+                "step_index": frame["step_index"],
+                "action": frame["action"],
+                "result": frame["result"],
+                "agent_pos": frame["agent_pos"],
+                "blocked_at": frame.get("blocked_at"),
+                "entered_dead_end_area": frame.get("entered_dead_end_area", False),
+            }
+            for frame in frames
+        ]
+
+    agent_pos = list(map_config["agent_start"])
+    walls = {tuple(pos) for pos in map_config["walls"]}
+    dead_end_positions = {tuple(pos) for pos in map_config["intended_dead_end_positions"]}
+    approach_positions = {tuple(pos) for pos in map_config["approach_positions"]}
+    events = [
+        {
+            "step_index": 0,
+            "action": "START",
+            "result": "start",
+            "agent_pos": list(agent_pos),
+            "entered_dead_end_area": tuple(agent_pos) in dead_end_positions,
+        }
+    ]
+
+    completed_approach = tuple(agent_pos) in approach_positions
+    for action in map_config["trial1_actions"][:max_steps]:
+        if completed_approach:
+            break
+        delta = DEAD_END_CANDIDATE_ACTION_DELTAS[action]
+        target = [agent_pos[0] + delta[0], agent_pos[1] + delta[1]]
+        target_tuple = tuple(target)
+        event = {
+            "step_index": len(events),
+            "action": action,
+            "result": "moved",
+            "agent_pos": target,
+            "entered_dead_end_area": target_tuple in dead_end_positions,
+        }
+        if (
+            target[0] < 0
+            or target[1] < 0
+            or target[0] >= map_config["width"]
+            or target[1] >= map_config["height"]
+            or target_tuple in walls
+        ):
+            event["result"] = "wall_blocked"
+            event["agent_pos"] = list(agent_pos)
+            event["blocked_at"] = target
+        elif target == map_config["box_pos"]:
+            event["result"] = "box_blocked"
+            event["agent_pos"] = list(agent_pos)
+            event["blocked_at"] = target
+        else:
+            agent_pos = target
+            completed_approach = target_tuple in approach_positions
+        events.append(event)
+    return events
+
+
+def _build_candidate_trial1_replay_frames(map_config: dict[str, Any], max_steps: int) -> list[dict[str, Any]]:
+    frames = []
+    for event in _candidate_trial1_positions_and_events(map_config, max_steps):
+        frame = {
+            "map_number": None,
+            "level_id": map_config["level_id"],
+            "step_index": event["step_index"],
+            "action": event["action"],
+            "result": event["result"],
+            "agent_pos": event["agent_pos"],
+            "grid": _render_trial1_candidate_grid(map_config, event["agent_pos"]),
+        }
+        if event.get("blocked_at") is not None:
+            frame["blocked_at"] = event["blocked_at"]
+        if event.get("entered_dead_end_area"):
+            frame["entered_dead_end_area"] = True
+        frames.append(frame)
+    return frames
+
+
+def _candidate_map_config_by_level_id(level_id: str) -> dict[str, Any]:
+    return next(map_config for map_config in DEAD_END_TRIAL1_MAP_CANDIDATES if map_config["level_id"] == level_id)
+
+
+def _summarize_candidate_trial1_replay_map(map_result: dict[str, Any]) -> dict[str, Any]:
+    summary = {
+        "level_id": map_result["level_id"],
+        "map_status": map_result["map_status"],
+        "completed_approach": map_result["completed_count"] > 0,
+        "entered_dead_end_area": map_result["entered_dead_end_count"] > 0,
+        "dead_end_positions_visited": map_result["dead_end_positions_visited_samples"][0]
+        if map_result["dead_end_positions_visited_samples"]
+        else [],
+        "blocked_or_failed_actions": map_result["blocked_or_failed_samples"][0]
+        if map_result["blocked_or_failed_samples"]
+        else [],
+        "step_count": map_result["step_counts"][0] if map_result["step_counts"] else 0,
+        "max_steps": None,
+        "selected_actions": map_result["selected_actions_samples"][0] if map_result["selected_actions_samples"] else [],
+        "llm_used": False,
+    }
+    if map_result["map_status"] == "has_shortcut":
+        summary["shortcut_observed"] = True
+        summary["shortcut_notes"] = "Map completed without dead-end entry or blocked/failed outcome."
+    if map_result["entered_dead_end_count"] == 0 and map_result["blocked_or_failed_total"] == 0:
+        summary["dead_end_event_observed"] = False
+    return summary
+
+
+def _format_candidate_trial1_ascii_frame(frame: dict[str, Any]) -> list[str]:
+    lines = [
+        "",
+        f"Map {frame['map_number']} / {frame['level_id']} / Step {frame['step_index']}",
+        f"map_number: {frame['map_number']}",
+        f"level_id: {frame['level_id']}",
+        f"step_index: {frame['step_index']}",
+        f"action: {frame['action']}",
+        f"result: {frame['result']}",
+        f"agent_pos: {frame['agent_pos']}",
+    ]
+    if "blocked_at" in frame:
+        lines.append(f"blocked_at: {frame['blocked_at']}")
+    if frame.get("entered_dead_end_area"):
+        lines.append("entered_dead_end_area: true")
+    lines.extend(["grid:", frame["grid"]])
+    return lines
+
+
+def _format_candidate_map_trial1_ascii_replay_text(result: dict[str, Any]) -> str:
+    lines = [
+        f"command: {result['command']}",
+        f"flow: {result['flow']}",
+        f"status: {result['status']}",
+        f"max_steps: {result['max_steps']}",
+        f"map_count: {result['map_count']}",
+        "",
+        "legend:",
+        result["legend"],
+        "",
+        "replays:",
+    ]
+    for replay in result["replays"]:
+        lines.extend(
+            [
+                "",
+                f"level_id: {replay['level_id']}",
+                f"map_status: {replay['map_status']}",
+                "legend:",
+                replay["legend"],
+                "trial_1_frames:",
+            ]
+        )
+        for frame in replay["trial_1_frames"]:
+            lines.extend(_format_candidate_trial1_ascii_frame(frame))
+        lines.extend(["summary:"])
+        for key, value in replay["summary"].items():
+            lines.append(f"{key}: {str(value).lower() if isinstance(value, bool) else value}")
+    lines.extend(["", "overall_summary:"])
+    for key, value in result["overall_summary"].items():
+        lines.append(f"{key}: {value}")
+    lines.extend(["", "boundary_check:"])
+    for key, value in result["boundary_check"].items():
+        lines.append(f"{key}: {str(value).lower() if isinstance(value, bool) else value}")
+    return "\n".join(lines)
+
+
+def run_candidate_dead_end_trial1_ascii_replay_cli(max_steps: int = 100) -> dict[str, Any]:
+    validation = validate_dead_end_trial1_maps_cli(runs_per_map=1, max_steps=max_steps)
+    replays = []
+    for map_number, map_result in enumerate(validation["map_results"], start=1):
+        map_config = _candidate_map_config_by_level_id(map_result["level_id"])
+        frames = _build_candidate_trial1_replay_frames(map_config, max_steps)
+        for frame in frames:
+            frame["map_number"] = map_number
+        summary = _summarize_candidate_trial1_replay_map(map_result)
+        summary["max_steps"] = max_steps
+        replays.append(
+            {
+                "map_number": map_number,
+                "level_id": map_result["level_id"],
+                "map_status": map_result["map_status"],
+                "legend": "A=agent, B=box, #=wall, .=walkable, x=dead-end marker",
+                "trial_1_frames": frames,
+                "summary": summary,
+            }
+        )
+
+    overall_summary = {
+        "replayed_map_count": len(replays),
+        "valid_for_two_trial_count": validation["overall_summary"]["valid_for_two_trial_count"],
+        "has_shortcut_count": validation["overall_summary"]["has_shortcut_count"],
+        "no_dead_end_event_count": validation["overall_summary"]["no_dead_end_event_count"],
+        "unreachable_count": validation["overall_summary"]["unreachable_count"],
+        "needs_map_fix_count": validation["overall_summary"]["needs_map_fix_count"],
+        "recommended_next_step": "Inspect replay output before selecting maps for multi-map A/B control.",
+    }
+    return {
+        "command": "replay-dead-end-trial1-candidate-maps",
+        "flow": "candidate_map_trial1_ascii_replay_v0",
+        "status": "ok",
+        "max_steps": max_steps,
+        "map_count": len(replays),
+        "legend": "A=agent, B=box, #=wall, .=walkable, x=dead-end marker",
+        "replays": replays,
+        "overall_summary": overall_summary,
+        "boundary_check": {
+            "trial1_replay_only": True,
+            "two_trial_run": False,
+            "memory_control_run": False,
+            "replay_output_only": True,
+            "runner_modified": False,
+            "action_selection_modified": False,
+            "used_llm": False,
+            "used_pathfinding": False,
+            "used_lesson_store": False,
+            "used_memory_layer": False,
+            "modified_docs_current_boundary_index": False,
+        },
+        "notes": [
+            "Candidate map Trial 1 ASCII replay is observer output only.",
+            "This command does not run Two-Trial or A/B memory control.",
+            "This is not proof of learning.",
+        ],
+    }
+
+
 def _verification_boundary() -> dict[str, bool]:
     return {
         "llm_used": False,
@@ -2192,6 +2449,8 @@ def run_command(command: str) -> dict[str, Any]:
         return run_approach_box_dead_end_two_trial_ascii_replay_cli()
     if command == "validate-dead-end-trial1-maps":
         return validate_dead_end_trial1_maps_cli()
+    if command == "replay-dead-end-trial1-candidate-maps":
+        return run_candidate_dead_end_trial1_ascii_replay_cli()
     return {
         "command": command,
         "status": "error",
@@ -2230,6 +2489,7 @@ def main(argv: list[str] | None = None) -> int:
             "run-approach-box-dead-end-memory-control-check",
             "replay-approach-box-dead-end-two-trial",
             "validate-dead-end-trial1-maps",
+            "replay-dead-end-trial1-candidate-maps",
         ],
     )
     parser.add_argument("--review-id", default="review_001")
@@ -2316,12 +2576,16 @@ def main(argv: list[str] | None = None) -> int:
         result = run_approach_box_dead_end_two_trial_ascii_replay_cli(max_steps=args.max_steps)
     elif args.command == "validate-dead-end-trial1-maps":
         result = validate_dead_end_trial1_maps_cli(runs_per_map=args.runs_per_map, max_steps=args.max_steps)
+    elif args.command == "replay-dead-end-trial1-candidate-maps":
+        result = run_candidate_dead_end_trial1_ascii_replay_cli(max_steps=args.max_steps)
     else:
         result = run_command(args.command)
     if hasattr(sys.stdout, "reconfigure"):
         sys.stdout.reconfigure(encoding="utf-8")
     if args.command == "replay-approach-box-dead-end-two-trial":
         print(_format_dead_end_ascii_replay_text(result))
+    elif args.command == "replay-dead-end-trial1-candidate-maps":
+        print(_format_candidate_map_trial1_ascii_replay_text(result))
     else:
         print(json.dumps(result, ensure_ascii=False, indent=2))
     return 0

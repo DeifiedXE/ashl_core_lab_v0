@@ -2259,6 +2259,34 @@ No LLM planning.
 Bad maps are reported, not forced to pass.
 This is not proof of learning.
 
+## Candidate Map Trial1 ASCII Replay v0
+
+Status:
+minimal-runtime / cli-renderer / trial1-observer-output / no-learning-proof
+
+Summary:
+Adds py -3 -m ashl_core.teaching_cli replay-dead-end-trial1-candidate-maps --max-steps 100.
+The command renders Trial 1 for all four candidate dead-end maps as ASCII grids.
+It includes valid_for_two_trial maps and the user_maze has_shortcut map so shortcut behavior can be inspected.
+Each replay records level_id, map_status, frames, summary, overall_summary, and boundary_check.
+
+Boundary:
+Trial 1 replay output only.
+No Two-Trial validation.
+No A/B memory control.
+No existing approach-box runner behavior changes.
+No dead-end single trial behavior changes.
+No action selection changes.
+No goal bias changes.
+No state-action memory behavior changes.
+No pathfinding / BFS / A*.
+No selected_actions replay as input.
+No lesson_candidate pipeline connection.
+No lesson_store write.
+No Memory Layer write.
+No LLM planning.
+This is not proof of learning.
+
 ## Micro Navigation Trial Metrics CLI v0
 
 Status:
