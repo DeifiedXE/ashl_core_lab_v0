@@ -6,9 +6,12 @@ import random
 from typing import Any
 
 from ashl_core.micro_push_box_sandbox import (
+    DIRECTIONS,
     apply_tactile_action,
     build_box_on_goal_need_state,
     build_initial_state,
+    rank_candidate_actions_with_goal_bias,
+    score_action_goal_direction,
     select_action_for_need_state,
 )
 
@@ -32,7 +35,7 @@ def run_need_state_driven_trial(
 
     for step_index in range(max_steps):
         step_seed = rng.randrange(2**32)
-        selection = select_action_for_need_state(state, candidate_actions, random_seed=step_seed)
+        selection = _select_action_for_trial(state, candidate_actions, random_seed=step_seed)
         action_result = apply_tactile_action(state, selection["selected_action"])
         state = action_result["state"]
         trace = action_result["trace"]
@@ -43,6 +46,7 @@ def run_need_state_driven_trial(
                 "step_index": step_index,
                 "selected_action": selection["selected_action"],
                 "selection_reason": selection["selection_reason"],
+                "selection_source": selection["selection_source"],
                 "tactile_result": trace["result"],
                 "need_state": need_state,
                 "agent_pos": trace["agent_pos"],
@@ -110,6 +114,42 @@ def _build_trial_result(
         "final_result": final_result,
         "steps": steps,
     }
+
+
+def _select_action_for_trial(
+    state: dict[str, Any],
+    candidate_actions: list[str] | tuple[str, ...],
+    random_seed: int | str | bytes | None = None,
+) -> dict[str, Any]:
+    base_selection = select_action_for_need_state(state, candidate_actions, random_seed=random_seed)
+    if base_selection["need_state"]["satisfied"]:
+        return {**base_selection, "selection_source": "need_satisfied_wait"}
+
+    selected_action = base_selection["selected_action"]
+    for action in rank_candidate_actions_with_goal_bias(state, candidate_actions):
+        if score_action_goal_direction(state, action) <= 0:
+            continue
+        if not _push_contacts_box(state, action):
+            continue
+        selected_action = action
+        break
+
+    return {
+        **base_selection,
+        "selected_action": selected_action,
+        "selection_reason": "need_unsatisfied_goal_bias_selection",
+        "selection_source": "outcome_weight_plus_goal_bias",
+    }
+
+
+def _push_contacts_box(state: dict[str, Any], action: str) -> bool:
+    if not action.startswith("push_"):
+        return False
+    _, direction = action.split("_", 1)
+    agent_pos = tuple(state["agent_pos"])
+    box_pos = tuple(state["box_pos"])
+    delta = DIRECTIONS[direction]
+    return (agent_pos[0] + delta[0], agent_pos[1] + delta[1]) == box_pos
 
 
 def _trial_seed(random_seed: int | str | bytes | None, trial_index: int) -> int | str | bytes | None:

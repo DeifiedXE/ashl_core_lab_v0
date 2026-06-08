@@ -1137,10 +1137,18 @@ v2.7a adds `ashl_core.failure_events` as a trace-only failure_event schema found
 ## Need-State Driven Trial Runner v0
 
 - Adds `run_need_state_driven_trial(candidate_actions, max_steps=10, random_seed=None)`.
-- Runs the default micro push-box state for a bounded number of steps by reading `box_on_goal`, selecting with `select_action_for_need_state(...)`, applying the tactile action, and recording each step.
-- Each step records `step_index`, `selected_action`, `selection_reason`, `tactile_result`, `need_state`, `agent_pos`, `box_pos`, and `trace`.
+- Runs the default micro push-box state for a bounded number of steps by reading `box_on_goal`, selecting from `candidate_actions`, applying the tactile action, and recording each step.
+- Each step records `step_index`, `selected_action`, `selection_reason`, `selection_source`, `tactile_result`, `need_state`, `agent_pos`, `box_pos`, and `trace`.
 - The summary returns `completed_goal`, `stop_reason`, `step_count`, `final_need_state`, `final_result`, and `steps`.
 - This is a finite trace runner, not AI solver / pathfinding, goal planning, learning pipeline, lesson_candidate pipeline, lesson_store / Memory Layer write, LLM / teaching chat, tactile result mapping change, or utterance_map change.
+
+## Need-State Trial Goal Bias Integration v0
+
+- Need-state trial runner step selection now records `selection_source = outcome_weight_plus_goal_bias` for unsatisfied need-state steps.
+- The integration uses existing outcome weighting and goal direction bias helpers while keeping selected actions bounded to `candidate_actions`.
+- Goal-improving push bias applies only when the push can immediately contact the box; otherwise the runner preserves bounded intrinsic selection behavior.
+- Batch summaries keep the existing `trial_count`, `step_counts`, `average_step_count`, `min_step_count`, `max_step_count`, and `trials` schema.
+- This integration is not AI solver / pathfinding, goal planning, learning pipeline, lesson_candidate pipeline, lesson_store / Memory Layer write, LLM / teaching chat, tactile result mapping change, or utterance_map change.
 
 ## Need-State Trial Runner 5-Trial Step Count v0
 

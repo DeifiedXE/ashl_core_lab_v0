@@ -622,6 +622,35 @@ def smoke_need_state_trial_5_step_count() -> dict:
     )
 
 
+def smoke_need_state_trial_goal_bias_integration() -> dict:
+    candidates = ["move_up", "move_right", "push_down"]
+    trial = run_need_state_driven_trial(candidates, max_steps=10, random_seed=0)
+    batch = run_need_state_driven_trial_batch(trial_count=5, max_steps=10, random_seed=0)
+    selected_actions = [step["selected_action"] for step in trial["steps"]]
+    selection_sources = [step.get("selection_source") for step in trial["steps"]]
+    passed = (
+        bool(trial["steps"])
+        and all(source == "outcome_weight_plus_goal_bias" for source in selection_sources)
+        and all(action in candidates for action in selected_actions)
+        and "push_down" in selected_actions
+        and batch["trial_count"] == 5
+        and len(batch["step_counts"]) == 5
+        and "average_step_count" in batch
+    )
+    return _result(
+        "need_state_trial_goal_bias_integration",
+        passed,
+        {
+            "selection_sources": selection_sources,
+            "selected_actions": selected_actions,
+            "selected_actions_from_candidates": all(action in candidates for action in selected_actions),
+            "batch_trial_count": batch["trial_count"],
+            "step_counts": batch["step_counts"],
+            "average_step_count": batch["average_step_count"],
+        },
+    )
+
+
 def smoke_need_state_trial_batch_cli() -> dict:
     result = run_need_state_trial_batch_cli(random_seed=0)
     boundary = result.get("boundary", {})
@@ -4847,6 +4876,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_minimal_need_state_driven_action_selection(),
         smoke_need_state_driven_trial_runner(),
         smoke_need_state_trial_5_step_count(),
+        smoke_need_state_trial_goal_bias_integration(),
         smoke_need_state_trial_batch_cli(),
         smoke_clear_sandbox_working_state_cli(),
         smoke_grounded_learning_verification_cli(),

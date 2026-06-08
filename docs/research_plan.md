@@ -1949,8 +1949,8 @@ minimal-runtime / bounded-trial-runner / trace-only-summary / no-learning
 
 Summary:
 Adds run_need_state_driven_trial(candidate_actions, max_steps=10, random_seed=None).
-The runner starts from the default micro push-box state, reads box_on_goal need_state, selects through select_action_for_need_state, applies the tactile action, and records each bounded step.
-Each step records step_index, selected_action, selection_reason, tactile_result, need_state, agent_pos, box_pos, and trace.
+The runner starts from the default micro push-box state, reads box_on_goal need_state, selects from candidate_actions, applies the tactile action, and records each bounded step.
+Each step records step_index, selected_action, selection_reason, selection_source, tactile_result, need_state, agent_pos, box_pos, and trace.
 The summary returns completed_goal, stop_reason, step_count, final_need_state, final_result, and steps.
 
 Boundary:
@@ -1964,6 +1964,30 @@ No LLM / teaching chat loop / free text conversation.
 No tactile result mapping changes.
 No utterance_map changes.
 Trial runner is bounded by max_steps and does not create new actions.
+
+## Need-State Trial Goal Bias Integration v0
+
+Status:
+minimal-runtime / bounded-trial-runner / goal-bias-selection-source / no-learning
+
+Summary:
+Integrates goal direction bias into the need-state trial runner selection step.
+Unsatisfied need-state steps record selection_source = outcome_weight_plus_goal_bias.
+The runner keeps selected actions bounded to candidate_actions and uses existing outcome weighting plus goal direction bias helpers.
+Goal-improving push bias applies only when the push can immediately contact the box; otherwise bounded intrinsic selection behavior is preserved.
+The 5-trial batch summary schema remains unchanged.
+
+Boundary:
+No AI solver / pathfinding.
+No goal planning.
+No learning pipeline.
+No lesson_candidate pipeline connection.
+No lesson_store write.
+No Memory Layer write.
+No LLM / teaching chat loop / free text conversation.
+No tactile result mapping changes.
+No utterance_map changes.
+No action outside candidate_actions.
 
 ## Need-State Trial Runner 5-Trial Step Count v0
 

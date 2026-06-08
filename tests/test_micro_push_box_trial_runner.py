@@ -52,6 +52,7 @@ class MicroPushBoxTrialRunnerTests(unittest.TestCase):
                 "step_index",
                 "selected_action",
                 "selection_reason",
+                "selection_source",
                 "tactile_result",
                 "need_state",
                 "agent_pos",
@@ -59,6 +60,21 @@ class MicroPushBoxTrialRunnerTests(unittest.TestCase):
                 "trace",
             },
         )
+
+    def test_trial_steps_record_goal_bias_selection_source(self):
+        result = run_need_state_driven_trial(["move_up", "move_right", "push_down"], max_steps=10, random_seed=0)
+
+        self.assertTrue(result["steps"])
+        self.assertTrue(
+            all(step["selection_source"] == "outcome_weight_plus_goal_bias" for step in result["steps"])
+        )
+
+    def test_goal_bias_favors_goal_improving_push_when_available(self):
+        result = run_need_state_driven_trial(["move_up", "move_right", "push_down"], max_steps=10, random_seed=0)
+
+        self.assertTrue(result["completed_goal"])
+        self.assertEqual(result["steps"][-1]["selected_action"], "push_down")
+        self.assertEqual(result["steps"][-1]["selection_source"], "outcome_weight_plus_goal_bias")
 
     def test_invalid_candidate_action_raises_value_error(self):
         with self.assertRaises(ValueError):
