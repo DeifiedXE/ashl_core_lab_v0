@@ -13,6 +13,7 @@ from ashl_core.teaching_cli import (
     run_known_flow,
     run_minimal_interaction,
     run_navigation_multi_goal_metrics_cli,
+    run_navigation_obstacle_trial_cli,
     run_navigation_trial_metrics_cli,
     run_need_state_trial_batch_cli,
     run_tactile_interaction,
@@ -480,6 +481,23 @@ class TeachingCliTests(unittest.TestCase):
         self.assertIn("human_summary", result)
         self.assertTrue(result["run_summaries"][0]["trial_summaries"][0]["completed_all_goals"])
         self.assertEqual(result["run_summaries"][0]["trial_summaries"][0]["goals_reached"], 2)
+        self.assertIs(boundary["llm_used"], False)
+        self.assertIs(boundary["creates_lesson_candidate"], False)
+        self.assertIs(boundary["writes_lesson_store"], False)
+        self.assertIs(boundary["writes_memory_layer"], False)
+        self.assertIs(boundary["changes_navigation_behavior"], False)
+
+    def test_navigation_obstacle_trial_cli_wrapper_returns_ok(self):
+        result = run_navigation_obstacle_trial_cli(max_steps=20)
+        boundary = result["boundary"]
+
+        self.assertEqual(result["command"], "run-navigation-obstacle-trial")
+        self.assertEqual(result["flow"], "navigation_obstacle_trial_cli_patch")
+        self.assertEqual(result["status"], "ok")
+        self.assertTrue(result["completed_goal"])
+        self.assertGreater(result["step_count"], 2)
+        self.assertTrue(result["selected_actions"])
+        self.assertTrue(result["wall_blocked_avoided"])
         self.assertIs(boundary["llm_used"], False)
         self.assertIs(boundary["creates_lesson_candidate"], False)
         self.assertIs(boundary["writes_lesson_store"], False)

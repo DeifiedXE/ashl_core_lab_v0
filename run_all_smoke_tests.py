@@ -139,6 +139,7 @@ from ashl_core.teaching_cli import (
     run_lifecycle_display,
     run_minimal_interaction,
     run_navigation_multi_goal_metrics_cli,
+    run_navigation_obstacle_trial_cli,
     run_navigation_trial_metrics_cli,
     run_need_state_trial_batch_cli,
     run_review_approve,
@@ -439,6 +440,38 @@ def smoke_navigation_obstacle_wall_detour_level() -> dict:
             "selected_actions": trial["selected_actions"],
             "final_agent_pos": trial["final_agent_pos"],
             "wall_blocked_avoided": wall_blocked_avoided,
+        },
+    )
+
+
+def smoke_navigation_obstacle_trial_cli() -> dict:
+    result = run_navigation_obstacle_trial_cli(max_steps=20)
+    boundary = result.get("boundary", {})
+    passed = (
+        result.get("command") == "run-navigation-obstacle-trial"
+        and result.get("flow") == "navigation_obstacle_trial_cli_patch"
+        and result.get("status") == "ok"
+        and result.get("completed_goal") is True
+        and result.get("step_count", 0) > 2
+        and bool(result.get("selected_actions"))
+        and all(action in ALLOWED_NAVIGATION_ACTIONS for action in result.get("selected_actions", []))
+        and result.get("wall_blocked_avoided") is True
+        and boundary.get("llm_used") is False
+        and boundary.get("creates_lesson_candidate") is False
+        and boundary.get("writes_lesson_store") is False
+        and boundary.get("writes_memory_layer") is False
+        and boundary.get("awakening_claim") is False
+        and boundary.get("changes_navigation_behavior") is False
+    )
+    return _result(
+        "navigation_obstacle_trial_cli",
+        passed,
+        {
+            "completed_goal": result.get("completed_goal"),
+            "step_count": result.get("step_count"),
+            "selected_actions": result.get("selected_actions"),
+            "wall_blocked_avoided": result.get("wall_blocked_avoided"),
+            "boundary": boundary,
         },
     )
 
@@ -5313,6 +5346,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_micro_navigation_multi_goal_level(),
         smoke_micro_navigation_multi_goal_metrics_cli(),
         smoke_navigation_obstacle_wall_detour_level(),
+        smoke_navigation_obstacle_trial_cli(),
         smoke_micro_push_box_sandbox(),
         smoke_micro_push_box_allowed_action_set(),
         smoke_tactile_result_state_key_mapping(),

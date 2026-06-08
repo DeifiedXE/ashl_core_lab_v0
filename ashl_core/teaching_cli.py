@@ -23,7 +23,11 @@ from .micro_push_box_sandbox import (
     build_initial_state as build_micro_push_box_state,
     suggest_next_action_avoiding_repeat_blocked,
 )
-from .micro_navigation_trial_runner import run_navigation_goal_trial, run_navigation_multi_goal_trial
+from .micro_navigation_trial_runner import (
+    run_navigation_goal_trial,
+    run_navigation_multi_goal_trial,
+    run_navigation_obstacle_trial,
+)
 from .micro_push_box_trial_runner import run_need_state_driven_trial_batch
 from .tactile_state_mapping import map_tactile_result_to_state_key
 from .trace_persistence import append_first_output_trace, append_mentor_feedback_trace
@@ -800,6 +804,36 @@ def run_navigation_multi_goal_metrics_cli(
     }
 
 
+def run_navigation_obstacle_trial_cli(max_steps: int = 20) -> dict[str, Any]:
+    trial = run_navigation_obstacle_trial(max_steps=max_steps)
+    initial_agent_pos = trial["steps"][0]["trace"]["before"]["agent_pos"] if trial["steps"] else trial["final_agent_pos"]
+    wall_blocked_avoided = any(step["blocked_candidates"] for step in trial["steps"]) and all(
+        step["navigation_result"] != "wall_blocked" for step in trial["steps"]
+    )
+    return {
+        "command": "run-navigation-obstacle-trial",
+        "flow": "navigation_obstacle_trial_cli_patch",
+        "status": "ok",
+        "completed_goal": trial["completed_goal"],
+        "step_count": trial["step_count"],
+        "stop_reason": trial["stop_reason"],
+        "initial_agent_pos": initial_agent_pos,
+        "goal_pos": trial["goal_pos"],
+        "final_agent_pos": trial["final_agent_pos"],
+        "selected_actions": trial["selected_actions"],
+        "wall_blocked_avoided": wall_blocked_avoided,
+        "boundary": {
+            "llm_used": False,
+            "creates_lesson_candidate": False,
+            "writes_lesson_store": False,
+            "writes_memory_layer": False,
+            "awakening_claim": False,
+            "changes_navigation_behavior": False,
+        },
+        "notes": ["Navigation obstacle trial CLI only wraps the existing deterministic obstacle trial runner."],
+    }
+
+
 def _verification_boundary() -> dict[str, bool]:
     return {
         "llm_used": False,
@@ -855,6 +889,8 @@ def run_command(command: str) -> dict[str, Any]:
         return run_navigation_trial_metrics_cli()
     if command == "run-navigation-multi-goal-metrics":
         return run_navigation_multi_goal_metrics_cli()
+    if command == "run-navigation-obstacle-trial":
+        return run_navigation_obstacle_trial_cli()
     return {
         "command": command,
         "status": "error",
@@ -883,6 +919,7 @@ def main(argv: list[str] | None = None) -> int:
             "run-trial-metrics-comparison",
             "run-navigation-trial-metrics",
             "run-navigation-multi-goal-metrics",
+            "run-navigation-obstacle-trial",
         ],
     )
     parser.add_argument("--review-id", default="review_001")
@@ -945,6 +982,8 @@ def main(argv: list[str] | None = None) -> int:
             trial_count=args.trial_count,
             max_steps=args.max_steps,
         )
+    elif args.command == "run-navigation-obstacle-trial":
+        result = run_navigation_obstacle_trial_cli(max_steps=args.max_steps)
     else:
         result = run_command(args.command)
     if hasattr(sys.stdout, "reconfigure"):

@@ -1133,6 +1133,15 @@ v2.7a adds `ashl_core.failure_events` as a trace-only failure_event schema found
 - Step traces keep `trace_type = navigation_sandbox_trace`, `action`, `before`, `after`, `result`, `blocked`, `agent_pos`, `goal_pos`, and `distance_to_goal`.
 - This is a 2D curriculum level and blocked-aware one-step selector, not 3D / GMod, AI solver, pathfinding, BFS, A*, goal planning, learning pipeline, lesson_candidate pipeline, lesson_store / Memory Layer write, LLM / teaching chat, graphics, or GUI.
 
+## Navigation Obstacle Trial CLI Patch
+
+- Adds `py -3 -m ashl_core.teaching_cli run-navigation-obstacle-trial`.
+- Supports `--max-steps`.
+- The CLI wraps the existing `run_navigation_obstacle_trial(max_steps=...)` helper.
+- Output includes `command`, `flow = navigation_obstacle_trial_cli_patch`, `status`, `completed_goal`, `step_count`, `stop_reason`, `initial_agent_pos`, `goal_pos`, `final_agent_pos`, `selected_actions`, `wall_blocked_avoided`, and `boundary`.
+- Boundary flags remain false for `llm_used`, `creates_lesson_candidate`, `writes_lesson_store`, `writes_memory_layer`, `awakening_claim`, and `changes_navigation_behavior`.
+- This is a CLI wrapper only. It does not modify navigation runner behavior, navigation sandbox behavior, push-box sandbox behavior, add AI solver / pathfinding / BFS / A*, goal planning, learning pipeline, lesson_candidate pipeline, lesson_store / Memory Layer writes, LLM / teaching chat, graphics, or GUI.
+
 ## Micro Navigation Trial Metrics CLI v0
 
 - Adds `py -3 -m ashl_core.teaching_cli run-navigation-trial-metrics --runs 4 --trial-count 5 --max-steps 10`.

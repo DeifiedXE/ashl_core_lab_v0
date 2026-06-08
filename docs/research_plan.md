@@ -1962,6 +1962,30 @@ No LLM / teaching chat / free text conversation.
 No graphics / GUI.
 No autonomous behavior claim.
 
+## Navigation Obstacle Trial CLI Patch
+
+Status:
+minimal-runtime / cli-wrapper / obstacle-trial-readback / no-learning
+
+Summary:
+Adds py -3 -m ashl_core.teaching_cli run-navigation-obstacle-trial.
+The command supports --max-steps and wraps the existing run_navigation_obstacle_trial(max_steps=...) helper.
+It returns command = run-navigation-obstacle-trial, flow = navigation_obstacle_trial_cli_patch, status, completed_goal, step_count, stop_reason, initial_agent_pos, goal_pos, final_agent_pos, selected_actions, wall_blocked_avoided, and boundary.
+
+Boundary:
+No navigation runner behavior changes.
+No navigation sandbox behavior changes.
+No push-box sandbox behavior changes.
+No AI solver / pathfinding / BFS / A*.
+No goal planning.
+No learning pipeline.
+No lesson_candidate pipeline.
+No lesson_store writes.
+No Memory Layer writes.
+No LLM / teaching chat / free text conversation.
+No graphics / GUI.
+No autonomous behavior claim.
+
 ## Micro Navigation Trial Metrics CLI v0
 
 Status:
