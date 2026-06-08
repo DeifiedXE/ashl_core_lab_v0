@@ -18,6 +18,8 @@ class ApproachBoxDeadEndMemoryControlCheckTests(unittest.TestCase):
         self.assertEqual(result["max_steps"], 100)
         self.assertIn("with_memory", result)
         self.assertIn("without_memory", result)
+        self.assertIn("trial1_source_audit", result)
+        self.assertIn("conditioned_on_trial1_dead_end", result)
         self.assertIn("comparison", result)
         self.assertIn("boundary_check", result)
 
@@ -49,9 +51,41 @@ class ApproachBoxDeadEndMemoryControlCheckTests(unittest.TestCase):
         self.assertTrue(comparison["control_group_used"])
         self.assertIsInstance(comparison["memory_effect_observed"], bool)
 
+    def test_trial1_source_audit_reports_memory_source_fields(self):
+        result = run_approach_box_dead_end_memory_control_check_cli(max_steps=100, runs=3)
+        audit = result["trial1_source_audit"]
+
+        self.assertIn("with_memory_trial1_entered_dead_end_count", audit)
+        self.assertIn("with_memory_trial1_blocked_or_failed_total", audit)
+        self.assertIn("with_memory_trial1_local_memory_written_count", audit)
+        self.assertIn("with_memory_trial1_average_step_count", audit)
+        self.assertIn("with_memory_trial1_step_counts", audit)
+        self.assertIn("without_memory_trial1_entered_dead_end_count", audit)
+        self.assertIn("without_memory_trial1_blocked_or_failed_total", audit)
+        self.assertIn("without_memory_trial1_local_memory_written_count", audit)
+        self.assertIn("without_memory_trial1_average_step_count", audit)
+        self.assertIn("without_memory_trial1_step_counts", audit)
+        self.assertEqual(len(audit["with_memory_trial1_step_counts"]), 3)
+        self.assertEqual(len(audit["without_memory_trial1_step_counts"]), 3)
+
+    def test_conditioned_analysis_reports_trial1_dead_end_sample_fields(self):
+        result = run_approach_box_dead_end_memory_control_check_cli(max_steps=100, runs=3)
+        conditioned = result["conditioned_on_trial1_dead_end"]
+
+        self.assertIn("with_memory_sample_count", conditioned)
+        self.assertIn("with_memory_trial2_avoided_count", conditioned)
+        self.assertIn("with_memory_trial2_avoid_rate", conditioned)
+        self.assertIn("without_memory_sample_count", conditioned)
+        self.assertIn("without_memory_trial2_avoided_count", conditioned)
+        self.assertIn("without_memory_trial2_avoid_rate", conditioned)
+        self.assertIn("conditioned_memory_effect_observed", conditioned)
+        self.assertIsInstance(conditioned["conditioned_memory_effect_observed"], bool)
+
     def test_boundary_check_rejects_forbidden_sources(self):
         boundary = run_approach_box_dead_end_memory_control_check_cli(max_steps=100, runs=2)["boundary_check"]
 
+        self.assertTrue(boundary["trial1_source_audit_present"])
+        self.assertTrue(boundary["conditioned_analysis_present"])
         self.assertTrue(boundary["with_memory_trial2_read_local_outcome_memory"])
         self.assertFalse(boundary["without_memory_trial2_read_local_outcome_memory"])
         self.assertFalse(boundary["with_memory_trial2_replayed_full_route"])
@@ -90,7 +124,11 @@ class ApproachBoxDeadEndMemoryControlCheckTests(unittest.TestCase):
         self.assertEqual(result["random_seed"], 17)
         self.assertEqual(result["with_memory"]["run_count"], 3)
         self.assertEqual(result["without_memory"]["run_count"], 3)
+        self.assertIn("trial1_source_audit", result)
+        self.assertIn("conditioned_on_trial1_dead_end", result)
         self.assertTrue(result["comparison"]["control_group_used"])
+        self.assertTrue(result["boundary_check"]["trial1_source_audit_present"])
+        self.assertTrue(result["boundary_check"]["conditioned_analysis_present"])
         self.assertTrue(result["boundary_check"]["with_memory_trial2_read_local_outcome_memory"])
         self.assertFalse(result["boundary_check"]["without_memory_trial2_read_local_outcome_memory"])
 

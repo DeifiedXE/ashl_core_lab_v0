@@ -2168,6 +2168,9 @@ The CLI compares with_memory against without_memory on the existing approach_box
 with_memory runs Trial 1, extracts local state-action outcome memory, then runs Trial 2 with that local memory available.
 without_memory runs Trial 1, then runs Trial 2 fresh without reading local memory.
 The output records aggregate Trial 2 completion, dead-end entry counts, avoided-dead-end-action counts, blocked/failed totals, average step counts, comparison deltas, and boundary_check.
+The output also records trial1_source_audit and conditioned_on_trial1_dead_end.
+trial1_source_audit reports whether Trial 1 entered the dead-end, produced blocked/failed outcome evidence, and wrote local memory source counts.
+conditioned_on_trial1_dead_end reports Trial 2 avoidance rates only for runs where Trial 1 generated dead-end source evidence.
 
 Boundary:
 No existing approach-box runner behavior changes.

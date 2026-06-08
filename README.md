@@ -1199,6 +1199,7 @@ Two-Trial History Boundary:
 - Compares `with_memory` against `without_memory` on the existing `approach_box_dead_end_v0` level.
 - `with_memory` Trial 2 may read only Trial 1 local outcome memory; `without_memory` Trial 2 must not read local memory.
 - Output records aggregate Trial 2 dead-end entry counts, blocked/failed totals, average step counts, completion counts, and control-group comparison deltas.
+- The output also reports `trial1_source_audit` and `conditioned_on_trial1_dead_end`, so the control check can distinguish runs where Trial 1 actually generated dead-end local memory source evidence before evaluating Trial 2 avoidance.
 - This is a bounded A/B control check, not proof of general learning. It does not use LLM planning, pathfinding / BFS / A*, full route replay, Trial 1 `selected_actions` replay, lesson_candidate, lesson_store, or Memory Layer.
 
 ## Micro Navigation Trial Metrics CLI v0

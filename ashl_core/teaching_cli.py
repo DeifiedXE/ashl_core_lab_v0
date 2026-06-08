@@ -1261,25 +1261,121 @@ def _summarize_dead_end_memory_control_trials(trial_2_results: list[dict[str, An
     }
 
 
+def _dead_end_trial1_wrote_local_memory_source(trial_1: dict[str, Any]) -> bool:
+    return bool(trial_1.get("local_outcome_memory_written")) or trial_1["step_count"] > 0
+
+
+def _dead_end_trial1_generated_dead_end_source(trial_1: dict[str, Any]) -> bool:
+    return trial_1["entered_dead_end_area"] or bool(trial_1["blocked_or_failed_actions"])
+
+
+def _summarize_dead_end_trial1_source_audit(
+    with_memory_trial_1_results: list[dict[str, Any]],
+    without_memory_trial_1_results: list[dict[str, Any]],
+) -> dict[str, Any]:
+    with_memory_step_counts = [trial["step_count"] for trial in with_memory_trial_1_results]
+    without_memory_step_counts = [trial["step_count"] for trial in without_memory_trial_1_results]
+    with_memory_count = len(with_memory_trial_1_results)
+    without_memory_count = len(without_memory_trial_1_results)
+    return {
+        "with_memory_trial1_entered_dead_end_count": sum(
+            1 for trial in with_memory_trial_1_results if trial["entered_dead_end_area"]
+        ),
+        "with_memory_trial1_blocked_or_failed_total": sum(
+            len(trial["blocked_or_failed_actions"]) for trial in with_memory_trial_1_results
+        ),
+        "with_memory_trial1_local_memory_written_count": sum(
+            1 for trial in with_memory_trial_1_results if _dead_end_trial1_wrote_local_memory_source(trial)
+        ),
+        "with_memory_trial1_average_step_count": (sum(with_memory_step_counts) / with_memory_count)
+        if with_memory_count
+        else 0,
+        "with_memory_trial1_step_counts": with_memory_step_counts,
+        "without_memory_trial1_entered_dead_end_count": sum(
+            1 for trial in without_memory_trial_1_results if trial["entered_dead_end_area"]
+        ),
+        "without_memory_trial1_blocked_or_failed_total": sum(
+            len(trial["blocked_or_failed_actions"]) for trial in without_memory_trial_1_results
+        ),
+        "without_memory_trial1_local_memory_written_count": sum(
+            1 for trial in without_memory_trial_1_results if _dead_end_trial1_wrote_local_memory_source(trial)
+        ),
+        "without_memory_trial1_average_step_count": (sum(without_memory_step_counts) / without_memory_count)
+        if without_memory_count
+        else 0,
+        "without_memory_trial1_step_counts": without_memory_step_counts,
+    }
+
+
+def _dead_end_trial2_avoided_dead_end(trial_2: dict[str, Any]) -> bool:
+    return trial_2.get("avoided_trial1_dead_end_action") is True or not trial_2["entered_dead_end_area"]
+
+
+def _build_dead_end_conditioned_analysis(
+    with_memory_pairs: list[tuple[dict[str, Any], dict[str, Any]]],
+    without_memory_pairs: list[tuple[dict[str, Any], dict[str, Any]]],
+) -> dict[str, Any]:
+    with_memory_conditioned = [
+        (trial_1, trial_2) for trial_1, trial_2 in with_memory_pairs if _dead_end_trial1_generated_dead_end_source(trial_1)
+    ]
+    without_memory_conditioned = [
+        (trial_1, trial_2)
+        for trial_1, trial_2 in without_memory_pairs
+        if _dead_end_trial1_generated_dead_end_source(trial_1)
+    ]
+    with_memory_avoided = sum(1 for _trial_1, trial_2 in with_memory_conditioned if _dead_end_trial2_avoided_dead_end(trial_2))
+    without_memory_avoided = sum(
+        1 for _trial_1, trial_2 in without_memory_conditioned if _dead_end_trial2_avoided_dead_end(trial_2)
+    )
+    with_memory_sample_count = len(with_memory_conditioned)
+    without_memory_sample_count = len(without_memory_conditioned)
+    with_memory_avoid_rate = (with_memory_avoided / with_memory_sample_count) if with_memory_sample_count else 0
+    without_memory_avoid_rate = (
+        without_memory_avoided / without_memory_sample_count
+    ) if without_memory_sample_count else 0
+    return {
+        "with_memory_sample_count": with_memory_sample_count,
+        "with_memory_trial2_avoided_count": with_memory_avoided,
+        "with_memory_trial2_avoid_rate": with_memory_avoid_rate,
+        "without_memory_sample_count": without_memory_sample_count,
+        "without_memory_trial2_avoided_count": without_memory_avoided,
+        "without_memory_trial2_avoid_rate": without_memory_avoid_rate,
+        "conditioned_memory_effect_observed": with_memory_avoid_rate > without_memory_avoid_rate,
+    }
+
+
 def run_approach_box_dead_end_memory_control_check_cli(
     max_steps: int = 100,
     runs: int = 20,
     random_seed: int | None = None,
 ) -> dict[str, Any]:
+    with_memory_pairs = []
+    without_memory_pairs = []
+    with_memory_trial_1_results = []
     with_memory_trial_2_results = []
+    without_memory_trial_1_results = []
     without_memory_trial_2_results = []
 
     for _run_id in range(runs):
         with_memory_result = run_approach_box_dead_end_two_trial_check_cli(max_steps=max_steps)
+        with_memory_trial_1_results.append(with_memory_result["trial_1"])
         with_memory_trial_2_results.append(with_memory_result["trial_2"])
+        with_memory_pairs.append((with_memory_result["trial_1"], with_memory_result["trial_2"]))
 
-        run_approach_box_dead_end_trial_cli(max_steps=max_steps)
+        without_memory_trial_1 = run_approach_box_dead_end_trial_cli(max_steps=max_steps)
         without_memory_trial_2 = run_approach_box_dead_end_trial_cli(max_steps=max_steps)
         without_memory_trial_2["avoided_trial1_dead_end_action"] = False
+        without_memory_trial_1_results.append(without_memory_trial_1)
         without_memory_trial_2_results.append(without_memory_trial_2)
+        without_memory_pairs.append((without_memory_trial_1, without_memory_trial_2))
 
     with_memory = _summarize_dead_end_memory_control_trials(with_memory_trial_2_results)
     without_memory = _summarize_dead_end_memory_control_trials(without_memory_trial_2_results)
+    trial1_source_audit = _summarize_dead_end_trial1_source_audit(
+        with_memory_trial_1_results,
+        without_memory_trial_1_results,
+    )
+    conditioned_on_trial1_dead_end = _build_dead_end_conditioned_analysis(with_memory_pairs, without_memory_pairs)
     average_step_count_delta = with_memory["trial2_average_step_count"] - without_memory["trial2_average_step_count"]
     memory_effect_observed = (
         with_memory["trial2_entered_dead_end_count"] < without_memory["trial2_entered_dead_end_count"]
@@ -1308,10 +1404,14 @@ def run_approach_box_dead_end_memory_control_check_cli(
         "trial2_used_lesson_candidate": False,
         "trial2_used_pathfinding": False,
         "trial2_used_human_hint": False,
+        "trial1_source_audit_present": True,
+        "conditioned_analysis_present": True,
     }
     notes = [
         "Dead-end memory control check compares with_memory against without_memory on the existing level.",
         "Trial 2 reads local outcome memory only in the with_memory group.",
+        "Trial 1 source audit reports whether dead-end local memory source was generated before Trial 2.",
+        "Conditioned analysis only counts runs where Trial 1 generated dead-end source evidence.",
         "This bounded A/B control check is not proof of general learning.",
     ]
     if random_seed is None:
@@ -1329,6 +1429,8 @@ def run_approach_box_dead_end_memory_control_check_cli(
         "random_seed": random_seed,
         "with_memory": with_memory,
         "without_memory": without_memory,
+        "trial1_source_audit": trial1_source_audit,
+        "conditioned_on_trial1_dead_end": conditioned_on_trial1_dead_end,
         "comparison": comparison,
         "boundary_check": boundary_check,
         "notes": notes,

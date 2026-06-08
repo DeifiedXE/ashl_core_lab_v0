@@ -765,6 +765,48 @@ def smoke_approach_box_dead_end_memory_control_check() -> dict:
     )
 
 
+def smoke_dead_end_memory_control_trial1_source_audit() -> dict:
+    result = run_approach_box_dead_end_memory_control_check_cli(max_steps=100, runs=3)
+    audit = result.get("trial1_source_audit", {})
+    conditioned = result.get("conditioned_on_trial1_dead_end", {})
+    boundary = result.get("boundary_check", {})
+    passed = (
+        result.get("flow") == "dead_end_memory_control_check_v0"
+        and "with_memory_trial1_entered_dead_end_count" in audit
+        and "with_memory_trial1_blocked_or_failed_total" in audit
+        and "with_memory_trial1_local_memory_written_count" in audit
+        and "with_memory_trial1_average_step_count" in audit
+        and len(audit.get("with_memory_trial1_step_counts", [])) == 3
+        and "without_memory_trial1_entered_dead_end_count" in audit
+        and "without_memory_trial1_blocked_or_failed_total" in audit
+        and "without_memory_trial1_local_memory_written_count" in audit
+        and "without_memory_trial1_average_step_count" in audit
+        and len(audit.get("without_memory_trial1_step_counts", [])) == 3
+        and "with_memory_sample_count" in conditioned
+        and "with_memory_trial2_avoided_count" in conditioned
+        and "with_memory_trial2_avoid_rate" in conditioned
+        and "without_memory_sample_count" in conditioned
+        and "without_memory_trial2_avoided_count" in conditioned
+        and "without_memory_trial2_avoid_rate" in conditioned
+        and isinstance(conditioned.get("conditioned_memory_effect_observed"), bool)
+        and boundary.get("trial1_source_audit_present") is True
+        and boundary.get("conditioned_analysis_present") is True
+        and boundary.get("with_memory_trial2_read_local_outcome_memory") is True
+        and boundary.get("without_memory_trial2_read_local_outcome_memory") is False
+        and boundary.get("trial2_used_llm") is False
+        and boundary.get("trial2_used_pathfinding") is False
+    )
+    return _result(
+        "dead_end_memory_control_trial1_source_audit",
+        passed,
+        {
+            "trial1_source_audit": audit,
+            "conditioned_on_trial1_dead_end": conditioned,
+            "boundary_check": boundary,
+        },
+    )
+
+
 def smoke_micro_push_box_sandbox() -> dict:
     initial_state = build_micro_push_box_state()
     touch_box = apply_tactile_action(initial_state, "touch_right")["trace"]
@@ -5738,6 +5780,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_approach_box_dead_end_trial(),
         smoke_approach_box_dead_end_two_trial_learning_check(),
         smoke_approach_box_dead_end_memory_control_check(),
+        smoke_dead_end_memory_control_trial1_source_audit(),
         smoke_micro_push_box_sandbox(),
         smoke_micro_push_box_allowed_action_set(),
         smoke_tactile_result_state_key_mapping(),
