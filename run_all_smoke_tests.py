@@ -75,6 +75,7 @@ from ashl_core.micro_push_box_sandbox import (
     apply_tactile_action,
     build_box_on_goal_need_state,
     build_initial_state as build_micro_push_box_state,
+    select_action_for_need_state,
     select_intrinsic_action,
     suggest_next_action_by_outcome_weight,
     suggest_next_action_avoiding_repeat_blocked,
@@ -481,6 +482,40 @@ def smoke_box_on_goal_need_state() -> dict:
             "initial_current_value": initial_need_state["current_value"],
             "goal_current_value": goal_need_state["current_value"],
             "goal_satisfied": goal_need_state["satisfied"],
+        },
+    )
+
+
+def smoke_minimal_need_state_driven_action_selection() -> dict:
+    state = build_micro_push_box_state()
+    state["action_history"] = (
+        {"action": "push_right", "result": "box_blocked", "tick": 1},
+        {"action": "push_down", "result": "box_pushed", "tick": 2},
+    )
+    candidates = ["push_right", "push_down"]
+    unsatisfied = select_action_for_need_state(state, candidates, random_seed=9)
+
+    goal_state = build_micro_push_box_state()
+    goal_state["box_pos"] = goal_state["goal_pos"]
+    satisfied = select_action_for_need_state(goal_state, candidates, random_seed=9)
+
+    passed = (
+        unsatisfied["need_state"]["current_value"] == 0
+        and unsatisfied["selected_action"] == "push_down"
+        and unsatisfied["selection_reason"] == "need_unsatisfied_intrinsic_selection"
+        and satisfied["need_state"]["current_value"] == 1
+        and satisfied["selected_action"] == "wait"
+        and satisfied["selection_reason"] == "need_satisfied_wait"
+    )
+    return _result(
+        "minimal_need_state_driven_action_selection",
+        passed,
+        {
+            "candidate_actions": candidates,
+            "unsatisfied_selected_action": unsatisfied["selected_action"],
+            "unsatisfied_selection_reason": unsatisfied["selection_reason"],
+            "satisfied_selected_action": satisfied["selected_action"],
+            "satisfied_selection_reason": satisfied["selection_reason"],
         },
     )
 
@@ -4665,6 +4700,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_minimal_action_outcome_weighting(),
         smoke_minimal_intrinsic_action_selection(),
         smoke_box_on_goal_need_state(),
+        smoke_minimal_need_state_driven_action_selection(),
         smoke_clear_sandbox_working_state_cli(),
         smoke_grounded_learning_verification_cli(),
         smoke_standing_task(),

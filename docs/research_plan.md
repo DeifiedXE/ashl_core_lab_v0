@@ -1873,6 +1873,30 @@ No tactile result mapping changes.
 No utterance_map changes.
 Need state does not choose actions.
 
+## Minimal Need-State Driven Action Selection v0
+
+Status:
+minimal-runtime / need-state-selection-helper / bounded-candidate-selection / no-learning
+
+Summary:
+Adds select_action_for_need_state(state, candidate_actions, random_seed=None) for the micro push-box sandbox.
+The helper reads build_box_on_goal_need_state(state) and returns selected_action, need_state, selection_reason, and candidate_actions.
+When box_on_goal is unsatisfied, it delegates to select_intrinsic_action.
+When box_on_goal is satisfied, it selects wait with selection_reason=need_satisfied_wait.
+
+Boundary:
+No AI solver / pathfinding.
+No goal planning.
+No learning pipeline.
+No lesson_candidate pipeline connection.
+No lesson_store write.
+No Memory Layer write.
+No LLM / teaching chat loop / free text conversation.
+No emotion / dopamine runtime.
+No tactile result mapping changes.
+No utterance_map changes.
+Helper does not create new actions.
+
 ## Sandbox Working State Clear CLI v0
 
 Status:

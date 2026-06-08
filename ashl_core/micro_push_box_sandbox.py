@@ -153,6 +153,31 @@ def select_intrinsic_action(
     return rng.choice(best_candidates)
 
 
+def select_action_for_need_state(
+    state: dict[str, Any],
+    candidate_actions: list[str] | tuple[str, ...],
+    random_seed: int | str | bytes | None = None,
+) -> dict[str, Any]:
+    validated_candidates = tuple(validate_allowed_action(action) for action in candidate_actions)
+    if not validated_candidates:
+        raise ValueError("candidate_actions must include at least one action")
+
+    need_state = build_box_on_goal_need_state(state)
+    if need_state["satisfied"]:
+        selected_action = "wait"
+        selection_reason = "need_satisfied_wait"
+    else:
+        selected_action = select_intrinsic_action(state, validated_candidates, random_seed=random_seed)
+        selection_reason = "need_unsatisfied_intrinsic_selection"
+
+    return {
+        "selected_action": selected_action,
+        "need_state": need_state,
+        "selection_reason": selection_reason,
+        "candidate_actions": list(validated_candidates),
+    }
+
+
 def apply_tactile_action(state: dict[str, Any], action: str) -> dict[str, Any]:
     action = validate_allowed_action(action)
 

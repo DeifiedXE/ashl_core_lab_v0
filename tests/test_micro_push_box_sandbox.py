@@ -10,6 +10,7 @@ from ashl_core.micro_push_box_sandbox import (
     build_initial_state,
     rank_candidate_actions_by_outcome_weight,
     score_action_from_history,
+    select_action_for_need_state,
     select_intrinsic_action,
     suggest_next_action_avoiding_repeat_blocked,
     suggest_next_action_by_outcome_weight,
@@ -215,6 +216,15 @@ class MicroPushBoxSandboxTests(unittest.TestCase):
         )
 
         self.assertEqual(select_intrinsic_action(state, ["push_right", "push_down"], random_seed=1), "push_down")
+
+    def test_need_state_driven_selection_uses_wait_when_satisfied(self):
+        state = build_initial_state()
+        state["box_pos"] = state["goal_pos"]
+
+        result = select_action_for_need_state(state, ["push_right", "push_down"], random_seed=1)
+
+        self.assertEqual(result["selected_action"], "wait")
+        self.assertEqual(result["selection_reason"], "need_satisfied_wait")
 
     def test_trace_does_not_write_learning_or_memory_outputs(self):
         trace = apply_tactile_action(build_initial_state(), "touch_right")["trace"]
