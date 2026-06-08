@@ -1173,6 +1173,46 @@ def smoke_trial_metrics_comparison_cli() -> dict:
     )
 
 
+def smoke_trial_metrics_baseline_snapshot() -> dict:
+    baseline_path = Path("data/baselines/trial_metrics_baseline_v0.json")
+    baseline = json.loads(baseline_path.read_text(encoding="utf-8")) if baseline_path.exists() else {}
+    parameters = baseline.get("parameters", {})
+    metrics = baseline.get("metrics", {})
+    notes_text = " ".join(baseline.get("notes", []))
+    passed = (
+        baseline_path.exists()
+        and baseline.get("baseline_id") == "trial_metrics_baseline_v0"
+        and baseline.get("created_for") == "push_box_need_state_trial_metrics"
+        and "run-trial-metrics-comparison" in baseline.get("source_command", "")
+        and baseline.get("commit")
+        and baseline.get("boundary_index_version") == "Boundary Index Version: 2026-06-06-b30"
+        and parameters.get("runs") == 4
+        and parameters.get("trial_count") == 5
+        and parameters.get("max_steps") == 10
+        and parameters.get("random_seed") == 17
+        and metrics.get("total_trials") == 20
+        and "total_completed" in metrics
+        and "overall_success_rate" in metrics
+        and "overall_average_step_count" in metrics
+        and "max_steps_reached_count" in metrics
+        and len(metrics.get("run_summaries", [])) == 4
+        and "comparison only" in notes_text
+        and "does not modify behavior" in notes_text
+        and "not proof of learning" in notes_text
+    )
+    return _result(
+        "trial_metrics_baseline_snapshot",
+        passed,
+        {
+            "path": str(baseline_path),
+            "baseline_id": baseline.get("baseline_id"),
+            "total_trials": metrics.get("total_trials"),
+            "overall_success_rate": metrics.get("overall_success_rate"),
+            "overall_average_step_count": metrics.get("overall_average_step_count"),
+        },
+    )
+
+
 def smoke_clear_sandbox_working_state_cli() -> dict:
     result = run_clear_sandbox_working_state(session_id="final_check")
     passed = (
@@ -5409,6 +5449,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_stuck_detection_repetition_penalty(),
         smoke_need_state_trial_batch_cli(),
         smoke_trial_metrics_comparison_cli(),
+        smoke_trial_metrics_baseline_snapshot(),
         smoke_clear_sandbox_working_state_cli(),
         smoke_grounded_learning_verification_cli(),
         smoke_standing_task(),

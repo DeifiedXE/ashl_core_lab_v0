@@ -2384,6 +2384,34 @@ No LLM / teaching chat / free text conversation.
 No metric-driven behavior change.
 No awakening claim.
 
+## Trial Metrics Baseline Snapshot v0
+
+Status:
+baseline-snapshot / metrics-readback / comparison-only / no-learning
+
+Summary:
+Adds data/baselines/trial_metrics_baseline_v0.json as a committed baseline snapshot for push-box need-state trial metrics.
+The baseline source command is py -3 -m ashl_core.teaching_cli run-trial-metrics-comparison --runs 4 --trial-count 5 --max-steps 10 --random-seed 17.
+The snapshot records baseline_id, created_for, source_command, commit, boundary_index_version, parameters, metrics, and notes.
+Recorded parameters are runs=4, trial_count=5, max_steps=10, and random_seed=17.
+Recorded metrics are total_trials=20, total_completed=13, overall_success_rate=0.65, overall_average_step_count=6.6, and max_steps_reached_count=7.
+
+Boundary:
+Baseline is for comparison only.
+Baseline does not modify behavior.
+Baseline is not proof of learning by itself.
+No trial runner behavior changes.
+No sandbox behavior changes.
+No metrics-driven behavior changes.
+No solver / pathfinding.
+No goal planning.
+No learning pipeline.
+No lesson_candidate pipeline connection.
+No lesson_store write.
+No Memory Layer write.
+No LLM / teaching chat loop / free text conversation.
+No baseline-driven automatic behavior change.
+
 ## Sandbox Working State Clear CLI v0
 
 Status:

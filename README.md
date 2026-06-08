@@ -1274,6 +1274,15 @@ Two-Trial History Boundary:
 - Boundary flags remain false for `llm_used`, `creates_lesson_candidate`, `writes_lesson_store`, `writes_memory_layer`, `awakening_claim`, and `changes_trial_runner_behavior`.
 - This is metrics readback only. It does not modify trial runner behavior, add AI solver / pathfinding, goal planning, learning pipeline, lesson_candidate pipeline, lesson_store writes, Memory Layer writes, LLM / teaching chat, or autonomous behavior.
 
+## Trial Metrics Baseline Snapshot v0
+
+- Adds `data/baselines/trial_metrics_baseline_v0.json`.
+- The baseline was produced from `py -3 -m ashl_core.teaching_cli run-trial-metrics-comparison --runs 4 --trial-count 5 --max-steps 10 --random-seed 17`.
+- Baseline metadata records `baseline_id`, `created_for`, `source_command`, `commit`, `boundary_index_version`, `parameters`, `metrics`, and `notes`.
+- The snapshot records `runs = 4`, `trial_count = 5`, `max_steps = 10`, `random_seed = 17`, `total_trials = 20`, `total_completed = 13`, `overall_success_rate = 0.65`, `overall_average_step_count = 6.6`, and `max_steps_reached_count = 7`.
+- This baseline is for comparison only. It does not modify behavior and is not proof of learning by itself.
+- This package does not modify trial runner behavior, sandbox behavior, metrics-driven behavior, learning pipeline, lesson_candidate pipeline, lesson_store / Memory Layer writes, LLM / teaching chat, AI solver / pathfinding, or goal planning.
+
 ## Sandbox Working State Clear CLI v0
 
 - Adds `py -3 -m ashl_core.teaching_cli clear-sandbox-working-state --session-id <session_id>`.
