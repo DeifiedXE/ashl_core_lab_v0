@@ -1158,6 +1158,15 @@ Two-Trial History Boundary:
 - Trial 2 must not read full trace routes, replay selected_actions, reconstruct full paths, create lesson_candidate, write lesson_store, write Memory Layer / Long-term Memory, use LLM planning, or treat trace as memory.
 - The next package candidate is Approach Box Two-Trial Learning Check v0.
 
+## Approach Box Trial CLI v0
+
+- Adds `py -3 -m ashl_core.teaching_cli run-approach-box-trial`.
+- Supports `--max-steps`.
+- The CLI wraps the existing `run_navigation_approach_box_trial(max_steps=...)` helper.
+- Output includes `completed_approach`, `initial_agent_pos`, `box_pos`, `final_agent_pos`, `final_distance_to_box`, `step_count`, `selected_actions`, and `llm_used = false`.
+- Boundary flags remain false for lesson_candidate creation, lesson_store write, Memory Layer write, Two-Trial Learning Check, pathfinding, and box pushing.
+- This is a PowerShell-verifiable CLI wrapper only. It does not modify the approach-box runner, navigation sandbox, push-box sandbox, add box pushing, Two-Trial Learning Check, lesson_candidate pipeline, lesson_store / Memory Layer writes, LLM planning, pathfinding / BFS / A*, or full route replay.
+
 ## Micro Navigation Trial Metrics CLI v0
 
 - Adds `py -3 -m ashl_core.teaching_cli run-navigation-trial-metrics --runs 4 --trial-count 5 --max-steps 10`.

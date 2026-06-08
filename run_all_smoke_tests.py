@@ -142,6 +142,7 @@ from ashl_core.teaching_cli import (
     run_known_flow,
     run_lifecycle_display,
     run_minimal_interaction,
+    run_approach_box_trial_cli,
     run_navigation_multi_goal_metrics_cli,
     run_navigation_obstacle_trial_cli,
     run_navigation_trial_metrics_cli,
@@ -509,6 +510,44 @@ def smoke_approach_box_level() -> dict:
             "final_distance_to_box": final_distance_to_box,
             "step_count": trial["step_count"],
             "selected_actions": trial["selected_actions"],
+        },
+    )
+
+
+def smoke_approach_box_trial_cli() -> dict:
+    result = run_approach_box_trial_cli(max_steps=10)
+    boundary = result.get("boundary", {})
+    passed = (
+        result.get("command") == "run-approach-box-trial"
+        and result.get("flow") == "approach_box_trial_cli_v0"
+        and result.get("status") == "ok"
+        and result.get("completed_approach") is True
+        and result.get("initial_agent_pos") == [1, 1]
+        and result.get("box_pos") == [3, 4]
+        and result.get("final_agent_pos") == [3, 3]
+        and result.get("final_distance_to_box") == 1
+        and result.get("step_count") == 4
+        and result.get("selected_actions") == ["move_down", "move_down", "move_right", "move_right"]
+        and result.get("llm_used") is False
+        and boundary.get("llm_used") is False
+        and boundary.get("creates_lesson_candidate") is False
+        and boundary.get("writes_lesson_store") is False
+        and boundary.get("writes_memory_layer") is False
+        and boundary.get("changes_navigation_behavior") is False
+        and boundary.get("two_trial_learning_check") is False
+        and boundary.get("pathfinding_used") is False
+        and boundary.get("box_pushed") is False
+    )
+    return _result(
+        "approach_box_trial_cli",
+        passed,
+        {
+            "completed_approach": result.get("completed_approach"),
+            "final_distance_to_box": result.get("final_distance_to_box"),
+            "step_count": result.get("step_count"),
+            "selected_actions": result.get("selected_actions"),
+            "llm_used": result.get("llm_used"),
+            "boundary": boundary,
         },
     )
 
@@ -5430,6 +5469,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_navigation_obstacle_wall_detour_level(),
         smoke_navigation_obstacle_trial_cli(),
         smoke_approach_box_level(),
+        smoke_approach_box_trial_cli(),
         smoke_micro_push_box_sandbox(),
         smoke_micro_push_box_allowed_action_set(),
         smoke_tactile_result_state_key_mapping(),

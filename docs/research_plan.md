@@ -2040,6 +2040,31 @@ Future Trial 2 may read only local state-action outcome memory with agent_pos, b
 Trial 2 must not read full trace routes, replay selected_actions, reconstruct full paths, create lesson_candidate, write lesson_store, write Memory Layer / Long-term Memory, use LLM planning, or treat trace as memory.
 The next package candidate is Approach Box Two-Trial Learning Check v0.
 
+## Approach Box Trial CLI v0
+
+Status:
+minimal-runtime / cli-wrapper / approach-box-trial-readback / no-learning
+
+Summary:
+Adds py -3 -m ashl_core.teaching_cli run-approach-box-trial.
+The command supports --max-steps and wraps the existing run_navigation_approach_box_trial(max_steps=...) helper.
+It returns completed_approach, initial_agent_pos, box_pos, final_agent_pos, final_distance_to_box, step_count, selected_actions, and llm_used=false.
+The default CLI run reaches box adjacency with final_distance_to_box=1 and does not push the box.
+
+Boundary:
+No approach-box runner behavior changes.
+No navigation sandbox behavior changes.
+No push-box sandbox behavior changes.
+No box pushing.
+No Two-Trial Learning Check.
+No lesson_candidate pipeline connection.
+No lesson_store write.
+No Memory Layer write.
+No Long-term Memory write.
+No LLM planning.
+No AI solver / pathfinding / BFS / A*.
+No full route replay.
+
 ## Micro Navigation Trial Metrics CLI v0
 
 Status:

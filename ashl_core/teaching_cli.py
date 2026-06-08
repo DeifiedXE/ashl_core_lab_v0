@@ -24,10 +24,12 @@ from .micro_push_box_sandbox import (
     suggest_next_action_avoiding_repeat_blocked,
 )
 from .micro_navigation_trial_runner import (
+    run_navigation_approach_box_trial,
     run_navigation_goal_trial,
     run_navigation_multi_goal_trial,
     run_navigation_obstacle_trial,
 )
+from .micro_navigation_sandbox import manhattan_distance_to_box
 from .micro_push_box_trial_runner import run_need_state_driven_trial_batch
 from .tactile_state_mapping import map_tactile_result_to_state_key
 from .trace_persistence import append_first_output_trace, append_mentor_feedback_trace
@@ -834,6 +836,37 @@ def run_navigation_obstacle_trial_cli(max_steps: int = 20) -> dict[str, Any]:
     }
 
 
+def run_approach_box_trial_cli(max_steps: int = 20) -> dict[str, Any]:
+    trial = run_navigation_approach_box_trial(max_steps=max_steps)
+    final_distance_to_box = manhattan_distance_to_box(trial["final_agent_pos"], trial["box_pos"])
+    return {
+        "command": "run-approach-box-trial",
+        "flow": "approach_box_trial_cli_v0",
+        "status": "ok",
+        "completed_approach": trial["completed_approach"],
+        "initial_agent_pos": list(trial["initial_agent_pos"]),
+        "box_pos": list(trial["box_pos"]),
+        "final_agent_pos": list(trial["final_agent_pos"]),
+        "final_distance_to_box": final_distance_to_box,
+        "step_count": trial["step_count"],
+        "stop_reason": trial["stop_reason"],
+        "selected_actions": trial["selected_actions"],
+        "llm_used": False,
+        "boundary": {
+            "llm_used": False,
+            "creates_lesson_candidate": False,
+            "writes_lesson_store": False,
+            "writes_memory_layer": False,
+            "awakening_claim": False,
+            "changes_navigation_behavior": False,
+            "two_trial_learning_check": False,
+            "pathfinding_used": False,
+            "box_pushed": False,
+        },
+        "notes": ["Approach box trial CLI only wraps the existing deterministic approach-box trial runner."],
+    }
+
+
 def _verification_boundary() -> dict[str, bool]:
     return {
         "llm_used": False,
@@ -891,6 +924,8 @@ def run_command(command: str) -> dict[str, Any]:
         return run_navigation_multi_goal_metrics_cli()
     if command == "run-navigation-obstacle-trial":
         return run_navigation_obstacle_trial_cli()
+    if command == "run-approach-box-trial":
+        return run_approach_box_trial_cli()
     return {
         "command": command,
         "status": "error",
@@ -920,6 +955,7 @@ def main(argv: list[str] | None = None) -> int:
             "run-navigation-trial-metrics",
             "run-navigation-multi-goal-metrics",
             "run-navigation-obstacle-trial",
+            "run-approach-box-trial",
         ],
     )
     parser.add_argument("--review-id", default="review_001")
@@ -984,6 +1020,8 @@ def main(argv: list[str] | None = None) -> int:
         )
     elif args.command == "run-navigation-obstacle-trial":
         result = run_navigation_obstacle_trial_cli(max_steps=args.max_steps)
+    elif args.command == "run-approach-box-trial":
+        result = run_approach_box_trial_cli(max_steps=args.max_steps)
     else:
         result = run_command(args.command)
     if hasattr(sys.stdout, "reconfigure"):
