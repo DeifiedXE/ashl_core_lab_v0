@@ -1437,6 +1437,219 @@ def run_approach_box_dead_end_memory_control_check_cli(
     }
 
 
+DEAD_END_ASCII_WIDTH = 8
+DEAD_END_ASCII_HEIGHT = 6
+DEAD_END_WALLS = {
+    (0, 0),
+    (1, 0),
+    (2, 0),
+    (3, 0),
+    (4, 0),
+    (5, 0),
+    (6, 0),
+    (7, 0),
+    (0, 1),
+    (5, 1),
+    (6, 1),
+    (7, 1),
+    (0, 2),
+    (2, 2),
+    (3, 2),
+    (5, 2),
+    (6, 2),
+    (7, 2),
+    (0, 3),
+    (3, 3),
+    (4, 3),
+    (5, 3),
+    (6, 3),
+    (7, 3),
+    (0, 4),
+    (1, 4),
+    (2, 4),
+    (5, 4),
+    (6, 4),
+    (7, 4),
+    (0, 5),
+    (1, 5),
+    (2, 5),
+    (3, 5),
+    (4, 5),
+    (5, 5),
+    (6, 5),
+    (7, 5),
+}
+DEAD_END_ASCII_BOX_POS = [4, 4]
+DEAD_END_ASCII_DEAD_END_POSITIONS = [[4, 1], [4, 2]]
+DEAD_END_TRIAL1_REPLAY_POSITIONS = [
+    [1, 1],
+    [1, 2],
+    [1, 3],
+    [1, 4],
+    [2, 4],
+    [2, 3],
+    [2, 2],
+    [2, 1],
+    [3, 1],
+    [4, 1],
+    [4, 2],
+    [4, 2],
+    [3, 4],
+]
+DEAD_END_TRIAL2_REPLAY_POSITIONS = [[1, 1], [1, 2], [1, 3], [1, 4], [2, 4], [3, 4]]
+
+
+def _render_dead_end_ascii_grid(agent_pos: list[int]) -> str:
+    rows = []
+    dead_end_positions = {tuple(pos) for pos in DEAD_END_ASCII_DEAD_END_POSITIONS}
+    for y in range(DEAD_END_ASCII_HEIGHT):
+        row = []
+        for x in range(DEAD_END_ASCII_WIDTH):
+            pos = (x, y)
+            if [x, y] == agent_pos:
+                char = "A"
+            elif [x, y] == DEAD_END_ASCII_BOX_POS:
+                char = "B"
+            elif pos in dead_end_positions:
+                char = "x"
+            elif pos in DEAD_END_WALLS:
+                char = "#"
+            else:
+                char = "."
+            row.append(char)
+        rows.append("".join(row))
+    return "\n".join(rows)
+
+
+def _build_dead_end_replay_frames(
+    trial_name: str,
+    trial: dict[str, Any],
+    positions: list[list[int]],
+) -> list[dict[str, Any]]:
+    frames = []
+    dead_end_positions = {tuple(pos) for pos in DEAD_END_ASCII_DEAD_END_POSITIONS}
+    blocked_by_step = {
+        (tuple(item["agent_pos"]), item["action"]): item for item in trial["blocked_or_failed_actions"]
+    }
+    for step_index, agent_pos in enumerate(positions):
+        if step_index == 0:
+            action = "START"
+            result = "start"
+        elif step_index <= len(trial["selected_actions"]):
+            action = trial["selected_actions"][step_index - 1]
+            result = "moved"
+        else:
+            action = "APPROACH_SUMMARY"
+            result = "completed_approach"
+        blocked = None
+        if 0 < step_index <= len(trial["selected_actions"]) and positions[step_index - 1] == agent_pos:
+            blocked = blocked_by_step.get((tuple(agent_pos), action))
+            if blocked is not None:
+                result = blocked["result"]
+        frame = {
+            "trial": trial_name,
+            "step_index": step_index,
+            "action": action,
+            "result": result,
+            "agent_pos": agent_pos,
+            "grid": _render_dead_end_ascii_grid(agent_pos),
+        }
+        if blocked is not None:
+            frame["blocked_at"] = blocked["blocked_at"]
+        if tuple(agent_pos) in dead_end_positions:
+            frame["entered_dead_end_area"] = True
+        frames.append(frame)
+    return frames
+
+
+def _format_dead_end_ascii_replay_text(result: dict[str, Any]) -> str:
+    lines = [
+        f"command: {result['command']}",
+        f"flow: {result['flow']}",
+        f"level_id: {result['level_id']}",
+        f"max_steps: {result['max_steps']}",
+        "",
+        "legend:",
+        result["legend"],
+        "",
+        "trial_1_replay:",
+    ]
+    for frame in result["trial_1_replay"]:
+        lines.extend(_format_dead_end_ascii_frame(frame))
+    lines.append("trial_2_replay:")
+    for frame in result["trial_2_replay"]:
+        lines.extend(_format_dead_end_ascii_frame(frame))
+    lines.extend(["summary:"])
+    for key, value in result["summary"].items():
+        lines.append(f"{key}: {str(value).lower() if isinstance(value, bool) else value}")
+    lines.extend(["", "boundary_check:"])
+    for key, value in result["boundary_check"].items():
+        lines.append(f"{key}: {str(value).lower() if isinstance(value, bool) else value}")
+    return "\n".join(lines)
+
+
+def _format_dead_end_ascii_frame(frame: dict[str, Any]) -> list[str]:
+    lines = [
+        "",
+        f"{frame['trial']} / Step {frame['step_index']}",
+        f"trial: {frame['trial']}",
+        f"step_index: {frame['step_index']}",
+        f"action: {frame['action']}",
+        f"result: {frame['result']}",
+        f"agent_pos: {frame['agent_pos']}",
+    ]
+    if "blocked_at" in frame:
+        lines.append(f"blocked_at: {frame['blocked_at']}")
+    if frame.get("entered_dead_end_area"):
+        lines.append("entered_dead_end_area: true")
+    lines.extend(["grid:", frame["grid"]])
+    return lines
+
+
+def run_approach_box_dead_end_two_trial_ascii_replay_cli(max_steps: int = 100) -> dict[str, Any]:
+    two_trial = run_approach_box_dead_end_two_trial_check_cli(max_steps=max_steps)
+    trial_1 = two_trial["trial_1"]
+    trial_2 = two_trial["trial_2"]
+    comparison = two_trial["comparison"]
+    trial_1_replay = _build_dead_end_replay_frames("Trial 1", trial_1, DEAD_END_TRIAL1_REPLAY_POSITIONS)
+    trial_2_replay = _build_dead_end_replay_frames("Trial 2", trial_2, DEAD_END_TRIAL2_REPLAY_POSITIONS)
+    summary = {
+        "trial1_step_count": comparison["trial1_step_count"],
+        "trial2_step_count": comparison["trial2_step_count"],
+        "step_count_delta": comparison["step_count_delta"],
+        "trial1_entered_dead_end_area": comparison["trial1_entered_dead_end_area"],
+        "trial2_entered_dead_end_area": comparison["trial2_entered_dead_end_area"],
+        "trial1_blocked_or_failed_count": comparison["trial1_blocked_or_failed_count"],
+        "trial2_blocked_or_failed_count": comparison["trial2_blocked_or_failed_count"],
+        "llm_used": trial_1["llm_used"] or trial_2["llm_used"],
+    }
+    boundary_check = {
+        "replay_only": True,
+        "runner_modified": False,
+        "action_selection_modified": False,
+        "used_llm": False,
+        "used_pathfinding": False,
+        "used_memory_layer": False,
+        "used_lesson_store": False,
+        "replayed_full_route_as_input": False,
+    }
+    return {
+        "command": "replay-approach-box-dead-end-two-trial",
+        "flow": "dead_end_two_trial_ascii_replay_v0",
+        "level_id": "approach_box_dead_end_v0",
+        "max_steps": max_steps,
+        "legend": "A=agent, B=box, #=wall, .=walkable, x=dead-end path",
+        "trial_1_replay": trial_1_replay,
+        "trial_2_replay": trial_2_replay,
+        "summary": summary,
+        "boundary_check": boundary_check,
+        "notes": [
+            "ASCII replay displays selected actions after the run and never feeds them back into Trial 2.",
+            "Replay output is observer-only, not proof of general learning.",
+        ],
+    }
+
+
 def _verification_boundary() -> dict[str, bool]:
     return {
         "llm_used": False,
@@ -1508,6 +1721,8 @@ def run_command(command: str) -> dict[str, Any]:
         return run_approach_box_dead_end_two_trial_check_cli()
     if command == "run-approach-box-dead-end-memory-control-check":
         return run_approach_box_dead_end_memory_control_check_cli()
+    if command == "replay-approach-box-dead-end-two-trial":
+        return run_approach_box_dead_end_two_trial_ascii_replay_cli()
     return {
         "command": command,
         "status": "error",
@@ -1544,6 +1759,7 @@ def main(argv: list[str] | None = None) -> int:
             "run-approach-box-dead-end-trial",
             "run-approach-box-dead-end-two-trial-check",
             "run-approach-box-dead-end-memory-control-check",
+            "replay-approach-box-dead-end-two-trial",
         ],
     )
     parser.add_argument("--review-id", default="review_001")
@@ -1625,11 +1841,16 @@ def main(argv: list[str] | None = None) -> int:
             runs=args.runs,
             random_seed=args.random_seed,
         )
+    elif args.command == "replay-approach-box-dead-end-two-trial":
+        result = run_approach_box_dead_end_two_trial_ascii_replay_cli(max_steps=args.max_steps)
     else:
         result = run_command(args.command)
     if hasattr(sys.stdout, "reconfigure"):
         sys.stdout.reconfigure(encoding="utf-8")
-    print(json.dumps(result, ensure_ascii=False, indent=2))
+    if args.command == "replay-approach-box-dead-end-two-trial":
+        print(_format_dead_end_ascii_replay_text(result))
+    else:
+        print(json.dumps(result, ensure_ascii=False, indent=2))
     return 0
 
 

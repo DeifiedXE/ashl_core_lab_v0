@@ -2192,6 +2192,36 @@ No human hint.
 Trial 2 may read local outcome memory only in the with_memory group.
 This is a bounded A/B control check, not proof of general learning.
 
+## Dead-End Two-Trial ASCII Replay v0
+
+Status:
+minimal-runtime / cli-renderer / observer-output / no-learning-proof
+
+Summary:
+Adds py -3 -m ashl_core.teaching_cli replay-approach-box-dead-end-two-trial --max-steps 100.
+The command renders each step of the existing dead-end two-trial check as an ASCII grid.
+Each frame records trial, step_index, action, result, agent_pos, grid, optional blocked_at, and optional entered_dead_end_area.
+The replay shows Trial 1 entering the dead-end and hitting the blocked wall, while Trial 2 avoids the dead-end in the current fixture.
+
+Boundary:
+Replay output is observer-only.
+No existing approach-box runner behavior changes.
+No dead-end single trial behavior changes.
+No dead-end two-trial behavior changes.
+No memory-control behavior changes.
+No action selection changes.
+No goal bias changes.
+No state-action memory behavior changes.
+No pathfinding / BFS / A*.
+No UI / web app / GUI.
+No full route replay as runner input.
+No Trial 1 selected_actions replay into Trial 2.
+No lesson_candidate pipeline connection.
+No lesson_store write.
+No Memory Layer write.
+No LLM planning.
+This is not proof of general learning.
+
 ## Micro Navigation Trial Metrics CLI v0
 
 Status:

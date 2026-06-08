@@ -146,6 +146,7 @@ from ashl_core.teaching_cli import (
     run_approach_box_two_trial_check_cli,
     run_approach_box_dead_end_trial_cli,
     run_approach_box_dead_end_two_trial_check_cli,
+    run_approach_box_dead_end_two_trial_ascii_replay_cli,
     run_approach_box_dead_end_memory_control_check_cli,
     run_navigation_multi_goal_metrics_cli,
     run_navigation_obstacle_trial_cli,
@@ -803,6 +804,50 @@ def smoke_dead_end_memory_control_trial1_source_audit() -> dict:
             "trial1_source_audit": audit,
             "conditioned_on_trial1_dead_end": conditioned,
             "boundary_check": boundary,
+        },
+    )
+
+
+def smoke_dead_end_two_trial_ascii_replay() -> dict:
+    result = run_approach_box_dead_end_two_trial_ascii_replay_cli(max_steps=100)
+    trial_1 = result.get("trial_1_replay", [])
+    trial_2 = result.get("trial_2_replay", [])
+    summary = result.get("summary", {})
+    boundary = result.get("boundary_check", {})
+    passed = (
+        result.get("flow") == "dead_end_two_trial_ascii_replay_v0"
+        and result.get("command") == "replay-approach-box-dead-end-two-trial"
+        and result.get("level_id") == "approach_box_dead_end_v0"
+        and "A=agent" in result.get("legend", "")
+        and trial_1
+        and trial_2
+        and trial_1[0].get("step_index") == 0
+        and trial_2[0].get("step_index") == 0
+        and "########" in trial_1[0].get("grid", "")
+        and any(frame.get("entered_dead_end_area") is True for frame in trial_1)
+        and any(frame.get("blocked_at") == [4, 3] for frame in trial_1)
+        and not any(frame.get("entered_dead_end_area") is True for frame in trial_2)
+        and summary.get("trial1_step_count") == 11
+        and summary.get("trial2_step_count") == 5
+        and summary.get("step_count_delta") == -6
+        and summary.get("llm_used") is False
+        and boundary.get("replay_only") is True
+        and boundary.get("runner_modified") is False
+        and boundary.get("action_selection_modified") is False
+        and boundary.get("used_llm") is False
+        and boundary.get("used_pathfinding") is False
+        and boundary.get("used_memory_layer") is False
+        and boundary.get("used_lesson_store") is False
+        and boundary.get("replayed_full_route_as_input") is False
+    )
+    return _result(
+        "dead_end_two_trial_ascii_replay",
+        passed,
+        {
+            "summary": summary,
+            "boundary_check": boundary,
+            "first_trial1_frame": trial_1[0] if trial_1 else {},
+            "first_trial2_frame": trial_2[0] if trial_2 else {},
         },
     )
 
@@ -5779,6 +5824,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_approach_box_two_trial_learning_check(),
         smoke_approach_box_dead_end_trial(),
         smoke_approach_box_dead_end_two_trial_learning_check(),
+        smoke_dead_end_two_trial_ascii_replay(),
         smoke_approach_box_dead_end_memory_control_check(),
         smoke_dead_end_memory_control_trial1_source_audit(),
         smoke_micro_push_box_sandbox(),

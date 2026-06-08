@@ -1202,6 +1202,13 @@ Two-Trial History Boundary:
 - The output also reports `trial1_source_audit` and `conditioned_on_trial1_dead_end`, so the control check can distinguish runs where Trial 1 actually generated dead-end local memory source evidence before evaluating Trial 2 avoidance.
 - This is a bounded A/B control check, not proof of general learning. It does not use LLM planning, pathfinding / BFS / A*, full route replay, Trial 1 `selected_actions` replay, lesson_candidate, lesson_store, or Memory Layer.
 
+## Dead-End Two-Trial ASCII Replay v0
+
+- Adds `py -3 -m ashl_core.teaching_cli replay-approach-box-dead-end-two-trial --max-steps 100`.
+- Renders every step of the existing dead-end two-trial check as an ASCII grid with action, result, agent position, dead-end markers, and blocked events.
+- This is observer output only. It does not modify the runner, action selection, local memory logic, or memory-control behavior.
+- This command does not use LLM planning, pathfinding / BFS / A*, UI / GUI, lesson_candidate, lesson_store, or Memory Layer, and it is not proof of general learning.
+
 ## Micro Navigation Trial Metrics CLI v0
 
 - Adds `py -3 -m ashl_core.teaching_cli run-navigation-trial-metrics --runs 4 --trial-count 5 --max-steps 10`.
