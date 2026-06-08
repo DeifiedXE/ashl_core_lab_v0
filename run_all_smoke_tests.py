@@ -88,7 +88,11 @@ from ashl_core.micro_push_box_sandbox import (
     suggest_next_action_avoiding_repeat_blocked,
     validate_allowed_action,
 )
-from ashl_core.micro_push_box_trial_runner import run_need_state_driven_trial, run_need_state_driven_trial_batch
+from ashl_core.micro_push_box_trial_runner import (
+    _select_action_for_trial,
+    run_need_state_driven_trial,
+    run_need_state_driven_trial_batch,
+)
 from ashl_core.manual_review import (
     build_review_trace,
     create_review_item,
@@ -665,7 +669,7 @@ def smoke_need_state_trial_goal_bias_integration() -> dict:
     selection_sources = [step.get("selection_source") for step in trial["steps"]]
     passed = (
         bool(trial["steps"])
-        and all(source == "outcome_weight_plus_goal_bias" for source in selection_sources)
+        and all(source == "state_action_memory_plus_outcome_weight_plus_goal_bias" for source in selection_sources)
         and all(action in candidates for action in selected_actions)
         and "push_down" in selected_actions
         and batch["trial_count"] == 5
@@ -679,6 +683,64 @@ def smoke_need_state_trial_goal_bias_integration() -> dict:
             "selection_sources": selection_sources,
             "selected_actions": selected_actions,
             "selected_actions_from_candidates": all(action in candidates for action in selected_actions),
+            "batch_trial_count": batch["trial_count"],
+            "step_counts": batch["step_counts"],
+            "average_step_count": batch["average_step_count"],
+        },
+    )
+
+
+def smoke_state_action_memory_trial_runner_integration() -> dict:
+    candidates = ["push_right", "push_down"]
+    state = build_micro_push_box_state()
+    state["agent_pos"] = (1, 3)
+    state["box_pos"] = (2, 3)
+    state["goal_pos"] = (3, 3)
+    push_right_key = build_state_action_key(state, "push_right")
+    push_down_key = build_state_action_key(state, "push_down")
+    state["action_history"] = (
+        {**push_right_key, "result": "box_blocked", "tick": 1},
+        {**push_down_key, "result": "box_pushed", "tick": 2},
+    )
+    different_context = dict(state)
+    different_context["agent_pos"] = (1, 2)
+
+    trial = run_need_state_driven_trial(["move_up", "move_right", "push_down"], max_steps=10, random_seed=0)
+    batch = run_need_state_driven_trial_batch(trial_count=5, max_steps=10, random_seed=0)
+    selection = _select_action_for_trial(state, candidates, random_seed=0)
+    trial_selected_actions = [step["selected_action"] for step in trial["steps"]]
+    trial_selection_sources = [step.get("selection_source") for step in trial["steps"]]
+    memory_flags = [step.get("state_action_memory_used") for step in trial["steps"]]
+
+    passed = (
+        selection["selected_action"] == "push_down"
+        and selection["selected_action"] in candidates
+        and selection["selection_source"] == "state_action_memory_plus_outcome_weight_plus_goal_bias"
+        and selection["state_action_memory_used"] is True
+        and score_action_from_state_action_memory(different_context, "push_down") == 0
+        and bool(trial["steps"])
+        and all(source == "state_action_memory_plus_outcome_weight_plus_goal_bias" for source in trial_selection_sources)
+        and all(flag is True for flag in memory_flags)
+        and all(action in ["move_up", "move_right", "push_down"] for action in trial_selected_actions)
+        and batch["trial_count"] == 5
+        and len(batch["step_counts"]) == 5
+        and "average_step_count" in batch
+    )
+    return _result(
+        "state_action_memory_trial_runner_integration",
+        passed,
+        {
+            "selection_source": selection["selection_source"],
+            "state_action_memory_used": selection["state_action_memory_used"],
+            "selected_action": selection["selected_action"],
+            "selected_action_from_candidates": selection["selected_action"] in candidates,
+            "same_context_blocked_score": score_action_from_state_action_memory(state, "push_right"),
+            "same_context_pushed_score": score_action_from_state_action_memory(state, "push_down"),
+            "different_context_push_down_score": score_action_from_state_action_memory(different_context, "push_down"),
+            "trial_selection_sources": trial_selection_sources,
+            "trial_selected_actions_from_candidates": all(
+                action in ["move_up", "move_right", "push_down"] for action in trial_selected_actions
+            ),
             "batch_trial_count": batch["trial_count"],
             "step_counts": batch["step_counts"],
             "average_step_count": batch["average_step_count"],
@@ -4913,6 +4975,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_need_state_driven_trial_runner(),
         smoke_need_state_trial_5_step_count(),
         smoke_need_state_trial_goal_bias_integration(),
+        smoke_state_action_memory_trial_runner_integration(),
         smoke_need_state_trial_batch_cli(),
         smoke_clear_sandbox_working_state_cli(),
         smoke_grounded_learning_verification_cli(),

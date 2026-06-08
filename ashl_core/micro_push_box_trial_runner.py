@@ -10,7 +10,8 @@ from ashl_core.micro_push_box_sandbox import (
     apply_tactile_action,
     build_box_on_goal_need_state,
     build_initial_state,
-    rank_candidate_actions_with_goal_bias,
+    score_action_from_history,
+    score_action_from_state_action_memory,
     score_action_goal_direction,
     select_action_for_need_state,
 )
@@ -47,6 +48,7 @@ def run_need_state_driven_trial(
                 "selected_action": selection["selected_action"],
                 "selection_reason": selection["selection_reason"],
                 "selection_source": selection["selection_source"],
+                "state_action_memory_used": selection["state_action_memory_used"],
                 "tactile_result": trace["result"],
                 "need_state": need_state,
                 "agent_pos": trace["agent_pos"],
@@ -123,10 +125,14 @@ def _select_action_for_trial(
 ) -> dict[str, Any]:
     base_selection = select_action_for_need_state(state, candidate_actions, random_seed=random_seed)
     if base_selection["need_state"]["satisfied"]:
-        return {**base_selection, "selection_source": "need_satisfied_wait"}
+        return {
+            **base_selection,
+            "selection_source": "need_satisfied_wait",
+            "state_action_memory_used": False,
+        }
 
     selected_action = base_selection["selected_action"]
-    for action in rank_candidate_actions_with_goal_bias(state, candidate_actions):
+    for action in _rank_candidate_actions_for_trial(state, base_selection["candidate_actions"]):
         if score_action_goal_direction(state, action) <= 0:
             continue
         if not _push_contacts_box(state, action):
@@ -138,8 +144,29 @@ def _select_action_for_trial(
         **base_selection,
         "selected_action": selected_action,
         "selection_reason": "need_unsatisfied_goal_bias_selection",
-        "selection_source": "outcome_weight_plus_goal_bias",
+        "selection_source": "state_action_memory_plus_outcome_weight_plus_goal_bias",
+        "state_action_memory_used": True,
     }
+
+
+def _rank_candidate_actions_for_trial(
+    state: dict[str, Any],
+    candidate_actions: list[str] | tuple[str, ...],
+) -> list[str]:
+    indexed_scores = [
+        (
+            index,
+            action,
+            score_action_from_state_action_memory(state, action)
+            + score_action_from_history(state, action)
+            + score_action_goal_direction(state, action),
+        )
+        for index, action in enumerate(candidate_actions)
+    ]
+    return [
+        action
+        for _, action, _ in sorted(indexed_scores, key=lambda item: (-item[2], item[0]))
+    ]
 
 
 def _push_contacts_box(state: dict[str, Any], action: str) -> bool:

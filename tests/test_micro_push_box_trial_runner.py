@@ -1,8 +1,14 @@
 import unittest
 
 from ashl_core.micro_push_box_trial_runner import (
+    _select_action_for_trial,
     run_need_state_driven_trial,
     run_need_state_driven_trial_batch,
+)
+from ashl_core.micro_push_box_sandbox import (
+    build_initial_state,
+    build_state_action_key,
+    score_action_from_state_action_memory,
 )
 
 
@@ -53,6 +59,7 @@ class MicroPushBoxTrialRunnerTests(unittest.TestCase):
                 "selected_action",
                 "selection_reason",
                 "selection_source",
+                "state_action_memory_used",
                 "tactile_result",
                 "need_state",
                 "agent_pos",
@@ -61,20 +68,48 @@ class MicroPushBoxTrialRunnerTests(unittest.TestCase):
             },
         )
 
-    def test_trial_steps_record_goal_bias_selection_source(self):
+    def test_trial_steps_record_state_action_memory_selection_source(self):
         result = run_need_state_driven_trial(["move_up", "move_right", "push_down"], max_steps=10, random_seed=0)
 
         self.assertTrue(result["steps"])
         self.assertTrue(
-            all(step["selection_source"] == "outcome_weight_plus_goal_bias" for step in result["steps"])
+            all(
+                step["selection_source"] == "state_action_memory_plus_outcome_weight_plus_goal_bias"
+                for step in result["steps"]
+            )
         )
+        self.assertTrue(all(step["state_action_memory_used"] is True for step in result["steps"]))
 
     def test_goal_bias_favors_goal_improving_push_when_available(self):
         result = run_need_state_driven_trial(["move_up", "move_right", "push_down"], max_steps=10, random_seed=0)
 
         self.assertTrue(result["completed_goal"])
         self.assertEqual(result["steps"][-1]["selected_action"], "push_down")
-        self.assertEqual(result["steps"][-1]["selection_source"], "outcome_weight_plus_goal_bias")
+        self.assertEqual(
+            result["steps"][-1]["selection_source"],
+            "state_action_memory_plus_outcome_weight_plus_goal_bias",
+        )
+
+    def test_state_action_memory_can_affect_trial_candidate_ordering(self):
+        state = build_initial_state()
+        state["agent_pos"] = (1, 3)
+        state["box_pos"] = (2, 3)
+        state["goal_pos"] = (3, 3)
+        push_right_key = build_state_action_key(state, "push_right")
+        push_down_key = build_state_action_key(state, "push_down")
+        state["action_history"] = (
+            {**push_right_key, "result": "box_blocked", "tick": 1},
+            {**push_down_key, "result": "box_pushed", "tick": 2},
+        )
+
+        selection = _select_action_for_trial(state, ["push_right", "push_down"], random_seed=0)
+        different_context = dict(state)
+        different_context["agent_pos"] = (1, 2)
+
+        self.assertEqual(selection["selected_action"], "push_down")
+        self.assertEqual(selection["selection_source"], "state_action_memory_plus_outcome_weight_plus_goal_bias")
+        self.assertTrue(selection["state_action_memory_used"])
+        self.assertEqual(score_action_from_state_action_memory(different_context, "push_down"), 0)
 
     def test_invalid_candidate_action_raises_value_error(self):
         with self.assertRaises(ValueError):

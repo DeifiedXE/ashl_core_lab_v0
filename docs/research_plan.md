@@ -1995,7 +1995,7 @@ minimal-runtime / bounded-trial-runner / goal-bias-selection-source / no-learnin
 
 Summary:
 Integrates goal direction bias into the need-state trial runner selection step.
-Unsatisfied need-state steps record selection_source = outcome_weight_plus_goal_bias.
+Unsatisfied need-state steps include goal direction bias; the current integrated trace records selection_source = state_action_memory_plus_outcome_weight_plus_goal_bias.
 The runner keeps selected actions bounded to candidate_actions and uses existing outcome weighting plus goal direction bias helpers.
 Goal-improving push bias applies only when the push can immediately contact the box; otherwise bounded intrinsic selection behavior is preserved.
 The 5-trial batch summary schema remains unchanged.
@@ -2008,6 +2008,33 @@ No lesson_candidate pipeline connection.
 No lesson_store write.
 No Memory Layer write.
 No LLM / teaching chat loop / free text conversation.
+No tactile result mapping changes.
+No utterance_map changes.
+No action outside candidate_actions.
+
+## State-Action Memory Trial Runner Integration v0
+
+Status:
+minimal-runtime / bounded-trial-runner / local-state-action-memory-selection-source / no-learning
+
+Summary:
+Integrates local state-action outcome memory into the need-state trial runner action ordering.
+Unsatisfied need-state steps record selection_source = state_action_memory_plus_outcome_weight_plus_goal_bias.
+Unsatisfied need-state steps record state_action_memory_used = true.
+The runner combines local state-action memory score, existing outcome history weight, and goal direction bias.
+Same-context local memory can lower a blocked action and raise a pushed action; different contexts do not reuse previous local results.
+Selected actions remain bounded to candidate_actions.
+The 5-trial batch summary schema remains unchanged.
+
+Boundary:
+No AI solver / pathfinding.
+No goal planning.
+No learning pipeline.
+No lesson_candidate pipeline.
+No lesson_store writes.
+No Memory Layer writes.
+No persistent state-action memory beyond returned sandbox state.
+No LLM / teaching chat / free text conversation.
 No tactile result mapping changes.
 No utterance_map changes.
 No action outside candidate_actions.
