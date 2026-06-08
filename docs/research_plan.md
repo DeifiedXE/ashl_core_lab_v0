@@ -2095,6 +2095,35 @@ No LLM planning.
 No human hint.
 This is local memory verification, not proof of learning by itself.
 
+## Approach Box Dead-End Level v0
+
+Status:
+minimal-runtime / cli-wrapper / dead-end-approach-box-fixture / no-learning
+
+Summary:
+Adds py -3 -m ashl_core.teaching_cli run-approach-box-dead-end-trial --max-steps 100.
+The fixture starts with initial_agent_pos=[1, 1] and box_pos=[4, 4].
+The only approach position is [3, 4]; [4, 3] is a wall and is not an approach position.
+The output records entered_dead_end_area, dead_end_positions_visited, blocked_or_failed_actions, selected_actions, and llm_used=false.
+
+Boundary:
+No existing approach-box runner behavior changes.
+No navigation sandbox behavior changes.
+No push-box sandbox behavior changes.
+No Two-Trial Learning Check.
+No learning rule creation.
+No action selection changes.
+No goal bias changes.
+No state-action memory changes.
+No penalty / stuck detection.
+No pathfinding / BFS / A*.
+No full route replay.
+No lesson_candidate pipeline connection.
+No lesson_store write.
+No Memory Layer write.
+No LLM planning.
+No proof of learning claim.
+
 ## Micro Navigation Trial Metrics CLI v0
 
 Status:

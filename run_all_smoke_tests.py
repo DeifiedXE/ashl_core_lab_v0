@@ -144,6 +144,7 @@ from ashl_core.teaching_cli import (
     run_minimal_interaction,
     run_approach_box_trial_cli,
     run_approach_box_two_trial_check_cli,
+    run_approach_box_dead_end_trial_cli,
     run_navigation_multi_goal_metrics_cli,
     run_navigation_obstacle_trial_cli,
     run_navigation_trial_metrics_cli,
@@ -599,6 +600,59 @@ def smoke_approach_box_two_trial_learning_check() -> dict:
             "step_count_delta": comparison.get("step_count_delta"),
             "failed_or_blocked_delta": comparison.get("failed_or_blocked_delta"),
             "boundary_check": boundary,
+        },
+    )
+
+
+def smoke_approach_box_dead_end_trial() -> dict:
+    result = run_approach_box_dead_end_trial_cli(max_steps=100)
+    boundary = result.get("boundary", {})
+    passed = (
+        result.get("flow") == "approach_box_dead_end_trial_v0"
+        and result.get("level_id") == "approach_box_dead_end_v0"
+        and result.get("completed_approach") is True
+        and result.get("initial_agent_pos") == [1, 1]
+        and result.get("box_pos") == [4, 4]
+        and result.get("approach_positions") == [[3, 4]]
+        and [4, 3] not in result.get("approach_positions", [])
+        and result.get("final_agent_pos") == [3, 4]
+        and result.get("final_distance_to_box") == 1
+        and result.get("max_steps") == 100
+        and result.get("step_count", 0) > 0
+        and result.get("selected_actions")
+        and result.get("entered_dead_end_area") is True
+        and result.get("dead_end_positions_visited") == [[4, 1], [4, 2]]
+        and [4, 3] not in result.get("dead_end_positions_visited", [])
+        and result.get("blocked_or_failed_actions")
+        and result.get("blocked_or_failed_actions")[0].get("blocked_at") == [4, 3]
+        and result.get("llm_used") is False
+        and boundary.get("changes_approach_box_runner") is False
+        and boundary.get("changes_navigation_sandbox") is False
+        and boundary.get("changes_push_box_sandbox") is False
+        and boundary.get("two_trial_learning_check") is False
+        and boundary.get("changes_action_selection") is False
+        and boundary.get("changes_goal_bias") is False
+        and boundary.get("changes_state_action_memory") is False
+        and boundary.get("uses_penalty_or_stuck_detection") is False
+        and boundary.get("pathfinding_used") is False
+        and boundary.get("full_route_replay") is False
+        and boundary.get("creates_lesson_candidate") is False
+        and boundary.get("writes_lesson_store") is False
+        and boundary.get("writes_memory_layer") is False
+        and boundary.get("proof_of_learning") is False
+    )
+    return _result(
+        "approach_box_dead_end_trial",
+        passed,
+        {
+            "level_id": result.get("level_id"),
+            "completed_approach": result.get("completed_approach"),
+            "approach_positions": result.get("approach_positions"),
+            "entered_dead_end_area": result.get("entered_dead_end_area"),
+            "dead_end_positions_visited": result.get("dead_end_positions_visited"),
+            "blocked_or_failed_actions": result.get("blocked_or_failed_actions"),
+            "step_count": result.get("step_count"),
+            "llm_used": result.get("llm_used"),
         },
     )
 
@@ -5573,6 +5627,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_approach_box_level(),
         smoke_approach_box_trial_cli(),
         smoke_approach_box_two_trial_learning_check(),
+        smoke_approach_box_dead_end_trial(),
         smoke_micro_push_box_sandbox(),
         smoke_micro_push_box_allowed_action_set(),
         smoke_tactile_result_state_key_mapping(),

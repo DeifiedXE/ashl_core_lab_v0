@@ -1024,6 +1024,72 @@ def run_approach_box_two_trial_check_cli(max_steps: int = 10) -> dict[str, Any]:
     }
 
 
+def run_approach_box_dead_end_trial_cli(max_steps: int = 100) -> dict[str, Any]:
+    selected_actions = [
+        "move_down",
+        "move_down",
+        "move_down",
+        "move_right",
+        "move_down",
+        "move_up",
+        "move_up",
+        "move_right",
+        "move_right",
+        "move_down",
+        "move_down",
+    ]
+    dead_end_positions_visited = [[4, 1], [4, 2]]
+    blocked_or_failed_actions = [
+        {
+            "agent_pos": [4, 2],
+            "action": "move_down",
+            "result": "wall_blocked",
+            "blocked_at": [4, 3],
+        }
+    ]
+    return {
+        "command": "run-approach-box-dead-end-trial",
+        "flow": "approach_box_dead_end_trial_v0",
+        "status": "ok",
+        "level_id": "approach_box_dead_end_v0",
+        "completed_approach": True,
+        "initial_agent_pos": [1, 1],
+        "box_pos": [4, 4],
+        "approach_positions": [[3, 4]],
+        "final_agent_pos": [3, 4],
+        "final_distance_to_box": 1,
+        "step_count": len(selected_actions),
+        "max_steps": max_steps,
+        "selected_actions": selected_actions,
+        "entered_dead_end_area": True,
+        "dead_end_positions_visited": dead_end_positions_visited,
+        "blocked_or_failed_actions": blocked_or_failed_actions,
+        "llm_used": False,
+        "boundary": {
+            "changes_approach_box_runner": False,
+            "changes_navigation_sandbox": False,
+            "changes_push_box_sandbox": False,
+            "two_trial_learning_check": False,
+            "creates_learning_rule": False,
+            "changes_action_selection": False,
+            "changes_goal_bias": False,
+            "changes_state_action_memory": False,
+            "uses_penalty_or_stuck_detection": False,
+            "pathfinding_used": False,
+            "full_route_replay": False,
+            "creates_lesson_candidate": False,
+            "writes_lesson_store": False,
+            "writes_memory_layer": False,
+            "llm_used": False,
+            "proof_of_learning": False,
+        },
+        "notes": [
+            "Dead-end trial is a bounded fixture wrapper, not a pathfinding or learning proof.",
+            "(4,3) is a wall and is not an approach position.",
+        ],
+    }
+
+
 def _verification_boundary() -> dict[str, bool]:
     return {
         "llm_used": False,
@@ -1089,6 +1155,8 @@ def run_command(command: str) -> dict[str, Any]:
         return run_approach_box_trial_cli()
     if command == "run-approach-box-two-trial-check":
         return run_approach_box_two_trial_check_cli()
+    if command == "run-approach-box-dead-end-trial":
+        return run_approach_box_dead_end_trial_cli()
     return {
         "command": command,
         "status": "error",
@@ -1122,6 +1190,7 @@ def main(argv: list[str] | None = None) -> int:
             "run-navigation-obstacle-trial",
             "run-approach-box-trial",
             "run-approach-box-two-trial-check",
+            "run-approach-box-dead-end-trial",
         ],
     )
     parser.add_argument("--review-id", default="review_001")
@@ -1193,6 +1262,8 @@ def main(argv: list[str] | None = None) -> int:
         result = run_approach_box_trial_cli(max_steps=args.max_steps)
     elif args.command == "run-approach-box-two-trial-check":
         result = run_approach_box_two_trial_check_cli(max_steps=args.max_steps)
+    elif args.command == "run-approach-box-dead-end-trial":
+        result = run_approach_box_dead_end_trial_cli(max_steps=args.max_steps)
     else:
         result = run_command(args.command)
     if hasattr(sys.stdout, "reconfigure"):
