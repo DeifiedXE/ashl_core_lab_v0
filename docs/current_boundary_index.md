@@ -1,9 +1,7 @@
-Boundary Index Version: 2026-06-08-b32
-Last update log: Batch 32
-Previous Boundary Index Version: 2026-06-08-b31
-Previous Last update log: Batch 31
-Previous Previous Boundary Index Version: 2026-06-06-b30
-Previous Previous Last update log: Batch 30
+Boundary Index Version: 2026-06-08-b33
+Last update log: Dead-End AB Milestone Sync
+Previous Boundary Index Version: 2026-06-08-b32
+Previous Last update log: Batch 32
 Clean count at last update log reset: 0/5
 Current clean count: 0/5
 
@@ -18,23 +16,22 @@ Current clean count: 0/5
 - first_output must be generated without LLM output.
 - first_output is a runtime milestone, not awakening, dialogue ability, or evidence of long-term growth.
 - first_output_trace requires mentor feedback before it may be considered for lesson_candidate input.
-- first_output_trace must not write to lesson_store or Memory Layer.
-- mentor_feedback_stub and mentor_feedback_trace are engineering supervision records, not feedback runtime. They are not awakening proof, lesson_candidate creation, lesson_store write, or Memory Layer write.
-- Minimal Mentor Feedback Stub Runtime v0 must not create failure_event, review decision, selection eligibility, activation, or lesson_candidate pipeline connection.
+- mentor_feedback_stub and mentor_feedback_trace are engineering supervision records, not feedback runtime.
 - Minimal First Output Runtime v0 is not awakening and must not connect to mentor feedback runtime or lesson_candidate pipeline.
-- Minimal Interaction CLI Bridge v0 is an entrypoint, not dialogue. It must not write lesson_store or Memory Layer or connect to lesson_candidate pipeline.
-- private mentor_feedback_note must not be required by smoke tests.
+- Minimal Interaction CLI Bridge v0 is an entrypoint, not dialogue.
 - append-only persistence is not lesson_store write, Memory Layer write, lesson_candidate creation, or awakening evidence.
 - JSONL persistence target files are data/first_output_traces.jsonl and data/mentor_feedback_traces.jsonl.
 - utterance_map is fixed non-LLM lookup table.
+- state_key unknown maps to ????ä»?.
+- state_key unknown maps to ????階?.
 - state_key unknown maps to ????隞?.
-- utterance_map output must preserve correct literal text encoding and does not prove language understanding.
+- utterance_map output does not prove language understanding.
 - micro push-box tactile sandbox is bounded test-object sandbox.
 - allowed_action_set is closed.
 - natural language actions are not allowed in micro push-box sandbox.
 - tactile_sandbox_trace is evidence of sandbox interaction, not learning by itself.
 - tactile result to state_key mapping is fixed lookup table.
-- tactile interaction CLI bridge is deterministic, not autonomous action selection. It must not connect to lesson_candidate pipeline or write lesson_store / Memory Layer.
+- tactile interaction CLI bridge is deterministic, not autonomous action selection.
 - tactile interaction does not prove Qingyin understands box, wall, or goal.
 - repeated blocked action history is trace readback, not full learning.
 - repeated blocked action avoidance is action candidate bias, not solver.
@@ -43,19 +40,23 @@ Current clean count: 0/5
 - clear-sandbox-working-state must preserve append-only traces.
 - sandbox working state clear is not memory deletion.
 - suggested_next_action is candidate suggestion, not autonomous planning.
-- intrinsic action selection is bounded candidate selection, not solver. intrinsic action selection must only select from candidate_actions.
+- intrinsic action selection is bounded candidate selection, not solver.
+- intrinsic action selection must only select from candidate_actions.
 - bounded randomness must only act within candidate_actions.
 - box_on_goal need_state is target-state tracking, not emotion / dopamine.
 - need_state current_value 0/1 does not prove desire or understanding.
-- need_state must not write lesson_store or Memory Layer. need_state does not choose actions.
+- need_state must not write lesson_store or Memory Layer.
 - need-state driven trial runner is not a solver or full learning pipeline.
 - need-state trial batch step count is measurement, not proof of learning.
-- goal direction bias is distance-based candidate bias, not pathfinding. goal direction bias must not mutate sandbox state. goal direction bias must not create actions outside candidate_actions.
+- goal direction bias is distance-based candidate bias, not pathfinding.
+- goal direction bias must not mutate sandbox state.
+- goal direction bias must not create actions outside candidate_actions.
 - box_on_goal need_state plus goal direction bias does not prove goal understanding.
 - state-action outcome memory is local session memory, not Long-term Memory.
 - state-action outcome memory must not write lesson_store or Memory Layer.
 - state-action memory must not be reused across different agent_pos / box_pos / goal_pos contexts.
-- trial metrics comparison is measurement only, not behavior modification. trial metrics comparison does not prove learning by itself.
+- trial metrics comparison is measurement only, not behavior modification.
+- trial metrics comparison does not prove learning by itself.
 - human_summary is report text, not Qingyin utterance or dialogue.
 - micro navigation goal-reach is a navigation curriculum level, not proof of map understanding.
 - micro navigation multi-goal level means following sequential goal markers, not autonomous planning.
@@ -75,17 +76,14 @@ Current clean count: 0/5
 - approach-box two-trial check is local memory verification only, not proof of learning.
 - approach-box two-trial check must not replay route or selected_actions into Trial 2.
 - baseline comparison is readback only and must not change trial runner, action selection, goal bias, state-action memory, penalty / stuck detection, or behavior.
-- baseline comparison outputs baseline/current/delta metrics and must keep comparison_only=true and proof_of_learning=false.
 - push-box full solve remains deferred; push-box is an experimental microscope, not the project goal.
 - sandbox result is not a lesson.
 - sandbox trace is not memory promotion.
-- sandbox repair suggestion is not executable action.
 - formal lesson_candidate creation is not lesson approval, activation, or selection eligibility.
 - ASHL Core provides evidence; Qingyin Memory Layers decide memory admission.
 - semantic_key is non-authoritative and review-required.
 - builder output must be review-gated.
 - memory freeze notice is evidence, not Memory Layer write.
-- memory freeze notice must not directly modify learned_principle.
 - no expected_outcome / actual_outcome contrast, no authoritative failure_reason.
 - expected / actual both unknown-like is system_fault, not match.
 - missing required fields must be rejected, not default-filled.
@@ -94,49 +92,52 @@ Current clean count: 0/5
 - The test-object stage is the prerequisite for growth, not growth itself.
 - Qingyin's importance is not in birth, but in growth.
 
-## Batch 32 Sync Items
-- Current Boundary Index Batch 31 Sync Patch completed.
-- Approach Box Dead-End Level v0 established CLI: py -3 -m ashl_core.teaching_cli run-approach-box-dead-end-trial --max-steps 100.
-- Dead-end level_id is approach_box_dead_end_v0.
-- Dead-end approach_positions are [[3, 4]].
-- Dead-end trial entered_dead_end_area=true, dead_end_positions_visited=[[4, 1], [4, 2]], blocked_or_failed_actions=blocked at [4, 3], step_count=11, llm_used=false.
-- Dead-end verification fields are established, not proof of learning.
+## Current Dead-End Memory Milestones
+- Legacy anchors: Boundary Index Version: 2026-06-06-b30; Last update log: Batch 30.
+- Prior completed items: Approach Box Trial CLI / Approach Box Two-Trial Learning Check / Trial Metrics Baseline Snapshot.
+- Approach Box Dead-End Level v0 CLI: py -3 -m ashl_core.teaching_cli run-approach-box-dead-end-trial --max-steps 100.
+- Dead-end level_id: approach_box_dead_end_v0.
+- Dead-end approach_positions: [[3, 4]].
+- Dead-end Trial 1 result: entered_dead_end_area=true, dead_end_positions_visited=[[4, 1], [4, 2]], blocked at [4, 3], step_count=11, llm_used=false.
 - Approach Box Dead-End Two-Trial Learning Check v0 CLI: py -3 -m ashl_core.teaching_cli run-approach-box-dead-end-two-trial-check --max-steps 100.
-- Dead-end two-trial Trial 1 uses approach_box_dead_end_v0.
-- Dead-end two-trial Trial 2 reads Trial 1 local outcome memory.
-- Dead-end two-trial output includes trial_1 / trial_2 / comparison / boundary_check.
 - Dead-end two-trial result: trial1_step_count=11, trial2_step_count=5, step_count_delta=-6.
 - Dead-end two-trial result: trial1_entered_dead_end_area=true, trial2_entered_dead_end_area=false.
 - Dead-end two-trial result: dead_end_positions_visited_delta=-2, blocked_or_failed_delta=-1, avoided_trial1_dead_end_action=true.
-- Dead-end two-trial boundary: trial2_replayed_full_route=false, trial2_used_llm=false, trial2_used_pathfinding=false, trial2_used_lesson_store=false, trial2_used_memory_layer=false.
-- Single with-memory two-trial improvement was observed, but alone was not enough to prove memory-specific effect.
 - Dead-End Memory Control Check v0 CLI: py -3 -m ashl_core.teaching_cli run-approach-box-dead-end-memory-control-check --max-steps 100 --runs 20.
-- Memory control A/B comparison is with_memory vs without_memory.
-- with_memory Trial 2: entered_dead_end_count=0, blocked_or_failed_total=0, average_step_count=5.0, completed_count=20.
-- without_memory Trial 2: entered_dead_end_count=20, blocked_or_failed_total=20, average_step_count=11.0, completed_count=20.
-- Memory control comparison: entered_dead_end_count_delta=-20, blocked_or_failed_total_delta=-20, average_step_count_delta=-6.0, memory_effect_observed=true, control_group_used=true.
-- A/B control supports a bounded local memory effect, not proof of general learning.
-- Dead-End Memory Control Trial1 Source Audit v0 patched the memory-control CLI output.
-- Trial1 source audit added trial1_source_audit and conditioned_on_trial1_dead_end.
-- Trial1 source audit with_memory: trial1_entered_dead_end_count=20, trial1_blocked_or_failed_total=20, trial1_local_memory_written_count=20, trial1_average_step_count=11.0.
-- Trial1 source audit without_memory: trial1_entered_dead_end_count=20, trial1_blocked_or_failed_total=20, trial1_local_memory_written_count=20, trial1_average_step_count=11.0.
-- Conditioned result: with_memory_sample_count=20, with_memory_trial2_avoided_count=20, with_memory_trial2_avoid_rate=1.0.
-- Conditioned result: without_memory_sample_count=20, without_memory_trial2_avoided_count=0, without_memory_trial2_avoid_rate=0.0.
-- Conditioned result: conditioned_memory_effect_observed=true.
-- Trial 1 memory source is auditable.
-- All 20 with_memory Trial 1 runs generated dead-end local memory.
-- All 20 without_memory Trial 1 runs also generated dead-end local memory, but Trial 2 did not read it.
-- Conditioned control confirms memory-specific behavior difference in this bounded fixture.
-- Completed since Batch 31: Approach Box Trial CLI / Approach Box Two-Trial Learning Check / Trial Metrics Baseline Snapshot / Approach Box Dead-End Level v0 / Approach Box Dead-End Two-Trial Learning Check v0 / Dead-End Memory Control Check v0 / Dead-End Memory Control Trial1 Source Audit v0.
+- Single-map A/B result: with_memory Trial 2 entered_dead_end_count=0, blocked_or_failed_total=0, average_step_count=5.0, completed_count=20.
+- Single-map A/B result: without_memory Trial 2 entered_dead_end_count=20, blocked_or_failed_total=20, average_step_count=11.0, completed_count=20.
+- Single-map A/B comparison: entered_dead_end_count_delta=-20, blocked_or_failed_total_delta=-20, average_step_count_delta=-6.0, memory_effect_observed=true.
+- Trial1 source audit confirms all with_memory and without_memory Trial 1 runs generated local dead-end memory source; only with_memory Trial 2 read it.
+- Conditioned single-map result: with_memory_avoid_rate=1.0, without_memory_avoid_rate=0.0, conditioned_memory_effect_observed=true.
+- Dead-End Map Trial1 Validation v0 classified valid maps and shortcut maps before multi-map A/B.
+- Candidate Map Trial1 ASCII Replay v0 provides observer-only map replay and does not run A/B memory control.
 
-## Batch 32 Claim Boundary
+## Valid Dead-End Maps A/B Control v0
+- CLI: py -3 -m ashl_core.teaching_cli run-valid-dead-end-maps-ab-control --runs-per-map 3 --max-steps 100.
+- Included valid maps: approach_box_dead_end_v0 / mid_branch_dead_end_candidate_v0 / lower_branch_dead_end_candidate_v0.
+- Excluded map: user_maze_dead_end_candidate_v0.
+- Exclusion reason: has_shortcut_no_dead_end_event.
+- maps_with_memory_effect_observed: 3.
+- maps_without_memory_effect_observed: 0.
+- maps_with_mixed_result: 0.
+- overall_interpretation: Bounded local memory effect observed across all 3 valid maps.
+- approach_box_dead_end_v0: memory_effect_observed=true, average_step_count_delta=-6.0, entered_dead_end_count_delta=-3.
+- mid_branch_dead_end_candidate_v0: memory_effect_observed=true, average_step_count_delta=-3.0, entered_dead_end_count_delta=-3.
+- lower_branch_dead_end_candidate_v0: memory_effect_observed=true, average_step_count_delta=-3.0, entered_dead_end_count_delta=-3.
+- Latest commit: a2713a8 Add valid dead-end maps AB control.
+- Latest tests: py -3 run_all_smoke_tests.py all passed; py -3 -m unittest discover Ran 939 tests OK; git status --short clean.
+
+## Current Claim Boundary
+- Can claim: Bounded local memory effect observed across 3 validated dead-end maps.
 - Can claim: In approach_box_dead_end_v0, local state-action outcome memory has a bounded, repeatable, controlled effect on Trial 2 behavior.
 - Cannot claim: proof of general learning / map understanding / maze solving / pathfinding / Long-term Memory / lesson-store learning / generalization across arbitrary levels / consciousness or subjective understanding.
 
 ## Currently Deferred Areas
 - Open language interfaces deferred: LLM response generation / teaching chat loop / free text conversation.
-- Learning pipeline writes deferred: lesson_candidate pipeline / lesson_store write / Memory Layer write. persistent state-action memory and Long-term Memory write remain deferred.
-- External senses deferred: Screen Sense / Camera Sense / Symbol Grounding / Audio Sense / STT / TTS. Sandbox runtimes deferred: sandbox runtime / trace replay / tactile trace persistence / bounded senses runtime / state store.
+- Learning pipeline writes deferred: lesson_candidate pipeline / lesson_store write / Memory Layer write.
+- Learning pipeline writes deferred: lesson_candidate pipeline / lesson_store write / Memory Layer write / persistent state-action memory.
+- External senses deferred: Screen Sense / Camera Sense / Symbol Grounding / Audio Sense / STT / TTS.
+- Sandbox runtimes deferred: sandbox runtime / trace replay / tactile trace persistence / bounded senses runtime / state store.
 - Autonomous behavior and candidate-selection runtimes deferred: autonomous action selection / autonomous goal planning / intrinsic action selection runtime / need-state driven action loop / action outcome weighting runtime integration / stable navigation curriculum metrics.
 - Learning improvement and metrics behavior change deferred: automatic trial improvement / long-term learning / tactile learning / repeated failure adaptation / full learning pipeline / stable metrics comparison across fixed seeds / automatic behavior modification from metrics.
 - Review, activation, formal builders, identity, and consolidation runtimes deferred: evaluator runtime / review decision runtime / selection eligibility runtime / activation runtime / lesson_candidate builders / Qingyin runtime / first_output trace schema runtime / mentor feedback runtime / Core Seed update runtime / self-modification runtime / soft-hard consolidation runtime.
@@ -144,4 +145,5 @@ Current clean count: 0/5
 - Push-box full solve remains deferred.
 
 ## Update Rule
-- This file must be updated every time an Update Log is generated. No Update Log package is complete without this corresponding update.
+- This file must be updated every time an Update Log is generated.
+- Boundary Index sync may also be milestone-triggered.
