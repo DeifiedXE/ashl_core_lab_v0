@@ -75,8 +75,12 @@ from ashl_core.micro_push_box_sandbox import (
     apply_tactile_action,
     build_box_on_goal_need_state,
     build_initial_state as build_micro_push_box_state,
+    manhattan_distance_to_goal,
+    rank_candidate_actions_with_goal_bias,
+    score_action_goal_direction,
     select_action_for_need_state,
     select_intrinsic_action,
+    suggest_next_action_with_goal_bias,
     suggest_next_action_by_outcome_weight,
     suggest_next_action_avoiding_repeat_blocked,
     validate_allowed_action,
@@ -413,6 +417,46 @@ def smoke_minimal_action_outcome_weighting() -> dict:
             "push_down_history_result": "box_pushed",
             "candidate_actions": candidates,
             "suggested_action": suggested,
+        },
+    )
+
+
+def smoke_minimal_goal_direction_bias() -> dict:
+    state = build_micro_push_box_state()
+    before = json.dumps(state, sort_keys=True)
+    distance = manhattan_distance_to_goal(state["box_pos"], state["goal_pos"])
+    better_action = "push_down"
+    worse_action = "push_up"
+    better_score = score_action_goal_direction(state, better_action)
+    worse_score = score_action_goal_direction(state, worse_action)
+    non_push_score = score_action_goal_direction(state, "move_down")
+    ranked = rank_candidate_actions_with_goal_bias(state, [worse_action, better_action, "wait"])
+    suggested = suggest_next_action_with_goal_bias(state, [worse_action, better_action])
+    after = json.dumps(state, sort_keys=True)
+    passed = (
+        distance == 1
+        and better_score > worse_score
+        and better_score == 2
+        and worse_score == -2
+        and non_push_score == 0
+        and ranked[0] == better_action
+        and suggested == better_action
+        and before == after
+    )
+    return _result(
+        "minimal_goal_direction_bias",
+        passed,
+        {
+            "box_pos": state["box_pos"],
+            "goal_pos": state["goal_pos"],
+            "distance": distance,
+            "better_action": better_action,
+            "worse_action": worse_action,
+            "better_score": better_score,
+            "worse_score": worse_score,
+            "non_push_score": non_push_score,
+            "ranked": ranked,
+            "state_mutated": before != after,
         },
     )
 
@@ -4788,6 +4832,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_repeated_blocked_action_trace(),
         smoke_minimal_avoid_repeated_blocked_action(),
         smoke_minimal_action_outcome_weighting(),
+        smoke_minimal_goal_direction_bias(),
         smoke_minimal_intrinsic_action_selection(),
         smoke_box_on_goal_need_state(),
         smoke_minimal_need_state_driven_action_selection(),

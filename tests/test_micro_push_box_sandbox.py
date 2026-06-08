@@ -1,3 +1,4 @@
+import copy
 import unittest
 
 from ashl_core.micro_push_box_sandbox import (
@@ -8,12 +9,16 @@ from ashl_core.micro_push_box_sandbox import (
     apply_tactile_action,
     build_box_on_goal_need_state,
     build_initial_state,
+    manhattan_distance_to_goal,
     rank_candidate_actions_by_outcome_weight,
+    rank_candidate_actions_with_goal_bias,
     score_action_from_history,
+    score_action_goal_direction,
     select_action_for_need_state,
     select_intrinsic_action,
     suggest_next_action_avoiding_repeat_blocked,
     suggest_next_action_by_outcome_weight,
+    suggest_next_action_with_goal_bias,
     validate_allowed_action,
 )
 
@@ -243,6 +248,50 @@ class MicroPushBoxSandboxTests(unittest.TestCase):
     def test_invalid_action_raises_value_error(self):
         with self.assertRaises(ValueError):
             apply_tactile_action(build_initial_state(), "solve")
+
+    def test_goal_direction_bias_scores_push_toward_goal_above_push_away(self):
+        state = build_initial_state()
+
+        self.assertEqual(manhattan_distance_to_goal(state["box_pos"], state["goal_pos"]), 1)
+        self.assertEqual(score_action_goal_direction(state, "push_down"), 2)
+        self.assertEqual(score_action_goal_direction(state, "push_up"), -2)
+        self.assertGreater(
+            score_action_goal_direction(state, "push_down"),
+            score_action_goal_direction(state, "push_up"),
+        )
+
+    def test_goal_direction_bias_non_push_actions_score_zero(self):
+        state = build_initial_state()
+
+        for action in ("move_down", "touch_right", "wait"):
+            with self.subTest(action=action):
+                self.assertEqual(score_action_goal_direction(state, action), 0)
+
+    def test_goal_direction_bias_ranking_combines_outcome_weight_and_goal_bias(self):
+        state = build_initial_state()
+
+        self.assertEqual(
+            rank_candidate_actions_with_goal_bias(state, ["push_up", "push_down", "wait"]),
+            ["push_down", "wait", "push_up"],
+        )
+        self.assertEqual(suggest_next_action_with_goal_bias(state, ["push_up", "push_down"]), "push_down")
+
+    def test_goal_direction_bias_invalid_candidate_raises_value_error(self):
+        with self.assertRaises(ValueError):
+            rank_candidate_actions_with_goal_bias(build_initial_state(), ["push_down", "push diagonal"])
+
+        with self.assertRaises(ValueError):
+            suggest_next_action_with_goal_bias(build_initial_state(), [])
+
+    def test_goal_direction_bias_helpers_do_not_modify_state(self):
+        state = build_initial_state()
+        before = copy.deepcopy(state)
+
+        score_action_goal_direction(state, "push_down")
+        rank_candidate_actions_with_goal_bias(state, ["push_up", "push_down", "wait"])
+        suggest_next_action_with_goal_bias(state, ["push_up", "push_down"])
+
+        self.assertEqual(state, before)
 
 
 if __name__ == "__main__":

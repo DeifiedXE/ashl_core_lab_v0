@@ -1824,6 +1824,31 @@ No utterance_map changes.
 No autonomous action generation outside candidate_actions.
 No awakening claim.
 
+## Minimal Goal Direction Bias v0
+
+Status:
+minimal-runtime / deterministic-helper / goal-direction-bias / no-learning
+
+Summary:
+Adds manhattan_distance_to_goal, score_action_goal_direction, rank_candidate_actions_with_goal_bias, and suggest_next_action_with_goal_bias.
+Goal direction bias reads box_pos and goal_pos.
+Push actions that reduce box-to-goal Manhattan distance score +2.
+Push actions that increase box-to-goal Manhattan distance score -2.
+Move, touch, and wait actions score 0.
+Ranking combines existing outcome weight and goal_direction_bias while preserving candidate order on ties.
+
+Boundary:
+No AI solver / pathfinding.
+No goal planning.
+No learning pipeline.
+No lesson_candidate pipeline connection.
+No lesson_store write.
+No Memory Layer write.
+No LLM / teaching chat loop / free text conversation.
+No tactile result mapping changes.
+No utterance_map changes.
+No new action types.
+
 ## Minimal Intrinsic Action Selection v0
 
 Status:

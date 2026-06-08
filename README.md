@@ -1101,6 +1101,14 @@ v2.7a adds `ashl_core.failure_events` as a trace-only failure_event schema found
 - Example: history `push_right -> box_blocked`, `push_down -> box_pushed` ranks `push_down` above `push_right`.
 - This is deterministic outcome weighting, not AI solver / pathfinding, goal planning, learning pipeline, lesson_candidate pipeline, lesson_store / Memory Layer write, LLM / teaching chat, tactile result mapping change, or utterance_map change.
 
+## Minimal Goal Direction Bias v0
+
+- Adds `manhattan_distance_to_goal(...)`, `score_action_goal_direction(...)`, `rank_candidate_actions_with_goal_bias(...)`, and `suggest_next_action_with_goal_bias(...)`.
+- Goal direction bias reads `box_pos`, `goal_pos`, and the box-on-goal direction only; push actions that reduce box-to-goal Manhattan distance score `+2`, push actions that increase it score `-2`, and non-push actions score `0`.
+- Ranking combines existing outcome history weight with goal direction bias while preserving candidate order on ties.
+- Helpers validate candidate actions, do not mutate state, and do not add new actions.
+- This is minimal directional bias, not AI solver / pathfinding, goal planning, learning pipeline, lesson_candidate pipeline, lesson_store / Memory Layer write, LLM / teaching chat, tactile result mapping change, or utterance_map change.
+
 ## Minimal Intrinsic Action Selection v0
 
 - Adds `select_intrinsic_action(state, candidate_actions, random_seed=None)` for the micro push-box sandbox.

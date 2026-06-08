@@ -80,6 +80,27 @@ def build_box_on_goal_need_state(state: dict[str, Any]) -> dict[str, Any]:
     }
 
 
+def manhattan_distance_to_goal(box_pos: tuple[int, int], goal_pos: tuple[int, int]) -> int:
+    return abs(box_pos[0] - goal_pos[0]) + abs(box_pos[1] - goal_pos[1])
+
+
+def score_action_goal_direction(state: dict[str, Any], action: str) -> int:
+    action = validate_allowed_action(action)
+    if not action.startswith("push_"):
+        return 0
+
+    _, direction = action.split("_", 1)
+    box_pos = tuple(state["box_pos"])
+    goal_pos = tuple(state["goal_pos"])
+    before_distance = manhattan_distance_to_goal(box_pos, goal_pos)
+    after_distance = manhattan_distance_to_goal(_add(box_pos, DIRECTIONS[direction]), goal_pos)
+    if after_distance < before_distance:
+        return 2
+    if after_distance > before_distance:
+        return -2
+    return 0
+
+
 def suggest_next_action_avoiding_repeat_blocked(
     state: dict[str, Any],
     candidate_actions: list[str] | tuple[str, ...],
@@ -125,6 +146,35 @@ def suggest_next_action_by_outcome_weight(
     candidate_actions: list[str] | tuple[str, ...],
 ) -> str:
     ranked = rank_candidate_actions_by_outcome_weight(state, candidate_actions)
+    if not ranked:
+        raise ValueError("candidate_actions must include at least one action")
+    return ranked[0]
+
+
+def rank_candidate_actions_with_goal_bias(
+    state: dict[str, Any],
+    candidate_actions: list[str] | tuple[str, ...],
+) -> list[str]:
+    validated_candidates = tuple(validate_allowed_action(action) for action in candidate_actions)
+    indexed_scores = [
+        (
+            index,
+            action,
+            score_action_from_history(state, action) + score_action_goal_direction(state, action),
+        )
+        for index, action in enumerate(validated_candidates)
+    ]
+    return [
+        action
+        for _, action, _ in sorted(indexed_scores, key=lambda item: (-item[2], item[0]))
+    ]
+
+
+def suggest_next_action_with_goal_bias(
+    state: dict[str, Any],
+    candidate_actions: list[str] | tuple[str, ...],
+) -> str:
+    ranked = rank_candidate_actions_with_goal_bias(state, candidate_actions)
     if not ranked:
         raise ValueError("candidate_actions must include at least one action")
     return ranked[0]
