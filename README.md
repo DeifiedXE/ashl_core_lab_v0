@@ -1323,11 +1323,19 @@ v2.7a adds `ashl_core.failure_events` as a trace-only failure_event schema found
 
 - `docs/current_boundary_index.md`
 - Adds a short, versioned, low-token source of global hard boundaries for future work packages.
-- Current version: `Boundary Index Version: 2026-06-06-b26`.
+- Current version: `Boundary Index Version: 2026-06-06-b27`.
 - Lists current global hard boundaries and deferred areas.
 - Compression patch keeps the version at b25 while aggregating repeated boundary lines to preserve room for future sync packages.
 - Requires the file to be updated every time an Update Log is generated.
 - Does not add runtime behavior, modify existing design document content, or introduce new boundary design decisions.
+
+## Current Boundary Index Batch 27 Sync Patch
+
+- Updates `docs/current_boundary_index.md` from Batch 26 to Batch 27.
+- Adds Batch 27 hard boundaries for need-state trial runner measurement, trial batch step-count interpretation, and distance-based goal direction bias.
+- Marks goal direction bias integration into trial runner, stable trial metrics comparison, stuck detection / repetition penalty, autonomous goal planning, full learning pipeline, lesson_candidate pipeline, lesson_store write, Memory Layer write, LLM response generation, teaching chat loop, and free text conversation as deferred.
+- Keeps the boundary index under 150 lines.
+- Does not add runtime behavior or modify sandbox, CLI, need-state, or goal-bias logic.
 
 ## v2.8e Review Decision Trace-only Schema
 

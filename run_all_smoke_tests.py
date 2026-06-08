@@ -2285,8 +2285,8 @@ def smoke_current_boundary_index_docs() -> dict:
     readme = readme_path.read_text(encoding="utf-8") if readme_path.exists() else ""
     research_plan = research_plan_path.read_text(encoding="utf-8") if research_plan_path.exists() else ""
     required_terms = [
-        "Boundary Index Version: 2026-06-06-b26",
-        "Last update log: Batch 26",
+        "Boundary Index Version: 2026-06-06-b27",
+        "Last update log: Batch 27",
         "Clean count at last update log reset: 0/5",
         "Current clean count: 0/5",
         "# Global Hard Boundaries",
@@ -2413,8 +2413,8 @@ def smoke_current_boundary_index_docs() -> dict:
         "This file must be updated every time an Update Log is generated.",
     ]
     required_terms = [
-        "Boundary Index Version: 2026-06-06-b26",
-        "Last update log: Batch 26",
+        "Boundary Index Version: 2026-06-06-b27",
+        "Last update log: Batch 27",
         "Clean count at last update log reset: 0/5",
         "Current clean count: 0/5",
         "# Global Hard Boundaries",
@@ -2445,12 +2445,21 @@ def smoke_current_boundary_index_docs() -> dict:
         "box_on_goal need_state is target-state tracking, not emotion or dopamine.",
         "need_state current_value 0/1 does not prove desire or understanding.",
         "need_state must not write lesson_store or Memory Layer.",
+        "need-state driven trial runner is not a solver or full learning pipeline.",
+        "need-state trial batch step count is measurement, not proof of learning.",
+        "goal direction bias is distance-based candidate bias, not pathfinding.",
+        "goal direction bias must not mutate sandbox state.",
+        "goal direction bias must not create actions outside candidate_actions.",
+        "box_on_goal need_state plus goal direction bias does not prove goal understanding.",
         "formal lesson_candidate creation is not lesson approval, activation, or selection eligibility.",
         "ASHL Core provides evidence; Qingyin Memory Layers decide memory admission",
         "Open language interfaces deferred: LLM response generation / teaching chat loop / free text conversation.",
         "Learning pipeline writes deferred: lesson_candidate pipeline / lesson_store write / Memory Layer write.",
         "External senses deferred: Screen Sense / Camera Sense / Symbol Grounding / Audio Sense / STT / TTS.",
         "intrinsic action selection runtime",
+        "goal direction bias integration into trial runner",
+        "stable trial metrics comparison",
+        "stuck detection / repetition penalty",
         "need-state driven action loop",
         "automatic trial improvement",
         "long-term learning",

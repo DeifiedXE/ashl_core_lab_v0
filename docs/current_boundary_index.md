@@ -1,5 +1,5 @@
-Boundary Index Version: 2026-06-06-b26
-Last update log: Batch 26
+Boundary Index Version: 2026-06-06-b27
+Last update log: Batch 27
 Clean count at last update log reset: 0/5
 Current clean count: 0/5
 ## Global Hard Boundaries
@@ -71,6 +71,12 @@ Current clean count: 0/5
 - need_state current_value 0/1 does not prove desire or understanding.
 - need_state must not write lesson_store or Memory Layer.
 - need_state does not choose actions.
+- need-state driven trial runner is not a solver or full learning pipeline.
+- need-state trial batch step count is measurement, not proof of learning.
+- goal direction bias is distance-based candidate bias, not pathfinding.
+- goal direction bias must not mutate sandbox state.
+- goal direction bias must not create actions outside candidate_actions.
+- box_on_goal need_state plus goal direction bias does not prove goal understanding.
 - sandbox result is not a lesson.
 - sandbox trace is not memory promotion.
 - sandbox repair suggestion is not executable action.
@@ -96,6 +102,17 @@ Current clean count: 0/5
 - tactile trace persistence runtime
 - autonomous action selection
 - intrinsic action selection runtime
+- goal direction bias integration into trial runner
+- stable trial metrics comparison
+- stuck detection / repetition penalty
+- autonomous goal planning
+- full learning pipeline
+- lesson_candidate pipeline connection
+- lesson_store write
+- Memory Layer write
+- LLM response generation
+- teaching chat loop
+- free text conversation
 - need-state driven action loop
 - automatic trial improvement
 - long-term learning

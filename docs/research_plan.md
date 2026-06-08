@@ -1379,6 +1379,26 @@ Boundary:
 - No lesson_candidate pipeline connection.
 - No LLM / teaching chat loop / free text conversation.
 - No autonomous behavior changes.
+
+## Current Boundary Index Batch 27 Sync Patch
+
+Status:
+completed / docs-only / boundary-index-sync / no-runtime
+
+Summary:
+Updates docs/current_boundary_index.md from Batch 26 to Batch 27.
+Adds Batch 27 hard boundaries for need-state trial runner measurement, need-state trial batch step counts, and distance-based goal direction bias.
+Marks goal direction bias integration into trial runner, stable trial metrics comparison, stuck detection / repetition penalty, autonomous goal planning, full learning pipeline, lesson_candidate pipeline connection, lesson_store write, Memory Layer write, LLM response generation, teaching chat loop, and free text conversation as deferred.
+
+Boundary:
+No runtime behavior changes.
+No sandbox behavior changes.
+No CLI behavior changes.
+No need-state or goal-bias behavior changes.
+No lesson_candidate pipeline connection.
+No lesson_store write.
+No Memory Layer write.
+No AI solver / pathfinding.
 - No new design document.
 
 ## Current Boundary Index Compression Patch
