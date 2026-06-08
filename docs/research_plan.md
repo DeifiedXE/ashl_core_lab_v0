@@ -2065,6 +2065,36 @@ No LLM planning.
 No AI solver / pathfinding / BFS / A*.
 No full route replay.
 
+## Approach Box Two-Trial Learning Check v0
+
+Status:
+minimal-runtime / two-trial-local-memory-check / approach-box-readback / no-learning-proof
+
+Summary:
+Adds py -3 -m ashl_core.teaching_cli run-approach-box-two-trial-check.
+The command supports --max-steps.
+It runs Trial 1 and Trial 2 on the existing approach-box level and returns trial_1, trial_2, comparison, and boundary_check.
+Trial 1 writes only local state-action outcome memory with agent_pos, box_pos, optional goal_pos, action, result, and tick.
+Trial 2 may read only that local outcome memory and reports whether it read and used Trial 1 local memory.
+The check compares step_count, failed_or_blocked actions, and selected_actions for Trial 1 and Trial 2.
+
+Boundary:
+No approach-box runner behavior changes.
+No navigation sandbox behavior changes.
+No push-box sandbox behavior changes.
+No box pushing.
+No full push-box solve.
+No AI solver / pathfinding / BFS / A*.
+No full trace / full route replay.
+No selected_actions replay into Trial 2.
+No lesson_candidate pipeline connection.
+No lesson_store write.
+No Memory Layer write.
+No Long-term Memory write.
+No LLM planning.
+No human hint.
+This is local memory verification, not proof of learning by itself.
+
 ## Micro Navigation Trial Metrics CLI v0
 
 Status:

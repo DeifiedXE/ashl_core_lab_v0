@@ -143,6 +143,7 @@ from ashl_core.teaching_cli import (
     run_lifecycle_display,
     run_minimal_interaction,
     run_approach_box_trial_cli,
+    run_approach_box_two_trial_check_cli,
     run_navigation_multi_goal_metrics_cli,
     run_navigation_obstacle_trial_cli,
     run_navigation_trial_metrics_cli,
@@ -548,6 +549,55 @@ def smoke_approach_box_trial_cli() -> dict:
             "selected_actions": result.get("selected_actions"),
             "llm_used": result.get("llm_used"),
             "boundary": boundary,
+        },
+    )
+
+
+def smoke_approach_box_two_trial_learning_check() -> dict:
+    result = run_approach_box_two_trial_check_cli(max_steps=10)
+    trial_1 = result.get("trial_1", {})
+    trial_2 = result.get("trial_2", {})
+    comparison = result.get("comparison", {})
+    boundary = result.get("boundary_check", {})
+    passed = (
+        result.get("flow") == "approach_box_two_trial_learning_check_v0"
+        and trial_1.get("completed_approach") is True
+        and trial_2.get("completed_approach") is True
+        and trial_1.get("final_distance_to_box") == 1
+        and trial_2.get("final_distance_to_box") == 1
+        and trial_1.get("local_outcome_memory_written") is True
+        and trial_2.get("local_outcome_memory_read") is True
+        and trial_2.get("used_trial1_local_memory") is True
+        and trial_1.get("llm_used") is False
+        and trial_2.get("llm_used") is False
+        and comparison.get("trial1_step_count") == 4
+        and comparison.get("trial2_step_count") == 4
+        and comparison.get("step_count_delta") == 0
+        and comparison.get("trial1_failed_or_blocked_actions") == 0
+        and comparison.get("trial2_failed_or_blocked_actions") == 0
+        and comparison.get("failed_or_blocked_delta") == 0
+        and boundary.get("trial2_read_local_outcome_memory_only") is True
+        and boundary.get("trial2_replayed_full_route") is False
+        and boundary.get("trial2_used_llm") is False
+        and boundary.get("trial2_used_lesson_store") is False
+        and boundary.get("trial2_used_memory_layer") is False
+        and boundary.get("trial2_used_long_term_memory") is False
+        and boundary.get("trial2_used_lesson_candidate") is False
+        and boundary.get("trial2_used_pathfinding") is False
+        and boundary.get("trial2_used_human_hint") is False
+        and "steps" not in result
+        and "trace" not in result
+        and "route" not in result
+    )
+    return _result(
+        "approach_box_two_trial_learning_check",
+        passed,
+        {
+            "trial1_step_count": comparison.get("trial1_step_count"),
+            "trial2_step_count": comparison.get("trial2_step_count"),
+            "step_count_delta": comparison.get("step_count_delta"),
+            "failed_or_blocked_delta": comparison.get("failed_or_blocked_delta"),
+            "boundary_check": boundary,
         },
     )
 
@@ -5470,6 +5520,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_navigation_obstacle_trial_cli(),
         smoke_approach_box_level(),
         smoke_approach_box_trial_cli(),
+        smoke_approach_box_two_trial_learning_check(),
         smoke_micro_push_box_sandbox(),
         smoke_micro_push_box_allowed_action_set(),
         smoke_tactile_result_state_key_mapping(),

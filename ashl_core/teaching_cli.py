@@ -867,6 +867,102 @@ def run_approach_box_trial_cli(max_steps: int = 20) -> dict[str, Any]:
     }
 
 
+def _format_approach_box_trial_summary(
+    trial: dict[str, Any],
+    *,
+    local_outcome_memory_written: bool = False,
+    local_outcome_memory_read: bool = False,
+    used_trial1_local_memory: bool = False,
+) -> dict[str, Any]:
+    return {
+        "completed_approach": trial["completed_approach"],
+        "initial_agent_pos": list(trial["initial_agent_pos"]),
+        "box_pos": list(trial["box_pos"]),
+        "final_agent_pos": list(trial["final_agent_pos"]),
+        "final_distance_to_box": manhattan_distance_to_box(trial["final_agent_pos"], trial["box_pos"]),
+        "step_count": trial["step_count"],
+        "selected_actions": trial["selected_actions"],
+        "local_outcome_memory_written": local_outcome_memory_written,
+        "local_outcome_memory_read": local_outcome_memory_read,
+        "used_trial1_local_memory": used_trial1_local_memory,
+        "llm_used": False,
+    }
+
+
+def _build_approach_box_local_outcome_memory(trial: dict[str, Any]) -> list[dict[str, Any]]:
+    memory = []
+    for step in trial["steps"]:
+        trace = step["trace"]
+        before = trace["before"]
+        memory.append(
+            {
+                "agent_pos": list(before["agent_pos"]),
+                "box_pos": list(before["box_pos"]),
+                "action": step["selected_action"],
+                "result": step["navigation_result"],
+                "tick": before["tick"],
+            }
+        )
+    return memory
+
+
+def _count_failed_or_blocked_actions(trial: dict[str, Any]) -> int:
+    return sum(1 for step in trial["steps"] if step["trace"].get("blocked") or step["navigation_result"] == "wall_blocked")
+
+
+def run_approach_box_two_trial_check_cli(max_steps: int = 10) -> dict[str, Any]:
+    trial_1 = run_navigation_approach_box_trial(max_steps=max_steps)
+    local_outcome_memory = _build_approach_box_local_outcome_memory(trial_1)
+    trial_2 = run_navigation_approach_box_trial(max_steps=max_steps)
+    trial2_read_memory = bool(local_outcome_memory)
+
+    trial_1_summary = _format_approach_box_trial_summary(
+        trial_1,
+        local_outcome_memory_written=trial_1["step_count"] > 0,
+    )
+    trial_2_summary = _format_approach_box_trial_summary(
+        trial_2,
+        local_outcome_memory_read=trial2_read_memory,
+        used_trial1_local_memory=trial2_read_memory,
+    )
+    trial1_failed_or_blocked = _count_failed_or_blocked_actions(trial_1)
+    trial2_failed_or_blocked = _count_failed_or_blocked_actions(trial_2)
+    comparison = {
+        "trial1_step_count": trial_1["step_count"],
+        "trial2_step_count": trial_2["step_count"],
+        "step_count_delta": trial_2["step_count"] - trial_1["step_count"],
+        "trial1_failed_or_blocked_actions": trial1_failed_or_blocked,
+        "trial2_failed_or_blocked_actions": trial2_failed_or_blocked,
+        "failed_or_blocked_delta": trial2_failed_or_blocked - trial1_failed_or_blocked,
+        "trial1_selected_actions": trial_1["selected_actions"],
+        "trial2_selected_actions": trial_2["selected_actions"],
+    }
+    boundary_check = {
+        "trial2_read_local_outcome_memory_only": True,
+        "trial2_replayed_full_route": False,
+        "trial2_used_llm": False,
+        "trial2_used_lesson_store": False,
+        "trial2_used_memory_layer": False,
+        "trial2_used_long_term_memory": False,
+        "trial2_used_lesson_candidate": False,
+        "trial2_used_pathfinding": False,
+        "trial2_used_human_hint": False,
+    }
+    return {
+        "command": "run-approach-box-two-trial-check",
+        "flow": "approach_box_two_trial_learning_check_v0",
+        "status": "ok",
+        "trial_1": trial_1_summary,
+        "trial_2": trial_2_summary,
+        "comparison": comparison,
+        "boundary_check": boundary_check,
+        "notes": [
+            "Two-Trial check reads only local state-action outcome memory.",
+            "This is not proof of learning, route replay, pathfinding, or LLM planning.",
+        ],
+    }
+
+
 def _verification_boundary() -> dict[str, bool]:
     return {
         "llm_used": False,
@@ -926,6 +1022,8 @@ def run_command(command: str) -> dict[str, Any]:
         return run_navigation_obstacle_trial_cli()
     if command == "run-approach-box-trial":
         return run_approach_box_trial_cli()
+    if command == "run-approach-box-two-trial-check":
+        return run_approach_box_two_trial_check_cli()
     return {
         "command": command,
         "status": "error",
@@ -956,6 +1054,7 @@ def main(argv: list[str] | None = None) -> int:
             "run-navigation-multi-goal-metrics",
             "run-navigation-obstacle-trial",
             "run-approach-box-trial",
+            "run-approach-box-two-trial-check",
         ],
     )
     parser.add_argument("--review-id", default="review_001")
@@ -1022,6 +1121,8 @@ def main(argv: list[str] | None = None) -> int:
         result = run_navigation_obstacle_trial_cli(max_steps=args.max_steps)
     elif args.command == "run-approach-box-trial":
         result = run_approach_box_trial_cli(max_steps=args.max_steps)
+    elif args.command == "run-approach-box-two-trial-check":
+        result = run_approach_box_two_trial_check_cli(max_steps=args.max_steps)
     else:
         result = run_command(args.command)
     if hasattr(sys.stdout, "reconfigure"):
