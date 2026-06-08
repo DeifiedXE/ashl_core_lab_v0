@@ -1,5 +1,7 @@
-Boundary Index Version: 2026-06-06-b30
-Last update log: Batch 30
+Boundary Index Version: 2026-06-08-b31
+Last update log: Batch 31
+Previous Boundary Index Version: 2026-06-06-b30
+Previous Last update log: Batch 30
 Clean count at last update log reset: 0/5
 Current clean count: 0/5
 
@@ -78,6 +80,16 @@ Current clean count: 0/5
 - Two-Trial History Boundary allows only local state-action outcome memory.
 - Trial 2 must not read full trace, full route, selected_actions replay, lesson_candidate, lesson_store, Memory Layer, Long-term Memory, LLM planning, or human hint.
 - Trial 2 can read local context only: agent_pos / box_pos / optional goal_pos / action / result / tick.
+- trial metrics baseline snapshot is comparison-only, not proof of learning, lesson_store write, or Memory Layer write.
+- committed trial metrics baseline uses runs=4, trial_count=5, max_steps=10, random_seed=17.
+- baseline metrics are total_trials=20, total_completed=13, overall_success_rate=0.65, overall_average_step_count=6.6, max_steps_reached_count=7.
+- approach-box trial CLI is a wrapper around the existing approach-box runner and must not change runner behavior.
+- approach-box trial CLI must not add box pushing, pathfinding, or learning proof.
+- approach-box two-trial check is local memory verification only, not proof of learning.
+- approach-box two-trial check must not replay route or selected_actions into Trial 2.
+- baseline comparison is readback only and must not change trial runner, action selection, goal bias, state-action memory, penalty / stuck detection, or behavior.
+- baseline comparison outputs baseline/current/delta metrics and must keep comparison_only=true and proof_of_learning=false.
+- Completed since Batch 30: Trial Metrics Baseline Snapshot / Approach Box Trial CLI / Approach Box Two-Trial Learning Check / Trial Metrics Baseline Comparison.
 - push-box full solve remains deferred; push-box is an experimental microscope, not the project goal.
 - sandbox result is not a lesson.
 - sandbox trace is not memory promotion.
@@ -109,7 +121,7 @@ Current clean count: 0/5
 - Review and activation runtimes deferred: evaluator runtime / review decision runtime / selection eligibility runtime / activation runtime.
 - Formal candidate builders deferred: formal lesson_candidate creation runtime / lesson_candidate automatic builder / failure_event automatic builder.
 - Identity and consolidation runtimes deferred: Qingyin runtime / first_output trace schema runtime / mentor feedback runtime / mentor_feedback_trace schema runtime / Core Seed update runtime / self-modification runtime / soft-hard consolidation runtime.
-- Navigation curriculum deferred: Approach Box Trial CLI / Approach Box Two-Trial Learning Check / Trial Metrics Baseline Snapshot / Push Once Level / push-box full solve / stable navigation curriculum metrics.
+- Navigation curriculum deferred: Trial Metrics Baseline Comparison / Snapshot Compare follow-ups / Push Once Level / push-box full solve / stable navigation curriculum metrics.
 - Push-box full solve remains deferred.
 
 ## Update Rule
