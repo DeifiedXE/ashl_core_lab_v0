@@ -1401,6 +1401,26 @@ No Memory Layer write.
 No AI solver / pathfinding.
 - No new design document.
 
+## Current Boundary Index Batch 28 Sync Patch
+
+Status:
+completed / docs-only / boundary-index-sync / no-runtime
+
+Summary:
+Updates docs/current_boundary_index.md from Batch 27 to Batch 28.
+Adds Batch 28 hard boundaries for state-action outcome memory as local session memory, context-bound reuse, trial metrics comparison as measurement-only, and human_summary as report text rather than Qingyin utterance.
+Marks stuck detection / repetition penalty runtime, stable metrics comparison across fixed seeds, automatic behavior modification from metrics, persistent state-action memory, full learning pipeline, lesson_candidate pipeline connection, lesson_store write, Memory Layer write, LLM response generation, teaching chat loop, and free text conversation as deferred.
+
+Boundary:
+No runtime behavior changes.
+No sandbox behavior changes.
+No CLI behavior changes.
+No trial runner / metrics behavior changes.
+No lesson_candidate pipeline connection.
+No lesson_store write.
+No Memory Layer write.
+No AI solver / pathfinding.
+
 ## Current Boundary Index Compression Patch
 
 Status:

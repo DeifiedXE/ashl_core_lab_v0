@@ -1357,7 +1357,7 @@ v2.7a adds `ashl_core.failure_events` as a trace-only failure_event schema found
 
 - `docs/current_boundary_index.md`
 - Adds a short, versioned, low-token source of global hard boundaries for future work packages.
-- Current version: `Boundary Index Version: 2026-06-06-b27`.
+- Current version: `Boundary Index Version: 2026-06-06-b28`.
 - Lists current global hard boundaries and deferred areas.
 - Compression patch keeps the version at b25 while aggregating repeated boundary lines to preserve room for future sync packages.
 - Requires the file to be updated every time an Update Log is generated.
@@ -1370,6 +1370,14 @@ v2.7a adds `ashl_core.failure_events` as a trace-only failure_event schema found
 - Marks goal direction bias integration into trial runner, stable trial metrics comparison, stuck detection / repetition penalty, autonomous goal planning, full learning pipeline, lesson_candidate pipeline, lesson_store write, Memory Layer write, LLM response generation, teaching chat loop, and free text conversation as deferred.
 - Keeps the boundary index under 150 lines.
 - Does not add runtime behavior or modify sandbox, CLI, need-state, or goal-bias logic.
+
+## Current Boundary Index Batch 28 Sync Patch
+
+- Updates `docs/current_boundary_index.md` from Batch 27 to Batch 28.
+- Adds Batch 28 hard boundaries for local state-action outcome memory, context-bound reuse, trial metrics comparison as measurement-only, and `human_summary` as report text rather than Qingyin utterance.
+- Marks stuck detection / repetition penalty runtime, stable metrics comparison across fixed seeds, automatic behavior modification from metrics, persistent state-action memory, full learning pipeline, lesson_candidate pipeline connection, lesson_store write, Memory Layer write, LLM response generation, teaching chat loop, and free text conversation as deferred.
+- Keeps the boundary index under 150 lines.
+- Does not add runtime behavior or modify sandbox, CLI, trial runner, metrics, lesson_store, or Memory Layer logic.
 
 ## v2.8e Review Decision Trace-only Schema
 

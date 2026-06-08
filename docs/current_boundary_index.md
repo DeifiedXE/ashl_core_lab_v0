@@ -1,5 +1,5 @@
-Boundary Index Version: 2026-06-06-b27
-Last update log: Batch 27
+Boundary Index Version: 2026-06-06-b28
+Last update log: Batch 28
 Clean count at last update log reset: 0/5
 Current clean count: 0/5
 ## Global Hard Boundaries
@@ -45,7 +45,6 @@ Current clean count: 0/5
 - utterance_map output must preserve correct literal text encoding.
 - utterance_map does not prove language understanding.
 - micro push-box tactile sandbox is bounded test-object sandbox.
-- micro push-box tactile sandbox is a test-object engineering sandbox, not full perception.
 - allowed_action_set is closed.
 - natural language actions are not allowed in micro push-box sandbox.
 - tactile_sandbox_trace is evidence of sandbox interaction, not learning by itself.
@@ -63,11 +62,9 @@ Current clean count: 0/5
 - sandbox working state clear is not memory deletion.
 - suggested_next_action is candidate suggestion, not autonomous planning.
 - intrinsic action selection is bounded candidate selection, not solver.
-- intrinsic action selection is bounded candidate selection, not autonomous planning.
 - intrinsic action selection must only select from candidate_actions.
 - bounded randomness must only act within candidate_actions.
 - box_on_goal need_state is target-state tracking, not emotion / dopamine.
-- box_on_goal need_state is target-state tracking, not emotion or dopamine.
 - need_state current_value 0/1 does not prove desire or understanding.
 - need_state must not write lesson_store or Memory Layer.
 - need_state does not choose actions.
@@ -77,6 +74,12 @@ Current clean count: 0/5
 - goal direction bias must not mutate sandbox state.
 - goal direction bias must not create actions outside candidate_actions.
 - box_on_goal need_state plus goal direction bias does not prove goal understanding.
+- state-action outcome memory is local session memory, not Long-term Memory.
+- state-action outcome memory must not write lesson_store or Memory Layer.
+- state-action memory must not be reused across different agent_pos / box_pos / goal_pos contexts.
+- trial metrics comparison is measurement only, not behavior modification.
+- trial metrics comparison does not prove learning by itself.
+- human_summary is report text, not Qingyin utterance or dialogue.
 - sandbox result is not a lesson.
 - sandbox trace is not memory promotion.
 - sandbox repair suggestion is not executable action.
@@ -102,11 +105,11 @@ Current clean count: 0/5
 - tactile trace persistence runtime
 - autonomous action selection
 - intrinsic action selection runtime
-- goal direction bias integration into trial runner
-- stable trial metrics comparison
+- stable metrics comparison across fixed seeds
 - stuck detection / repetition penalty
+- automatic behavior modification from metrics
+- persistent state-action memory
 - autonomous goal planning
-- full learning pipeline
 - lesson_candidate pipeline connection
 - lesson_store write
 - Memory Layer write
@@ -134,7 +137,6 @@ Current clean count: 0/5
 - Core Seed update runtime
 - self-modification runtime
 - Qingyin runtime
-- first_output runtime / first_output generator
 - first_output trace schema runtime
 - state store
 - mentor feedback runtime
