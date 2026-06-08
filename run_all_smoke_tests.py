@@ -81,7 +81,7 @@ from ashl_core.micro_push_box_sandbox import (
     suggest_next_action_avoiding_repeat_blocked,
     validate_allowed_action,
 )
-from ashl_core.micro_push_box_trial_runner import run_need_state_driven_trial
+from ashl_core.micro_push_box_trial_runner import run_need_state_driven_trial, run_need_state_driven_trial_batch
 from ashl_core.manual_review import (
     build_review_trace,
     create_review_item,
@@ -548,6 +548,31 @@ def smoke_need_state_driven_trial_runner() -> dict:
             "stop_reason": result["stop_reason"],
             "selected_actions": selected_actions,
             "final_need_state": result["final_need_state"],
+        },
+    )
+
+
+def smoke_need_state_trial_5_step_count() -> dict:
+    result = run_need_state_driven_trial_batch(trial_count=5, max_steps=10, random_seed=0)
+    passed = (
+        result["trial_count"] == 5
+        and len(result["step_counts"]) == 5
+        and "average_step_count" in result
+        and "min_step_count" in result
+        and "max_step_count" in result
+        and len(result["trials"]) == 5
+        and all("selected_actions" in trial for trial in result["trials"])
+    )
+    return _result(
+        "need_state_trial_5_step_count",
+        passed,
+        {
+            "trial_count": result["trial_count"],
+            "completed_count": result["completed_count"],
+            "step_counts": result["step_counts"],
+            "average_step_count": result["average_step_count"],
+            "min_step_count": result["min_step_count"],
+            "max_step_count": result["max_step_count"],
         },
     )
 
@@ -4734,6 +4759,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_box_on_goal_need_state(),
         smoke_minimal_need_state_driven_action_selection(),
         smoke_need_state_driven_trial_runner(),
+        smoke_need_state_trial_5_step_count(),
         smoke_clear_sandbox_working_state_cli(),
         smoke_grounded_learning_verification_cli(),
         smoke_standing_task(),

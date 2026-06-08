@@ -57,6 +57,44 @@ def run_need_state_driven_trial(
     return _build_trial_result(False, "max_steps_reached", final_need_state, final_result, steps)
 
 
+def run_need_state_driven_trial_batch(
+    trial_count: int = 5,
+    candidate_actions: list[str] | tuple[str, ...] | None = None,
+    max_steps: int = 10,
+    random_seed: int | str | bytes | None = None,
+) -> dict[str, Any]:
+    if trial_count < 0:
+        raise ValueError("trial_count must be non-negative")
+
+    candidates = tuple(candidate_actions) if candidate_actions is not None else ("move_up", "move_right", "push_down")
+    trials = []
+    for trial_index in range(trial_count):
+        trial_seed = _trial_seed(random_seed, trial_index)
+        trial = run_need_state_driven_trial(candidates, max_steps=max_steps, random_seed=trial_seed)
+        trials.append(
+            {
+                "trial_index": trial_index,
+                "completed_goal": trial["completed_goal"],
+                "stop_reason": trial["stop_reason"],
+                "step_count": trial["step_count"],
+                "final_need_state": trial["final_need_state"],
+                "selected_actions": [step["selected_action"] for step in trial["steps"]],
+            }
+        )
+
+    step_counts = [trial["step_count"] for trial in trials]
+    completed_count = sum(1 for trial in trials if trial["completed_goal"])
+    return {
+        "trial_count": trial_count,
+        "completed_count": completed_count,
+        "step_counts": step_counts,
+        "average_step_count": (sum(step_counts) / len(step_counts)) if step_counts else 0,
+        "min_step_count": min(step_counts) if step_counts else 0,
+        "max_step_count": max(step_counts) if step_counts else 0,
+        "trials": trials,
+    }
+
+
 def _build_trial_result(
     completed_goal: bool,
     stop_reason: str,
@@ -72,3 +110,13 @@ def _build_trial_result(
         "final_result": final_result,
         "steps": steps,
     }
+
+
+def _trial_seed(random_seed: int | str | bytes | None, trial_index: int) -> int | str | bytes | None:
+    if random_seed is None:
+        return None
+    if isinstance(random_seed, int):
+        return random_seed + trial_index
+    if isinstance(random_seed, bytes):
+        return random_seed + str(trial_index).encode("ascii")
+    return f"{random_seed}{trial_index}"

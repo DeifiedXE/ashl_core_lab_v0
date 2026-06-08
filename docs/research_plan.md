@@ -1920,6 +1920,28 @@ No tactile result mapping changes.
 No utterance_map changes.
 Trial runner is bounded by max_steps and does not create new actions.
 
+## Need-State Trial Runner 5-Trial Step Count v0
+
+Status:
+minimal-runtime / batch-trial-step-count / trace-summary / no-learning
+
+Summary:
+Adds run_need_state_driven_trial_batch(trial_count=5, candidate_actions=None, max_steps=10, random_seed=None).
+The helper runs run_need_state_driven_trial from the default micro push-box state for each trial.
+It returns trial_count, completed_count, step_counts, average_step_count, min_step_count, max_step_count, and trials.
+Each trial summary includes trial_index, completed_goal, stop_reason, step_count, final_need_state, and selected_actions.
+
+Boundary:
+No need-state selection behavior changes.
+No AI solver / pathfinding.
+No goal planning.
+No learning pipeline.
+No lesson_candidate pipeline connection.
+No lesson_store write.
+No Memory Layer write.
+No LLM / teaching chat loop / free text conversation.
+No autonomous behavior from aggregate step counts.
+
 ## Sandbox Working State Clear CLI v0
 
 Status:

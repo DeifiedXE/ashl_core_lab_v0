@@ -1,6 +1,9 @@
 import unittest
 
-from ashl_core.micro_push_box_trial_runner import run_need_state_driven_trial
+from ashl_core.micro_push_box_trial_runner import (
+    run_need_state_driven_trial,
+    run_need_state_driven_trial_batch,
+)
 
 
 class MicroPushBoxTrialRunnerTests(unittest.TestCase):
@@ -77,6 +80,70 @@ class MicroPushBoxTrialRunnerTests(unittest.TestCase):
         for step in result["steps"]:
             self.assertTrue(forbidden_keys.isdisjoint(step))
             self.assertTrue(forbidden_keys.isdisjoint(step["trace"]))
+
+    def test_trial_batch_defaults_to_five_trials(self):
+        result = run_need_state_driven_trial_batch(random_seed=0)
+
+        self.assertEqual(result["trial_count"], 5)
+        self.assertEqual(len(result["trials"]), 5)
+        self.assertEqual(len(result["step_counts"]), 5)
+        self.assertIn("average_step_count", result)
+        self.assertIn("min_step_count", result)
+        self.assertIn("max_step_count", result)
+
+    def test_trial_batch_records_trial_summaries(self):
+        result = run_need_state_driven_trial_batch(
+            trial_count=5,
+            candidate_actions=["move_up", "move_right", "push_down"],
+            max_steps=10,
+            random_seed=0,
+        )
+
+        for index, trial in enumerate(result["trials"]):
+            self.assertEqual(trial["trial_index"], index)
+            self.assertIn("completed_goal", trial)
+            self.assertIn("stop_reason", trial)
+            self.assertIn("step_count", trial)
+            self.assertIn("final_need_state", trial)
+            self.assertIn("selected_actions", trial)
+            self.assertIsInstance(trial["selected_actions"], list)
+
+    def test_trial_batch_reproducible_with_same_seed(self):
+        first = run_need_state_driven_trial_batch(random_seed=13)
+        second = run_need_state_driven_trial_batch(random_seed=13)
+
+        self.assertEqual(first, second)
+
+    def test_trial_batch_supports_blocked_max_steps_case(self):
+        result = run_need_state_driven_trial_batch(
+            trial_count=5,
+            candidate_actions=["push_right", "wait"],
+            max_steps=3,
+            random_seed=0,
+        )
+
+        self.assertEqual(result["trial_count"], 5)
+        self.assertEqual(result["completed_count"], 0)
+        self.assertEqual(result["step_counts"], [3, 3, 3, 3, 3])
+        self.assertEqual(result["average_step_count"], 3)
+        self.assertEqual(result["min_step_count"], 3)
+        self.assertEqual(result["max_step_count"], 3)
+
+    def test_trial_batch_does_not_write_learning_or_memory_outputs(self):
+        result = run_need_state_driven_trial_batch(random_seed=0)
+        forbidden_keys = {
+            "lesson_store_write",
+            "memory_layer_write",
+            "memory_write",
+            "lesson_candidate",
+            "solver",
+            "pathfinding",
+            "llm_prompt",
+        }
+
+        self.assertTrue(forbidden_keys.isdisjoint(result))
+        for trial in result["trials"]:
+            self.assertTrue(forbidden_keys.isdisjoint(trial))
 
 
 if __name__ == "__main__":
