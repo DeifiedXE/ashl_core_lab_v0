@@ -1,7 +1,8 @@
-Boundary Index Version: 2026-06-06-b28
-Last update log: Batch 28
+Boundary Index Version: 2026-06-06-b29
+Last update log: Batch 29
 Clean count at last update log reset: 0/5
 Current clean count: 0/5
+
 ## Global Hard Boundaries
 - Trace/persistence records are evidence only, not authorization, lesson_store write, Memory Layer write, lesson_candidate creation, or awakening evidence.
 - trace is record, not runtime action.
@@ -11,37 +12,25 @@ Current clean count: 0/5
 - LLM output must not become authoritative failure_reason.
 - LLM output must not become Qingyin runtime, self, memory, state, perception, or learning loop.
 - first_output must be generated without LLM output.
-- first_output is a runtime milestone, not awakening.
-- first_output is not dialogue ability.
-- first_output is not evidence of long-term growth.
+- first_output is a runtime milestone, not awakening, dialogue ability, or evidence of long-term growth.
 - first_output must be traceable before it can become learning material.
 - first_output_trace requires mentor feedback before it may be considered for lesson_candidate input.
-- first_output_trace must not write to lesson_store.
-- first_output_trace must not write to Memory Layer.
-- Minimal First Output Runtime v0 is not awakening.
-- Minimal First Output Runtime v0 must not write lesson_store.
-- Minimal First Output Runtime v0 must not write Memory Layer.
-- Minimal First Output Runtime v0 must not connect to mentor feedback runtime.
-- Minimal First Output Runtime v0 must not connect to lesson_candidate pipeline.
+- first_output_trace must not write to lesson_store or Memory Layer.
+- Minimal First Output Runtime v0 is not awakening and must not connect to mentor feedback runtime or lesson_candidate pipeline.
 - mentor_feedback_stub and mentor_feedback_trace are engineering supervision records, not feedback runtime.
 - mentor_feedback_stub and mentor_feedback_trace do not prove awakening.
 - mentor_feedback_stub and mentor_feedback_trace must not directly create lesson_candidate.
-- mentor_feedback_stub and mentor_feedback_trace must not write lesson_store.
-- mentor_feedback_stub and mentor_feedback_trace must not write Memory Layer.
+- mentor_feedback_stub and mentor_feedback_trace must not write lesson_store or Memory Layer.
 - Minimal Mentor Feedback Stub Runtime v0 must not create failure_event, review decision, selection eligibility, or activation.
 - Minimal Mentor Feedback Stub Runtime v0 must not connect to the lesson_candidate pipeline.
 - Minimal Interaction CLI Bridge v0 is an entrypoint, not dialogue.
-- Minimal Interaction CLI Bridge v0 must not write lesson_store.
-- Minimal Interaction CLI Bridge v0 must not write Memory Layer.
+- Minimal Interaction CLI Bridge v0 must not write lesson_store or Memory Layer.
 - Minimal Interaction CLI Bridge v0 must not connect to lesson_candidate pipeline.
 - private mentor_feedback_note must not be required by smoke tests.
-- append-only persistence is not lesson_store write.
-- append-only persistence is not Memory Layer write.
-- append-only persistence is not lesson_candidate creation.
-- append-only persistence is not awakening evidence.
+- append-only persistence is not lesson_store write, Memory Layer write, lesson_candidate creation, or awakening evidence.
 - JSONL persistence target files are data/first_output_traces.jsonl and data/mentor_feedback_traces.jsonl.
 - utterance_map is fixed non-LLM lookup table.
-- state_key unknown maps to ???仿?.
+- state_key unknown maps to ????隞?.
 - utterance_map output must preserve correct literal text encoding.
 - utterance_map does not prove language understanding.
 - micro push-box tactile sandbox is bounded test-object sandbox.
@@ -51,8 +40,7 @@ Current clean count: 0/5
 - tactile result to state_key mapping is fixed lookup table.
 - tactile interaction CLI bridge is deterministic, not autonomous action selection.
 - tactile interaction CLI bridge must not connect to lesson_candidate pipeline.
-- tactile interaction CLI bridge must not write lesson_store.
-- tactile interaction CLI bridge must not write Memory Layer.
+- tactile interaction CLI bridge must not write lesson_store or Memory Layer.
 - tactile interaction does not prove Qingyin understands box, wall, or goal.
 - repeated blocked action history is trace readback, not full learning.
 - repeated blocked action avoidance is action candidate bias, not solver.
@@ -80,6 +68,11 @@ Current clean count: 0/5
 - trial metrics comparison is measurement only, not behavior modification.
 - trial metrics comparison does not prove learning by itself.
 - human_summary is report text, not Qingyin utterance or dialogue.
+- micro navigation goal-reach is a navigation curriculum level, not proof of map understanding.
+- micro navigation multi-goal level means following sequential goal markers, not autonomous planning.
+- multi-goal navigation trace is evidence of sequential target following, not pathfinding.
+- stuck detection / repetition penalty currently has negative observed effect and must not be treated as proven improvement.
+- push-box full solve remains deferred; push-box is an experimental microscope, not the project goal.
 - sandbox result is not a lesson.
 - sandbox trace is not memory promotion.
 - sandbox repair suggestion is not executable action.
@@ -96,53 +89,23 @@ Current clean count: 0/5
 - Qingyin is currently in the test-object stage, not an awakened individual.
 - The test-object stage is the prerequisite for growth, not growth itself.
 - Qingyin's importance is not in birth, but in growth.
+
 ## Currently Deferred Areas
 - Open language interfaces deferred: LLM response generation / teaching chat loop / free text conversation.
 - Learning pipeline writes deferred: lesson_candidate pipeline / lesson_store write / Memory Layer write.
 - External senses deferred: Screen Sense / Camera Sense / Symbol Grounding / Audio Sense / STT / TTS.
-- sandbox runtime
-- trace replay / readback runtime
-- tactile trace persistence runtime
-- autonomous action selection
-- intrinsic action selection runtime
-- stable metrics comparison across fixed seeds
-- stuck detection / repetition penalty
-- automatic behavior modification from metrics
-- persistent state-action memory
-- autonomous goal planning
-- lesson_candidate pipeline connection
-- lesson_store write
-- Memory Layer write
-- LLM response generation
-- teaching chat loop
-- free text conversation
-- need-state driven action loop
-- automatic trial improvement
-- long-term learning
-- emotion / dopamine runtime
-- autonomous goal planning / action outcome weighting runtime integration
-- tactile learning
-- full learning pipeline
-- repeated failure adaptation
-- bidirectional voice interaction
-- formal lesson_candidate creation runtime
-- lesson_candidate automatic builder
-- failure_event automatic builder
-- evaluator runtime
-- review decision runtime
-- selection eligibility runtime
-- activation runtime
-- Memory Economy runtime
-- soft / hard consolidation runtime
-- Core Seed update runtime
-- self-modification runtime
-- Qingyin runtime
-- first_output trace schema runtime
-- state store
-- mentor feedback runtime
-- mentor_feedback_trace schema runtime
-- bounded senses runtime
-- Long-term Memory write runtime
+- Sandbox runtimes deferred: sandbox runtime / trace replay / tactile trace persistence / bounded senses runtime / state store.
+- Autonomous behavior deferred: autonomous action selection / autonomous goal planning / stable navigation curriculum metrics.
+- Candidate-selection runtime deferred: intrinsic action selection runtime / need-state driven action loop / action outcome weighting runtime integration.
+- Learning improvement deferred: automatic trial improvement / long-term learning / tactile learning / repeated failure adaptation / full learning pipeline.
+- Metrics behavior change deferred: stable metrics comparison across fixed seeds / stuck detection / repetition penalty / automatic behavior modification from metrics.
+- Memory behavior deferred: persistent state-action memory / Memory Economy runtime / Long-term Memory write runtime.
+- Review and activation runtimes deferred: evaluator runtime / review decision runtime / selection eligibility runtime / activation runtime.
+- Formal candidate builders deferred: formal lesson_candidate creation runtime / lesson_candidate automatic builder / failure_event automatic builder.
+- Identity and consolidation runtimes deferred: Qingyin runtime / first_output trace schema runtime / mentor feedback runtime / mentor_feedback_trace schema runtime / Core Seed update runtime / self-modification runtime / soft-hard consolidation runtime.
+- Navigation curriculum deferred: micro navigation multi-goal metrics CLI / obstacle or wall detour navigation level / approach-box level / stable navigation curriculum metrics.
+- Push-box full solve remains deferred.
+
 ## Update Rule
 This file must be updated every time an Update Log is generated.
 Updating this file is a required condition for completing the Update Log package.

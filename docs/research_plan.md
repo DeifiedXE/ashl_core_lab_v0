@@ -1421,6 +1421,25 @@ No lesson_store write.
 No Memory Layer write.
 No AI solver / pathfinding.
 
+## Current Boundary Index Batch 29 Sync Patch
+
+Status:
+completed / docs-only / boundary-index-sync / no-runtime
+
+Summary:
+Updates docs/current_boundary_index.md from Batch 28 to Batch 29.
+Adds Batch 29 hard boundaries for micro navigation goal-reach as curriculum level, multi-goal navigation as sequential marker following, multi-goal traces as evidence rather than pathfinding, stuck detection / repetition penalty as not-yet-proven improvement, and push-box full solve as deferred.
+Marks micro navigation multi-goal metrics CLI, obstacle / wall detour navigation level, approach-box level, push-box full solve, stable navigation curriculum metrics, lesson_candidate pipeline connection, lesson_store write, Memory Layer write, LLM response generation, teaching chat loop, and free text conversation as deferred.
+
+Boundary:
+No runtime behavior changes.
+No navigation sandbox logic changes.
+No push-box sandbox logic changes.
+No CLI behavior changes.
+No lesson_store or Memory Layer changes.
+No lesson_candidate pipeline changes.
+No AI solver / pathfinding.
+
 ## Current Boundary Index Compression Patch
 
 Status:

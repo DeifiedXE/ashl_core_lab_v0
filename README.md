@@ -1396,7 +1396,7 @@ v2.7a adds `ashl_core.failure_events` as a trace-only failure_event schema found
 
 - `docs/current_boundary_index.md`
 - Adds a short, versioned, low-token source of global hard boundaries for future work packages.
-- Current version: `Boundary Index Version: 2026-06-06-b28`.
+- Current version: `Boundary Index Version: 2026-06-06-b29`.
 - Lists current global hard boundaries and deferred areas.
 - Compression patch keeps the version at b25 while aggregating repeated boundary lines to preserve room for future sync packages.
 - Requires the file to be updated every time an Update Log is generated.
@@ -1417,6 +1417,14 @@ v2.7a adds `ashl_core.failure_events` as a trace-only failure_event schema found
 - Marks stuck detection / repetition penalty runtime, stable metrics comparison across fixed seeds, automatic behavior modification from metrics, persistent state-action memory, full learning pipeline, lesson_candidate pipeline connection, lesson_store write, Memory Layer write, LLM response generation, teaching chat loop, and free text conversation as deferred.
 - Keeps the boundary index under 150 lines.
 - Does not add runtime behavior or modify sandbox, CLI, trial runner, metrics, lesson_store, or Memory Layer logic.
+
+## Current Boundary Index Batch 29 Sync Patch
+
+- Updates `docs/current_boundary_index.md` from Batch 28 to Batch 29.
+- Adds Batch 29 hard boundaries for micro navigation goal-reach as curriculum level, multi-goal navigation as sequential marker following, multi-goal traces as evidence rather than pathfinding, stuck detection / repetition penalty as not-yet-proven improvement, and push-box full solve as deferred.
+- Marks micro navigation multi-goal metrics CLI, obstacle / wall detour navigation level, approach-box level, push-box full solve, stable navigation curriculum metrics, lesson_candidate pipeline connection, lesson_store write, Memory Layer write, LLM response generation, teaching chat loop, and free text conversation as deferred.
+- Keeps the boundary index under 150 lines.
+- Does not add runtime behavior or modify navigation sandbox, push-box sandbox, CLI, lesson_store, Memory Layer, lesson_candidate pipeline, or AI solver / pathfinding logic.
 
 ## v2.8e Review Decision Trace-only Schema
 
