@@ -74,12 +74,17 @@ from ashl_core.micro_navigation_sandbox import (
     ALLOWED_NAVIGATION_ACTIONS,
     apply_multi_goal_navigation_action,
     apply_navigation_action,
+    create_navigation_obstacle_level_state,
     build_initial_multi_goal_navigation_state,
     build_initial_navigation_state,
     manhattan_distance_to_goal as navigation_distance_to_goal,
     select_navigation_action_toward_goal,
 )
-from ashl_core.micro_navigation_trial_runner import run_navigation_goal_trial, run_navigation_multi_goal_trial
+from ashl_core.micro_navigation_trial_runner import (
+    run_navigation_goal_trial,
+    run_navigation_multi_goal_trial,
+    run_navigation_obstacle_trial,
+)
 from ashl_core.micro_push_box_sandbox import (
     ALLOWED_ACTION_SET,
     apply_tactile_action,
@@ -397,6 +402,43 @@ def smoke_micro_navigation_multi_goal_metrics_cli() -> dict:
             "human_summary": result.get("human_summary"),
             "first_trial_summary": first_trial_summary,
             "boundary": boundary,
+        },
+    )
+
+
+def smoke_navigation_obstacle_wall_detour_level() -> dict:
+    initial_state = create_navigation_obstacle_level_state()
+    wall_state = create_navigation_obstacle_level_state()
+    wall_state["agent_pos"] = (2, 1)
+    wall_state["grid"] = ("#######", "#.....#", "#Q###.#", "#....G#", "#######")
+    wall_trace = apply_navigation_action(wall_state, "move_right")["trace"]
+    trial = run_navigation_obstacle_trial(max_steps=20)
+    wall_blocked_avoided = any(step["blocked_candidates"] for step in trial["steps"]) and all(
+        step["navigation_result"] != "wall_blocked" for step in trial["steps"]
+    )
+    passed = (
+        initial_state["grid"] == ("#######", "#Q....#", "#.###.#", "#....G#", "#######")
+        and wall_trace["result"] == "wall_blocked"
+        and trial["completed_goal"] is True
+        and trial["step_count"] > 2
+        and trial["final_agent_pos"] == trial["goal_pos"]
+        and all(action in ALLOWED_NAVIGATION_ACTIONS for action in trial["selected_actions"])
+        and wall_blocked_avoided is True
+        and "lesson_candidate" not in trial
+        and "memory_layer_write" not in trial
+    )
+    return _result(
+        "navigation_obstacle_wall_detour_level",
+        passed,
+        {
+            "initial_agent_pos": initial_state["agent_pos"],
+            "goal_pos": initial_state["goal_pos"],
+            "wall_result": wall_trace["result"],
+            "completed_goal": trial["completed_goal"],
+            "step_count": trial["step_count"],
+            "selected_actions": trial["selected_actions"],
+            "final_agent_pos": trial["final_agent_pos"],
+            "wall_blocked_avoided": wall_blocked_avoided,
         },
     )
 
@@ -5270,6 +5312,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_micro_navigation_trial_metrics_cli(),
         smoke_micro_navigation_multi_goal_level(),
         smoke_micro_navigation_multi_goal_metrics_cli(),
+        smoke_navigation_obstacle_wall_detour_level(),
         smoke_micro_push_box_sandbox(),
         smoke_micro_push_box_allowed_action_set(),
         smoke_tactile_result_state_key_mapping(),

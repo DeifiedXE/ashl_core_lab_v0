@@ -57,6 +57,10 @@ def build_initial_multi_goal_navigation_state() -> dict[str, Any]:
     return state
 
 
+def create_navigation_obstacle_level_state() -> dict[str, Any]:
+    return _state_from_grid(MULTI_GOAL_LEVEL_MAP)
+
+
 def validate_navigation_action(action: str) -> str:
     if action not in ALLOWED_NAVIGATION_ACTIONS:
         raise ValueError(f"unsupported navigation action: {action}")
@@ -89,6 +93,46 @@ def select_navigation_action_toward_goal(
         if manhattan_distance_to_goal(target, goal_pos) < current_distance:
             return action
     return validated_candidates[0]
+
+
+def select_navigation_action_blocked_aware(
+    state: dict[str, Any],
+    candidate_actions: list[str] | tuple[str, ...] | None = None,
+) -> dict[str, Any]:
+    candidates = tuple(candidate_actions) if candidate_actions is not None else DEFAULT_CANDIDATE_ACTIONS
+    validated_candidates = tuple(validate_navigation_action(action) for action in candidates)
+    if not validated_candidates:
+        raise ValueError("candidate_actions must include at least one action")
+
+    agent_pos = tuple(state["agent_pos"])
+    goal_pos = tuple(state["goal_pos"])
+    considered_moves: list[dict[str, Any]] = []
+    blocked_candidates: list[str] = []
+    best_action = None
+    best_distance = None
+
+    for action in validated_candidates:
+        if not action.startswith("move_"):
+            continue
+        _, direction = action.split("_", 1)
+        target = _add(agent_pos, DIRECTIONS[direction])
+        if _tile_at(state, target) == "#":
+            blocked_candidates.append(action)
+            considered_moves.append({"action": action, "target": target, "blocked": True, "distance_to_goal": None})
+            continue
+        distance = manhattan_distance_to_goal(target, goal_pos)
+        considered_moves.append({"action": action, "target": target, "blocked": False, "distance_to_goal": distance})
+        if best_distance is None or distance < best_distance:
+            best_action = action
+            best_distance = distance
+
+    selected_action = best_action if best_action is not None else validated_candidates[0]
+    return {
+        "selected_action": selected_action,
+        "selection_rule": "blocked_aware_min_distance",
+        "blocked_candidates": blocked_candidates,
+        "considered_moves": considered_moves,
+    }
 
 
 def apply_navigation_action(state: dict[str, Any], action: str) -> dict[str, Any]:

@@ -6,7 +6,9 @@ from ashl_core.micro_navigation_sandbox import (
     apply_navigation_action,
     build_initial_multi_goal_navigation_state,
     build_initial_navigation_state,
+    create_navigation_obstacle_level_state,
     manhattan_distance_to_goal,
+    select_navigation_action_blocked_aware,
     select_navigation_action_toward_goal,
     validate_navigation_action,
 )
@@ -135,6 +137,48 @@ class MicroNavigationSandboxTests(unittest.TestCase):
     def test_multi_goal_invalid_action_raises_value_error(self):
         with self.assertRaises(ValueError):
             apply_multi_goal_navigation_action(build_initial_multi_goal_navigation_state(), "push_down")
+
+    def test_obstacle_level_initial_state_shape(self):
+        state = create_navigation_obstacle_level_state()
+
+        self.assertEqual(state["grid"], ("#######", "#Q....#", "#.###.#", "#....G#", "#######"))
+        self.assertEqual(state["agent_pos"], (1, 1))
+        self.assertEqual(state["goal_pos"], (3, 5))
+        self.assertEqual(state["tick"], 0)
+
+    def test_obstacle_level_move_into_wall_returns_wall_blocked(self):
+        state = create_navigation_obstacle_level_state()
+        state["agent_pos"] = (2, 1)
+        state["grid"] = ("#######", "#.....#", "#Q###.#", "#....G#", "#######")
+        result = apply_navigation_action(state, "move_right")
+
+        self.assertEqual(result["trace"]["trace_type"], "navigation_sandbox_trace")
+        self.assertEqual(result["trace"]["result"], "wall_blocked")
+        self.assertTrue(result["trace"]["blocked"])
+        self.assertEqual(result["trace"]["agent_pos"], (2, 1))
+
+    def test_blocked_aware_selection_avoids_wall_blocked_move(self):
+        state = create_navigation_obstacle_level_state()
+        state["agent_pos"] = (2, 1)
+        state["grid"] = ("#######", "#.....#", "#Q###.#", "#....G#", "#######")
+
+        selection = select_navigation_action_blocked_aware(state, ["move_right", "move_down"])
+
+        self.assertEqual(selection["selection_rule"], "blocked_aware_min_distance")
+        self.assertEqual(selection["selected_action"], "move_down")
+        self.assertEqual(selection["blocked_candidates"], ["move_right"])
+
+    def test_blocked_aware_selection_uses_minimum_distance(self):
+        state = create_navigation_obstacle_level_state()
+
+        selection = select_navigation_action_blocked_aware(state, ["move_up", "move_down", "move_right"])
+
+        self.assertEqual(selection["selected_action"], "move_down")
+        self.assertIn("move_up", selection["blocked_candidates"])
+
+    def test_blocked_aware_invalid_action_raises_value_error(self):
+        with self.assertRaises(ValueError):
+            select_navigation_action_blocked_aware(create_navigation_obstacle_level_state(), ["push_down"])
 
 
 if __name__ == "__main__":

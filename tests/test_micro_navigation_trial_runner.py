@@ -1,7 +1,11 @@
 import unittest
 
 from ashl_core.micro_navigation_sandbox import ALLOWED_NAVIGATION_ACTIONS
-from ashl_core.micro_navigation_trial_runner import run_navigation_goal_trial, run_navigation_multi_goal_trial
+from ashl_core.micro_navigation_trial_runner import (
+    run_navigation_goal_trial,
+    run_navigation_multi_goal_trial,
+    run_navigation_obstacle_trial,
+)
 
 
 class MicroNavigationTrialRunnerTests(unittest.TestCase):
@@ -115,6 +119,45 @@ class MicroNavigationTrialRunnerTests(unittest.TestCase):
     def test_multi_goal_invalid_candidate_action_raises_value_error(self):
         with self.assertRaises(ValueError):
             run_navigation_multi_goal_trial(candidate_actions=["move_down", "push_down"], max_steps=3)
+
+    def test_obstacle_trial_reaches_goal(self):
+        result = run_navigation_obstacle_trial(max_steps=20)
+
+        self.assertTrue(result["completed_goal"])
+        self.assertEqual(result["stop_reason"], "goal_reached")
+        self.assertEqual(result["final_agent_pos"], result["goal_pos"])
+        self.assertGreater(result["step_count"], 2)
+        self.assertTrue(all(action in ALLOWED_NAVIGATION_ACTIONS for action in result["selected_actions"]))
+
+    def test_obstacle_trial_uses_blocked_aware_selection(self):
+        result = run_navigation_obstacle_trial(max_steps=20)
+
+        self.assertTrue(any(step["selection_rule"] == "blocked_aware_min_distance" for step in result["steps"]))
+        self.assertTrue(any(step["blocked_candidates"] for step in result["steps"]))
+        self.assertNotIn("wall_blocked", [step["navigation_result"] for step in result["steps"]])
+
+    def test_obstacle_trial_summary_shape(self):
+        result = run_navigation_obstacle_trial(max_steps=20)
+
+        self.assertIn("completed_goal", result)
+        self.assertIn("step_count", result)
+        self.assertIn("stop_reason", result)
+        self.assertIn("selected_actions", result)
+        self.assertIn("final_agent_pos", result)
+        self.assertIn("goal_pos", result)
+        self.assertIn("steps", result)
+
+    def test_obstacle_trial_respects_max_steps(self):
+        result = run_navigation_obstacle_trial(candidate_actions=["wait"], max_steps=3)
+
+        self.assertFalse(result["completed_goal"])
+        self.assertEqual(result["stop_reason"], "max_steps_reached")
+        self.assertEqual(result["step_count"], 3)
+        self.assertEqual(result["selected_actions"], ["wait", "wait", "wait"])
+
+    def test_obstacle_trial_invalid_candidate_action_raises_value_error(self):
+        with self.assertRaises(ValueError):
+            run_navigation_obstacle_trial(candidate_actions=["move_down", "push_down"], max_steps=3)
 
 
 if __name__ == "__main__":

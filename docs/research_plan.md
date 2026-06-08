@@ -1936,6 +1936,32 @@ No Memory Layer writes.
 No LLM / teaching chat / free text conversation.
 No metric-driven behavior change.
 
+## Navigation Obstacle / Wall Detour Level v0
+
+Status:
+minimal-runtime / obstacle-navigation-level / blocked-aware-one-step-selection / no-learning
+
+Summary:
+Adds create_navigation_obstacle_level_state() for a deterministic obstacle navigation level using fixed map ####### / #Q....# / #.###.# / #....G# / #######.
+Adds select_navigation_action_blocked_aware(state, candidate_actions=None).
+The selector validates allowed navigation actions, ignores wall-blocked move candidates, chooses the non-wall candidate with minimum Manhattan distance to the goal, and preserves candidate order on ties.
+Adds run_navigation_obstacle_trial(candidate_actions=None, max_steps=20) as a bounded detour trial runner.
+Trial summaries include completed_goal, step_count, stop_reason, selected_actions, final_agent_pos, goal_pos, and steps.
+Step traces continue to use trace_type = navigation_sandbox_trace with action, before, after, result, blocked, agent_pos, goal_pos, and distance_to_goal.
+
+Boundary:
+No push-box sandbox behavior changes.
+No 3D / GMod adapter.
+No AI solver / pathfinding / BFS / A*.
+No goal planning.
+No learning pipeline.
+No lesson_candidate pipeline.
+No lesson_store writes.
+No Memory Layer writes.
+No LLM / teaching chat / free text conversation.
+No graphics / GUI.
+No autonomous behavior claim.
+
 ## Micro Navigation Trial Metrics CLI v0
 
 Status:
