@@ -1249,6 +1249,13 @@ Two-Trial History Boundary:
 - `failure_reasons` is always a list, so unknown and multiple failure reasons are supported.
 - This memory does not write lesson_store or Memory Layer and is not proof of general learning.
 
+## Session Working Memory Trial Integration v0
+
+- Adds `py -3 -m ashl_core.teaching_cli run-session-working-memory-trial --level-id approach_box_dead_end_v0 --max-steps 100 --max-records 20`.
+- Runs a bounded Trial 1 style observer and records generic state-action-outcome records into session-local working memory.
+- The memory is short-term only and is cleared at session end.
+- This command does not write lesson_store or Memory Layer, does not modify action selection, and is not proof of general learning.
+
 ## Micro Navigation Trial Metrics CLI v0
 
 - Adds `py -3 -m ashl_core.teaching_cli run-navigation-trial-metrics --runs 4 --trial-count 5 --max-steps 10`.

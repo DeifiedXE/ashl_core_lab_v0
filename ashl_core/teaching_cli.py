@@ -2142,6 +2142,151 @@ def demo_session_working_memory_cli(max_records: int = 20) -> dict[str, Any]:
     }
 
 
+def _map_session_trial_outcome(
+    *,
+    raw_result: str,
+    target_pos: list[int] | None,
+    dead_end_positions: list[list[int]],
+) -> tuple[str, list[str]]:
+    if raw_result in {"wall_blocked", "box_blocked"}:
+        return "blocked", [raw_result]
+    if raw_result == "moved" and target_pos in dead_end_positions:
+        return "entered_trap", ["entered_dead_end"]
+    if raw_result == "moved":
+        return "moved", []
+    if raw_result == "completed_approach":
+        return "goal_reached", []
+    if raw_result == "no_progress":
+        return "no_progress", ["no_progress"]
+    return "unknown", ["unknown"]
+
+
+def _build_session_working_memory_trial_records(
+    trial: dict[str, Any],
+) -> list[dict[str, Any]]:
+    records = []
+    dead_end_positions = trial["dead_end_positions_visited"]
+    frames = _build_dead_end_replay_frames("Trial 1", trial, DEAD_END_TRIAL1_REPLAY_POSITIONS)
+    for frame in frames[1:]:
+        prior_frame = frames[frame["step_index"] - 1]
+        target_pos = frame.get("blocked_at", frame["agent_pos"])
+        raw_result = frame["result"]
+        outcome_type, failure_reasons = _map_session_trial_outcome(
+            raw_result=raw_result,
+            target_pos=target_pos,
+            dead_end_positions=dead_end_positions,
+        )
+        records.append(
+            build_session_outcome_record(
+                tick=frame["step_index"] - 1,
+                state_snapshot={
+                    "agent_pos": prior_frame["agent_pos"],
+                    "box_pos": trial["box_pos"],
+                    "level_id": trial["level_id"],
+                },
+                action=frame["action"],
+                target=target_pos,
+                outcome_type=outcome_type,
+                failure_reasons=failure_reasons,
+                metadata={
+                    "target_pos": target_pos,
+                    "blocked_at": frame.get("blocked_at"),
+                    "raw_result": raw_result,
+                    "source": "session_working_memory_trial_v0",
+                },
+            )
+        )
+    return records
+
+
+def run_session_working_memory_trial_cli(
+    level_id: str = "approach_box_dead_end_v0",
+    max_steps: int = 100,
+    max_records: int = 20,
+) -> dict[str, Any]:
+    if level_id != "approach_box_dead_end_v0":
+        return {
+            "command": "run-session-working-memory-trial",
+            "flow": "session_working_memory_trial_integration_v0",
+            "status": "error",
+            "level_id": level_id,
+            "max_steps": max_steps,
+            "max_records": max_records,
+            "error": "unsupported_level_id",
+            "supported_level_ids": ["approach_box_dead_end_v0"],
+            "notes": [
+                "Session Working Memory Trial Integration v0 supports approach_box_dead_end_v0 only.",
+                "user_maze_dead_end_candidate_v0 is not supported in this package.",
+            ],
+        }
+
+    memory = create_session_working_memory(max_records=max_records)
+    trial = run_approach_box_dead_end_trial_cli(max_steps=max_steps)
+    for record in _build_session_working_memory_trial_records(trial):
+        append_outcome_record(memory, record)
+
+    records_before_clear = query_recent_outcomes(memory)
+    blocked_records = query_recent_outcomes(memory, outcome_type="blocked")
+    entered_trap_records = query_recent_outcomes(memory, outcome_type="entered_trap")
+    goal_reached_records = query_recent_outcomes(memory, outcome_type="goal_reached")
+    unknown_records = query_recent_outcomes(memory, outcome_type="unknown")
+    move_down_records = query_recent_outcomes(memory, action="move_down")
+    wall_blocked_records = [
+        record for record in records_before_clear if "wall_blocked" in record["failure_reasons"]
+    ]
+    clear_session_working_memory(memory)
+    record_count_after_clear = len(memory["records"])
+    return {
+        "command": "run-session-working-memory-trial",
+        "flow": "session_working_memory_trial_integration_v0",
+        "status": "ok",
+        "level_id": level_id,
+        "max_steps": max_steps,
+        "max_records": max_records,
+        "session_summary": {
+            "started": True,
+            "ended": True,
+            "end_reason": "completed_approach" if trial["completed_approach"] else "max_steps_or_stopped",
+            "completed_approach": trial["completed_approach"],
+            "step_count": trial["step_count"],
+            "record_count_before_clear": len(records_before_clear),
+            "record_count_after_clear": record_count_after_clear,
+        },
+        "records": records_before_clear,
+        "query_summary": {
+            "query_by_outcome_type_blocked_count": len(blocked_records),
+            "query_by_outcome_type_entered_trap_count": len(entered_trap_records),
+            "query_by_outcome_type_goal_reached_count": len(goal_reached_records),
+            "query_by_failure_reason_wall_blocked_count": len(wall_blocked_records),
+            "query_by_failure_reason_unknown_count": sum(
+                1 for record in unknown_records if "unknown" in record["failure_reasons"]
+            ),
+            "query_by_action_move_down_count": len(move_down_records),
+        },
+        "clear_summary": {
+            "cleared": True,
+            "record_count_after_clear": record_count_after_clear,
+        },
+        "boundary_check": {
+            "session_local_only": True,
+            "persistent_memory_write": False,
+            "lesson_store_write": False,
+            "memory_layer_write": False,
+            "long_term_memory_write": False,
+            "action_selection_modified": False,
+            "goal_bias_modified": False,
+            "state_action_memory_modified": False,
+            "used_llm": False,
+            "used_pathfinding": False,
+        },
+        "notes": [
+            "This command records generic state-action-outcome records into session-local working memory.",
+            "Session working memory is cleared at session end.",
+            "This does not modify action selection and is not proof of general learning.",
+        ],
+    }
+
+
 DEAD_END_ASCII_WIDTH = 8
 DEAD_END_ASCII_HEIGHT = 6
 DEAD_END_WALLS = {
@@ -3162,6 +3307,8 @@ def run_command(command: str) -> dict[str, Any]:
         return run_local_memory_decision_trace_observer_cli()
     if command == "demo-session-working-memory":
         return demo_session_working_memory_cli()
+    if command == "run-session-working-memory-trial":
+        return run_session_working_memory_trial_cli()
     return {
         "command": command,
         "status": "error",
@@ -3204,6 +3351,7 @@ def main(argv: list[str] | None = None) -> int:
             "run-valid-dead-end-maps-ab-control",
             "observe-local-memory-decision-trace",
             "demo-session-working-memory",
+            "run-session-working-memory-trial",
         ],
     )
     parser.add_argument("--review-id", default="review_001")
@@ -3307,6 +3455,12 @@ def main(argv: list[str] | None = None) -> int:
         )
     elif args.command == "demo-session-working-memory":
         result = demo_session_working_memory_cli(max_records=args.max_records)
+    elif args.command == "run-session-working-memory-trial":
+        result = run_session_working_memory_trial_cli(
+            level_id=args.level_id,
+            max_steps=args.max_steps,
+            max_records=args.max_records,
+        )
     else:
         result = run_command(args.command)
     if hasattr(sys.stdout, "reconfigure"):

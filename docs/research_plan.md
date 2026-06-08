@@ -2376,6 +2376,33 @@ It does not use pathfinding / BFS / A*.
 It does not use LLM planning.
 This is not proof of general learning.
 
+## Session Working Memory Trial Integration v0
+
+Status:
+minimal-runtime / observer-trial-integration / session-local / no-general-learning-proof
+
+Summary:
+Adds py -3 -m ashl_core.teaching_cli run-session-working-memory-trial --level-id approach_box_dead_end_v0 --max-steps 100 --max-records 20.
+The command runs a bounded Trial 1 style observer and appends generic state-action-outcome records to Session Working Memory.
+Records include tick, state_snapshot, action, outcome_type, failure_reasons, and metadata.
+The command reports query_summary and clears session working memory at session end.
+
+Boundary:
+Session-local only.
+Short-term only.
+Memory is cleared at session end.
+No persistent memory write.
+No lesson_store write.
+No Memory Layer write.
+No Long-term Memory write.
+No action selection changes.
+No goal bias changes.
+No state-action memory changes.
+No existing dead-end A/B behavior changes.
+No pathfinding / BFS / A*.
+No LLM planning.
+This is not proof of general learning.
+
 ## Micro Navigation Trial Metrics CLI v0
 
 Status:

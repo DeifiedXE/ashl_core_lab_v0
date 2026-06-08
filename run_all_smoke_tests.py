@@ -153,6 +153,7 @@ from ashl_core.teaching_cli import (
     run_valid_dead_end_maps_ab_control_cli,
     run_local_memory_decision_trace_observer_cli,
     demo_session_working_memory_cli,
+    run_session_working_memory_trial_cli,
     run_navigation_multi_goal_metrics_cli,
     run_navigation_obstacle_trial_cli,
     run_navigation_trial_metrics_cli,
@@ -1087,6 +1088,59 @@ def smoke_session_working_memory_demo() -> dict:
             "max_records": result.get("max_records"),
             "outcome_types_supported": result.get("outcome_types_supported", []),
             "demo": demo,
+            "boundary_check": boundary,
+        },
+    )
+
+
+def smoke_session_working_memory_trial() -> dict:
+    result = run_session_working_memory_trial_cli(
+        level_id="approach_box_dead_end_v0",
+        max_steps=100,
+        max_records=20,
+    )
+    records = result.get("records", [])
+    query = result.get("query_summary", {})
+    clear = result.get("clear_summary", {})
+    boundary = result.get("boundary_check", {})
+    outcome_types = {record.get("outcome_type") for record in records}
+    passed = (
+        result.get("flow") == "session_working_memory_trial_integration_v0"
+        and result.get("command") == "run-session-working-memory-trial"
+        and result.get("level_id") == "approach_box_dead_end_v0"
+        and result.get("max_steps") == 100
+        and result.get("max_records") == 20
+        and result.get("session_summary", {}).get("started") is True
+        and result.get("session_summary", {}).get("ended") is True
+        and bool(records)
+        and all("outcome_type" in record for record in records)
+        and all(isinstance(record.get("failure_reasons"), list) for record in records)
+        and "moved" in outcome_types
+        and bool({"blocked", "entered_trap"}.intersection(outcome_types))
+        and "query_by_outcome_type_blocked_count" in query
+        and "query_by_outcome_type_entered_trap_count" in query
+        and "query_by_outcome_type_goal_reached_count" in query
+        and "query_by_failure_reason_wall_blocked_count" in query
+        and "query_by_failure_reason_unknown_count" in query
+        and "query_by_action_move_down_count" in query
+        and clear.get("cleared") is True
+        and clear.get("record_count_after_clear") == 0
+        and boundary.get("session_local_only") is True
+        and boundary.get("persistent_memory_write") is False
+        and boundary.get("lesson_store_write") is False
+        and boundary.get("memory_layer_write") is False
+        and boundary.get("long_term_memory_write") is False
+        and boundary.get("action_selection_modified") is False
+        and boundary.get("used_llm") is False
+        and boundary.get("used_pathfinding") is False
+    )
+    return _result(
+        "session_working_memory_trial",
+        passed,
+        {
+            "session_summary": result.get("session_summary", {}),
+            "query_summary": query,
+            "clear_summary": clear,
             "boundary_check": boundary,
         },
     )
@@ -6070,6 +6124,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_valid_dead_end_maps_ab_control(),
         smoke_local_memory_decision_trace_observer(),
         smoke_session_working_memory_demo(),
+        smoke_session_working_memory_trial(),
         smoke_approach_box_dead_end_memory_control_check(),
         smoke_dead_end_memory_control_trial1_source_audit(),
         smoke_micro_push_box_sandbox(),
