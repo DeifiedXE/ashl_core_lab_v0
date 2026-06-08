@@ -1241,6 +1241,14 @@ Two-Trial History Boundary:
 - This is observer output only and does not modify action selection, goal bias, or state-action memory.
 - This command does not use LLM planning, does not use pathfinding / BFS / A*, and is not proof of general learning.
 
+## Session Working Memory v0
+
+- Adds a session-local generic state-action-outcome working memory plus `py -3 -m ashl_core.teaching_cli demo-session-working-memory --max-records 20`.
+- Session Working Memory is short-term only and stores generic state-action-outcome records.
+- It is not wall-specific, not dead-end-specific, and not Long-term Memory.
+- `failure_reasons` is always a list, so unknown and multiple failure reasons are supported.
+- This memory does not write lesson_store or Memory Layer and is not proof of general learning.
+
 ## Micro Navigation Trial Metrics CLI v0
 
 - Adds `py -3 -m ashl_core.teaching_cli run-navigation-trial-metrics --runs 4 --trial-count 5 --max-steps 10`.

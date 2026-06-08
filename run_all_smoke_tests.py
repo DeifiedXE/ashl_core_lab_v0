@@ -152,6 +152,7 @@ from ashl_core.teaching_cli import (
     run_candidate_dead_end_trial1_ascii_replay_cli,
     run_valid_dead_end_maps_ab_control_cli,
     run_local_memory_decision_trace_observer_cli,
+    demo_session_working_memory_cli,
     run_navigation_multi_goal_metrics_cli,
     run_navigation_obstacle_trial_cli,
     run_navigation_trial_metrics_cli,
@@ -1049,6 +1050,43 @@ def smoke_local_memory_decision_trace_observer() -> dict:
             "trial2_step_count": result.get("trial_2_summary", {}).get("step_count"),
             "decision_trace_count": len(trace),
             "key_observation": result.get("key_observation", {}),
+            "boundary_check": boundary,
+        },
+    )
+
+
+def smoke_session_working_memory_demo() -> dict:
+    result = demo_session_working_memory_cli(max_records=20)
+    boundary = result.get("boundary_check", {})
+    demo = result.get("demo", {})
+    passed = (
+        result.get("flow") == "session_working_memory_v0"
+        and result.get("command") == "demo-session-working-memory"
+        and result.get("max_records") == 20
+        and result.get("failure_reasons_supports_list") is True
+        and result.get("unknown_failure_supported") is True
+        and result.get("multiple_failure_reasons_supported") is True
+        and result.get("persistent_write") is False
+        and demo.get("query_by_action_count") == 2
+        and demo.get("query_by_outcome_type_count") == 2
+        and demo.get("query_by_state_action_count") == 1
+        and demo.get("record_count_after_clear") == 0
+        and boundary.get("session_local_only") is True
+        and boundary.get("persistent_memory_write") is False
+        and boundary.get("lesson_store_write") is False
+        and boundary.get("memory_layer_write") is False
+        and boundary.get("long_term_memory_write") is False
+        and boundary.get("action_selection_modified") is False
+        and boundary.get("used_llm") is False
+        and boundary.get("used_pathfinding") is False
+    )
+    return _result(
+        "session_working_memory_demo",
+        passed,
+        {
+            "max_records": result.get("max_records"),
+            "outcome_types_supported": result.get("outcome_types_supported", []),
+            "demo": demo,
             "boundary_check": boundary,
         },
     )
@@ -6031,6 +6069,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_candidate_map_trial1_ascii_replay(),
         smoke_valid_dead_end_maps_ab_control(),
         smoke_local_memory_decision_trace_observer(),
+        smoke_session_working_memory_demo(),
         smoke_approach_box_dead_end_memory_control_check(),
         smoke_dead_end_memory_control_trial1_source_audit(),
         smoke_micro_push_box_sandbox(),

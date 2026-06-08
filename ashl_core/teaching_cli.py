@@ -32,6 +32,14 @@ from .micro_navigation_trial_runner import (
 )
 from .micro_navigation_sandbox import manhattan_distance_to_box
 from .micro_push_box_trial_runner import run_need_state_driven_trial_batch
+from .session_working_memory import (
+    SUPPORTED_OUTCOME_TYPES,
+    append_outcome_record,
+    build_session_outcome_record,
+    clear_session_working_memory,
+    create_session_working_memory,
+    query_recent_outcomes,
+)
 from .tactile_state_mapping import map_tactile_result_to_state_key
 from .trace_persistence import append_first_output_trace, append_mentor_feedback_trace
 
@@ -2047,6 +2055,93 @@ def run_local_memory_decision_trace_observer_cli(
     }
 
 
+def demo_session_working_memory_cli(max_records: int = 20) -> dict[str, Any]:
+    memory = create_session_working_memory(max_records=max_records)
+    records = [
+        build_session_outcome_record(
+            tick=1,
+            state_snapshot={"agent_pos": [1, 1], "level_id": "session_memory_demo_v0"},
+            action="move_right",
+            target=[2, 1],
+            outcome_type="moved",
+            metadata={"target_pos": [2, 1], "raw_result": "moved", "source": "demo"},
+        ),
+        build_session_outcome_record(
+            tick=2,
+            state_snapshot={"agent_pos": [2, 1], "level_id": "session_memory_demo_v0"},
+            action="move_right",
+            target=[3, 1],
+            outcome_type="blocked",
+            failure_reasons=["wall_blocked"],
+            metadata={"blocked_at": [3, 1], "raw_result": "wall_blocked", "source": "demo"},
+        ),
+        build_session_outcome_record(
+            tick=3,
+            state_snapshot={"agent_pos": [2, 1], "level_id": "session_memory_demo_v0"},
+            action="wait",
+            outcome_type="unknown",
+            failure_reasons=["unknown"],
+            metadata={"raw_result": "unknown", "source": "demo"},
+        ),
+        build_session_outcome_record(
+            tick=4,
+            state_snapshot={"agent_pos": [4, 2], "box_pos": [4, 4], "level_id": "session_memory_demo_v0"},
+            action="move_down",
+            target=[4, 3],
+            outcome_type="blocked",
+            failure_reasons=["wall_blocked", "no_progress"],
+            metadata={"blocked_at": [4, 3], "raw_result": "wall_blocked", "source": "demo"},
+        ),
+    ]
+    for record in records:
+        append_outcome_record(memory, record)
+
+    query_by_action = query_recent_outcomes(memory, action="move_right")
+    query_by_outcome_type = query_recent_outcomes(memory, outcome_type="blocked")
+    query_by_state_action = query_recent_outcomes(
+        memory,
+        state_snapshot={"agent_pos": [4, 2], "box_pos": [4, 4], "level_id": "session_memory_demo_v0"},
+        action="move_down",
+    )
+    record_count_before_clear = len(memory["records"])
+    clear_session_working_memory(memory)
+    return {
+        "command": "demo-session-working-memory",
+        "flow": "session_working_memory_v0",
+        "status": "ok",
+        "max_records": max_records,
+        "outcome_types_supported": sorted(SUPPORTED_OUTCOME_TYPES),
+        "failure_reasons_supports_list": True,
+        "unknown_failure_supported": True,
+        "multiple_failure_reasons_supported": True,
+        "persistent_write": False,
+        "demo": {
+            "appended_records": records,
+            "query_by_action_count": len(query_by_action),
+            "query_by_outcome_type_count": len(query_by_outcome_type),
+            "query_by_state_action_count": len(query_by_state_action),
+            "record_count_before_clear": record_count_before_clear,
+            "record_count_after_clear": len(memory["records"]),
+        },
+        "boundary_check": {
+            "session_local_only": True,
+            "persistent_memory_write": False,
+            "lesson_store_write": False,
+            "memory_layer_write": False,
+            "long_term_memory_write": False,
+            "action_selection_modified": False,
+            "used_llm": False,
+            "used_pathfinding": False,
+        },
+        "notes": [
+            "Session Working Memory is short-term only.",
+            "It stores generic state-action-outcome records.",
+            "It is not wall-specific or dead-end-specific.",
+            "It is not long-term memory and does not prove general learning.",
+        ],
+    }
+
+
 DEAD_END_ASCII_WIDTH = 8
 DEAD_END_ASCII_HEIGHT = 6
 DEAD_END_WALLS = {
@@ -3065,6 +3160,8 @@ def run_command(command: str) -> dict[str, Any]:
         return run_valid_dead_end_maps_ab_control_cli()
     if command == "observe-local-memory-decision-trace":
         return run_local_memory_decision_trace_observer_cli()
+    if command == "demo-session-working-memory":
+        return demo_session_working_memory_cli()
     return {
         "command": command,
         "status": "error",
@@ -3106,6 +3203,7 @@ def main(argv: list[str] | None = None) -> int:
             "replay-dead-end-trial1-candidate-maps",
             "run-valid-dead-end-maps-ab-control",
             "observe-local-memory-decision-trace",
+            "demo-session-working-memory",
         ],
     )
     parser.add_argument("--review-id", default="review_001")
@@ -3125,6 +3223,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--random-seed", type=int, default=None)
     parser.add_argument("--baseline-path", default="data/baselines/trial_metrics_baseline_v0.json")
     parser.add_argument("--level-id", default="approach_box_dead_end_v0")
+    parser.add_argument("--max-records", type=int, default=20)
     args = parser.parse_args(argv)
     if args.command == "run-review-approve":
         result = run_review_approve(review_id=args.review_id, notes=args.notes)
@@ -3206,6 +3305,8 @@ def main(argv: list[str] | None = None) -> int:
             level_id=args.level_id,
             max_steps=args.max_steps,
         )
+    elif args.command == "demo-session-working-memory":
+        result = demo_session_working_memory_cli(max_records=args.max_records)
     else:
         result = run_command(args.command)
     if hasattr(sys.stdout, "reconfigure"):

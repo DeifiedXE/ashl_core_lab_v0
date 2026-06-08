@@ -2348,6 +2348,34 @@ No Memory Layer write.
 No LLM planning.
 This is not proof of general learning.
 
+## Session Working Memory v0
+
+Status:
+minimal-runtime / session-local / generic-state-action-outcome / no-general-learning-proof
+
+Summary:
+Adds a session-local working memory for generic state-action-outcome records.
+Adds py -3 -m ashl_core.teaching_cli demo-session-working-memory --max-records 20.
+The memory stores records with tick, state_snapshot, action, outcome_type, failure_reasons, and metadata.
+It supports generic outcome types including moved, blocked, no_progress, entered_trap, goal_progress, goal_reached, and unknown.
+failure_reasons is always a list and supports empty, unknown, and multiple reasons.
+
+Boundary:
+Session Working Memory is short-term only.
+It is generic state-action-outcome memory.
+It is not wall-specific.
+It is not dead-end-specific.
+It is not Long-term Memory.
+It does not write lesson_store.
+It does not write Memory Layer.
+It does not connect to lesson_candidate pipeline.
+It does not modify action selection.
+It does not modify goal bias.
+It does not modify existing dead-end A/B behavior.
+It does not use pathfinding / BFS / A*.
+It does not use LLM planning.
+This is not proof of general learning.
+
 ## Micro Navigation Trial Metrics CLI v0
 
 Status:
