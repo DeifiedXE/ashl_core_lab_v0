@@ -1,4 +1,4 @@
-"""Tiny deterministic navigation sandbox for reaching a fixed goal."""
+"""Tiny deterministic navigation sandbox for reaching fixed navigation goals."""
 
 from __future__ import annotations
 
@@ -12,6 +12,16 @@ INITIAL_MAP = (
     "#..G#",
     "#####",
 )
+
+MULTI_GOAL_LEVEL_MAP = (
+    "#######",
+    "#Q....#",
+    "#.###.#",
+    "#....G#",
+    "#######",
+)
+
+MULTI_GOAL_SEQUENCE = ((3, 5), (3, 1))
 
 DIRECTIONS = {
     "up": (-1, 0),
@@ -35,6 +45,16 @@ DEFAULT_CANDIDATE_ACTIONS = ("move_up", "move_down", "move_left", "move_right", 
 
 def build_initial_navigation_state() -> dict[str, Any]:
     return _state_from_grid(INITIAL_MAP)
+
+
+def build_initial_multi_goal_navigation_state() -> dict[str, Any]:
+    state = _state_from_grid(MULTI_GOAL_LEVEL_MAP)
+    state["goal_sequence"] = MULTI_GOAL_SEQUENCE
+    state["goal_index"] = 0
+    state["goals_reached"] = 0
+    state["goal_pos"] = MULTI_GOAL_SEQUENCE[0]
+    state["grid"] = _render_grid(state)
+    return state
 
 
 def validate_navigation_action(action: str) -> str:
@@ -106,6 +126,56 @@ def apply_navigation_action(state: dict[str, Any], action: str) -> dict[str, Any
     return {"state": after, "trace": trace}
 
 
+def apply_multi_goal_navigation_action(state: dict[str, Any], action: str) -> dict[str, Any]:
+    action = validate_navigation_action(action)
+    before = _snapshot(state)
+    after = _snapshot(state)
+    blocked = False
+    goal_reached_this_step = False
+    next_goal_spawned = False
+
+    if action == "wait":
+        result = "wait"
+    else:
+        _, direction = action.split("_", 1)
+        target = _add(tuple(before["agent_pos"]), DIRECTIONS[direction])
+        if _tile_at(before, target) == "#":
+            result = "wall_blocked"
+            blocked = True
+        else:
+            after["agent_pos"] = target
+            if target == tuple(before["goal_pos"]):
+                goal_reached_this_step = True
+                after["goals_reached"] = before["goals_reached"] + 1
+                after["goal_index"] = before["goal_index"] + 1
+                if after["goal_index"] < len(after["goal_sequence"]):
+                    after["goal_pos"] = tuple(after["goal_sequence"][after["goal_index"]])
+                    next_goal_spawned = True
+                result = "goal_reached"
+            else:
+                result = "moved"
+
+    after["tick"] = before["tick"] + 1
+    after["grid"] = _render_grid(after)
+    trace = {
+        "trace_type": "navigation_multi_goal_sandbox_trace",
+        "tick": after["tick"],
+        "action": action,
+        "before": before,
+        "after": after,
+        "result": result,
+        "blocked": blocked,
+        "agent_pos": after["agent_pos"],
+        "goal_pos": after["goal_pos"],
+        "distance_to_goal": manhattan_distance_to_goal(tuple(after["agent_pos"]), tuple(after["goal_pos"])),
+        "goal_reached_this_step": goal_reached_this_step,
+        "goal_index": after["goal_index"],
+        "goals_reached": after["goals_reached"],
+        "next_goal_spawned": next_goal_spawned,
+    }
+    return {"state": after, "trace": trace}
+
+
 def _state_from_grid(grid: tuple[str, ...]) -> dict[str, Any]:
     agent_pos = None
     goal_pos = None
@@ -118,6 +188,7 @@ def _state_from_grid(grid: tuple[str, ...]) -> dict[str, Any]:
     if agent_pos is None or goal_pos is None:
         raise ValueError("navigation grid must include Q and G")
     state = {
+        "base_grid": grid,
         "grid": grid,
         "agent_pos": agent_pos,
         "goal_pos": goal_pos,
@@ -128,19 +199,25 @@ def _state_from_grid(grid: tuple[str, ...]) -> dict[str, Any]:
 
 
 def _snapshot(state: dict[str, Any]) -> dict[str, Any]:
-    return {
+    snapshot = {
+        "base_grid": tuple(state.get("base_grid", INITIAL_MAP)),
         "grid": tuple(state["grid"]),
         "agent_pos": tuple(state["agent_pos"]),
         "goal_pos": tuple(state["goal_pos"]),
         "tick": state["tick"],
     }
+    if "goal_sequence" in state:
+        snapshot["goal_sequence"] = tuple(tuple(goal) for goal in state["goal_sequence"])
+        snapshot["goal_index"] = state["goal_index"]
+        snapshot["goals_reached"] = state["goals_reached"]
+    return snapshot
 
 
 def _render_grid(state: dict[str, Any]) -> tuple[str, ...]:
-    base = [list(row) for row in INITIAL_MAP]
+    base = [list(row) for row in state.get("base_grid", INITIAL_MAP)]
     for row_index, row in enumerate(base):
         for col_index, char in enumerate(row):
-            if char == "Q":
+            if char in {"Q", "G"}:
                 base[row_index][col_index] = "."
     agent_pos = tuple(state["agent_pos"])
     goal_pos = tuple(state["goal_pos"])

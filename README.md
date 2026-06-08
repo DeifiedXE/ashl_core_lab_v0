@@ -1102,6 +1102,19 @@ v2.7a adds `ashl_core.failure_events` as a trace-only failure_event schema found
 - Adds `run_navigation_goal_trial(candidate_actions=None, max_steps=10)` for a bounded goal-reach trial.
 - This is a tiny Level 0 navigation sandbox, not a modification to push-box sandbox, AI solver / pathfinding, goal planning, learning pipeline, lesson_candidate pipeline, lesson_store / Memory Layer write, LLM / teaching chat, graphics, or GUI.
 
+## Micro Navigation Multi-Goal Level v0
+
+- Adds a deterministic multi-step navigation level with a fixed map: `####### / #Q....# / #.###.# / #....G# / #######`.
+- Internal navigation coordinates keep the existing `(row, col)` convention.
+- Initial agent position is `(1, 1)`.
+- Goal sequence is `((3, 5), (3, 1))`.
+- Multi-goal state records `agent_pos`, `goal_pos`, `goal_index`, `goals_reached`, and `tick`.
+- Reaching the first goal increments `goals_reached`, increments `goal_index`, and spawns the second goal.
+- Reaching the final goal completes the trial.
+- Multi-goal traces record `goal_reached_this_step`, `goal_index`, `goals_reached`, and `next_goal_spawned`.
+- Adds `run_navigation_multi_goal_trial(candidate_actions=None, max_steps=20)` for a bounded two-goal navigation trial.
+- This is a deterministic multi-goal level, not a modification to push-box sandbox, AI solver / pathfinding, goal planning, learning pipeline, lesson_candidate pipeline, lesson_store / Memory Layer write, LLM / teaching chat, graphics, or GUI.
+
 ## Micro Navigation Trial Metrics CLI v0
 
 - Adds `py -3 -m ashl_core.teaching_cli run-navigation-trial-metrics --runs 4 --trial-count 5 --max-steps 10`.

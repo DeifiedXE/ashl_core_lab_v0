@@ -1863,6 +1863,34 @@ No LLM / teaching chat / free text conversation.
 No graphics / GUI.
 No autonomous behavior claim.
 
+## Micro Navigation Multi-Goal Level v0
+
+Status:
+minimal-runtime / multi-goal-navigation-level / bounded-two-goal-trial / no-learning
+
+Summary:
+Adds a deterministic multi-step navigation level with fixed map ####### / #Q....# / #.###.# / #....G# / #######.
+Internal coordinates keep the existing row, col convention.
+The initial agent position is (1, 1).
+The goal sequence is ((3, 5), (3, 1)).
+Multi-goal navigation state records agent_pos, goal_pos, goal_index, goals_reached, and tick.
+Reaching the first goal increments goals_reached, increments goal_index, and spawns the second goal.
+Reaching the final goal completes the trial.
+Multi-goal traces record goal_reached_this_step, goal_index, goals_reached, and next_goal_spawned.
+Adds run_navigation_multi_goal_trial(candidate_actions=None, max_steps=20) as a bounded two-goal trial runner.
+
+Boundary:
+No push-box sandbox behavior changes.
+No AI solver / pathfinding.
+No goal planning.
+No learning pipeline.
+No lesson_candidate pipeline.
+No lesson_store writes.
+No Memory Layer writes.
+No LLM / teaching chat / free text conversation.
+No graphics / GUI.
+No autonomous behavior claim.
+
 ## Micro Navigation Trial Metrics CLI v0
 
 Status:
