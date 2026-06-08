@@ -1650,6 +1650,177 @@ def run_approach_box_dead_end_two_trial_ascii_replay_cli(max_steps: int = 100) -
     }
 
 
+DEAD_END_TRIAL1_MAP_CANDIDATES = [
+    {
+        "level_id": "approach_box_dead_end_v0",
+        "source": "existing_trial1_fixture",
+        "agent_start": [1, 1],
+        "box_pos": [4, 4],
+        "approach_positions": [[3, 4]],
+        "intended_dead_end_positions": [[4, 1], [4, 2]],
+        "runner_supported": True,
+    },
+    {
+        "level_id": "user_maze_dead_end_candidate_v0",
+        "source": "candidate_validation_fixture",
+        "agent_start": [1, 1],
+        "box_pos": [8, 8],
+        "approach_positions": [],
+        "intended_dead_end_positions": [],
+        "runner_supported": False,
+        "unsupported_reason": "current dead-end Trial 1 runner is fixed to approach_box_dead_end_v0 and has no generic 10x10 map adapter",
+    },
+    {
+        "level_id": "mid_branch_dead_end_candidate_v0",
+        "source": "candidate_validation_fixture",
+        "agent_start": [1, 1],
+        "box_pos": [5, 5],
+        "approach_positions": [[4, 5]],
+        "intended_dead_end_positions": [[5, 3]],
+        "runner_supported": False,
+        "unsupported_reason": "current dead-end Trial 1 runner is fixed to approach_box_dead_end_v0 and has no generic branch-map adapter",
+    },
+    {
+        "level_id": "lower_branch_dead_end_candidate_v0",
+        "source": "candidate_validation_fixture",
+        "agent_start": [1, 1],
+        "box_pos": [5, 5],
+        "approach_positions": [[4, 5]],
+        "intended_dead_end_positions": [[5, 4]],
+        "runner_supported": False,
+        "unsupported_reason": "current dead-end Trial 1 runner is fixed to approach_box_dead_end_v0 and has no generic branch-map adapter",
+    },
+]
+
+
+def _status_for_dead_end_trial1_results(trials: list[dict[str, Any]], max_steps: int) -> str:
+    if not trials:
+        return "needs_map_fix"
+    completed_count = sum(1 for trial in trials if trial["completed_approach"])
+    entered_dead_end_count = sum(1 for trial in trials if trial["entered_dead_end_area"])
+    blocked_or_failed_total = sum(len(trial["blocked_or_failed_actions"]) for trial in trials)
+    step_counts = {trial["step_count"] for trial in trials}
+    if completed_count == 0:
+        return "unreachable"
+    if len(step_counts) > 1:
+        return "mixed"
+    if entered_dead_end_count > 0 or blocked_or_failed_total > 0:
+        return "valid_for_two_trial"
+    if all(trial["step_count"] < max_steps for trial in trials):
+        return "has_shortcut"
+    return "no_dead_end_event"
+
+
+def _summarize_dead_end_trial1_map_result(
+    map_config: dict[str, Any],
+    runs_per_map: int,
+    max_steps: int,
+) -> dict[str, Any]:
+    if not map_config["runner_supported"]:
+        return {
+            "level_id": map_config["level_id"],
+            "runs": runs_per_map,
+            "completed_count": 0,
+            "entered_dead_end_count": 0,
+            "blocked_or_failed_total": 0,
+            "average_step_count": None,
+            "step_counts": [],
+            "selected_actions_samples": [],
+            "dead_end_positions_visited_samples": [],
+            "blocked_or_failed_samples": [],
+            "map_status": "needs_map_fix",
+            "validation_notes": [
+                map_config["unsupported_reason"],
+                "Candidate map was recorded for validation but not forced through the existing fixed fixture.",
+            ],
+        }
+
+    trials = [run_approach_box_dead_end_trial_cli(max_steps=max_steps) for _run in range(runs_per_map)]
+    step_counts = [trial["step_count"] for trial in trials]
+    completed_count = sum(1 for trial in trials if trial["completed_approach"])
+    entered_dead_end_count = sum(1 for trial in trials if trial["entered_dead_end_area"])
+    blocked_or_failed_total = sum(len(trial["blocked_or_failed_actions"]) for trial in trials)
+    map_status = _status_for_dead_end_trial1_results(trials, max_steps)
+    validation_notes = [
+        "Existing fixed dead-end Trial 1 fixture was used without modifying runner behavior.",
+        "Trial 1 validation only; no Two-Trial or A/B memory control was run.",
+    ]
+    if map_status == "valid_for_two_trial":
+        validation_notes.append("Trial 1 produced dead-end or blocked/failed local outcome evidence.")
+    return {
+        "level_id": map_config["level_id"],
+        "runs": runs_per_map,
+        "completed_count": completed_count,
+        "entered_dead_end_count": entered_dead_end_count,
+        "blocked_or_failed_total": blocked_or_failed_total,
+        "average_step_count": (sum(step_counts) / len(step_counts)) if step_counts else None,
+        "step_counts": step_counts,
+        "selected_actions_samples": [trial["selected_actions"] for trial in trials[: min(3, len(trials))]],
+        "dead_end_positions_visited_samples": [
+            trial["dead_end_positions_visited"] for trial in trials[: min(3, len(trials))]
+        ],
+        "blocked_or_failed_samples": [trial["blocked_or_failed_actions"] for trial in trials[: min(3, len(trials))]],
+        "map_status": map_status,
+        "validation_notes": validation_notes,
+    }
+
+
+def _summarize_dead_end_map_validation(map_results: list[dict[str, Any]]) -> dict[str, Any]:
+    statuses = [result["map_status"] for result in map_results]
+    valid_count = statuses.count("valid_for_two_trial")
+    needs_fix_count = statuses.count("needs_map_fix")
+    if needs_fix_count:
+        recommended_next_step = "Fix candidate maps before Two-Trial."
+    elif valid_count:
+        recommended_next_step = "Use only valid_for_two_trial maps for the next multi-map memory check."
+    else:
+        recommended_next_step = "Do not proceed to multi-map A/B yet."
+    return {
+        "map_count": len(map_results),
+        "valid_for_two_trial_count": valid_count,
+        "no_dead_end_event_count": statuses.count("no_dead_end_event"),
+        "unreachable_count": statuses.count("unreachable"),
+        "has_shortcut_count": statuses.count("has_shortcut"),
+        "mixed_count": statuses.count("mixed"),
+        "needs_map_fix_count": needs_fix_count,
+        "recommended_next_step": recommended_next_step,
+    }
+
+
+def validate_dead_end_trial1_maps_cli(runs_per_map: int = 3, max_steps: int = 100) -> dict[str, Any]:
+    map_results = [
+        _summarize_dead_end_trial1_map_result(map_config, runs_per_map, max_steps)
+        for map_config in DEAD_END_TRIAL1_MAP_CANDIDATES
+    ]
+    return {
+        "command": "validate-dead-end-trial1-maps",
+        "flow": "dead_end_map_trial1_validation_v0",
+        "status": "ok",
+        "runs_per_map": runs_per_map,
+        "max_steps": max_steps,
+        "map_results": map_results,
+        "overall_summary": _summarize_dead_end_map_validation(map_results),
+        "boundary_check": {
+            "trial1_validation_only": True,
+            "two_trial_run": False,
+            "memory_control_run": False,
+            "replayed_full_route": False,
+            "used_llm": False,
+            "used_pathfinding": False,
+            "used_lesson_store": False,
+            "used_memory_layer": False,
+            "modified_action_selection": False,
+            "modified_goal_bias": False,
+            "modified_state_action_memory": False,
+        },
+        "notes": [
+            "This command validates candidate dead-end maps before Two-Trial or A/B memory tests.",
+            "Bad maps are reported honestly and are not forced to pass.",
+            "This is not proof of learning.",
+        ],
+    }
+
+
 def _verification_boundary() -> dict[str, bool]:
     return {
         "llm_used": False,
@@ -1723,6 +1894,8 @@ def run_command(command: str) -> dict[str, Any]:
         return run_approach_box_dead_end_memory_control_check_cli()
     if command == "replay-approach-box-dead-end-two-trial":
         return run_approach_box_dead_end_two_trial_ascii_replay_cli()
+    if command == "validate-dead-end-trial1-maps":
+        return validate_dead_end_trial1_maps_cli()
     return {
         "command": command,
         "status": "error",
@@ -1760,6 +1933,7 @@ def main(argv: list[str] | None = None) -> int:
             "run-approach-box-dead-end-two-trial-check",
             "run-approach-box-dead-end-memory-control-check",
             "replay-approach-box-dead-end-two-trial",
+            "validate-dead-end-trial1-maps",
         ],
     )
     parser.add_argument("--review-id", default="review_001")
@@ -1775,6 +1949,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--trial-count", type=int, default=5)
     parser.add_argument("--max-steps", type=int, default=10)
     parser.add_argument("--runs", type=int, default=4)
+    parser.add_argument("--runs-per-map", type=int, default=3)
     parser.add_argument("--random-seed", type=int, default=None)
     parser.add_argument("--baseline-path", default="data/baselines/trial_metrics_baseline_v0.json")
     args = parser.parse_args(argv)
@@ -1843,6 +2018,8 @@ def main(argv: list[str] | None = None) -> int:
         )
     elif args.command == "replay-approach-box-dead-end-two-trial":
         result = run_approach_box_dead_end_two_trial_ascii_replay_cli(max_steps=args.max_steps)
+    elif args.command == "validate-dead-end-trial1-maps":
+        result = validate_dead_end_trial1_maps_cli(runs_per_map=args.runs_per_map, max_steps=args.max_steps)
     else:
         result = run_command(args.command)
     if hasattr(sys.stdout, "reconfigure"):

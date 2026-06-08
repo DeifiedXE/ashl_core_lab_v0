@@ -148,6 +148,7 @@ from ashl_core.teaching_cli import (
     run_approach_box_dead_end_two_trial_check_cli,
     run_approach_box_dead_end_two_trial_ascii_replay_cli,
     run_approach_box_dead_end_memory_control_check_cli,
+    validate_dead_end_trial1_maps_cli,
     run_navigation_multi_goal_metrics_cli,
     run_navigation_obstacle_trial_cli,
     run_navigation_trial_metrics_cli,
@@ -848,6 +849,52 @@ def smoke_dead_end_two_trial_ascii_replay() -> dict:
             "boundary_check": boundary,
             "first_trial1_frame": trial_1[0] if trial_1 else {},
             "first_trial2_frame": trial_2[0] if trial_2 else {},
+        },
+    )
+
+
+def smoke_dead_end_map_trial1_validation() -> dict:
+    result = validate_dead_end_trial1_maps_cli(runs_per_map=3, max_steps=100)
+    map_results = result.get("map_results", [])
+    summary = result.get("overall_summary", {})
+    boundary = result.get("boundary_check", {})
+    statuses = {item.get("level_id"): item.get("map_status") for item in map_results}
+    passed = (
+        result.get("flow") == "dead_end_map_trial1_validation_v0"
+        and result.get("command") == "validate-dead-end-trial1-maps"
+        and result.get("runs_per_map") == 3
+        and result.get("max_steps") == 100
+        and len(map_results) == 4
+        and summary.get("map_count") == 4
+        and "recommended_next_step" in summary
+        and statuses.get("approach_box_dead_end_v0") == "valid_for_two_trial"
+        and "user_maze_dead_end_candidate_v0" in statuses
+        and "mid_branch_dead_end_candidate_v0" in statuses
+        and "lower_branch_dead_end_candidate_v0" in statuses
+        and all("level_id" in item for item in map_results)
+        and all("completed_count" in item for item in map_results)
+        and all("entered_dead_end_count" in item for item in map_results)
+        and all("blocked_or_failed_total" in item for item in map_results)
+        and all("average_step_count" in item for item in map_results)
+        and boundary.get("trial1_validation_only") is True
+        and boundary.get("two_trial_run") is False
+        and boundary.get("memory_control_run") is False
+        and boundary.get("replayed_full_route") is False
+        and boundary.get("used_llm") is False
+        and boundary.get("used_pathfinding") is False
+        and boundary.get("used_lesson_store") is False
+        and boundary.get("used_memory_layer") is False
+        and boundary.get("modified_action_selection") is False
+        and boundary.get("modified_goal_bias") is False
+        and boundary.get("modified_state_action_memory") is False
+    )
+    return _result(
+        "dead_end_map_trial1_validation",
+        passed,
+        {
+            "overall_summary": summary,
+            "map_statuses": statuses,
+            "boundary_check": boundary,
         },
     )
 
@@ -5825,6 +5872,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_approach_box_dead_end_trial(),
         smoke_approach_box_dead_end_two_trial_learning_check(),
         smoke_dead_end_two_trial_ascii_replay(),
+        smoke_dead_end_map_trial1_validation(),
         smoke_approach_box_dead_end_memory_control_check(),
         smoke_dead_end_memory_control_trial1_source_audit(),
         smoke_micro_push_box_sandbox(),

@@ -1209,6 +1209,14 @@ Two-Trial History Boundary:
 - This is observer output only. It does not modify the runner, action selection, local memory logic, or memory-control behavior.
 - This command does not use LLM planning, pathfinding / BFS / A*, UI / GUI, lesson_candidate, lesson_store, or Memory Layer, and it is not proof of general learning.
 
+## Dead-End Map Trial1 Validation v0
+
+- Adds `py -3 -m ashl_core.teaching_cli validate-dead-end-trial1-maps --runs-per-map 3 --max-steps 100`.
+- Validates candidate dead-end maps before Two-Trial or A/B memory tests by running Trial 1 style checks where the current fixture supports it.
+- Reports `map_status`, completion counts, dead-end entry counts, blocked/failed totals, step counts, samples, and an overall recommendation.
+- Bad maps are reported honestly rather than forced to pass.
+- This command does not run Two-Trial, does not run A/B memory control, does not use LLM planning, does not use pathfinding / BFS / A*, and is not proof of learning.
+
 ## Micro Navigation Trial Metrics CLI v0
 
 - Adds `py -3 -m ashl_core.teaching_cli run-navigation-trial-metrics --runs 4 --trial-count 5 --max-steps 10`.

@@ -2222,6 +2222,39 @@ No Memory Layer write.
 No LLM planning.
 This is not proof of general learning.
 
+## Dead-End Map Trial1 Validation v0
+
+Status:
+minimal-runtime / map-validation-cli / trial1-only / no-learning-proof
+
+Summary:
+Adds py -3 -m ashl_core.teaching_cli validate-dead-end-trial1-maps --runs-per-map 3 --max-steps 100.
+The command validates four candidate dead-end maps before Two-Trial or A/B memory tests.
+It runs Trial 1 style validation for maps supported by the current fixture and reports unsupported candidate maps honestly as needs_map_fix.
+Each map result reports level_id, runs, completion count, dead-end entry count, blocked/failed total, average step count, samples, map_status, and validation_notes.
+The overall summary reports status counts and a data-based recommended_next_step.
+
+Boundary:
+Trial 1 validation only.
+No Two-Trial validation.
+No A/B memory control.
+No existing approach-box runner behavior changes.
+No dead-end single trial behavior changes.
+No action selection changes.
+No goal bias changes.
+No state-action memory behavior changes.
+No penalty / stuck detection.
+No learning rule creation.
+No pathfinding / BFS / A*.
+No full route replay.
+No selected_actions replay as input.
+No lesson_candidate pipeline connection.
+No lesson_store write.
+No Memory Layer write.
+No LLM planning.
+Bad maps are reported, not forced to pass.
+This is not proof of learning.
+
 ## Micro Navigation Trial Metrics CLI v0
 
 Status:
