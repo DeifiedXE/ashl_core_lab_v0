@@ -1439,7 +1439,7 @@ Two-Trial History Boundary:
 
 - `docs/current_boundary_index.md`
 - Adds a short, versioned, low-token source of global hard boundaries for future work packages.
-- Current version: `Boundary Index Version: 2026-06-06-b29`.
+- Current version: `Boundary Index Version: 2026-06-06-b30`.
 - Lists current global hard boundaries and deferred areas.
 - Compression patch keeps the version at b25 while aggregating repeated boundary lines to preserve room for future sync packages.
 - Requires the file to be updated every time an Update Log is generated.
@@ -1466,6 +1466,15 @@ Two-Trial History Boundary:
 - Updates `docs/current_boundary_index.md` from Batch 28 to Batch 29.
 - Adds Batch 29 hard boundaries for micro navigation goal-reach as curriculum level, multi-goal navigation as sequential marker following, multi-goal traces as evidence rather than pathfinding, stuck detection / repetition penalty as not-yet-proven improvement, and push-box full solve as deferred.
 - Marks micro navigation multi-goal metrics CLI, obstacle / wall detour navigation level, approach-box level, push-box full solve, stable navigation curriculum metrics, lesson_candidate pipeline connection, lesson_store write, Memory Layer write, LLM response generation, teaching chat loop, and free text conversation as deferred.
+- Keeps the boundary index under 150 lines.
+- Does not add runtime behavior or modify navigation sandbox, push-box sandbox, CLI, lesson_store, Memory Layer, lesson_candidate pipeline, or AI solver / pathfinding logic.
+
+## Current Boundary Index Batch 30 Sync Patch
+
+- Updates `docs/current_boundary_index.md` from Batch 29 to Batch 30.
+- Adds Batch 30 hard boundaries for approach-box as object-approach verification, not push behavior or box understanding.
+- Records the Two-Trial History Boundary: future Trial 2 may read only local state-action outcome memory with `agent_pos`, `box_pos`, optional `goal_pos`, `action`, `result`, and `tick`.
+- Marks Approach Box Trial CLI, Approach Box Two-Trial Learning Check, Trial Metrics Baseline Snapshot, Push Once Level, push-box full solve, lesson_candidate pipeline connection, lesson_store write, Memory Layer write, LLM response generation, teaching chat loop, and free text conversation as deferred.
 - Keeps the boundary index under 150 lines.
 - Does not add runtime behavior or modify navigation sandbox, push-box sandbox, CLI, lesson_store, Memory Layer, lesson_candidate pipeline, or AI solver / pathfinding logic.
 

@@ -1,5 +1,5 @@
-Boundary Index Version: 2026-06-06-b29
-Last update log: Batch 29
+Boundary Index Version: 2026-06-06-b30
+Last update log: Batch 30
 Clean count at last update log reset: 0/5
 Current clean count: 0/5
 
@@ -72,6 +72,12 @@ Current clean count: 0/5
 - micro navigation multi-goal level means following sequential goal markers, not autonomous planning.
 - multi-goal navigation trace is evidence of sequential target following, not pathfinding.
 - stuck detection / repetition penalty currently has negative observed effect and must not be treated as proven improvement.
+- approach-box level is object-approach verification, not push behavior.
+- approach-box level must not modify push-box sandbox.
+- approach-box completion means agent is adjacent to box, not that it understands box.
+- Two-Trial History Boundary allows only local state-action outcome memory.
+- Trial 2 must not read full trace, full route, selected_actions replay, lesson_candidate, lesson_store, Memory Layer, Long-term Memory, LLM planning, or human hint.
+- Trial 2 can read local context only: agent_pos / box_pos / optional goal_pos / action / result / tick.
 - push-box full solve remains deferred; push-box is an experimental microscope, not the project goal.
 - sandbox result is not a lesson.
 - sandbox trace is not memory promotion.
@@ -103,7 +109,7 @@ Current clean count: 0/5
 - Review and activation runtimes deferred: evaluator runtime / review decision runtime / selection eligibility runtime / activation runtime.
 - Formal candidate builders deferred: formal lesson_candidate creation runtime / lesson_candidate automatic builder / failure_event automatic builder.
 - Identity and consolidation runtimes deferred: Qingyin runtime / first_output trace schema runtime / mentor feedback runtime / mentor_feedback_trace schema runtime / Core Seed update runtime / self-modification runtime / soft-hard consolidation runtime.
-- Navigation curriculum deferred: micro navigation multi-goal metrics CLI / obstacle or wall detour navigation level / approach-box level / stable navigation curriculum metrics.
+- Navigation curriculum deferred: Approach Box Trial CLI / Approach Box Two-Trial Learning Check / Trial Metrics Baseline Snapshot / Push Once Level / push-box full solve / stable navigation curriculum metrics.
 - Push-box full solve remains deferred.
 
 ## Update Rule

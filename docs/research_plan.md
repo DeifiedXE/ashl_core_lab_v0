@@ -1440,6 +1440,27 @@ No lesson_store or Memory Layer changes.
 No lesson_candidate pipeline changes.
 No AI solver / pathfinding.
 
+## Current Boundary Index Batch 30 Sync Patch
+
+Status:
+completed / docs-only / boundary-index-sync / no-runtime
+
+Summary:
+Updates docs/current_boundary_index.md from Batch 29 to Batch 30.
+Adds Batch 30 hard boundaries for approach-box as object-approach verification, not push behavior or box understanding.
+Records the Two-Trial History Boundary: future Trial 2 may read only local state-action outcome memory with agent_pos, box_pos, optional goal_pos, action, result, and tick.
+Marks Approach Box Trial CLI, Approach Box Two-Trial Learning Check, Trial Metrics Baseline Snapshot, Push Once Level, push-box full solve, lesson_candidate pipeline connection, lesson_store write, Memory Layer write, LLM response generation, teaching chat loop, and free text conversation as deferred.
+
+Boundary:
+No runtime behavior changes.
+No navigation sandbox logic changes.
+No push-box sandbox logic changes.
+No CLI behavior changes.
+No lesson_store or Memory Layer changes.
+No lesson_candidate pipeline changes.
+No LLM / teaching chat / free text conversation.
+No AI solver / pathfinding.
+
 ## Current Boundary Index Compression Patch
 
 Status:
