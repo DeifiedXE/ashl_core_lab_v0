@@ -2015,7 +2015,7 @@ minimal-runtime / bounded-trial-runner / goal-bias-selection-source / no-learnin
 
 Summary:
 Integrates goal direction bias into the need-state trial runner selection step.
-Unsatisfied need-state steps include goal direction bias; the current integrated trace records selection_source = state_action_memory_plus_outcome_weight_plus_goal_bias.
+Unsatisfied need-state steps include goal direction bias; the current integrated trace records selection_source = state_action_memory_plus_outcome_weight_plus_goal_bias_plus_repetition_penalty.
 The runner keeps selected actions bounded to candidate_actions and uses existing outcome weighting plus goal direction bias helpers.
 Goal-improving push bias applies only when the push can immediately contact the box; otherwise bounded intrinsic selection behavior is preserved.
 The 5-trial batch summary schema remains unchanged.
@@ -2039,7 +2039,7 @@ minimal-runtime / bounded-trial-runner / local-state-action-memory-selection-sou
 
 Summary:
 Integrates local state-action outcome memory into the need-state trial runner action ordering.
-Unsatisfied need-state steps record selection_source = state_action_memory_plus_outcome_weight_plus_goal_bias.
+Unsatisfied need-state steps record selection_source = state_action_memory_plus_outcome_weight_plus_goal_bias_plus_repetition_penalty.
 Unsatisfied need-state steps record state_action_memory_used = true.
 The runner combines local state-action memory score, existing outcome history weight, and goal direction bias.
 Same-context local memory can lower a blocked action and raise a pushed action; different contexts do not reuse previous local results.
@@ -2057,6 +2057,32 @@ No persistent state-action memory beyond returned sandbox state.
 No LLM / teaching chat / free text conversation.
 No tactile result mapping changes.
 No utterance_map changes.
+No action outside candidate_actions.
+
+## Stuck Detection / Repetition Penalty v0
+
+Status:
+minimal-runtime / bounded-trial-runner / repetition-penalty / no-learning
+
+Summary:
+Adds detect_stuck_from_recent_steps for recent trial step traces.
+Stuck detection requires same selected action, no goal_reached, and no need_state.current_value improvement inside the recent window.
+Adds score_action_repetition_penalty with -2 for two recent repeats, -4 for three or more recent repeats, and 0 otherwise.
+Need-state trial runner selection scoring combines state-action memory, outcome weight, goal direction bias, and repetition penalty.
+Unsatisfied need-state steps record stuck_detected_before_selection and repetition_penalty_applied.
+
+Boundary:
+No AI solver / pathfinding.
+No goal planning.
+No learning pipeline.
+No lesson_candidate pipeline.
+No lesson_store writes.
+No Memory Layer writes.
+No persistent memory.
+No LLM / teaching chat / free text conversation.
+No tactile result mapping changes.
+No utterance_map changes.
+No new action creation.
 No action outside candidate_actions.
 
 ## Need-State Trial Runner 5-Trial Step Count v0

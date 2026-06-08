@@ -90,8 +90,10 @@ from ashl_core.micro_push_box_sandbox import (
 )
 from ashl_core.micro_push_box_trial_runner import (
     _select_action_for_trial,
+    detect_stuck_from_recent_steps,
     run_need_state_driven_trial,
     run_need_state_driven_trial_batch,
+    score_action_repetition_penalty,
 )
 from ashl_core.manual_review import (
     build_review_trace,
@@ -670,7 +672,10 @@ def smoke_need_state_trial_goal_bias_integration() -> dict:
     selection_sources = [step.get("selection_source") for step in trial["steps"]]
     passed = (
         bool(trial["steps"])
-        and all(source == "state_action_memory_plus_outcome_weight_plus_goal_bias" for source in selection_sources)
+        and all(
+            source == "state_action_memory_plus_outcome_weight_plus_goal_bias_plus_repetition_penalty"
+            for source in selection_sources
+        )
         and all(action in candidates for action in selected_actions)
         and "push_down" in selected_actions
         and batch["trial_count"] == 5
@@ -716,11 +721,14 @@ def smoke_state_action_memory_trial_runner_integration() -> dict:
     passed = (
         selection["selected_action"] == "push_down"
         and selection["selected_action"] in candidates
-        and selection["selection_source"] == "state_action_memory_plus_outcome_weight_plus_goal_bias"
+        and selection["selection_source"] == "state_action_memory_plus_outcome_weight_plus_goal_bias_plus_repetition_penalty"
         and selection["state_action_memory_used"] is True
         and score_action_from_state_action_memory(different_context, "push_down") == 0
         and bool(trial["steps"])
-        and all(source == "state_action_memory_plus_outcome_weight_plus_goal_bias" for source in trial_selection_sources)
+        and all(
+            source == "state_action_memory_plus_outcome_weight_plus_goal_bias_plus_repetition_penalty"
+            for source in trial_selection_sources
+        )
         and all(flag is True for flag in memory_flags)
         and all(action in ["move_up", "move_right", "push_down"] for action in trial_selected_actions)
         and batch["trial_count"] == 5
@@ -743,6 +751,52 @@ def smoke_state_action_memory_trial_runner_integration() -> dict:
                 action in ["move_up", "move_right", "push_down"] for action in trial_selected_actions
             ),
             "batch_trial_count": batch["trial_count"],
+            "step_counts": batch["step_counts"],
+            "average_step_count": batch["average_step_count"],
+        },
+    )
+
+
+def smoke_stuck_detection_repetition_penalty() -> dict:
+    repeated_steps = [
+        {"selected_action": "push_down", "tactile_result": "box_pushed", "need_state": {"current_value": 0}},
+        {"selected_action": "push_down", "tactile_result": "box_pushed", "need_state": {"current_value": 0}},
+        {"selected_action": "push_down", "tactile_result": "box_pushed", "need_state": {"current_value": 0}},
+    ]
+    candidates = ["move_up", "move_right", "push_down"]
+    trial = run_need_state_driven_trial(candidates, max_steps=10, random_seed=0)
+    batch = run_need_state_driven_trial_batch(trial_count=5, max_steps=10, random_seed=0)
+    selected_actions = [step["selected_action"] for step in trial["steps"]]
+    selection_sources = [step.get("selection_source") for step in trial["steps"]]
+    passed = (
+        detect_stuck_from_recent_steps(repeated_steps) is True
+        and score_action_repetition_penalty(repeated_steps[:2], "push_down") == -2
+        and score_action_repetition_penalty(repeated_steps, "push_down") == -4
+        and score_action_repetition_penalty(repeated_steps, "move_up") == 0
+        and bool(trial["steps"])
+        and all("stuck_detected_before_selection" in step for step in trial["steps"])
+        and all("repetition_penalty_applied" in step for step in trial["steps"])
+        and all(
+            source == "state_action_memory_plus_outcome_weight_plus_goal_bias_plus_repetition_penalty"
+            for source in selection_sources
+        )
+        and all(action in candidates for action in selected_actions)
+        and batch["trial_count"] == 5
+        and len(batch["step_counts"]) == 5
+        and "average_step_count" in batch
+    )
+    return _result(
+        "stuck_detection_repetition_penalty",
+        passed,
+        {
+            "repeated_action_pattern": [step["selected_action"] for step in repeated_steps],
+            "stuck_detected": detect_stuck_from_recent_steps(repeated_steps),
+            "penalty_two_repeats": score_action_repetition_penalty(repeated_steps[:2], "push_down"),
+            "penalty_three_repeats": score_action_repetition_penalty(repeated_steps, "push_down"),
+            "selection_sources": selection_sources,
+            "selected_actions_from_candidates": all(action in candidates for action in selected_actions),
+            "trial_count": batch["trial_count"],
+            "completed_count": batch["completed_count"],
             "step_counts": batch["step_counts"],
             "average_step_count": batch["average_step_count"],
         },
@@ -5020,6 +5074,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_need_state_trial_5_step_count(),
         smoke_need_state_trial_goal_bias_integration(),
         smoke_state_action_memory_trial_runner_integration(),
+        smoke_stuck_detection_repetition_penalty(),
         smoke_need_state_trial_batch_cli(),
         smoke_trial_metrics_comparison_cli(),
         smoke_clear_sandbox_working_state_cli(),

@@ -2,8 +2,10 @@ import unittest
 
 from ashl_core.micro_push_box_trial_runner import (
     _select_action_for_trial,
+    detect_stuck_from_recent_steps,
     run_need_state_driven_trial,
     run_need_state_driven_trial_batch,
+    score_action_repetition_penalty,
 )
 from ashl_core.micro_push_box_sandbox import (
     build_initial_state,
@@ -60,6 +62,8 @@ class MicroPushBoxTrialRunnerTests(unittest.TestCase):
                 "selection_reason",
                 "selection_source",
                 "state_action_memory_used",
+                "stuck_detected_before_selection",
+                "repetition_penalty_applied",
                 "tactile_result",
                 "need_state",
                 "agent_pos",
@@ -74,7 +78,8 @@ class MicroPushBoxTrialRunnerTests(unittest.TestCase):
         self.assertTrue(result["steps"])
         self.assertTrue(
             all(
-                step["selection_source"] == "state_action_memory_plus_outcome_weight_plus_goal_bias"
+                step["selection_source"]
+                == "state_action_memory_plus_outcome_weight_plus_goal_bias_plus_repetition_penalty"
                 for step in result["steps"]
             )
         )
@@ -87,7 +92,7 @@ class MicroPushBoxTrialRunnerTests(unittest.TestCase):
         self.assertEqual(result["steps"][-1]["selected_action"], "push_down")
         self.assertEqual(
             result["steps"][-1]["selection_source"],
-            "state_action_memory_plus_outcome_weight_plus_goal_bias",
+            "state_action_memory_plus_outcome_weight_plus_goal_bias_plus_repetition_penalty",
         )
 
     def test_state_action_memory_can_affect_trial_candidate_ordering(self):
@@ -107,9 +112,55 @@ class MicroPushBoxTrialRunnerTests(unittest.TestCase):
         different_context["agent_pos"] = (1, 2)
 
         self.assertEqual(selection["selected_action"], "push_down")
-        self.assertEqual(selection["selection_source"], "state_action_memory_plus_outcome_weight_plus_goal_bias")
+        self.assertEqual(
+            selection["selection_source"],
+            "state_action_memory_plus_outcome_weight_plus_goal_bias_plus_repetition_penalty",
+        )
         self.assertTrue(selection["state_action_memory_used"])
         self.assertEqual(score_action_from_state_action_memory(different_context, "push_down"), 0)
+
+    def test_detect_stuck_from_recent_steps_detects_repeated_action_with_no_need_improvement(self):
+        steps = [
+            _step("push_down", "box_pushed", 0),
+            _step("push_down", "box_pushed", 0),
+            _step("push_down", "box_pushed", 0),
+        ]
+
+        self.assertTrue(detect_stuck_from_recent_steps(steps))
+
+    def test_detect_stuck_from_recent_steps_ignores_goal_reached(self):
+        steps = [
+            _step("push_down", "box_pushed", 0),
+            _step("push_down", "box_pushed", 0),
+            _step("push_down", "goal_reached", 1),
+        ]
+
+        self.assertFalse(detect_stuck_from_recent_steps(steps))
+
+    def test_detect_stuck_from_recent_steps_requires_enough_steps(self):
+        self.assertFalse(detect_stuck_from_recent_steps([_step("push_down", "box_pushed", 0)]))
+
+    def test_score_action_repetition_penalty_counts_recent_repeats(self):
+        two_repeats = [_step("push_down", "box_pushed", 0), _step("push_down", "box_pushed", 0)]
+        three_repeats = [*two_repeats, _step("push_down", "box_pushed", 0)]
+
+        self.assertEqual(score_action_repetition_penalty(two_repeats, "push_down"), -2)
+        self.assertEqual(score_action_repetition_penalty(three_repeats, "push_down"), -4)
+        self.assertEqual(score_action_repetition_penalty(three_repeats, "move_up"), 0)
+
+    def test_selection_records_stuck_and_repetition_penalty_metadata(self):
+        state = build_initial_state()
+        recent_steps = [
+            _step("push_down", "box_pushed", 0),
+            _step("push_down", "box_pushed", 0),
+            _step("push_down", "box_pushed", 0),
+        ]
+
+        selection = _select_action_for_trial(state, ["move_up", "move_right", "push_down"], recent_steps=recent_steps)
+
+        self.assertTrue(selection["stuck_detected_before_selection"])
+        self.assertIn(selection["selected_action"], ["move_up", "move_right", "push_down"])
+        self.assertIn("repetition_penalty_applied", selection)
 
     def test_invalid_candidate_action_raises_value_error(self):
         with self.assertRaises(ValueError):
@@ -195,6 +246,14 @@ class MicroPushBoxTrialRunnerTests(unittest.TestCase):
         self.assertTrue(forbidden_keys.isdisjoint(result))
         for trial in result["trials"]:
             self.assertTrue(forbidden_keys.isdisjoint(trial))
+
+
+def _step(action: str, result: str, current_value: int) -> dict:
+    return {
+        "selected_action": action,
+        "tactile_result": result,
+        "need_state": {"current_value": current_value},
+    }
 
 
 if __name__ == "__main__":

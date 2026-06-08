@@ -36,7 +36,7 @@ def run_need_state_driven_trial(
 
     for step_index in range(max_steps):
         step_seed = rng.randrange(2**32)
-        selection = _select_action_for_trial(state, candidate_actions, random_seed=step_seed)
+        selection = _select_action_for_trial(state, candidate_actions, recent_steps=steps, random_seed=step_seed)
         action_result = apply_tactile_action(state, selection["selected_action"])
         state = action_result["state"]
         trace = action_result["trace"]
@@ -49,6 +49,8 @@ def run_need_state_driven_trial(
                 "selection_reason": selection["selection_reason"],
                 "selection_source": selection["selection_source"],
                 "state_action_memory_used": selection["state_action_memory_used"],
+                "stuck_detected_before_selection": selection["stuck_detected_before_selection"],
+                "repetition_penalty_applied": selection["repetition_penalty_applied"],
                 "tactile_result": trace["result"],
                 "need_state": need_state,
                 "agent_pos": trace["agent_pos"],
@@ -121,18 +123,23 @@ def _build_trial_result(
 def _select_action_for_trial(
     state: dict[str, Any],
     candidate_actions: list[str] | tuple[str, ...],
+    recent_steps: list[dict[str, Any]] | tuple[dict[str, Any], ...] | None = None,
     random_seed: int | str | bytes | None = None,
 ) -> dict[str, Any]:
+    recent_steps = tuple(recent_steps or ())
+    stuck_detected = detect_stuck_from_recent_steps(recent_steps)
     base_selection = select_action_for_need_state(state, candidate_actions, random_seed=random_seed)
     if base_selection["need_state"]["satisfied"]:
         return {
             **base_selection,
             "selection_source": "need_satisfied_wait",
             "state_action_memory_used": False,
+            "stuck_detected_before_selection": stuck_detected,
+            "repetition_penalty_applied": 0,
         }
 
     selected_action = base_selection["selected_action"]
-    for action in _rank_candidate_actions_for_trial(state, base_selection["candidate_actions"]):
+    for action in _rank_candidate_actions_for_trial(state, base_selection["candidate_actions"], recent_steps):
         if score_action_goal_direction(state, action) <= 0:
             continue
         if not _push_contacts_box(state, action):
@@ -144,14 +151,56 @@ def _select_action_for_trial(
         **base_selection,
         "selected_action": selected_action,
         "selection_reason": "need_unsatisfied_goal_bias_selection",
-        "selection_source": "state_action_memory_plus_outcome_weight_plus_goal_bias",
+        "selection_source": "state_action_memory_plus_outcome_weight_plus_goal_bias_plus_repetition_penalty",
         "state_action_memory_used": True,
+        "stuck_detected_before_selection": stuck_detected,
+        "repetition_penalty_applied": score_action_repetition_penalty(recent_steps, selected_action),
     }
+
+
+def detect_stuck_from_recent_steps(
+    steps: list[dict[str, Any]] | tuple[dict[str, Any], ...],
+    window_size: int = 3,
+) -> bool:
+    if window_size <= 0:
+        raise ValueError("window_size must be positive")
+    if len(steps) < window_size:
+        return False
+
+    recent = tuple(steps[-window_size:])
+    actions = [step.get("selected_action") for step in recent]
+    if len(set(actions)) != 1:
+        return False
+    if any(step.get("tactile_result") == "goal_reached" for step in recent):
+        return False
+
+    values = [
+        (step.get("need_state") or {}).get("current_value")
+        for step in recent
+    ]
+    return len(set(values)) == 1
+
+
+def score_action_repetition_penalty(
+    steps: list[dict[str, Any]] | tuple[dict[str, Any], ...],
+    action: str,
+    window_size: int = 3,
+) -> int:
+    if window_size <= 0:
+        raise ValueError("window_size must be positive")
+    recent = tuple(steps[-window_size:])
+    repeat_count = sum(1 for step in recent if step.get("selected_action") == action)
+    if repeat_count >= 3:
+        return -4
+    if repeat_count == 2:
+        return -2
+    return 0
 
 
 def _rank_candidate_actions_for_trial(
     state: dict[str, Any],
     candidate_actions: list[str] | tuple[str, ...],
+    recent_steps: list[dict[str, Any]] | tuple[dict[str, Any], ...] = (),
 ) -> list[str]:
     indexed_scores = [
         (
@@ -159,7 +208,8 @@ def _rank_candidate_actions_for_trial(
             action,
             score_action_from_state_action_memory(state, action)
             + score_action_from_history(state, action)
-            + score_action_goal_direction(state, action),
+            + score_action_goal_direction(state, action)
+            + score_action_repetition_penalty(recent_steps, action),
         )
         for index, action in enumerate(candidate_actions)
     ]

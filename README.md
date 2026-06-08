@@ -1152,7 +1152,7 @@ v2.7a adds `ashl_core.failure_events` as a trace-only failure_event schema found
 
 ## Need-State Trial Goal Bias Integration v0
 
-- Need-state trial runner step selection now includes goal direction bias for unsatisfied need-state steps; the current integrated trace records `selection_source = state_action_memory_plus_outcome_weight_plus_goal_bias`.
+- Need-state trial runner step selection now includes goal direction bias for unsatisfied need-state steps; the current integrated trace records `selection_source = state_action_memory_plus_outcome_weight_plus_goal_bias_plus_repetition_penalty`.
 - The integration uses existing outcome weighting and goal direction bias helpers while keeping selected actions bounded to `candidate_actions`.
 - Goal-improving push bias applies only when the push can immediately contact the box; otherwise the runner preserves bounded intrinsic selection behavior.
 - Batch summaries keep the existing `trial_count`, `step_counts`, `average_step_count`, `min_step_count`, `max_step_count`, and `trials` schema.
@@ -1160,12 +1160,21 @@ v2.7a adds `ashl_core.failure_events` as a trace-only failure_event schema found
 
 ## State-Action Memory Trial Runner Integration v0
 
-- Need-state trial runner step selection now records `selection_source = state_action_memory_plus_outcome_weight_plus_goal_bias`.
+- Need-state trial runner step selection now records `selection_source = state_action_memory_plus_outcome_weight_plus_goal_bias_plus_repetition_penalty`.
 - Unsatisfied need-state steps record `state_action_memory_used = true`.
 - The runner combines local state-action outcome memory score, existing outcome history weight, and goal direction bias when ordering candidate actions.
 - Same-context local memory can lower a previously blocked action and raise a previously pushed action, while different contexts do not reuse prior local results.
 - Selected actions remain bounded to `candidate_actions`, and batch summaries keep `trial_count`, `step_counts`, `average_step_count`, `min_step_count`, `max_step_count`, and `trials`.
 - This integration uses in-state sandbox action history only. It is not AI solver / pathfinding, goal planning, learning pipeline, lesson_candidate pipeline, lesson_store / Memory Layer write, persistent state-action memory, LLM / teaching chat, tactile result mapping change, or utterance_map change.
+
+## Stuck Detection / Repetition Penalty v0
+
+- Adds `detect_stuck_from_recent_steps(steps, window_size=3)` for recent trial step traces.
+- Stuck detection requires the recent window to have the same selected action, no `goal_reached`, and no `need_state.current_value` improvement.
+- Adds `score_action_repetition_penalty(steps, action, window_size=3)` with `-2` for two recent repeats, `-4` for three or more recent repeats, and `0` otherwise.
+- Need-state trial runner selection scoring now combines state-action memory, outcome weight, goal direction bias, and repetition penalty.
+- Unsatisfied need-state steps record `stuck_detected_before_selection` and `repetition_penalty_applied`.
+- This is bounded candidate scoring, not AI solver / pathfinding, goal planning, learning pipeline, lesson_candidate pipeline, lesson_store / Memory Layer write, persistent memory, LLM / teaching chat, tactile result mapping change, utterance_map change, or new action creation.
 
 ## Need-State Trial Runner 5-Trial Step Count v0
 
