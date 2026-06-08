@@ -1226,6 +1226,14 @@ Two-Trial History Boundary:
 - This is observer output only for inspecting paths before further experiments.
 - This command does not run Two-Trial, does not run A/B memory control, does not use LLM planning, does not use pathfinding / BFS / A*, and is not proof of learning.
 
+## Valid Dead-End Maps A/B Control v0
+
+- Adds `py -3 -m ashl_core.teaching_cli run-valid-dead-end-maps-ab-control --runs-per-map 3 --max-steps 100`.
+- Runs A/B memory control only on maps that passed Trial 1 validation.
+- Excludes shortcut maps such as `user_maze_dead_end_candidate_v0`.
+- Trial 2 does not replay the Trial 1 route or receive Trial 1 `selected_actions` as input.
+- This command does not use LLM planning, does not use pathfinding / BFS / A*, and is not proof of general learning.
+
 ## Micro Navigation Trial Metrics CLI v0
 
 - Adds `py -3 -m ashl_core.teaching_cli run-navigation-trial-metrics --runs 4 --trial-count 5 --max-steps 10`.

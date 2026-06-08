@@ -150,6 +150,7 @@ from ashl_core.teaching_cli import (
     run_approach_box_dead_end_memory_control_check_cli,
     validate_dead_end_trial1_maps_cli,
     run_candidate_dead_end_trial1_ascii_replay_cli,
+    run_valid_dead_end_maps_ab_control_cli,
     run_navigation_multi_goal_metrics_cli,
     run_navigation_obstacle_trial_cli,
     run_navigation_trial_metrics_cli,
@@ -945,6 +946,58 @@ def smoke_candidate_map_trial1_ascii_replay() -> dict:
         passed,
         {
             "level_ids": sorted(level_ids),
+            "overall_summary": result.get("overall_summary", {}),
+            "boundary_check": boundary,
+        },
+    )
+
+
+def smoke_valid_dead_end_maps_ab_control() -> dict:
+    result = run_valid_dead_end_maps_ab_control_cli(runs_per_map=3, max_steps=100)
+    included_maps = result.get("included_maps", [])
+    excluded_maps = result.get("excluded_maps", [])
+    map_results = result.get("map_results", [])
+    boundary = result.get("boundary_check", {})
+    passed = (
+        result.get("flow") == "valid_dead_end_maps_ab_control_v0"
+        and result.get("command") == "run-valid-dead-end-maps-ab-control"
+        and result.get("runs_per_map") == 3
+        and result.get("max_steps") == 100
+        and included_maps
+        == [
+            "approach_box_dead_end_v0",
+            "mid_branch_dead_end_candidate_v0",
+            "lower_branch_dead_end_candidate_v0",
+        ]
+        and "user_maze_dead_end_candidate_v0" not in included_maps
+        and {
+            "level_id": "user_maze_dead_end_candidate_v0",
+            "reason": "has_shortcut_no_dead_end_event",
+        }
+        in excluded_maps
+        and len(map_results) == 3
+        and all("with_memory" in item for item in map_results)
+        and all("without_memory" in item for item in map_results)
+        and all("comparison" in item for item in map_results)
+        and all("trial1_source_audit" in item for item in map_results)
+        and all("conditioned_on_trial1_dead_end" in item for item in map_results)
+        and "overall_summary" in result
+        and boundary.get("valid_maps_only") is True
+        and boundary.get("excluded_shortcut_map") is True
+        and boundary.get("with_memory_trial2_reads_local_memory") is True
+        and boundary.get("without_memory_trial2_reads_local_memory") is False
+        and boundary.get("replayed_full_route") is False
+        and boundary.get("used_llm") is False
+        and boundary.get("used_pathfinding") is False
+        and boundary.get("used_lesson_store") is False
+        and boundary.get("used_memory_layer") is False
+    )
+    return _result(
+        "valid_dead_end_maps_ab_control",
+        passed,
+        {
+            "included_maps": included_maps,
+            "excluded_maps": excluded_maps,
             "overall_summary": result.get("overall_summary", {}),
             "boundary_check": boundary,
         },
@@ -5926,6 +5979,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_dead_end_two_trial_ascii_replay(),
         smoke_dead_end_map_trial1_validation(),
         smoke_candidate_map_trial1_ascii_replay(),
+        smoke_valid_dead_end_maps_ab_control(),
         smoke_approach_box_dead_end_memory_control_check(),
         smoke_dead_end_memory_control_trial1_source_audit(),
         smoke_micro_push_box_sandbox(),

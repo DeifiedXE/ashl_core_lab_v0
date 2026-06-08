@@ -2287,6 +2287,37 @@ No Memory Layer write.
 No LLM planning.
 This is not proof of learning.
 
+## Valid Dead-End Maps A/B Control v0
+
+Status:
+minimal-runtime / multi-map-ab-control / valid-maps-only / no-general-learning-proof
+
+Summary:
+Adds py -3 -m ashl_core.teaching_cli run-valid-dead-end-maps-ab-control --runs-per-map 3 --max-steps 100.
+The command runs A/B memory control only on maps that passed Trial 1 validation.
+It includes approach_box_dead_end_v0, mid_branch_dead_end_candidate_v0, and lower_branch_dead_end_candidate_v0.
+It excludes user_maze_dead_end_candidate_v0 because that map has shortcut status with no dead-end event.
+Each map reports with_memory, without_memory, comparison, trial1_source_audit, conditioned_on_trial1_dead_end, and map_status.
+
+Boundary:
+Valid maps only.
+Shortcut maps excluded.
+Trial 2 reads local Trial 1 outcome memory only in the with_memory group.
+Trial 2 does not replay Trial 1 route.
+Trial 2 does not receive Trial 1 selected_actions as input.
+No existing approach-box runner behavior changes.
+No existing dead-end single trial behavior changes.
+No candidate map fixture behavior changes.
+No action selection changes.
+No goal bias changes.
+No state-action memory changes.
+No pathfinding / BFS / A*.
+No lesson_candidate pipeline connection.
+No lesson_store write.
+No Memory Layer write.
+No LLM planning.
+This is not proof of general learning.
+
 ## Micro Navigation Trial Metrics CLI v0
 
 Status:

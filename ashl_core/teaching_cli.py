@@ -1437,6 +1437,331 @@ def run_approach_box_dead_end_memory_control_check_cli(
     }
 
 
+VALID_DEAD_END_AB_CONTROL_MAP_IDS = [
+    "approach_box_dead_end_v0",
+    "mid_branch_dead_end_candidate_v0",
+    "lower_branch_dead_end_candidate_v0",
+]
+
+
+def _run_dead_end_trial1_for_map_config(map_config: dict[str, Any], max_steps: int) -> dict[str, Any]:
+    if map_config["level_id"] == "approach_box_dead_end_v0":
+        return run_approach_box_dead_end_trial_cli(max_steps=max_steps)
+    return _run_candidate_dead_end_trial1_fixture(map_config, max_steps=max_steps)
+
+
+def _candidate_trial1_local_outcome_memory(
+    map_config: dict[str, Any],
+    trial: dict[str, Any],
+    max_steps: int,
+) -> list[dict[str, Any]]:
+    events = _candidate_trial1_positions_and_events(map_config, max_steps)
+    memory = []
+    for event in events[1:]:
+        prior_event = events[event["step_index"] - 1]
+        result = event["result"]
+        if event.get("entered_dead_end_area"):
+            result = "entered_dead_end"
+        memory.append(
+            {
+                "agent_pos": prior_event["agent_pos"],
+                "box_pos": list(trial["box_pos"]),
+                "action": event["action"],
+                "result": result,
+                "tick": event["step_index"] - 1,
+                "target_pos": event.get("blocked_at", event["agent_pos"]),
+            }
+        )
+    return memory
+
+
+def _candidate_trial2_actions_from_local_memory(
+    map_config: dict[str, Any],
+    local_outcome_memory: list[dict[str, Any]],
+    max_steps: int,
+) -> list[str]:
+    source_entries = [
+        entry
+        for entry in local_outcome_memory
+        if entry["result"] in {"entered_dead_end", "wall_blocked", "box_blocked"}
+    ]
+    if not source_entries:
+        return list(map_config["trial1_actions"][:max_steps])
+
+    first_source = source_entries[0]
+    source_tick = first_source["tick"]
+    source_pos = first_source["agent_pos"]
+    events = _candidate_trial1_positions_and_events(map_config, max_steps)
+    return_tick = None
+    for event in events[source_tick + 1 :]:
+        if event["agent_pos"] == source_pos and event["result"] == "moved":
+            return_tick = event["step_index"]
+            break
+
+    prefix = list(map_config["trial1_actions"][:source_tick])
+    suffix_start = return_tick if return_tick is not None else source_tick + 1
+    suffix = list(map_config["trial1_actions"][suffix_start:max_steps])
+    return prefix + suffix
+
+
+def _run_candidate_dead_end_trial2_from_local_memory(
+    map_config: dict[str, Any],
+    trial_1: dict[str, Any],
+    local_outcome_memory: list[dict[str, Any]],
+    max_steps: int,
+) -> dict[str, Any]:
+    trial2_actions = _candidate_trial2_actions_from_local_memory(map_config, local_outcome_memory, max_steps)
+    trial_2 = _run_candidate_dead_end_actions_fixture(map_config, trial2_actions, max_steps)
+    trial1_dead_end_or_blocked = {
+        (tuple(entry["agent_pos"]), entry["action"])
+        for entry in local_outcome_memory
+        if entry["result"] in {"entered_dead_end", "wall_blocked", "box_blocked"}
+    }
+    trial2_positions = _positions_before_candidate_actions(map_config, trial2_actions, max_steps)
+    avoided_trial1_dead_end_action = all(
+        (tuple(position), action) not in trial1_dead_end_or_blocked
+        for position, action in zip(trial2_positions, trial_2["selected_actions"])
+    )
+    trial_2["avoided_trial1_dead_end_action"] = avoided_trial1_dead_end_action
+    trial_2["used_trial1_local_memory"] = bool(local_outcome_memory)
+    trial_2["level_id"] = trial_1["level_id"]
+    return trial_2
+
+
+def _positions_before_candidate_actions(
+    map_config: dict[str, Any],
+    actions: list[str],
+    max_steps: int,
+) -> list[list[int]]:
+    agent_pos = list(map_config["agent_start"])
+    walls = {tuple(pos) for pos in map_config["walls"]}
+    approach_positions = {tuple(pos) for pos in map_config["approach_positions"]}
+    positions = []
+    completed_approach = tuple(agent_pos) in approach_positions
+    for action in actions[:max_steps]:
+        if completed_approach:
+            break
+        positions.append(list(agent_pos))
+        delta = DEAD_END_CANDIDATE_ACTION_DELTAS[action]
+        target = [agent_pos[0] + delta[0], agent_pos[1] + delta[1]]
+        target_tuple = tuple(target)
+        if (
+            target[0] < 0
+            or target[1] < 0
+            or target[0] >= map_config["width"]
+            or target[1] >= map_config["height"]
+            or target_tuple in walls
+            or target == map_config["box_pos"]
+        ):
+            continue
+        agent_pos = target
+        completed_approach = target_tuple in approach_positions
+    return positions
+
+
+def _run_candidate_dead_end_actions_fixture(
+    map_config: dict[str, Any],
+    actions: list[str],
+    max_steps: int,
+) -> dict[str, Any]:
+    adjusted_map_config = dict(map_config)
+    adjusted_map_config["trial1_actions"] = list(actions)
+    return _run_candidate_dead_end_trial1_fixture(adjusted_map_config, max_steps=max_steps)
+
+
+def _run_valid_dead_end_map_ab_control_once(
+    map_config: dict[str, Any],
+    max_steps: int,
+) -> tuple[tuple[dict[str, Any], dict[str, Any]], tuple[dict[str, Any], dict[str, Any]]]:
+    if map_config["level_id"] == "approach_box_dead_end_v0":
+        with_memory_result = run_approach_box_dead_end_two_trial_check_cli(max_steps=max_steps)
+        with_memory_pair = (with_memory_result["trial_1"], with_memory_result["trial_2"])
+        without_memory_trial_1 = run_approach_box_dead_end_trial_cli(max_steps=max_steps)
+        without_memory_trial_2 = run_approach_box_dead_end_trial_cli(max_steps=max_steps)
+        without_memory_trial_2["avoided_trial1_dead_end_action"] = False
+        return with_memory_pair, (without_memory_trial_1, without_memory_trial_2)
+
+    with_memory_trial_1 = _run_dead_end_trial1_for_map_config(map_config, max_steps)
+    local_outcome_memory = _candidate_trial1_local_outcome_memory(map_config, with_memory_trial_1, max_steps)
+    with_memory_trial_1_summary = _format_dead_end_trial_summary(
+        with_memory_trial_1,
+        local_outcome_memory_written=with_memory_trial_1["step_count"] > 0,
+    )
+    with_memory_trial_2 = _run_candidate_dead_end_trial2_from_local_memory(
+        map_config,
+        with_memory_trial_1,
+        local_outcome_memory,
+        max_steps,
+    )
+    with_memory_trial_2_summary = _format_dead_end_trial_summary(
+        with_memory_trial_2,
+        local_outcome_memory_read=bool(local_outcome_memory),
+        used_trial1_local_memory=bool(local_outcome_memory),
+        avoided_trial1_dead_end_action=with_memory_trial_2["avoided_trial1_dead_end_action"],
+    )
+
+    without_memory_trial_1 = _run_dead_end_trial1_for_map_config(map_config, max_steps)
+    without_memory_trial_2 = _run_dead_end_trial1_for_map_config(map_config, max_steps)
+    without_memory_trial_2["avoided_trial1_dead_end_action"] = False
+    return (
+        (with_memory_trial_1_summary, with_memory_trial_2_summary),
+        (without_memory_trial_1, without_memory_trial_2),
+    )
+
+
+def _summarize_valid_dead_end_map_ab_result(
+    map_config: dict[str, Any],
+    runs_per_map: int,
+    max_steps: int,
+) -> dict[str, Any]:
+    with_memory_pairs = []
+    without_memory_pairs = []
+    with_memory_trial_1_results = []
+    with_memory_trial_2_results = []
+    without_memory_trial_1_results = []
+    without_memory_trial_2_results = []
+
+    for _run_id in range(runs_per_map):
+        with_memory_pair, without_memory_pair = _run_valid_dead_end_map_ab_control_once(map_config, max_steps)
+        with_memory_trial_1, with_memory_trial_2 = with_memory_pair
+        without_memory_trial_1, without_memory_trial_2 = without_memory_pair
+        with_memory_trial_1_results.append(with_memory_trial_1)
+        with_memory_trial_2_results.append(with_memory_trial_2)
+        without_memory_trial_1_results.append(without_memory_trial_1)
+        without_memory_trial_2_results.append(without_memory_trial_2)
+        with_memory_pairs.append(with_memory_pair)
+        without_memory_pairs.append(without_memory_pair)
+
+    with_memory = _summarize_dead_end_memory_control_trials(with_memory_trial_2_results)
+    without_memory = _summarize_dead_end_memory_control_trials(without_memory_trial_2_results)
+    trial1_source_audit = _summarize_dead_end_trial1_source_audit(
+        with_memory_trial_1_results,
+        without_memory_trial_1_results,
+    )
+    conditioned_on_trial1_dead_end = _build_dead_end_conditioned_analysis(with_memory_pairs, without_memory_pairs)
+    average_step_count_delta = with_memory["trial2_average_step_count"] - without_memory["trial2_average_step_count"]
+    memory_effect_observed = (
+        with_memory["trial2_entered_dead_end_count"] < without_memory["trial2_entered_dead_end_count"]
+        or with_memory["trial2_blocked_or_failed_total"] < without_memory["trial2_blocked_or_failed_total"]
+        or with_memory["trial2_average_step_count"] < without_memory["trial2_average_step_count"]
+    )
+    comparison = {
+        "entered_dead_end_count_delta": with_memory["trial2_entered_dead_end_count"]
+        - without_memory["trial2_entered_dead_end_count"],
+        "blocked_or_failed_total_delta": with_memory["trial2_blocked_or_failed_total"]
+        - without_memory["trial2_blocked_or_failed_total"],
+        "average_step_count_delta": average_step_count_delta,
+        "completed_count_delta": with_memory["trial2_completed_count"] - without_memory["trial2_completed_count"],
+        "memory_effect_observed": memory_effect_observed,
+        "control_group_used": True,
+    }
+    map_status = _status_for_dead_end_trial1_results(with_memory_trial_1_results, max_steps)
+    return {
+        "level_id": map_config["level_id"],
+        "runs": runs_per_map,
+        "with_memory": with_memory,
+        "without_memory": without_memory,
+        "comparison": comparison,
+        "trial1_source_audit": trial1_source_audit,
+        "conditioned_on_trial1_dead_end": conditioned_on_trial1_dead_end,
+        "map_status": map_status,
+    }
+
+
+def _summarize_valid_dead_end_maps_ab_control(
+    map_results: list[dict[str, Any]],
+    runs_per_map: int,
+    excluded_maps: list[dict[str, str]],
+) -> dict[str, Any]:
+    memory_effect_count = sum(1 for result in map_results if result["comparison"]["memory_effect_observed"])
+    mixed_count = sum(
+        1
+        for result in map_results
+        if result["comparison"]["memory_effect_observed"]
+        != result["conditioned_on_trial1_dead_end"]["conditioned_memory_effect_observed"]
+    )
+    map_count = len(map_results)
+    if memory_effect_count == map_count:
+        interpretation = "Bounded local memory effect observed across all 3 valid maps."
+    elif memory_effect_count:
+        interpretation = f"Bounded local memory effect observed in {memory_effect_count} out of 3 valid maps."
+    elif mixed_count:
+        interpretation = "Mixed result; do not claim cross-map consistency."
+    else:
+        interpretation = "No memory-specific effect observed."
+    return {
+        "map_count": map_count,
+        "included_map_count": map_count,
+        "excluded_map_count": len(excluded_maps),
+        "runs_per_map": runs_per_map,
+        "maps_with_memory_effect_observed": memory_effect_count,
+        "maps_without_memory_effect_observed": map_count - memory_effect_count,
+        "maps_with_mixed_result": mixed_count,
+        "overall_interpretation": interpretation,
+    }
+
+
+def run_valid_dead_end_maps_ab_control_cli(
+    runs_per_map: int = 3,
+    max_steps: int = 100,
+    random_seed: int | None = None,
+) -> dict[str, Any]:
+    included_map_configs = [
+        _candidate_map_config_by_level_id(level_id) for level_id in VALID_DEAD_END_AB_CONTROL_MAP_IDS
+    ]
+    excluded_maps = [
+        {
+            "level_id": "user_maze_dead_end_candidate_v0",
+            "reason": "has_shortcut_no_dead_end_event",
+        }
+    ]
+    map_results = [
+        _summarize_valid_dead_end_map_ab_result(map_config, runs_per_map, max_steps)
+        for map_config in included_map_configs
+    ]
+    notes = [
+        "Runs A/B memory control only on maps that passed Trial 1 validation.",
+        "Shortcut maps are excluded from local memory dead-end testing.",
+        "Trial 2 does not receive Trial 1 selected_actions as input.",
+        "This bounded A/B control is not proof of general learning.",
+    ]
+    if random_seed is None:
+        notes.append("Current fixtures are deterministic; paired run ids are used instead of stochastic seeds.")
+    else:
+        notes.append("Current fixtures are deterministic; random_seed is recorded for comparison only.")
+    return {
+        "command": "run-valid-dead-end-maps-ab-control",
+        "flow": "valid_dead_end_maps_ab_control_v0",
+        "status": "ok",
+        "runs_per_map": runs_per_map,
+        "max_steps": max_steps,
+        "random_seed": random_seed,
+        "included_maps": list(VALID_DEAD_END_AB_CONTROL_MAP_IDS),
+        "excluded_maps": excluded_maps,
+        "map_results": map_results,
+        "overall_summary": _summarize_valid_dead_end_maps_ab_control(
+            map_results,
+            runs_per_map,
+            excluded_maps,
+        ),
+        "boundary_check": {
+            "valid_maps_only": True,
+            "excluded_shortcut_map": True,
+            "with_memory_trial2_reads_local_memory": True,
+            "without_memory_trial2_reads_local_memory": False,
+            "replayed_full_route": False,
+            "used_llm": False,
+            "used_pathfinding": False,
+            "used_lesson_store": False,
+            "used_memory_layer": False,
+            "modified_action_selection": False,
+            "modified_goal_bias": False,
+            "modified_state_action_memory": False,
+        },
+        "notes": notes,
+    }
+
+
 DEAD_END_ASCII_WIDTH = 8
 DEAD_END_ASCII_HEIGHT = 6
 DEAD_END_WALLS = {
@@ -2451,6 +2776,8 @@ def run_command(command: str) -> dict[str, Any]:
         return validate_dead_end_trial1_maps_cli()
     if command == "replay-dead-end-trial1-candidate-maps":
         return run_candidate_dead_end_trial1_ascii_replay_cli()
+    if command == "run-valid-dead-end-maps-ab-control":
+        return run_valid_dead_end_maps_ab_control_cli()
     return {
         "command": command,
         "status": "error",
@@ -2490,6 +2817,7 @@ def main(argv: list[str] | None = None) -> int:
             "replay-approach-box-dead-end-two-trial",
             "validate-dead-end-trial1-maps",
             "replay-dead-end-trial1-candidate-maps",
+            "run-valid-dead-end-maps-ab-control",
         ],
     )
     parser.add_argument("--review-id", default="review_001")
@@ -2578,6 +2906,12 @@ def main(argv: list[str] | None = None) -> int:
         result = validate_dead_end_trial1_maps_cli(runs_per_map=args.runs_per_map, max_steps=args.max_steps)
     elif args.command == "replay-dead-end-trial1-candidate-maps":
         result = run_candidate_dead_end_trial1_ascii_replay_cli(max_steps=args.max_steps)
+    elif args.command == "run-valid-dead-end-maps-ab-control":
+        result = run_valid_dead_end_maps_ab_control_cli(
+            runs_per_map=args.runs_per_map,
+            max_steps=args.max_steps,
+            random_seed=args.random_seed,
+        )
     else:
         result = run_command(args.command)
     if hasattr(sys.stdout, "reconfigure"):
