@@ -1193,6 +1193,14 @@ Two-Trial History Boundary:
 - Trial 2 reports whether it read local memory, avoided the Trial 1 dead-end blocked action, reduced dead-end visits, reduced blocked/failed actions, and changed step count.
 - This is dead-end local memory verification only. It is not proof of learning, not full route replay, not Trial 1 `selected_actions` replay, not pathfinding / BFS / A*, not lesson_candidate / lesson_store / Memory Layer use, and not LLM planning.
 
+## Dead-End Memory Control Check v0
+
+- Adds `py -3 -m ashl_core.teaching_cli run-approach-box-dead-end-memory-control-check --max-steps 100 --runs 20`.
+- Compares `with_memory` against `without_memory` on the existing `approach_box_dead_end_v0` level.
+- `with_memory` Trial 2 may read only Trial 1 local outcome memory; `without_memory` Trial 2 must not read local memory.
+- Output records aggregate Trial 2 dead-end entry counts, blocked/failed totals, average step counts, completion counts, and control-group comparison deltas.
+- This is a bounded A/B control check, not proof of general learning. It does not use LLM planning, pathfinding / BFS / A*, full route replay, Trial 1 `selected_actions` replay, lesson_candidate, lesson_store, or Memory Layer.
+
 ## Micro Navigation Trial Metrics CLI v0
 
 - Adds `py -3 -m ashl_core.teaching_cli run-navigation-trial-metrics --runs 4 --trial-count 5 --max-steps 10`.

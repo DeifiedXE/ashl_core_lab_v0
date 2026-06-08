@@ -1245,6 +1245,96 @@ def run_approach_box_dead_end_two_trial_check_cli(max_steps: int = 100) -> dict[
     }
 
 
+def _summarize_dead_end_memory_control_trials(trial_2_results: list[dict[str, Any]]) -> dict[str, Any]:
+    step_counts = [trial["step_count"] for trial in trial_2_results]
+    run_count = len(trial_2_results)
+    return {
+        "run_count": run_count,
+        "trial2_completed_count": sum(1 for trial in trial_2_results if trial["completed_approach"]),
+        "trial2_entered_dead_end_count": sum(1 for trial in trial_2_results if trial["entered_dead_end_area"]),
+        "trial2_avoided_dead_end_action_count": sum(
+            1 for trial in trial_2_results if trial.get("avoided_trial1_dead_end_action") is True
+        ),
+        "trial2_blocked_or_failed_total": sum(len(trial["blocked_or_failed_actions"]) for trial in trial_2_results),
+        "trial2_average_step_count": (sum(step_counts) / run_count) if run_count else 0,
+        "trial2_step_counts": step_counts,
+    }
+
+
+def run_approach_box_dead_end_memory_control_check_cli(
+    max_steps: int = 100,
+    runs: int = 20,
+    random_seed: int | None = None,
+) -> dict[str, Any]:
+    with_memory_trial_2_results = []
+    without_memory_trial_2_results = []
+
+    for _run_id in range(runs):
+        with_memory_result = run_approach_box_dead_end_two_trial_check_cli(max_steps=max_steps)
+        with_memory_trial_2_results.append(with_memory_result["trial_2"])
+
+        run_approach_box_dead_end_trial_cli(max_steps=max_steps)
+        without_memory_trial_2 = run_approach_box_dead_end_trial_cli(max_steps=max_steps)
+        without_memory_trial_2["avoided_trial1_dead_end_action"] = False
+        without_memory_trial_2_results.append(without_memory_trial_2)
+
+    with_memory = _summarize_dead_end_memory_control_trials(with_memory_trial_2_results)
+    without_memory = _summarize_dead_end_memory_control_trials(without_memory_trial_2_results)
+    average_step_count_delta = with_memory["trial2_average_step_count"] - without_memory["trial2_average_step_count"]
+    memory_effect_observed = (
+        with_memory["trial2_entered_dead_end_count"] < without_memory["trial2_entered_dead_end_count"]
+        or with_memory["trial2_blocked_or_failed_total"] < without_memory["trial2_blocked_or_failed_total"]
+        or with_memory["trial2_average_step_count"] < without_memory["trial2_average_step_count"]
+    )
+    comparison = {
+        "entered_dead_end_count_delta": with_memory["trial2_entered_dead_end_count"]
+        - without_memory["trial2_entered_dead_end_count"],
+        "blocked_or_failed_total_delta": with_memory["trial2_blocked_or_failed_total"]
+        - without_memory["trial2_blocked_or_failed_total"],
+        "average_step_count_delta": average_step_count_delta,
+        "completed_count_delta": with_memory["trial2_completed_count"] - without_memory["trial2_completed_count"],
+        "memory_effect_observed": memory_effect_observed,
+        "control_group_used": True,
+    }
+    boundary_check = {
+        "with_memory_trial2_read_local_outcome_memory": True,
+        "without_memory_trial2_read_local_outcome_memory": False,
+        "with_memory_trial2_replayed_full_route": False,
+        "without_memory_trial2_replayed_full_route": False,
+        "trial2_used_llm": False,
+        "trial2_used_lesson_store": False,
+        "trial2_used_memory_layer": False,
+        "trial2_used_long_term_memory": False,
+        "trial2_used_lesson_candidate": False,
+        "trial2_used_pathfinding": False,
+        "trial2_used_human_hint": False,
+    }
+    notes = [
+        "Dead-end memory control check compares with_memory against without_memory on the existing level.",
+        "Trial 2 reads local outcome memory only in the with_memory group.",
+        "This bounded A/B control check is not proof of general learning.",
+    ]
+    if random_seed is None:
+        notes.append("The current dead-end fixture is deterministic; paired run ids are used instead of stochastic seeds.")
+    else:
+        notes.append("The current dead-end fixture is deterministic; random_seed is recorded for paired comparison only.")
+
+    return {
+        "command": "run-approach-box-dead-end-memory-control-check",
+        "flow": "dead_end_memory_control_check_v0",
+        "status": "ok",
+        "level_id": "approach_box_dead_end_v0",
+        "runs": runs,
+        "max_steps": max_steps,
+        "random_seed": random_seed,
+        "with_memory": with_memory,
+        "without_memory": without_memory,
+        "comparison": comparison,
+        "boundary_check": boundary_check,
+        "notes": notes,
+    }
+
+
 def _verification_boundary() -> dict[str, bool]:
     return {
         "llm_used": False,
@@ -1314,6 +1404,8 @@ def run_command(command: str) -> dict[str, Any]:
         return run_approach_box_dead_end_trial_cli()
     if command == "run-approach-box-dead-end-two-trial-check":
         return run_approach_box_dead_end_two_trial_check_cli()
+    if command == "run-approach-box-dead-end-memory-control-check":
+        return run_approach_box_dead_end_memory_control_check_cli()
     return {
         "command": command,
         "status": "error",
@@ -1349,6 +1441,7 @@ def main(argv: list[str] | None = None) -> int:
             "run-approach-box-two-trial-check",
             "run-approach-box-dead-end-trial",
             "run-approach-box-dead-end-two-trial-check",
+            "run-approach-box-dead-end-memory-control-check",
         ],
     )
     parser.add_argument("--review-id", default="review_001")
@@ -1424,6 +1517,12 @@ def main(argv: list[str] | None = None) -> int:
         result = run_approach_box_dead_end_trial_cli(max_steps=args.max_steps)
     elif args.command == "run-approach-box-dead-end-two-trial-check":
         result = run_approach_box_dead_end_two_trial_check_cli(max_steps=args.max_steps)
+    elif args.command == "run-approach-box-dead-end-memory-control-check":
+        result = run_approach_box_dead_end_memory_control_check_cli(
+            max_steps=args.max_steps,
+            runs=args.runs,
+            random_seed=args.random_seed,
+        )
     else:
         result = run_command(args.command)
     if hasattr(sys.stdout, "reconfigure"):

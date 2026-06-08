@@ -2157,6 +2157,38 @@ No LLM planning.
 No human hint.
 This is local memory verification, not proof of learning.
 
+## Dead-End Memory Control Check v0
+
+Status:
+minimal-runtime / cli-wrapper / ab-memory-control-check / no-learning-proof
+
+Summary:
+Adds py -3 -m ashl_core.teaching_cli run-approach-box-dead-end-memory-control-check --max-steps 100 --runs 20.
+The CLI compares with_memory against without_memory on the existing approach_box_dead_end_v0 level.
+with_memory runs Trial 1, extracts local state-action outcome memory, then runs Trial 2 with that local memory available.
+without_memory runs Trial 1, then runs Trial 2 fresh without reading local memory.
+The output records aggregate Trial 2 completion, dead-end entry counts, avoided-dead-end-action counts, blocked/failed totals, average step counts, comparison deltas, and boundary_check.
+
+Boundary:
+No existing approach-box runner behavior changes.
+No dead-end single trial behavior changes.
+No action selection changes.
+No goal bias changes.
+No state-action memory behavior changes.
+No penalty / stuck detection.
+No learning rule creation.
+No pathfinding / BFS / A*.
+No full route replay.
+No Trial 1 selected_actions replay into Trial 2.
+No lesson_candidate pipeline connection.
+No lesson_store write.
+No Memory Layer write.
+No Long-term Memory write.
+No LLM planning.
+No human hint.
+Trial 2 may read local outcome memory only in the with_memory group.
+This is a bounded A/B control check, not proof of general learning.
+
 ## Micro Navigation Trial Metrics CLI v0
 
 Status:
