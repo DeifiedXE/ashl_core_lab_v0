@@ -1283,7 +1283,7 @@ v2.7a adds `ashl_core.failure_events` as a trace-only failure_event schema found
 
 - `docs/current_boundary_index.md`
 - Adds a short, versioned, low-token source of global hard boundaries for future work packages.
-- Current version: `Boundary Index Version: 2026-06-06-b25`.
+- Current version: `Boundary Index Version: 2026-06-06-b26`.
 - Lists current global hard boundaries and deferred areas.
 - Compression patch keeps the version at b25 while aggregating repeated boundary lines to preserve room for future sync packages.
 - Requires the file to be updated every time an Update Log is generated.

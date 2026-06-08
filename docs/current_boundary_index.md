@@ -1,5 +1,5 @@
-Boundary Index Version: 2026-06-06-b25
-Last update log: Batch 25
+Boundary Index Version: 2026-06-06-b26
+Last update log: Batch 26
 Clean count at last update log reset: 0/5
 Current clean count: 0/5
 ## Global Hard Boundaries
@@ -57,12 +57,19 @@ Current clean count: 0/5
 - tactile interaction does not prove Qingyin understands box, wall, or goal.
 - repeated blocked action history is trace readback, not full learning.
 - repeated blocked action avoidance is action candidate bias, not solver.
+- outcome weighting is action candidate bias, not solver or full reinforcement learning.
 - grounded learning verification CLI is human-verifiable trace flow, not teaching chat.
 - clear-sandbox-working-state must preserve append-only traces.
 - sandbox working state clear is not memory deletion.
 - suggested_next_action is candidate suggestion, not autonomous planning.
 - intrinsic action selection is bounded candidate selection, not solver.
+- intrinsic action selection is bounded candidate selection, not autonomous planning.
+- intrinsic action selection must only select from candidate_actions.
+- bounded randomness must only act within candidate_actions.
 - box_on_goal need_state is target-state tracking, not emotion / dopamine.
+- box_on_goal need_state is target-state tracking, not emotion or dopamine.
+- need_state current_value 0/1 does not prove desire or understanding.
+- need_state must not write lesson_store or Memory Layer.
 - need_state does not choose actions.
 - sandbox result is not a lesson.
 - sandbox trace is not memory promotion.
@@ -89,6 +96,10 @@ Current clean count: 0/5
 - tactile trace persistence runtime
 - autonomous action selection
 - intrinsic action selection runtime
+- need-state driven action loop
+- automatic trial improvement
+- long-term learning
+- emotion / dopamine runtime
 - autonomous goal planning / action outcome weighting runtime integration
 - tactile learning
 - full learning pipeline

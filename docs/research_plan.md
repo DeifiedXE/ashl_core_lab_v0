@@ -1399,6 +1399,28 @@ Boundary:
 - No sandbox / CLI / weighting / need_state behavior changes.
 - No Update Rule removal.
 
+## Current Boundary Index Batch 26 Sync Patch
+
+Status:
+docs-only / boundary-index-sync / update-log-sync / no-runtime-expansion
+
+Summary:
+Updates docs/current_boundary_index.md from Batch 25 to Batch 26.
+Adds Batch 26 hard boundaries for outcome weighting as action candidate bias, intrinsic action selection as bounded candidate selection within candidate_actions, bounded randomness limited to candidate_actions, and box_on_goal need_state as target-state tracking rather than emotion / dopamine.
+Marks need-state driven action loop, automatic trial improvement, long-term learning, autonomous goal planning, full learning pipeline, lesson_candidate pipeline connection, lesson_store write, Memory Layer write, emotion / dopamine runtime, and open language interfaces as deferred.
+
+Boundary:
+- No runtime.
+- No sandbox behavior changes.
+- No CLI behavior changes.
+- No action weighting / intrinsic selection / need_state behavior changes.
+- No lesson_store write.
+- No Memory Layer write.
+- No lesson_candidate pipeline connection.
+- No LLM / teaching chat loop / free text conversation.
+- No emotion / dopamine runtime.
+- No autonomous behavior changes.
+
 ## v2.8e Review Decision Trace-only Schema
 
 Status: completed / trace-only
