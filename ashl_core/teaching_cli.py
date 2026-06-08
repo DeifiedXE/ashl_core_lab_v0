@@ -5,6 +5,7 @@ from __future__ import annotations
 import argparse
 import json
 import sys
+from pathlib import Path
 from typing import Any
 
 from .fake_sandbox import build_initial_sandbox_state, observe, pick_up
@@ -660,6 +661,66 @@ def run_trial_metrics_comparison_cli(
     }
 
 
+def run_trial_metrics_baseline_compare_cli(
+    baseline_path: str = "data/baselines/trial_metrics_baseline_v0.json",
+) -> dict[str, Any]:
+    path = Path(baseline_path)
+    baseline = json.loads(path.read_text(encoding="utf-8"))
+    parameters = baseline["parameters"]
+    baseline_metrics = baseline["metrics"]
+    current = run_trial_metrics_comparison_cli(
+        runs=parameters["runs"],
+        trial_count=parameters["trial_count"],
+        max_steps=parameters["max_steps"],
+        random_seed=parameters["random_seed"],
+    )
+    return {
+        "command": "run-trial-metrics-baseline-compare",
+        "flow": "trial_metrics_baseline_comparison_v0",
+        "status": "ok",
+        "baseline_id": baseline["baseline_id"],
+        "baseline_commit": baseline["commit"],
+        "baseline_source_command": baseline["source_command"],
+        "same_config_used": True,
+        "comparison_only": True,
+        "proof_of_learning": False,
+        "baseline_total_trials": baseline_metrics["total_trials"],
+        "current_total_trials": current["total_trials"],
+        "baseline_total_completed": baseline_metrics["total_completed"],
+        "current_total_completed": current["total_completed"],
+        "total_completed_delta": current["total_completed"] - baseline_metrics["total_completed"],
+        "baseline_overall_success_rate": baseline_metrics["overall_success_rate"],
+        "current_overall_success_rate": current["overall_success_rate"],
+        "success_rate_delta": current["overall_success_rate"] - baseline_metrics["overall_success_rate"],
+        "baseline_overall_average_step_count": baseline_metrics["overall_average_step_count"],
+        "current_overall_average_step_count": current["overall_average_step_count"],
+        "average_step_count_delta": current["overall_average_step_count"]
+        - baseline_metrics["overall_average_step_count"],
+        "baseline_max_steps_reached_count": baseline_metrics["max_steps_reached_count"],
+        "current_max_steps_reached_count": current["max_steps_reached_count"],
+        "max_steps_reached_delta": current["max_steps_reached_count"]
+        - baseline_metrics["max_steps_reached_count"],
+        "parameters": dict(parameters),
+        "boundary": {
+            "changes_trial_runner_behavior": False,
+            "changes_action_selection": False,
+            "changes_goal_bias": False,
+            "changes_state_action_memory": False,
+            "changes_penalty_or_stuck_detection": False,
+            "creates_learning_rule": False,
+            "creates_lesson_candidate": False,
+            "writes_lesson_store": False,
+            "writes_memory_layer": False,
+            "llm_used": False,
+        },
+        "notes": [
+            "Baseline comparison is readback only.",
+            "It does not modify behavior.",
+            "It is not proof of learning.",
+        ],
+    }
+
+
 def run_navigation_trial_metrics_cli(
     runs: int = 4,
     trial_count: int = 5,
@@ -1014,6 +1075,10 @@ def run_command(command: str) -> dict[str, Any]:
         return run_need_state_trial_batch_cli()
     if command == "run-trial-metrics-comparison":
         return run_trial_metrics_comparison_cli()
+    if command == "compare-trial-metrics-baseline":
+        return run_trial_metrics_baseline_compare_cli()
+    if command == "run-trial-metrics-baseline-compare":
+        return run_trial_metrics_baseline_compare_cli()
     if command == "run-navigation-trial-metrics":
         return run_navigation_trial_metrics_cli()
     if command == "run-navigation-multi-goal-metrics":
@@ -1050,6 +1115,8 @@ def main(argv: list[str] | None = None) -> int:
             "run-grounded-learning-check",
             "run-need-state-trial-batch",
             "run-trial-metrics-comparison",
+            "compare-trial-metrics-baseline",
+            "run-trial-metrics-baseline-compare",
             "run-navigation-trial-metrics",
             "run-navigation-multi-goal-metrics",
             "run-navigation-obstacle-trial",
@@ -1071,6 +1138,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--max-steps", type=int, default=10)
     parser.add_argument("--runs", type=int, default=4)
     parser.add_argument("--random-seed", type=int, default=None)
+    parser.add_argument("--baseline-path", default="data/baselines/trial_metrics_baseline_v0.json")
     args = parser.parse_args(argv)
     if args.command == "run-review-approve":
         result = run_review_approve(review_id=args.review_id, notes=args.notes)
@@ -1105,6 +1173,8 @@ def main(argv: list[str] | None = None) -> int:
             max_steps=args.max_steps,
             random_seed=args.random_seed,
         )
+    elif args.command in {"compare-trial-metrics-baseline", "run-trial-metrics-baseline-compare"}:
+        result = run_trial_metrics_baseline_compare_cli(baseline_path=args.baseline_path)
     elif args.command == "run-navigation-trial-metrics":
         result = run_navigation_trial_metrics_cli(
             runs=args.runs,

@@ -2467,6 +2467,31 @@ No Memory Layer write.
 No LLM / teaching chat loop / free text conversation.
 No baseline-driven automatic behavior change.
 
+## Trial Metrics Baseline Comparison v0
+
+Status:
+minimal-runtime / cli-wrapper / baseline-snapshot-compare / comparison-only / no-learning
+
+Summary:
+Adds py -3 -m ashl_core.teaching_cli compare-trial-metrics-baseline.
+Also supports py -3 -m ashl_core.teaching_cli run-trial-metrics-baseline-compare.
+The command reads data/baselines/trial_metrics_baseline_v0.json, reruns trial metrics comparison using the baseline parameters, and reports baseline/current/delta fields.
+The output includes same_config_used=true, comparison_only=true, and proof_of_learning=false.
+
+Boundary:
+No trial runner behavior changes.
+No action selection behavior changes.
+No goal bias changes.
+No state-action memory changes.
+No penalty / stuck detection changes.
+No learning rule creation.
+No lesson_candidate pipeline connection.
+No lesson_store write.
+No Memory Layer write.
+No LLM planning.
+No proof of learning claim.
+No behavior changes from baseline comparison.
+
 ## Sandbox Working State Clear CLI v0
 
 Status:

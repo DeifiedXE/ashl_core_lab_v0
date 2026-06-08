@@ -153,6 +153,7 @@ from ashl_core.teaching_cli import (
     run_review_reject,
     run_tactile_interaction,
     run_trial_metrics_comparison_cli,
+    run_trial_metrics_baseline_compare_cli,
     run_unknown_flow,
 )
 from ashl_core.tactile_state_mapping import map_tactile_result_to_state_key
@@ -1298,6 +1299,57 @@ def smoke_trial_metrics_baseline_snapshot() -> dict:
             "total_trials": metrics.get("total_trials"),
             "overall_success_rate": metrics.get("overall_success_rate"),
             "overall_average_step_count": metrics.get("overall_average_step_count"),
+        },
+    )
+
+
+def smoke_trial_metrics_baseline_comparison() -> dict:
+    result = run_trial_metrics_baseline_compare_cli()
+    boundary = result.get("boundary", {})
+    passed = (
+        result.get("flow") == "trial_metrics_baseline_comparison_v0"
+        and result.get("status") == "ok"
+        and result.get("baseline_id") == "trial_metrics_baseline_v0"
+        and result.get("baseline_commit")
+        and "run-trial-metrics-comparison" in result.get("baseline_source_command", "")
+        and result.get("same_config_used") is True
+        and result.get("comparison_only") is True
+        and result.get("proof_of_learning") is False
+        and result.get("baseline_total_trials") == 20
+        and result.get("current_total_trials") == 20
+        and result.get("baseline_total_completed") == 13
+        and result.get("current_total_completed") == 13
+        and result.get("total_completed_delta") == 0
+        and result.get("baseline_overall_success_rate") == 0.65
+        and result.get("current_overall_success_rate") == 0.65
+        and result.get("success_rate_delta") == 0
+        and result.get("baseline_overall_average_step_count") == 6.6
+        and result.get("current_overall_average_step_count") == 6.6
+        and result.get("average_step_count_delta") == 0
+        and result.get("baseline_max_steps_reached_count") == 7
+        and result.get("current_max_steps_reached_count") == 7
+        and result.get("max_steps_reached_delta") == 0
+        and boundary.get("changes_trial_runner_behavior") is False
+        and boundary.get("changes_action_selection") is False
+        and boundary.get("changes_goal_bias") is False
+        and boundary.get("changes_state_action_memory") is False
+        and boundary.get("changes_penalty_or_stuck_detection") is False
+        and boundary.get("creates_learning_rule") is False
+        and boundary.get("creates_lesson_candidate") is False
+        and boundary.get("writes_lesson_store") is False
+        and boundary.get("writes_memory_layer") is False
+        and boundary.get("llm_used") is False
+    )
+    return _result(
+        "trial_metrics_baseline_comparison",
+        passed,
+        {
+            "baseline_id": result.get("baseline_id"),
+            "same_config_used": result.get("same_config_used"),
+            "total_completed_delta": result.get("total_completed_delta"),
+            "success_rate_delta": result.get("success_rate_delta"),
+            "average_step_count_delta": result.get("average_step_count_delta"),
+            "max_steps_reached_delta": result.get("max_steps_reached_delta"),
         },
     )
 
@@ -5541,6 +5593,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_need_state_trial_batch_cli(),
         smoke_trial_metrics_comparison_cli(),
         smoke_trial_metrics_baseline_snapshot(),
+        smoke_trial_metrics_baseline_comparison(),
         smoke_clear_sandbox_working_state_cli(),
         smoke_grounded_learning_verification_cli(),
         smoke_standing_task(),

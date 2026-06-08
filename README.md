@@ -1301,6 +1301,14 @@ Two-Trial History Boundary:
 - This baseline is for comparison only. It does not modify behavior and is not proof of learning by itself.
 - This package does not modify trial runner behavior, sandbox behavior, metrics-driven behavior, learning pipeline, lesson_candidate pipeline, lesson_store / Memory Layer writes, LLM / teaching chat, AI solver / pathfinding, or goal planning.
 
+## Trial Metrics Baseline Comparison v0
+
+- Adds `py -3 -m ashl_core.teaching_cli compare-trial-metrics-baseline`.
+- Also supports `py -3 -m ashl_core.teaching_cli run-trial-metrics-baseline-compare`.
+- The CLI reads `data/baselines/trial_metrics_baseline_v0.json`, reruns trial metrics comparison with the baseline parameters, and reports baseline/current/delta fields.
+- Output includes `same_config_used = true`, `comparison_only = true`, and `proof_of_learning = false`.
+- This is metrics readback only. It does not modify trial runner behavior, action selection, goal bias, state-action memory, penalty / stuck detection, learning rules, lesson_candidate pipeline, lesson_store / Memory Layer writes, LLM planning, or behavior.
+
 ## Sandbox Working State Clear CLI v0
 
 - Adds `py -3 -m ashl_core.teaching_cli clear-sandbox-working-state --session-id <session_id>`.
