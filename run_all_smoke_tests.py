@@ -859,6 +859,7 @@ def smoke_dead_end_map_trial1_validation() -> dict:
     summary = result.get("overall_summary", {})
     boundary = result.get("boundary_check", {})
     statuses = {item.get("level_id"): item.get("map_status") for item in map_results}
+    fixture_loaded = {item.get("level_id"): item.get("fixture_loaded") for item in map_results}
     passed = (
         result.get("flow") == "dead_end_map_trial1_validation_v0"
         and result.get("command") == "validate-dead-end-trial1-maps"
@@ -871,7 +872,12 @@ def smoke_dead_end_map_trial1_validation() -> dict:
         and "user_maze_dead_end_candidate_v0" in statuses
         and "mid_branch_dead_end_candidate_v0" in statuses
         and "lower_branch_dead_end_candidate_v0" in statuses
+        and fixture_loaded.get("user_maze_dead_end_candidate_v0") is True
+        and fixture_loaded.get("mid_branch_dead_end_candidate_v0") is True
+        and fixture_loaded.get("lower_branch_dead_end_candidate_v0") is True
         and all("level_id" in item for item in map_results)
+        and all("fixture_loaded" in item for item in map_results)
+        and all("fixture_load_error" in item for item in map_results)
         and all("completed_count" in item for item in map_results)
         and all("entered_dead_end_count" in item for item in map_results)
         and all("blocked_or_failed_total" in item for item in map_results)
@@ -887,6 +893,8 @@ def smoke_dead_end_map_trial1_validation() -> dict:
         and boundary.get("modified_action_selection") is False
         and boundary.get("modified_goal_bias") is False
         and boundary.get("modified_state_action_memory") is False
+        and boundary.get("candidate_fixtures_supported") is True
+        and boundary.get("generic_ascii_parser_added") is False
     )
     return _result(
         "dead_end_map_trial1_validation",
@@ -894,6 +902,7 @@ def smoke_dead_end_map_trial1_validation() -> dict:
         {
             "overall_summary": summary,
             "map_statuses": statuses,
+            "fixture_loaded": fixture_loaded,
             "boundary_check": boundary,
         },
     )

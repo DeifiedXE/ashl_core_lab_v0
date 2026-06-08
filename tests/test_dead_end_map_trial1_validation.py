@@ -26,6 +26,8 @@ class DeadEndMapTrial1ValidationTests(unittest.TestCase):
         self.assertEqual(len(map_results), 4)
         for map_result in map_results:
             self.assertIn("level_id", map_result)
+            self.assertIn("fixture_loaded", map_result)
+            self.assertIn("fixture_load_error", map_result)
             self.assertIn("runs", map_result)
             self.assertIn("completed_count", map_result)
             self.assertIn("entered_dead_end_count", map_result)
@@ -54,12 +56,14 @@ class DeadEndMapTrial1ValidationTests(unittest.TestCase):
         existing = next(item for item in result["map_results"] if item["level_id"] == "approach_box_dead_end_v0")
 
         self.assertEqual(existing["runs"], 2)
+        self.assertTrue(existing["fixture_loaded"])
+        self.assertIsNone(existing["fixture_load_error"])
         self.assertEqual(existing["completed_count"], 2)
         self.assertGreaterEqual(existing["entered_dead_end_count"], 1)
         self.assertGreaterEqual(existing["blocked_or_failed_total"], 1)
         self.assertEqual(existing["map_status"], "valid_for_two_trial")
 
-    def test_candidate_maps_are_reported_honestly_when_runner_adapter_is_missing(self):
+    def test_candidate_maps_are_loaded_as_fixed_fixtures(self):
         result = validate_dead_end_trial1_maps_cli(runs_per_map=2, max_steps=100)
         candidate_results = [
             item for item in result["map_results"] if item["level_id"] != "approach_box_dead_end_v0"
@@ -67,9 +71,19 @@ class DeadEndMapTrial1ValidationTests(unittest.TestCase):
 
         self.assertEqual(len(candidate_results), 3)
         for candidate in candidate_results:
-            self.assertEqual(candidate["map_status"], "needs_map_fix")
-            self.assertEqual(candidate["completed_count"], 0)
-            self.assertIsNone(candidate["average_step_count"])
+            self.assertTrue(candidate["fixture_loaded"])
+            self.assertIsNone(candidate["fixture_load_error"])
+            self.assertIn(
+                candidate["map_status"],
+                {
+                    "valid_for_two_trial",
+                    "no_dead_end_event",
+                    "unreachable",
+                    "has_shortcut",
+                    "mixed",
+                    "needs_map_fix",
+                },
+            )
             self.assertTrue(candidate["validation_notes"])
 
     def test_overall_summary_and_boundary(self):
@@ -96,6 +110,8 @@ class DeadEndMapTrial1ValidationTests(unittest.TestCase):
         self.assertFalse(boundary["modified_action_selection"])
         self.assertFalse(boundary["modified_goal_bias"])
         self.assertFalse(boundary["modified_state_action_memory"])
+        self.assertTrue(boundary["candidate_fixtures_supported"])
+        self.assertFalse(boundary["generic_ascii_parser_added"])
 
     def test_module_cli_validation_outputs_json(self):
         process = subprocess.run(
@@ -121,6 +137,8 @@ class DeadEndMapTrial1ValidationTests(unittest.TestCase):
         self.assertEqual(result["overall_summary"]["map_count"], 4)
         self.assertTrue(result["boundary_check"]["trial1_validation_only"])
         self.assertFalse(result["boundary_check"]["two_trial_run"])
+        self.assertTrue(result["boundary_check"]["candidate_fixtures_supported"])
+        self.assertFalse(result["boundary_check"]["generic_ascii_parser_added"])
         self.assertFalse(result["boundary_check"]["used_llm"])
         self.assertFalse(result["boundary_check"]["used_pathfinding"])
 

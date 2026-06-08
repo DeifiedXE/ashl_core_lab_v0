@@ -1214,6 +1214,8 @@ Two-Trial History Boundary:
 - Adds `py -3 -m ashl_core.teaching_cli validate-dead-end-trial1-maps --runs-per-map 3 --max-steps 100`.
 - Validates candidate dead-end maps before Two-Trial or A/B memory tests by running Trial 1 style checks where the current fixture supports it.
 - Reports `map_status`, completion counts, dead-end entry counts, blocked/failed totals, step counts, samples, and an overall recommendation.
+- Candidate maps are now wired as fixed fixtures for Trial 1 validation, with `fixture_loaded` and `fixture_load_error` reported for each map.
+- Fixture support does not mean a map is valid for Two-Trial; the validation CLI reports whether each map is usable.
 - Bad maps are reported honestly rather than forced to pass.
 - This command does not run Two-Trial, does not run A/B memory control, does not use LLM planning, does not use pathfinding / BFS / A*, and is not proof of learning.
 

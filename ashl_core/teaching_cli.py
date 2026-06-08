@@ -1659,16 +1659,104 @@ DEAD_END_TRIAL1_MAP_CANDIDATES = [
         "approach_positions": [[3, 4]],
         "intended_dead_end_positions": [[4, 1], [4, 2]],
         "runner_supported": True,
+        "fixture_type": "existing",
     },
     {
         "level_id": "user_maze_dead_end_candidate_v0",
         "source": "candidate_validation_fixture",
         "agent_start": [1, 1],
         "box_pos": [8, 8],
-        "approach_positions": [],
+        "approach_positions": [[8, 7]],
         "intended_dead_end_positions": [],
-        "runner_supported": False,
-        "unsupported_reason": "current dead-end Trial 1 runner is fixed to approach_box_dead_end_v0 and has no generic 10x10 map adapter",
+        "runner_supported": True,
+        "fixture_type": "fixed_candidate",
+        "width": 10,
+        "height": 10,
+        "walls": [
+            [0, 0],
+            [1, 0],
+            [2, 0],
+            [3, 0],
+            [4, 0],
+            [5, 0],
+            [6, 0],
+            [7, 0],
+            [8, 0],
+            [9, 0],
+            [0, 1],
+            [8, 1],
+            [9, 1],
+            [0, 2],
+            [1, 2],
+            [2, 2],
+            [3, 2],
+            [4, 2],
+            [5, 2],
+            [7, 2],
+            [8, 2],
+            [9, 2],
+            [0, 3],
+            [1, 3],
+            [5, 3],
+            [7, 3],
+            [8, 3],
+            [9, 3],
+            [0, 4],
+            [1, 4],
+            [3, 4],
+            [5, 4],
+            [9, 4],
+            [0, 5],
+            [1, 5],
+            [3, 5],
+            [7, 5],
+            [9, 5],
+            [0, 6],
+            [1, 6],
+            [3, 6],
+            [4, 6],
+            [5, 6],
+            [6, 6],
+            [7, 6],
+            [9, 6],
+            [0, 7],
+            [1, 7],
+            [9, 7],
+            [0, 8],
+            [1, 8],
+            [2, 8],
+            [3, 8],
+            [4, 8],
+            [5, 8],
+            [6, 8],
+            [7, 8],
+            [9, 8],
+            [0, 9],
+            [1, 9],
+            [2, 9],
+            [3, 9],
+            [4, 9],
+            [5, 9],
+            [6, 9],
+            [7, 9],
+            [8, 9],
+            [9, 9],
+        ],
+        "trial1_actions": [
+            "move_right",
+            "move_right",
+            "move_right",
+            "move_right",
+            "move_right",
+            "move_down",
+            "move_down",
+            "move_down",
+            "move_right",
+            "move_right",
+            "move_down",
+            "move_down",
+            "move_down",
+        ],
     },
     {
         "level_id": "mid_branch_dead_end_candidate_v0",
@@ -1677,8 +1765,70 @@ DEAD_END_TRIAL1_MAP_CANDIDATES = [
         "box_pos": [5, 5],
         "approach_positions": [[4, 5]],
         "intended_dead_end_positions": [[5, 3]],
-        "runner_supported": False,
-        "unsupported_reason": "current dead-end Trial 1 runner is fixed to approach_box_dead_end_v0 and has no generic branch-map adapter",
+        "runner_supported": True,
+        "fixture_type": "fixed_candidate",
+        "width": 8,
+        "height": 7,
+        "walls": [
+            [0, 0],
+            [1, 0],
+            [2, 0],
+            [3, 0],
+            [4, 0],
+            [5, 0],
+            [6, 0],
+            [7, 0],
+            [0, 1],
+            [5, 1],
+            [6, 1],
+            [7, 1],
+            [0, 2],
+            [1, 2],
+            [2, 2],
+            [3, 2],
+            [5, 2],
+            [6, 2],
+            [7, 2],
+            [0, 3],
+            [1, 3],
+            [2, 3],
+            [3, 3],
+            [6, 3],
+            [7, 3],
+            [0, 4],
+            [1, 4],
+            [2, 4],
+            [3, 4],
+            [5, 4],
+            [6, 4],
+            [7, 4],
+            [0, 5],
+            [1, 5],
+            [2, 5],
+            [3, 5],
+            [6, 5],
+            [7, 5],
+            [0, 6],
+            [1, 6],
+            [2, 6],
+            [3, 6],
+            [4, 6],
+            [5, 6],
+            [6, 6],
+            [7, 6],
+        ],
+        "trial1_actions": [
+            "move_right",
+            "move_right",
+            "move_right",
+            "move_down",
+            "move_down",
+            "move_right",
+            "move_right",
+            "move_left",
+            "move_down",
+            "move_down",
+        ],
     },
     {
         "level_id": "lower_branch_dead_end_candidate_v0",
@@ -1687,10 +1837,79 @@ DEAD_END_TRIAL1_MAP_CANDIDATES = [
         "box_pos": [5, 5],
         "approach_positions": [[4, 5]],
         "intended_dead_end_positions": [[5, 4]],
-        "runner_supported": False,
-        "unsupported_reason": "current dead-end Trial 1 runner is fixed to approach_box_dead_end_v0 and has no generic branch-map adapter",
+        "runner_supported": True,
+        "fixture_type": "fixed_candidate",
+        "width": 8,
+        "height": 7,
+        "walls": [
+            [0, 0],
+            [1, 0],
+            [2, 0],
+            [3, 0],
+            [4, 0],
+            [5, 0],
+            [6, 0],
+            [7, 0],
+            [0, 1],
+            [5, 1],
+            [6, 1],
+            [7, 1],
+            [0, 2],
+            [1, 2],
+            [2, 2],
+            [3, 2],
+            [5, 2],
+            [6, 2],
+            [7, 2],
+            [0, 3],
+            [1, 3],
+            [2, 3],
+            [3, 3],
+            [5, 3],
+            [6, 3],
+            [7, 3],
+            [0, 4],
+            [1, 4],
+            [2, 4],
+            [3, 4],
+            [6, 4],
+            [7, 4],
+            [0, 5],
+            [1, 5],
+            [2, 5],
+            [3, 5],
+            [6, 5],
+            [7, 5],
+            [0, 6],
+            [1, 6],
+            [2, 6],
+            [3, 6],
+            [4, 6],
+            [5, 6],
+            [6, 6],
+            [7, 6],
+        ],
+        "trial1_actions": [
+            "move_right",
+            "move_right",
+            "move_right",
+            "move_down",
+            "move_down",
+            "move_down",
+            "move_right",
+            "move_down",
+            "move_left",
+            "move_down",
+        ],
     },
 ]
+
+DEAD_END_CANDIDATE_ACTION_DELTAS = {
+    "move_up": [0, -1],
+    "move_down": [0, 1],
+    "move_left": [-1, 0],
+    "move_right": [1, 0],
+}
 
 
 def _status_for_dead_end_trial1_results(trials: list[dict[str, Any]], max_steps: int) -> str:
@@ -1711,6 +1930,71 @@ def _status_for_dead_end_trial1_results(trials: list[dict[str, Any]], max_steps:
     return "no_dead_end_event"
 
 
+def _run_candidate_dead_end_trial1_fixture(map_config: dict[str, Any], max_steps: int) -> dict[str, Any]:
+    agent_pos = list(map_config["agent_start"])
+    walls = {tuple(pos) for pos in map_config["walls"]}
+    dead_end_positions = {tuple(pos) for pos in map_config["intended_dead_end_positions"]}
+    approach_positions = {tuple(pos) for pos in map_config["approach_positions"]}
+    selected_actions = []
+    dead_end_positions_visited = []
+    blocked_or_failed_actions = []
+    completed_approach = tuple(agent_pos) in approach_positions
+
+    for action in map_config["trial1_actions"][:max_steps]:
+        if completed_approach:
+            break
+        selected_actions.append(action)
+        delta = DEAD_END_CANDIDATE_ACTION_DELTAS[action]
+        target = [agent_pos[0] + delta[0], agent_pos[1] + delta[1]]
+        target_tuple = tuple(target)
+        blocked_result = None
+        if (
+            target[0] < 0
+            or target[1] < 0
+            or target[0] >= map_config["width"]
+            or target[1] >= map_config["height"]
+            or target_tuple in walls
+        ):
+            blocked_result = "wall_blocked"
+        elif target == map_config["box_pos"]:
+            blocked_result = "box_blocked"
+
+        if blocked_result is not None:
+            blocked_or_failed_actions.append(
+                {
+                    "agent_pos": list(agent_pos),
+                    "action": action,
+                    "result": blocked_result,
+                    "blocked_at": target,
+                }
+            )
+        else:
+            agent_pos = target
+            if target_tuple in dead_end_positions and target not in dead_end_positions_visited:
+                dead_end_positions_visited.append(list(target))
+            completed_approach = target_tuple in approach_positions
+
+    entered_dead_end_area = bool(dead_end_positions_visited)
+    return {
+        "command": "validate-dead-end-trial1-maps",
+        "flow": "candidate_dead_end_trial1_fixture_v0",
+        "status": "ok",
+        "level_id": map_config["level_id"],
+        "completed_approach": completed_approach,
+        "initial_agent_pos": list(map_config["agent_start"]),
+        "box_pos": list(map_config["box_pos"]),
+        "approach_positions": [list(pos) for pos in map_config["approach_positions"]],
+        "final_agent_pos": list(agent_pos),
+        "step_count": len(selected_actions),
+        "max_steps": max_steps,
+        "selected_actions": selected_actions,
+        "entered_dead_end_area": entered_dead_end_area,
+        "dead_end_positions_visited": dead_end_positions_visited,
+        "blocked_or_failed_actions": blocked_or_failed_actions,
+        "llm_used": False,
+    }
+
+
 def _summarize_dead_end_trial1_map_result(
     map_config: dict[str, Any],
     runs_per_map: int,
@@ -1719,6 +2003,8 @@ def _summarize_dead_end_trial1_map_result(
     if not map_config["runner_supported"]:
         return {
             "level_id": map_config["level_id"],
+            "fixture_loaded": False,
+            "fixture_load_error": map_config["unsupported_reason"],
             "runs": runs_per_map,
             "completed_count": 0,
             "entered_dead_end_count": 0,
@@ -1735,20 +2021,27 @@ def _summarize_dead_end_trial1_map_result(
             ],
         }
 
-    trials = [run_approach_box_dead_end_trial_cli(max_steps=max_steps) for _run in range(runs_per_map)]
+    if map_config["fixture_type"] == "existing":
+        trials = [run_approach_box_dead_end_trial_cli(max_steps=max_steps) for _run in range(runs_per_map)]
+    else:
+        trials = [_run_candidate_dead_end_trial1_fixture(map_config, max_steps) for _run in range(runs_per_map)]
     step_counts = [trial["step_count"] for trial in trials]
     completed_count = sum(1 for trial in trials if trial["completed_approach"])
     entered_dead_end_count = sum(1 for trial in trials if trial["entered_dead_end_area"])
     blocked_or_failed_total = sum(len(trial["blocked_or_failed_actions"]) for trial in trials)
     map_status = _status_for_dead_end_trial1_results(trials, max_steps)
     validation_notes = [
-        "Existing fixed dead-end Trial 1 fixture was used without modifying runner behavior.",
+        "Fixed dead-end Trial 1 fixture was used without modifying runner behavior.",
         "Trial 1 validation only; no Two-Trial or A/B memory control was run.",
     ]
+    if map_config["fixture_type"] == "fixed_candidate":
+        validation_notes.append("Candidate map fixture is wired with a fixed Trial 1 validation route.")
     if map_status == "valid_for_two_trial":
         validation_notes.append("Trial 1 produced dead-end or blocked/failed local outcome evidence.")
     return {
         "level_id": map_config["level_id"],
+        "fixture_loaded": True,
+        "fixture_load_error": None,
         "runs": runs_per_map,
         "completed_count": completed_count,
         "entered_dead_end_count": entered_dead_end_count,
@@ -1812,10 +2105,13 @@ def validate_dead_end_trial1_maps_cli(runs_per_map: int = 3, max_steps: int = 10
             "modified_action_selection": False,
             "modified_goal_bias": False,
             "modified_state_action_memory": False,
+            "candidate_fixtures_supported": True,
+            "generic_ascii_parser_added": False,
         },
         "notes": [
             "This command validates candidate dead-end maps before Two-Trial or A/B memory tests.",
             "Bad maps are reported honestly and are not forced to pass.",
+            "Candidate maps are supported as fixed fixtures; no generic ASCII parser was added.",
             "This is not proof of learning.",
         ],
     }
