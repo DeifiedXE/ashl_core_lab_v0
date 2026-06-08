@@ -70,6 +70,16 @@ def validate_allowed_action(action: str) -> str:
     return action
 
 
+def build_box_on_goal_need_state(state: dict[str, Any]) -> dict[str, Any]:
+    current_value = 1 if tuple(state["box_pos"]) == tuple(state["goal_pos"]) else 0
+    return {
+        "need_name": "box_on_goal",
+        "target_value": 1,
+        "current_value": current_value,
+        "satisfied": current_value == 1,
+    }
+
+
 def suggest_next_action_avoiding_repeat_blocked(
     state: dict[str, Any],
     candidate_actions: list[str] | tuple[str, ...],
@@ -200,6 +210,7 @@ def _build_trace_result(
         "result": result,
         "blocked": blocked,
         "history": history,
+        "need_state": build_box_on_goal_need_state(after_state),
         "agent_pos": after_state["agent_pos"],
         "box_pos": after_state["box_pos"],
         "goal_pos": after_state["goal_pos"],

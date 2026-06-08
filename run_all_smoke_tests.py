@@ -73,6 +73,7 @@ from ashl_core.memory_layers import (
 from ashl_core.micro_push_box_sandbox import (
     ALLOWED_ACTION_SET,
     apply_tactile_action,
+    build_box_on_goal_need_state,
     build_initial_state as build_micro_push_box_state,
     select_intrinsic_action,
     suggest_next_action_by_outcome_weight,
@@ -446,6 +447,40 @@ def smoke_minimal_intrinsic_action_selection() -> dict:
             "selected_from_candidates": selected in candidates,
             "push_right_history_result": "box_blocked",
             "push_down_history_result": "box_pushed",
+        },
+    )
+
+
+def smoke_box_on_goal_need_state() -> dict:
+    initial_state = build_micro_push_box_state()
+    initial_need_state = build_box_on_goal_need_state(initial_state)
+    goal_state = build_micro_push_box_state()
+    goal_state["box_pos"] = goal_state["goal_pos"]
+    goal_need_state = build_box_on_goal_need_state(goal_state)
+
+    push_state = build_micro_push_box_state()
+    push_state["agent_pos"] = (1, 3)
+    push_state["box_pos"] = (2, 3)
+    goal_trace = apply_tactile_action(push_state, "push_down")["trace"]
+
+    passed = (
+        initial_need_state["current_value"] == 0
+        and initial_need_state["satisfied"] is False
+        and goal_need_state["current_value"] == 1
+        and goal_need_state["satisfied"] is True
+        and goal_trace["result"] == "goal_reached"
+        and goal_trace["need_state"]["current_value"] == 1
+        and goal_trace["need_state"]["satisfied"] is True
+    )
+    return _result(
+        "box_on_goal_need_state",
+        passed,
+        {
+            "need_name": initial_need_state["need_name"],
+            "target_value": initial_need_state["target_value"],
+            "initial_current_value": initial_need_state["current_value"],
+            "goal_current_value": goal_need_state["current_value"],
+            "goal_satisfied": goal_need_state["satisfied"],
         },
     )
 
@@ -4581,6 +4616,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_minimal_avoid_repeated_blocked_action(),
         smoke_minimal_action_outcome_weighting(),
         smoke_minimal_intrinsic_action_selection(),
+        smoke_box_on_goal_need_state(),
         smoke_clear_sandbox_working_state_cli(),
         smoke_grounded_learning_verification_cli(),
         smoke_standing_task(),

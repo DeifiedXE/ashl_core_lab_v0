@@ -1809,6 +1809,30 @@ No autonomous action generation outside candidate_actions.
 No new action creation.
 No hidden environment inspection.
 
+## Box-on-Goal Need State v0
+
+Status:
+minimal-runtime / need-state-readout / trace-observable / no-learning
+
+Summary:
+Adds build_box_on_goal_need_state(state) for the micro push-box sandbox.
+The helper returns need_name=box_on_goal, target_value=1, current_value=0 or 1, and satisfied=true or false.
+current_value is 1 only when state.box_pos equals state.goal_pos; otherwise it is 0.
+Tactile sandbox traces include need_state, and goal_reached traces report satisfied=true.
+
+Boundary:
+No emotion / dopamine runtime.
+No AI solver / pathfinding.
+No goal planning.
+No learning pipeline.
+No lesson_candidate pipeline connection.
+No lesson_store write.
+No Memory Layer write.
+No LLM / teaching chat loop / free text conversation.
+No tactile result mapping changes.
+No utterance_map changes.
+Need state does not choose actions.
+
 ## Sandbox Working State Clear CLI v0
 
 Status:

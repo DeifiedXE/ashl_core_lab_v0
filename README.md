@@ -1110,6 +1110,14 @@ v2.7a adds `ashl_core.failure_events` as a trace-only failure_event schema found
 - Example: history `push_right -> box_blocked`, `push_down -> box_pushed`, candidates `["push_right", "push_down"]` selects `push_down`.
 - This is minimal candidate selection, not AI solver / pathfinding, goal planning, learning pipeline, lesson_candidate pipeline, lesson_store / Memory Layer write, LLM / teaching chat, tactile result mapping change, or utterance_map change.
 
+## Box-on-Goal Need State v0
+
+- Adds `build_box_on_goal_need_state(state)` for the micro push-box sandbox.
+- The need schema is `need_name = box_on_goal`, `target_value = 1`, `current_value = 0 or 1`, and `satisfied = true or false`.
+- `current_value` is `1` only when `state["box_pos"] == state["goal_pos"]`; otherwise it is `0`.
+- Tactile sandbox traces include `need_state`; a `goal_reached` trace reports `satisfied = true`.
+- This is a minimal need-state readout, not emotion / dopamine runtime, AI solver / pathfinding, goal planning, learning pipeline, lesson_candidate pipeline, lesson_store / Memory Layer write, LLM / teaching chat, tactile result mapping change, or utterance_map change.
+
 ## Sandbox Working State Clear CLI v0
 
 - Adds `py -3 -m ashl_core.teaching_cli clear-sandbox-working-state --session-id <session_id>`.

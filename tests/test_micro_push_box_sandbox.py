@@ -6,6 +6,7 @@ from ashl_core.micro_push_box_sandbox import (
     INITIAL_MAP,
     SUPPORTED_ACTIONS,
     apply_tactile_action,
+    build_box_on_goal_need_state,
     build_initial_state,
     rank_candidate_actions_by_outcome_weight,
     score_action_from_history,
@@ -26,6 +27,7 @@ class MicroPushBoxSandboxTests(unittest.TestCase):
         self.assertEqual(state["goal_pos"], (3, 3))
         self.assertEqual(state["tick"], 0)
         self.assertEqual(state["action_history"], ())
+        self.assertEqual(build_box_on_goal_need_state(state)["current_value"], 0)
 
     def test_supported_actions_include_touch_move_push(self):
         self.assertIn("touch_right", SUPPORTED_ACTIONS)
@@ -131,6 +133,8 @@ class MicroPushBoxSandboxTests(unittest.TestCase):
         result = apply_tactile_action(state, "push_down")
 
         self.assertEqual(result["trace"]["result"], "goal_reached")
+        self.assertEqual(result["trace"]["need_state"]["current_value"], 1)
+        self.assertTrue(result["trace"]["need_state"]["satisfied"])
         self.assertEqual(result["state"]["agent_pos"], (2, 3))
         self.assertEqual(result["state"]["box_pos"], (3, 3))
 
@@ -160,6 +164,7 @@ class MicroPushBoxSandboxTests(unittest.TestCase):
         self.assertEqual(trace["box_pos"], trace["after"]["box_pos"])
         self.assertEqual(trace["goal_pos"], trace["after"]["goal_pos"])
         self.assertEqual(trace["history"], {"same_action_attempted_before": False})
+        self.assertEqual(trace["need_state"]["need_name"], "box_on_goal")
 
     def test_repeated_action_trace_includes_previous_same_action_result(self):
         first = apply_tactile_action(build_initial_state(), "push_right")
