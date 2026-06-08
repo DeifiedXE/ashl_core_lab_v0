@@ -14,6 +14,7 @@ from ashl_core.teaching_cli import (
     run_minimal_interaction,
     run_need_state_trial_batch_cli,
     run_tactile_interaction,
+    run_trial_metrics_comparison_cli,
     run_unknown_flow,
 )
 from ashl_core.first_output_runtime import UTTERANCE_MAP
@@ -428,6 +429,22 @@ class TeachingCliTests(unittest.TestCase):
         self.assertIs(boundary["writes_lesson_store"], False)
         self.assertIs(boundary["writes_memory_layer"], False)
         self.assertIs(boundary["awakening_claim"], False)
+
+    def test_trial_metrics_comparison_cli_wrapper_returns_ok(self):
+        result = run_trial_metrics_comparison_cli(runs=4, trial_count=5, max_steps=10, random_seed=0)
+        boundary = result["boundary"]
+
+        self.assertEqual(result["command"], "run-trial-metrics-comparison")
+        self.assertEqual(result["flow"], "trial_metrics_comparison_cli_v0")
+        self.assertEqual(result["status"], "ok")
+        self.assertEqual(result["total_trials"], 20)
+        self.assertIn("overall_success_rate", result)
+        self.assertIn("overall_average_step_count", result)
+        self.assertIn("human_summary", result)
+        self.assertIs(boundary["llm_used"], False)
+        self.assertIs(boundary["creates_lesson_candidate"], False)
+        self.assertIs(boundary["writes_lesson_store"], False)
+        self.assertIs(boundary["writes_memory_layer"], False)
 
 
 if __name__ == "__main__":

@@ -2085,6 +2085,32 @@ No Memory Layer write.
 No LLM / teaching chat loop / free text conversation.
 No awakening claim.
 
+## Trial Metrics Comparison CLI v0
+
+Status:
+minimal-runtime / cli-wrapper / repeated-batch-metrics-readback / no-learning
+
+Summary:
+Adds py -3 -m ashl_core.teaching_cli run-trial-metrics-comparison.
+The command wraps repeated calls to the existing run_need_state_driven_trial_batch helper.
+It supports --runs, --trial-count, --max-steps, and --random-seed.
+It returns flow = trial_metrics_comparison_cli_v0, status = ok, runs, trial_count_per_run, total_trials, total_completed, overall_success_rate, run_summaries, overall_average_step_count, max_steps_reached_count, boundary, and human_summary.
+Per-run summaries include run_index, completed_count, trial_count, success_rate, step_counts, average_step_count, min_step_count, max_step_count, and max_steps_reached_count.
+
+Boundary:
+No trial runner behavior changes.
+No sandbox behavior changes.
+No action selection behavior changes.
+No solver / pathfinding.
+No goal planning.
+No learning pipeline.
+No lesson_candidate pipeline connection.
+No lesson_store write.
+No Memory Layer write.
+No LLM / teaching chat / free text conversation.
+No metric-driven behavior change.
+No awakening claim.
+
 ## Sandbox Working State Clear CLI v0
 
 Status:

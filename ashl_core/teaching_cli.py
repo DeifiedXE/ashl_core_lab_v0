@@ -578,6 +578,81 @@ def run_need_state_trial_batch_cli(
     }
 
 
+def run_trial_metrics_comparison_cli(
+    runs: int = 4,
+    trial_count: int = 5,
+    max_steps: int = 10,
+    random_seed: int | None = None,
+) -> dict[str, Any]:
+    if runs < 0:
+        raise ValueError("runs must be non-negative")
+    if trial_count < 0:
+        raise ValueError("trial_count must be non-negative")
+
+    run_summaries = []
+    for run_index in range(runs):
+        run_seed = random_seed + run_index if random_seed is not None else None
+        batch = run_need_state_driven_trial_batch(
+            trial_count=trial_count,
+            max_steps=max_steps,
+            random_seed=run_seed,
+        )
+        max_steps_reached_count = sum(
+            1 for trial in batch["trials"] if trial["stop_reason"] == "max_steps_reached"
+        )
+        success_rate = (batch["completed_count"] / batch["trial_count"]) if batch["trial_count"] else 0
+        run_summaries.append(
+            {
+                "run_index": run_index,
+                "completed_count": batch["completed_count"],
+                "trial_count": batch["trial_count"],
+                "success_rate": success_rate,
+                "step_counts": batch["step_counts"],
+                "average_step_count": batch["average_step_count"],
+                "min_step_count": batch["min_step_count"],
+                "max_step_count": batch["max_step_count"],
+                "max_steps_reached_count": max_steps_reached_count,
+            }
+        )
+
+    total_trials = runs * trial_count
+    total_completed = sum(summary["completed_count"] for summary in run_summaries)
+    total_step_count = sum(sum(summary["step_counts"]) for summary in run_summaries)
+    max_steps_reached_count = sum(summary["max_steps_reached_count"] for summary in run_summaries)
+    overall_success_rate = (total_completed / total_trials) if total_trials else 0
+    overall_average_step_count = (total_step_count / total_trials) if total_trials else 0
+    human_summary = (
+        f"{total_trials} trials, {total_completed} completed, "
+        f"success rate {overall_success_rate:.0%}, "
+        f"average step count {overall_average_step_count:.1f}, "
+        f"max-steps reached {max_steps_reached_count} times."
+    )
+
+    return {
+        "command": "run-trial-metrics-comparison",
+        "flow": "trial_metrics_comparison_cli_v0",
+        "status": "ok",
+        "runs": runs,
+        "trial_count_per_run": trial_count,
+        "total_trials": total_trials,
+        "total_completed": total_completed,
+        "overall_success_rate": overall_success_rate,
+        "run_summaries": run_summaries,
+        "overall_average_step_count": overall_average_step_count,
+        "max_steps_reached_count": max_steps_reached_count,
+        "human_summary": human_summary,
+        "boundary": {
+            "llm_used": False,
+            "creates_lesson_candidate": False,
+            "writes_lesson_store": False,
+            "writes_memory_layer": False,
+            "awakening_claim": False,
+            "changes_trial_runner_behavior": False,
+        },
+        "notes": ["Trial metrics comparison CLI only wraps repeated deterministic batch runner calls."],
+    }
+
+
 def _verification_boundary() -> dict[str, bool]:
     return {
         "llm_used": False,
@@ -627,6 +702,8 @@ def run_command(command: str) -> dict[str, Any]:
         return run_grounded_learning_check()
     if command == "run-need-state-trial-batch":
         return run_need_state_trial_batch_cli()
+    if command == "run-trial-metrics-comparison":
+        return run_trial_metrics_comparison_cli()
     return {
         "command": command,
         "status": "error",
@@ -652,6 +729,7 @@ def main(argv: list[str] | None = None) -> int:
             "clear-sandbox-working-state",
             "run-grounded-learning-check",
             "run-need-state-trial-batch",
+            "run-trial-metrics-comparison",
         ],
     )
     parser.add_argument("--review-id", default="review_001")
@@ -666,6 +744,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--actions", nargs="*", default=None)
     parser.add_argument("--trial-count", type=int, default=5)
     parser.add_argument("--max-steps", type=int, default=10)
+    parser.add_argument("--runs", type=int, default=4)
     parser.add_argument("--random-seed", type=int, default=None)
     args = parser.parse_args(argv)
     if args.command == "run-review-approve":
@@ -690,6 +769,13 @@ def main(argv: list[str] | None = None) -> int:
         result = run_grounded_learning_check(actions=args.actions)
     elif args.command == "run-need-state-trial-batch":
         result = run_need_state_trial_batch_cli(
+            trial_count=args.trial_count,
+            max_steps=args.max_steps,
+            random_seed=args.random_seed,
+        )
+    elif args.command == "run-trial-metrics-comparison":
+        result = run_trial_metrics_comparison_cli(
+            runs=args.runs,
             trial_count=args.trial_count,
             max_steps=args.max_steps,
             random_seed=args.random_seed,

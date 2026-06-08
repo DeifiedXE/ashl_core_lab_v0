@@ -1183,6 +1183,15 @@ v2.7a adds `ashl_core.failure_events` as a trace-only failure_event schema found
 - Boundary flags remain false for `llm_used`, `creates_lesson_candidate`, `writes_lesson_store`, `writes_memory_layer`, and `awakening_claim`.
 - This CLI wrapper does not change the trial runner, sandbox behavior, action selection behavior, learning pipeline, lesson_candidate pipeline, lesson_store writes, Memory Layer writes, or free text conversation.
 
+## Trial Metrics Comparison CLI v0
+
+- Adds `py -3 -m ashl_core.teaching_cli run-trial-metrics-comparison --runs 4 --trial-count 5 --max-steps 10`.
+- Optional arguments: `--runs`, `--trial-count`, `--max-steps`, and `--random-seed`.
+- The CLI wraps repeated calls to the existing `run_need_state_driven_trial_batch(...)` helper and returns JSON with `flow = trial_metrics_comparison_cli_v0`, `status = ok`, run summaries, total trials, total completed trials, overall success rate, overall average step count, max-steps reached count, and a human-readable summary.
+- Per-run summaries include `run_index`, `completed_count`, `trial_count`, `success_rate`, `step_counts`, `average_step_count`, `min_step_count`, `max_step_count`, and `max_steps_reached_count`.
+- Boundary flags remain false for `llm_used`, `creates_lesson_candidate`, `writes_lesson_store`, `writes_memory_layer`, `awakening_claim`, and `changes_trial_runner_behavior`.
+- This is metrics readback only. It does not modify trial runner behavior, add AI solver / pathfinding, goal planning, learning pipeline, lesson_candidate pipeline, lesson_store writes, Memory Layer writes, LLM / teaching chat, or autonomous behavior.
+
 ## Sandbox Working State Clear CLI v0
 
 - Adds `py -3 -m ashl_core.teaching_cli clear-sandbox-working-state --session-id <session_id>`.

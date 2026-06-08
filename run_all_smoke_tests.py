@@ -126,6 +126,7 @@ from ashl_core.teaching_cli import (
     run_review_display,
     run_review_reject,
     run_tactile_interaction,
+    run_trial_metrics_comparison_cli,
     run_unknown_flow,
 )
 from ashl_core.tactile_state_mapping import map_tactile_result_to_state_key
@@ -775,6 +776,44 @@ def smoke_need_state_trial_batch_cli() -> dict:
             "average_step_count": result.get("average_step_count"),
             "min_step_count": result.get("min_step_count"),
             "max_step_count": result.get("max_step_count"),
+            "boundary": boundary,
+        },
+    )
+
+
+def smoke_trial_metrics_comparison_cli() -> dict:
+    result = run_trial_metrics_comparison_cli(runs=4, trial_count=5, max_steps=10, random_seed=0)
+    boundary = result.get("boundary", {})
+    passed = (
+        result.get("flow") == "trial_metrics_comparison_cli_v0"
+        and result.get("status") == "ok"
+        and result.get("runs") == 4
+        and result.get("trial_count_per_run") == 5
+        and result.get("total_trials") == 20
+        and len(result.get("run_summaries", [])) == 4
+        and "overall_success_rate" in result
+        and "overall_average_step_count" in result
+        and "max_steps_reached_count" in result
+        and "human_summary" in result
+        and boundary.get("llm_used") is False
+        and boundary.get("creates_lesson_candidate") is False
+        and boundary.get("writes_lesson_store") is False
+        and boundary.get("writes_memory_layer") is False
+        and boundary.get("awakening_claim") is False
+        and boundary.get("changes_trial_runner_behavior") is False
+    )
+    return _result(
+        "trial_metrics_comparison_cli",
+        passed,
+        {
+            "runs": result.get("runs"),
+            "trial_count_per_run": result.get("trial_count_per_run"),
+            "total_trials": result.get("total_trials"),
+            "total_completed": result.get("total_completed"),
+            "overall_success_rate": result.get("overall_success_rate"),
+            "overall_average_step_count": result.get("overall_average_step_count"),
+            "max_steps_reached_count": result.get("max_steps_reached_count"),
+            "human_summary": result.get("human_summary"),
             "boundary": boundary,
         },
     )
@@ -4977,6 +5016,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_need_state_trial_goal_bias_integration(),
         smoke_state_action_memory_trial_runner_integration(),
         smoke_need_state_trial_batch_cli(),
+        smoke_trial_metrics_comparison_cli(),
         smoke_clear_sandbox_working_state_cli(),
         smoke_grounded_learning_verification_cli(),
         smoke_standing_task(),
