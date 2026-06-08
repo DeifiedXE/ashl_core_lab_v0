@@ -12,6 +12,7 @@ from ashl_core.teaching_cli import (
     run_grounded_learning_check,
     run_known_flow,
     run_minimal_interaction,
+    run_navigation_multi_goal_metrics_cli,
     run_navigation_trial_metrics_cli,
     run_need_state_trial_batch_cli,
     run_tactile_interaction,
@@ -459,6 +460,26 @@ class TeachingCliTests(unittest.TestCase):
         self.assertIn("overall_success_rate", result)
         self.assertIn("overall_average_step_count", result)
         self.assertIn("human_summary", result)
+        self.assertIs(boundary["llm_used"], False)
+        self.assertIs(boundary["creates_lesson_candidate"], False)
+        self.assertIs(boundary["writes_lesson_store"], False)
+        self.assertIs(boundary["writes_memory_layer"], False)
+        self.assertIs(boundary["changes_navigation_behavior"], False)
+
+    def test_navigation_multi_goal_metrics_cli_wrapper_returns_ok(self):
+        result = run_navigation_multi_goal_metrics_cli(runs=4, trial_count=5, max_steps=20)
+        boundary = result["boundary"]
+
+        self.assertEqual(result["command"], "run-navigation-multi-goal-metrics")
+        self.assertEqual(result["flow"], "navigation_multi_goal_metrics_cli_v0")
+        self.assertEqual(result["status"], "ok")
+        self.assertEqual(result["total_trials"], 20)
+        self.assertEqual(result["total_completed"], 20)
+        self.assertIn("overall_success_rate", result)
+        self.assertIn("overall_average_step_count", result)
+        self.assertIn("human_summary", result)
+        self.assertTrue(result["run_summaries"][0]["trial_summaries"][0]["completed_all_goals"])
+        self.assertEqual(result["run_summaries"][0]["trial_summaries"][0]["goals_reached"], 2)
         self.assertIs(boundary["llm_used"], False)
         self.assertIs(boundary["creates_lesson_candidate"], False)
         self.assertIs(boundary["writes_lesson_store"], False)

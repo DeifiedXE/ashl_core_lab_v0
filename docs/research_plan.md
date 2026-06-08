@@ -1910,6 +1910,32 @@ No LLM / teaching chat / free text conversation.
 No graphics / GUI.
 No autonomous behavior claim.
 
+## Micro Navigation Multi-Goal Metrics CLI v0
+
+Status:
+minimal-runtime / cli-wrapper / multi-goal-navigation-metrics-readback / no-learning
+
+Summary:
+Adds py -3 -m ashl_core.teaching_cli run-navigation-multi-goal-metrics.
+The command wraps repeated calls to the existing run_navigation_multi_goal_trial helper.
+It supports --runs, --trial-count, and --max-steps.
+It returns flow = navigation_multi_goal_metrics_cli_v0, status = ok, runs, trial_count_per_run, total_trials, total_completed, overall_success_rate, overall_average_step_count, max_steps_reached_count, run_summaries, human_summary, and boundary.
+Per-run summaries include run_index, completed_count, trial_count, success_rate, step_counts, average_step_count, min_step_count, max_step_count, max_steps_reached_count, and trial_summaries.
+Trial summaries use completed_all_goals, goals_reached, goal_count, step_count, and selected_actions.
+
+Boundary:
+No navigation runner behavior changes.
+No navigation sandbox behavior changes.
+No push-box sandbox behavior changes.
+No AI solver / pathfinding.
+No goal planning.
+No learning pipeline.
+No lesson_candidate pipeline.
+No lesson_store writes.
+No Memory Layer writes.
+No LLM / teaching chat / free text conversation.
+No metric-driven behavior change.
+
 ## Micro Navigation Trial Metrics CLI v0
 
 Status:
