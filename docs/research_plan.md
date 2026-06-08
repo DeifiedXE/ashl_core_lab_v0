@@ -1986,6 +1986,39 @@ No LLM / teaching chat / free text conversation.
 No graphics / GUI.
 No autonomous behavior claim.
 
+## Approach Box Level v0
+
+Status:
+minimal-runtime / navigation-push-box-bridge-level / approach-adjacency-only / no-learning
+
+Summary:
+Adds create_navigation_approach_box_level_state() for a deterministic Level 1 bridge between micro navigation and push-box tasks.
+The fixed level tracks grid, agent_pos, box_pos, and tick, and intentionally has no goal_pos.
+Adds manhattan_distance_to_box(agent_pos, box_pos).
+Adds apply_navigation_approach_box_action(...) with trace_type = navigation_approach_box_trace.
+Approach-box traces record tick, action, before, after, result, blocked, agent_pos, box_pos, distance_to_box, and box_adjacent.
+Adds run_navigation_approach_box_trial(candidate_actions=None, max_steps=20), which stops when the agent reaches distance_to_box == 1.
+The default bounded trial reaches adjacency without pushing the box.
+
+Boundary:
+No box pushing.
+No box_on_goal satisfaction.
+No push-box sandbox behavior changes.
+No AI solver / pathfinding / BFS / A*.
+No goal planning.
+No learning pipeline.
+No lesson_candidate pipeline connection.
+No lesson_store write.
+No Memory Layer write.
+No LLM / teaching chat loop / free text conversation.
+No graphics / GUI.
+No Two-Trial Learning Check in this package.
+
+Two-Trial History Boundary:
+Future Trial 2 may read only local state-action outcome memory with agent_pos, box_pos, optional goal_pos, action, result, and tick.
+Trial 2 must not read full trace routes, replay selected_actions, reconstruct full paths, create lesson_candidate, write lesson_store, write Memory Layer / Long-term Memory, use LLM planning, or treat trace as memory.
+The next package candidate is Approach Box Two-Trial Learning Check v0.
+
 ## Micro Navigation Trial Metrics CLI v0
 
 Status:

@@ -72,16 +72,20 @@ from ashl_core.memory_layers import (
 )
 from ashl_core.micro_navigation_sandbox import (
     ALLOWED_NAVIGATION_ACTIONS,
+    apply_navigation_approach_box_action,
     apply_multi_goal_navigation_action,
     apply_navigation_action,
+    create_navigation_approach_box_level_state,
     create_navigation_obstacle_level_state,
     build_initial_multi_goal_navigation_state,
     build_initial_navigation_state,
+    manhattan_distance_to_box,
     manhattan_distance_to_goal as navigation_distance_to_goal,
     select_navigation_action_toward_goal,
 )
 from ashl_core.micro_navigation_trial_runner import (
     run_navigation_goal_trial,
+    run_navigation_approach_box_trial,
     run_navigation_multi_goal_trial,
     run_navigation_obstacle_trial,
 )
@@ -472,6 +476,39 @@ def smoke_navigation_obstacle_trial_cli() -> dict:
             "selected_actions": result.get("selected_actions"),
             "wall_blocked_avoided": result.get("wall_blocked_avoided"),
             "boundary": boundary,
+        },
+    )
+
+
+def smoke_approach_box_level() -> dict:
+    initial_state = create_navigation_approach_box_level_state()
+    move_trace = apply_navigation_approach_box_action(initial_state, "move_down")["trace"]
+    trial = run_navigation_approach_box_trial(max_steps=20)
+    final_distance_to_box = manhattan_distance_to_box(trial["final_agent_pos"], trial["box_pos"])
+    passed = (
+        initial_state["grid"] == ("#######", "#Q....#", "#.###.#", "#...B.#", "#######")
+        and initial_state["agent_pos"] == (1, 1)
+        and initial_state["box_pos"] == (3, 4)
+        and "goal_pos" not in initial_state
+        and move_trace["trace_type"] == "navigation_approach_box_trace"
+        and trial["completed_approach"] is True
+        and final_distance_to_box == 1
+        and trial["step_count"] > 0
+        and all(action in ALLOWED_NAVIGATION_ACTIONS for action in trial["selected_actions"])
+        and "lesson_candidate" not in trial
+        and "memory_layer_write" not in trial
+        and "two_trial_learning_check" not in trial
+    )
+    return _result(
+        "approach_box_level",
+        passed,
+        {
+            "initial_agent_pos": initial_state["agent_pos"],
+            "box_pos": initial_state["box_pos"],
+            "completed_approach": trial["completed_approach"],
+            "final_distance_to_box": final_distance_to_box,
+            "step_count": trial["step_count"],
+            "selected_actions": trial["selected_actions"],
         },
     )
 
@@ -5347,6 +5384,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_micro_navigation_multi_goal_metrics_cli(),
         smoke_navigation_obstacle_wall_detour_level(),
         smoke_navigation_obstacle_trial_cli(),
+        smoke_approach_box_level(),
         smoke_micro_push_box_sandbox(),
         smoke_micro_push_box_allowed_action_set(),
         smoke_tactile_result_state_key_mapping(),

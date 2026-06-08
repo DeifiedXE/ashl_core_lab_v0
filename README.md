@@ -1142,6 +1142,22 @@ v2.7a adds `ashl_core.failure_events` as a trace-only failure_event schema found
 - Boundary flags remain false for `llm_used`, `creates_lesson_candidate`, `writes_lesson_store`, `writes_memory_layer`, `awakening_claim`, and `changes_navigation_behavior`.
 - This is a CLI wrapper only. It does not modify navigation runner behavior, navigation sandbox behavior, push-box sandbox behavior, add AI solver / pathfinding / BFS / A*, goal planning, learning pipeline, lesson_candidate pipeline, lesson_store / Memory Layer writes, LLM / teaching chat, graphics, or GUI.
 
+## Approach Box Level v0
+
+- Adds `create_navigation_approach_box_level_state()` for a Level 1 navigation/push-box bridge where the agent approaches a box but does not push it.
+- Approach-box state contains `grid`, `agent_pos`, `box_pos`, and `tick`; it intentionally has no `goal_pos`.
+- Adds `manhattan_distance_to_box(agent_pos, box_pos)`.
+- Adds `apply_navigation_approach_box_action(...)` with `trace_type = navigation_approach_box_trace`.
+- Approach-box trace records `tick`, `action`, `before`, `after`, `result`, `blocked`, `agent_pos`, `box_pos`, `distance_to_box`, and `box_adjacent`.
+- Results are `moved`, `wall_blocked`, `box_adjacent`, or `wait`.
+- Adds `run_navigation_approach_box_trial(candidate_actions=None, max_steps=20)`, which stops when `distance_to_box == 1`.
+- This is not box pushing, not a push-box sandbox modification, not AI solver / pathfinding / BFS / A*, not goal planning, not learning pipeline, not lesson_candidate pipeline, not lesson_store / Memory Layer write, not LLM / teaching chat, and not graphics / GUI.
+
+Two-Trial History Boundary:
+- Future Trial 2 may read only local state-action outcome memory with `agent_pos`, `box_pos`, optional `goal_pos`, `action`, `result`, and `tick`.
+- Trial 2 must not read full trace routes, replay selected_actions, reconstruct full paths, create lesson_candidate, write lesson_store, write Memory Layer / Long-term Memory, use LLM planning, or treat trace as memory.
+- The next package candidate is Approach Box Two-Trial Learning Check v0.
+
 ## Micro Navigation Trial Metrics CLI v0
 
 - Adds `py -3 -m ashl_core.teaching_cli run-navigation-trial-metrics --runs 4 --trial-count 5 --max-steps 10`.
