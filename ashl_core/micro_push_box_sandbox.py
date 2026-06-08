@@ -126,6 +126,61 @@ def score_action_from_history(state: dict[str, Any], action: str) -> int:
     return 0
 
 
+def build_state_action_key(state: dict[str, Any], action: str) -> dict[str, Any]:
+    action = validate_allowed_action(action)
+    return {
+        "agent_pos": tuple(state["agent_pos"]),
+        "box_pos": tuple(state["box_pos"]),
+        "goal_pos": tuple(state["goal_pos"]),
+        "action": action,
+    }
+
+
+def find_previous_same_state_action_result(state: dict[str, Any], action: str) -> dict[str, Any] | None:
+    key = build_state_action_key(state, action)
+    for entry in reversed(state.get("action_history", ())):
+        if (
+            tuple(entry.get("agent_pos", ())) == key["agent_pos"]
+            and tuple(entry.get("box_pos", ())) == key["box_pos"]
+            and tuple(entry.get("goal_pos", ())) == key["goal_pos"]
+            and entry.get("action") == key["action"]
+        ):
+            return entry
+    return None
+
+
+def score_action_from_state_action_memory(state: dict[str, Any], action: str) -> int:
+    previous = find_previous_same_state_action_result(state, action)
+    if previous is None:
+        return 0
+    return OUTCOME_WEIGHTS.get(previous.get("result"), 0)
+
+
+def rank_candidate_actions_by_state_action_memory(
+    state: dict[str, Any],
+    candidate_actions: list[str] | tuple[str, ...],
+) -> list[str]:
+    validated_candidates = tuple(validate_allowed_action(action) for action in candidate_actions)
+    indexed_scores = [
+        (index, action, score_action_from_state_action_memory(state, action))
+        for index, action in enumerate(validated_candidates)
+    ]
+    return [
+        action
+        for _, action, _ in sorted(indexed_scores, key=lambda item: (-item[2], item[0]))
+    ]
+
+
+def suggest_next_action_by_state_action_memory(
+    state: dict[str, Any],
+    candidate_actions: list[str] | tuple[str, ...],
+) -> str:
+    ranked = rank_candidate_actions_by_state_action_memory(state, candidate_actions)
+    if not ranked:
+        raise ValueError("candidate_actions must include at least one action")
+    return ranked[0]
+
+
 def rank_candidate_actions_by_outcome_weight(
     state: dict[str, Any],
     candidate_actions: list[str] | tuple[str, ...],
@@ -268,6 +323,9 @@ def _build_trace_result(
     history = _history_for_action(before.get("action_history", ()), action)
     after_state["action_history"] = tuple(before.get("action_history", ())) + (
         {
+            "agent_pos": before["agent_pos"],
+            "box_pos": before["box_pos"],
+            "goal_pos": before["goal_pos"],
             "action": action,
             "result": result,
             "tick": after_state["tick"],

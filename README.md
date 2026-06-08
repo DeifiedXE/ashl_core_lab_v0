@@ -1085,6 +1085,14 @@ v2.7a adds `ashl_core.failure_events` as a trace-only failure_event schema found
 - Different actions do not count as same-action history.
 - This is trace evidence only. It does not add learning, action selection, avoid-same-action behavior, solver / pathfinding, lesson_candidate pipeline, lesson_store / Memory Layer writes, LLM / teaching chat, or JSONL persistence.
 
+## State-Action Outcome Memory v0
+
+- Adds local state-action context readback for micro push-box `action_history`.
+- `action_history` entries now record `agent_pos`, `box_pos`, `goal_pos`, `action`, `result`, and `tick`.
+- Adds `build_state_action_key(...)`, `find_previous_same_state_action_result(...)`, `score_action_from_state_action_memory(...)`, `rank_candidate_actions_by_state_action_memory(...)`, and `suggest_next_action_by_state_action_memory(...)`.
+- Scores only reuse prior results when `agent_pos`, `box_pos`, `goal_pos`, and `action` all match the current context.
+- This is in-state sandbox history readback, not AI solver / pathfinding, learning pipeline, lesson_candidate pipeline, lesson_store / Memory Layer write, LLM / teaching chat, tactile result mapping change, utterance_map change, or persistent memory.
+
 ## Minimal Avoid Repeated Blocked Action v0
 
 - Adds `suggest_next_action_avoiding_repeat_blocked(state, candidate_actions)`.

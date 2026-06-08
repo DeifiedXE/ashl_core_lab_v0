@@ -184,6 +184,16 @@ class MicroPushBoxSandboxTests(unittest.TestCase):
         self.assertEqual(second["trace"]["history"]["previous_same_action_tick"], 1)
         self.assertEqual(len(second["state"]["action_history"]), 2)
 
+    def test_action_history_records_state_action_context(self):
+        result = apply_tactile_action(build_initial_state(), "push_right")
+        entry = result["state"]["action_history"][0]
+
+        self.assertEqual(entry["agent_pos"], (2, 2))
+        self.assertEqual(entry["box_pos"], (2, 3))
+        self.assertEqual(entry["goal_pos"], (3, 3))
+        self.assertEqual(entry["action"], "push_right")
+        self.assertEqual(entry["result"], "box_blocked")
+
     def test_suggest_next_action_avoids_repeated_blocked_action(self):
         first = apply_tactile_action(build_initial_state(), "push_right")
 

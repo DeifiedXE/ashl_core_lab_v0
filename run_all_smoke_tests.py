@@ -75,8 +75,11 @@ from ashl_core.micro_push_box_sandbox import (
     apply_tactile_action,
     build_box_on_goal_need_state,
     build_initial_state as build_micro_push_box_state,
+    build_state_action_key,
+    find_previous_same_state_action_result,
     manhattan_distance_to_goal,
     rank_candidate_actions_with_goal_bias,
+    score_action_from_state_action_memory,
     score_action_goal_direction,
     select_action_for_need_state,
     select_intrinsic_action,
@@ -380,6 +383,38 @@ def smoke_repeated_blocked_action_trace() -> dict:
             "second_action": second["trace"]["action"],
             "second_result": second["trace"]["result"],
             "history": history,
+        },
+    )
+
+
+def smoke_state_action_outcome_memory() -> dict:
+    same_context = apply_tactile_action(build_micro_push_box_state(), "push_right")["state"]
+    previous = find_previous_same_state_action_result(same_context, "push_right")
+    different_context = dict(same_context)
+    different_context["agent_pos"] = (1, 1)
+
+    pushed_state = build_micro_push_box_state()
+    push_key = build_state_action_key(pushed_state, "push_down")
+    pushed_state["action_history"] = ({**push_key, "result": "box_pushed", "tick": 1},)
+
+    passed = (
+        previous is not None
+        and previous.get("result") == "box_blocked"
+        and score_action_from_state_action_memory(same_context, "push_right") == -2
+        and find_previous_same_state_action_result(different_context, "push_right") is None
+        and score_action_from_state_action_memory(different_context, "push_right") == 0
+        and score_action_from_state_action_memory(pushed_state, "push_down") == 2
+    )
+    return _result(
+        "state_action_outcome_memory",
+        passed,
+        {
+            "same_context_action": "push_right",
+            "previous_result": previous.get("result") if previous else None,
+            "different_context_reuse": find_previous_same_state_action_result(different_context, "push_right")
+            is not None,
+            "local_score_blocked": score_action_from_state_action_memory(same_context, "push_right"),
+            "local_score_pushed": score_action_from_state_action_memory(pushed_state, "push_down"),
         },
     )
 
@@ -4868,6 +4903,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_tactile_result_state_key_mapping(),
         smoke_tactile_interaction_cli_bridge(),
         smoke_repeated_blocked_action_trace(),
+        smoke_state_action_outcome_memory(),
         smoke_minimal_avoid_repeated_blocked_action(),
         smoke_minimal_action_outcome_weighting(),
         smoke_minimal_goal_direction_bias(),
