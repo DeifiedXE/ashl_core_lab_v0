@@ -1381,6 +1381,24 @@ Boundary:
 - No autonomous behavior changes.
 - No new design document.
 
+## Current Boundary Index Compression Patch
+
+Status:
+docs-only / boundary-index-compression / no-batch-sync / no-runtime-expansion
+
+Summary:
+Compresses docs/current_boundary_index.md while preserving Boundary Index Version: 2026-06-06-b25.
+Aggregates repeated hard boundaries and deferred areas into shorter umbrella lines to keep the index below the 150-line limit and leave room for future sync packages.
+Does not add new boundaries and does not change runtime behavior.
+
+Boundary:
+- No new boundary.
+- No b26 update.
+- No Batch sync.
+- No runtime.
+- No sandbox / CLI / weighting / need_state behavior changes.
+- No Update Rule removal.
+
 ## v2.8e Review Decision Trace-only Schema
 
 Status: completed / trace-only
