@@ -23,6 +23,7 @@ from .micro_push_box_sandbox import (
     build_initial_state as build_micro_push_box_state,
     suggest_next_action_avoiding_repeat_blocked,
 )
+from .micro_navigation_trial_runner import run_navigation_goal_trial
 from .micro_push_box_trial_runner import run_need_state_driven_trial_batch
 from .tactile_state_mapping import map_tactile_result_to_state_key
 from .trace_persistence import append_first_output_trace, append_mentor_feedback_trace
@@ -653,6 +654,74 @@ def run_trial_metrics_comparison_cli(
     }
 
 
+def run_navigation_trial_metrics_cli(
+    runs: int = 4,
+    trial_count: int = 5,
+    max_steps: int = 10,
+) -> dict[str, Any]:
+    if runs < 0:
+        raise ValueError("runs must be non-negative")
+    if trial_count < 0:
+        raise ValueError("trial_count must be non-negative")
+
+    run_summaries = []
+    for run_index in range(runs):
+        trials = [run_navigation_goal_trial(max_steps=max_steps) for _ in range(trial_count)]
+        step_counts = [trial["step_count"] for trial in trials]
+        completed_count = sum(1 for trial in trials if trial["completed_goal"])
+        max_steps_reached_count = sum(1 for trial in trials if trial["stop_reason"] == "max_steps_reached")
+        run_summaries.append(
+            {
+                "run_index": run_index,
+                "completed_count": completed_count,
+                "trial_count": trial_count,
+                "success_rate": (completed_count / trial_count) if trial_count else 0,
+                "step_counts": step_counts,
+                "average_step_count": (sum(step_counts) / len(step_counts)) if step_counts else 0,
+                "min_step_count": min(step_counts) if step_counts else 0,
+                "max_step_count": max(step_counts) if step_counts else 0,
+                "max_steps_reached_count": max_steps_reached_count,
+            }
+        )
+
+    total_trials = runs * trial_count
+    total_completed = sum(summary["completed_count"] for summary in run_summaries)
+    total_step_count = sum(sum(summary["step_counts"]) for summary in run_summaries)
+    max_steps_reached_count = sum(summary["max_steps_reached_count"] for summary in run_summaries)
+    overall_success_rate = (total_completed / total_trials) if total_trials else 0
+    overall_average_step_count = (total_step_count / total_trials) if total_trials else 0
+    human_summary = (
+        f"{total_trials} navigation trials, {total_completed} completed, "
+        f"success rate {overall_success_rate:.0%}, "
+        f"average step count {overall_average_step_count:.1f}, "
+        f"max-steps reached {max_steps_reached_count} times."
+    )
+
+    return {
+        "command": "run-navigation-trial-metrics",
+        "flow": "navigation_trial_metrics_cli_v0",
+        "status": "ok",
+        "runs": runs,
+        "trial_count_per_run": trial_count,
+        "total_trials": total_trials,
+        "total_completed": total_completed,
+        "overall_success_rate": overall_success_rate,
+        "overall_average_step_count": overall_average_step_count,
+        "max_steps_reached_count": max_steps_reached_count,
+        "run_summaries": run_summaries,
+        "human_summary": human_summary,
+        "boundary": {
+            "llm_used": False,
+            "creates_lesson_candidate": False,
+            "writes_lesson_store": False,
+            "writes_memory_layer": False,
+            "awakening_claim": False,
+            "changes_navigation_behavior": False,
+        },
+        "notes": ["Navigation trial metrics CLI only wraps existing deterministic navigation trials."],
+    }
+
+
 def _verification_boundary() -> dict[str, bool]:
     return {
         "llm_used": False,
@@ -704,6 +773,8 @@ def run_command(command: str) -> dict[str, Any]:
         return run_need_state_trial_batch_cli()
     if command == "run-trial-metrics-comparison":
         return run_trial_metrics_comparison_cli()
+    if command == "run-navigation-trial-metrics":
+        return run_navigation_trial_metrics_cli()
     return {
         "command": command,
         "status": "error",
@@ -730,6 +801,7 @@ def main(argv: list[str] | None = None) -> int:
             "run-grounded-learning-check",
             "run-need-state-trial-batch",
             "run-trial-metrics-comparison",
+            "run-navigation-trial-metrics",
         ],
     )
     parser.add_argument("--review-id", default="review_001")
@@ -779,6 +851,12 @@ def main(argv: list[str] | None = None) -> int:
             trial_count=args.trial_count,
             max_steps=args.max_steps,
             random_seed=args.random_seed,
+        )
+    elif args.command == "run-navigation-trial-metrics":
+        result = run_navigation_trial_metrics_cli(
+            runs=args.runs,
+            trial_count=args.trial_count,
+            max_steps=args.max_steps,
         )
     else:
         result = run_command(args.command)

@@ -131,6 +131,7 @@ from ashl_core.teaching_cli import (
     run_known_flow,
     run_lifecycle_display,
     run_minimal_interaction,
+    run_navigation_trial_metrics_cli,
     run_need_state_trial_batch_cli,
     run_review_approve,
     run_review_display,
@@ -261,6 +262,46 @@ def smoke_micro_navigation_goal_reach() -> dict:
             "step_count": trial["step_count"],
             "selected_actions": trial["selected_actions"],
             "final_agent_pos": trial["final_agent_pos"],
+        },
+    )
+
+
+def smoke_micro_navigation_trial_metrics_cli() -> dict:
+    result = run_navigation_trial_metrics_cli(runs=4, trial_count=5, max_steps=10)
+    boundary = result.get("boundary", {})
+    passed = (
+        result.get("flow") == "navigation_trial_metrics_cli_v0"
+        and result.get("status") == "ok"
+        and result.get("runs") == 4
+        and result.get("trial_count_per_run") == 5
+        and result.get("total_trials") == 20
+        and result.get("total_trials") == result.get("runs") * result.get("trial_count_per_run")
+        and result.get("total_completed") == 20
+        and "overall_success_rate" in result
+        and "overall_average_step_count" in result
+        and "max_steps_reached_count" in result
+        and len(result.get("run_summaries", [])) == 4
+        and "human_summary" in result
+        and boundary.get("llm_used") is False
+        and boundary.get("creates_lesson_candidate") is False
+        and boundary.get("writes_lesson_store") is False
+        and boundary.get("writes_memory_layer") is False
+        and boundary.get("awakening_claim") is False
+        and boundary.get("changes_navigation_behavior") is False
+    )
+    return _result(
+        "micro_navigation_trial_metrics_cli",
+        passed,
+        {
+            "runs": result.get("runs"),
+            "trial_count_per_run": result.get("trial_count_per_run"),
+            "total_trials": result.get("total_trials"),
+            "total_completed": result.get("total_completed"),
+            "overall_success_rate": result.get("overall_success_rate"),
+            "overall_average_step_count": result.get("overall_average_step_count"),
+            "max_steps_reached_count": result.get("max_steps_reached_count"),
+            "human_summary": result.get("human_summary"),
+            "boundary": boundary,
         },
     )
 
@@ -5111,6 +5152,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_body_state(),
         smoke_action_sandbox(),
         smoke_micro_navigation_goal_reach(),
+        smoke_micro_navigation_trial_metrics_cli(),
         smoke_micro_push_box_sandbox(),
         smoke_micro_push_box_allowed_action_set(),
         smoke_tactile_result_state_key_mapping(),
