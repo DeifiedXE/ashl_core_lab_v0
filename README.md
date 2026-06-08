@@ -1142,6 +1142,14 @@ v2.7a adds `ashl_core.failure_events` as a trace-only failure_event schema found
 - Each trial summary includes `trial_index`, `completed_goal`, `stop_reason`, `step_count`, `final_need_state`, and `selected_actions`.
 - This is trial step-count readback, not action selection behavior change, AI solver / pathfinding, goal planning, learning pipeline, lesson_candidate pipeline, lesson_store / Memory Layer write, LLM / teaching chat, or free text conversation.
 
+## Need-State Trial Batch CLI v0
+
+- Adds `py -3 -m ashl_core.teaching_cli run-need-state-trial-batch`.
+- Optional arguments: `--trial-count`, `--max-steps`, and `--random-seed`.
+- The CLI wraps the existing `run_need_state_driven_trial_batch(...)` helper and returns JSON with `flow = need_state_trial_batch_cli_v0`, `status = ok`, batch step-count statistics, trial summaries, and explicit boundary flags.
+- Boundary flags remain false for `llm_used`, `creates_lesson_candidate`, `writes_lesson_store`, `writes_memory_layer`, and `awakening_claim`.
+- This CLI wrapper does not change the trial runner, sandbox behavior, action selection behavior, learning pipeline, lesson_candidate pipeline, lesson_store writes, Memory Layer writes, or free text conversation.
+
 ## Sandbox Working State Clear CLI v0
 
 - Adds `py -3 -m ashl_core.teaching_cli clear-sandbox-working-state --session-id <session_id>`.

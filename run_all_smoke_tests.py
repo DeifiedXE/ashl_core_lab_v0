@@ -110,6 +110,7 @@ from ashl_core.teaching_cli import (
     run_known_flow,
     run_lifecycle_display,
     run_minimal_interaction,
+    run_need_state_trial_batch_cli,
     run_review_approve,
     run_review_display,
     run_review_reject,
@@ -573,6 +574,38 @@ def smoke_need_state_trial_5_step_count() -> dict:
             "average_step_count": result["average_step_count"],
             "min_step_count": result["min_step_count"],
             "max_step_count": result["max_step_count"],
+        },
+    )
+
+
+def smoke_need_state_trial_batch_cli() -> dict:
+    result = run_need_state_trial_batch_cli(random_seed=0)
+    boundary = result.get("boundary", {})
+    passed = (
+        result.get("flow") == "need_state_trial_batch_cli_v0"
+        and result.get("status") == "ok"
+        and result.get("trial_count") == 5
+        and len(result.get("step_counts", [])) == 5
+        and "average_step_count" in result
+        and "min_step_count" in result
+        and "max_step_count" in result
+        and boundary.get("llm_used") is False
+        and boundary.get("creates_lesson_candidate") is False
+        and boundary.get("writes_lesson_store") is False
+        and boundary.get("writes_memory_layer") is False
+        and boundary.get("awakening_claim") is False
+    )
+    return _result(
+        "need_state_trial_batch_cli",
+        passed,
+        {
+            "trial_count": result.get("trial_count"),
+            "completed_count": result.get("completed_count"),
+            "step_counts": result.get("step_counts"),
+            "average_step_count": result.get("average_step_count"),
+            "min_step_count": result.get("min_step_count"),
+            "max_step_count": result.get("max_step_count"),
+            "boundary": boundary,
         },
     )
 
@@ -4760,6 +4793,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_minimal_need_state_driven_action_selection(),
         smoke_need_state_driven_trial_runner(),
         smoke_need_state_trial_5_step_count(),
+        smoke_need_state_trial_batch_cli(),
         smoke_clear_sandbox_working_state_cli(),
         smoke_grounded_learning_verification_cli(),
         smoke_standing_task(),

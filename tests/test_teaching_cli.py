@@ -12,6 +12,7 @@ from ashl_core.teaching_cli import (
     run_grounded_learning_check,
     run_known_flow,
     run_minimal_interaction,
+    run_need_state_trial_batch_cli,
     run_tactile_interaction,
     run_unknown_flow,
 )
@@ -412,6 +413,21 @@ class TeachingCliTests(unittest.TestCase):
         self.assertEqual(result["status"], "ok")
         self.assertEqual(result["steps"][1]["history"]["previous_same_action_result"], "box_blocked")
         self.assertEqual(result["suggested_next_action"], "wait")
+
+    def test_need_state_trial_batch_cli_wrapper_returns_boundary_flags(self):
+        result = run_need_state_trial_batch_cli(random_seed=0)
+        boundary = result["boundary"]
+
+        self.assertEqual(result["command"], "run-need-state-trial-batch")
+        self.assertEqual(result["flow"], "need_state_trial_batch_cli_v0")
+        self.assertEqual(result["status"], "ok")
+        self.assertEqual(result["trial_count"], 5)
+        self.assertEqual(len(result["step_counts"]), 5)
+        self.assertIs(boundary["llm_used"], False)
+        self.assertIs(boundary["creates_lesson_candidate"], False)
+        self.assertIs(boundary["writes_lesson_store"], False)
+        self.assertIs(boundary["writes_memory_layer"], False)
+        self.assertIs(boundary["awakening_claim"], False)
 
 
 if __name__ == "__main__":

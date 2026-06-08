@@ -23,6 +23,7 @@ from .micro_push_box_sandbox import (
     build_initial_state as build_micro_push_box_state,
     suggest_next_action_avoiding_repeat_blocked,
 )
+from .micro_push_box_trial_runner import run_need_state_driven_trial_batch
 from .tactile_state_mapping import map_tactile_result_to_state_key
 from .trace_persistence import append_first_output_trace, append_mentor_feedback_trace
 
@@ -551,6 +552,32 @@ def run_grounded_learning_check(actions: list[str] | tuple[str, ...] | None = No
     }
 
 
+def run_need_state_trial_batch_cli(
+    trial_count: int = 5,
+    max_steps: int = 10,
+    random_seed: int | None = None,
+) -> dict[str, Any]:
+    batch = run_need_state_driven_trial_batch(
+        trial_count=trial_count,
+        max_steps=max_steps,
+        random_seed=random_seed,
+    )
+    return {
+        "command": "run-need-state-trial-batch",
+        "flow": "need_state_trial_batch_cli_v0",
+        "status": "ok",
+        **batch,
+        "boundary": {
+            "llm_used": False,
+            "creates_lesson_candidate": False,
+            "writes_lesson_store": False,
+            "writes_memory_layer": False,
+            "awakening_claim": False,
+        },
+        "notes": ["Need-state trial batch CLI only wraps the existing deterministic batch runner."],
+    }
+
+
 def _verification_boundary() -> dict[str, bool]:
     return {
         "llm_used": False,
@@ -598,6 +625,8 @@ def run_command(command: str) -> dict[str, Any]:
         return run_clear_sandbox_working_state()
     if command == "run-grounded-learning-check":
         return run_grounded_learning_check()
+    if command == "run-need-state-trial-batch":
+        return run_need_state_trial_batch_cli()
     return {
         "command": command,
         "status": "error",
@@ -622,6 +651,7 @@ def main(argv: list[str] | None = None) -> int:
             "run-tactile-interaction",
             "clear-sandbox-working-state",
             "run-grounded-learning-check",
+            "run-need-state-trial-batch",
         ],
     )
     parser.add_argument("--review-id", default="review_001")
@@ -634,6 +664,9 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--state-key", default=None)
     parser.add_argument("--action", default=None)
     parser.add_argument("--actions", nargs="*", default=None)
+    parser.add_argument("--trial-count", type=int, default=5)
+    parser.add_argument("--max-steps", type=int, default=10)
+    parser.add_argument("--random-seed", type=int, default=None)
     args = parser.parse_args(argv)
     if args.command == "run-review-approve":
         result = run_review_approve(review_id=args.review_id, notes=args.notes)
@@ -655,6 +688,12 @@ def main(argv: list[str] | None = None) -> int:
         result = run_clear_sandbox_working_state(session_id=args.session_id, data_dir=args.data_dir)
     elif args.command == "run-grounded-learning-check":
         result = run_grounded_learning_check(actions=args.actions)
+    elif args.command == "run-need-state-trial-batch":
+        result = run_need_state_trial_batch_cli(
+            trial_count=args.trial_count,
+            max_steps=args.max_steps,
+            random_seed=args.random_seed,
+        )
     else:
         result = run_command(args.command)
     if hasattr(sys.stdout, "reconfigure"):

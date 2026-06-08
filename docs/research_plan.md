@@ -1942,6 +1942,30 @@ No Memory Layer write.
 No LLM / teaching chat loop / free text conversation.
 No autonomous behavior from aggregate step counts.
 
+## Need-State Trial Batch CLI v0
+
+Status:
+minimal-runtime / cli-wrapper / batch-trial-summary / no-learning
+
+Summary:
+Adds py -3 -m ashl_core.teaching_cli run-need-state-trial-batch.
+The command wraps the existing run_need_state_driven_trial_batch helper.
+It supports --trial-count, --max-steps, and --random-seed.
+It returns flow = need_state_trial_batch_cli_v0, status = ok, trial_count, completed_count, step_counts, average_step_count, min_step_count, max_step_count, trials, and boundary flags.
+
+Boundary:
+No trial runner behavior changes.
+No sandbox behavior changes.
+No action selection behavior changes.
+No solver / pathfinding.
+No goal planning.
+No learning pipeline.
+No lesson_candidate pipeline connection.
+No lesson_store write.
+No Memory Layer write.
+No LLM / teaching chat loop / free text conversation.
+No awakening claim.
+
 ## Sandbox Working State Clear CLI v0
 
 Status:
