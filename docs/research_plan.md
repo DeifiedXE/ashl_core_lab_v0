@@ -1838,6 +1838,31 @@ No utterance_map changes.
 No new action types.
 No persistent state-action memory beyond returned sandbox state.
 
+## Micro Navigation Goal-Reach v0
+
+Status:
+minimal-runtime / level-0-navigation-sandbox / bounded-goal-reach / no-learning
+
+Summary:
+Adds an independent micro navigation sandbox with a fixed tiny grid.
+Navigation state records grid, agent_pos, goal_pos, and tick.
+Allowed actions are move_up, move_down, move_left, move_right, and wait.
+Navigation traces record trace_type = navigation_sandbox_trace, tick, action, before, after, result, blocked, agent_pos, goal_pos, and distance_to_goal.
+Adds manhattan_distance_to_goal and select_navigation_action_toward_goal.
+Adds run_navigation_goal_trial(candidate_actions=None, max_steps=10) as a bounded trial runner.
+
+Boundary:
+No push-box sandbox behavior changes.
+No AI solver / pathfinding.
+No goal planning.
+No learning pipeline.
+No lesson_candidate pipeline.
+No lesson_store writes.
+No Memory Layer writes.
+No LLM / teaching chat / free text conversation.
+No graphics / GUI.
+No autonomous behavior claim.
+
 ## Minimal Avoid Repeated Blocked Action v0
 
 Status:

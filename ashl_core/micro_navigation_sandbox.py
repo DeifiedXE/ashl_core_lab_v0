@@ -1,0 +1,162 @@
+"""Tiny deterministic navigation sandbox for reaching a fixed goal."""
+
+from __future__ import annotations
+
+from typing import Any
+
+
+INITIAL_MAP = (
+    "#####",
+    "#...#",
+    "#.Q.#",
+    "#..G#",
+    "#####",
+)
+
+DIRECTIONS = {
+    "up": (-1, 0),
+    "down": (1, 0),
+    "left": (0, -1),
+    "right": (0, 1),
+}
+
+ALLOWED_NAVIGATION_ACTIONS = frozenset(
+    {
+        "move_up",
+        "move_down",
+        "move_left",
+        "move_right",
+        "wait",
+    }
+)
+
+DEFAULT_CANDIDATE_ACTIONS = ("move_up", "move_down", "move_left", "move_right", "wait")
+
+
+def build_initial_navigation_state() -> dict[str, Any]:
+    return _state_from_grid(INITIAL_MAP)
+
+
+def validate_navigation_action(action: str) -> str:
+    if action not in ALLOWED_NAVIGATION_ACTIONS:
+        raise ValueError(f"unsupported navigation action: {action}")
+    return action
+
+
+def manhattan_distance_to_goal(agent_pos: tuple[int, int], goal_pos: tuple[int, int]) -> int:
+    return abs(agent_pos[0] - goal_pos[0]) + abs(agent_pos[1] - goal_pos[1])
+
+
+def select_navigation_action_toward_goal(
+    state: dict[str, Any],
+    candidate_actions: list[str] | tuple[str, ...] | None = None,
+) -> str:
+    candidates = tuple(candidate_actions) if candidate_actions is not None else DEFAULT_CANDIDATE_ACTIONS
+    validated_candidates = tuple(validate_navigation_action(action) for action in candidates)
+    if not validated_candidates:
+        raise ValueError("candidate_actions must include at least one action")
+
+    agent_pos = tuple(state["agent_pos"])
+    goal_pos = tuple(state["goal_pos"])
+    current_distance = manhattan_distance_to_goal(agent_pos, goal_pos)
+    for action in validated_candidates:
+        if not action.startswith("move_"):
+            continue
+        _, direction = action.split("_", 1)
+        target = _add(agent_pos, DIRECTIONS[direction])
+        if _tile_at(state, target) == "#":
+            continue
+        if manhattan_distance_to_goal(target, goal_pos) < current_distance:
+            return action
+    return validated_candidates[0]
+
+
+def apply_navigation_action(state: dict[str, Any], action: str) -> dict[str, Any]:
+    action = validate_navigation_action(action)
+    before = _snapshot(state)
+    after = _snapshot(state)
+    blocked = False
+
+    if action == "wait":
+        result = "wait"
+    else:
+        _, direction = action.split("_", 1)
+        target = _add(tuple(before["agent_pos"]), DIRECTIONS[direction])
+        if _tile_at(before, target) == "#":
+            result = "wall_blocked"
+            blocked = True
+        else:
+            after["agent_pos"] = target
+            result = "goal_reached" if target == tuple(before["goal_pos"]) else "moved"
+
+    after["tick"] = before["tick"] + 1
+    after["grid"] = _render_grid(after)
+    trace = {
+        "trace_type": "navigation_sandbox_trace",
+        "tick": after["tick"],
+        "action": action,
+        "before": before,
+        "after": after,
+        "result": result,
+        "blocked": blocked,
+        "agent_pos": after["agent_pos"],
+        "goal_pos": after["goal_pos"],
+        "distance_to_goal": manhattan_distance_to_goal(tuple(after["agent_pos"]), tuple(after["goal_pos"])),
+    }
+    return {"state": after, "trace": trace}
+
+
+def _state_from_grid(grid: tuple[str, ...]) -> dict[str, Any]:
+    agent_pos = None
+    goal_pos = None
+    for row_index, row in enumerate(grid):
+        for col_index, char in enumerate(row):
+            if char == "Q":
+                agent_pos = (row_index, col_index)
+            elif char == "G":
+                goal_pos = (row_index, col_index)
+    if agent_pos is None or goal_pos is None:
+        raise ValueError("navigation grid must include Q and G")
+    state = {
+        "grid": grid,
+        "agent_pos": agent_pos,
+        "goal_pos": goal_pos,
+        "tick": 0,
+    }
+    state["grid"] = _render_grid(state)
+    return state
+
+
+def _snapshot(state: dict[str, Any]) -> dict[str, Any]:
+    return {
+        "grid": tuple(state["grid"]),
+        "agent_pos": tuple(state["agent_pos"]),
+        "goal_pos": tuple(state["goal_pos"]),
+        "tick": state["tick"],
+    }
+
+
+def _render_grid(state: dict[str, Any]) -> tuple[str, ...]:
+    base = [list(row) for row in INITIAL_MAP]
+    for row_index, row in enumerate(base):
+        for col_index, char in enumerate(row):
+            if char == "Q":
+                base[row_index][col_index] = "."
+    agent_pos = tuple(state["agent_pos"])
+    goal_pos = tuple(state["goal_pos"])
+    if agent_pos == goal_pos:
+        base[goal_pos[0]][goal_pos[1]] = "Q"
+    else:
+        base[goal_pos[0]][goal_pos[1]] = "G"
+        base[agent_pos[0]][agent_pos[1]] = "Q"
+    return tuple("".join(row) for row in base)
+
+
+def _tile_at(state: dict[str, Any], pos: tuple[int, int]) -> str:
+    if pos == tuple(state["goal_pos"]):
+        return "G"
+    return state["grid"][pos[0]][pos[1]]
+
+
+def _add(pos: tuple[int, int], delta: tuple[int, int]) -> tuple[int, int]:
+    return (pos[0] + delta[0], pos[1] + delta[1])

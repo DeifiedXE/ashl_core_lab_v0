@@ -70,6 +70,14 @@ from ashl_core.memory_layers import (
     read_working_memory_snapshot,
     write_working_memory_snapshot,
 )
+from ashl_core.micro_navigation_sandbox import (
+    ALLOWED_NAVIGATION_ACTIONS,
+    apply_navigation_action,
+    build_initial_navigation_state,
+    manhattan_distance_to_goal as navigation_distance_to_goal,
+    select_navigation_action_toward_goal,
+)
+from ashl_core.micro_navigation_trial_runner import run_navigation_goal_trial
 from ashl_core.micro_push_box_sandbox import (
     ALLOWED_ACTION_SET,
     apply_tactile_action,
@@ -211,6 +219,50 @@ def smoke_action_sandbox() -> dict:
         and stable["to_state"] == "standing_stable"
     )
     return _result("action_sandbox", passed, {"failed": failed, "stable": stable})
+
+
+def smoke_micro_navigation_goal_reach() -> dict:
+    initial_state = build_initial_navigation_state()
+    wall_state = build_initial_navigation_state()
+    wall_state["agent_pos"] = (1, 1)
+    wall_trace = apply_navigation_action(wall_state, "move_left")["trace"]
+    moved_trace = apply_navigation_action(initial_state, "move_down")["trace"]
+    goal_trace = apply_navigation_action(moved_trace["after"], "move_right")["trace"]
+    selected_action = select_navigation_action_toward_goal(
+        build_initial_navigation_state(),
+        ["move_up", "move_down", "move_right"],
+    )
+    trial = run_navigation_goal_trial(max_steps=10)
+    passed = (
+        initial_state["grid"] == ("#####", "#...#", "#.Q.#", "#..G#", "#####")
+        and wall_trace["result"] == "wall_blocked"
+        and moved_trace["result"] == "moved"
+        and goal_trace["result"] == "goal_reached"
+        and navigation_distance_to_goal(initial_state["agent_pos"], initial_state["goal_pos"]) == 2
+        and selected_action == "move_down"
+        and trial["completed_goal"] is True
+        and trial["final_agent_pos"] == trial["goal_pos"]
+        and trial["step_count"] <= 10
+        and all(action in ALLOWED_NAVIGATION_ACTIONS for action in trial["selected_actions"])
+        and "lesson_candidate" not in trial
+        and "memory_layer_write" not in trial
+    )
+    return _result(
+        "micro_navigation_goal_reach",
+        passed,
+        {
+            "initial_agent_pos": initial_state["agent_pos"],
+            "goal_pos": initial_state["goal_pos"],
+            "wall_result": wall_trace["result"],
+            "moved_result": moved_trace["result"],
+            "goal_result": goal_trace["result"],
+            "selected_action": selected_action,
+            "completed_goal": trial["completed_goal"],
+            "step_count": trial["step_count"],
+            "selected_actions": trial["selected_actions"],
+            "final_agent_pos": trial["final_agent_pos"],
+        },
+    )
 
 
 def smoke_micro_push_box_sandbox() -> dict:
@@ -5058,6 +5110,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_memory_layers(),
         smoke_body_state(),
         smoke_action_sandbox(),
+        smoke_micro_navigation_goal_reach(),
         smoke_micro_push_box_sandbox(),
         smoke_micro_push_box_allowed_action_set(),
         smoke_tactile_result_state_key_mapping(),

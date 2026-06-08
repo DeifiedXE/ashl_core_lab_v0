@@ -1093,6 +1093,15 @@ v2.7a adds `ashl_core.failure_events` as a trace-only failure_event schema found
 - Scores only reuse prior results when `agent_pos`, `box_pos`, `goal_pos`, and `action` all match the current context.
 - This is in-state sandbox history readback, not AI solver / pathfinding, learning pipeline, lesson_candidate pipeline, lesson_store / Memory Layer write, LLM / teaching chat, tactile result mapping change, utterance_map change, or persistent memory.
 
+## Micro Navigation Goal-Reach v0
+
+- Adds an independent `ashl_core.micro_navigation_sandbox` with a tiny fixed grid: `##### / #...# / #.Q.# / #..G# / #####`.
+- Navigation state records `grid`, `agent_pos`, `goal_pos`, and `tick`.
+- Allowed actions are closed to `move_up`, `move_down`, `move_left`, `move_right`, and `wait`.
+- Navigation traces record `trace_type = navigation_sandbox_trace`, `tick`, `action`, `before`, `after`, `result`, `blocked`, `agent_pos`, `goal_pos`, and `distance_to_goal`.
+- Adds `run_navigation_goal_trial(candidate_actions=None, max_steps=10)` for a bounded goal-reach trial.
+- This is a tiny Level 0 navigation sandbox, not a modification to push-box sandbox, AI solver / pathfinding, goal planning, learning pipeline, lesson_candidate pipeline, lesson_store / Memory Layer write, LLM / teaching chat, graphics, or GUI.
+
 ## Minimal Avoid Repeated Blocked Action v0
 
 - Adds `suggest_next_action_avoiding_repeat_blocked(state, candidate_actions)`.
