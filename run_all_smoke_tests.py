@@ -81,6 +81,7 @@ from ashl_core.micro_push_box_sandbox import (
     suggest_next_action_avoiding_repeat_blocked,
     validate_allowed_action,
 )
+from ashl_core.micro_push_box_trial_runner import run_need_state_driven_trial
 from ashl_core.manual_review import (
     build_review_trace,
     create_review_item,
@@ -516,6 +517,37 @@ def smoke_minimal_need_state_driven_action_selection() -> dict:
             "unsatisfied_selection_reason": unsatisfied["selection_reason"],
             "satisfied_selected_action": satisfied["selected_action"],
             "satisfied_selection_reason": satisfied["selection_reason"],
+        },
+    )
+
+
+def smoke_need_state_driven_trial_runner() -> dict:
+    candidates = ["move_up", "move_right", "push_down"]
+    result = run_need_state_driven_trial(candidates, max_steps=10, random_seed=0)
+    selected_actions = [step["selected_action"] for step in result["steps"]]
+    forbidden_keys = {"lesson_store_write", "memory_layer_write", "memory_write", "lesson_candidate"}
+    no_forbidden_fields = forbidden_keys.isdisjoint(result) and all(
+        forbidden_keys.isdisjoint(step) and forbidden_keys.isdisjoint(step["trace"])
+        for step in result["steps"]
+    )
+    passed = (
+        result["step_count"] <= 10
+        and isinstance(result["steps"], list)
+        and bool(result["steps"])
+        and "final_need_state" in result
+        and isinstance(result["completed_goal"], bool)
+        and all(action in candidates + ["wait"] for action in selected_actions)
+        and no_forbidden_fields
+    )
+    return _result(
+        "need_state_driven_trial_runner",
+        passed,
+        {
+            "completed_goal": result["completed_goal"],
+            "step_count": result["step_count"],
+            "stop_reason": result["stop_reason"],
+            "selected_actions": selected_actions,
+            "final_need_state": result["final_need_state"],
         },
     )
 
@@ -4701,6 +4733,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_minimal_intrinsic_action_selection(),
         smoke_box_on_goal_need_state(),
         smoke_minimal_need_state_driven_action_selection(),
+        smoke_need_state_driven_trial_runner(),
         smoke_clear_sandbox_working_state_cli(),
         smoke_grounded_learning_verification_cli(),
         smoke_standing_task(),

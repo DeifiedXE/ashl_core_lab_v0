@@ -1126,6 +1126,14 @@ v2.7a adds `ashl_core.failure_events` as a trace-only failure_event schema found
 - If `box_on_goal` is satisfied, it selects `wait` with `selection_reason = need_satisfied_wait`.
 - This is a minimal need-state selection helper, not AI solver / pathfinding, goal planning, learning pipeline, lesson_candidate pipeline, lesson_store / Memory Layer write, LLM / teaching chat, emotion / dopamine runtime, tactile result mapping change, or utterance_map change.
 
+## Need-State Driven Trial Runner v0
+
+- Adds `run_need_state_driven_trial(candidate_actions, max_steps=10, random_seed=None)`.
+- Runs the default micro push-box state for a bounded number of steps by reading `box_on_goal`, selecting with `select_action_for_need_state(...)`, applying the tactile action, and recording each step.
+- Each step records `step_index`, `selected_action`, `selection_reason`, `tactile_result`, `need_state`, `agent_pos`, `box_pos`, and `trace`.
+- The summary returns `completed_goal`, `stop_reason`, `step_count`, `final_need_state`, `final_result`, and `steps`.
+- This is a finite trace runner, not AI solver / pathfinding, goal planning, learning pipeline, lesson_candidate pipeline, lesson_store / Memory Layer write, LLM / teaching chat, tactile result mapping change, or utterance_map change.
+
 ## Sandbox Working State Clear CLI v0
 
 - Adds `py -3 -m ashl_core.teaching_cli clear-sandbox-working-state --session-id <session_id>`.
