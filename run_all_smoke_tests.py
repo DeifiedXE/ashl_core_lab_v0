@@ -151,6 +151,7 @@ from ashl_core.teaching_cli import (
     validate_dead_end_trial1_maps_cli,
     run_candidate_dead_end_trial1_ascii_replay_cli,
     run_valid_dead_end_maps_ab_control_cli,
+    run_local_memory_decision_trace_observer_cli,
     run_navigation_multi_goal_metrics_cli,
     run_navigation_obstacle_trial_cli,
     run_navigation_trial_metrics_cli,
@@ -999,6 +1000,55 @@ def smoke_valid_dead_end_maps_ab_control() -> dict:
             "included_maps": included_maps,
             "excluded_maps": excluded_maps,
             "overall_summary": result.get("overall_summary", {}),
+            "boundary_check": boundary,
+        },
+    )
+
+
+def smoke_local_memory_decision_trace_observer() -> dict:
+    result = run_local_memory_decision_trace_observer_cli(
+        level_id="approach_box_dead_end_v0",
+        max_steps=100,
+    )
+    trace = result.get("decision_trace", [])
+    boundary = result.get("boundary_check", {})
+    first_trace = trace[0] if trace else {}
+    passed = (
+        result.get("flow") == "local_memory_decision_trace_observer_v0"
+        and result.get("command") == "observe-local-memory-decision-trace"
+        and result.get("level_id") == "approach_box_dead_end_v0"
+        and result.get("max_steps") == 100
+        and "trial_1_summary" in result
+        and "trial_2_summary" in result
+        and bool(trace)
+        and "step_index" in first_trace
+        and "agent_pos" in first_trace
+        and "candidate_actions" in first_trace
+        and "selected_action" in first_trace
+        and "selection_reason" in first_trace
+        and "relevant_local_memory" in first_trace
+        and "memory_effect_applied" in first_trace
+        and "score_breakdown" in first_trace
+        and boundary.get("observer_only") is True
+        and boundary.get("runner_modified") is False
+        and boundary.get("action_selection_modified") is False
+        and boundary.get("goal_bias_modified") is False
+        and boundary.get("state_action_memory_modified") is False
+        and boundary.get("used_llm") is False
+        and boundary.get("used_pathfinding") is False
+        and boundary.get("used_lesson_store") is False
+        and boundary.get("used_memory_layer") is False
+        and boundary.get("replayed_full_route_as_input") is False
+    )
+    return _result(
+        "local_memory_decision_trace_observer",
+        passed,
+        {
+            "level_id": result.get("level_id"),
+            "trial1_step_count": result.get("trial_1_summary", {}).get("step_count"),
+            "trial2_step_count": result.get("trial_2_summary", {}).get("step_count"),
+            "decision_trace_count": len(trace),
+            "key_observation": result.get("key_observation", {}),
             "boundary_check": boundary,
         },
     )
@@ -5980,6 +6030,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_dead_end_map_trial1_validation(),
         smoke_candidate_map_trial1_ascii_replay(),
         smoke_valid_dead_end_maps_ab_control(),
+        smoke_local_memory_decision_trace_observer(),
         smoke_approach_box_dead_end_memory_control_check(),
         smoke_dead_end_memory_control_trial1_source_audit(),
         smoke_micro_push_box_sandbox(),

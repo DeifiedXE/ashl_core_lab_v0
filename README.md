@@ -1234,6 +1234,13 @@ Two-Trial History Boundary:
 - Trial 2 does not replay the Trial 1 route or receive Trial 1 `selected_actions` as input.
 - This command does not use LLM planning, does not use pathfinding / BFS / A*, and is not proof of general learning.
 
+## Local Memory Decision Trace Observer v0
+
+- Adds `py -3 -m ashl_core.teaching_cli observe-local-memory-decision-trace --level-id approach_box_dead_end_v0 --max-steps 100`.
+- Explains Trial 2 decision traces for valid dead-end maps by showing candidate actions, relevant local memory, selected actions, and non-numeric action explanations.
+- This is observer output only and does not modify action selection, goal bias, or state-action memory.
+- This command does not use LLM planning, does not use pathfinding / BFS / A*, and is not proof of general learning.
+
 ## Micro Navigation Trial Metrics CLI v0
 
 - Adds `py -3 -m ashl_core.teaching_cli run-navigation-trial-metrics --runs 4 --trial-count 5 --max-steps 10`.

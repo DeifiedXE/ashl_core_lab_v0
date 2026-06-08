@@ -2318,6 +2318,36 @@ No Memory Layer write.
 No LLM planning.
 This is not proof of general learning.
 
+## Local Memory Decision Trace Observer v0
+
+Status:
+minimal-runtime / observer-output / local-memory-decision-trace / no-general-learning-proof
+
+Summary:
+Adds py -3 -m ashl_core.teaching_cli observe-local-memory-decision-trace --level-id approach_box_dead_end_v0 --max-steps 100.
+The command explains Trial 2 decision traces for valid dead-end maps.
+It reports trial_1_summary, trial_2_summary, decision_trace, key_observation, boundary_check, and notes.
+Decision trace records include candidate actions, selected action, selection reason, relevant local memory, memory_effect_applied, and non-numeric score_breakdown.
+Only approach_box_dead_end_v0, mid_branch_dead_end_candidate_v0, and lower_branch_dead_end_candidate_v0 are supported.
+The shortcut map user_maze_dead_end_candidate_v0 is not supported.
+
+Boundary:
+Observer output only.
+No existing runner behavior changes.
+No dead-end single trial behavior changes.
+No dead-end two-trial behavior changes.
+No valid maps A/B control behavior changes.
+No action selection changes.
+No goal bias changes.
+No state-action memory changes.
+No pathfinding / BFS / A*.
+No Trial 1 selected_actions feed into Trial 2.
+No lesson_candidate pipeline connection.
+No lesson_store write.
+No Memory Layer write.
+No LLM planning.
+This is not proof of general learning.
+
 ## Micro Navigation Trial Metrics CLI v0
 
 Status:

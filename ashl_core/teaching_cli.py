@@ -1762,6 +1762,291 @@ def run_valid_dead_end_maps_ab_control_cli(
     }
 
 
+LOCAL_MEMORY_OBSERVER_VALID_MAP_IDS = set(VALID_DEAD_END_AB_CONTROL_MAP_IDS)
+LOCAL_MEMORY_OBSERVER_CANDIDATE_ACTIONS = ["move_up", "move_down", "move_left", "move_right"]
+
+
+def _dead_end_memory_entries_for_observer(
+    trial_1: dict[str, Any],
+    local_outcome_memory: list[dict[str, Any]],
+) -> list[dict[str, Any]]:
+    blocked_lookup = {
+        (tuple(item["agent_pos"]), item["action"]): item
+        for item in trial_1.get("blocked_or_failed_actions", [])
+    }
+    observer_entries = []
+    for entry in local_outcome_memory:
+        blocked = blocked_lookup.get((tuple(entry["agent_pos"]), entry["action"]))
+        observer_entry = {
+            "agent_pos": entry["agent_pos"],
+            "box_pos": entry["box_pos"],
+            "action": entry["action"],
+            "previous_result": entry["result"],
+        }
+        if blocked and "blocked_at" in blocked:
+            observer_entry["blocked_at"] = blocked["blocked_at"]
+        elif "target_pos" in entry:
+            observer_entry["target_pos"] = entry["target_pos"]
+        observer_entries.append(observer_entry)
+    return observer_entries
+
+
+def _trial_summary_for_local_memory_observer(
+    trial: dict[str, Any],
+    *,
+    local_outcome_memory_written: bool = False,
+    local_outcome_memory_read: bool = False,
+    used_trial1_local_memory: bool = False,
+) -> dict[str, Any]:
+    return {
+        "completed_approach": trial["completed_approach"],
+        "entered_dead_end_area": trial["entered_dead_end_area"],
+        "dead_end_positions_visited": trial["dead_end_positions_visited"],
+        "blocked_or_failed_actions": trial["blocked_or_failed_actions"],
+        "step_count": trial["step_count"],
+        "local_outcome_memory_written": local_outcome_memory_written,
+        "local_outcome_memory_read": local_outcome_memory_read,
+        "used_trial1_local_memory": used_trial1_local_memory,
+        "llm_used": trial["llm_used"],
+    }
+
+
+def _candidate_trial_positions_before_selected_actions(
+    map_config: dict[str, Any],
+    selected_actions: list[str],
+    max_steps: int,
+) -> list[list[int]]:
+    return _positions_before_candidate_actions(map_config, selected_actions, max_steps)
+
+
+def _approach_box_trial2_positions_before_actions(selected_actions: list[str]) -> list[list[int]]:
+    return [list(pos) for pos in DEAD_END_TRIAL2_REPLAY_POSITIONS[: len(selected_actions)]]
+
+
+def _local_memory_score_breakdown(
+    candidate_actions: list[str],
+    selected_action: str,
+    relevant_memory: list[dict[str, Any]],
+) -> list[dict[str, Any]]:
+    adverse_results = {"entered_dead_end", "wall_blocked", "box_blocked", "blocked"}
+    memory_by_action = {
+        entry["action"]: entry
+        for entry in relevant_memory
+        if entry["previous_result"] in adverse_results
+    }
+    breakdown = []
+    for action in candidate_actions:
+        if action == selected_action:
+            status = "selected"
+            reason = "Selected by the existing deterministic local-memory trial wrapper."
+        elif action in memory_by_action:
+            status = "avoided"
+            reason = f"Trial 1 local memory recorded {memory_by_action[action]['previous_result']} for this state-action."
+        else:
+            status = "allowed"
+            reason = "No relevant local memory entry for this state-action."
+        breakdown.append(
+            {
+                "action": action,
+                "status": status,
+                "reason": reason,
+            }
+        )
+    return breakdown
+
+
+def _build_local_memory_decision_trace(
+    trial_2: dict[str, Any],
+    positions_before_actions: list[list[int]],
+    observer_memory_entries: list[dict[str, Any]],
+    *,
+    without_memory_actions: list[str],
+    exact_blocked_state_revisited: bool,
+) -> list[dict[str, Any]]:
+    decision_trace = []
+    candidate_actions = list(LOCAL_MEMORY_OBSERVER_CANDIDATE_ACTIONS)
+    adverse_results = {"entered_dead_end", "wall_blocked", "box_blocked", "blocked"}
+    for step_index, (agent_pos, selected_action) in enumerate(
+        zip(positions_before_actions, trial_2["selected_actions"]),
+        start=1,
+    ):
+        relevant_memory = [
+            entry
+            for entry in observer_memory_entries
+            if entry["agent_pos"] == agent_pos and entry["action"] in candidate_actions
+        ]
+        adverse_relevant_memory = [
+            entry for entry in relevant_memory if entry["previous_result"] in adverse_results
+        ]
+        without_memory_action = without_memory_actions[step_index - 1] if step_index <= len(without_memory_actions) else None
+        changed_from_without_memory = without_memory_action is not None and without_memory_action != selected_action
+        memory_effect_applied = bool(adverse_relevant_memory) or (
+            changed_from_without_memory and trial_2.get("used_trial1_local_memory") is True
+        )
+        if adverse_relevant_memory:
+            avoided = [
+                f"{entry['action']} after {entry['previous_result']}"
+                for entry in adverse_relevant_memory
+                if entry["action"] != selected_action
+            ]
+            if avoided:
+                selection_reason = (
+                    f"selected {selected_action}; local memory marked {', '.join(avoided)} for this state"
+                )
+            else:
+                selection_reason = f"selected {selected_action}; relevant local memory was displayed for this state"
+        elif memory_effect_applied:
+            selection_reason = (
+                f"selected {selected_action}; without-memory Trial 2 would select {without_memory_action}, "
+                "but local memory observer shows the with-memory route diverged before the blocked state"
+            )
+        else:
+            selection_reason = f"selected {selected_action}; no relevant local memory entry applied at this state"
+        result = "moved"
+        for blocked in trial_2.get("blocked_or_failed_actions", []):
+            if blocked["agent_pos"] == agent_pos and blocked["action"] == selected_action:
+                result = blocked["result"]
+                break
+        decision_trace.append(
+            {
+                "step_index": step_index,
+                "agent_pos": agent_pos,
+                "candidate_actions": candidate_actions,
+                "selected_action": selected_action,
+                "without_memory_action": without_memory_action,
+                "selection_reason": selection_reason,
+                "relevant_local_memory": relevant_memory,
+                "memory_effect_applied": memory_effect_applied,
+                "score_breakdown": _local_memory_score_breakdown(
+                    candidate_actions,
+                    selected_action,
+                    relevant_memory,
+                ),
+                "result": result,
+            }
+        )
+    return decision_trace
+
+
+def _build_local_memory_observer_trial_pair(
+    level_id: str,
+    max_steps: int,
+) -> tuple[dict[str, Any], dict[str, Any], list[dict[str, Any]], list[list[int]]]:
+    map_config = _candidate_map_config_by_level_id(level_id)
+    trial_1 = _run_dead_end_trial1_for_map_config(map_config, max_steps)
+    if level_id == "approach_box_dead_end_v0":
+        local_outcome_memory = _build_dead_end_local_outcome_memory(trial_1)
+        trial_2 = _build_dead_end_trial2_from_local_memory(trial_1, local_outcome_memory, max_steps)
+        trial_2["used_trial1_local_memory"] = bool(local_outcome_memory)
+        positions_before_actions = _approach_box_trial2_positions_before_actions(trial_2["selected_actions"])
+    else:
+        local_outcome_memory = _candidate_trial1_local_outcome_memory(map_config, trial_1, max_steps)
+        trial_2 = _run_candidate_dead_end_trial2_from_local_memory(
+            map_config,
+            trial_1,
+            local_outcome_memory,
+            max_steps,
+        )
+        positions_before_actions = _candidate_trial_positions_before_selected_actions(
+            map_config,
+            trial_2["selected_actions"],
+            max_steps,
+        )
+    observer_entries = _dead_end_memory_entries_for_observer(trial_1, local_outcome_memory)
+    return trial_1, trial_2, observer_entries, positions_before_actions
+
+
+def run_local_memory_decision_trace_observer_cli(
+    level_id: str = "approach_box_dead_end_v0",
+    max_steps: int = 100,
+) -> dict[str, Any]:
+    if level_id not in LOCAL_MEMORY_OBSERVER_VALID_MAP_IDS:
+        return {
+            "command": "observe-local-memory-decision-trace",
+            "flow": "local_memory_decision_trace_observer_v0",
+            "status": "error",
+            "level_id": level_id,
+            "max_steps": max_steps,
+            "error": "unsupported_level_id",
+            "supported_level_ids": list(VALID_DEAD_END_AB_CONTROL_MAP_IDS),
+            "notes": [
+                "Only valid dead-end maps are supported.",
+                "user_maze_dead_end_candidate_v0 is excluded because it has shortcut status and no dead-end event.",
+            ],
+        }
+
+    trial_1, trial_2, observer_memory_entries, positions_before_actions = _build_local_memory_observer_trial_pair(
+        level_id,
+        max_steps,
+    )
+    exact_blocked_states = [
+        (item["agent_pos"], item["action"])
+        for item in trial_1["blocked_or_failed_actions"]
+    ]
+    exact_blocked_state_revisited = any(
+        agent_pos == blocked_pos and selected_action == blocked_action
+        for agent_pos, selected_action in zip(positions_before_actions, trial_2["selected_actions"])
+        for blocked_pos, blocked_action in exact_blocked_states
+    )
+    decision_trace = _build_local_memory_decision_trace(
+        trial_2,
+        positions_before_actions,
+        observer_memory_entries,
+        without_memory_actions=trial_1["selected_actions"],
+        exact_blocked_state_revisited=exact_blocked_state_revisited,
+    )
+    blocked_memory = [
+        entry
+        for entry in observer_memory_entries
+        if entry["previous_result"] in {"wall_blocked", "box_blocked"}
+    ]
+    notes = [
+        "Decision trace is observer output only and does not modify action selection.",
+        "Score breakdown is non-numeric because the current wrapper does not expose numeric scoring.",
+        "It is allowed to display selected_actions after the run; they are not fed back into Trial 2.",
+        "This observer is not proof of general learning.",
+    ]
+    if blocked_memory and not exact_blocked_state_revisited:
+        notes.append("Trial 2 avoided the dead-end branch before reaching the exact blocked state.")
+    return {
+        "command": "observe-local-memory-decision-trace",
+        "flow": "local_memory_decision_trace_observer_v0",
+        "status": "ok",
+        "level_id": level_id,
+        "max_steps": max_steps,
+        "trial_1_summary": _trial_summary_for_local_memory_observer(
+            trial_1,
+            local_outcome_memory_written=trial_1["step_count"] > 0,
+        ),
+        "trial_2_summary": _trial_summary_for_local_memory_observer(
+            trial_2,
+            local_outcome_memory_read=True,
+            used_trial1_local_memory=bool(observer_memory_entries),
+        ),
+        "decision_trace": decision_trace,
+        "key_observation": {
+            "trial1_blocked_or_failed_memory": blocked_memory,
+            "exact_blocked_state_revisited": exact_blocked_state_revisited,
+            "summary": "Trial 2 did not repeat the Trial 1 local blocked action."
+            if blocked_memory and not exact_blocked_state_revisited
+            else "Trial 2 decision trace reports the local memory entries visible at each step.",
+        },
+        "boundary_check": {
+            "observer_only": True,
+            "runner_modified": False,
+            "action_selection_modified": False,
+            "goal_bias_modified": False,
+            "state_action_memory_modified": False,
+            "used_llm": False,
+            "used_pathfinding": False,
+            "used_lesson_store": False,
+            "used_memory_layer": False,
+            "replayed_full_route_as_input": False,
+        },
+        "notes": notes,
+    }
+
+
 DEAD_END_ASCII_WIDTH = 8
 DEAD_END_ASCII_HEIGHT = 6
 DEAD_END_WALLS = {
@@ -2778,6 +3063,8 @@ def run_command(command: str) -> dict[str, Any]:
         return run_candidate_dead_end_trial1_ascii_replay_cli()
     if command == "run-valid-dead-end-maps-ab-control":
         return run_valid_dead_end_maps_ab_control_cli()
+    if command == "observe-local-memory-decision-trace":
+        return run_local_memory_decision_trace_observer_cli()
     return {
         "command": command,
         "status": "error",
@@ -2818,6 +3105,7 @@ def main(argv: list[str] | None = None) -> int:
             "validate-dead-end-trial1-maps",
             "replay-dead-end-trial1-candidate-maps",
             "run-valid-dead-end-maps-ab-control",
+            "observe-local-memory-decision-trace",
         ],
     )
     parser.add_argument("--review-id", default="review_001")
@@ -2836,6 +3124,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--runs-per-map", type=int, default=3)
     parser.add_argument("--random-seed", type=int, default=None)
     parser.add_argument("--baseline-path", default="data/baselines/trial_metrics_baseline_v0.json")
+    parser.add_argument("--level-id", default="approach_box_dead_end_v0")
     args = parser.parse_args(argv)
     if args.command == "run-review-approve":
         result = run_review_approve(review_id=args.review_id, notes=args.notes)
@@ -2911,6 +3200,11 @@ def main(argv: list[str] | None = None) -> int:
             runs_per_map=args.runs_per_map,
             max_steps=args.max_steps,
             random_seed=args.random_seed,
+        )
+    elif args.command == "observe-local-memory-decision-trace":
+        result = run_local_memory_decision_trace_observer_cli(
+            level_id=args.level_id,
+            max_steps=args.max_steps,
         )
     else:
         result = run_command(args.command)
