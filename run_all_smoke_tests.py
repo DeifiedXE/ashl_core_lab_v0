@@ -145,6 +145,7 @@ from ashl_core.teaching_cli import (
     run_approach_box_trial_cli,
     run_approach_box_two_trial_check_cli,
     run_approach_box_dead_end_trial_cli,
+    run_approach_box_dead_end_two_trial_check_cli,
     run_navigation_multi_goal_metrics_cli,
     run_navigation_obstacle_trial_cli,
     run_navigation_trial_metrics_cli,
@@ -653,6 +654,64 @@ def smoke_approach_box_dead_end_trial() -> dict:
             "blocked_or_failed_actions": result.get("blocked_or_failed_actions"),
             "step_count": result.get("step_count"),
             "llm_used": result.get("llm_used"),
+        },
+    )
+
+
+def smoke_approach_box_dead_end_two_trial_learning_check() -> dict:
+    result = run_approach_box_dead_end_two_trial_check_cli(max_steps=100)
+    trial_1 = result.get("trial_1", {})
+    trial_2 = result.get("trial_2", {})
+    comparison = result.get("comparison", {})
+    boundary = result.get("boundary_check", {})
+    passed = (
+        result.get("flow") == "approach_box_dead_end_two_trial_learning_check_v0"
+        and trial_1.get("level_id") == "approach_box_dead_end_v0"
+        and trial_2.get("level_id") == "approach_box_dead_end_v0"
+        and trial_1.get("completed_approach") is True
+        and trial_2.get("completed_approach") is True
+        and trial_1.get("entered_dead_end_area") is True
+        and trial_2.get("entered_dead_end_area") is False
+        and trial_1.get("dead_end_positions_visited") == [[4, 1], [4, 2]]
+        and trial_2.get("dead_end_positions_visited") == []
+        and trial_1.get("blocked_or_failed_actions")
+        and trial_2.get("blocked_or_failed_actions") == []
+        and trial_1.get("local_outcome_memory_written") is True
+        and trial_2.get("local_outcome_memory_read") is True
+        and trial_2.get("used_trial1_local_memory") is True
+        and trial_2.get("avoided_trial1_dead_end_action") is True
+        and trial_1.get("llm_used") is False
+        and trial_2.get("llm_used") is False
+        and comparison.get("trial1_step_count") == 11
+        and comparison.get("trial2_step_count") == 5
+        and comparison.get("step_count_delta") == -6
+        and comparison.get("dead_end_positions_visited_delta") == -2
+        and comparison.get("blocked_or_failed_delta") == -1
+        and comparison.get("avoided_trial1_dead_end_action") is True
+        and boundary.get("trial2_read_local_outcome_memory_only") is True
+        and boundary.get("trial2_replayed_full_route") is False
+        and boundary.get("trial2_used_llm") is False
+        and boundary.get("trial2_used_lesson_store") is False
+        and boundary.get("trial2_used_memory_layer") is False
+        and boundary.get("trial2_used_long_term_memory") is False
+        and boundary.get("trial2_used_lesson_candidate") is False
+        and boundary.get("trial2_used_pathfinding") is False
+        and boundary.get("trial2_used_human_hint") is False
+        and "steps" not in result
+        and "trace" not in result
+        and "route" not in result
+    )
+    return _result(
+        "approach_box_dead_end_two_trial_learning_check",
+        passed,
+        {
+            "trial1_step_count": comparison.get("trial1_step_count"),
+            "trial2_step_count": comparison.get("trial2_step_count"),
+            "step_count_delta": comparison.get("step_count_delta"),
+            "dead_end_positions_visited_delta": comparison.get("dead_end_positions_visited_delta"),
+            "blocked_or_failed_delta": comparison.get("blocked_or_failed_delta"),
+            "avoided_trial1_dead_end_action": comparison.get("avoided_trial1_dead_end_action"),
+            "boundary_check": boundary,
         },
     )
 
@@ -5628,6 +5687,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_approach_box_trial_cli(),
         smoke_approach_box_two_trial_learning_check(),
         smoke_approach_box_dead_end_trial(),
+        smoke_approach_box_dead_end_two_trial_learning_check(),
         smoke_micro_push_box_sandbox(),
         smoke_micro_push_box_allowed_action_set(),
         smoke_tactile_result_state_key_mapping(),

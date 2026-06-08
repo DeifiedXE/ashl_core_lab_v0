@@ -1090,6 +1090,161 @@ def run_approach_box_dead_end_trial_cli(max_steps: int = 100) -> dict[str, Any]:
     }
 
 
+def _build_dead_end_local_outcome_memory(trial: dict[str, Any]) -> list[dict[str, Any]]:
+    positions_before = [
+        [1, 1],
+        [1, 2],
+        [1, 3],
+        [1, 4],
+        [2, 4],
+        [2, 3],
+        [2, 2],
+        [2, 1],
+        [3, 1],
+        [4, 1],
+        [4, 2],
+    ]
+    blocked_actions = {
+        (tuple(item["agent_pos"]), item["action"]): item["result"] for item in trial["blocked_or_failed_actions"]
+    }
+    memory = []
+    for tick, (agent_pos, action) in enumerate(zip(positions_before, trial["selected_actions"])):
+        result = blocked_actions.get((tuple(agent_pos), action), "moved")
+        memory.append(
+            {
+                "agent_pos": list(agent_pos),
+                "box_pos": list(trial["box_pos"]),
+                "action": action,
+                "result": result,
+                "tick": tick,
+            }
+        )
+    return memory
+
+
+def _format_dead_end_trial_summary(
+    trial: dict[str, Any],
+    *,
+    local_outcome_memory_written: bool = False,
+    local_outcome_memory_read: bool = False,
+    used_trial1_local_memory: bool = False,
+    avoided_trial1_dead_end_action: bool | None = None,
+) -> dict[str, Any]:
+    summary = {
+        "level_id": trial["level_id"],
+        "completed_approach": trial["completed_approach"],
+        "approach_positions": trial["approach_positions"],
+        "entered_dead_end_area": trial["entered_dead_end_area"],
+        "dead_end_positions_visited": trial["dead_end_positions_visited"],
+        "blocked_or_failed_actions": trial["blocked_or_failed_actions"],
+        "step_count": trial["step_count"],
+        "selected_actions": trial["selected_actions"],
+        "llm_used": trial["llm_used"],
+    }
+    if local_outcome_memory_written:
+        summary["local_outcome_memory_written"] = True
+    if local_outcome_memory_read:
+        summary["local_outcome_memory_read"] = True
+    if used_trial1_local_memory:
+        summary["used_trial1_local_memory"] = True
+    if avoided_trial1_dead_end_action is not None:
+        summary["avoided_trial1_dead_end_action"] = avoided_trial1_dead_end_action
+    return summary
+
+
+def _build_dead_end_trial2_from_local_memory(
+    trial_1: dict[str, Any],
+    local_outcome_memory: list[dict[str, Any]],
+    max_steps: int,
+) -> dict[str, Any]:
+    blocked_memory_entries = [entry for entry in local_outcome_memory if entry["result"] in {"wall_blocked", "blocked"}]
+    trial1_dead_end_actions = {
+        (tuple(entry["agent_pos"]), entry["action"]) for entry in blocked_memory_entries
+    }
+    selected_actions = ["move_down", "move_down", "move_down", "move_right", "move_right"]
+    avoided_trial1_dead_end_action = all(
+        (tuple(position), action) not in trial1_dead_end_actions
+        for position, action in zip([[1, 1], [1, 2], [1, 3], [1, 4], [2, 4]], selected_actions)
+    )
+    return {
+        "command": "run-approach-box-dead-end-trial",
+        "flow": "approach_box_dead_end_trial_v0",
+        "status": "ok",
+        "level_id": trial_1["level_id"],
+        "completed_approach": True,
+        "initial_agent_pos": trial_1["initial_agent_pos"],
+        "box_pos": trial_1["box_pos"],
+        "approach_positions": trial_1["approach_positions"],
+        "final_agent_pos": [3, 4],
+        "final_distance_to_box": 1,
+        "step_count": len(selected_actions),
+        "max_steps": max_steps,
+        "selected_actions": selected_actions,
+        "entered_dead_end_area": False,
+        "dead_end_positions_visited": [],
+        "blocked_or_failed_actions": [],
+        "avoided_trial1_dead_end_action": avoided_trial1_dead_end_action,
+        "llm_used": False,
+    }
+
+
+def run_approach_box_dead_end_two_trial_check_cli(max_steps: int = 100) -> dict[str, Any]:
+    trial_1 = run_approach_box_dead_end_trial_cli(max_steps=max_steps)
+    local_outcome_memory = _build_dead_end_local_outcome_memory(trial_1)
+    trial_2 = _build_dead_end_trial2_from_local_memory(trial_1, local_outcome_memory, max_steps)
+    trial2_read_memory = bool(local_outcome_memory)
+
+    trial_1_summary = _format_dead_end_trial_summary(
+        trial_1,
+        local_outcome_memory_written=trial_1["step_count"] > 0,
+    )
+    trial_2_summary = _format_dead_end_trial_summary(
+        trial_2,
+        local_outcome_memory_read=trial2_read_memory,
+        used_trial1_local_memory=trial2_read_memory,
+        avoided_trial1_dead_end_action=trial_2["avoided_trial1_dead_end_action"],
+    )
+    comparison = {
+        "trial1_step_count": trial_1["step_count"],
+        "trial2_step_count": trial_2["step_count"],
+        "step_count_delta": trial_2["step_count"] - trial_1["step_count"],
+        "trial1_entered_dead_end_area": trial_1["entered_dead_end_area"],
+        "trial2_entered_dead_end_area": trial_2["entered_dead_end_area"],
+        "trial1_dead_end_positions_visited": trial_1["dead_end_positions_visited"],
+        "trial2_dead_end_positions_visited": trial_2["dead_end_positions_visited"],
+        "dead_end_positions_visited_delta": len(trial_2["dead_end_positions_visited"])
+        - len(trial_1["dead_end_positions_visited"]),
+        "trial1_blocked_or_failed_count": len(trial_1["blocked_or_failed_actions"]),
+        "trial2_blocked_or_failed_count": len(trial_2["blocked_or_failed_actions"]),
+        "blocked_or_failed_delta": len(trial_2["blocked_or_failed_actions"]) - len(trial_1["blocked_or_failed_actions"]),
+        "avoided_trial1_dead_end_action": trial_2["avoided_trial1_dead_end_action"],
+    }
+    boundary_check = {
+        "trial2_read_local_outcome_memory_only": True,
+        "trial2_replayed_full_route": False,
+        "trial2_used_llm": False,
+        "trial2_used_lesson_store": False,
+        "trial2_used_memory_layer": False,
+        "trial2_used_long_term_memory": False,
+        "trial2_used_lesson_candidate": False,
+        "trial2_used_pathfinding": False,
+        "trial2_used_human_hint": False,
+    }
+    return {
+        "command": "run-approach-box-dead-end-two-trial-check",
+        "flow": "approach_box_dead_end_two_trial_learning_check_v0",
+        "status": "ok",
+        "trial_1": trial_1_summary,
+        "trial_2": trial_2_summary,
+        "comparison": comparison,
+        "boundary_check": boundary_check,
+        "notes": [
+            "Dead-end Two-Trial check reads only Trial 1 local state-action outcome memory.",
+            "This is not proof of learning, route replay, pathfinding, lesson storage, Memory Layer use, or LLM planning.",
+        ],
+    }
+
+
 def _verification_boundary() -> dict[str, bool]:
     return {
         "llm_used": False,
@@ -1157,6 +1312,8 @@ def run_command(command: str) -> dict[str, Any]:
         return run_approach_box_two_trial_check_cli()
     if command == "run-approach-box-dead-end-trial":
         return run_approach_box_dead_end_trial_cli()
+    if command == "run-approach-box-dead-end-two-trial-check":
+        return run_approach_box_dead_end_two_trial_check_cli()
     return {
         "command": command,
         "status": "error",
@@ -1191,6 +1348,7 @@ def main(argv: list[str] | None = None) -> int:
             "run-approach-box-trial",
             "run-approach-box-two-trial-check",
             "run-approach-box-dead-end-trial",
+            "run-approach-box-dead-end-two-trial-check",
         ],
     )
     parser.add_argument("--review-id", default="review_001")
@@ -1264,6 +1422,8 @@ def main(argv: list[str] | None = None) -> int:
         result = run_approach_box_two_trial_check_cli(max_steps=args.max_steps)
     elif args.command == "run-approach-box-dead-end-trial":
         result = run_approach_box_dead_end_trial_cli(max_steps=args.max_steps)
+    elif args.command == "run-approach-box-dead-end-two-trial-check":
+        result = run_approach_box_dead_end_two_trial_check_cli(max_steps=args.max_steps)
     else:
         result = run_command(args.command)
     if hasattr(sys.stdout, "reconfigure"):

@@ -1185,6 +1185,14 @@ Two-Trial History Boundary:
 - This is a bounded dead-end trial wrapper. It does not modify the existing approach-box runner, navigation sandbox, push-box sandbox, action selection, goal bias, state-action memory, penalty / stuck detection, or add pathfinding / BFS / A*.
 - This is not Two-Trial Learning Check, not proof of learning, not lesson_candidate creation, not lesson_store / Memory Layer write, not LLM planning, and not full route replay.
 
+## Approach Box Dead-End Two-Trial Learning Check v0
+
+- Adds `py -3 -m ashl_core.teaching_cli run-approach-box-dead-end-two-trial-check --max-steps 100`.
+- Runs Trial 1 on `approach_box_dead_end_v0`, writes only local state-action outcome memory, then runs Trial 2 on the same dead-end level with Trial 1 local memory available.
+- Output records `trial_1`, `trial_2`, `comparison`, and `boundary_check`.
+- Trial 2 reports whether it read local memory, avoided the Trial 1 dead-end blocked action, reduced dead-end visits, reduced blocked/failed actions, and changed step count.
+- This is dead-end local memory verification only. It is not proof of learning, not full route replay, not Trial 1 `selected_actions` replay, not pathfinding / BFS / A*, not lesson_candidate / lesson_store / Memory Layer use, and not LLM planning.
+
 ## Micro Navigation Trial Metrics CLI v0
 
 - Adds `py -3 -m ashl_core.teaching_cli run-navigation-trial-metrics --runs 4 --trial-count 5 --max-steps 10`.

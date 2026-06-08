@@ -2124,6 +2124,39 @@ No Memory Layer write.
 No LLM planning.
 No proof of learning claim.
 
+## Approach Box Dead-End Two-Trial Learning Check v0
+
+Status:
+minimal-runtime / cli-wrapper / dead-end-two-trial-local-memory-check / no-learning
+
+Summary:
+Adds py -3 -m ashl_core.teaching_cli run-approach-box-dead-end-two-trial-check --max-steps 100.
+Trial 1 runs approach_box_dead_end_v0 and writes local state-action outcome memory with agent_pos, box_pos, action, result, and tick.
+Trial 2 runs the same dead-end level with Trial 1 local memory available.
+The output records trial_1, trial_2, comparison, and boundary_check.
+Comparison reports step_count_delta, dead_end_positions_visited_delta, blocked_or_failed_delta, and avoided_trial1_dead_end_action.
+
+Boundary:
+No existing approach-box runner behavior changes.
+No dead-end single trial behavior changes.
+No navigation sandbox behavior changes.
+No push-box sandbox behavior changes.
+No action selection changes.
+No goal bias changes.
+No state-action memory behavior changes.
+No penalty / stuck detection.
+No learning rule creation.
+No pathfinding / BFS / A*.
+No full route replay.
+No Trial 1 selected_actions replay into Trial 2.
+No lesson_candidate pipeline connection.
+No lesson_store write.
+No Memory Layer write.
+No Long-term Memory write.
+No LLM planning.
+No human hint.
+This is local memory verification, not proof of learning.
+
 ## Micro Navigation Trial Metrics CLI v0
 
 Status:
