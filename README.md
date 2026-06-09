@@ -2320,3 +2320,9 @@ Two-Trial History Boundary:
 - Adds `py -3 -m ashl_core.teaching_cli run-lesson-candidate-review-evidence-summary-check`.
 - Builds reviewer-facing evidence summaries for pending_review `lesson_candidate` records.
 - Remains review-support-only and does not approve, reject, preview, apply, persist, write memory, change action selection, or mutate predictors.
+
+## History Runtime Persistence Gap Review v0
+
+- Adds `docs/history_runtime_persistence_gap_review_v0.md`.
+- Clarifies that current generalized memory exact-key aggregation uses cross-session demo records and does not yet prove a persisted history runtime.
+- Records the missing persistence / retention layer without adding storage, memory write, persistent learning, predictor mutation, or action selection influence.

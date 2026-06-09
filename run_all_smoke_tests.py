@@ -2705,6 +2705,46 @@ def smoke_generalized_memory_exact_key_bucket() -> dict:
     )
 
 
+def smoke_history_runtime_persistence_gap_review() -> dict:
+    doc_path = Path("docs/history_runtime_persistence_gap_review_v0.md")
+    doc = doc_path.read_text(encoding="utf-8") if doc_path.exists() else ""
+    readme = Path("README.md").read_text(encoding="utf-8")
+    research_plan = Path("docs/research_plan.md").read_text(encoding="utf-8")
+    required_phrases = [
+        "History Runtime Persistence Gap Review v0",
+        "Generalized Memory Exact-Key Bucket",
+        "cross-session demo experience records",
+        "not a true persisted history runtime",
+        "repetition_key = not_evaluated",
+        "Session Working Memory",
+        "persistent history store",
+        "A bucket can aggregate records if records are already present.",
+        "it cannot itself retain session A records into session B",
+        "session experience record",
+        "retention / commit policy",
+        "exact-key lookup by repetition_key / similar_context_key",
+        "Do not add storage in this package.",
+        "Do not write memory in this package.",
+        "Do not enable persistent learning.",
+        "Do not mutate predictor behavior.",
+        "Session Experience Record Schema Design v0",
+    ]
+    missing = [phrase for phrase in required_phrases if phrase not in doc]
+    passed = (
+        doc_path.exists()
+        and not missing
+        and "History Runtime Persistence Gap Review v0" in readme
+        and "does not yet prove a persisted history runtime" in readme
+        and "History Runtime Persistence Gap Review v0" in research_plan
+        and "recommends Session Experience Record Schema Design v0" in research_plan
+    )
+    return _result(
+        "history_runtime_persistence_gap_review",
+        passed,
+        {"doc": str(doc_path), "missing": missing},
+    )
+
+
 def smoke_generalized_prediction_confidence_check() -> dict:
     result = run_generalized_prediction_confidence_check()
     suggestions = result.get("confidence_suggestions", [])
@@ -10235,6 +10275,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_integrated_trace_chain_break_audit(),
         smoke_persistent_eligibility_checker(),
         smoke_generalized_memory_exact_key_bucket(),
+        smoke_history_runtime_persistence_gap_review(),
         smoke_generalized_prediction_confidence_check(),
         smoke_generalized_candidate_from_pattern(),
         smoke_generalized_candidate_review_preview(),

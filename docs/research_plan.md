@@ -5185,3 +5185,20 @@ Scope:
 
 Non-goals:
 - does not add human review decision schema, approval, rejection, needs_revision, stale decision, behavior correction preview, lesson application, action selection influence, persistent learning, memory write, predictor mutation, endocrine runtime, autonomy, or semantic vision / consciousness / subjective claims
+
+## History Runtime Persistence Gap Review v0
+
+Status: completed / design-only / review-only / no-runtime-change.
+
+Goal:
+Clarify whether current generalized memory exact-key aggregation proves a real persisted history runtime.
+
+Scope:
+- adds `docs/history_runtime_persistence_gap_review_v0.md`
+- distinguishes Session Working Memory, Generalized Memory Exact-Key Bucket, cross-session demo experience records, history runtime, persistent history store, Long-term Memory, Memory Layer, and persistent learning
+- records that current generalized memory exact-key aggregation uses cross-session demo records and does not yet prove a persisted history runtime
+- identifies the missing session experience record / retention / persisted history store / exact-key lookup layer
+- recommends Session Experience Record Schema Design v0 as the immediate next safe package
+
+Non-goals:
+- does not add storage, memory write, persistent learning, persistent rule write, runtime history lookup, repetition_key runtime evaluation, predictor mutation, action selection influence, lesson approval, lesson rejection, behavior preview, lesson application, autonomy, semantic vision, consciousness, or subjective claims
