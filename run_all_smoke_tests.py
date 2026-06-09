@@ -44,6 +44,7 @@ from ashl_core.instinct_random_walk_runner import run_instinct_random_walk
 from ashl_core.integrated_experience_session_trace import run_integrated_experience_session_trace
 from ashl_core.integrated_trace_chain_break_audit import run_integrated_trace_chain_break_audit
 from ashl_core.item_reward_event import run_item_reward_event_check
+from ashl_core.persistent_eligibility_checker import run_persistent_eligibility_checker_check
 from ashl_core.integrated_loop import run_turn
 from ashl_core.lesson_candidate_drafts import build_lesson_candidate_draft_trace, validate_lesson_candidate_draft_trace
 from ashl_core.lesson_runner import (
@@ -2184,6 +2185,72 @@ def smoke_integrated_trace_chain_break_audit() -> dict:
             "summary": summary,
             "boundary": boundary,
             "breaks": breaks,
+        },
+    )
+
+
+def smoke_persistent_eligibility_checker() -> dict:
+    result = run_persistent_eligibility_checker_check()
+    cases = {item.get("case_name"): item for item in result.get("case_results", [])}
+    summary = result.get("summary", {})
+    boundary = result.get("boundary_check", {})
+    eligible = cases.get("eligible_candidate", {})
+    blocked_cases = [
+        "not_approved_candidate",
+        "self_approved_candidate_blocked",
+        "temporary_apply_not_verified",
+        "insufficient_similar_context_validation",
+        "challenge_failed",
+        "recent_failure_blocked",
+        "active_conflict_blocked",
+        "trace_missing_blocked",
+        "rollback_missing_blocked",
+    ]
+    passed = (
+        result.get("command") == "run-persistent-eligibility-checker-check"
+        and result.get("flow") == "persistent_eligibility_checker_v0"
+        and result.get("status") == "ok"
+        and eligible.get("eligible_for_persistent_candidate_review") is True
+        and eligible.get("eligible_for_persistent_rule") is False
+        and eligible.get("persistent_rule_write_allowed") is False
+        and eligible.get("recommended_next_status") == "persistent_candidate"
+        and all(cases.get(case_name, {}).get("eligible_for_persistent_candidate_review") is False for case_name in blocked_cases)
+        and all(cases.get(case_name, {}).get("block_reasons") for case_name in blocked_cases)
+        and cases.get("self_approved_candidate_blocked", {}).get("eligibility_status") == "blocked_self_approval"
+        and summary.get("case_count") == 10
+        and summary.get("eligible_for_persistent_candidate_review_count") == 1
+        and summary.get("eligible_for_persistent_rule_count") == 0
+        and summary.get("blocked_count") == 9
+        and summary.get("persistent_rule_write_allowed_count") == 0
+        and summary.get("all_persistent_eligibility_checker_checks_passed") is True
+        and boundary.get("persistent_eligibility_checker_enabled") is True
+        and boundary.get("checker_only") is True
+        and boundary.get("persistent_candidate_review_eligibility_only") is True
+        and boundary.get("persistent_rule_write_enabled") is False
+        and boundary.get("persistent_rule_storage_added") is False
+        and boundary.get("persistent_rule_table_added") is False
+        and boundary.get("persistent_rule_active_enabled") is False
+        and boundary.get("candidate_auto_persistent_enabled") is False
+        and boundary.get("qingyin_self_approval_allowed") is False
+        and boundary.get("global_predictor_modified") is False
+        and boundary.get("action_selection_modified") is False
+        and boundary.get("lesson_store_write") is False
+        and boundary.get("memory_layer_write") is False
+        and boundary.get("long_term_memory_write") is False
+        and boundary.get("lesson_internalization_enabled") is False
+        and boundary.get("instinct_like_behavior_enabled") is False
+        and boundary.get("pathfinding_used") is False
+        and boundary.get("llm_reasoning_used") is False
+        and boundary.get("general_learning_claimed") is False
+        and boundary.get("autonomous_learning_claimed") is False
+    )
+    return _result(
+        "persistent_eligibility_checker",
+        passed,
+        {
+            "cases": cases,
+            "summary": summary,
+            "boundary": boundary,
         },
     )
 
@@ -8126,6 +8193,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_reviewed_candidate_apply_verification(),
         smoke_integrated_experience_session_trace(),
         smoke_integrated_trace_chain_break_audit(),
+        smoke_persistent_eligibility_checker(),
         smoke_micro_navigation_goal_reach(),
         smoke_micro_navigation_trial_metrics_cli(),
         smoke_micro_navigation_multi_goal_level(),

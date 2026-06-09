@@ -19,6 +19,7 @@ from .instinct_random_walk_runner import run_instinct_random_walk
 from .integrated_experience_session_trace import run_integrated_experience_session_trace
 from .integrated_trace_chain_break_audit import run_integrated_trace_chain_break_audit
 from .item_reward_event import run_item_reward_event_check
+from .persistent_eligibility_checker import run_persistent_eligibility_checker_check
 from .prediction_accuracy_check import run_prediction_accuracy_check
 from .reward_biased_action_tendency import run_reward_biased_action_tendency_check
 from .reward_biased_random_walk_check import run_reward_biased_random_walk_check
@@ -3414,6 +3415,8 @@ def run_command(command: str) -> dict[str, Any] | str:
         return run_integrated_experience_session_trace()
     if command == "run-integrated-trace-chain-break-audit":
         return run_integrated_trace_chain_break_audit()
+    if command == "run-persistent-eligibility-checker-check":
+        return run_persistent_eligibility_checker_check()
     return {
         "command": command,
         "status": "error",
@@ -3484,6 +3487,7 @@ def main(argv: list[str] | None = None) -> int:
             "run-reviewed-candidate-apply-verification-check",
             "run-integrated-experience-session-trace",
             "run-integrated-trace-chain-break-audit",
+            "run-persistent-eligibility-checker-check",
         ],
     )
     parser.add_argument("--review-id", default="review_001")
@@ -3680,6 +3684,8 @@ def main(argv: list[str] | None = None) -> int:
         result = run_integrated_experience_session_trace(scenario=args.scenario or "mixed", max_steps=max_steps)
     elif args.command == "run-integrated-trace-chain-break-audit":
         result = run_integrated_trace_chain_break_audit()
+    elif args.command == "run-persistent-eligibility-checker-check":
+        result = run_persistent_eligibility_checker_check()
     else:
         result = run_command(args.command)
     if hasattr(sys.stdout, "reconfigure"):

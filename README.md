@@ -2022,3 +2022,10 @@ Two-Trial History Boundary:
 - Defines the safety gate between approved candidate and persistent rule.
 - Requires temporary verification, repeated validation, challenge survival, low recent failure, low active conflict, preserved trace, rollback path, and separate human persistent approval.
 - Design-only: does not implement persistent rule storage, write persistent rules, modify global predictor, modify action selection, or add long-term memory.
+
+## Persistent Eligibility Checker v0
+
+- Adds `py -3 -m ashl_core.teaching_cli run-persistent-eligibility-checker-check`.
+- Evaluates whether an approved candidate has enough evidence to enter persistent-candidate review.
+- Checks temporary apply verification, repeated similar-context validation, challenge survival, low recent failure, low active conflict, preserved trace, and rollback path.
+- Checker-only: does not write persistent rules, add persistent storage, modify global predictors, or modify action selection.

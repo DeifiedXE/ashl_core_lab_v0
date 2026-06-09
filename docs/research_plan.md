@@ -4417,3 +4417,20 @@ Scope:
 
 Non-goals:
 - no runtime behavior, new CLI, runtime tests, persistent rule storage, persistent rule table, persistent rule write, global predictor modification, action selection modification, prediction-driven suppression/preference, candidate auto-approval, Qingyin self-approval, candidate application, lesson_store write, Memory Layer write, long-term memory, lesson_candidate pipeline connection, lesson internalization, instinct-like behavior layer, pathfinding, route planner, item seeking, item collection, reward change, random walk change, UI change, autonomous exploration, decision loop, LLM reasoning, LLM planning, LLM vision, Boundary Index modification, general learning claim, autonomous learning claim, visual understanding claim, solved symbol grounding claim, consciousness claim, or subjective experience claim
+
+## Persistent Eligibility Checker v0
+
+Status: completed / deterministic-eligibility-checker / no-persistent-write.
+
+Goal:
+Evaluate whether an approved candidate has enough evidence to enter persistent-candidate review.
+
+Scope:
+- adds `ashl_core.persistent_eligibility_checker`
+- adds `py -3 -m ashl_core.teaching_cli run-persistent-eligibility-checker-check`
+- evaluates approved human candidate, temporary apply verification, repeated similar-context validation, challenge survival, low recent failure, low active conflict, trace preservation, and rollback path gates
+- exposes `eligible_for_persistent_candidate_review` while keeping `eligible_for_persistent_rule=false`
+- records human persistent approval as observed-only and keeps persistent rule write disabled
+
+Non-goals:
+- no persistent rule storage, persistent rule table, persistent rule write, persistent rule activation, global predictor modification, action selection modification, prediction-driven suppression/preference, candidate auto-approval, Qingyin self-approval, auto-promotion to persistent rule, persistent candidate application, lesson_store write, Memory Layer write, long-term memory, lesson_candidate pipeline connection, lesson internalization, instinct-like behavior layer, pathfinding, route planner, item seeking, item collection, reward change, random walk change, UI change, autonomous exploration, decision loop, LLM reasoning, LLM planning, LLM vision, Boundary Index modification, general learning claim, autonomous learning claim, visual understanding claim, solved symbol grounding claim, consciousness claim, or subjective experience claim
