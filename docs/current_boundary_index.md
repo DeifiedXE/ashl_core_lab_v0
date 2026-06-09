@@ -1,7 +1,7 @@
-Boundary Index Version: 2026-06-08-b33
-Last update log: Dead-End AB Milestone Sync
-Previous Boundary Index Version: 2026-06-08-b32
-Previous Last update log: Batch 32
+Boundary Index Version: 2026-06-09-b34
+Last update log: Simulated Vision Grounding Boundary Index Sync
+Previous Boundary Index Version: 2026-06-08-b33
+Previous Last update log: Dead-End AB Milestone Sync
 Clean count at last update log reset: 0/5
 Current clean count: 0/5
 
@@ -92,40 +92,32 @@ Current clean count: 0/5
 - The test-object stage is the prerequisite for growth, not growth itself.
 - Qingyin's importance is not in birth, but in growth.
 
-## Current Dead-End Memory Milestones
+## Current Dead-End Memory Milestones (compressed)
 - Legacy anchors: Boundary Index Version: 2026-06-06-b30; Last update log: Batch 30.
 - Prior completed items: Approach Box Trial CLI / Approach Box Two-Trial Learning Check / Trial Metrics Baseline Snapshot.
-- Approach Box Dead-End Level v0 CLI: py -3 -m ashl_core.teaching_cli run-approach-box-dead-end-trial --max-steps 100.
-- Dead-end level_id: approach_box_dead_end_v0.
-- Dead-end approach_positions: [[3, 4]].
-- Dead-end Trial 1 result: entered_dead_end_area=true, dead_end_positions_visited=[[4, 1], [4, 2]], blocked at [4, 3], step_count=11, llm_used=false.
-- Approach Box Dead-End Two-Trial Learning Check v0 CLI: py -3 -m ashl_core.teaching_cli run-approach-box-dead-end-two-trial-check --max-steps 100.
-- Dead-end two-trial result: trial1_step_count=11, trial2_step_count=5, step_count_delta=-6.
-- Dead-end two-trial result: trial1_entered_dead_end_area=true, trial2_entered_dead_end_area=false.
-- Dead-end two-trial result: dead_end_positions_visited_delta=-2, blocked_or_failed_delta=-1, avoided_trial1_dead_end_action=true.
-- Dead-End Memory Control Check v0 CLI: py -3 -m ashl_core.teaching_cli run-approach-box-dead-end-memory-control-check --max-steps 100 --runs 20.
-- Single-map A/B result: with_memory Trial 2 entered_dead_end_count=0, blocked_or_failed_total=0, average_step_count=5.0, completed_count=20.
-- Single-map A/B result: without_memory Trial 2 entered_dead_end_count=20, blocked_or_failed_total=20, average_step_count=11.0, completed_count=20.
-- Single-map A/B comparison: entered_dead_end_count_delta=-20, blocked_or_failed_total_delta=-20, average_step_count_delta=-6.0, memory_effect_observed=true.
+- Approach Box Dead-End Level v0: approach_box_dead_end_v0; approach_positions [[3, 4]]; Trial 1 entered dead end, visited [[4, 1], [4, 2]], blocked at [4, 3], step_count=11, llm_used=false.
+- Dead-end two-trial check: Trial 1 step_count=11 and entered dead end; Trial 2 step_count=5 and avoided Trial 1 dead-end action; delta=-6 steps, dead_end_positions_visited_delta=-2, blocked_or_failed_delta=-1.
+- Dead-End Memory Control Check v0: single-map with_memory Trial 2 avoid_rate=1.0, entered_dead_end_count=0, average_step_count=5.0; without_memory avoid_rate=0.0, entered_dead_end_count=20, average_step_count=11.0; memory_effect_observed=true.
 - Trial1 source audit confirms all with_memory and without_memory Trial 1 runs generated local dead-end memory source; only with_memory Trial 2 read it.
-- Conditioned single-map result: with_memory_avoid_rate=1.0, without_memory_avoid_rate=0.0, conditioned_memory_effect_observed=true.
-- Dead-End Map Trial1 Validation v0 classified valid maps and shortcut maps before multi-map A/B.
-- Candidate Map Trial1 ASCII Replay v0 provides observer-only map replay and does not run A/B memory control.
+- Dead-End Map Trial1 Validation v0 classified valid maps and shortcut maps; Candidate Map Trial1 ASCII Replay v0 is observer-only and does not run A/B memory control.
 
 ## Valid Dead-End Maps A/B Control v0
 - CLI: py -3 -m ashl_core.teaching_cli run-valid-dead-end-maps-ab-control --runs-per-map 3 --max-steps 100.
 - Included valid maps: approach_box_dead_end_v0 / mid_branch_dead_end_candidate_v0 / lower_branch_dead_end_candidate_v0.
 - Excluded map: user_maze_dead_end_candidate_v0.
 - Exclusion reason: has_shortcut_no_dead_end_event.
-- maps_with_memory_effect_observed: 3.
-- maps_without_memory_effect_observed: 0.
-- maps_with_mixed_result: 0.
-- overall_interpretation: Bounded local memory effect observed across all 3 valid maps.
-- approach_box_dead_end_v0: memory_effect_observed=true, average_step_count_delta=-6.0, entered_dead_end_count_delta=-3.
-- mid_branch_dead_end_candidate_v0: memory_effect_observed=true, average_step_count_delta=-3.0, entered_dead_end_count_delta=-3.
-- lower_branch_dead_end_candidate_v0: memory_effect_observed=true, average_step_count_delta=-3.0, entered_dead_end_count_delta=-3.
+- A/B result: maps_with_memory_effect_observed=3; maps_without_memory_effect_observed=0; maps_with_mixed_result=0; overall_interpretation=Bounded local memory effect observed across all 3 valid maps.
+- Per-map deltas: approach_box_dead_end_v0 average_step_count_delta=-6.0 entered_dead_end_count_delta=-3; mid_branch and lower_branch average_step_count_delta=-3.0 entered_dead_end_count_delta=-3.
 - Latest commit: a2713a8 Add valid dead-end maps AB control.
 - Latest tests: py -3 run_all_smoke_tests.py all passed; py -3 -m unittest discover Ran 939 tests OK; git status --short clean.
+
+## Simulated Vision Grounding Milestone
+- Completed symbolic first-person vision loop: first-person see -> interact -> outcome -> experience -> see exact same front_symbol again -> consult experience -> influence immediate action.
+- Viewport convention: a=viewport[2][1], immediate front=viewport[1][1], far front=viewport[0][1]; simulated vision sandbox remains a test room, not a home sandbox.
+- v0 similar symbol rule: exact same front_symbol only (w->w, e->e, i->i), not fuzzy similarity, wall-like objects, semantic categories, or learned visual similarity.
+- Verified: symbol grounding 3/3, experience influence 3/3 plus no-experience wall control, py -3 -m unittest discover Ran 1047 tests OK.
+- Non-claims: no real image vision, no LLM vision/planning, no full-map vision, no pathfinding/route planning, no long-term memory, no visual understanding claim, no solved symbol grounding claim, no general learning proof, no consciousness or subjective understanding claim.
+- Log: docs/milestone_logs/simulated_vision_grounding_milestone_2026-06-09.md.
 
 ## Current Claim Boundary
 - Can claim: Bounded local memory effect observed across 3 validated dead-end maps.
