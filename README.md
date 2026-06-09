@@ -2177,3 +2177,9 @@ Two-Trial History Boundary:
 - Assembles validated retina feature records into a `visual_frame` and validates it with the visual frame schema.
 - Reuses symbolic / hybrid retina feature decode, retina feature schema validation, and visual frame buffer schema validation.
 - Check-only: no runtime frame buffering, current/previous frame storage, frame comparison, focus selection, action selection influence, memory write, object recognition, or semantic vision is added.
+
+## Visual Frame Change Design v0
+
+- Adds `docs/visual_frame_change_design_v0.md`.
+- Defines design-only `change_record` structures for comparing `previous_frame` and `current_frame`.
+- It does not add runtime change detection, frame storage, focus selection, action selection influence, or memory write.

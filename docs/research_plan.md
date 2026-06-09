@@ -4806,3 +4806,19 @@ Scope:
 
 Non-goals:
 - no runtime visual frame buffer, current_frame / previous_frame runtime storage, automatic frame replacement, frame comparison, frame change detection, visual change records, focus selector, focus candidates, attention mechanism, endocrine connection, vision-driven action selection, visual memory write, long-term memory write, lesson_store write, Memory Layer write, predictor mutation, LLM vision, CNN, YOLO, UNet, image processing runtime, RGB quantization runtime, object recognition, semantic labels, scene understanding, symbol grounding claim, consciousness claim, or subjective visual experience claim
+
+## Visual Frame Change Design v0
+
+Status: completed / design-only / no-runtime-change.
+
+Goal:
+Define design-only `change_record` structures for comparing future `previous_frame` and `current_frame` records.
+
+Scope:
+- adds `docs/visual_frame_change_design_v0.md`
+- defines low-level change types: `feature_appeared`, `feature_disappeared`, `feature_modified`, `position_changed`, and `no_change`
+- defines deterministic matching assumptions without object tracking or semantic matching
+- requires valid visual frames and validated retina feature records before any valid comparison concept
+
+Non-goals:
+- no runtime change detection, frame storage, runtime current_frame / previous_frame storage, frame comparison runner, focus selector, focus candidates, attention mechanism, action selection influence, memory write, predictor mutation, object recognition, object tracking, semantic vision, LLM vision, CNN, YOLO, UNet, symbol grounding claim, consciousness claim, or subjective visual experience claim
