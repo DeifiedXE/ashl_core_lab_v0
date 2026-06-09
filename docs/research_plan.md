@@ -4580,3 +4580,21 @@ Scope:
 
 Non-goals:
 - no runtime behavior, new CLI, endocrine signal runtime, numerical formula implementation, action selection modification, endocrine suppression/preference of actions, autonomous attention control, blind trust, human review override, candidate auto-approval, candidate application, predictor behavior modification, global predictor modification, persistent rule write, long-term memory write, lesson_store write, Memory Layer write, personality weight modification, personality drift, autonomous drive system, persistent preview/dry-run, pathfinding, BFS, A*, route planner, UI change, LLM reasoning, LLM planning, LLM vision, biological hormone simulation claim, proof of happiness/trust/anxiety/stress, consciousness claim, subjective experience claim, or denial of future subjective possibility
+
+## Mimetic Endocrine Signal Schema v0
+
+Status: completed / schema-check-only / no-runtime-change.
+
+Goal:
+Add a deterministic schema and checker for v0 mimetic endocrine signal records.
+
+Scope:
+- adds `ashl_core.mimetic_endocrine_signal_schema`
+- adds `py -3 -m ashl_core.teaching_cli run-mimetic-endocrine-signal-schema-check`
+- defines canonical records for `dopamine_like`, `norepinephrine_like`, `oxytocin_like`, and `cortisol_like`
+- validates bounded `value`, `baseline`, `decay_rate`, and `confidence`
+- validates source event IDs, source traces, decay metadata, and blocks from action selection, memory write, and candidate approval
+- includes deterministic invalid cases for out-of-range values, subjective claims, unblocked action selection, missing source trace, and unknown signal names
+
+Non-goals:
+- no endocrine signal runtime behavior, formulas that update values from real events, signal interactions, runtime endocrine state, action selection modification, endocrine suppression/preference of actions, predictor behavior modification, global predictor modification, candidate auto-approval, candidate application, human review override, long-term memory write, lesson_store write, Memory Layer write, personality weight modification, personality drift, autonomous drive system, persistent rule write, persistent preview/dry-run, pathfinding, BFS, A*, route planner, UI change, LLM reasoning, LLM planning, LLM vision, biological hormone simulation claim, proof of happiness/trust/anxiety/stress, consciousness claim, subjective experience claim, or denial of future subjective possibility

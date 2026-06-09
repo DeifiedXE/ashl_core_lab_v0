@@ -48,6 +48,7 @@ from ashl_core.instinct_random_walk_runner import run_instinct_random_walk
 from ashl_core.integrated_experience_session_trace import run_integrated_experience_session_trace
 from ashl_core.integrated_trace_chain_break_audit import run_integrated_trace_chain_break_audit
 from ashl_core.item_reward_event import run_item_reward_event_check
+from ashl_core.mimetic_endocrine_signal_schema import run_mimetic_endocrine_signal_schema_check
 from ashl_core.persistent_eligibility_checker import run_persistent_eligibility_checker_check
 from ashl_core.integrated_loop import run_turn
 from ashl_core.lesson_candidate_drafts import build_lesson_candidate_draft_trace, validate_lesson_candidate_draft_trace
@@ -2527,6 +2528,64 @@ def smoke_generalized_candidate_review_preview() -> dict:
         {
             "summary": summary,
             "cases": cases,
+            "boundary": boundary,
+        },
+    )
+
+
+def smoke_mimetic_endocrine_signal_schema() -> dict:
+    result = run_mimetic_endocrine_signal_schema_check()
+    records = {record.get("signal_name"): record for record in result.get("signal_records", [])}
+    summary = result.get("summary", {})
+    boundary = result.get("boundary_check", {})
+    invalid_cases = {
+        item.get("case_name"): item.get("validation_result", {})
+        for item in result.get("invalid_case_results", [])
+    }
+    passed = (
+        result.get("command") == "run-mimetic-endocrine-signal-schema-check"
+        and result.get("flow") == "mimetic_endocrine_signal_schema_v0"
+        and result.get("status") == "ok"
+        and summary.get("signal_count") == 4
+        and summary.get("valid_signal_count") == 4
+        and summary.get("invalid_signal_count") == 0
+        and summary.get("blocked_from_action_selection_count") == 4
+        and summary.get("blocked_from_memory_write_count") == 4
+        and summary.get("blocked_from_candidate_approval_count") == 4
+        and summary.get("subjective_claim_count") == 0
+        and summary.get("runtime_formula_count") == 0
+        and summary.get("action_selection_influence_count") == 0
+        and summary.get("memory_write_count") == 0
+        and summary.get("candidate_approval_influence_count") == 0
+        and records.get("dopamine_like", {}).get("axis") == "approach_reward"
+        and records.get("norepinephrine_like", {}).get("axis") == "attention_salience"
+        and records.get("oxytocin_like", {}).get("axis") == "source_trust"
+        and records.get("cortisol_like", {}).get("axis") == "pressure_load"
+        and all(record.get("blocked_from_action_selection") is True for record in records.values())
+        and all(record.get("blocked_from_memory_write") is True for record in records.values())
+        and all(record.get("blocked_from_candidate_approval") is True for record in records.values())
+        and all(record.get("subjective_claim") is False for record in records.values())
+        and invalid_cases.get("invalid_value_out_of_range", {}).get("valid") is False
+        and invalid_cases.get("invalid_subjective_claim_true", {}).get("valid") is False
+        and invalid_cases.get("invalid_action_selection_unblocked", {}).get("valid") is False
+        and boundary.get("schema_check_only") is True
+        and boundary.get("runtime_formula_added") is False
+        and boundary.get("signal_interaction_runtime_added") is False
+        and boundary.get("endocrine_state_runtime_added") is False
+        and boundary.get("subjective_emotion_claimed") is False
+        and boundary.get("subjective_possibility_denied") is False
+        and boundary.get("action_selection_modified") is False
+        and boundary.get("endocrine_signal_used_for_action_selection") is False
+        and boundary.get("memory_layer_write") is False
+        and boundary.get("personality_drift_enabled") is False
+    )
+    return _result(
+        "mimetic_endocrine_signal_schema",
+        passed,
+        {
+            "summary": summary,
+            "records": records,
+            "invalid_cases": invalid_cases,
             "boundary": boundary,
         },
     )
@@ -8475,6 +8534,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_generalized_prediction_confidence_check(),
         smoke_generalized_candidate_from_pattern(),
         smoke_generalized_candidate_review_preview(),
+        smoke_mimetic_endocrine_signal_schema(),
         smoke_micro_navigation_goal_reach(),
         smoke_micro_navigation_trial_metrics_cli(),
         smoke_micro_navigation_multi_goal_level(),

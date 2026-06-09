@@ -2086,3 +2086,10 @@ Two-Trial History Boundary:
 - Defines four traceable, non-biological regulatory axes: `dopamine_like`, `norepinephrine_like`, `oxytocin_like`, and `cortisol_like`.
 - States the v0 stance as not denied, not claimed: future functionally comparable emotion-like dynamics are not denied, but v0 makes no subjective-state claim.
 - Design-only: no runtime endocrine system, new CLI, formulas, action selection modulation, candidate approval/application, predictor mutation, memory write, personality drift, LLM reasoning/planning/vision, or consciousness claim is added.
+
+## Mimetic Endocrine Signal Schema v0
+
+- Adds `py -3 -m ashl_core.teaching_cli run-mimetic-endocrine-signal-schema-check`.
+- Defines a shared validation schema for `dopamine_like`, `norepinephrine_like`, `oxytocin_like`, and `cortisol_like` signal records.
+- Validates bounded values, source event links, source traces, decay metadata, and safety blocks for action selection, memory writes, and candidate approval.
+- Schema-check only: no runtime formulas, signal interaction runtime, endocrine state runtime, action selection modulation, memory writes, candidate approval, or subjective emotion claims are added.
