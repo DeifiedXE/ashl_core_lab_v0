@@ -4822,3 +4822,19 @@ Scope:
 
 Non-goals:
 - no runtime change detection, frame storage, runtime current_frame / previous_frame storage, frame comparison runner, focus selector, focus candidates, attention mechanism, action selection influence, memory write, predictor mutation, object recognition, object tracking, semantic vision, LLM vision, CNN, YOLO, UNet, symbol grounding claim, consciousness claim, or subjective visual experience claim
+
+## Visual Frame Change Schema Check v0
+
+Status: completed / schema-check-only / no-runtime-change.
+
+Goal:
+Validate low-level `change_record` structures from Visual Frame Change Design v0.
+
+Scope:
+- adds `ashl_core.visual_frame_change_schema`
+- adds `py -3 -m ashl_core.teaching_cli run-visual-frame-change-schema-check`
+- enforces allowed low-level change types, null `semantic_label`, source trace provenance, changed field consistency, and downstream safety flags
+- includes deterministic valid and invalid controls for semantic labels, unknown change types, downstream unblocked flags, and object tracking
+
+Non-goals:
+- no frame comparison runtime, change detection runtime, runtime frame storage, runtime current_frame / previous_frame storage, visual change records runtime, focus selector, focus candidates, attention mechanism, action selection influence, memory write, predictor mutation, object tracking, object recognition, semantic vision, LLM vision, CNN, YOLO, UNet, symbol grounding claim, consciousness claim, or subjective visual experience claim

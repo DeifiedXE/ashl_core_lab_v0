@@ -2183,3 +2183,9 @@ Two-Trial History Boundary:
 - Adds `docs/visual_frame_change_design_v0.md`.
 - Defines design-only `change_record` structures for comparing `previous_frame` and `current_frame`.
 - It does not add runtime change detection, frame storage, focus selection, action selection influence, or memory write.
+
+## Visual Frame Change Schema Check v0
+
+- Adds `py -3 -m ashl_core.teaching_cli run-visual-frame-change-schema-check`.
+- Validates low-level `change_record` structures and required downstream safety flags.
+- Checker-only: no frame comparison runtime, change detection runtime, focus selection, action selection influence, or memory write is added.

@@ -46,6 +46,7 @@ from .similar_context_key import run_similar_context_key_check
 from .two_round_instinct_reward_comparison import run_two_round_instinct_reward_comparison
 from .visual_frame_assembly_from_retina_features import run_visual_frame_assembly_from_retina_features_check
 from .visual_frame_buffer_schema import run_visual_frame_buffer_schema_check
+from .visual_frame_change_schema import run_visual_frame_change_schema_check
 from .wall_experience_influence import run_wall_experience_influence_check
 from .lesson_runner import run_lesson_causality_test, run_session_2a_with_lesson
 from .lesson_store import (
@@ -3463,6 +3464,8 @@ def run_command(command: str) -> dict[str, Any] | str:
         return run_visual_frame_buffer_schema_check()
     if command == "run-visual-frame-assembly-from-retina-features-check":
         return run_visual_frame_assembly_from_retina_features_check()
+    if command == "run-visual-frame-change-schema-check":
+        return run_visual_frame_change_schema_check()
     return {
         "command": command,
         "status": "error",
@@ -3548,6 +3551,7 @@ def main(argv: list[str] | None = None) -> int:
             "run-retina-decoder-symbolic-feature-decode-check",
             "run-visual-frame-buffer-schema-check",
             "run-visual-frame-assembly-from-retina-features-check",
+            "run-visual-frame-change-schema-check",
         ],
     )
     parser.add_argument("--review-id", default="review_001")
@@ -3774,6 +3778,8 @@ def main(argv: list[str] | None = None) -> int:
         result = run_visual_frame_buffer_schema_check()
     elif args.command == "run-visual-frame-assembly-from-retina-features-check":
         result = run_visual_frame_assembly_from_retina_features_check()
+    elif args.command == "run-visual-frame-change-schema-check":
+        result = run_visual_frame_change_schema_check()
     else:
         result = run_command(args.command)
     if hasattr(sys.stdout, "reconfigure"):
