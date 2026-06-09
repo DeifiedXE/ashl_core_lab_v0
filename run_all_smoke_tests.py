@@ -3349,6 +3349,45 @@ def smoke_perception_to_action_boundary_review() -> dict:
     )
 
 
+def smoke_focus_perception_boundary_construction_log() -> dict:
+    doc_path = Path("docs/focus_perception_boundary_construction_log_v0.md")
+    doc = doc_path.read_text(encoding="utf-8") if doc_path.exists() else ""
+    readme = Path("README.md").read_text(encoding="utf-8")
+    research_plan = Path("docs/research_plan.md").read_text(encoding="utf-8")
+    required_phrases = [
+        "Focus / Perception Boundary Construction Log v0",
+        "Boundary Index Version: 2026-06-09-b41",
+        "latest completed commit: fd7843b Add perception-to-action boundary review",
+        "ranking_trace is only an ordering record",
+        "rank_position 1 is not selected focus",
+        "highest total_score is not selected focus",
+        "retina feature is not an action reason",
+        "focus_candidate is not an action intent",
+        "No direct mapping from total_score to action.",
+        "trace/checker/review only",
+        "no active_focus",
+        "no perception-to-action bridge",
+        "Do not claim Qingyin sees like a human.",
+        "Do not claim object recognition.",
+        "Do not claim subjective visual experience.",
+        "Option A: Perception-to-Action Gate Schema Check v0",
+        "fd7843b Add perception-to-action boundary review",
+    ]
+    missing = [phrase for phrase in required_phrases if phrase not in doc]
+    passed = (
+        doc_path.exists()
+        and not missing
+        and "Focus / Perception Boundary Construction Log v0" in readme
+        and "Focus / Perception Boundary Construction Log v0" in research_plan
+        and "documentation-only" in research_plan
+    )
+    return _result(
+        "focus_perception_boundary_construction_log",
+        passed,
+        {"doc": str(doc_path), "missing": missing},
+    )
+
+
 def smoke_focus_application_gate_schema() -> dict:
     result = run_focus_application_gate_schema_check()
     summary = result.get("summary", {})
@@ -9778,6 +9817,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_focus_candidate_ranking_trace(),
         smoke_focus_application_boundary_review(),
         smoke_perception_to_action_boundary_review(),
+        smoke_focus_perception_boundary_construction_log(),
         smoke_focus_application_gate_schema(),
         smoke_focus_candidate_from_change_trace(),
         smoke_micro_navigation_goal_reach(),

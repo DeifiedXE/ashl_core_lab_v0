@@ -2266,3 +2266,9 @@ Two-Trial History Boundary:
 - Adds `docs/perception_to_action_boundary_review_v0.md`.
 - Documents the boundary between perception/focus traces and any future action influence.
 - Design-only: does not add active_focus, attention control, perception-to-action bridge, action selection influence, memory write, endocrine runtime, or predictor mutation.
+
+## Focus / Perception Boundary Construction Log v0
+
+- Adds `docs/focus_perception_boundary_construction_log_v0.md`.
+- Summarizes the completed eye-structure, focus trace/checker, focus application boundary, and perception-to-action boundary work for handoff.
+- Documentation-only: no runtime focus, attention, perception-to-action, action selection, memory, predictor, endocrine, object, semantic, or subjective claim behavior is added.

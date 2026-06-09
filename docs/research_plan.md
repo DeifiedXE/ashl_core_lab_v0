@@ -5034,3 +5034,19 @@ Scope:
 
 Non-goals:
 - does not add active_focus, focus_applied, attention control, perception-to-action bridge, focus-to-action bridge, action selection influence, action candidate scoring from vision, memory write, predictor mutation, persistent rule creation, endocrine runtime, object recognition, object tracking, semantic vision, symbol grounding claim, consciousness claim, or subjective visual experience claim
+
+## Focus / Perception Boundary Construction Log v0
+
+Status: completed / documentation-only / no-runtime-change.
+
+Goal:
+Summarize the completed eye-structure, focus trace/checker, focus application boundary, and perception-to-action boundary work for handoff.
+
+Scope:
+- adds `docs/focus_perception_boundary_construction_log_v0.md`
+- records the current Boundary Index / test snapshot
+- summarizes the eye-structure simulation line, focus selector trace/checker line, focus lock-prevention additions, focus application boundary/gate work, and perception-to-action boundary review
+- records current safe claim, forbidden claims, next recommended options, and commit timeline
+
+Non-goals:
+- does not add runtime behavior, schemas, checks, runtime focus selector, runtime ranking, active_focus selection, focus application, attention control, perception-to-action bridge, focus-to-action bridge, vision-driven action selection, action selection influence, memory write, predictor mutation, persistent rule creation, endocrine runtime, object recognition, object tracking, semantic vision, symbol grounding claim, consciousness claim, or subjective visual experience claim
