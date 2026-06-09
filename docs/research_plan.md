@@ -3936,3 +3936,24 @@ Non-goals:
 - no item collection, pickup, inventory, exit activation, win condition, or task completion
 - no curiosity, prediction error, place memory, home sandbox, lesson_store write, Memory Layer write, Long-term Memory write, or lesson_candidate pipeline connection
 - no visual understanding, symbol grounding solved, or proof-of-learning claim
+
+## Larger Sandbox Flask Visual UI Prototype v0
+
+Status: completed / local-visual-inspection-ui / no-runtime-change.
+
+Goal:
+Provide a localhost-only Flask control panel for manually inspecting Qingyin in the larger static simulated vision sandbox.
+
+Scope:
+- adds `ashl_core.larger_sandbox_flask_ui`
+- adds `py -3 -m ashl_core.teaching_cli run-larger-sandbox-ui`
+- defaults to `http://127.0.0.1:7860`
+- shows current first-person viewport, position, facing, front symbol, action buttons, reset, legend, boundary notes, and human-readable action log
+- uses existing larger sandbox runtime helpers for actions
+
+Non-goals:
+- no auto exploration, pathfinding, BFS, A*, route planner, or item seeking
+- no item collection, pickup, inventory, exit activation, win condition, or task completion
+- no curiosity, prediction error, place memory, home sandbox, real image vision, computer vision, LLM vision, or LLM planning
+- no lesson_store write, Memory Layer write, Long-term Memory write, or lesson_candidate pipeline connection
+- no visual understanding, symbol grounding solved, general learning, or consciousness claim

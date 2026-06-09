@@ -19,6 +19,7 @@ from .lesson_store import (
     select_lesson_for_context,
     select_lesson_for_decision_point,
 )
+from .larger_sandbox_flask_ui import get_launch_config, run_larger_sandbox_ui
 from .manual_review import build_review_trace, create_review_item, get_review_item, mark_review_approved, mark_review_rejected
 from .mentor_feedback_runtime import build_minimal_mentor_feedback_trace
 from .micro_push_box_sandbox import (
@@ -3353,6 +3354,8 @@ def run_command(command: str) -> dict[str, Any] | str:
         return run_larger_sandbox_symbol_contact_smoke()
     if command == "replay-larger-sandbox-human":
         return run_larger_sandbox_human_replay()
+    if command == "run-larger-sandbox-ui":
+        return get_launch_config()
     if command == "run-simulated-vision-memory-bridge-demo":
         return run_simulated_vision_memory_bridge_demo()
     if command == "run-simulated-vision-observed-map-demo":
@@ -3411,6 +3414,7 @@ def main(argv: list[str] | None = None) -> int:
             "run-larger-sandbox-observed-map-smoke",
             "run-larger-sandbox-symbol-contact-smoke",
             "replay-larger-sandbox-human",
+            "run-larger-sandbox-ui",
             "run-simulated-vision-memory-bridge-demo",
             "run-simulated-vision-observed-map-demo",
             "run-simulated-vision-symbol-grounding-check",
@@ -3439,6 +3443,9 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--action-sequence", default=None)
     parser.add_argument("--scenario", choices=["wall", "empty", "item", "doorway", "exit"], default=None)
     parser.add_argument("--mode", choices=["demo", "contact", "observed-map"], default="demo")
+    parser.add_argument("--host", default="127.0.0.1")
+    parser.add_argument("--port", type=int, default=7860)
+    parser.add_argument("--debug", action="store_true")
     args = parser.parse_args(argv)
     if args.command == "run-review-approve":
         result = run_review_approve(review_id=args.review_id, notes=args.notes)
@@ -3547,6 +3554,9 @@ def main(argv: list[str] | None = None) -> int:
         result = run_larger_sandbox_symbol_contact_smoke(scenario=args.scenario)
     elif args.command == "replay-larger-sandbox-human":
         result = run_larger_sandbox_human_replay(mode=args.mode)
+    elif args.command == "run-larger-sandbox-ui":
+        run_larger_sandbox_ui(host=args.host, port=args.port, debug=args.debug)
+        return 0
     elif args.command == "run-simulated-vision-memory-bridge-demo":
         action_sequence = None
         if args.action_sequence:

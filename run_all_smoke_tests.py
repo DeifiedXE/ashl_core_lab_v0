@@ -62,6 +62,10 @@ from ashl_core.lesson_store import (
     select_lesson_for_context,
     unmark_lesson_stale,
 )
+from ashl_core.larger_sandbox_flask_ui import create_app as create_larger_sandbox_ui_app
+from ashl_core.larger_sandbox_flask_ui import get_launch_config as get_larger_sandbox_ui_launch_config
+from ashl_core.larger_sandbox_flask_ui import get_ui_state as get_larger_sandbox_ui_state
+from ashl_core.larger_sandbox_flask_ui import reset_ui_state as reset_larger_sandbox_ui_state
 from ashl_core.memory_layers import (
     append_archive_memory,
     append_long_term_memory,
@@ -654,6 +658,69 @@ def smoke_larger_sandbox_human_replay() -> dict:
         {
             "demo_preview": demo.splitlines()[:16],
             "contact_preview": contact.splitlines()[:20],
+        },
+    )
+
+
+def smoke_larger_sandbox_flask_ui() -> dict:
+    reset_larger_sandbox_ui_state()
+    app = create_larger_sandbox_ui_app()
+    client = app.test_client()
+    index_response = client.get("/")
+    index_html = index_response.get_data(as_text=True)
+    look_response = client.post("/action", data={"action": "look"})
+    turn_response = client.post("/action", data={"action": "turn_right"})
+    move_response = client.post("/action", data={"action": "move_forward"})
+    moved_state = get_larger_sandbox_ui_state()
+    reset_response = client.post("/reset")
+    reset_state = get_larger_sandbox_ui_state()
+    launch_config = get_larger_sandbox_ui_launch_config()
+    boundary = launch_config.get("boundary_check", {})
+    passed = (
+        index_response.status_code == 200
+        and "Larger Sandbox" in index_html
+        and "First-person viewport" in index_html
+        and "Position: [2, 2]" in index_html
+        and "Facing: north" in index_html
+        and "look" in index_html
+        and "turn_left" in index_html
+        and "turn_right" in index_html
+        and "move_forward" in index_html
+        and "reset" in index_html
+        and "No pathfinding." in index_html
+        and look_response.status_code == 302
+        and turn_response.status_code == 302
+        and move_response.status_code == 302
+        and moved_state.get("pos") == [3, 2]
+        and moved_state.get("facing") == "east"
+        and any("Step 3: move_forward" in entry for entry in moved_state.get("action_log", []))
+        and reset_response.status_code == 302
+        and reset_state.get("pos") == [2, 2]
+        and reset_state.get("facing") == "north"
+        and reset_state.get("action_log") == []
+        and launch_config.get("command") == "run-larger-sandbox-ui"
+        and launch_config.get("url") == "http://127.0.0.1:7860"
+        and launch_config.get("local_only") is True
+        and boundary.get("ui_prototype") is True
+        and boundary.get("runtime_behavior_modified") is False
+        and boundary.get("pathfinding_used") is False
+        and boundary.get("route_planner_added") is False
+        and boundary.get("item_collection_enabled") is False
+        and boundary.get("exit_activation_enabled") is False
+        and boundary.get("curiosity_enabled") is False
+        and boundary.get("prediction_error_enabled") is False
+        and boundary.get("place_memory_enabled") is False
+        and boundary.get("home_sandbox_enabled") is False
+        and boundary.get("long_term_memory_write") is False
+    )
+    return _result(
+        "larger_sandbox_flask_ui",
+        passed,
+        {
+            "index_status": index_response.status_code,
+            "moved_state": moved_state,
+            "reset_state": reset_state,
+            "launch_config": launch_config,
         },
     )
 
@@ -6842,6 +6909,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_larger_sandbox_observed_map_smoke(),
         smoke_larger_sandbox_symbol_contact_smoke(),
         smoke_larger_sandbox_human_replay(),
+        smoke_larger_sandbox_flask_ui(),
         smoke_simulated_vision_memory_bridge(),
         smoke_simulated_vision_observed_map(),
         smoke_simulated_vision_symbol_grounding(),

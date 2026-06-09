@@ -1838,3 +1838,10 @@ Two-Trial History Boundary:
 - Prints a plain-text, human-readable replay from existing larger sandbox traces and contact/observed-map smoke outputs.
 - Front symbol display uses the first-person immediate front cell `viewport[1][1]`.
 - Readability replay only: no runtime behavior, action selection, pathfinding, item collection, exit activation, curiosity, prediction error, place memory, home sandbox, or visual understanding claim is added.
+
+## Larger Sandbox Flask Visual UI Prototype v0
+
+- Adds `py -3 -m ashl_core.teaching_cli run-larger-sandbox-ui`.
+- Provides a localhost-only Flask visual control panel for manual inspection of the larger sandbox.
+- Shows current first-person viewport, position/facing/front symbol, action buttons, reset, legend, boundary notes, and a human-readable action log.
+- Does not add pathfinding, route planning, item collection, exit activation, curiosity, prediction error, place memory, home sandbox, or visual understanding claims.
