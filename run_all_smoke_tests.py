@@ -28,6 +28,7 @@ from ashl_core.core_seed import (
 )
 from ashl_core.deliberation import deliberate
 from ashl_core.dopamine_like_reward_trace_check import run_dopamine_like_reward_trace_check
+from ashl_core.expected_actual_outcome_pair_schema import run_expected_actual_outcome_pair_schema_check
 from ashl_core.expression import build_expression_package
 from ashl_core.experience_log import list_experience_events, list_lesson_candidates
 from ashl_core.fake_sandbox import build_initial_sandbox_state, pick_up
@@ -1795,6 +1796,65 @@ def smoke_action_outcome_predictor() -> dict:
         {
             "predictions": predictions,
             "summary": summary,
+            "boundary": boundary,
+        },
+    )
+
+
+def smoke_expected_actual_outcome_pair_schema() -> dict:
+    result = run_expected_actual_outcome_pair_schema_check()
+    summary = result.get("summary", {})
+    boundary = result.get("boundary_check", {})
+    passed = (
+        result.get("command") == "run-expected-actual-outcome-pair-schema-check"
+        and result.get("flow") == "expected_actual_outcome_pair_schema_v0"
+        and result.get("status") == "ok"
+        and summary.get("pair_record_count") == 12
+        and summary.get("valid_pair_count") == 2
+        and summary.get("invalid_pair_count") == 10
+        and summary.get("mismatch_true_count") == 1
+        and summary.get("mismatch_false_count") == 1
+        and summary.get("missing_expected_outcome_blocked_count") >= 1
+        and summary.get("missing_actual_outcome_blocked_count") >= 1
+        and summary.get("non_boolean_mismatch_blocked_count") >= 1
+        and summary.get("unknown_vs_unknown_blocked_count") >= 1
+        and summary.get("missing_failure_reason_blocked_count") >= 1
+        and summary.get("action_selection_unblocked_blocked_count") >= 1
+        and summary.get("lesson_application_unblocked_blocked_count") >= 1
+        and summary.get("memory_write_unblocked_blocked_count") >= 1
+        and summary.get("predictor_mutation_unblocked_blocked_count") >= 1
+        and summary.get("persistent_rule_write_unblocked_blocked_count") >= 1
+        and summary.get("action_selection_influence_count") == 0
+        and summary.get("action_behavior_changed_count") == 0
+        and summary.get("lesson_application_runtime_count") == 0
+        and summary.get("memory_write_count") == 0
+        and summary.get("predictor_modified_count") == 0
+        and summary.get("persistent_rule_write_count") == 0
+        and summary.get("endocrine_control_count") == 0
+        and summary.get("autonomy_enabled_count") == 0
+        and boundary.get("schema_check_only") is True
+        and boundary.get("trace_only_pairs") is True
+        and boundary.get("review_gated_pairs") is True
+        and boundary.get("runtime_action_selection_added") is False
+        and boundary.get("action_selection_modified") is False
+        and boundary.get("new_action_behavior_added") is False
+        and boundary.get("lesson_application_runtime_added") is False
+        and boundary.get("persistent_learning_added") is False
+        and boundary.get("memory_write_added") is False
+        and boundary.get("predictor_mutation_added") is False
+        and boundary.get("perception_to_action_bridge_added") is False
+        and boundary.get("focus_to_action_bridge_added") is False
+        and boundary.get("active_focus_selection_added") is False
+        and boundary.get("attention_control_added") is False
+        and boundary.get("endocrine_runtime_added") is False
+        and boundary.get("autonomy_added") is False
+    )
+    return _result(
+        "expected_actual_outcome_pair_schema",
+        passed,
+        {
+            "summary": summary,
+            "validation_results": result.get("validation_results", []),
             "boundary": boundary,
         },
     )
@@ -9866,6 +9926,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_failure_reason_classifier(),
         smoke_similar_context_key(),
         smoke_action_outcome_predictor(),
+        smoke_expected_actual_outcome_pair_schema(),
         smoke_prediction_accuracy_check(),
         smoke_rule_candidate_from_mismatch(),
         smoke_rule_candidate_review_gate(),

@@ -5082,3 +5082,21 @@ Scope:
 
 Non-goals:
 - does not add runtime action selection, action selection influence, new action behavior, action candidate scoring changes, movement control changes, lesson application runtime, automatic lesson application, persistent learning, persistent rule write, memory write, predictor mutation, perception-to-action bridge, focus-to-action bridge, active_focus, focus_applied, attention control, runtime focus selector, runtime ranking, endocrine runtime, endocrine-controlled action, autonomy, object recognition, semantic vision, consciousness claim, or subjective claim
+
+## Expected vs Actual Outcome Pair Schema Check v0
+
+Status: completed / schema-check-only / no-runtime-change.
+
+Goal:
+Validate the smallest reusable Phase 0 `expected_outcome` / `actual_outcome` / `mismatch` record shape with structured `failure_reason` and trace-only/review-gated boundaries.
+
+Scope:
+- adds `ashl_core.expected_actual_outcome_pair_schema`
+- adds `py -3 -m ashl_core.teaching_cli run-expected-actual-outcome-pair-schema-check`
+- enforces expected_outcome and actual_outcome presence
+- enforces explicit boolean mismatch and blocks unknown-vs-unknown contrast pairs
+- requires structured failure_reason when mismatch is true
+- enforces review boundary and safety flags that block action selection, behavior change, lesson application, memory write, predictor mutation, persistent rule write, endocrine control, and autonomy
+
+Non-goals:
+- does not add runtime action selection, action selection influence, new action behavior, action candidate scoring changes, movement control changes, lesson application runtime, automatic lesson application, persistent learning, persistent rule write, memory write, predictor mutation, perception-to-action bridge, focus-to-action bridge, active_focus, focus_applied, attention control, runtime focus selector, runtime ranking, endocrine runtime, endocrine-controlled action, autonomy, object recognition, semantic vision, consciousness claim, or subjective claim

@@ -2284,3 +2284,9 @@ Two-Trial History Boundary:
 - Adds `docs/action_outcome_contrast_baseline_review_v0.md`.
 - Reviews the current Phase 0 action/outcome/failure_reason/lesson path and identifies the next safe trace/checker package.
 - Review-only: does not change action selection, action behavior, learning, memory, or predictor behavior.
+
+## Expected vs Actual Outcome Pair Schema Check v0
+
+- Adds `py -3 -m ashl_core.teaching_cli run-expected-actual-outcome-pair-schema-check`.
+- Validates the smallest reusable Phase 0 `expected_outcome` / `actual_outcome` / `mismatch` record shape with structured `failure_reason` and trace-only/review-gated boundaries.
+- Schema/checker-only: does not change action selection, action behavior, lesson application, memory, persistence, or predictor behavior.
