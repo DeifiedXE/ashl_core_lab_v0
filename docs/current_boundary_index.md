@@ -1,7 +1,7 @@
-Boundary Index Version: 2026-06-09-b34
-Last update log: Simulated Vision Grounding Boundary Index Sync
-Previous Boundary Index Version: 2026-06-08-b33
-Previous Last update log: Dead-End AB Milestone Sync
+Boundary Index Version: 2026-06-09-b35
+Last update log: Experience Abstraction Boundary Index Sync
+Previous Boundary Index Version: 2026-06-09-b34
+Previous Last update log: Simulated Vision Grounding Boundary Index Sync
 Clean count at last update log reset: 0/5
 Current clean count: 0/5
 
@@ -91,6 +91,8 @@ Current clean count: 0/5
 - Qingyin is currently in the test-object stage, not an awakened individual.
 - The test-object stage is the prerequisite for growth, not growth itself.
 - Qingyin's importance is not in birth, but in growth.
+- Experience Abstraction Layer v0: temporary apply verification must not modify global predictors/action selection/persistent stores; human reviewer required; Qingyin self-approval blocked; approved means reviewed, not persistent application.
+- UI expansion is paused until eye-structure simulation, generalized memory loop, and mimetic endocrine system are more developed.
 
 ## Current Dead-End Memory Milestones (compressed)
 - Legacy anchors: Boundary Index Version: 2026-06-06-b30; Last update log: Batch 30.
@@ -119,15 +121,22 @@ Current clean count: 0/5
 - Non-claims: no real image vision, no LLM vision/planning, no full-map vision, no pathfinding/route planning, no long-term memory, no visual understanding claim, no solved symbol grounding claim, no general learning proof, no consciousness or subjective understanding claim.
 - Log: docs/milestone_logs/simulated_vision_grounding_milestone_2026-06-09.md.
 
+## Experience Abstraction Layer Milestone
+- Completed safe abstraction chain: experience -> failure_reason -> similar_context_key -> prediction -> mismatch -> candidate -> human review -> approved preview -> temporary in-memory apply verification.
+- Strongest claim: deterministic controlled experience abstraction can classify reasons, build position-independent keys, predict outcomes, detect mismatch, create review-required candidates, pass human review, preview approved changes, and verify temporary in-memory application.
+- Safety: no global predictor modification, no action selection modification, no persistent rule application, no long-term memory, no lesson_store / Memory Layer writes, no LLM reasoning/planning/vision.
+- Review rule: human reviewer required; Qingyin self-approval blocked; approved does not mean applied.
+- Log: docs/milestone_logs/experience_abstraction_layer_milestone_2026-06-09.md.
+
 ## Current Claim Boundary
 - Can claim: Bounded local memory effect observed across 3 validated dead-end maps.
 - Can claim: In approach_box_dead_end_v0, local state-action outcome memory has a bounded, repeatable, controlled effect on Trial 2 behavior.
+- Can claim: ASHL Core can convert controlled experience records through deterministic reason classification, position-independent keys, prediction, mismatch, review-required candidates, human-gated review, approved preview, and temporary in-memory apply verification.
 - Cannot claim: proof of general learning / map understanding / maze solving / pathfinding / Long-term Memory / lesson-store learning / generalization across arbitrary levels / consciousness or subjective understanding.
 
 ## Currently Deferred Areas
 - Open language interfaces deferred: LLM response generation / teaching chat loop / free text conversation.
-- Learning pipeline writes deferred: lesson_candidate pipeline / lesson_store write / Memory Layer write.
-- Learning pipeline writes deferred: lesson_candidate pipeline / lesson_store write / Memory Layer write / persistent state-action memory.
+- Learning pipeline writes deferred: lesson_candidate pipeline / lesson_store write / Memory Layer write. persistent state-action memory deferred.
 - External senses deferred: Screen Sense / Camera Sense / Symbol Grounding / Audio Sense / STT / TTS.
 - Sandbox runtimes deferred: sandbox runtime / trace replay / tactile trace persistence / bounded senses runtime / state store.
 - Autonomous behavior and candidate-selection runtimes deferred: autonomous action selection / autonomous goal planning / intrinsic action selection runtime / need-state driven action loop / action outcome weighting runtime integration / stable navigation curriculum metrics.
