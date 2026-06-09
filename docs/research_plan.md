@@ -5066,3 +5066,19 @@ Scope:
 
 Non-goals:
 - does not add runtime action selection, action selection influence, new action behavior, lesson application runtime, automatic lesson application, persistent learning, persistent rule write, memory write, predictor mutation, perception-to-action bridge, focus-to-action bridge, active_focus, focus_applied, attention control, runtime focus selector, runtime ranking, endocrine runtime, endocrine-controlled action, autonomy, object recognition, semantic vision, consciousness claim, or subjective claim
+
+## Action Outcome Contrast Baseline Review v0
+
+Status: completed / review-only / no-runtime-change.
+
+Goal:
+Review the current Phase 0 action/outcome/failure_reason/lesson path and identify the next safe trace/checker package.
+
+Scope:
+- adds `docs/action_outcome_contrast_baseline_review_v0.md`
+- reviews existing action_intent / expected_outcome / actual_outcome / mismatch / structured failure_reason / lesson_candidate / human review components
+- lists related modules, tests, docs, known completed pieces, and current auditability gaps
+- recommends `Expected vs Actual Outcome Pair Schema Check v0` as the next minimal package
+
+Non-goals:
+- does not add runtime action selection, action selection influence, new action behavior, action candidate scoring changes, movement control changes, lesson application runtime, automatic lesson application, persistent learning, persistent rule write, memory write, predictor mutation, perception-to-action bridge, focus-to-action bridge, active_focus, focus_applied, attention control, runtime focus selector, runtime ranking, endocrine runtime, endocrine-controlled action, autonomy, object recognition, semantic vision, consciousness claim, or subjective claim

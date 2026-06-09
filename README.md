@@ -2278,3 +2278,9 @@ Two-Trial History Boundary:
 - Adds `docs/phase0_action_lesson_loop_return_planning_v0.md`.
 - Records the decision to pause perception/focus runtime escalation and return to action/outcome/failure_reason/lesson foundations.
 - Planning-only: no runtime action selection, lesson application, persistent learning, perception-to-action bridge, active_focus, attention control, memory write, predictor mutation, or endocrine runtime is added.
+
+## Action Outcome Contrast Baseline Review v0
+
+- Adds `docs/action_outcome_contrast_baseline_review_v0.md`.
+- Reviews the current Phase 0 action/outcome/failure_reason/lesson path and identifies the next safe trace/checker package.
+- Review-only: does not change action selection, action behavior, learning, memory, or predictor behavior.
