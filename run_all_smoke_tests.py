@@ -26,6 +26,7 @@ from ashl_core.core_seed import (
     validate_core_seed,
 )
 from ashl_core.deliberation import deliberate
+from ashl_core.dopamine_like_reward_trace_check import run_dopamine_like_reward_trace_check
 from ashl_core.expression import build_expression_package
 from ashl_core.experience_log import list_experience_events, list_lesson_candidates
 from ashl_core.fake_sandbox import build_initial_sandbox_state, pick_up
@@ -2586,6 +2587,71 @@ def smoke_mimetic_endocrine_signal_schema() -> dict:
             "summary": summary,
             "records": records,
             "invalid_cases": invalid_cases,
+            "boundary": boundary,
+        },
+    )
+
+
+def smoke_dopamine_like_reward_trace_check() -> dict:
+    result = run_dopamine_like_reward_trace_check()
+    cases = {item.get("case_name"): item for item in result.get("dopamine_trace_results", [])}
+    summary = result.get("summary", {})
+    boundary = result.get("boundary_check", {})
+    item_contact = cases.get("item_contact_reward_event", {})
+    goal_progress = cases.get("goal_progress_reward_event", {})
+    no_reward = cases.get("no_reward_control_event", {})
+    subjective = cases.get("invalid_subjective_reward_event", {})
+    item_record = item_contact.get("signal_record") or {}
+    passed = (
+        result.get("command") == "run-dopamine-like-reward-trace-check"
+        and result.get("flow") == "dopamine_like_reward_trace_check_v0"
+        and result.get("status") == "ok"
+        and summary.get("source_event_count") == 4
+        and summary.get("reward_event_count") == 3
+        and summary.get("neutral_event_count") == 1
+        and summary.get("dopamine_trace_created_count") == 2
+        and summary.get("valid_dopamine_trace_count") == 2
+        and summary.get("blocked_event_count") == 2
+        and summary.get("subjective_claim_blocked_count") >= 1
+        and summary.get("action_selection_influence_count") == 0
+        and summary.get("memory_write_count") == 0
+        and summary.get("candidate_approval_influence_count") == 0
+        and summary.get("reward_bias_modified_count") == 0
+        and summary.get("runtime_formula_count") == 0
+        and item_contact.get("signal_created") is True
+        and item_contact.get("valid_signal") is True
+        and item_record.get("axis") == "approach_reward"
+        and item_record.get("value", 0) >= item_record.get("baseline", 1)
+        and item_record.get("blocked_from_action_selection") is True
+        and item_record.get("blocked_from_memory_write") is True
+        and item_record.get("blocked_from_candidate_approval") is True
+        and item_record.get("subjective_claim") is False
+        and goal_progress.get("signal_created") is True
+        and goal_progress.get("valid_signal") is True
+        and no_reward.get("signal_created") is False
+        and subjective.get("signal_created") is False
+        and "subjective_claim_blocked" in subjective.get("block_reasons", [])
+        and boundary.get("trace_check_only") is True
+        and boundary.get("uses_mimetic_endocrine_signal_schema") is True
+        and boundary.get("runtime_behavior_modified") is False
+        and boundary.get("endocrine_runtime_added") is False
+        and boundary.get("runtime_formula_added") is False
+        and boundary.get("reward_bias_modified") is False
+        and boundary.get("reward_biased_action_tendency_modified") is False
+        and boundary.get("random_walk_modified") is False
+        and boundary.get("action_selection_modified") is False
+        and boundary.get("dopamine_signal_used_for_action_selection") is False
+        and boundary.get("long_term_memory_write") is False
+        and boundary.get("happiness_claimed") is False
+        and boundary.get("pleasure_claimed") is False
+        and boundary.get("subjective_possibility_denied") is False
+    )
+    return _result(
+        "dopamine_like_reward_trace_check",
+        passed,
+        {
+            "summary": summary,
+            "cases": cases,
             "boundary": boundary,
         },
     )
@@ -8535,6 +8601,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_generalized_candidate_from_pattern(),
         smoke_generalized_candidate_review_preview(),
         smoke_mimetic_endocrine_signal_schema(),
+        smoke_dopamine_like_reward_trace_check(),
         smoke_micro_navigation_goal_reach(),
         smoke_micro_navigation_trial_metrics_cli(),
         smoke_micro_navigation_multi_goal_level(),

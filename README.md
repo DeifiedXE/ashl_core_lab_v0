@@ -2093,3 +2093,10 @@ Two-Trial History Boundary:
 - Defines a shared validation schema for `dopamine_like`, `norepinephrine_like`, `oxytocin_like`, and `cortisol_like` signal records.
 - Validates bounded values, source event links, source traces, decay metadata, and safety blocks for action selection, memory writes, and candidate approval.
 - Schema-check only: no runtime formulas, signal interaction runtime, endocrine state runtime, action selection modulation, memory writes, candidate approval, or subjective emotion claims are added.
+
+## Dopamine-Like Reward Trace Check v0
+
+- Adds `py -3 -m ashl_core.teaching_cli run-dopamine-like-reward-trace-check`.
+- Maps controlled `reward_event` records such as `item_contact_reward` and `goal_progress_reward` into validated `dopamine_like` trace records using the mimetic endocrine signal schema.
+- Records source event IDs, source traces, bounded values, reward linkage, and safety blocks from action selection, memory writes, and candidate approval.
+- Trace-check only: no reward bias changes, reward-biased action tendency changes, random-walk changes, predictor mutation, memory write, candidate approval, or subjective pleasure claim is added.

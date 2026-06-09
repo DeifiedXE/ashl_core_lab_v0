@@ -4598,3 +4598,21 @@ Scope:
 
 Non-goals:
 - no endocrine signal runtime behavior, formulas that update values from real events, signal interactions, runtime endocrine state, action selection modification, endocrine suppression/preference of actions, predictor behavior modification, global predictor modification, candidate auto-approval, candidate application, human review override, long-term memory write, lesson_store write, Memory Layer write, personality weight modification, personality drift, autonomous drive system, persistent rule write, persistent preview/dry-run, pathfinding, BFS, A*, route planner, UI change, LLM reasoning, LLM planning, LLM vision, biological hormone simulation claim, proof of happiness/trust/anxiety/stress, consciousness claim, subjective experience claim, or denial of future subjective possibility
+
+## Dopamine-Like Reward Trace Check v0
+
+Status: completed / trace-check-only / no-runtime-change.
+
+Goal:
+Map controlled reward events into validated `dopamine_like` trace records without activating endocrine control.
+
+Scope:
+- adds `ashl_core.dopamine_like_reward_trace_check`
+- adds `py -3 -m ashl_core.teaching_cli run-dopamine-like-reward-trace-check`
+- creates deterministic source events for `item_contact_reward`, `goal_progress_reward`, neutral no-reward control, and subjective-claim invalid reward
+- creates valid `dopamine_like` trace records for reward-linked events using the mimetic endocrine signal schema
+- validates source event IDs, source traces, bounded values, value >= baseline, reward linkage, and safety blocks from action selection, memory write, and candidate approval
+- blocks neutral and subjective-claim events from valid dopamine-like reward traces
+
+Non-goals:
+- no endocrine runtime behavior, formulas that update values from real runtime, signal interactions, dopamine-driven action selection, dopamine-driven reward bias modification, reward-biased action tendency modification, random-walk modification, predictor behavior modification, global predictor modification, candidate auto-approval, candidate application, human review override, long-term memory write, lesson_store write, Memory Layer write, personality weight modification, personality drift, autonomous drive system, persistent rule write, persistent preview/dry-run, pathfinding, BFS, A*, route planner, UI change, LLM reasoning, LLM planning, LLM vision, biological hormone simulation claim, proof of happiness, pleasure claim, consciousness claim, subjective experience claim, or denial of future subjective possibility

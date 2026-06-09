@@ -13,6 +13,7 @@ from .action_outcome_predictor import run_action_outcome_predictor_check
 from .fake_sandbox import build_initial_sandbox_state, observe, pick_up
 from .failure_reason_classifier import run_failure_reason_classifier_check
 from .first_output_runtime import generate_minimal_first_output
+from .dopamine_like_reward_trace_check import run_dopamine_like_reward_trace_check
 from .grounded_action_experience import run_grounded_action_experience_check
 from .grounded_action_experience_influence import run_grounded_action_experience_influence_check
 from .generalized_memory_exact_key_bucket import run_generalized_memory_exact_key_bucket_check
@@ -3432,6 +3433,8 @@ def run_command(command: str) -> dict[str, Any] | str:
         return run_generalized_candidate_review_preview_check()
     if command == "run-mimetic-endocrine-signal-schema-check":
         return run_mimetic_endocrine_signal_schema_check()
+    if command == "run-dopamine-like-reward-trace-check":
+        return run_dopamine_like_reward_trace_check()
     return {
         "command": command,
         "status": "error",
@@ -3508,6 +3511,7 @@ def main(argv: list[str] | None = None) -> int:
             "run-generalized-candidate-from-pattern-check",
             "run-generalized-candidate-review-preview-check",
             "run-mimetic-endocrine-signal-schema-check",
+            "run-dopamine-like-reward-trace-check",
         ],
     )
     parser.add_argument("--review-id", default="review_001")
@@ -3716,6 +3720,8 @@ def main(argv: list[str] | None = None) -> int:
         result = run_generalized_candidate_review_preview_check()
     elif args.command == "run-mimetic-endocrine-signal-schema-check":
         result = run_mimetic_endocrine_signal_schema_check()
+    elif args.command == "run-dopamine-like-reward-trace-check":
+        result = run_dopamine_like_reward_trace_check()
     else:
         result = run_command(args.command)
     if hasattr(sys.stdout, "reconfigure"):
