@@ -3957,3 +3957,25 @@ Non-goals:
 - no curiosity, prediction error, place memory, home sandbox, real image vision, computer vision, LLM vision, or LLM planning
 - no lesson_store write, Memory Layer write, Long-term Memory write, or lesson_candidate pipeline connection
 - no visual understanding, symbol grounding solved, general learning, or consciousness claim
+
+## Adjustable Action Cooldown v0
+
+Status: completed / manual-action-timing-gate / no-action-selection-change.
+
+Goal:
+Give the larger sandbox Flask UI a configurable action rhythm so manual button presses cannot be spammed instantly unless cooldown is disabled.
+
+Scope:
+- adds configurable cooldown state to `ashl_core.larger_sandbox_flask_ui`
+- default cooldown is `0.5s`
+- accepted range is `0.0s` to `5.0s`; `0.0s` disables blocking
+- blocks only manual `look`, `turn_left`, `turn_right`, and `move_forward` button actions during cooldown
+- reset remains allowed and clears cooldown timing
+- shows cooldown, remaining time, can-act status, and readable blocked-action log entries
+
+Non-goals:
+- no auto action loop, autonomy, auto exploration, pathfinding, BFS, A*, route planner, or item seeking
+- no action selection change, action prioritization, learning, prediction, or outcome planning
+- no item collection, pickup, inventory, exit activation, win condition, task completion, curiosity, prediction error, place memory, or home sandbox
+- no lesson_store write, Memory Layer write, Long-term Memory write, or lesson_candidate pipeline connection
+- no visual understanding, symbol grounding solved, general learning, or consciousness claim

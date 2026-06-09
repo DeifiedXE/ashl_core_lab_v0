@@ -7,10 +7,13 @@ from ashl_core.larger_sandbox_flask_ui import (
     DEFAULT_UI_PORT,
     apply_ui_action,
     build_ui_boundary_check,
+    cooldown_remaining_seconds,
     create_app,
     get_launch_config,
     get_ui_state,
     reset_ui_state,
+    reset_ui_now_func,
+    set_ui_now_func,
 )
 from ashl_core.simulated_vision_larger_sandbox import run_simulated_vision_larger_sandbox_demo
 from ashl_core.teaching_cli import run_command
@@ -18,9 +21,15 @@ from ashl_core.teaching_cli import run_command
 
 class LargerSandboxFlaskUiTests(unittest.TestCase):
     def setUp(self):
+        self.now = 100.0
+        set_ui_now_func(lambda: self.now)
         reset_ui_state()
         self.app = create_app()
         self.client = self.app.test_client()
+
+    def tearDown(self):
+        reset_ui_now_func()
+        reset_ui_state()
 
     def test_create_app_returns_flask_app(self):
         self.assertIsInstance(self.app, Flask)
@@ -43,7 +52,14 @@ class LargerSandboxFlaskUiTests(unittest.TestCase):
         self.assertIn("turn_right", html)
         self.assertIn("move_forward", html)
         self.assertIn("reset", html)
+        self.assertIn("Action cooldown", html)
+        self.assertIn("Cooldown: 0.5s", html)
+        self.assertIn("Cooldown remaining: 0.00 seconds", html)
+        self.assertIn("Can act: yes", html)
         self.assertIn("No pathfinding.", html)
+        self.assertIn("No autonomy.", html)
+        self.assertIn("No auto exploration.", html)
+        self.assertIn("No action selection change.", html)
 
     def test_state_json_is_read_only_snapshot(self):
         response = self.client.get("/state.json")
@@ -55,6 +71,9 @@ class LargerSandboxFlaskUiTests(unittest.TestCase):
         self.assertEqual(data["facing"], "north")
         self.assertEqual(data["front_symbol"], "e")
         self.assertEqual(data["viewport"][2][1], "a")
+        self.assertEqual(data["action_cooldown_seconds"], 0.5)
+        self.assertEqual(data["cooldown_remaining_seconds"], 0.0)
+        self.assertTrue(data["can_act"])
 
     def test_post_action_look_redirects_and_logs(self):
         response = self.client.post("/action", data={"action": "look"})
@@ -77,6 +96,7 @@ class LargerSandboxFlaskUiTests(unittest.TestCase):
 
     def test_post_action_move_forward_appends_human_log(self):
         self.client.post("/action", data={"action": "turn_right"})
+        self.now += 0.6
         response = self.client.post("/action", data={"action": "move_forward"})
         state = get_ui_state()
         log = "\n\n".join(state["action_log"])
@@ -91,6 +111,7 @@ class LargerSandboxFlaskUiTests(unittest.TestCase):
 
     def test_post_reset_restores_initial_state_and_empty_log(self):
         self.client.post("/action", data={"action": "turn_right"})
+        self.now += 0.6
         self.client.post("/action", data={"action": "move_forward"})
         response = self.client.post("/reset")
         state = get_ui_state()
@@ -99,6 +120,8 @@ class LargerSandboxFlaskUiTests(unittest.TestCase):
         self.assertEqual(state["pos"], [2, 2])
         self.assertEqual(state["facing"], "north")
         self.assertEqual(state["action_log"], [])
+        self.assertTrue(state["can_act"])
+        self.assertIsNone(state["last_action_time"])
 
     def test_invalid_action_returns_400(self):
         response = self.client.post("/action", data={"action": "auto_explore"})
@@ -114,8 +137,13 @@ class LargerSandboxFlaskUiTests(unittest.TestCase):
         self.assertEqual(config["host"], DEFAULT_UI_HOST)
         self.assertEqual(config["port"], DEFAULT_UI_PORT)
         self.assertTrue(config["local_only"])
+        self.assertTrue(config["action_cooldown_enabled"])
+        self.assertTrue(config["action_cooldown_configurable"])
         self.assertTrue(boundary["ui_prototype"])
         self.assertTrue(boundary["local_only"])
+        self.assertTrue(boundary["action_cooldown_enabled"])
+        self.assertTrue(boundary["action_cooldown_configurable"])
+        self.assertFalse(boundary["autonomous_action_loop_enabled"])
         self.assertFalse(boundary["runtime_behavior_modified"])
         self.assertFalse(boundary["pathfinding_used"])
         self.assertFalse(boundary["route_planner_added"])
@@ -135,6 +163,7 @@ class LargerSandboxFlaskUiTests(unittest.TestCase):
         self.assertTrue(boundary["ui_prototype"])
         self.assertTrue(boundary["local_only"])
         self.assertFalse(boundary["action_selection_modified"])
+        self.assertFalse(boundary["autonomous_action_loop_enabled"])
         self.assertFalse(boundary["item_pickup_enabled"])
         self.assertFalse(boundary["inventory_enabled"])
         self.assertFalse(boundary["win_condition_enabled"])
@@ -154,11 +183,87 @@ class LargerSandboxFlaskUiTests(unittest.TestCase):
     def test_ui_does_not_modify_runtime_movement_rules(self):
         before = run_simulated_vision_larger_sandbox_demo()
         apply_ui_action("turn_right")
+        self.now += 0.6
         apply_ui_action("move_forward")
         after = run_simulated_vision_larger_sandbox_demo()
 
         self.assertEqual(after["action_trace"], before["action_trace"])
         self.assertEqual(after["boundary_check"], before["boundary_check"])
+
+    def test_post_cooldown_updates_cooldown_and_logs(self):
+        response = self.client.post("/cooldown", data={"cooldown_seconds": "1.0"})
+        state = get_ui_state()
+
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(state["action_cooldown_seconds"], 1.0)
+        self.assertIn("Cooldown updated to 1.0s", state["action_log"][-1])
+
+    def test_post_cooldown_clamps_to_allowed_range(self):
+        self.client.post("/cooldown", data={"cooldown_seconds": "-2"})
+        self.assertEqual(get_ui_state()["action_cooldown_seconds"], 0.0)
+
+        self.client.post("/cooldown", data={"cooldown_seconds": "9.5"})
+        self.assertEqual(get_ui_state()["action_cooldown_seconds"], 5.0)
+
+    def test_cooldown_remaining_helper_is_deterministic(self):
+        self.assertEqual(cooldown_remaining_seconds(now=10.0, last_action_time=None, cooldown_seconds=0.5), 0.0)
+        self.assertAlmostEqual(cooldown_remaining_seconds(now=10.0, last_action_time=9.8, cooldown_seconds=0.5), 0.3)
+        self.assertEqual(cooldown_remaining_seconds(now=10.0, last_action_time=9.0, cooldown_seconds=0.5), 0.0)
+        self.assertEqual(cooldown_remaining_seconds(now=10.0, last_action_time=10.0, cooldown_seconds=0.0), 0.0)
+
+    def test_first_action_allowed_and_immediate_second_action_blocked(self):
+        self.client.post("/cooldown", data={"cooldown_seconds": "1.0"})
+        self.client.post("/action", data={"action": "turn_right"})
+        state_after_first = get_ui_state()
+        response = self.client.post("/action", data={"action": "move_forward"})
+        state_after_second = get_ui_state()
+        log = "\n\n".join(state_after_second["action_log"])
+
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(state_after_first["facing"], "east")
+        self.assertEqual(state_after_second["pos"], [2, 2])
+        self.assertEqual(state_after_second["facing"], "east")
+        self.assertFalse(state_after_second["can_act"])
+        self.assertIn("Action blocked by cooldown.", log)
+        self.assertIn("Remaining: 1.00s", log)
+
+    def test_action_after_cooldown_expiry_is_allowed(self):
+        self.client.post("/cooldown", data={"cooldown_seconds": "1.0"})
+        self.client.post("/action", data={"action": "turn_right"})
+        self.now += 1.1
+        self.client.post("/action", data={"action": "move_forward"})
+        state = get_ui_state()
+        log = "\n\n".join(state["action_log"])
+
+        self.assertEqual(state["pos"], [3, 2])
+        self.assertEqual(state["facing"], "east")
+        self.assertFalse(state["can_act"])
+        self.assertIn("Step 2: move_forward", log)
+        self.assertIn("Result: moved", log)
+
+    def test_cooldown_zero_disables_blocking(self):
+        self.client.post("/cooldown", data={"cooldown_seconds": "0.0"})
+        self.client.post("/action", data={"action": "turn_right"})
+        self.client.post("/action", data={"action": "move_forward"})
+        state = get_ui_state()
+        log = "\n\n".join(state["action_log"])
+
+        self.assertEqual(state["pos"], [3, 2])
+        self.assertEqual(state["facing"], "east")
+        self.assertTrue(state["can_act"])
+        self.assertNotIn("Action blocked by cooldown.", log)
+
+    def test_reset_is_allowed_during_cooldown(self):
+        self.client.post("/cooldown", data={"cooldown_seconds": "1.0"})
+        self.client.post("/action", data={"action": "turn_right"})
+        response = self.client.post("/reset")
+        state = get_ui_state()
+
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(state["pos"], [2, 2])
+        self.assertEqual(state["facing"], "north")
+        self.assertTrue(state["can_act"])
+        self.assertEqual(state["action_log"], [])
 
 
 if __name__ == "__main__":

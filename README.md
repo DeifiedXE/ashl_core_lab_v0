@@ -1845,3 +1845,10 @@ Two-Trial History Boundary:
 - Provides a localhost-only Flask visual control panel for manual inspection of the larger sandbox.
 - Shows current first-person viewport, position/facing/front symbol, action buttons, reset, legend, boundary notes, and a human-readable action log.
 - Does not add pathfinding, route planning, item collection, exit activation, curiosity, prediction error, place memory, home sandbox, or visual understanding claims.
+
+## Adjustable Action Cooldown v0
+
+- Adds configurable manual action cooldown to the larger sandbox Flask UI.
+- Default cooldown is `0.5s`; accepted range is `0.0s` to `5.0s`, where `0.0s` disables blocking.
+- Shows cooldown, remaining time, and whether Qingyin can act; blocked button presses append a readable cooldown log entry.
+- Timing gate only: no autonomy, auto exploration, pathfinding, or action selection change is added.

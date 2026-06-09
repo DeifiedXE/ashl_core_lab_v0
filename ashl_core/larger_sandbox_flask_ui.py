@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from copy import deepcopy
+import time
 from typing import Any
 
 from flask import Flask, redirect, render_template_string, request, url_for
@@ -18,6 +19,9 @@ from .simulated_vision_larger_sandbox_human_replay import get_front_symbol_for_r
 
 DEFAULT_UI_HOST = "127.0.0.1"
 DEFAULT_UI_PORT = 7860
+DEFAULT_ACTION_COOLDOWN_SECONDS = 0.5
+MIN_ACTION_COOLDOWN_SECONDS = 0.0
+MAX_ACTION_COOLDOWN_SECONDS = 5.0
 ALLOWED_UI_ACTIONS = frozenset({"look", "turn_left", "turn_right", "move_forward"})
 
 _SYMBOL_LABELS = {
@@ -30,6 +34,7 @@ _SYMBOL_LABELS = {
     "a": "Qingyin",
 }
 _UI_STATE: dict[str, Any] | None = None
+_NOW_FUNC = time.monotonic
 
 
 def create_app() -> Flask:
@@ -45,6 +50,11 @@ def create_app() -> Flask:
         if action_name not in ALLOWED_UI_ACTIONS:
             return "unsupported action", 400
         apply_ui_action(action_name)
+        return redirect(url_for("index"))
+
+    @app.post("/cooldown")
+    def cooldown() -> Any:
+        set_action_cooldown_seconds(request.form.get("cooldown_seconds", ""))
         return redirect(url_for("index"))
 
     @app.post("/reset")
@@ -70,6 +80,8 @@ def get_launch_config(host: str = DEFAULT_UI_HOST, port: int = DEFAULT_UI_PORT) 
         "debug": False,
         "local_only": host == DEFAULT_UI_HOST,
         "ui_prototype": True,
+        "action_cooldown_enabled": True,
+        "action_cooldown_configurable": True,
         "boundary_check": build_ui_boundary_check(host=host),
     }
 
@@ -89,6 +101,15 @@ def get_ui_state() -> dict[str, Any]:
     return _public_state(internal["state"], internal["viewport"], internal["action_log"])
 
 
+def set_ui_now_func(now_func: Any) -> None:
+    global _NOW_FUNC
+    _NOW_FUNC = now_func
+
+
+def reset_ui_now_func() -> None:
+    set_ui_now_func(time.monotonic)
+
+
 def reset_ui_state() -> dict[str, Any]:
     global _UI_STATE
     level = create_simulated_vision_larger_sandbox()
@@ -100,7 +121,17 @@ def reset_ui_state() -> dict[str, Any]:
         "viewport": viewport,
         "action_log": [],
         "step_count": 0,
+        "action_cooldown_seconds": DEFAULT_ACTION_COOLDOWN_SECONDS,
+        "last_action_time": None,
     }
+    return get_ui_state()
+
+
+def set_action_cooldown_seconds(value: Any) -> dict[str, Any]:
+    internal = _get_internal_state()
+    cooldown_seconds = _clamp_cooldown_seconds(value)
+    internal["action_cooldown_seconds"] = cooldown_seconds
+    internal["action_log"].append(f"Cooldown updated to {cooldown_seconds:.1f}s")
     return get_ui_state()
 
 
@@ -109,21 +140,43 @@ def apply_ui_action(action: str) -> dict[str, Any]:
         raise ValueError(f"unsupported larger sandbox UI action: {action}")
 
     internal = _get_internal_state()
+    now = _NOW_FUNC()
+    remaining = cooldown_remaining_seconds(
+        now=now,
+        last_action_time=internal["last_action_time"],
+        cooldown_seconds=internal["action_cooldown_seconds"],
+    )
+    if remaining > 0:
+        internal["step_count"] += 1
+        internal["action_log"].append(_format_cooldown_blocked_log_entry(internal["step_count"], action, remaining))
+        return get_ui_state()
+
     before = deepcopy(internal["state"])
     result = apply_larger_sandbox_action(internal["state"], internal["level"], action)
     after = result["state"]
     trace = result["trace"]
     internal["state"] = after
     internal["viewport"] = trace["viewport"]
+    internal["last_action_time"] = now
     internal["step_count"] += 1
     internal["action_log"].append(_format_action_log_entry(internal["step_count"], action, before, trace))
     return get_ui_state()
+
+
+def cooldown_remaining_seconds(*, now: float, last_action_time: float | None, cooldown_seconds: float) -> float:
+    if cooldown_seconds <= 0 or last_action_time is None:
+        return 0.0
+    elapsed = max(0.0, now - last_action_time)
+    return max(0.0, cooldown_seconds - elapsed)
 
 
 def build_ui_boundary_check(host: str = DEFAULT_UI_HOST) -> dict[str, Any]:
     return {
         "ui_prototype": True,
         "local_only": host == DEFAULT_UI_HOST,
+        "action_cooldown_enabled": True,
+        "action_cooldown_configurable": True,
+        "autonomous_action_loop_enabled": False,
         "runtime_behavior_modified": False,
         "viewport_geometry_modified": False,
         "action_selection_modified": False,
@@ -163,6 +216,13 @@ def _get_internal_state() -> dict[str, Any]:
 
 
 def _public_state(state: dict[str, Any], viewport: list[list[str]], action_log: list[str]) -> dict[str, Any]:
+    internal = _get_internal_state()
+    cooldown_seconds = internal["action_cooldown_seconds"]
+    remaining = cooldown_remaining_seconds(
+        now=_NOW_FUNC(),
+        last_action_time=internal["last_action_time"],
+        cooldown_seconds=cooldown_seconds,
+    )
     level_id = state["level_id"]
     front_symbol = get_front_symbol_for_replay(viewport)
     return {
@@ -174,6 +234,12 @@ def _public_state(state: dict[str, Any], viewport: list[list[str]], action_log: 
         "front_symbol": front_symbol,
         "front_label": _SYMBOL_LABELS[front_symbol],
         "action_log": list(action_log),
+        "action_cooldown_seconds": cooldown_seconds,
+        "cooldown_remaining_seconds": remaining,
+        "cooldown_remaining_display": f"{remaining:.2f}",
+        "can_act": remaining <= 0,
+        "can_act_display": "yes" if remaining <= 0 else "no",
+        "last_action_time": internal["last_action_time"],
         "boundary_check": build_ui_boundary_check(),
     }
 
@@ -192,8 +258,20 @@ def _format_action_log_entry(step_number: int, action: str, before: dict[str, An
     )
 
 
+def _format_cooldown_blocked_log_entry(step_number: int, action: str, remaining: float) -> str:
+    return f"Step {step_number}: {action}\nAction blocked by cooldown.\nRemaining: {remaining:.2f}s"
+
+
 def _format_pos(pos: list[int] | tuple[int, int]) -> str:
     return f"[{pos[0]},{pos[1]}]"
+
+
+def _clamp_cooldown_seconds(value: Any) -> float:
+    try:
+        cooldown_seconds = float(value)
+    except (TypeError, ValueError):
+        cooldown_seconds = DEFAULT_ACTION_COOLDOWN_SECONDS
+    return min(MAX_ACTION_COOLDOWN_SECONDS, max(MIN_ACTION_COOLDOWN_SECONDS, cooldown_seconds))
 
 
 _HTML_TEMPLATE = """<!doctype html>
@@ -315,6 +393,32 @@ _HTML_TEMPLATE = """<!doctype html>
     }
     button:hover { background: #eef3f8; }
     .reset button { border-color: #c7a1a1; }
+    .cooldown {
+      border-top: 1px solid var(--line);
+      padding-top: 12px;
+      margin-top: 12px;
+      max-width: 360px;
+    }
+    .cooldown form {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+      margin: 8px 0;
+    }
+    .cooldown input {
+      width: 86px;
+      min-height: 36px;
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 7px 8px;
+      font: inherit;
+    }
+    .cooldown p {
+      margin: 4px 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
     .legend, .boundary, .log {
       border-top: 1px solid var(--line);
       padding-top: 12px;
@@ -382,6 +486,17 @@ _HTML_TEMPLATE = """<!doctype html>
         <form method="post" action="{{ url_for('action') }}"><button name="action" value="move_forward">move_forward</button></form>
         <form class="reset" method="post" action="{{ url_for('reset') }}"><button>reset</button></form>
       </div>
+      <div class="cooldown">
+        <h2>Action cooldown</h2>
+        <p>Cooldown: {{ "%.1f"|format(ui.action_cooldown_seconds) }}s</p>
+        <p>Cooldown remaining: {{ ui.cooldown_remaining_display }} seconds</p>
+        <p>Can act: {{ ui.can_act_display }}</p>
+        <form method="post" action="{{ url_for('cooldown') }}">
+          <label for="cooldown_seconds">Seconds</label>
+          <input id="cooldown_seconds" name="cooldown_seconds" type="number" min="0" max="5" step="0.1" value="{{ "%.1f"|format(ui.action_cooldown_seconds) }}">
+          <button>update cooldown</button>
+        </form>
+      </div>
     </section>
     <section>
       <div class="legend">
@@ -396,8 +511,12 @@ _HTML_TEMPLATE = """<!doctype html>
         <h2>Boundary</h2>
         <ul>
           <li>Local visual inspection UI only.</li>
+          <li>Action cooldown only controls timing.</li>
+          <li>No autonomy.</li>
+          <li>No auto exploration.</li>
           <li>No pathfinding.</li>
           <li>No route planner.</li>
+          <li>No action selection change.</li>
           <li>No item collection.</li>
           <li>No exit activation.</li>
           <li>No curiosity.</li>

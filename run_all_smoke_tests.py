@@ -668,7 +668,12 @@ def smoke_larger_sandbox_flask_ui() -> dict:
     client = app.test_client()
     index_response = client.get("/")
     index_html = index_response.get_data(as_text=True)
+    cooldown_update_response = client.post("/cooldown", data={"cooldown_seconds": "1.0"})
     look_response = client.post("/action", data={"action": "look"})
+    blocked_response = client.post("/action", data={"action": "turn_right"})
+    blocked_state = get_larger_sandbox_ui_state()
+    reset_after_blocked_response = client.post("/reset")
+    cooldown_disable_response = client.post("/cooldown", data={"cooldown_seconds": "0.0"})
     turn_response = client.post("/action", data={"action": "turn_right"})
     move_response = client.post("/action", data={"action": "move_forward"})
     moved_state = get_larger_sandbox_ui_state()
@@ -687,13 +692,26 @@ def smoke_larger_sandbox_flask_ui() -> dict:
         and "turn_right" in index_html
         and "move_forward" in index_html
         and "reset" in index_html
+        and "Action cooldown" in index_html
+        and "Cooldown: 0.5s" in index_html
+        and "Cooldown remaining: 0.00 seconds" in index_html
+        and "Can act: yes" in index_html
+        and "No autonomy." in index_html
+        and "No auto exploration." in index_html
+        and "No action selection change." in index_html
         and "No pathfinding." in index_html
+        and cooldown_update_response.status_code == 302
         and look_response.status_code == 302
+        and blocked_response.status_code == 302
+        and any("Action blocked by cooldown." in entry for entry in blocked_state.get("action_log", []))
+        and reset_after_blocked_response.status_code == 302
+        and cooldown_disable_response.status_code == 302
         and turn_response.status_code == 302
         and move_response.status_code == 302
         and moved_state.get("pos") == [3, 2]
         and moved_state.get("facing") == "east"
-        and any("Step 3: move_forward" in entry for entry in moved_state.get("action_log", []))
+        and moved_state.get("action_cooldown_seconds") == 0.0
+        and any("Step 2: move_forward" in entry for entry in moved_state.get("action_log", []))
         and reset_response.status_code == 302
         and reset_state.get("pos") == [2, 2]
         and reset_state.get("facing") == "north"
@@ -701,7 +719,12 @@ def smoke_larger_sandbox_flask_ui() -> dict:
         and launch_config.get("command") == "run-larger-sandbox-ui"
         and launch_config.get("url") == "http://127.0.0.1:7860"
         and launch_config.get("local_only") is True
+        and launch_config.get("action_cooldown_enabled") is True
+        and launch_config.get("action_cooldown_configurable") is True
         and boundary.get("ui_prototype") is True
+        and boundary.get("action_cooldown_enabled") is True
+        and boundary.get("action_cooldown_configurable") is True
+        and boundary.get("autonomous_action_loop_enabled") is False
         and boundary.get("runtime_behavior_modified") is False
         and boundary.get("pathfinding_used") is False
         and boundary.get("route_planner_added") is False
@@ -718,6 +741,7 @@ def smoke_larger_sandbox_flask_ui() -> dict:
         passed,
         {
             "index_status": index_response.status_code,
+            "blocked_state": blocked_state,
             "moved_state": moved_state,
             "reset_state": reset_state,
             "launch_config": launch_config,
