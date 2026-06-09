@@ -4322,3 +4322,20 @@ Scope:
 
 Non-goals:
 - no approved candidate application, predictor rule modification, rule learning, rule revision, rule application, action selection modification, preview-driven suppression/preference, lesson_store write, Memory Layer write, long-term memory, pathfinding, route planner, item seeking, reward change, random walk change, UI change, autonomous exploration, decision loop, LLM reasoning, or general learning claim
+
+## Reviewed Candidate Apply Verification v0
+
+Status: completed / temporary-in-memory-application-verification / no-persistent-learning.
+
+Goal:
+Continue the Experience Abstraction Layer by applying approved candidates to a runner-local predictor rule table and verifying prediction changes.
+
+Scope:
+- adds `ashl_core.reviewed_candidate_apply_verification`
+- adds `py -3 -m ashl_core.teaching_cli run-reviewed-candidate-apply-verification-check`
+- applies outcome revision, reason revision, and unknown-context candidates only in a temporary in-memory rule table
+- reruns prediction against that table to verify the expected outcome and reason
+- blocks pending, rejected, and self-approved candidates
+
+Non-goals:
+- no persistent rule application, global predictor modification, action selection modification, applied-rule suppression/preference, lesson_store write, Memory Layer write, long-term memory, lesson_candidate pipeline connection, auto-approval, Qingyin self-approval, automatic rule revision, persistent rule learning, pathfinding, route planner, item seeking, reward change, random walk change, UI change, autonomous exploration, decision loop, LLM reasoning, or general learning claim

@@ -1980,3 +1980,11 @@ Two-Trial History Boundary:
 - Shows proposed predictor-entry changes before any application step.
 - Blocks non-approved candidates from applicable previews.
 - Does not apply rules, modify predictor rules, modify action selection, write lesson_store, or write long-term memory.
+
+## Reviewed Candidate Apply Verification v0
+
+- Adds `py -3 -m ashl_core.teaching_cli run-reviewed-candidate-apply-verification-check`.
+- Applies approved candidates only to a temporary in-memory predictor rule table.
+- Reruns prediction against the temporary table and verifies expected outcome/reason changes.
+- Blocks pending, rejected, and self-approved candidates.
+- Does not persist rules, modify the global predictor, modify action selection, write lesson_store, write Memory Layer, or write long-term memory.

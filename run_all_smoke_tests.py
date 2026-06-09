@@ -138,6 +138,7 @@ from ashl_core.prediction_accuracy_check import run_prediction_accuracy_check
 from ashl_core.prompt_leakage_check import build_decision_input_snapshot, check_leakage
 from ashl_core.reward_biased_action_tendency import run_reward_biased_action_tendency_check
 from ashl_core.reward_biased_random_walk_check import run_reward_biased_random_walk_check
+from ashl_core.reviewed_candidate_apply_verification import run_reviewed_candidate_apply_verification_check
 from ashl_core.rule_candidate_from_mismatch import run_rule_candidate_from_mismatch_check
 from ashl_core.rule_candidate_review_gate import run_rule_candidate_review_gate_check
 from ashl_core.rule_candidates import append_rule_candidate
@@ -1982,6 +1983,71 @@ def smoke_approved_candidate_preview() -> dict:
         passed,
         {
             "previews": previews,
+            "summary": summary,
+            "boundary": boundary,
+        },
+    )
+
+
+def smoke_reviewed_candidate_apply_verification() -> dict:
+    result = run_reviewed_candidate_apply_verification_check()
+    applications = {
+        item.get("case_name"): item
+        for item in result.get("application_results", [])
+    }
+    summary = result.get("summary", {})
+    boundary = result.get("boundary_check", {})
+    passed = (
+        result.get("command") == "run-reviewed-candidate-apply-verification-check"
+        and result.get("flow") == "reviewed_candidate_apply_verification_v0"
+        and result.get("status") == "ok"
+        and applications.get("approved_outcome_revision_apply", {}).get("application_result", {}).get("applied_in_memory") is True
+        and applications.get("approved_outcome_revision_apply", {}).get("prediction_after_apply", {}).get("predicted_outcome_type") == "blocked"
+        and applications.get("approved_outcome_revision_apply", {}).get("prediction_after_apply", {}).get("predicted_primary_reason") == "front_cell_wall"
+        and applications.get("approved_reason_revision_apply", {}).get("application_result", {}).get("applied_in_memory") is True
+        and applications.get("approved_reason_revision_apply", {}).get("prediction_after_apply", {}).get("predicted_outcome_type") == "moved"
+        and applications.get("approved_reason_revision_apply", {}).get("prediction_after_apply", {}).get("predicted_primary_reason") == "front_cell_passage_crossed"
+        and applications.get("approved_unknown_context_apply", {}).get("application_result", {}).get("applied_in_memory") is True
+        and applications.get("approved_unknown_context_apply", {}).get("application_result", {}).get("rule_table_changed") is True
+        and applications.get("pending_candidate_blocked", {}).get("application_result", {}).get("applied_in_memory") is False
+        and applications.get("pending_candidate_blocked", {}).get("application_result", {}).get("application_blocked_reason") == "candidate_not_approved"
+        and applications.get("rejected_candidate_blocked", {}).get("application_result", {}).get("applied_in_memory") is False
+        and applications.get("rejected_candidate_blocked", {}).get("application_result", {}).get("application_blocked_reason") == "candidate_not_approved"
+        and applications.get("self_approved_candidate_blocked", {}).get("application_result", {}).get("applied_in_memory") is False
+        and applications.get("self_approved_candidate_blocked", {}).get("application_result", {}).get("application_blocked_reason") == "invalid_reviewer"
+        and all(item.get("verification", {}).get("verification_passed") is True for item in applications.values())
+        and summary.get("case_count") == 6
+        and summary.get("passed_count") == 6
+        and summary.get("failed_count") == 0
+        and summary.get("applied_in_memory_count") == 3
+        and summary.get("blocked_application_count") == 3
+        and summary.get("persistent_write_count") == 0
+        and summary.get("predictor_global_modified_count") == 0
+        and summary.get("lesson_store_write_count") == 0
+        and summary.get("memory_layer_write_count") == 0
+        and summary.get("long_term_memory_write_count") == 0
+        and summary.get("all_reviewed_candidate_apply_verification_checks_passed") is True
+        and boundary.get("reviewed_candidate_apply_verification_enabled") is True
+        and boundary.get("requires_approved_candidate") is True
+        and boundary.get("requires_human_review") is True
+        and boundary.get("temporary_in_memory_rule_table") is True
+        and boundary.get("persistent_rule_application_enabled") is False
+        and boundary.get("global_predictor_modified") is False
+        and boundary.get("predictor_rule_modified_in_memory_only") is True
+        and boundary.get("action_selection_modified") is False
+        and boundary.get("lesson_store_write") is False
+        and boundary.get("memory_layer_write") is False
+        and boundary.get("long_term_memory_write") is False
+        and boundary.get("candidate_auto_approved") is False
+        and boundary.get("qingyin_self_approval_allowed") is False
+        and boundary.get("llm_reasoning_used") is False
+        and boundary.get("general_learning_claimed") is False
+    )
+    return _result(
+        "reviewed_candidate_apply_verification",
+        passed,
+        {
+            "applications": applications,
             "summary": summary,
             "boundary": boundary,
         },
@@ -7923,6 +7989,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_rule_candidate_from_mismatch(),
         smoke_rule_candidate_review_gate(),
         smoke_approved_candidate_preview(),
+        smoke_reviewed_candidate_apply_verification(),
         smoke_micro_navigation_goal_reach(),
         smoke_micro_navigation_trial_metrics_cli(),
         smoke_micro_navigation_multi_goal_level(),

@@ -20,6 +20,7 @@ from .item_reward_event import run_item_reward_event_check
 from .prediction_accuracy_check import run_prediction_accuracy_check
 from .reward_biased_action_tendency import run_reward_biased_action_tendency_check
 from .reward_biased_random_walk_check import run_reward_biased_random_walk_check
+from .reviewed_candidate_apply_verification import run_reviewed_candidate_apply_verification_check
 from .rule_candidate_from_mismatch import run_rule_candidate_from_mismatch_check
 from .rule_candidate_review_gate import run_rule_candidate_review_gate_check
 from .similar_context_key import run_similar_context_key_check
@@ -3405,6 +3406,8 @@ def run_command(command: str) -> dict[str, Any] | str:
         return run_rule_candidate_review_gate_check()
     if command == "run-approved-candidate-preview-check":
         return run_approved_candidate_preview_check()
+    if command == "run-reviewed-candidate-apply-verification-check":
+        return run_reviewed_candidate_apply_verification_check()
     return {
         "command": command,
         "status": "error",
@@ -3472,6 +3475,7 @@ def main(argv: list[str] | None = None) -> int:
             "run-rule-candidate-from-mismatch-check",
             "run-rule-candidate-review-gate-check",
             "run-approved-candidate-preview-check",
+            "run-reviewed-candidate-apply-verification-check",
         ],
     )
     parser.add_argument("--review-id", default="review_001")
@@ -3660,6 +3664,8 @@ def main(argv: list[str] | None = None) -> int:
         result = run_rule_candidate_review_gate_check()
     elif args.command == "run-approved-candidate-preview-check":
         result = run_approved_candidate_preview_check()
+    elif args.command == "run-reviewed-candidate-apply-verification-check":
+        result = run_reviewed_candidate_apply_verification_check()
     else:
         result = run_command(args.command)
     if hasattr(sys.stdout, "reconfigure"):
