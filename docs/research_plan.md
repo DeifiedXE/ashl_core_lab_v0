@@ -4149,3 +4149,24 @@ Non-goals:
 - no random walk runner change, Flask UI behavior change, runtime movement rule change, or existing navigation action selection change
 - no LLM planning, LLM vision, lesson_store write, Memory Layer write, long-term memory, or lesson_candidate pipeline connection
 - no pleasure, desire, self-awareness, consciousness, subjective experience, visual understanding, solved symbol grounding, or general learning claim
+
+## Reward-Biased Random Walk Check v0
+
+Status: completed / controlled-visible-symbol-sampling / no-item-seeking.
+
+Goal:
+Compare no-reward vs with-item-reward immediate action tendency under a controlled visible-`i` condition.
+
+Scope:
+- adds `ashl_core.reward_biased_random_walk_check`
+- adds `py -3 -m ashl_core.teaching_cli run-reward-biased-random-walk-check`
+- uses deterministic seeded sampling over `look`, `turn_left`, `turn_right`, and `move_forward`
+- verifies score increase and non-lower `move_forward` selection when a prior `item_contact_reward` exists
+- keeps the effect local to immediate front-symbol action scoring
+
+Non-goals:
+- no whole-map random walk improvement claim, route-level item seeking, observed_map navigation toward `I`, pathfinding, BFS, A*, route planner, autonomous exploration, or decision loop
+- no item collection, pickup, inventory, exit activation, win condition, task completion, curiosity, prediction error, place memory, or home sandbox
+- no random walk runner behavior change, Flask UI behavior change, runtime movement rule change, or existing navigation action selection change
+- no LLM planning, LLM vision, lesson_store write, Memory Layer write, long-term memory, or lesson_candidate pipeline connection
+- no pleasure, desire, self-awareness, consciousness, subjective experience, visual understanding, solved symbol grounding, or general learning claim

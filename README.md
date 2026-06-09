@@ -1908,3 +1908,10 @@ Two-Trial History Boundary:
 - Verifies that a prior non-subjective `item_contact_reward` can increase immediate `move_forward` action tendency when `front_symbol=i` is visible again.
 - Includes a no-reward control proving that seeing `i` alone does not apply reward bias.
 - Does not add item seeking, pathfinding, item collection, long-term memory, pleasure claims, or consciousness claims.
+
+## Reward-Biased Random Walk Check v0
+
+- Adds `py -3 -m ashl_core.teaching_cli run-reward-biased-random-walk-check`.
+- Compares no-reward vs with-item-reward immediate action tendency under a controlled visible-`i` condition.
+- Verifies score increase and non-lower `move_forward` selection when a prior `item_contact_reward` exists.
+- Does not claim whole-map item seeking, pathfinding, item collection, long-term memory, pleasure, desire, or consciousness.

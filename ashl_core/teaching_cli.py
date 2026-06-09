@@ -15,6 +15,7 @@ from .grounded_action_experience_influence import run_grounded_action_experience
 from .instinct_random_walk_runner import run_instinct_random_walk
 from .item_reward_event import run_item_reward_event_check
 from .reward_biased_action_tendency import run_reward_biased_action_tendency_check
+from .reward_biased_random_walk_check import run_reward_biased_random_walk_check
 from .wall_experience_influence import run_wall_experience_influence_check
 from .lesson_runner import run_lesson_causality_test, run_session_2a_with_lesson
 from .lesson_store import (
@@ -3378,6 +3379,8 @@ def run_command(command: str) -> dict[str, Any] | str:
         return run_item_reward_event_check()
     if command == "run-reward-biased-action-tendency-check":
         return run_reward_biased_action_tendency_check()
+    if command == "run-reward-biased-random-walk-check":
+        return run_reward_biased_random_walk_check()
     return {
         "command": command,
         "status": "error",
@@ -3436,6 +3439,7 @@ def main(argv: list[str] | None = None) -> int:
             "run-wall-experience-influence-check",
             "run-item-reward-event-check",
             "run-reward-biased-action-tendency-check",
+            "run-reward-biased-random-walk-check",
         ],
     )
     parser.add_argument("--review-id", default="review_001")
@@ -3454,6 +3458,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--runs-per-map", type=int, default=3)
     parser.add_argument("--random-seed", type=int, default=None)
     parser.add_argument("--seed", type=int, default=1)
+    parser.add_argument("--trials", type=int, default=20)
     parser.add_argument("--baseline-path", default="data/baselines/trial_metrics_baseline_v0.json")
     parser.add_argument("--level-id", default="approach_box_dead_end_v0")
     parser.add_argument("--max-records", type=int, default=20)
@@ -3605,6 +3610,8 @@ def main(argv: list[str] | None = None) -> int:
         result = run_item_reward_event_check(scenario=args.scenario)
     elif args.command == "run-reward-biased-action-tendency-check":
         result = run_reward_biased_action_tendency_check()
+    elif args.command == "run-reward-biased-random-walk-check":
+        result = run_reward_biased_random_walk_check(seed=args.seed, trials=args.trials)
     else:
         result = run_command(args.command)
     if hasattr(sys.stdout, "reconfigure"):
