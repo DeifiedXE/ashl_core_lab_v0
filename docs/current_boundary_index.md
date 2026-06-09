@@ -1,7 +1,7 @@
-Boundary Index Version: 2026-06-09-b39
-Last update log: Mimetic Endocrine Line Milestone + Boundary Sync
-Previous Boundary Index Version: 2026-06-09-b38
-Previous Last update log: Generalized Memory Line Milestone + Boundary Sync
+Boundary Index Version: 2026-06-09-b40
+Last update log: Eye Structure Line Milestone + Boundary Sync
+Previous Boundary Index Version: 2026-06-09-b39
+Previous Last update log: Mimetic Endocrine Line Milestone + Boundary Sync
 Clean count at last update log reset: 0/5
 Current clean count: 0/5
 
@@ -115,6 +115,7 @@ Current clean count: 0/5
 - Persistent Eligibility Checker (2026-06-09): checker-only gate for approved candidates entering persistent_candidate review; 10 cases, 1 eligible_for_persistent_candidate_review, 9 blocked, 0 eligible_for_persistent_rule, 0 persistent_rule_write_allowed. No persistent preview/dry-run/write/storage/table/activation, predictor/action selection modification, long-term memory, lesson_store/Memory Layer writes. Log: docs/milestone_logs/persistent_eligibility_checker_milestone_2026-06-09.md
 - Generalized Memory Line Milestone (2026-06-09): completed exact-key generalized memory check line through approved preview; 4 buckets, 2 high-confidence stable patterns, 2 generalized candidates, 2 approved previews; 0 applied, 0 predictor_modified, 0 action_selection_influence, 0 memory_write, 0 persistent_candidate. Exact key only; no fuzzy/semantic/LLM/visual similarity or persistent write. Log: docs/milestone_logs/generalized_memory_line_milestone_2026-06-09.md
 - Mimetic Endocrine Line Milestone (2026-06-09): completed design/schema/trace/integration for four functional axes: dopamine_like approach_reward, norepinephrine_like attention_salience, cortisol_like pressure_load, oxytocin_like source_trust. Results: four-axis trace integration has 4 axes, 11 valid traces, 0 action_selection_influence, 0 memory_write, 0 candidate_approval_influence, 0 predictor_modified, 0 runtime_formula, 0 signal_interaction_runtime, 0 endocrine_runtime. Boundary: trace only; no formulas, no signal interactions, no endocrine runtime/state runtime, no reward bias modification, no autonomous attention, no protective mechanism, no trust-based approval, no action selection change, no memory writes, no subjective emotion/consciousness proof; future subjective possibility not denied. Log: docs/milestone_logs/mimetic_endocrine_line_milestone_2026-06-09.md
+- Eye-Structure Simulation Line Milestone (2026-06-09): completed Retina Decoder -> Feature Schema -> Symbolic Decode -> Visual Frame Schema/Assembly -> Frame Pair -> Change Schema/Trace. Status: low-level trace/checker only; no runtime frame storage, continuous change detection, focus selector, action selection influence, memory write, predictor mutation, object recognition, object tracking, semantic vision, or subjective visual proof.
 
 ## Current Claim Boundary
 - Can claim: Bounded local memory effect observed across 3 validated dead-end maps.
@@ -123,6 +124,7 @@ Current clean count: 0/5
 - Can claim: ASHL Core can run a scripted integrated trace connecting symbolic perception/action/outcome/experience/reason/similar_context_key/prediction/mismatch/candidate/review gate pending state while keeping approval and application disabled.
 - Can claim: ASHL Core can run a safe exact-key generalized memory check line through approved preview while keeping application, predictor mutation, action selection influence, persistent promotion, and memory writes disabled.
 - Can claim: ASHL Core can define and validate four mimetic endocrine signal axes, map controlled reward/change/failure/trust events into schema-valid trace records, and integrate those traces into a four-axis endocrine trace summary while keeping formulas, signal interactions, endocrine runtime control, action selection influence, predictor mutation, candidate approval influence, memory writes, and subjective emotion claims disabled.
+- Can claim: ASHL Core can run a deterministic low-level eye-structure trace path from symbolic/hybrid demo input through retina features, visual_frame, previous/current frame pair, and schema-valid low-level change_records while keeping runtime storage/control, object/semantic claims, and subjective proof disabled.
 - Cannot claim: proof of general learning / map understanding / maze solving / pathfinding / Long-term Memory / lesson-store learning / fuzzy generalization / arbitrary-level generalization / biological hormone simulation / subjective emotion / consciousness or subjective understanding.
 
 ## Currently Deferred Areas

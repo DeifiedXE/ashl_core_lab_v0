@@ -4872,3 +4872,12 @@ Scope:
 
 Non-goals:
 - no runtime frame storage, runtime current_frame / previous_frame storage, automatic frame replacement, continuous frame comparison runtime, continuous change detection runtime, focus selector, focus candidates, attention mechanism, action selection influence, memory write, predictor mutation, object tracking, object recognition, semantic labels, semantic vision, LLM vision, CNN, YOLO, UNet, symbol grounding claim, consciousness claim, or subjective visual experience claim
+
+## Eye-Structure Simulation Line Milestone Sync v0
+
+Status: completed / documentation-milestone / boundary-index-sync.
+
+Progress:
+- completed low-level eye-structure trace path through Visual Frame Change Trace Check v0
+- synced `docs/current_boundary_index.md` to Boundary Index Version `2026-06-09-b40`
+- possible next stage: Focus Selector Design v0, only as a design/trace boundary, not runtime attention or action control

@@ -2201,3 +2201,8 @@ Two-Trial History Boundary:
 - Adds `py -3 -m ashl_core.teaching_cli run-visual-frame-change-trace-check`.
 - Generates deterministic low-level `change_records` from a valid `previous_frame` / `current_frame` demo pair and validates them with the change schema.
 - Trace/check-only: no runtime frame storage, continuous change detection, focus selection, action selection influence, or memory write is added.
+
+## Eye-Structure Simulation Line Milestone v0
+
+- Syncs the completed low-level eye-structure path: symbolic/hybrid demo input -> retina features -> visual_frame -> previous/current frame pair -> low-level `change_records`.
+- All outputs remain trace/checker-only and blocked from action selection, memory write, focus selection, endocrine control, predictor mutation, and semantic/object claims.
