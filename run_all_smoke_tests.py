@@ -41,6 +41,7 @@ from ashl_core.failure_events import (
 from ashl_core.first_output_runtime import UTTERANCE_MAP, generate_minimal_first_output
 from ashl_core.focus_candidate_schema import run_focus_candidate_schema_check
 from ashl_core.focus_candidate_from_change_trace import run_focus_candidate_from_change_trace_check
+from ashl_core.focus_candidate_ranking_trace import run_focus_candidate_ranking_trace_check
 from ashl_core.focus_candidate_ranking_trace_schema import run_focus_candidate_ranking_trace_schema_check
 from ashl_core.guard import guard_output
 from ashl_core.grounded_action_experience import run_grounded_action_experience_check
@@ -3206,6 +3207,67 @@ def smoke_focus_candidate_ranking_trace_schema() -> dict:
         {
             "summary": summary,
             "validation_results": result.get("validation_results", []),
+            "boundary": boundary,
+        },
+    )
+
+
+def smoke_focus_candidate_ranking_trace() -> dict:
+    result = run_focus_candidate_ranking_trace_check()
+    summary = result.get("summary", {})
+    boundary = result.get("boundary_check", {})
+    passed = (
+        result.get("command") == "run-focus-candidate-ranking-trace-check"
+        and result.get("flow") == "focus_candidate_ranking_trace_v0"
+        and result.get("status") == "ok"
+        and summary.get("focus_candidate_count") == 3
+        and summary.get("valid_focus_candidate_count") == 3
+        and summary.get("invalid_focus_candidate_count") == 0
+        and summary.get("ranking_trace_count") == 1
+        and summary.get("valid_ranking_trace_count") == 1
+        and summary.get("invalid_ranking_trace_count") == 0
+        and summary.get("ranking_item_count") == 3
+        and summary.get("valid_ranking_item_count") == 3
+        and summary.get("invalid_ranking_item_count") == 0
+        and summary.get("active_focus_id_non_null_count") == 0
+        and summary.get("focus_applied_count") == 0
+        and summary.get("attention_control_count") == 0
+        and summary.get("runtime_ranking_count") == 0
+        and summary.get("runtime_focus_selector_count") == 0
+        and summary.get("cooldown_applied_count") == 0
+        and summary.get("decay_applied_count") == 0
+        and summary.get("interruptible_count") == 3
+        and summary.get("external_mentor_interrupt_allowed_count") == 3
+        and summary.get("semantic_label_non_null_count") == 0
+        and summary.get("object_recognition_count") == 0
+        and summary.get("object_tracking_count") == 0
+        and summary.get("semantic_vision_count") == 0
+        and summary.get("action_selection_influence_count") == 0
+        and summary.get("memory_write_count") == 0
+        and summary.get("endocrine_control_count") == 0
+        and summary.get("predictor_modified_count") == 0
+        and boundary.get("trace_check_only") is True
+        and boundary.get("uses_focus_candidate_from_change_trace") is True
+        and boundary.get("uses_focus_candidate_schema") is True
+        and boundary.get("uses_focus_candidate_ranking_trace_schema") is True
+        and boundary.get("ordering_is_trace_generation_only") is True
+        and boundary.get("runtime_ranking_added") is False
+        and boundary.get("runtime_focus_selector_added") is False
+        and boundary.get("active_focus_selection_added") is False
+        and boundary.get("focus_application_added") is False
+        and boundary.get("attention_control_added") is False
+        and boundary.get("action_selection_modified") is False
+        and boundary.get("visual_memory_write") is False
+        and boundary.get("object_tracking_enabled") is False
+        and boundary.get("semantic_vision_claimed") is False
+        and boundary.get("llm_vision_used") is False
+    )
+    return _result(
+        "focus_candidate_ranking_trace",
+        passed,
+        {
+            "summary": summary,
+            "ranking_trace_validation": result.get("ranking_trace_validation", {}),
             "boundary": boundary,
         },
     )
@@ -9580,6 +9642,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_focus_candidate_schema(),
         smoke_focus_candidate_ranking_trace_design(),
         smoke_focus_candidate_ranking_trace_schema(),
+        smoke_focus_candidate_ranking_trace(),
         smoke_focus_candidate_from_change_trace(),
         smoke_micro_navigation_goal_reach(),
         smoke_micro_navigation_trial_metrics_cli(),

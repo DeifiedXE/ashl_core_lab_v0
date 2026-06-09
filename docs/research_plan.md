@@ -4962,3 +4962,19 @@ Scope:
 
 Non-goals:
 - no runtime focus selector, runtime ranking, active_focus selection, focus application, attention control, focus candidate ranking runtime, focus-to-action bridge, perception-to-action bridge, endocrine runtime, endocrine-controlled attention, action selection influence, memory write, predictor mutation, object recognition, object tracking, semantic labels, semantic vision, LLM vision, CNN, YOLO, UNet, symbol grounding claim, consciousness claim, or subjective visual experience claim
+
+## Focus Candidate Ranking Trace Check v0
+
+Status: completed / trace-check-only / no-runtime-change.
+
+Goal:
+Create a deterministic trace-only `ranking_trace` from validated `focus_candidate` records and validate it with the ranking trace schema.
+
+Scope:
+- adds `ashl_core.focus_candidate_ranking_trace`
+- adds `py -3 -m ashl_core.teaching_cli run-focus-candidate-ranking-trace-check`
+- reuses `focus_candidate_from_change_trace`, `focus_candidate_schema`, and `focus_candidate_ranking_trace_schema`
+- orders candidates by `score_fields.total_score` descending with stable `focus_candidate_id` tie ordering as trace generation only
+
+Non-goals:
+- no runtime focus selector, runtime ranking, active_focus selection, focus application, attention control, focus candidate ranking runtime, focus-to-action bridge, perception-to-action bridge, endocrine runtime, endocrine-controlled attention, action selection influence, memory write, predictor mutation, object recognition, object tracking, semantic labels, semantic vision, LLM vision, CNN, YOLO, UNet, symbol grounding claim, consciousness claim, or subjective visual experience claim
