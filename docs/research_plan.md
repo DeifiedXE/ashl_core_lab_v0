@@ -2518,6 +2518,42 @@ No lesson_candidate pipeline connection.
 No visual understanding claim.
 No symbol grounding solved claim.
 
+## Simulated Vision Observed Local Map v0
+
+Status:
+minimal-runtime / session-local-observed-map / current-viewport-separation / no-decision-use
+
+Summary:
+Adds `ashl_core.simulated_vision_observed_map`.
+Adds `py -3 -m ashl_core.teaching_cli run-simulated-vision-observed-map-demo`.
+The observed map separates current_viewport from observed_local_map.
+current_viewport is only what is visible now.
+observed_local_map stores session-local cells seen so far.
+x means currently unseen or unknown and does not erase previously observed known symbols.
+Unseen cells are not inferred from the source map.
+
+Boundary:
+Structured symbols only.
+No real images.
+No computer vision.
+No LLM vision.
+No LLM planning.
+No full-map vision exposure.
+No inference for unseen cells.
+No x overwrite of known observed cells.
+No pathfinding / BFS / A*.
+No route planner.
+No item seeking.
+No action selection changes.
+No goal bias changes.
+No existing dead-end A/B behavior changes.
+No lesson_store write.
+No Memory Layer write.
+No Long-term Memory.
+No lesson_candidate pipeline connection.
+No visual understanding claim.
+No symbol grounding solved claim.
+
 ## Micro Navigation Trial Metrics CLI v0
 
 Status:

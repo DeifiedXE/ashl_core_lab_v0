@@ -1285,6 +1285,15 @@ Two-Trial History Boundary:
 - Session memory is cleared at session end.
 - This does not modify action selection, does not use real images, LLM vision, or pathfinding, and does not prove visual understanding or symbol grounding.
 
+## Simulated Vision Observed Local Map v0
+
+- Adds `py -3 -m ashl_core.teaching_cli run-simulated-vision-observed-map-demo`.
+- Separates `current_viewport` from session-local `observed_local_map`.
+- `current_viewport` means what is visible now; `observed_local_map` stores previously observed cells for the current session.
+- `x` means currently unseen or unknown and does not erase previously observed known symbols.
+- No unseen cells are inferred from the source map.
+- This does not use real images, LLM vision, or pathfinding, and does not prove visual understanding or symbol grounding.
+
 ## Micro Navigation Trial Metrics CLI v0
 
 - Adds `py -3 -m ashl_core.teaching_cli run-navigation-trial-metrics --runs 4 --trial-count 5 --max-steps 10`.

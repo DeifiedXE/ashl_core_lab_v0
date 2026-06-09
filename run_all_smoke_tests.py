@@ -143,6 +143,7 @@ from ashl_core.simulated_vision_sandbox import (
     run_simulated_vision_viewport_demo,
 )
 from ashl_core.simulated_vision_memory_bridge import run_simulated_vision_memory_bridge_demo
+from ashl_core.simulated_vision_observed_map import run_simulated_vision_observed_map_demo
 from ashl_core.state_core import StateCore
 from ashl_core.state_persistence import (
     read_last_trace_summary,
@@ -360,6 +361,53 @@ def smoke_simulated_vision_memory_bridge() -> dict:
             "memory_record_count": len(records),
             "query_summary": query_summary,
             "blocked_query_summary": blocked_summary,
+            "boundary": boundary,
+        },
+    )
+
+
+def smoke_simulated_vision_observed_map() -> dict:
+    result = run_simulated_vision_observed_map_demo()
+    boundary = result.get("boundary_check", {})
+    trace = result.get("observed_map_trace", [])
+    persistence = result.get("persistence_check", {})
+    final_map = trace[-1].get("observed_local_map", {}) if trace else {}
+    known_cells = final_map.get("known_cells", [])
+    remembered_symbols = sorted({cell.get("symbol") for cell in known_cells})
+    passed = (
+        result.get("command") == "run-simulated-vision-observed-map-demo"
+        and result.get("flow") == "simulated_vision_observed_local_map_v0"
+        and len(result.get("action_trace", [])) == len(trace)
+        and trace
+        and trace[0].get("known_cell_count_before") == 0
+        and trace[0].get("known_cell_count_after", 0) > 0
+        and final_map.get("known_cell_count", 0) >= trace[0].get("known_cell_count_after", 0)
+        and persistence.get("passed") is True
+        and persistence.get("current_viewport_symbol_for_same_cell_or_x") == "x"
+        and boundary.get("simulated_vision_only") is True
+        and boundary.get("structured_symbols_only") is True
+        and boundary.get("real_image_vision") is False
+        and boundary.get("llm_vision_used") is False
+        and boundary.get("pathfinding_used") is False
+        and boundary.get("observed_local_map_enabled") is True
+        and boundary.get("observed_map_session_local") is True
+        and boundary.get("x_does_not_erase_known_cells") is True
+        and boundary.get("unseen_cells_not_inferred") is True
+        and boundary.get("action_selection_modified") is False
+        and boundary.get("route_planner_added") is False
+        and boundary.get("item_seeking_added") is False
+        and boundary.get("session_memory_write") is False
+    )
+    return _result(
+        "simulated_vision_observed_map",
+        passed,
+        {
+            "action_trace_count": len(result.get("action_trace", [])),
+            "observed_map_trace_count": len(trace),
+            "known_cell_count_initial": trace[0].get("known_cell_count_before") if trace else None,
+            "known_cell_count_final": final_map.get("known_cell_count"),
+            "remembered_symbols": remembered_symbols,
+            "persistence_check": persistence,
             "boundary": boundary,
         },
     )
@@ -6275,6 +6323,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_action_sandbox(),
         smoke_simulated_vision_viewport(),
         smoke_simulated_vision_memory_bridge(),
+        smoke_simulated_vision_observed_map(),
         smoke_micro_navigation_goal_reach(),
         smoke_micro_navigation_trial_metrics_cli(),
         smoke_micro_navigation_multi_goal_level(),
