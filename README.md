@@ -1859,3 +1859,10 @@ Two-Trial History Boundary:
 - Adds read-only `GET /qingyin_state.json` for structured observation state.
 - Shows symbolic sandbox body state, current perception, last action/result, effects/failures, cooldown, and boundary notes.
 - Manual observation only: no autonomy, auto exploration, decision loop, LLM planning, pathfinding, or long-term memory is added.
+
+## Instinct Random Walk + Item Reward Bias Design v0
+
+- Adds `docs/instinct_random_walk_item_reward_bias_design_v0.md`.
+- Designs a future two-round experiment with instinct/random walk, wall-blocked experience, item reward event, and reward-biased action tendency toward `I`.
+- Defines future metrics, controls, staged implementation plan, and language boundaries.
+- Design-only: no runtime behavior, autonomous loop, random walk runner, reward runtime, action weighting, pathfinding, or learning claim is added.

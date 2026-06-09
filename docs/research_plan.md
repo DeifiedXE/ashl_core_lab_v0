@@ -4000,3 +4000,24 @@ Non-goals:
 - no item collection, pickup, inventory, exit activation, win condition, task completion, prediction error, place memory, home sandbox, real robot body, or real image vision
 - no lesson_store write, Memory Layer write, Long-term Memory write, or lesson_candidate pipeline connection
 - no visual understanding, symbol grounding solved, general learning, consciousness, or subjective experience claim
+
+## Instinct Random Walk + Item Reward Bias Design v0
+
+Status: completed / design-only / no-runtime-change.
+
+Goal:
+Design the next bounded experiment: Round 1 explores with no prior experience, records wall-blocked experience and item reward events, then Round 2 carries those records to test reward-biased action tendency under controls.
+
+Scope:
+- adds `docs/instinct_random_walk_item_reward_bias_design_v0.md`
+- defines Round 1 and Round 2 structure
+- defines instinct/random walk policy concept without implementation
+- defines wall-blocked experience and item reward event
+- defines reward-biased action tendency toward visible `I`
+- defines metrics, controls, staged implementation plan, non-claims, and next recommended package
+
+Non-goals:
+- no runtime behavior, autonomous loop, new CLI, random walk runner, reward runtime, dopamine runtime, or action weighting
+- no item collection, pickup, inventory, exit activation, win condition, task completion, curiosity, prediction error, place memory, or home sandbox
+- no pathfinding, BFS, A*, route planner, full-map knowledge, LLM planning, LLM vision, lesson_store write, Memory Layer write, long-term memory, or lesson_candidate pipeline connection
+- no self-awareness, consciousness, subjective experience, visual understanding, solved symbol grounding, or general learning claim
