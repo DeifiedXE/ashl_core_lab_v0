@@ -2170,3 +2170,10 @@ Two-Trial History Boundary:
 - Validates visual frame records composed of already validated retina feature records.
 - Enforces frame count consistency, null retina `semantic_label`, and downstream safety flags.
 - Schema/checker only: no runtime frame buffering, current/previous frame storage, frame comparison, focus selection, action selection influence, memory write, object recognition, or semantic vision is added.
+
+## Visual Frame Assembly From Retina Features Check v0
+
+- Adds `py -3 -m ashl_core.teaching_cli run-visual-frame-assembly-from-retina-features-check`.
+- Assembles validated retina feature records into a `visual_frame` and validates it with the visual frame schema.
+- Reuses symbolic / hybrid retina feature decode, retina feature schema validation, and visual frame buffer schema validation.
+- Check-only: no runtime frame buffering, current/previous frame storage, frame comparison, focus selection, action selection influence, memory write, object recognition, or semantic vision is added.

@@ -4788,3 +4788,21 @@ Scope:
 
 Non-goals:
 - no runtime visual frame buffer, current_frame / previous_frame runtime storage, automatic frame replacement, frame comparison, frame change detection, visual change records, focus selector, focus candidates, attention mechanism, endocrine connection, vision-driven action selection, visual memory write, long-term memory write, lesson_store write, Memory Layer write, predictor mutation, LLM vision, CNN, YOLO, UNet, image processing runtime, RGB quantization runtime, object recognition, semantic labels, scene understanding, symbol grounding claim, consciousness claim, or subjective visual experience claim
+
+## Visual Frame Assembly From Retina Features Check v0
+
+Status: completed / check-only / no-runtime-change.
+
+Goal:
+Assemble validated retina feature records into a visual frame record and validate that frame with the visual frame schema.
+
+Scope:
+- adds `ashl_core.visual_frame_assembly_from_retina_features`
+- adds `py -3 -m ashl_core.teaching_cli run-visual-frame-assembly-from-retina-features-check`
+- reuses `retina_decoder_symbolic_feature_decode` for deterministic symbolic / hybrid demo input
+- reuses `retina_decoder_feature_schema.validate_feature_record` before frame validation
+- reuses `visual_frame_buffer_schema.validate_visual_frame_record` for the assembled frame
+- produces one valid assembled visual frame in the CLI happy path
+
+Non-goals:
+- no runtime visual frame buffer, current_frame / previous_frame runtime storage, automatic frame replacement, frame comparison, frame change detection, visual change records, focus selector, focus candidates, attention mechanism, endocrine connection, vision-driven action selection, visual memory write, long-term memory write, lesson_store write, Memory Layer write, predictor mutation, LLM vision, CNN, YOLO, UNet, image processing runtime, RGB quantization runtime, object recognition, semantic labels, scene understanding, symbol grounding claim, consciousness claim, or subjective visual experience claim

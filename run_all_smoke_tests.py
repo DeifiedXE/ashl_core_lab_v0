@@ -240,6 +240,9 @@ from ashl_core.trace_persistence import append_first_output_trace, append_mentor
 from ashl_core.trial_feedback import append_trial_feedback, build_trial_feedback, summarize_trial_feedback
 from ashl_core.trial_rules import build_trial_suggestions, list_approved_trial_candidates, build_trial_rule_view
 from ashl_core.two_round_instinct_reward_comparison import run_two_round_instinct_reward_comparison
+from ashl_core.visual_frame_assembly_from_retina_features import (
+    run_visual_frame_assembly_from_retina_features_check,
+)
 from ashl_core.visual_frame_buffer_schema import run_visual_frame_buffer_schema_check
 from ashl_core.wall_experience_influence import run_wall_experience_influence_check
 
@@ -2757,6 +2760,64 @@ def smoke_visual_frame_buffer_schema() -> dict:
         {
             "summary": summary,
             "validation_results": result.get("validation_results", []),
+            "boundary": boundary,
+        },
+    )
+
+
+def smoke_visual_frame_assembly_from_retina_features() -> dict:
+    result = run_visual_frame_assembly_from_retina_features_check()
+    summary = result.get("summary", {})
+    boundary = result.get("boundary_check", {})
+    passed = (
+        result.get("command") == "run-visual-frame-assembly-from-retina-features-check"
+        and result.get("flow") == "visual_frame_assembly_from_retina_features_v0"
+        and result.get("status") == "ok"
+        and summary.get("input_cell_count", 0) > 0
+        and summary.get("retina_feature_record_count") == summary.get("input_cell_count")
+        and summary.get("retina_valid_feature_count") == summary.get("retina_feature_record_count")
+        and summary.get("retina_invalid_feature_count") == 0
+        and summary.get("assembled_frame_count") == 1
+        and summary.get("valid_frame_count") == 1
+        and summary.get("invalid_frame_count") == 0
+        and summary.get("semantic_label_non_null_count") == 0
+        and summary.get("semantic_label_non_null_blocked_count") == 0
+        and summary.get("invalid_feature_record_blocked_count") == 0
+        and summary.get("object_recognition_count") == 0
+        and summary.get("semantic_vision_count") == 0
+        and summary.get("runtime_decoder_count") == 0
+        and summary.get("rgb_quantization_runtime_count") == 0
+        and summary.get("image_processing_runtime_count") == 0
+        and summary.get("runtime_frame_buffer_count") == 0
+        and summary.get("frame_change_runtime_count") == 0
+        and summary.get("action_selection_influence_count") == 0
+        and summary.get("memory_write_count") == 0
+        and summary.get("focus_selection_count") == 0
+        and summary.get("endocrine_control_count") == 0
+        and summary.get("predictor_modified_count") == 0
+        and all(item.get("valid") is True for item in result.get("retina_feature_validation_results", []))
+        and all(item.get("valid") is True for item in result.get("frame_validation_results", []))
+        and boundary.get("uses_retina_decoder_symbolic_feature_decode") is True
+        and boundary.get("uses_retina_decoder_feature_schema") is True
+        and boundary.get("uses_visual_frame_buffer_schema") is True
+        and boundary.get("runtime_visual_frame_buffer_added") is False
+        and boundary.get("current_frame_runtime_storage_added") is False
+        and boundary.get("previous_frame_runtime_storage_added") is False
+        and boundary.get("frame_comparison_added") is False
+        and boundary.get("frame_change_runtime_added") is False
+        and boundary.get("focus_selector_added") is False
+        and boundary.get("action_selection_modified") is False
+        and boundary.get("visual_memory_write") is False
+        and boundary.get("object_recognition_enabled") is False
+        and boundary.get("semantic_vision_claimed") is False
+        and boundary.get("llm_vision_used") is False
+    )
+    return _result(
+        "visual_frame_assembly_from_retina_features",
+        passed,
+        {
+            "summary": summary,
+            "frame_validation_results": result.get("frame_validation_results", []),
             "boundary": boundary,
         },
     )
@@ -9065,6 +9126,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_retina_decoder_feature_schema(),
         smoke_retina_decoder_symbolic_feature_decode(),
         smoke_visual_frame_buffer_schema(),
+        smoke_visual_frame_assembly_from_retina_features(),
         smoke_micro_navigation_goal_reach(),
         smoke_micro_navigation_trial_metrics_cli(),
         smoke_micro_navigation_multi_goal_level(),
