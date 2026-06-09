@@ -4021,3 +4021,24 @@ Non-goals:
 - no item collection, pickup, inventory, exit activation, win condition, task completion, curiosity, prediction error, place memory, or home sandbox
 - no pathfinding, BFS, A*, route planner, full-map knowledge, LLM planning, LLM vision, lesson_store write, Memory Layer write, long-term memory, or lesson_candidate pipeline connection
 - no self-awareness, consciousness, subjective experience, visual understanding, solved symbol grounding, or general learning claim
+
+## Instinct Random Walk Runner v0
+
+Status: completed / bounded-seeded-runner / round-1-only.
+
+Goal:
+Add the first bounded instinct/random-walk runner in the larger symbolic sandbox.
+
+Scope:
+- adds `ashl_core.instinct_random_walk_runner`
+- adds `py -3 -m ashl_core.teaching_cli run-instinct-random-walk`
+- supports `--seed` and `--max-steps`
+- defaults to seed `1`, max steps `50`, and level `simulated_vision_larger_sandbox_v0`
+- uses fixed random action weights: `look=1`, `turn_left=1`, `turn_right=1`, `move_forward=2`
+- records step traces and local experience outcomes
+
+Non-goals:
+- no prior experience loading, reward bias, dopamine-like signal, wall-experience influence, or two-round comparison
+- no item collection, pickup, inventory, exit activation, win condition, task completion, curiosity, prediction error, place memory, or home sandbox
+- no pathfinding, BFS, A*, route planner, full-map knowledge, LLM planning, LLM vision, lesson_store write, Memory Layer write, long-term memory, or lesson_candidate pipeline connection
+- no self-awareness, consciousness, subjective experience, visual understanding, solved symbol grounding, or general learning claim

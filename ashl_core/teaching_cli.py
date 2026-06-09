@@ -12,6 +12,7 @@ from .fake_sandbox import build_initial_sandbox_state, observe, pick_up
 from .first_output_runtime import generate_minimal_first_output
 from .grounded_action_experience import run_grounded_action_experience_check
 from .grounded_action_experience_influence import run_grounded_action_experience_influence_check
+from .instinct_random_walk_runner import run_instinct_random_walk
 from .lesson_runner import run_lesson_causality_test, run_session_2a_with_lesson
 from .lesson_store import (
     build_lesson_from_failure,
@@ -3366,6 +3367,8 @@ def run_command(command: str) -> dict[str, Any] | str:
         return run_grounded_action_experience_check()
     if command == "run-grounded-action-experience-influence-check":
         return run_grounded_action_experience_influence_check()
+    if command == "run-instinct-random-walk":
+        return run_instinct_random_walk()
     return {
         "command": command,
         "status": "error",
@@ -3420,6 +3423,7 @@ def main(argv: list[str] | None = None) -> int:
             "run-simulated-vision-symbol-grounding-check",
             "run-grounded-action-experience-check",
             "run-grounded-action-experience-influence-check",
+            "run-instinct-random-walk",
         ],
     )
     parser.add_argument("--review-id", default="review_001")
@@ -3437,6 +3441,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--runs", type=int, default=4)
     parser.add_argument("--runs-per-map", type=int, default=3)
     parser.add_argument("--random-seed", type=int, default=None)
+    parser.add_argument("--seed", type=int, default=1)
     parser.add_argument("--baseline-path", default="data/baselines/trial_metrics_baseline_v0.json")
     parser.add_argument("--level-id", default="approach_box_dead_end_v0")
     parser.add_argument("--max-records", type=int, default=20)
@@ -3576,6 +3581,10 @@ def main(argv: list[str] | None = None) -> int:
         result = run_grounded_action_experience_check(scenario=args.scenario)
     elif args.command == "run-grounded-action-experience-influence-check":
         result = run_grounded_action_experience_influence_check(scenario=args.scenario)
+    elif args.command == "run-instinct-random-walk":
+        raw_argv = argv if argv is not None else sys.argv[1:]
+        max_steps = args.max_steps if "--max-steps" in raw_argv else 50
+        result = run_instinct_random_walk(seed=args.seed, max_steps=max_steps)
     else:
         result = run_command(args.command)
     if hasattr(sys.stdout, "reconfigure"):

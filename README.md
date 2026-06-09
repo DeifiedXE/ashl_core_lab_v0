@@ -1866,3 +1866,10 @@ Two-Trial History Boundary:
 - Designs a future two-round experiment with instinct/random walk, wall-blocked experience, item reward event, and reward-biased action tendency toward `I`.
 - Defines future metrics, controls, staged implementation plan, and language boundaries.
 - Design-only: no runtime behavior, autonomous loop, random walk runner, reward runtime, action weighting, pathfinding, or learning claim is added.
+
+## Instinct Random Walk Runner v0
+
+- Adds `py -3 -m ashl_core.teaching_cli run-instinct-random-walk`.
+- Adds a bounded seeded random/instinct runner in the larger symbolic sandbox.
+- Records step traces and local experience outcomes for wall-blocked, item-contact, passage, and exit contact observations.
+- Round 1 only: no prior experience, reward bias, pathfinding, LLM planning, item collection, two-round comparison, or long-term memory is used.

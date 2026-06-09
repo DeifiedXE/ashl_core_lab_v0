@@ -37,6 +37,7 @@ from ashl_core.first_output_runtime import UTTERANCE_MAP, generate_minimal_first
 from ashl_core.guard import guard_output
 from ashl_core.grounded_action_experience import run_grounded_action_experience_check
 from ashl_core.grounded_action_experience_influence import run_grounded_action_experience_influence_check
+from ashl_core.instinct_random_walk_runner import run_instinct_random_walk
 from ashl_core.integrated_loop import run_turn
 from ashl_core.lesson_candidate_drafts import build_lesson_candidate_draft_trace, validate_lesson_candidate_draft_trace
 from ashl_core.lesson_runner import (
@@ -979,6 +980,68 @@ def smoke_grounded_action_experience() -> dict:
         {
             "experience_summary": summary,
             "scenario_results": result.get("scenario_results", []),
+            "boundary": boundary,
+        },
+    )
+
+
+def smoke_instinct_random_walk_runner() -> dict:
+    result = run_instinct_random_walk(seed=1, max_steps=20)
+    same = run_instinct_random_walk(seed=1, max_steps=20)
+    different = run_instinct_random_walk(seed=2, max_steps=20)
+    boundary = result.get("boundary_check", {})
+    metrics = result.get("metrics", {})
+    experience_summary = result.get("experience_summary", {})
+    actions = [step.get("selected_action") for step in result.get("step_trace", [])]
+    different_actions = [step.get("selected_action") for step in different.get("step_trace", [])]
+    experience_keys = experience_summary.get("experience_keys", [])
+    passed = (
+        result.get("command") == "run-instinct-random-walk"
+        and result.get("flow") == "instinct_random_walk_runner_v0"
+        and result.get("status") == "ok"
+        and result.get("level_id") == "simulated_vision_larger_sandbox_v0"
+        and result.get("seed") == 1
+        and result.get("max_steps") == 20
+        and result.get("action_weights") == {"look": 1, "turn_left": 1, "turn_right": 1, "move_forward": 2}
+        and len(result.get("step_trace", [])) == 20
+        and metrics.get("step_count") == 20
+        and metrics.get("step_count") <= result.get("max_steps")
+        and "wall_blocked_count" in metrics
+        and "item_contact_count" in metrics
+        and experience_summary.get("experience_count") == 20
+        and all(action in {"look", "turn_left", "turn_right", "move_forward"} for action in actions)
+        and all(step.get("experience_record", {}).get("experience_key", "").startswith("front_symbol=") for step in result.get("step_trace", []))
+        and all("|action=" in key for key in experience_keys)
+        and result.get("step_trace") == same.get("step_trace")
+        and actions != different_actions
+        and boundary.get("instinct_random_walk_enabled") is True
+        and boundary.get("round_1_only") is True
+        and boundary.get("prior_experience_loaded") is False
+        and boundary.get("experience_influence_enabled") is False
+        and boundary.get("reward_bias_enabled") is False
+        and boundary.get("dopamine_like_signal_enabled") is False
+        and boundary.get("two_round_comparison_enabled") is False
+        and boundary.get("simulated_vision_only") is True
+        and boundary.get("larger_static_sandbox_used") is True
+        and boundary.get("structured_symbols_only") is True
+        and boundary.get("llm_planning_used") is False
+        and boundary.get("pathfinding_used") is False
+        and boundary.get("route_planner_added") is False
+        and boundary.get("full_map_visible_to_agent") is False
+        and boundary.get("autonomous_action_loop_enabled") is False
+        and boundary.get("item_collection_enabled") is False
+        and boundary.get("lesson_store_write") is False
+        and boundary.get("memory_layer_write") is False
+        and boundary.get("long_term_memory_write") is False
+    )
+    return _result(
+        "instinct_random_walk_runner",
+        passed,
+        {
+            "actions": actions,
+            "different_actions": different_actions,
+            "metrics": metrics,
+            "experience_summary": experience_summary,
             "boundary": boundary,
         },
     )
@@ -6969,6 +7032,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_simulated_vision_symbol_grounding(),
         smoke_grounded_action_experience(),
         smoke_grounded_action_experience_influence(),
+        smoke_instinct_random_walk_runner(),
         smoke_micro_navigation_goal_reach(),
         smoke_micro_navigation_trial_metrics_cli(),
         smoke_micro_navigation_multi_goal_level(),
