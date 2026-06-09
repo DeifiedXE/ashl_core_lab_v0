@@ -41,6 +41,7 @@ from ashl_core.guard import guard_output
 from ashl_core.grounded_action_experience import run_grounded_action_experience_check
 from ashl_core.grounded_action_experience_influence import run_grounded_action_experience_influence_check
 from ashl_core.generalized_memory_exact_key_bucket import run_generalized_memory_exact_key_bucket_check
+from ashl_core.generalized_candidate_from_pattern import run_generalized_candidate_from_pattern_check
 from ashl_core.generalized_prediction_confidence_check import run_generalized_prediction_confidence_check
 from ashl_core.instinct_random_walk_runner import run_instinct_random_walk
 from ashl_core.integrated_experience_session_trace import run_integrated_experience_session_trace
@@ -2372,6 +2373,79 @@ def smoke_generalized_prediction_confidence_check() -> dict:
     )
     return _result(
         "generalized_prediction_confidence_check",
+        passed,
+        {
+            "summary": summary,
+            "stable_wall_bucket": stable_wall,
+            "stable_item_bucket": stable_item,
+            "mixed_empty_bucket": mixed_empty,
+            "single_session_bucket": single_session,
+            "boundary": boundary,
+        },
+    )
+
+
+def smoke_generalized_candidate_from_pattern() -> dict:
+    result = run_generalized_candidate_from_pattern_check()
+    candidate_results = result.get("candidate_results", [])
+    by_reason = {item.get("primary_reason"): item for item in candidate_results}
+    summary = result.get("summary", {})
+    boundary = result.get("boundary_check", {})
+    stable_wall = by_reason.get("front_cell_wall", {})
+    stable_item = by_reason.get("front_cell_item_contact", {})
+    mixed_empty = by_reason.get("front_cell_empty_walkable", {})
+    single_session = by_reason.get("front_cell_door_observed", {})
+    created_candidates = [
+        item.get("candidate", {})
+        for item in candidate_results
+        if item.get("candidate_created") is True
+    ]
+    passed = (
+        result.get("command") == "run-generalized-candidate-from-pattern-check"
+        and result.get("flow") == "generalized_candidate_from_pattern_v0"
+        and result.get("status") == "ok"
+        and summary.get("suggestion_count") == 4
+        and summary.get("candidate_created_count") == 2
+        and summary.get("pending_review_count") == 2
+        and summary.get("blocked_count") == 2
+        and summary.get("approved_count") == 0
+        and summary.get("applied_count") == 0
+        and summary.get("persistent_candidate_count") == 0
+        and summary.get("persistent_rule_write_allowed_count") == 0
+        and summary.get("action_selection_influence_count") == 0
+        and stable_wall.get("candidate_created") is True
+        and stable_wall.get("candidate", {}).get("candidate_status") == "pending_review"
+        and stable_item.get("candidate_created") is True
+        and stable_item.get("candidate", {}).get("candidate_status") == "pending_review"
+        and mixed_empty.get("candidate_created") is False
+        and "conflict_like_distribution" in mixed_empty.get("block_reasons", [])
+        and single_session.get("candidate_created") is False
+        and "single_session_evidence" in single_session.get("block_reasons", [])
+        and all(candidate.get("review_required") is True for candidate in created_candidates)
+        and all(candidate.get("review_status") == "pending_review" for candidate in created_candidates)
+        and all(candidate.get("approved") is False for candidate in created_candidates)
+        and all(candidate.get("applied") is False for candidate in created_candidates)
+        and boundary.get("candidate_generation_check_only") is True
+        and boundary.get("exact_similar_context_key_only") is True
+        and boundary.get("fuzzy_similarity_enabled") is False
+        and boundary.get("semantic_similarity_enabled") is False
+        and boundary.get("llm_similarity_enabled") is False
+        and boundary.get("visual_similarity_enabled") is False
+        and boundary.get("generalized_candidate_created_in_output") is True
+        and boundary.get("generalized_candidate_persisted") is False
+        and boundary.get("candidate_auto_approved") is False
+        and boundary.get("candidate_auto_applied") is False
+        and boundary.get("review_required") is True
+        and boundary.get("review_status_pending_only") is True
+        and boundary.get("prediction_confidence_applied_to_predictor") is False
+        and boundary.get("global_predictor_modified") is False
+        and boundary.get("action_selection_modified") is False
+        and boundary.get("persistent_candidate_created") is False
+        and boundary.get("persistent_rule_write_enabled") is False
+        and boundary.get("long_term_memory_write") is False
+    )
+    return _result(
+        "generalized_candidate_from_pattern",
         passed,
         {
             "summary": summary,
@@ -8325,6 +8399,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_persistent_eligibility_checker(),
         smoke_generalized_memory_exact_key_bucket(),
         smoke_generalized_prediction_confidence_check(),
+        smoke_generalized_candidate_from_pattern(),
         smoke_micro_navigation_goal_reach(),
         smoke_micro_navigation_trial_metrics_cli(),
         smoke_micro_navigation_multi_goal_level(),

@@ -2058,3 +2058,10 @@ Two-Trial History Boundary:
 - Converts exact-key bucket summaries into prediction confidence suggestions.
 - Stable cross-session exact-key patterns can suggest `increase_confidence`.
 - Checker-only: does not apply confidence to predictors, modify predictor rules, create generalized candidates, or influence action selection.
+
+## Generalized Candidate From Pattern v0
+
+- Adds `py -3 -m ashl_core.teaching_cli run-generalized-candidate-from-pattern-check`.
+- Creates review-gated `generalized_candidate` records from stable exact-key patterns and confidence suggestions.
+- Created candidates remain `pending_review`, unapproved, unapplied, and non-persistent.
+- Checker-output only: does not persist candidates, modify predictors, write persistent rules, or affect action selection.

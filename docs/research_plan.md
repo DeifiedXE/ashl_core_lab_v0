@@ -4513,3 +4513,20 @@ Scope:
 
 Non-goals:
 - no fuzzy similarity, semantic similarity, LLM similarity, visual similarity, cross-session database, persistent storage, long-term memory write, lesson_store write, Memory Layer write, predictor behavior modification, prediction confidence application, prediction rule modification, global predictor modification, action selection modification, prediction-driven suppression/preference, runtime generalized_candidate creation, candidate auto-approval, candidate application, persistent rule write, persistent preview/dry-run, lesson internalization, instinct-like behavior layer, pathfinding, BFS, A*, route planner, item seeking, item collection, reward changes, random walk changes, UI changes, autonomous exploration, decision loop, LLM reasoning, LLM planning, LLM vision, Boundary Index modification, general learning claim, autonomous learning claim, visual understanding claim, solved symbol grounding claim, consciousness claim, or subjective experience claim
+
+## Generalized Candidate From Pattern v0
+
+Status: completed / candidate-generation-check-only / review-gated-output.
+
+Goal:
+Create review-gated `generalized_candidate` records from stable exact-key patterns and confidence suggestions.
+
+Scope:
+- adds `ashl_core.generalized_candidate_from_pattern`
+- adds `py -3 -m ashl_core.teaching_cli run-generalized-candidate-from-pattern-check`
+- reuses `Generalized Prediction Confidence Check v0` output
+- creates output-only generalized candidates for stable high-confidence exact-key patterns
+- keeps created candidates `pending_review`, unapproved, unapplied, non-persistent, and unable to affect action selection
+
+Non-goals:
+- no fuzzy similarity, semantic similarity, LLM similarity, visual similarity, cross-session database, persistent storage, long-term memory write, lesson_store write, Memory Layer write, generalized candidate persistence, candidate auto-approval, candidate application, persistent candidate creation, persistent rule write, persistent preview/dry-run, predictor behavior modification, prediction confidence application, prediction rule modification, global predictor modification, action selection modification, prediction-driven suppression/preference, lesson internalization, instinct-like behavior layer, pathfinding, BFS, A*, route planner, item seeking, item collection, reward changes, random walk changes, UI changes, autonomous exploration, decision loop, LLM reasoning, LLM planning, LLM vision, Boundary Index modification, general learning claim, autonomous learning claim, visual understanding claim, solved symbol grounding claim, consciousness claim, or subjective experience claim
