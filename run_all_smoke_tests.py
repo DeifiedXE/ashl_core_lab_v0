@@ -209,6 +209,7 @@ from ashl_core.tactile_state_mapping import map_tactile_result_to_state_key
 from ashl_core.trace_persistence import append_first_output_trace, append_mentor_feedback_trace
 from ashl_core.trial_feedback import append_trial_feedback, build_trial_feedback, summarize_trial_feedback
 from ashl_core.trial_rules import build_trial_suggestions, list_approved_trial_candidates, build_trial_rule_view
+from ashl_core.wall_experience_influence import run_wall_experience_influence_check
 
 
 REPORT_PATH = Path("smoke_test_report.json")
@@ -1042,6 +1043,68 @@ def smoke_instinct_random_walk_runner() -> dict:
             "different_actions": different_actions,
             "metrics": metrics,
             "experience_summary": experience_summary,
+            "boundary": boundary,
+        },
+    )
+
+
+def smoke_wall_experience_influence() -> dict:
+    result = run_wall_experience_influence_check(seed=1, max_steps=20)
+    control = result.get("control_result", {})
+    influence = result.get("influence_result", {})
+    store_summary = result.get("experience_store_summary", {})
+    summary = result.get("summary", {})
+    boundary = result.get("boundary_check", {})
+    passed = (
+        result.get("command") == "run-wall-experience-influence-check"
+        and result.get("flow") == "wall_experience_influence_v0"
+        and result.get("status") == "ok"
+        and result.get("level_id") == "simulated_vision_larger_sandbox_v0"
+        and control.get("front_symbol") == "w"
+        and control.get("candidate_action") == "move_forward"
+        and control.get("selected_action") == "move_forward"
+        and control.get("experience_used_for_decision") is False
+        and control.get("influence_applied") is False
+        and control.get("passed") is True
+        and influence.get("prior_experience", {}).get("front_symbol") == "w"
+        and influence.get("prior_experience", {}).get("action") == "move_forward"
+        and influence.get("prior_experience", {}).get("outcome_type") == "blocked"
+        and influence.get("prior_experience", {}).get("failure_reasons") == ["wall_blocked"]
+        and influence.get("candidate_action") == "move_forward"
+        and influence.get("selected_action") != "move_forward"
+        and influence.get("selected_action") == "turn_right"
+        and influence.get("matching_experience_found") is True
+        and influence.get("experience_used_for_decision") is True
+        and influence.get("influence_applied") is True
+        and influence.get("influence_type") == "suppress"
+        and influence.get("passed") is True
+        and store_summary.get("experience_count") == 1
+        and store_summary.get("experience_keys") == ["front_symbol=w|action=move_forward"]
+        and store_summary.get("wall_blocked_experience_available") is True
+        and summary.get("control_passed") is True
+        and summary.get("influence_passed") is True
+        and summary.get("requires_prior_experience_for_influence") is True
+        and summary.get("all_wall_experience_influence_checks_passed") is True
+        and boundary.get("wall_experience_influence_enabled") is True
+        and boundary.get("requires_prior_experience_for_influence") is True
+        and boundary.get("no_experience_control_used") is True
+        and boundary.get("item_reward_bias_enabled") is False
+        and boundary.get("dopamine_like_signal_enabled") is False
+        and boundary.get("item_seeking_enabled") is False
+        and boundary.get("two_round_item_comparison_enabled") is False
+        and boundary.get("pathfinding_used") is False
+        and boundary.get("route_planner_added") is False
+        and boundary.get("full_map_visible_to_agent") is False
+        and boundary.get("long_term_memory_write") is False
+    )
+    return _result(
+        "wall_experience_influence",
+        passed,
+        {
+            "control": control,
+            "influence": influence,
+            "experience_store_summary": store_summary,
+            "summary": summary,
             "boundary": boundary,
         },
     )
@@ -7033,6 +7096,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_grounded_action_experience(),
         smoke_grounded_action_experience_influence(),
         smoke_instinct_random_walk_runner(),
+        smoke_wall_experience_influence(),
         smoke_micro_navigation_goal_reach(),
         smoke_micro_navigation_trial_metrics_cli(),
         smoke_micro_navigation_multi_goal_level(),

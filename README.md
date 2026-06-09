@@ -1873,3 +1873,10 @@ Two-Trial History Boundary:
 - Adds a bounded seeded random/instinct runner in the larger symbolic sandbox.
 - Records step traces and local experience outcomes for wall-blocked, item-contact, passage, and exit contact observations.
 - Round 1 only: no prior experience, reward bias, pathfinding, LLM planning, item collection, two-round comparison, or long-term memory is used.
+
+## Wall Experience Influence v0
+
+- Adds `py -3 -m ashl_core.teaching_cli run-wall-experience-influence-check`.
+- Verifies that prior `front_symbol=w|action=move_forward` wall-blocked experience can suppress a later matching `move_forward` action.
+- Includes a no-experience control proving that seeing `w` alone does not trigger suppression.
+- Does not add item reward bias, dopamine-like signals, pathfinding, route planning, item seeking, or long-term memory.

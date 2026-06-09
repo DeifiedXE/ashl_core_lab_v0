@@ -4042,3 +4042,24 @@ Non-goals:
 - no item collection, pickup, inventory, exit activation, win condition, task completion, curiosity, prediction error, place memory, or home sandbox
 - no pathfinding, BFS, A*, route planner, full-map knowledge, LLM planning, LLM vision, lesson_store write, Memory Layer write, long-term memory, or lesson_candidate pipeline connection
 - no self-awareness, consciousness, subjective experience, visual understanding, solved symbol grounding, or general learning claim
+
+## Wall Experience Influence v0
+
+Status: completed / runner-local-influence / wall-only.
+
+Goal:
+Verify that wall-blocked experience can influence a later matching immediate action.
+
+Scope:
+- adds `ashl_core.wall_experience_influence`
+- adds `py -3 -m ashl_core.teaching_cli run-wall-experience-influence-check`
+- supports `--seed` and `--max-steps` for CLI consistency
+- verifies no-experience control: `front_symbol=w` alone does not suppress `move_forward`
+- verifies prior wall-blocked experience suppresses later matching `front_symbol=w|action=move_forward`
+- uses deterministic fallback action `turn_right`
+
+Non-goals:
+- no item reward bias, dopamine-like signal, item seeking, or two-round item comparison
+- no item collection, pickup, inventory, exit activation, win condition, task completion, curiosity, prediction error, place memory, or home sandbox
+- no pathfinding, BFS, A*, route planner, full-map knowledge, LLM planning, LLM vision, lesson_store write, Memory Layer write, long-term memory, or lesson_candidate pipeline connection
+- no self-awareness, consciousness, subjective experience, visual understanding, solved symbol grounding, or general learning claim
