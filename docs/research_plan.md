@@ -4170,3 +4170,24 @@ Non-goals:
 - no random walk runner behavior change, Flask UI behavior change, runtime movement rule change, or existing navigation action selection change
 - no LLM planning, LLM vision, lesson_store write, Memory Layer write, long-term memory, or lesson_candidate pipeline connection
 - no pleasure, desire, self-awareness, consciousness, subjective experience, visual understanding, solved symbol grounding, or general learning claim
+
+## Two-Round Instinct Reward Comparison v0
+
+Status: completed / controlled-two-round-comparison / no-item-seeking.
+
+Goal:
+Close the instinct/wall/reward line with a controlled comparison between Round 1 and Round 2.
+
+Scope:
+- adds `ashl_core.two_round_instinct_reward_comparison`
+- adds `py -3 -m ashl_core.teaching_cli run-two-round-instinct-reward-comparison`
+- Round 1 has no carried experience and no carried reward
+- Round 2 carries wall experience and item reward experience
+- verifies immediate wall suppression and visible-item reward bias in controlled scenarios
+
+Non-goals:
+- no map-level item seeking, whole-map random walk improvement claim, observed_map navigation toward `I`, pathfinding, BFS, A*, route planner, autonomous exploration, or decision loop
+- no item collection, pickup, inventory, exit activation, win condition, task completion, curiosity, prediction error, place memory, or home sandbox
+- no random walk base behavior change, Flask UI behavior change, runtime movement rule change, or existing navigation action selection change
+- no LLM planning, LLM vision, lesson_store write, Memory Layer write, long-term memory, or lesson_candidate pipeline connection
+- no pleasure, desire, self-awareness, consciousness, subjective experience, visual understanding, solved symbol grounding, or general learning claim

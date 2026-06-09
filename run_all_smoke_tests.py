@@ -212,6 +212,7 @@ from ashl_core.tactile_state_mapping import map_tactile_result_to_state_key
 from ashl_core.trace_persistence import append_first_output_trace, append_mentor_feedback_trace
 from ashl_core.trial_feedback import append_trial_feedback, build_trial_feedback, summarize_trial_feedback
 from ashl_core.trial_rules import build_trial_suggestions, list_approved_trial_candidates, build_trial_rule_view
+from ashl_core.two_round_instinct_reward_comparison import run_two_round_instinct_reward_comparison
 from ashl_core.wall_experience_influence import run_wall_experience_influence_check
 
 
@@ -1512,6 +1513,82 @@ def smoke_reward_biased_random_walk_check() -> dict:
         {
             "no_reward": no_reward,
             "with_reward": with_reward,
+            "comparison": comparison,
+            "boundary": boundary,
+        },
+    )
+
+
+def smoke_two_round_instinct_reward_comparison() -> dict:
+    result = run_two_round_instinct_reward_comparison(seed=1, trials=20)
+    round1 = result.get("round1", {})
+    round2 = result.get("round2", {})
+    wall_control = round1.get("wall_control", {})
+    item_control = round1.get("item_control", {})
+    wall_with_experience = round2.get("wall_with_experience", {})
+    item_with_reward = round2.get("item_with_reward", {})
+    comparison = result.get("comparison", {})
+    boundary = result.get("boundary_check", {})
+    passed = (
+        result.get("command") == "run-two-round-instinct-reward-comparison"
+        and result.get("flow") == "two_round_instinct_reward_comparison_v0"
+        and result.get("status") == "ok"
+        and result.get("level_id") == "simulated_vision_larger_sandbox_v0"
+        and result.get("seed") == 1
+        and result.get("trials") == 20
+        and wall_control.get("front_symbol") == "w"
+        and wall_control.get("candidate_action") == "move_forward"
+        and wall_control.get("selected_action") == "move_forward"
+        and wall_control.get("experience_used_for_decision") is False
+        and wall_control.get("influence_applied") is False
+        and wall_with_experience.get("carried_wall_experience") is True
+        and wall_with_experience.get("front_symbol") == "w"
+        and wall_with_experience.get("selected_action") != "move_forward"
+        and wall_with_experience.get("experience_used_for_decision") is True
+        and wall_with_experience.get("influence_applied") is True
+        and wall_with_experience.get("influence_type") == "suppress"
+        and item_control.get("front_symbol") == "i"
+        and item_control.get("candidate_action") == "move_forward"
+        and item_control.get("reward_bias_applied") is False
+        and item_control.get("move_forward_score") == 1.0
+        and item_with_reward.get("carried_item_reward") is True
+        and item_with_reward.get("front_symbol") == "i"
+        and item_with_reward.get("reward_bias_applied") is True
+        and item_with_reward.get("reward_used_for_decision") is True
+        and item_with_reward.get("move_forward_score") > item_control.get("move_forward_score")
+        and item_with_reward.get("move_forward_selected_count") >= item_control.get("move_forward_selected_count")
+        and comparison.get("wall_round2_improved") is True
+        and comparison.get("item_round2_bias_improved") is True
+        and comparison.get("move_forward_score_delta_for_i") == 0.5
+        and comparison.get("move_forward_selected_count_delta_for_i") >= 0
+        and comparison.get("round2_uses_carried_experience") is True
+        and comparison.get("round2_uses_carried_reward") is True
+        and comparison.get("all_two_round_checks_passed") is True
+        and boundary.get("two_round_instinct_reward_comparison_enabled") is True
+        and boundary.get("controlled_immediate_tendency_comparison") is True
+        and boundary.get("whole_map_item_seeking_claimed") is False
+        and boundary.get("whole_map_random_walk_improvement_claimed") is False
+        and boundary.get("wall_experience_influence_enabled") is True
+        and boundary.get("item_reward_event_enabled") is True
+        and boundary.get("reward_biased_action_tendency_enabled") is True
+        and boundary.get("reward_biased_random_walk_check_enabled") is True
+        and boundary.get("requires_prior_wall_experience_for_wall_influence") is True
+        and boundary.get("requires_prior_reward_for_item_bias") is True
+        and boundary.get("item_seeking_enabled") is False
+        and boundary.get("pathfinding_used") is False
+        and boundary.get("route_planner_added") is False
+        and boundary.get("long_term_memory_write") is False
+        and boundary.get("pleasure_claimed") is False
+        and boundary.get("desire_claimed") is False
+        and boundary.get("consciousness_claimed") is False
+        and boundary.get("subjective_experience_claimed") is False
+    )
+    return _result(
+        "two_round_instinct_reward_comparison",
+        passed,
+        {
+            "round1": round1,
+            "round2": round2,
             "comparison": comparison,
             "boundary": boundary,
         },
@@ -7445,6 +7522,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_item_reward_event(),
         smoke_reward_biased_action_tendency(),
         smoke_reward_biased_random_walk_check(),
+        smoke_two_round_instinct_reward_comparison(),
         smoke_micro_navigation_goal_reach(),
         smoke_micro_navigation_trial_metrics_cli(),
         smoke_micro_navigation_multi_goal_level(),

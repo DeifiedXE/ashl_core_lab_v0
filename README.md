@@ -1915,3 +1915,11 @@ Two-Trial History Boundary:
 - Compares no-reward vs with-item-reward immediate action tendency under a controlled visible-`i` condition.
 - Verifies score increase and non-lower `move_forward` selection when a prior `item_contact_reward` exists.
 - Does not claim whole-map item seeking, pathfinding, item collection, long-term memory, pleasure, desire, or consciousness.
+
+## Two-Round Instinct Reward Comparison v0
+
+- Adds `py -3 -m ashl_core.teaching_cli run-two-round-instinct-reward-comparison`.
+- Closes the instinct/wall/reward line with a controlled two-round comparison.
+- Round 1 has no carried experience or reward; Round 2 carries wall experience and item reward experience.
+- Verifies immediate wall suppression and visible-item reward bias in controlled scenarios.
+- Does not claim map-level item seeking, pathfinding, item collection, long-term memory, pleasure, desire, or consciousness.
