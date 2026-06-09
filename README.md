@@ -2051,3 +2051,10 @@ Two-Trial History Boundary:
 - Aggregates demo cross-session experience records by exact `similar_context_key`.
 - Reports pattern counts, outcome distribution, reason distribution, confidence labels, and future `generalized_candidate` eligibility.
 - Runtime check only: does not use fuzzy / semantic / LLM / visual similarity, write long-term memory, create generalized candidates, modify predictors, or affect action selection.
+
+## Generalized Prediction Confidence Check v0
+
+- Adds `py -3 -m ashl_core.teaching_cli run-generalized-prediction-confidence-check`.
+- Converts exact-key bucket summaries into prediction confidence suggestions.
+- Stable cross-session exact-key patterns can suggest `increase_confidence`.
+- Checker-only: does not apply confidence to predictors, modify predictor rules, create generalized candidates, or influence action selection.

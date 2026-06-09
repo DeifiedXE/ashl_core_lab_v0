@@ -41,6 +41,7 @@ from ashl_core.guard import guard_output
 from ashl_core.grounded_action_experience import run_grounded_action_experience_check
 from ashl_core.grounded_action_experience_influence import run_grounded_action_experience_influence_check
 from ashl_core.generalized_memory_exact_key_bucket import run_generalized_memory_exact_key_bucket_check
+from ashl_core.generalized_prediction_confidence_check import run_generalized_prediction_confidence_check
 from ashl_core.instinct_random_walk_runner import run_instinct_random_walk
 from ashl_core.integrated_experience_session_trace import run_integrated_experience_session_trace
 from ashl_core.integrated_trace_chain_break_audit import run_integrated_trace_chain_break_audit
@@ -2312,6 +2313,65 @@ def smoke_generalized_memory_exact_key_bucket() -> dict:
     )
     return _result(
         "generalized_memory_exact_key_bucket",
+        passed,
+        {
+            "summary": summary,
+            "stable_wall_bucket": stable_wall,
+            "stable_item_bucket": stable_item,
+            "mixed_empty_bucket": mixed_empty,
+            "single_session_bucket": single_session,
+            "boundary": boundary,
+        },
+    )
+
+
+def smoke_generalized_prediction_confidence_check() -> dict:
+    result = run_generalized_prediction_confidence_check()
+    suggestions = result.get("confidence_suggestions", [])
+    by_reason = {suggestion.get("primary_reason"): suggestion for suggestion in suggestions}
+    summary = result.get("summary", {})
+    boundary = result.get("boundary_check", {})
+    stable_wall = by_reason.get("front_cell_wall", {})
+    stable_item = by_reason.get("front_cell_item_contact", {})
+    mixed_empty = by_reason.get("front_cell_empty_walkable", {})
+    single_session = by_reason.get("front_cell_door_observed", {})
+    passed = (
+        result.get("command") == "run-generalized-prediction-confidence-check"
+        and result.get("flow") == "generalized_prediction_confidence_check_v0"
+        and result.get("status") == "ok"
+        and summary.get("bucket_count") == 4
+        and summary.get("suggestion_count") == 4
+        and summary.get("increase_confidence_count") == 2
+        and summary.get("blocked_conflict_like_count") == 1
+        and summary.get("blocked_single_session_count") == 1
+        and summary.get("applied_to_predictor_count") == 0
+        and summary.get("action_selection_influence_count") == 0
+        and summary.get("candidate_created_count") == 0
+        and stable_wall.get("prediction_confidence_suggestion") == "increase_confidence"
+        and stable_wall.get("applied_to_predictor") is False
+        and stable_wall.get("action_selection_influence") is False
+        and stable_item.get("prediction_confidence_suggestion") == "increase_confidence"
+        and mixed_empty.get("prediction_confidence_suggestion") == "blocked_conflict_like_distribution"
+        and single_session.get("prediction_confidence_suggestion") == "blocked_single_session_evidence"
+        and boundary.get("confidence_check_only") is True
+        and boundary.get("uses_exact_key_buckets") is True
+        and boundary.get("fuzzy_similarity_enabled") is False
+        and boundary.get("semantic_similarity_enabled") is False
+        and boundary.get("llm_similarity_enabled") is False
+        and boundary.get("visual_similarity_enabled") is False
+        and boundary.get("prediction_confidence_suggestions_generated") is True
+        and boundary.get("prediction_confidence_applied_to_predictor") is False
+        and boundary.get("prediction_rule_modified") is False
+        and boundary.get("global_predictor_modified") is False
+        and boundary.get("generalized_candidate_created") is False
+        and boundary.get("action_selection_modified") is False
+        and boundary.get("prediction_used_for_action_selection") is False
+        and boundary.get("long_term_memory_write") is False
+        and boundary.get("lesson_store_write") is False
+        and boundary.get("memory_layer_write") is False
+    )
+    return _result(
+        "generalized_prediction_confidence_check",
         passed,
         {
             "summary": summary,
@@ -8264,6 +8324,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_integrated_trace_chain_break_audit(),
         smoke_persistent_eligibility_checker(),
         smoke_generalized_memory_exact_key_bucket(),
+        smoke_generalized_prediction_confidence_check(),
         smoke_micro_navigation_goal_reach(),
         smoke_micro_navigation_trial_metrics_cli(),
         smoke_micro_navigation_multi_goal_level(),
