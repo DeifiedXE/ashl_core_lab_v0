@@ -2079,3 +2079,10 @@ Two-Trial History Boundary:
 - Syncs `docs/current_boundary_index.md` to Boundary Index Version `2026-06-09-b38`.
 - Completes the exact-key generalized memory check line through approved preview.
 - Keeps fuzzy similarity, predictor mutation, action selection influence, persistent promotion, and memory writes disabled.
+
+## Mimetic Endocrine System Design v0
+
+- Adds `docs/mimetic_endocrine_system_design_v0.md`.
+- Defines four traceable, non-biological regulatory axes: `dopamine_like`, `norepinephrine_like`, `oxytocin_like`, and `cortisol_like`.
+- States the v0 stance as not denied, not claimed: future functionally comparable emotion-like dynamics are not denied, but v0 makes no subjective-state claim.
+- Design-only: no runtime endocrine system, new CLI, formulas, action selection modulation, candidate approval/application, predictor mutation, memory write, personality drift, LLM reasoning/planning/vision, or consciousness claim is added.

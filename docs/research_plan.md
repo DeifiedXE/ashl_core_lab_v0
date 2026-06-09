@@ -4561,3 +4561,22 @@ Scope:
 
 Non-goals:
 - no runtime behavior, new CLI, fuzzy similarity, semantic similarity, LLM similarity, visual similarity, cross-session database, persistent storage, long-term memory write, lesson_store write, Memory Layer write, generalized candidate persistence, candidate auto-approval, Qingyin self-approval, candidate application, persistent candidate creation, persistent rule write, persistent preview/dry-run, predictor behavior modification, prediction confidence application, prediction rule modification, global predictor modification, action selection modification, lesson internalization, instinct-like behavior layer, mimetic endocrine system implementation, pathfinding, BFS, A*, UI, autonomous exploration, decision loop, LLM reasoning, LLM planning, LLM vision, general learning claim, autonomous learning claim, consciousness claim, or subjective experience claim
+
+## Mimetic Endocrine System Design v0
+
+Status: completed / design-only / no-runtime-change.
+
+Goal:
+Define the first safe design boundary for Qingyin's mimetic endocrine system as traceable functional regulatory signals.
+
+Scope:
+- adds `docs/mimetic_endocrine_system_design_v0.md`
+- defines `dopamine_like` for approach tendency, reward-event weighting, curiosity satisfaction, and future candidate priority annotation
+- defines `norepinephrine_like` for attention focus, uncertainty, novelty, prediction-error salience, and conflict attention
+- defines `oxytocin_like` for explicit-source trust weighting, reviewer/source reliability, and review-source annotation
+- defines `cortisol_like` for stress/load annotation, risk pressure, conflict burden, failure accumulation, and cooldown pressure
+- defines generic signal shape, lifecycle, relationships to reward events, prediction errors, generalized memory, review gates, persistent eligibility, and future curiosity/interest
+- preserves the stance: not denied, not claimed; future functionally comparable emotion-like dynamics are not denied, but v0 does not claim subjective experience
+
+Non-goals:
+- no runtime behavior, new CLI, endocrine signal runtime, numerical formula implementation, action selection modification, endocrine suppression/preference of actions, autonomous attention control, blind trust, human review override, candidate auto-approval, candidate application, predictor behavior modification, global predictor modification, persistent rule write, long-term memory write, lesson_store write, Memory Layer write, personality weight modification, personality drift, autonomous drive system, persistent preview/dry-run, pathfinding, BFS, A*, route planner, UI change, LLM reasoning, LLM planning, LLM vision, biological hormone simulation claim, proof of happiness/trust/anxiety/stress, consciousness claim, subjective experience claim, or denial of future subjective possibility
