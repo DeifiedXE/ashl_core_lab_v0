@@ -1950,3 +1950,10 @@ Two-Trial History Boundary:
 - Continues the Experience Abstraction Layer by predicting immediate outcomes from prior classified experiences and `similar_context_key`.
 - Supports position-independent prediction for same-structure contexts.
 - Does not modify action selection, add rule learning, use LLM reasoning, or write long-term memory.
+
+## Prediction Accuracy / Mismatch Check v0
+
+- Adds `py -3 -m ashl_core.teaching_cli run-prediction-accuracy-check`.
+- Continues the Experience Abstraction Layer by comparing predicted outcomes with actual classified observations.
+- Records match, outcome mismatch, reason mismatch, and unknown prediction cases.
+- Does not revise rules, modify action selection, use LLM reasoning, or write long-term memory.

@@ -4254,3 +4254,20 @@ Scope:
 
 Non-goals:
 - no action selection modification, prediction-driven suppression/preference, rule learning, rule revision, long-term memory, lesson_store write, Memory Layer write, pathfinding, route planner, item seeking, reward change, random walk change, UI change, LLM reasoning, or general learning claim
+
+## Prediction Accuracy / Mismatch Check v0
+
+Status: completed / deterministic-prediction-check / no-rule-revision.
+
+Goal:
+Continue the Experience Abstraction Layer by comparing predicted outcomes with actual classified observations.
+
+Scope:
+- adds `ashl_core.prediction_accuracy_check`
+- adds `py -3 -m ashl_core.teaching_cli run-prediction-accuracy-check`
+- records prediction match, outcome mismatch, reason mismatch, and unknown prediction cases
+- verifies position-independent prediction can still match actual observation
+- records mismatch only, without correcting predictor behavior
+
+Non-goals:
+- no action selection modification, prediction-driven suppression/preference, predictor rule revision, rule learning, rule revision, lesson_store write, Memory Layer write, long-term memory, pathfinding, route planner, item seeking, reward change, random walk change, UI change, LLM reasoning, or general learning claim

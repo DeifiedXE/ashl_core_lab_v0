@@ -133,6 +133,7 @@ from ashl_core.manual_review import (
 from ashl_core.mentor_feedback_runtime import build_minimal_mentor_feedback_trace
 from ashl_core.persistence import append_jsonl, read_jsonl
 from ashl_core.perception import perceive
+from ashl_core.prediction_accuracy_check import run_prediction_accuracy_check
 from ashl_core.prompt_leakage_check import build_decision_input_snapshot, check_leakage
 from ashl_core.reward_biased_action_tendency import run_reward_biased_action_tendency_check
 from ashl_core.reward_biased_random_walk_check import run_reward_biased_random_walk_check
@@ -1758,6 +1759,55 @@ def smoke_action_outcome_predictor() -> dict:
         passed,
         {
             "predictions": predictions,
+            "summary": summary,
+            "boundary": boundary,
+        },
+    )
+
+
+def smoke_prediction_accuracy_check() -> dict:
+    result = run_prediction_accuracy_check()
+    checks = {item.get("case_name"): item.get("prediction_check", {}) for item in result.get("check_results", [])}
+    summary = result.get("summary", {})
+    boundary = result.get("boundary_check", {})
+    passed = (
+        result.get("command") == "run-prediction-accuracy-check"
+        and result.get("flow") == "prediction_accuracy_check_v0"
+        and result.get("status") == "ok"
+        and checks.get("wall_prediction_match", {}).get("prediction_match") is True
+        and checks.get("wall_position_transfer_match", {}).get("prediction_match") is True
+        and checks.get("item_prediction_match", {}).get("prediction_match") is True
+        and checks.get("outcome_mismatch", {}).get("mismatch_type") == "outcome_mismatch"
+        and checks.get("reason_mismatch", {}).get("mismatch_type") == "reason_mismatch"
+        and checks.get("unknown_prediction", {}).get("mismatch_type") == "unknown_prediction"
+        and summary.get("case_count") == 6
+        and summary.get("passed_count") == 6
+        and summary.get("failed_count") == 0
+        and summary.get("prediction_match_count") == 3
+        and summary.get("prediction_mismatch_count") == 3
+        and summary.get("unknown_prediction_count") == 1
+        and summary.get("outcome_mismatch_count") == 1
+        and summary.get("reason_mismatch_count") == 1
+        and summary.get("position_transfer_match_passed") is True
+        and summary.get("all_prediction_accuracy_checks_passed") is True
+        and boundary.get("prediction_accuracy_check_enabled") is True
+        and boundary.get("uses_action_outcome_predictor") is True
+        and boundary.get("position_independent_prediction_checked") is True
+        and boundary.get("prediction_used_for_action_selection") is False
+        and boundary.get("action_selection_modified") is False
+        and boundary.get("rule_learning_enabled") is False
+        and boundary.get("rule_revision_enabled") is False
+        and boundary.get("mismatch_recorded_only") is True
+        and boundary.get("pathfinding_used") is False
+        and boundary.get("llm_reasoning_used") is False
+        and boundary.get("long_term_memory_write") is False
+        and boundary.get("general_learning_claimed") is False
+    )
+    return _result(
+        "prediction_accuracy_check",
+        passed,
+        {
+            "checks": checks,
             "summary": summary,
             "boundary": boundary,
         },
@@ -7695,6 +7745,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_failure_reason_classifier(),
         smoke_similar_context_key(),
         smoke_action_outcome_predictor(),
+        smoke_prediction_accuracy_check(),
         smoke_micro_navigation_goal_reach(),
         smoke_micro_navigation_trial_metrics_cli(),
         smoke_micro_navigation_multi_goal_level(),

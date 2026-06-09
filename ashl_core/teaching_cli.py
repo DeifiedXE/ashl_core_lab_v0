@@ -16,6 +16,7 @@ from .grounded_action_experience import run_grounded_action_experience_check
 from .grounded_action_experience_influence import run_grounded_action_experience_influence_check
 from .instinct_random_walk_runner import run_instinct_random_walk
 from .item_reward_event import run_item_reward_event_check
+from .prediction_accuracy_check import run_prediction_accuracy_check
 from .reward_biased_action_tendency import run_reward_biased_action_tendency_check
 from .reward_biased_random_walk_check import run_reward_biased_random_walk_check
 from .similar_context_key import run_similar_context_key_check
@@ -3393,6 +3394,8 @@ def run_command(command: str) -> dict[str, Any] | str:
         return run_similar_context_key_check()
     if command == "run-action-outcome-predictor-check":
         return run_action_outcome_predictor_check()
+    if command == "run-prediction-accuracy-check":
+        return run_prediction_accuracy_check()
     return {
         "command": command,
         "status": "error",
@@ -3456,6 +3459,7 @@ def main(argv: list[str] | None = None) -> int:
             "run-failure-reason-classifier-check",
             "run-similar-context-key-check",
             "run-action-outcome-predictor-check",
+            "run-prediction-accuracy-check",
         ],
     )
     parser.add_argument("--review-id", default="review_001")
@@ -3636,6 +3640,8 @@ def main(argv: list[str] | None = None) -> int:
         result = run_similar_context_key_check()
     elif args.command == "run-action-outcome-predictor-check":
         result = run_action_outcome_predictor_check()
+    elif args.command == "run-prediction-accuracy-check":
+        result = run_prediction_accuracy_check()
     else:
         result = run_command(args.command)
     if hasattr(sys.stdout, "reconfigure"):
