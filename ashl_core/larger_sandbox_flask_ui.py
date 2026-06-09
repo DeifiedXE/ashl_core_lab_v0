@@ -8,6 +8,7 @@ from typing import Any
 
 from flask import Flask, redirect, render_template_string, request, url_for
 
+from .qingyin_ui_observation import build_qingyin_observation_state, format_qingyin_log_entry
 from .simulated_vision_larger_sandbox import (
     apply_larger_sandbox_action,
     build_initial_larger_sandbox_state,
@@ -66,6 +67,10 @@ def create_app() -> Flask:
     def state_json() -> dict[str, Any]:
         return get_ui_state()
 
+    @app.get("/qingyin_state.json")
+    def qingyin_state_json() -> dict[str, Any]:
+        return get_ui_state()["qingyin_observation"]
+
     return app
 
 
@@ -82,6 +87,8 @@ def get_launch_config(host: str = DEFAULT_UI_HOST, port: int = DEFAULT_UI_PORT) 
         "ui_prototype": True,
         "action_cooldown_enabled": True,
         "action_cooldown_configurable": True,
+        "qingyin_observation_bridge_enabled": True,
+        "manual_observation_only": True,
         "boundary_check": build_ui_boundary_check(host=host),
     }
 
@@ -123,6 +130,7 @@ def reset_ui_state() -> dict[str, Any]:
         "step_count": 0,
         "action_cooldown_seconds": DEFAULT_ACTION_COOLDOWN_SECONDS,
         "last_action_time": None,
+        "last_action_result": None,
     }
     return get_ui_state()
 
@@ -148,6 +156,12 @@ def apply_ui_action(action: str) -> dict[str, Any]:
     )
     if remaining > 0:
         internal["step_count"] += 1
+        internal["last_action_result"] = {
+            "action": action,
+            "result": "cooldown_blocked",
+            "effects": [],
+            "failures": ["cooldown_active"],
+        }
         internal["action_log"].append(_format_cooldown_blocked_log_entry(internal["step_count"], action, remaining))
         return get_ui_state()
 
@@ -158,6 +172,12 @@ def apply_ui_action(action: str) -> dict[str, Any]:
     internal["state"] = after
     internal["viewport"] = trace["viewport"]
     internal["last_action_time"] = now
+    internal["last_action_result"] = {
+        "action": action,
+        "result": trace["result"],
+        "effects": list(trace["effect_tags"]),
+        "failures": list(trace["failure_reasons"]),
+    }
     internal["step_count"] += 1
     internal["action_log"].append(_format_action_log_entry(internal["step_count"], action, before, trace))
     return get_ui_state()
@@ -176,7 +196,11 @@ def build_ui_boundary_check(host: str = DEFAULT_UI_HOST) -> dict[str, Any]:
         "local_only": host == DEFAULT_UI_HOST,
         "action_cooldown_enabled": True,
         "action_cooldown_configurable": True,
+        "qingyin_observation_bridge_enabled": True,
+        "manual_observation_only": True,
         "autonomous_action_loop_enabled": False,
+        "auto_exploration_enabled": False,
+        "decision_loop_enabled": False,
         "runtime_behavior_modified": False,
         "viewport_geometry_modified": False,
         "action_selection_modified": False,
@@ -194,6 +218,7 @@ def build_ui_boundary_check(host: str = DEFAULT_UI_HOST) -> dict[str, Any]:
         "home_sandbox_enabled": False,
         "real_image_vision": False,
         "computer_vision": False,
+        "computer_vision_used": False,
         "llm_vision_used": False,
         "llm_planning_used": False,
         "lesson_store_write": False,
@@ -203,6 +228,7 @@ def build_ui_boundary_check(host: str = DEFAULT_UI_HOST) -> dict[str, Any]:
         "visual_understanding_claimed": False,
         "symbol_grounding_solved_claimed": False,
         "general_learning_claimed": False,
+        "consciousness_claimed": False,
     }
 
 
@@ -225,7 +251,7 @@ def _public_state(state: dict[str, Any], viewport: list[list[str]], action_log: 
     )
     level_id = state["level_id"]
     front_symbol = get_front_symbol_for_replay(viewport)
-    return {
+    public_state = {
         "level_id": level_id,
         "pos": list(state["pos"]),
         "facing": state["facing"],
@@ -240,15 +266,20 @@ def _public_state(state: dict[str, Any], viewport: list[list[str]], action_log: 
         "can_act": remaining <= 0,
         "can_act_display": "yes" if remaining <= 0 else "no",
         "last_action_time": internal["last_action_time"],
+        "last_action_result": deepcopy(internal["last_action_result"]),
         "boundary_check": build_ui_boundary_check(),
     }
+    public_state["qingyin_observation"] = build_qingyin_observation_state(public_state)
+    return public_state
 
 
 def _format_action_log_entry(step_number: int, action: str, before: dict[str, Any], trace: dict[str, Any]) -> str:
     effects = ", ".join(trace["effect_tags"]) if trace["effect_tags"] else "none"
     failures = ", ".join(trace["failure_reasons"]) if trace["failure_reasons"] else "none"
+    qingyin_line = format_qingyin_log_entry(action, trace["result"], trace["effect_tags"], trace["failure_reasons"])
     return (
         f"Step {step_number}: {action}\n"
+        f"{qingyin_line}\n"
         f"Before: {_format_pos(before['pos'])}, facing {before['facing']}\n"
         f"Front symbol: {trace['front_symbol']}\n"
         f"Result: {trace['result']}\n"
@@ -419,11 +450,20 @@ _HTML_TEMPLATE = """<!doctype html>
       color: var(--muted);
       font-size: 14px;
     }
-    .legend, .boundary, .log {
+    .observation, .legend, .boundary, .log {
       border-top: 1px solid var(--line);
       padding-top: 12px;
       margin-top: 12px;
     }
+    .observation dl {
+      display: grid;
+      grid-template-columns: max-content 1fr;
+      gap: 6px 12px;
+      margin: 0;
+      font-size: 14px;
+    }
+    .observation dt { font-weight: 700; }
+    .observation dd { margin: 0; color: var(--muted); }
     .legend dl {
       display: grid;
       grid-template-columns: auto 1fr;
@@ -499,6 +539,24 @@ _HTML_TEMPLATE = """<!doctype html>
       </div>
     </section>
     <section>
+      <div class="observation">
+        <h2>Qingyin Observation</h2>
+        <dl>
+          <dt>Mode</dt><dd>manual observation</dd>
+          <dt>Body</dt><dd>symbolic sandbox body</dd>
+          <dt>Position</dt><dd>[{{ ui.qingyin_observation.pos[0] }}, {{ ui.qingyin_observation.pos[1] }}]</dd>
+          <dt>Facing</dt><dd>{{ ui.qingyin_observation.facing }}</dd>
+          <dt>Front symbol</dt><dd>{{ ui.qingyin_observation.front_symbol }} {{ ui.qingyin_observation.front_label }}</dd>
+          <dt>Visible symbols</dt><dd>{% if ui.qingyin_observation.visible_symbol_labels %}{{ ui.qingyin_observation.visible_symbol_labels | join(', ') }}{% else %}none{% endif %}</dd>
+          <dt>Last action</dt><dd>{{ ui.qingyin_observation.last_action }}</dd>
+          <dt>Last result</dt><dd>{{ ui.qingyin_observation.last_result }}</dd>
+          <dt>Effects</dt><dd>{% if ui.qingyin_observation.last_effects %}{{ ui.qingyin_observation.last_effects | join(', ') }}{% else %}none{% endif %}</dd>
+          <dt>Failures</dt><dd>{% if ui.qingyin_observation.last_failures %}{{ ui.qingyin_observation.last_failures | join(', ') }}{% else %}none{% endif %}</dd>
+          <dt>Cooldown</dt><dd>{{ "%.1f"|format(ui.qingyin_observation.cooldown_seconds) }}s, remaining {{ ui.qingyin_observation.cooldown_remaining_display }}s</dd>
+          <dt>Can act</dt><dd>{{ ui.qingyin_observation.can_act_display }}</dd>
+        </dl>
+        <p>Manual observation only. No autonomy. No auto exploration. No LLM planning. No pathfinding.</p>
+      </div>
       <div class="legend">
         <h2>Legend</h2>
         <dl>

@@ -53,12 +53,18 @@ class LargerSandboxFlaskUiTests(unittest.TestCase):
         self.assertIn("move_forward", html)
         self.assertIn("reset", html)
         self.assertIn("Action cooldown", html)
+        self.assertIn("Qingyin Observation", html)
+        self.assertIn("Mode", html)
+        self.assertIn("manual observation", html)
+        self.assertIn("symbolic sandbox body", html)
+        self.assertIn("Visible symbols", html)
         self.assertIn("Cooldown: 0.5s", html)
         self.assertIn("Cooldown remaining: 0.00 seconds", html)
         self.assertIn("Can act: yes", html)
         self.assertIn("No pathfinding.", html)
         self.assertIn("No autonomy.", html)
         self.assertIn("No auto exploration.", html)
+        self.assertIn("No LLM planning.", html)
         self.assertIn("No action selection change.", html)
 
     def test_state_json_is_read_only_snapshot(self):
@@ -74,6 +80,8 @@ class LargerSandboxFlaskUiTests(unittest.TestCase):
         self.assertEqual(data["action_cooldown_seconds"], 0.5)
         self.assertEqual(data["cooldown_remaining_seconds"], 0.0)
         self.assertTrue(data["can_act"])
+        self.assertEqual(data["qingyin_observation"]["name"], "Qingyin")
+        self.assertEqual(data["qingyin_observation"]["mode"], "manual_observation")
 
     def test_post_action_look_redirects_and_logs(self):
         response = self.client.post("/action", data={"action": "look"})
@@ -83,6 +91,7 @@ class LargerSandboxFlaskUiTests(unittest.TestCase):
         self.assertEqual(state["pos"], [2, 2])
         self.assertEqual(state["facing"], "north")
         self.assertIn("Step 1: look", state["action_log"][0])
+        self.assertIn("Qingyin looked.", state["action_log"][0])
         self.assertIn("Result: observed", state["action_log"][0])
 
     def test_post_action_turn_right_updates_facing(self):
@@ -93,6 +102,7 @@ class LargerSandboxFlaskUiTests(unittest.TestCase):
         self.assertEqual(state["pos"], [2, 2])
         self.assertEqual(state["facing"], "east")
         self.assertIn("Step 1: turn_right", state["action_log"][0])
+        self.assertIn("Qingyin turned right.", state["action_log"][0])
 
     def test_post_action_move_forward_appends_human_log(self):
         self.client.post("/action", data={"action": "turn_right"})
@@ -104,6 +114,7 @@ class LargerSandboxFlaskUiTests(unittest.TestCase):
         self.assertEqual(response.status_code, 302)
         self.assertEqual(state["pos"], [3, 2])
         self.assertIn("Step 2: move_forward", log)
+        self.assertIn("Qingyin moved forward.", log)
         self.assertIn("Before: [2,2], facing east", log)
         self.assertIn("Front symbol: e", log)
         self.assertIn("Result: moved", log)
@@ -139,11 +150,17 @@ class LargerSandboxFlaskUiTests(unittest.TestCase):
         self.assertTrue(config["local_only"])
         self.assertTrue(config["action_cooldown_enabled"])
         self.assertTrue(config["action_cooldown_configurable"])
+        self.assertTrue(config["qingyin_observation_bridge_enabled"])
+        self.assertTrue(config["manual_observation_only"])
         self.assertTrue(boundary["ui_prototype"])
         self.assertTrue(boundary["local_only"])
+        self.assertTrue(boundary["qingyin_observation_bridge_enabled"])
+        self.assertTrue(boundary["manual_observation_only"])
         self.assertTrue(boundary["action_cooldown_enabled"])
         self.assertTrue(boundary["action_cooldown_configurable"])
         self.assertFalse(boundary["autonomous_action_loop_enabled"])
+        self.assertFalse(boundary["auto_exploration_enabled"])
+        self.assertFalse(boundary["decision_loop_enabled"])
         self.assertFalse(boundary["runtime_behavior_modified"])
         self.assertFalse(boundary["pathfinding_used"])
         self.assertFalse(boundary["route_planner_added"])
@@ -162,8 +179,12 @@ class LargerSandboxFlaskUiTests(unittest.TestCase):
 
         self.assertTrue(boundary["ui_prototype"])
         self.assertTrue(boundary["local_only"])
+        self.assertTrue(boundary["qingyin_observation_bridge_enabled"])
+        self.assertTrue(boundary["manual_observation_only"])
         self.assertFalse(boundary["action_selection_modified"])
         self.assertFalse(boundary["autonomous_action_loop_enabled"])
+        self.assertFalse(boundary["auto_exploration_enabled"])
+        self.assertFalse(boundary["decision_loop_enabled"])
         self.assertFalse(boundary["item_pickup_enabled"])
         self.assertFalse(boundary["inventory_enabled"])
         self.assertFalse(boundary["win_condition_enabled"])
@@ -179,6 +200,60 @@ class LargerSandboxFlaskUiTests(unittest.TestCase):
         self.assertFalse(boundary["lesson_store_write"])
         self.assertFalse(boundary["memory_layer_write"])
         self.assertFalse(boundary["long_term_memory_write"])
+        self.assertFalse(boundary["consciousness_claimed"])
+
+    def test_qingyin_state_json_returns_observation_summary(self):
+        response = self.client.get("/qingyin_state.json")
+        data = response.get_json()
+        boundary = data["boundary_check"]
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(data["name"], "Qingyin")
+        self.assertEqual(data["mode"], "manual_observation")
+        self.assertEqual(data["body"], "symbolic_sandbox_body")
+        self.assertEqual(data["level_id"], "simulated_vision_larger_sandbox_v0")
+        self.assertEqual(data["pos"], [2, 2])
+        self.assertEqual(data["facing"], "north")
+        self.assertEqual(data["front_symbol"], "e")
+        self.assertIn("e", data["visible_symbols"])
+        self.assertIn("w", data["visible_symbols"])
+        self.assertEqual(data["last_action"], "none")
+        self.assertEqual(data["last_result"], "none")
+        self.assertTrue(data["can_act"])
+        self.assertEqual(data["cooldown_remaining_seconds"], 0.0)
+        self.assertTrue(boundary["qingyin_observation_bridge_enabled"])
+        self.assertTrue(boundary["manual_observation_only"])
+        self.assertFalse(boundary["autonomous_action_loop_enabled"])
+        self.assertFalse(boundary["auto_exploration_enabled"])
+        self.assertFalse(boundary["decision_loop_enabled"])
+        self.assertFalse(boundary["llm_planning_used"])
+        self.assertFalse(boundary["pathfinding_used"])
+        self.assertFalse(boundary["action_selection_modified"])
+        self.assertTrue(boundary["symbolic_sandbox_body"])
+        self.assertFalse(boundary["real_robot_body"])
+        self.assertFalse(boundary["real_image_vision"])
+        self.assertFalse(boundary["long_term_memory_write"])
+        self.assertFalse(boundary["consciousness_claimed"])
+
+    def test_qingyin_observation_updates_after_action(self):
+        self.client.post("/action", data={"action": "turn_right"})
+        data = self.client.get("/qingyin_state.json").get_json()
+
+        self.assertEqual(data["facing"], "east")
+        self.assertEqual(data["last_action"], "turn_right")
+        self.assertEqual(data["last_result"], "turned")
+        self.assertEqual(data["last_effects"], [])
+        self.assertEqual(data["last_failures"], [])
+
+    def test_action_log_uses_observation_wording_without_overclaiming(self):
+        self.client.post("/action", data={"action": "look"})
+        log = "\n\n".join(get_ui_state()["action_log"]).lower()
+
+        self.assertIn("qingyin looked.", log)
+        self.assertNotIn("decided", log)
+        self.assertNotIn("understood", log)
+        self.assertNotIn("wanted", log)
+        self.assertNotIn("chose because", log)
 
     def test_ui_does_not_modify_runtime_movement_rules(self):
         before = run_simulated_vision_larger_sandbox_demo()

@@ -3979,3 +3979,24 @@ Non-goals:
 - no item collection, pickup, inventory, exit activation, win condition, task completion, curiosity, prediction error, place memory, or home sandbox
 - no lesson_store write, Memory Layer write, Long-term Memory write, or lesson_candidate pipeline connection
 - no visual understanding, symbol grounding solved, general learning, or consciousness claim
+
+## Qingyin UI Observation Bridge v0
+
+Status: completed / manual-observation-bridge / no-autonomy.
+
+Goal:
+Connect the larger sandbox Flask UI to a Qingyin observation wrapper so the user can inspect Qingyin-like symbolic state while still driving every action manually.
+
+Scope:
+- adds `ashl_core.qingyin_ui_observation`
+- adds a `Qingyin Observation` panel to the larger sandbox Flask UI
+- adds read-only `GET /qingyin_state.json`
+- exposes name, mode, symbolic body, level, position, facing, current viewport, front symbol, visible symbols, last action/result, effects/failures, cooldown, can-act state, and boundary checks
+- updates action log wording to observation-safe Qingyin phrasing
+
+Non-goals:
+- no auto action loop, autonomous exploration, decision loop, LLM planning, LLM vision, pathfinding, BFS, A*, route planner, or item seeking
+- no action selection change, goal-driven action, curiosity-driven action, or background action cycle
+- no item collection, pickup, inventory, exit activation, win condition, task completion, prediction error, place memory, home sandbox, real robot body, or real image vision
+- no lesson_store write, Memory Layer write, Long-term Memory write, or lesson_candidate pipeline connection
+- no visual understanding, symbol grounding solved, general learning, consciousness, or subjective experience claim

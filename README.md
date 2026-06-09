@@ -1852,3 +1852,10 @@ Two-Trial History Boundary:
 - Default cooldown is `0.5s`; accepted range is `0.0s` to `5.0s`, where `0.0s` disables blocking.
 - Shows cooldown, remaining time, and whether Qingyin can act; blocked button presses append a readable cooldown log entry.
 - Timing gate only: no autonomy, auto exploration, pathfinding, or action selection change is added.
+
+## Qingyin UI Observation Bridge v0
+
+- Adds a `Qingyin Observation` panel to the larger sandbox Flask UI.
+- Adds read-only `GET /qingyin_state.json` for structured observation state.
+- Shows symbolic sandbox body state, current perception, last action/result, effects/failures, cooldown, and boundary notes.
+- Manual observation only: no autonomy, auto exploration, decision loop, LLM planning, pathfinding, or long-term memory is added.

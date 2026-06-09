@@ -668,8 +668,11 @@ def smoke_larger_sandbox_flask_ui() -> dict:
     client = app.test_client()
     index_response = client.get("/")
     index_html = index_response.get_data(as_text=True)
+    qingyin_initial_response = client.get("/qingyin_state.json")
+    qingyin_initial = qingyin_initial_response.get_json() or {}
     cooldown_update_response = client.post("/cooldown", data={"cooldown_seconds": "1.0"})
     look_response = client.post("/action", data={"action": "look"})
+    qingyin_after_look = (client.get("/qingyin_state.json").get_json() or {})
     blocked_response = client.post("/action", data={"action": "turn_right"})
     blocked_state = get_larger_sandbox_ui_state()
     reset_after_blocked_response = client.post("/reset")
@@ -677,6 +680,7 @@ def smoke_larger_sandbox_flask_ui() -> dict:
     turn_response = client.post("/action", data={"action": "turn_right"})
     move_response = client.post("/action", data={"action": "move_forward"})
     moved_state = get_larger_sandbox_ui_state()
+    qingyin_after_move = (client.get("/qingyin_state.json").get_json() or {})
     reset_response = client.post("/reset")
     reset_state = get_larger_sandbox_ui_state()
     launch_config = get_larger_sandbox_ui_launch_config()
@@ -692,16 +696,30 @@ def smoke_larger_sandbox_flask_ui() -> dict:
         and "turn_right" in index_html
         and "move_forward" in index_html
         and "reset" in index_html
+        and "Qingyin Observation" in index_html
+        and "manual observation" in index_html
+        and "symbolic sandbox body" in index_html
+        and "Visible symbols" in index_html
         and "Action cooldown" in index_html
         and "Cooldown: 0.5s" in index_html
         and "Cooldown remaining: 0.00 seconds" in index_html
         and "Can act: yes" in index_html
         and "No autonomy." in index_html
         and "No auto exploration." in index_html
+        and "No LLM planning." in index_html
         and "No action selection change." in index_html
         and "No pathfinding." in index_html
+        and qingyin_initial_response.status_code == 200
+        and qingyin_initial.get("name") == "Qingyin"
+        and qingyin_initial.get("mode") == "manual_observation"
+        and qingyin_initial.get("body") == "symbolic_sandbox_body"
+        and qingyin_initial.get("boundary_check", {}).get("manual_observation_only") is True
+        and qingyin_initial.get("boundary_check", {}).get("autonomous_action_loop_enabled") is False
+        and qingyin_initial.get("boundary_check", {}).get("pathfinding_used") is False
         and cooldown_update_response.status_code == 302
         and look_response.status_code == 302
+        and qingyin_after_look.get("last_action") == "look"
+        and qingyin_after_look.get("last_result") == "observed"
         and blocked_response.status_code == 302
         and any("Action blocked by cooldown." in entry for entry in blocked_state.get("action_log", []))
         and reset_after_blocked_response.status_code == 302
@@ -712,6 +730,10 @@ def smoke_larger_sandbox_flask_ui() -> dict:
         and moved_state.get("facing") == "east"
         and moved_state.get("action_cooldown_seconds") == 0.0
         and any("Step 2: move_forward" in entry for entry in moved_state.get("action_log", []))
+        and any("Qingyin moved forward." in entry for entry in moved_state.get("action_log", []))
+        and qingyin_after_move.get("name") == "Qingyin"
+        and qingyin_after_move.get("last_action") == "move_forward"
+        and qingyin_after_move.get("boundary_check", {}).get("decision_loop_enabled") is False
         and reset_response.status_code == 302
         and reset_state.get("pos") == [2, 2]
         and reset_state.get("facing") == "north"
@@ -721,10 +743,16 @@ def smoke_larger_sandbox_flask_ui() -> dict:
         and launch_config.get("local_only") is True
         and launch_config.get("action_cooldown_enabled") is True
         and launch_config.get("action_cooldown_configurable") is True
+        and launch_config.get("qingyin_observation_bridge_enabled") is True
+        and launch_config.get("manual_observation_only") is True
         and boundary.get("ui_prototype") is True
+        and boundary.get("qingyin_observation_bridge_enabled") is True
+        and boundary.get("manual_observation_only") is True
         and boundary.get("action_cooldown_enabled") is True
         and boundary.get("action_cooldown_configurable") is True
         and boundary.get("autonomous_action_loop_enabled") is False
+        and boundary.get("auto_exploration_enabled") is False
+        and boundary.get("decision_loop_enabled") is False
         and boundary.get("runtime_behavior_modified") is False
         and boundary.get("pathfinding_used") is False
         and boundary.get("route_planner_added") is False
@@ -743,6 +771,8 @@ def smoke_larger_sandbox_flask_ui() -> dict:
             "index_status": index_response.status_code,
             "blocked_state": blocked_state,
             "moved_state": moved_state,
+            "qingyin_initial": qingyin_initial,
+            "qingyin_after_move": qingyin_after_move,
             "reset_state": reset_state,
             "launch_config": launch_config,
         },
