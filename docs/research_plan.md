@@ -4435,6 +4435,19 @@ Scope:
 Non-goals:
 - no persistent rule storage, persistent rule table, persistent rule write, persistent rule activation, global predictor modification, action selection modification, prediction-driven suppression/preference, candidate auto-approval, Qingyin self-approval, auto-promotion to persistent rule, persistent candidate application, lesson_store write, Memory Layer write, long-term memory, lesson_candidate pipeline connection, lesson internalization, instinct-like behavior layer, pathfinding, route planner, item seeking, item collection, reward change, random walk change, UI change, autonomous exploration, decision loop, LLM reasoning, LLM planning, LLM vision, Boundary Index modification, general learning claim, autonomous learning claim, visual understanding claim, solved symbol grounding claim, consciousness claim, or subjective experience claim
 
+## Persistent Eligibility Checker Milestone + Boundary Sync v0
+
+Status: completed / documentation-milestone / boundary-index-sync.
+
+Scope:
+- adds `docs/milestone_logs/persistent_eligibility_checker_milestone_2026-06-09.md`
+- syncs Persistent Eligibility Checker v0 into `docs/current_boundary_index.md` as Boundary Index Version `2026-06-09-b37`
+- records that `eligible_for_persistent_candidate_review` may be true while `eligible_for_persistent_rule=false` and `persistent_rule_write_allowed=false`
+- pauses the persistent line after checker wrap-up; next planned direction is generalized memory loop
+
+Non-goals:
+- no runtime behavior, new CLI, persistent preview/dry-run, persistent rule storage, persistent rule table, persistent rule write, persistent rule activation, global predictor modification, action selection modification, prediction-driven suppression/preference, candidate auto-approval, Qingyin self-approval, auto-promotion to persistent rules, persistent candidate application, lesson_store write, Memory Layer write, long-term memory, lesson_candidate pipeline connection, lesson internalization, instinct-like behavior layer, generalized memory loop implementation, pathfinding, route planner, item seeking, item collection, reward change, random walk change, UI change, autonomous exploration, decision loop, LLM reasoning, LLM planning, LLM vision, general learning claim, autonomous learning claim, visual understanding claim, solved symbol grounding claim, consciousness claim, or subjective experience claim
+
 ## Project State Audit / Pause Point v0
 
 Status: completed / audit-documentation / pause-point-only.
