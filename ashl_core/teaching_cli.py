@@ -17,6 +17,7 @@ from .instinct_random_walk_runner import run_instinct_random_walk
 from .item_reward_event import run_item_reward_event_check
 from .reward_biased_action_tendency import run_reward_biased_action_tendency_check
 from .reward_biased_random_walk_check import run_reward_biased_random_walk_check
+from .similar_context_key import run_similar_context_key_check
 from .two_round_instinct_reward_comparison import run_two_round_instinct_reward_comparison
 from .wall_experience_influence import run_wall_experience_influence_check
 from .lesson_runner import run_lesson_causality_test, run_session_2a_with_lesson
@@ -3387,6 +3388,8 @@ def run_command(command: str) -> dict[str, Any] | str:
         return run_two_round_instinct_reward_comparison()
     if command == "run-failure-reason-classifier-check":
         return run_failure_reason_classifier_check()
+    if command == "run-similar-context-key-check":
+        return run_similar_context_key_check()
     return {
         "command": command,
         "status": "error",
@@ -3448,6 +3451,7 @@ def main(argv: list[str] | None = None) -> int:
             "run-reward-biased-random-walk-check",
             "run-two-round-instinct-reward-comparison",
             "run-failure-reason-classifier-check",
+            "run-similar-context-key-check",
         ],
     )
     parser.add_argument("--review-id", default="review_001")
@@ -3624,6 +3628,8 @@ def main(argv: list[str] | None = None) -> int:
         result = run_two_round_instinct_reward_comparison(seed=args.seed, trials=args.trials)
     elif args.command == "run-failure-reason-classifier-check":
         result = run_failure_reason_classifier_check()
+    elif args.command == "run-similar-context-key-check":
+        result = run_similar_context_key_check()
     else:
         result = run_command(args.command)
     if hasattr(sys.stdout, "reconfigure"):

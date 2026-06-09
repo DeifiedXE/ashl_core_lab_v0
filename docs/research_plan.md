@@ -4220,3 +4220,20 @@ Scope:
 
 Non-goals:
 - no prediction, similar-context matching, rule learning, rule revision, action selection change, reward change, random walk change, UI change, LLM reasoning, memory write, or general learning claim
+
+## Similar Context Key v0
+
+Status: completed / deterministic-structural-key / no-prediction.
+
+Goal:
+Continue the Experience Abstraction Layer by generating deterministic structural keys from classified experiences.
+
+Scope:
+- adds `ashl_core.similar_context_key`
+- adds `py -3 -m ashl_core.teaching_cli run-similar-context-key-check`
+- builds position-independent keys from `front_symbol`, `action`, and `primary_reason`
+- verifies same-structure different-position wall experiences produce the same key
+- uses `front_symbol=null` for turn, look, and unknown keys where front symbol is not causally relevant in v0
+
+Non-goals:
+- no prediction, action outcome predictor, rule learning, rule revision, action selection change, reward change, random walk change, UI change, item seeking, pathfinding, LLM reasoning, memory write, or general learning claim

@@ -145,6 +145,7 @@ from ashl_core.session_working_memory import (
     create_session_working_memory,
     query_recent_outcomes,
 )
+from ashl_core.similar_context_key import run_similar_context_key_check
 from ashl_core.simulated_vision_sandbox import (
     ALLOWED_VIEWPORT_SYMBOLS,
     FIRST_PERSON_AGENT_VIEWPORT_POSITION,
@@ -1641,6 +1642,63 @@ def smoke_failure_reason_classifier() -> dict:
         passed,
         {
             "reasons": reasons,
+            "summary": summary,
+            "boundary": boundary,
+        },
+    )
+
+
+def smoke_similar_context_key() -> dict:
+    result = run_similar_context_key_check()
+    key_results = result.get("key_results", [])
+    comparison = result.get("comparison_results", {})
+    summary = result.get("summary", {})
+    boundary = result.get("boundary_check", {})
+    keys = {item.get("case_name"): item.get("similar_context_key") for item in key_results}
+    passed = (
+        result.get("command") == "run-similar-context-key-check"
+        and result.get("flow") == "similar_context_key_v0"
+        and result.get("status") == "ok"
+        and keys.get("wall_position_a") == keys.get("wall_position_b")
+        and keys.get("wall_position_a") == "front_symbol=w|action=move_forward|primary_reason=front_cell_wall"
+        and keys.get("wall_position_a") != keys.get("empty_moved")
+        and keys.get("item_contact") != keys.get("unknown")
+        and keys.get("turn_right")
+        == "front_symbol=null|action=turn_right|primary_reason=turn_action_orientation_change"
+        and keys.get("look") == "front_symbol=null|action=look|primary_reason=look_action_observation_only"
+        and keys.get("unknown") == "front_symbol=null|action=move_forward|primary_reason=unknown_outcome_reason"
+        and comparison.get("same_structure_different_position_match") is True
+        and comparison.get("different_front_symbol_differs") is True
+        and comparison.get("different_reason_differs") is True
+        and comparison.get("turn_key_stable") is True
+        and comparison.get("look_key_stable") is True
+        and comparison.get("unknown_key_stable") is True
+        and summary.get("case_count") == 9
+        and summary.get("passed_count") == 9
+        and summary.get("failed_count") == 0
+        and summary.get("position_independent_match_count") == 1
+        and summary.get("different_context_diff_count") == 2
+        and summary.get("unknown_key_count") == 1
+        and summary.get("all_similar_context_key_checks_passed") is True
+        and boundary.get("similar_context_key_enabled") is True
+        and boundary.get("position_independent_by_default") is True
+        and boundary.get("deterministic_rules_only") is True
+        and boundary.get("failure_reason_classifier_required") is True
+        and boundary.get("prediction_enabled") is False
+        and boundary.get("rule_learning_enabled") is False
+        and boundary.get("rule_revision_enabled") is False
+        and boundary.get("action_selection_modified") is False
+        and boundary.get("pathfinding_used") is False
+        and boundary.get("llm_reasoning_used") is False
+        and boundary.get("long_term_memory_write") is False
+        and boundary.get("general_learning_claimed") is False
+    )
+    return _result(
+        "similar_context_key",
+        passed,
+        {
+            "keys": keys,
+            "comparison": comparison,
             "summary": summary,
             "boundary": boundary,
         },
@@ -7576,6 +7634,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_reward_biased_random_walk_check(),
         smoke_two_round_instinct_reward_comparison(),
         smoke_failure_reason_classifier(),
+        smoke_similar_context_key(),
         smoke_micro_navigation_goal_reach(),
         smoke_micro_navigation_trial_metrics_cli(),
         smoke_micro_navigation_multi_goal_level(),

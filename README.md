@@ -1936,3 +1936,10 @@ Two-Trial History Boundary:
 - Starts the Experience Abstraction Layer by converting raw action outcomes into deterministic reason categories.
 - Classifies wall-blocked, empty-moved, item-contact, passage-crossed, exit-contact, turn, look, and unknown cases.
 - Does not add prediction, similar-context matching, rule learning, action selection changes, LLM reasoning, or long-term memory.
+
+## Similar Context Key v0
+
+- Adds `py -3 -m ashl_core.teaching_cli run-similar-context-key-check`.
+- Continues the Experience Abstraction Layer by generating deterministic structural keys from classified experiences.
+- Keys are position-independent by default, enabling same-structure different-position experiences to match.
+- Does not add prediction, rule learning, action selection changes, LLM reasoning, or long-term memory.
