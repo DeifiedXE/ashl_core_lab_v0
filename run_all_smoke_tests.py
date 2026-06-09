@@ -64,6 +64,7 @@ from ashl_core.norepinephrine_like_change_attention_trace_check import (
     run_norepinephrine_like_change_attention_trace_check,
 )
 from ashl_core.oxytocin_like_review_trust_trace_check import run_oxytocin_like_review_trust_trace_check
+from ashl_core.outcome_pair_from_action_trial_trace import run_outcome_pair_from_action_trial_trace_check
 from ashl_core.persistent_eligibility_checker import run_persistent_eligibility_checker_check
 from ashl_core.integrated_loop import run_turn
 from ashl_core.lesson_candidate_drafts import build_lesson_candidate_draft_trace, validate_lesson_candidate_draft_trace
@@ -1855,6 +1856,60 @@ def smoke_expected_actual_outcome_pair_schema() -> dict:
         {
             "summary": summary,
             "validation_results": result.get("validation_results", []),
+            "boundary": boundary,
+        },
+    )
+
+
+def smoke_outcome_pair_from_action_trial_trace() -> dict:
+    result = run_outcome_pair_from_action_trial_trace_check()
+    summary = result.get("summary", {})
+    boundary = result.get("boundary_check", {})
+    passed = (
+        result.get("command") == "run-outcome-pair-from-action-trial-trace-check"
+        and result.get("flow") == "outcome_pair_from_action_trial_trace_v0"
+        and result.get("status") == "ok"
+        and summary.get("trial_trace_count") == 6
+        and summary.get("valid_trial_trace_count") == 2
+        and summary.get("invalid_trial_trace_count") == 4
+        and summary.get("generated_pair_count") == 4
+        and summary.get("valid_pair_count") == 2
+        and summary.get("invalid_pair_count") == 2
+        and summary.get("mismatch_true_count") == 1
+        and summary.get("mismatch_false_count") == 1
+        and summary.get("failure_reason_created_count") == 1
+        and summary.get("missing_expected_outcome_blocked_count") == 1
+        and summary.get("missing_actual_outcome_blocked_count") == 1
+        and summary.get("unknown_vs_unknown_blocked_count") == 1
+        and summary.get("schema_validation_failed_count") == 2
+        and summary.get("action_selection_influence_count") == 0
+        and summary.get("action_behavior_changed_count") == 0
+        and summary.get("lesson_application_runtime_count") == 0
+        and summary.get("memory_write_count") == 0
+        and summary.get("predictor_modified_count") == 0
+        and summary.get("persistent_rule_write_count") == 0
+        and summary.get("endocrine_control_count") == 0
+        and summary.get("autonomy_enabled_count") == 0
+        and boundary.get("trace_check_only") is True
+        and boundary.get("uses_expected_actual_outcome_pair_schema") is True
+        and boundary.get("structured_state_equality_only") is True
+        and boundary.get("free_form_outcome_comparison_used") is False
+        and boundary.get("llm_semantic_comparison_used") is False
+        and boundary.get("runtime_action_selection_added") is False
+        and boundary.get("action_selection_modified") is False
+        and boundary.get("new_action_behavior_added") is False
+        and boundary.get("lesson_application_runtime_added") is False
+        and boundary.get("persistent_learning_added") is False
+        and boundary.get("memory_write_added") is False
+        and boundary.get("predictor_mutation_added") is False
+        and boundary.get("autonomy_added") is False
+    )
+    return _result(
+        "outcome_pair_from_action_trial_trace",
+        passed,
+        {
+            "summary": summary,
+            "trial_results": result.get("trial_results", []),
             "boundary": boundary,
         },
     )
@@ -9927,6 +9982,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_similar_context_key(),
         smoke_action_outcome_predictor(),
         smoke_expected_actual_outcome_pair_schema(),
+        smoke_outcome_pair_from_action_trial_trace(),
         smoke_prediction_accuracy_check(),
         smoke_rule_candidate_from_mismatch(),
         smoke_rule_candidate_review_gate(),

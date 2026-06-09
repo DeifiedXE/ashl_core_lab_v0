@@ -39,6 +39,7 @@ from .norepinephrine_like_change_attention_trace_check import (
     run_norepinephrine_like_change_attention_trace_check,
 )
 from .oxytocin_like_review_trust_trace_check import run_oxytocin_like_review_trust_trace_check
+from .outcome_pair_from_action_trial_trace import run_outcome_pair_from_action_trial_trace_check
 from .persistent_eligibility_checker import run_persistent_eligibility_checker_check
 from .prediction_accuracy_check import run_prediction_accuracy_check
 from .reward_biased_action_tendency import run_reward_biased_action_tendency_check
@@ -3464,6 +3465,8 @@ def run_command(command: str) -> dict[str, Any] | str:
         return run_cortisol_like_failure_load_trace_check()
     if command == "run-oxytocin-like-review-trust-trace-check":
         return run_oxytocin_like_review_trust_trace_check()
+    if command == "run-outcome-pair-from-action-trial-trace-check":
+        return run_outcome_pair_from_action_trial_trace_check()
     if command == "run-mimetic-endocrine-four-axis-trace-integration-check":
         return run_mimetic_endocrine_four_axis_trace_integration_check()
     if command == "run-retina-decoder-feature-schema-check":
@@ -3571,6 +3574,7 @@ def main(argv: list[str] | None = None) -> int:
             "run-norepinephrine-like-change-attention-trace-check",
             "run-cortisol-like-failure-load-trace-check",
             "run-oxytocin-like-review-trust-trace-check",
+            "run-outcome-pair-from-action-trial-trace-check",
             "run-mimetic-endocrine-four-axis-trace-integration-check",
             "run-retina-decoder-feature-schema-check",
             "run-retina-decoder-symbolic-feature-decode-check",
@@ -3802,6 +3806,8 @@ def main(argv: list[str] | None = None) -> int:
         result = run_cortisol_like_failure_load_trace_check()
     elif args.command == "run-oxytocin-like-review-trust-trace-check":
         result = run_oxytocin_like_review_trust_trace_check()
+    elif args.command == "run-outcome-pair-from-action-trial-trace-check":
+        result = run_outcome_pair_from_action_trial_trace_check()
     elif args.command == "run-mimetic-endocrine-four-axis-trace-integration-check":
         result = run_mimetic_endocrine_four_axis_trace_integration_check()
     elif args.command == "run-retina-decoder-feature-schema-check":

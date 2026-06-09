@@ -5100,3 +5100,21 @@ Scope:
 
 Non-goals:
 - does not add runtime action selection, action selection influence, new action behavior, action candidate scoring changes, movement control changes, lesson application runtime, automatic lesson application, persistent learning, persistent rule write, memory write, predictor mutation, perception-to-action bridge, focus-to-action bridge, active_focus, focus_applied, attention control, runtime focus selector, runtime ranking, endocrine runtime, endocrine-controlled action, autonomy, object recognition, semantic vision, consciousness claim, or subjective claim
+
+## Outcome Pair From Action Trial Trace Check v0
+
+Status: completed / trace-check-only / no-runtime-change.
+
+Goal:
+Generate validated `expected_actual_outcome_pair` records from deterministic demo action trial traces.
+
+Scope:
+- adds `ashl_core.outcome_pair_from_action_trial_trace`
+- adds `py -3 -m ashl_core.teaching_cli run-outcome-pair-from-action-trial-trace-check`
+- builds expected_actual_outcome_pair records from action_intent, expected_outcome, and trial_result.actual_outcome
+- uses structured state equality to set explicit mismatch in demo traces
+- generates structured failure_reason when mismatch is true
+- reuses `expected_actual_outcome_pair_schema` validation
+
+Non-goals:
+- does not add runtime action selection, action selection influence, new action behavior, action candidate scoring changes, movement control changes, lesson application runtime, automatic lesson application, persistent learning, persistent rule write, memory write, predictor mutation, perception-to-action bridge, focus-to-action bridge, active_focus, focus_applied, attention control, runtime focus selector, runtime ranking, endocrine runtime, endocrine-controlled action, autonomy, object recognition, semantic vision, LLM semantic comparison, free-form outcome comparison, consciousness claim, or subjective claim

@@ -2290,3 +2290,9 @@ Two-Trial History Boundary:
 - Adds `py -3 -m ashl_core.teaching_cli run-expected-actual-outcome-pair-schema-check`.
 - Validates the smallest reusable Phase 0 `expected_outcome` / `actual_outcome` / `mismatch` record shape with structured `failure_reason` and trace-only/review-gated boundaries.
 - Schema/checker-only: does not change action selection, action behavior, lesson application, memory, persistence, or predictor behavior.
+
+## Outcome Pair From Action Trial Trace Check v0
+
+- Adds `py -3 -m ashl_core.teaching_cli run-outcome-pair-from-action-trial-trace-check`.
+- Generates validated `expected_actual_outcome_pair` records from deterministic demo action trial traces.
+- Trace/check-only: does not change action selection, action behavior, lesson application, memory, persistence, or predictor behavior.
