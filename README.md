@@ -2037,3 +2037,10 @@ Two-Trial History Boundary:
 - Adds `docs/milestone_logs/project_state_pause_point_2026-06-09.md`.
 - Classifies implemented, trace-only, checker-only, design-only, and not-present capabilities after the integrated trace and persistent eligibility checker line.
 - Pause-only: does not add runtime behavior, CLI, persistent writes, action selection changes, global predictor mutation, or Boundary Index changes.
+
+## Generalized Memory Loop Design v0
+
+- Adds `docs/generalized_memory_loop_design_v0.md`.
+- Defines cross-session exact-key pattern accumulation for future prediction confidence updates and `generalized_candidate` review.
+- Exact `similar_context_key` matches are the only allowed aggregation path.
+- Design-only: does not add runtime generalized memory, fuzzy similarity, storage, long-term memory, action selection changes, persistent rule writes, or LLM similarity.

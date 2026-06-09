@@ -4463,3 +4463,19 @@ Scope:
 
 Non-goals:
 - no runtime behavior, new CLI, runtime tests, action selection modification, prediction-driven suppression/preference, persistent rule storage, persistent rule table, persistent rule write, persistent rule activation, global predictor modification, candidate auto-approval, Qingyin self-approval, candidate application, lesson_store write, Memory Layer write, long-term memory, lesson_candidate pipeline connection, lesson internalization, instinct-like behavior layer, pathfinding, route planner, item seeking, item collection, reward change, random walk change, UI change, autonomous exploration, decision loop, LLM reasoning, LLM planning, LLM vision, Boundary Index modification, general learning claim, autonomous learning claim, visual understanding claim, solved symbol grounding claim, consciousness claim, or subjective experience claim
+
+## Generalized Memory Loop Design v0
+
+Status: completed / design-only / no-runtime-change.
+
+Goal:
+Define the first safe generalized memory loop as cross-session exact-key pattern accumulation.
+
+Scope:
+- adds `docs/generalized_memory_loop_design_v0.md`
+- defines exact `similar_context_key` aggregation across sessions
+- defines conceptual generalized pattern records, prediction-confidence-only updates, `generalized_candidate` review, safety gates, and block conditions
+- lists future packages for exact-key buckets, prediction confidence checks, generalized candidates, conflict audit, and review gate
+
+Non-goals:
+- no runtime behavior, new CLI, runtime tests, generalized memory runtime, cross-session storage, fuzzy similarity, semantic similarity, LLM similarity, visual similarity, prediction rule modification, global predictor modification, action selection modification, prediction-driven action selection, candidate auto-approval, candidate auto-application, persistent rule write, lesson_store write, Memory Layer write, long-term memory write, lesson internalization, instinct-like behavior layer, pathfinding, route planner, UI change, autonomous exploration, decision loop, LLM reasoning, LLM planning, LLM vision, Boundary Index modification, general learning claim, autonomous learning claim, visual understanding claim, solved symbol grounding claim, consciousness claim, or subjective experience claim
