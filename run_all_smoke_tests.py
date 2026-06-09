@@ -134,6 +134,14 @@ from ashl_core.session_working_memory import (
     create_session_working_memory,
     query_recent_outcomes,
 )
+from ashl_core.simulated_vision_sandbox import (
+    ALLOWED_VIEWPORT_SYMBOLS,
+    apply_simulated_vision_action,
+    build_initial_simulated_vision_state,
+    create_simulated_vision_room,
+    render_viewport,
+    run_simulated_vision_viewport_demo,
+)
 from ashl_core.state_core import StateCore
 from ashl_core.state_persistence import (
     read_last_trace_summary,
@@ -253,6 +261,62 @@ def smoke_action_sandbox() -> dict:
         and stable["to_state"] == "standing_stable"
     )
     return _result("action_sandbox", passed, {"failed": failed, "stable": stable})
+
+
+def smoke_simulated_vision_viewport() -> dict:
+    level = create_simulated_vision_room()
+    initial_state = build_initial_simulated_vision_state(level)
+    moved = apply_simulated_vision_action(initial_state, level, "move_forward")
+    wall_state = {"level_id": level["level_id"], "pos": (3, 1), "facing": "north", "tick": 0}
+    blocked = apply_simulated_vision_action(wall_state, level, "move_forward")
+    item_state = {"level_id": level["level_id"], "pos": (4, 2), "facing": "north", "tick": 0}
+    item_contact = apply_simulated_vision_action(item_state, level, "move_forward")
+    edge_state = {"level_id": level["level_id"], "pos": (0, 0), "facing": "north", "tick": 0}
+    edge_symbols = {symbol for row in render_viewport(edge_state, level) for symbol in row}
+    result = run_simulated_vision_viewport_demo()
+    boundary = result.get("boundary_check", {})
+    viewport_symbols = {
+        symbol
+        for step in result.get("action_trace", [])
+        for row in step.get("viewport", [])
+        for symbol in row
+    }
+    passed = (
+        initial_state["pos"] == (3, 3)
+        and initial_state["facing"] == "north"
+        and moved["state"]["pos"] == (3, 2)
+        and moved["trace"]["result"] == "moved"
+        and blocked["state"]["pos"] == (3, 1)
+        and blocked["trace"]["result"] == "blocked"
+        and blocked["trace"]["failure_reasons"] == ["wall_blocked"]
+        and item_contact["trace"]["result"] == "item_contact"
+        and "x" in edge_symbols
+        and viewport_symbols <= ALLOWED_VIEWPORT_SYMBOLS
+        and result.get("command") == "run-simulated-vision-viewport-demo"
+        and result.get("flow") == "simulated_vision_facing_viewport_v0"
+        and len(result.get("action_trace", [])) == 7
+        and boundary.get("simulated_vision_only") is True
+        and boundary.get("real_image_vision") is False
+        and boundary.get("structured_symbols_only") is True
+        and boundary.get("full_map_visible_to_agent") is False
+        and boundary.get("pathfinding_used") is False
+        and boundary.get("llm_vision_used") is False
+        and boundary.get("llm_planning_used") is False
+        and boundary.get("session_memory_write") is False
+    )
+    return _result(
+        "simulated_vision_viewport",
+        passed,
+        {
+            "initial_state": {"pos": initial_state["pos"], "facing": initial_state["facing"]},
+            "moved_result": moved["trace"]["result"],
+            "blocked_result": blocked["trace"]["result"],
+            "item_result": item_contact["trace"]["result"],
+            "viewport_symbols": sorted(viewport_symbols),
+            "edge_symbols": sorted(edge_symbols),
+            "boundary": boundary,
+        },
+    )
 
 
 def smoke_micro_navigation_goal_reach() -> dict:
@@ -6163,6 +6227,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_memory_layers(),
         smoke_body_state(),
         smoke_action_sandbox(),
+        smoke_simulated_vision_viewport(),
         smoke_micro_navigation_goal_reach(),
         smoke_micro_navigation_trial_metrics_cli(),
         smoke_micro_navigation_multi_goal_level(),

@@ -2454,6 +2454,38 @@ No pathfinding.
 No LLM planning.
 No proof of general learning claim.
 
+## Simulated Vision Facing / Viewport v0
+
+Status:
+minimal-runtime / symbolic-viewport / facing-state / no-visual-grounding-proof
+
+Summary:
+Adds `ashl_core.simulated_vision_sandbox`.
+Adds `py -3 -m ashl_core.teaching_cli run-simulated-vision-viewport-demo`.
+The sandbox gives the agent position and facing, supports turn_left, turn_right, look, and move_forward, and returns a bounded 3x3 symbolic viewport.
+Symbols are w wall, e empty, i item/object, x out of view/unknown, and a agent marker.
+The agent receives only the bounded viewport output, not the full map as vision.
+Session Working Memory bridge is deferred.
+
+Boundary:
+Structured symbolic simulated vision only.
+No real images.
+No computer vision.
+No LLM vision.
+No LLM planning.
+No full-map vision exposure.
+No pathfinding / BFS / A*.
+No route planner.
+No goal solving.
+No existing dead-end A/B behavior changes.
+No action selection changes in existing navigation tests.
+No lesson_store write.
+No Memory Layer write.
+No Long-term Memory.
+No lesson_candidate pipeline connection.
+No visual understanding claim.
+No symbol grounding solved claim.
+
 ## Micro Navigation Trial Metrics CLI v0
 
 Status:

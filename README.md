@@ -1269,6 +1269,14 @@ Two-Trial History Boundary:
 - Closes the current Session Working Memory phase and summarizes completed memory capabilities, boundaries, and current data shape.
 - Next phase direction: Simulated Vision Facing / Viewport v0 using structured symbolic simulated vision, not real images, pathfinding, or LLM vision.
 
+## Simulated Vision Facing / Viewport v0
+
+- Adds `py -3 -m ashl_core.teaching_cli run-simulated-vision-viewport-demo`.
+- Introduces symbolic viewport input with position and facing: `pos = (x, y)` and `facing = north / east / south / west`.
+- Supported actions are `turn_left`, `turn_right`, `look`, and `move_forward`.
+- Viewport symbols are `w` wall, `e` empty, `i` item/object, and `x` out of view/unknown; the center may use `a` for the agent.
+- This is not real image vision, does not use LLM vision, does not use pathfinding, and does not prove visual grounding.
+
 ## Micro Navigation Trial Metrics CLI v0
 
 - Adds `py -3 -m ashl_core.teaching_cli run-navigation-trial-metrics --runs 4 --trial-count 5 --max-steps 10`.
