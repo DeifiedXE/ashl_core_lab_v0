@@ -2272,3 +2272,9 @@ Two-Trial History Boundary:
 - Adds `docs/focus_perception_boundary_construction_log_v0.md`.
 - Summarizes the completed eye-structure, focus trace/checker, focus application boundary, and perception-to-action boundary work for handoff.
 - Documentation-only: no runtime focus, attention, perception-to-action, action selection, memory, predictor, endocrine, object, semantic, or subjective claim behavior is added.
+
+## Phase 0 Action / Lesson Loop Return Planning v0
+
+- Adds `docs/phase0_action_lesson_loop_return_planning_v0.md`.
+- Records the decision to pause perception/focus runtime escalation and return to action/outcome/failure_reason/lesson foundations.
+- Planning-only: no runtime action selection, lesson application, persistent learning, perception-to-action bridge, active_focus, attention control, memory write, predictor mutation, or endocrine runtime is added.

@@ -3388,6 +3388,46 @@ def smoke_focus_perception_boundary_construction_log() -> dict:
     )
 
 
+def smoke_phase0_action_lesson_loop_return_planning() -> dict:
+    doc_path = Path("docs/phase0_action_lesson_loop_return_planning_v0.md")
+    doc = doc_path.read_text(encoding="utf-8") if doc_path.exists() else ""
+    readme = Path("README.md").read_text(encoding="utf-8")
+    research_plan = Path("docs/research_plan.md").read_text(encoding="utf-8")
+    required_phrases = [
+        "Phase 0 Action / Lesson Loop Return Planning v0",
+        "The perception/focus path has reached a safe trace/checker/review milestone.",
+        "action_intent",
+        "expected_outcome",
+        "actual_outcome",
+        "structured failure_reason",
+        "lesson_candidate",
+        "human review",
+        "Qingyin's grounding priority remains action-result contrast, not visual action control.",
+        "Option A: Action Outcome Contrast Baseline Review v0",
+        "Option B: Failure Reason Coverage Audit v0",
+        "Option C: Lesson Candidate Review Path Audit v0",
+        "Do not resume perception-to-action bridge yet.",
+        "Do not introduce active_focus.",
+        "Do not allow focus rank, total_score, or change_salience to affect action.",
+        "Do not add runtime action selection.",
+        "Do not add persistent learning.",
+        "Boundary Index Version: 2026-06-09-b41",
+    ]
+    missing = [phrase for phrase in required_phrases if phrase not in doc]
+    passed = (
+        doc_path.exists()
+        and not missing
+        and "Phase 0 Action / Lesson Loop Return Planning v0" in readme
+        and "Phase 0 Action / Lesson Loop Return Planning v0" in research_plan
+        and "planning-only" in research_plan
+    )
+    return _result(
+        "phase0_action_lesson_loop_return_planning",
+        passed,
+        {"doc": str(doc_path), "missing": missing},
+    )
+
+
 def smoke_focus_application_gate_schema() -> dict:
     result = run_focus_application_gate_schema_check()
     summary = result.get("summary", {})
@@ -9818,6 +9858,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_focus_application_boundary_review(),
         smoke_perception_to_action_boundary_review(),
         smoke_focus_perception_boundary_construction_log(),
+        smoke_phase0_action_lesson_loop_return_planning(),
         smoke_focus_application_gate_schema(),
         smoke_focus_candidate_from_change_trace(),
         smoke_micro_navigation_goal_reach(),

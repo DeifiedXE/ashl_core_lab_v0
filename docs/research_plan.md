@@ -5050,3 +5050,19 @@ Scope:
 
 Non-goals:
 - does not add runtime behavior, schemas, checks, runtime focus selector, runtime ranking, active_focus selection, focus application, attention control, perception-to-action bridge, focus-to-action bridge, vision-driven action selection, action selection influence, memory write, predictor mutation, persistent rule creation, endocrine runtime, object recognition, object tracking, semantic vision, symbol grounding claim, consciousness claim, or subjective visual experience claim
+
+## Phase 0 Action / Lesson Loop Return Planning v0
+
+Status: completed / planning-only / no-runtime-change.
+
+Goal:
+Record the decision to pause perception/focus runtime escalation and return to Phase 0 action/outcome/failure_reason/lesson foundations.
+
+Scope:
+- adds `docs/phase0_action_lesson_loop_return_planning_v0.md`
+- explains why perception/focus work pauses at the trace/checker/review boundary
+- re-states the Phase 0 action_intent -> expected_outcome -> actual_outcome -> mismatch -> structured failure_reason -> lesson_candidate -> human review loop
+- lists safe next package options and recommends Action Outcome Contrast Baseline Review v0 as the immediate next planning target
+
+Non-goals:
+- does not add runtime action selection, action selection influence, new action behavior, lesson application runtime, automatic lesson application, persistent learning, persistent rule write, memory write, predictor mutation, perception-to-action bridge, focus-to-action bridge, active_focus, focus_applied, attention control, runtime focus selector, runtime ranking, endocrine runtime, endocrine-controlled action, autonomy, object recognition, semantic vision, consciousness claim, or subjective claim
