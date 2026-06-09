@@ -15,6 +15,7 @@ from .failure_reason_classifier import run_failure_reason_classifier_check
 from .first_output_runtime import generate_minimal_first_output
 from .grounded_action_experience import run_grounded_action_experience_check
 from .grounded_action_experience_influence import run_grounded_action_experience_influence_check
+from .generalized_memory_exact_key_bucket import run_generalized_memory_exact_key_bucket_check
 from .instinct_random_walk_runner import run_instinct_random_walk
 from .integrated_experience_session_trace import run_integrated_experience_session_trace
 from .integrated_trace_chain_break_audit import run_integrated_trace_chain_break_audit
@@ -3417,6 +3418,8 @@ def run_command(command: str) -> dict[str, Any] | str:
         return run_integrated_trace_chain_break_audit()
     if command == "run-persistent-eligibility-checker-check":
         return run_persistent_eligibility_checker_check()
+    if command == "run-generalized-memory-exact-key-bucket-check":
+        return run_generalized_memory_exact_key_bucket_check()
     return {
         "command": command,
         "status": "error",
@@ -3488,6 +3491,7 @@ def main(argv: list[str] | None = None) -> int:
             "run-integrated-experience-session-trace",
             "run-integrated-trace-chain-break-audit",
             "run-persistent-eligibility-checker-check",
+            "run-generalized-memory-exact-key-bucket-check",
         ],
     )
     parser.add_argument("--review-id", default="review_001")
@@ -3686,6 +3690,8 @@ def main(argv: list[str] | None = None) -> int:
         result = run_integrated_trace_chain_break_audit()
     elif args.command == "run-persistent-eligibility-checker-check":
         result = run_persistent_eligibility_checker_check()
+    elif args.command == "run-generalized-memory-exact-key-bucket-check":
+        result = run_generalized_memory_exact_key_bucket_check()
     else:
         result = run_command(args.command)
     if hasattr(sys.stdout, "reconfigure"):

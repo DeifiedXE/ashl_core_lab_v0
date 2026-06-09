@@ -2044,3 +2044,10 @@ Two-Trial History Boundary:
 - Defines cross-session exact-key pattern accumulation for future prediction confidence updates and `generalized_candidate` review.
 - Exact `similar_context_key` matches are the only allowed aggregation path.
 - Design-only: does not add runtime generalized memory, fuzzy similarity, storage, long-term memory, action selection changes, persistent rule writes, or LLM similarity.
+
+## Generalized Memory Exact-Key Bucket v0
+
+- Adds `py -3 -m ashl_core.teaching_cli run-generalized-memory-exact-key-bucket-check`.
+- Aggregates demo cross-session experience records by exact `similar_context_key`.
+- Reports pattern counts, outcome distribution, reason distribution, confidence labels, and future `generalized_candidate` eligibility.
+- Runtime check only: does not use fuzzy / semantic / LLM / visual similarity, write long-term memory, create generalized candidates, modify predictors, or affect action selection.

@@ -40,6 +40,7 @@ from ashl_core.first_output_runtime import UTTERANCE_MAP, generate_minimal_first
 from ashl_core.guard import guard_output
 from ashl_core.grounded_action_experience import run_grounded_action_experience_check
 from ashl_core.grounded_action_experience_influence import run_grounded_action_experience_influence_check
+from ashl_core.generalized_memory_exact_key_bucket import run_generalized_memory_exact_key_bucket_check
 from ashl_core.instinct_random_walk_runner import run_instinct_random_walk
 from ashl_core.integrated_experience_session_trace import run_integrated_experience_session_trace
 from ashl_core.integrated_trace_chain_break_audit import run_integrated_trace_chain_break_audit
@@ -2250,6 +2251,74 @@ def smoke_persistent_eligibility_checker() -> dict:
         {
             "cases": cases,
             "summary": summary,
+            "boundary": boundary,
+        },
+    )
+
+
+def smoke_generalized_memory_exact_key_bucket() -> dict:
+    result = run_generalized_memory_exact_key_bucket_check()
+    summaries = result.get("bucket_summaries", [])
+    buckets = {summary.get("primary_reason"): summary for summary in summaries}
+    summary = result.get("summary", {})
+    boundary = result.get("boundary_check", {})
+    stable_wall = buckets.get("front_cell_wall", {})
+    stable_item = buckets.get("front_cell_item_contact", {})
+    mixed_empty = next(
+        (
+            item
+            for item in summaries
+            if item.get("similar_context_key")
+            == "front_symbol=e|action=move_forward|primary_reason=front_cell_empty_walkable"
+        ),
+        {},
+    )
+    single_session = buckets.get("front_cell_door_observed", {})
+    passed = (
+        result.get("command") == "run-generalized-memory-exact-key-bucket-check"
+        and result.get("flow") == "generalized_memory_exact_key_bucket_v0"
+        and result.get("status") == "ok"
+        and summary.get("record_count") == 10
+        and summary.get("bucket_count") == 4
+        and summary.get("cross_session_bucket_count") == 3
+        and summary.get("mixed_bucket_count") == 1
+        and summary.get("single_session_bucket_count") == 1
+        and summary.get("candidate_created_count") == 0
+        and stable_wall.get("session_count") == 3
+        and stable_wall.get("pattern_count") == 3
+        and stable_wall.get("dominant_outcome_ratio") == 1.0
+        and stable_wall.get("confidence_label") == "high"
+        and stable_wall.get("eligible_for_generalized_candidate") is True
+        and stable_wall.get("candidate_created") is False
+        and stable_item.get("confidence_label") == "high"
+        and mixed_empty.get("conflict_like_distribution") is True
+        and mixed_empty.get("eligible_for_generalized_candidate") is False
+        and single_session.get("session_count") == 1
+        and single_session.get("eligible_for_generalized_candidate") is False
+        and boundary.get("exact_key_bucket_only") is True
+        and boundary.get("exact_similar_context_key_only") is True
+        and boundary.get("fuzzy_similarity_enabled") is False
+        and boundary.get("semantic_similarity_enabled") is False
+        and boundary.get("llm_similarity_enabled") is False
+        and boundary.get("visual_similarity_enabled") is False
+        and boundary.get("prediction_confidence_calculated") is True
+        and boundary.get("prediction_confidence_applied_to_predictor") is False
+        and boundary.get("generalized_candidate_eligibility_calculated") is True
+        and boundary.get("generalized_candidate_created") is False
+        and boundary.get("action_selection_modified") is False
+        and boundary.get("long_term_memory_write") is False
+        and boundary.get("lesson_store_write") is False
+        and boundary.get("memory_layer_write") is False
+    )
+    return _result(
+        "generalized_memory_exact_key_bucket",
+        passed,
+        {
+            "summary": summary,
+            "stable_wall_bucket": stable_wall,
+            "stable_item_bucket": stable_item,
+            "mixed_empty_bucket": mixed_empty,
+            "single_session_bucket": single_session,
             "boundary": boundary,
         },
     )
@@ -8194,6 +8263,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_integrated_experience_session_trace(),
         smoke_integrated_trace_chain_break_audit(),
         smoke_persistent_eligibility_checker(),
+        smoke_generalized_memory_exact_key_bucket(),
         smoke_micro_navigation_goal_reach(),
         smoke_micro_navigation_trial_metrics_cli(),
         smoke_micro_navigation_multi_goal_level(),

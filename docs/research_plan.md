@@ -4479,3 +4479,20 @@ Scope:
 
 Non-goals:
 - no runtime behavior, new CLI, runtime tests, generalized memory runtime, cross-session storage, fuzzy similarity, semantic similarity, LLM similarity, visual similarity, prediction rule modification, global predictor modification, action selection modification, prediction-driven action selection, candidate auto-approval, candidate auto-application, persistent rule write, lesson_store write, Memory Layer write, long-term memory write, lesson internalization, instinct-like behavior layer, pathfinding, route planner, UI change, autonomous exploration, decision loop, LLM reasoning, LLM planning, LLM vision, Boundary Index modification, general learning claim, autonomous learning claim, visual understanding claim, solved symbol grounding claim, consciousness claim, or subjective experience claim
+
+## Generalized Memory Exact-Key Bucket v0
+
+Status: completed / runtime-check-only / no-storage.
+
+Goal:
+Implement the first safe generalized memory runtime/checker piece: exact-key bucket aggregation over demo cross-session experience records.
+
+Scope:
+- adds `ashl_core.generalized_memory_exact_key_bucket`
+- adds `py -3 -m ashl_core.teaching_cli run-generalized-memory-exact-key-bucket-check`
+- aggregates records by exact `similar_context_key`
+- reports pattern counts, outcome distribution, reason distribution, primary outcome, primary reason, confidence label, and future `generalized_candidate` eligibility
+- keeps `candidate_created=false`
+
+Non-goals:
+- no fuzzy similarity, semantic similarity, LLM similarity, visual similarity, cross-session database, persistent storage, long-term memory write, lesson_store write, Memory Layer write, predictor behavior modification, global predictor modification, action selection modification, prediction-driven suppression/preference, runtime generalized_candidate creation, candidate auto-approval, candidate application, persistent rule write, persistent preview/dry-run, lesson internalization, instinct-like behavior layer, pathfinding, BFS, A*, route planner, item seeking, item collection, reward changes, random walk changes, UI changes, autonomous exploration, decision loop, LLM reasoning, LLM planning, LLM vision, Boundary Index modification, general learning claim, autonomous learning claim, visual understanding claim, solved symbol grounding claim, consciousness claim, or subjective experience claim
