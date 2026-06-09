@@ -1836,4 +1836,5 @@ Two-Trial History Boundary:
 - Adds `py -3 -m ashl_core.teaching_cli replay-larger-sandbox-human`.
 - Supports `--mode demo`, `--mode contact`, and `--mode observed-map`.
 - Prints a plain-text, human-readable replay from existing larger sandbox traces and contact/observed-map smoke outputs.
+- Front symbol display uses the first-person immediate front cell `viewport[1][1]`.
 - Readability replay only: no runtime behavior, action selection, pathfinding, item collection, exit activation, curiosity, prediction error, place memory, home sandbox, or visual understanding claim is added.

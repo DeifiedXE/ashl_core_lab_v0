@@ -28,6 +28,8 @@ def _format_demo_replay(result: dict[str, Any]) -> str:
     lines.append("Steps:")
     for index, step in enumerate(result["action_trace"], start=1):
         after = step["after"]
+        viewport = step["viewport"]
+        front_symbol = get_front_symbol_for_replay(viewport)
         lines.extend(
             [
                 "",
@@ -35,9 +37,9 @@ def _format_demo_replay(result: dict[str, Any]) -> str:
                 f"Position: {_format_pos(after['pos'])}",
                 f"Facing: {after['facing']}",
                 "Viewport:",
-                _format_viewport(step["viewport"]),
-                f"She sees: {_symbol_description(step['front_symbol'])}",
-                f"Front symbol: {step['front_symbol']}",
+                _format_viewport(viewport),
+                f"Visible symbols: {_format_visible_symbols(viewport)}",
+                f"Front symbol: {front_symbol}",
                 f"Result: {step['result']}",
                 f"Effects: {_format_list(step['effect_tags'])}",
                 f"Failures: {_format_list(step['failure_reasons'])}",
@@ -51,6 +53,8 @@ def _format_contact_replay(result: dict[str, Any]) -> str:
     lines = _header(result["level_id"], "contact")
     lines.append("Contact Steps:")
     for index, step in enumerate(result["scenario_results"], start=1):
+        viewport = step["current_viewport"]
+        front_symbol = get_front_symbol_for_replay(viewport)
         lines.extend(
             [
                 "",
@@ -59,9 +63,9 @@ def _format_contact_replay(result: dict[str, Any]) -> str:
                 f"Position: {_format_pos(step['initial_pos'])}",
                 f"Facing: {step['initial_facing']}",
                 "Viewport:",
-                _format_viewport(step["current_viewport"]),
-                f"She sees: {_symbol_description(step['front_symbol'])}",
-                f"Front symbol: {step['front_symbol']}",
+                _format_viewport(viewport),
+                f"Visible symbols: {_format_visible_symbols(viewport)}",
+                f"Front symbol: {front_symbol}",
                 f"Result: {step['actual_outcome']}",
                 f"Effects: {_format_list(step['effect_tags'])}",
                 f"Failures: {_format_list(step['failure_reasons'])}",
@@ -77,6 +81,8 @@ def _format_observed_map_replay(result: dict[str, Any]) -> str:
     lines.append("Observed Map Steps:")
     for index, step in enumerate(result["scenario_results"], start=1):
         state = step["initial_state"]
+        viewport = step["current_viewport"]
+        front_symbol = get_front_symbol_for_replay(viewport)
         lines.extend(
             [
                 "",
@@ -84,9 +90,9 @@ def _format_observed_map_replay(result: dict[str, Any]) -> str:
                 f"Position: {_format_pos(state['pos'])}",
                 f"Facing: {state['facing']}",
                 "Viewport:",
-                _format_viewport(step["current_viewport"]),
-                f"She sees: {_symbol_description(step['target_symbol'])}",
-                f"Front symbol: {step['target_symbol']}",
+                _format_viewport(viewport),
+                f"Visible symbols: {_format_visible_symbols(viewport)}",
+                f"Front symbol: {front_symbol}",
                 f"Observed world position: {_format_pos(step['observed_world_pos'])}",
                 f"Known cells after view: {step['known_cell_count_after']}",
                 f"Still remembered after view change: {_format_bool(step['still_remembered'])}",
@@ -146,6 +152,10 @@ def _format_viewport(viewport: list[list[str]]) -> str:
     return "\n".join(" ".join(row) for row in viewport)
 
 
+def get_front_symbol_for_replay(viewport: list[list[str]]) -> str:
+    return viewport[1][1]
+
+
 def _format_pos(pos: list[int] | tuple[int, int]) -> str:
     return f"({pos[0]}, {pos[1]})"
 
@@ -156,6 +166,11 @@ def _format_list(values: list[str]) -> str:
 
 def _format_bool(value: bool) -> str:
     return "true" if value else "false"
+
+
+def _format_visible_symbols(viewport: list[list[str]]) -> str:
+    symbols = sorted({symbol for row in viewport for symbol in row if symbol not in {"a", "x"}})
+    return ", ".join(_symbol_description(symbol) for symbol in symbols) if symbols else "none"
 
 
 def _symbol_description(symbol: str) -> str:

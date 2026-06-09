@@ -4,7 +4,10 @@ import sys
 import unittest
 
 from ashl_core.simulated_vision_larger_sandbox import run_simulated_vision_larger_sandbox_demo
-from ashl_core.simulated_vision_larger_sandbox_human_replay import run_larger_sandbox_human_replay
+from ashl_core.simulated_vision_larger_sandbox_human_replay import (
+    get_front_symbol_for_replay,
+    run_larger_sandbox_human_replay,
+)
 from ashl_core.teaching_cli import run_larger_sandbox_human_replay as run_cli_helper
 
 
@@ -27,13 +30,35 @@ class LargerSandboxHumanReplayTests(unittest.TestCase):
         self.assertIn("Step 1: look", text)
         self.assertIn("Position:", text)
         self.assertIn("Facing:", text)
-        self.assertIn("She sees:", text)
+        self.assertIn("Visible symbols:", text)
         self.assertIn("Front symbol:", text)
 
     def test_demo_replay_contains_stable_viewport_rows(self):
         text = run_larger_sandbox_human_replay()
 
         self.assertIn("w w w\ne e e\ne a e", text)
+
+    def test_front_symbol_helper_uses_immediate_front_cell(self):
+        viewport = [
+            ["w", "w", "w"],
+            ["e", "e", "e"],
+            ["e", "a", "d"],
+        ]
+
+        self.assertEqual(get_front_symbol_for_replay(viewport), "e")
+
+    def test_demo_side_d_viewport_reports_empty_front_symbol(self):
+        text = run_larger_sandbox_human_replay()
+        bad_case = (
+            "Viewport:\n"
+            "w w w\n"
+            "e e e\n"
+            "e a d\n"
+            "Visible symbols: passage marker, empty, wall\n"
+            "Front symbol: e"
+        )
+
+        self.assertIn(bad_case, text)
 
     def test_contact_replay_names_contact_scenarios_and_results(self):
         text = run_larger_sandbox_human_replay(mode="contact")

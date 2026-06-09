@@ -3927,6 +3927,7 @@ Scope:
 - supports `--mode demo`, `--mode contact`, and `--mode observed-map`
 - formats existing demo action traces and larger sandbox contact/observed-map smoke outputs
 - includes stable legend, viewport rows, position, facing, front symbol, result/effects/failures, and explicit boundary notes
+- front symbol display uses the first-person immediate front cell `viewport[1][1]`
 
 Non-goals:
 - no runtime behavior change
