@@ -2206,3 +2206,9 @@ Two-Trial History Boundary:
 
 - Syncs the completed low-level eye-structure path: symbolic/hybrid demo input -> retina features -> visual_frame -> previous/current frame pair -> low-level `change_records`.
 - All outputs remain trace/checker-only and blocked from action selection, memory write, focus selection, endocrine control, predictor mutation, and semantic/object claims.
+
+## Focus Selector Design v0
+
+- Adds `docs/focus_selector_design_v0.md`.
+- Defines design-only `focus_candidate` records from low-level visual features and change traces.
+- Design-only: no runtime focus selection, attention control, action selection influence, endocrine control, memory write, or semantic/object understanding is added.

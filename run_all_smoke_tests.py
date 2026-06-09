@@ -3029,6 +3029,45 @@ def smoke_visual_frame_change_trace() -> dict:
     )
 
 
+def smoke_focus_selector_design() -> dict:
+    doc_path = Path("docs/focus_selector_design_v0.md")
+    doc = doc_path.read_text(encoding="utf-8") if doc_path.exists() else ""
+    readme = Path("README.md").read_text(encoding="utf-8")
+    research_plan = Path("docs/research_plan.md").read_text(encoding="utf-8")
+    required_phrases = [
+        "focus_candidate",
+        "candidate_source",
+        "reason_codes",
+        "score_fields",
+        "semantic_label remains null",
+        "not attention",
+        "not action intent",
+        "not object recognition",
+        "not object tracking",
+        "not semantic vision",
+        "runtime_focus_selector = False",
+        "attention_control = False",
+        "focus_applied = False",
+        "blocked_from_action_selection",
+        "blocked_from_memory_write",
+        "blocked_from_endocrine_control",
+        "Perception-to-Action Boundary Review",
+    ]
+    missing = [phrase for phrase in required_phrases if phrase not in doc]
+    passed = (
+        doc_path.exists()
+        and not missing
+        and "focus_selector_design_v0.md" in readme
+        and "Focus Selector Design v0" in research_plan
+        and "no runtime focus selector" in research_plan
+    )
+    return _result(
+        "focus_selector_design",
+        passed,
+        {"doc": str(doc_path), "missing": missing},
+    )
+
+
 def smoke_dopamine_like_reward_trace_check() -> dict:
     result = run_dopamine_like_reward_trace_check()
     cases = {item.get("case_name"): item for item in result.get("dopamine_trace_results", [])}
@@ -9337,6 +9376,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_visual_frame_change_schema(),
         smoke_visual_frame_pair_demo_assembly(),
         smoke_visual_frame_change_trace(),
+        smoke_focus_selector_design(),
         smoke_micro_navigation_goal_reach(),
         smoke_micro_navigation_trial_metrics_cli(),
         smoke_micro_navigation_multi_goal_level(),

@@ -4881,3 +4881,19 @@ Progress:
 - completed low-level eye-structure trace path through Visual Frame Change Trace Check v0
 - synced `docs/current_boundary_index.md` to Boundary Index Version `2026-06-09-b40`
 - possible next stage: Focus Selector Design v0, only as a design/trace boundary, not runtime attention or action control
+
+## Focus Selector Design v0
+
+Status: completed / design-only / no-runtime-change.
+
+Goal:
+Define design-only `focus_candidate` records from low-level visual features and change traces.
+
+Scope:
+- adds `docs/focus_selector_design_v0.md`
+- defines low-level focus source types, reason codes, and score fields
+- records score fields without defining runtime formulas or endocrine modulation
+- requires focus candidates to remain blocked from action selection, memory write, and endocrine control
+
+Non-goals:
+- no runtime focus selector, attention control, focus application, focus candidate ranking runtime, focus-to-action bridge, perception-to-action bridge, endocrine connection, norepinephrine-controlled attention, action selection influence, memory write, predictor mutation, object recognition, object tracking, semantic labels, semantic vision, LLM vision, CNN, YOLO, UNet, symbol grounding claim, consciousness claim, or subjective visual experience claim
