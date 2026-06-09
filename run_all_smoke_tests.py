@@ -156,6 +156,7 @@ from ashl_core.simulated_vision_larger_sandbox import (
     run_simulated_vision_larger_sandbox_demo,
 )
 from ashl_core.simulated_vision_larger_sandbox_contact import run_larger_sandbox_symbol_contact_smoke
+from ashl_core.simulated_vision_larger_sandbox_human_replay import run_larger_sandbox_human_replay
 from ashl_core.simulated_vision_larger_sandbox_observed_map import run_larger_sandbox_observed_map_smoke
 from ashl_core.simulated_vision_memory_bridge import run_simulated_vision_memory_bridge_demo
 from ashl_core.simulated_vision_observed_map import run_simulated_vision_observed_map_demo
@@ -586,6 +587,71 @@ def smoke_larger_sandbox_symbol_contact_smoke() -> dict:
             "summary": summary,
             "scenario_results": result.get("scenario_results", []),
             "boundary": boundary,
+        },
+    )
+
+
+def smoke_larger_sandbox_human_replay() -> dict:
+    demo = run_larger_sandbox_human_replay()
+    contact = run_larger_sandbox_human_replay(mode="contact")
+    demo_markers = [
+        "Larger Sandbox Human Replay",
+        "Level: simulated_vision_larger_sandbox_v0",
+        "Mode: demo",
+        "Legend:",
+        "w = wall",
+        "e = empty",
+        "i = item",
+        "d = passage marker",
+        "g = exit placeholder",
+        "x = unseen / out of view",
+        "a = Qingyin",
+        "Step 1: look",
+        "w w w",
+        "e e e",
+        "e a e",
+        "Position:",
+        "Facing:",
+        "She sees:",
+        "Front symbol:",
+        "Boundary:",
+        "Readability replay only.",
+        "No runtime behavior changed.",
+        "No action selection changed.",
+        "No pathfinding.",
+        "No item collection.",
+        "No exit activation.",
+        "No visual understanding claim.",
+    ]
+    contact_markers = [
+        "Mode: contact",
+        "doorway_d",
+        "item_i",
+        "exit_g",
+        "Front symbol: d",
+        "Front symbol: i",
+        "Front symbol: g",
+        "Result: moved",
+        "Result: item_contact",
+        "Result: exit_contact",
+        "passage_crossed",
+        "item_contact",
+        "exit_contact",
+    ]
+    passed = (
+        isinstance(demo, str)
+        and isinstance(contact, str)
+        and all(marker in demo for marker in demo_markers)
+        and all(marker in contact for marker in contact_markers)
+        and not demo.lstrip().startswith("{")
+        and not contact.lstrip().startswith("{")
+    )
+    return _result(
+        "larger_sandbox_human_replay",
+        passed,
+        {
+            "demo_preview": demo.splitlines()[:16],
+            "contact_preview": contact.splitlines()[:20],
         },
     )
 
@@ -6773,6 +6839,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_simulated_vision_larger_sandbox_static_runtime(),
         smoke_larger_sandbox_observed_map_smoke(),
         smoke_larger_sandbox_symbol_contact_smoke(),
+        smoke_larger_sandbox_human_replay(),
         smoke_simulated_vision_memory_bridge(),
         smoke_simulated_vision_observed_map(),
         smoke_simulated_vision_symbol_grounding(),

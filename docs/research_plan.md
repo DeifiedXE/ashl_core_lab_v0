@@ -3913,3 +3913,25 @@ Non-goals:
 - no curiosity or prediction error implementation
 - no place memory, home sandbox, pathfinding, route planner, or map solving
 - no lesson_store write, Memory Layer write, Long-term Memory write, or lesson_candidate pipeline connection
+
+## Larger Sandbox Human Replay v0
+
+Status: completed / readability-only / no-runtime-change.
+
+Goal:
+Provide a plain-text human replay for the larger simulated vision sandbox so existing traces can be inspected without reading JSON.
+
+Scope:
+- adds `ashl_core.simulated_vision_larger_sandbox_human_replay`
+- adds `py -3 -m ashl_core.teaching_cli replay-larger-sandbox-human`
+- supports `--mode demo`, `--mode contact`, and `--mode observed-map`
+- formats existing demo action traces and larger sandbox contact/observed-map smoke outputs
+- includes stable legend, viewport rows, position, facing, front symbol, result/effects/failures, and explicit boundary notes
+
+Non-goals:
+- no runtime behavior change
+- no action selection change
+- no pathfinding, BFS, A*, route planner, or full-route replay
+- no item collection, pickup, inventory, exit activation, win condition, or task completion
+- no curiosity, prediction error, place memory, home sandbox, lesson_store write, Memory Layer write, Long-term Memory write, or lesson_candidate pipeline connection
+- no visual understanding, symbol grounding solved, or proof-of-learning claim

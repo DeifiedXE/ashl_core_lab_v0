@@ -45,6 +45,7 @@ from .session_working_memory import (
 from .simulated_vision_sandbox import run_simulated_vision_viewport_demo
 from .simulated_vision_larger_sandbox import run_simulated_vision_larger_sandbox_demo
 from .simulated_vision_larger_sandbox_contact import run_larger_sandbox_symbol_contact_smoke
+from .simulated_vision_larger_sandbox_human_replay import run_larger_sandbox_human_replay
 from .simulated_vision_larger_sandbox_observed_map import run_larger_sandbox_observed_map_smoke
 from .simulated_vision_memory_bridge import run_simulated_vision_memory_bridge_demo
 from .simulated_vision_observed_map import run_simulated_vision_observed_map_demo
@@ -3279,7 +3280,7 @@ def _tactile_interaction_boundary(llm_used: bool = False) -> dict[str, bool]:
     }
 
 
-def run_command(command: str) -> dict[str, Any]:
+def run_command(command: str) -> dict[str, Any] | str:
     if command == "run-known-flow":
         return run_known_flow()
     if command == "run-unknown-flow":
@@ -3350,6 +3351,8 @@ def run_command(command: str) -> dict[str, Any]:
         return run_larger_sandbox_observed_map_smoke()
     if command == "run-larger-sandbox-symbol-contact-smoke":
         return run_larger_sandbox_symbol_contact_smoke()
+    if command == "replay-larger-sandbox-human":
+        return run_larger_sandbox_human_replay()
     if command == "run-simulated-vision-memory-bridge-demo":
         return run_simulated_vision_memory_bridge_demo()
     if command == "run-simulated-vision-observed-map-demo":
@@ -3407,6 +3410,7 @@ def main(argv: list[str] | None = None) -> int:
             "run-simulated-vision-larger-sandbox-demo",
             "run-larger-sandbox-observed-map-smoke",
             "run-larger-sandbox-symbol-contact-smoke",
+            "replay-larger-sandbox-human",
             "run-simulated-vision-memory-bridge-demo",
             "run-simulated-vision-observed-map-demo",
             "run-simulated-vision-symbol-grounding-check",
@@ -3434,6 +3438,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--max-records", type=int, default=20)
     parser.add_argument("--action-sequence", default=None)
     parser.add_argument("--scenario", choices=["wall", "empty", "item", "doorway", "exit"], default=None)
+    parser.add_argument("--mode", choices=["demo", "contact", "observed-map"], default="demo")
     args = parser.parse_args(argv)
     if args.command == "run-review-approve":
         result = run_review_approve(review_id=args.review_id, notes=args.notes)
@@ -3540,6 +3545,8 @@ def main(argv: list[str] | None = None) -> int:
         result = run_larger_sandbox_observed_map_smoke(action_sequence=action_sequence)
     elif args.command == "run-larger-sandbox-symbol-contact-smoke":
         result = run_larger_sandbox_symbol_contact_smoke(scenario=args.scenario)
+    elif args.command == "replay-larger-sandbox-human":
+        result = run_larger_sandbox_human_replay(mode=args.mode)
     elif args.command == "run-simulated-vision-memory-bridge-demo":
         action_sequence = None
         if args.action_sequence:
@@ -3567,6 +3574,8 @@ def main(argv: list[str] | None = None) -> int:
         print(_format_dead_end_ascii_replay_text(result))
     elif args.command == "replay-dead-end-trial1-candidate-maps":
         print(_format_candidate_map_trial1_ascii_replay_text(result))
+    elif args.command == "replay-larger-sandbox-human":
+        print(result)
     else:
         print(json.dumps(result, ensure_ascii=False, indent=2))
     return 0

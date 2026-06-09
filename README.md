@@ -1830,3 +1830,10 @@ Two-Trial History Boundary:
 - Adds `py -3 -m ashl_core.teaching_cli run-larger-sandbox-symbol-contact-smoke`.
 - Verifies immediate contact outcomes: `d -> moved / passage_crossed`, `i -> item_contact`, and `g -> exit_contact`.
 - Does not add item collection, exit activation, task completion, curiosity, prediction error, place memory, pathfinding, or home sandbox behavior.
+
+## Larger Sandbox Human Replay v0
+
+- Adds `py -3 -m ashl_core.teaching_cli replay-larger-sandbox-human`.
+- Supports `--mode demo`, `--mode contact`, and `--mode observed-map`.
+- Prints a plain-text, human-readable replay from existing larger sandbox traces and contact/observed-map smoke outputs.
+- Readability replay only: no runtime behavior, action selection, pathfinding, item collection, exit activation, curiosity, prediction error, place memory, home sandbox, or visual understanding claim is added.
