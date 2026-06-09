@@ -1994,3 +1994,10 @@ Two-Trial History Boundary:
 - Adds `docs/milestone_logs/experience_abstraction_layer_milestone_2026-06-09.md`.
 - Records the completed Experience Abstraction Layer chain from reason classification through temporary in-memory apply verification.
 - Documents safety boundaries, explicit non-claims, and the recommended Boundary Index sync follow-up.
+
+## Integrated Experience Session Trace v0
+
+- Adds `py -3 -m ashl_core.teaching_cli run-integrated-experience-session-trace`.
+- Connects existing symbolic vision, outcome classification, similar context keys, prediction, mismatch, candidate creation, and review gate into one scripted trace.
+- Stops candidates at pending_review and keeps predictions read-only.
+- Integration-only: does not add autonomy, action selection changes, persistent rule application, long-term memory, LLM reasoning, or pathfinding.

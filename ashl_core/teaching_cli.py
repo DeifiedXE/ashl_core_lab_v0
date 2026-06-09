@@ -16,6 +16,7 @@ from .first_output_runtime import generate_minimal_first_output
 from .grounded_action_experience import run_grounded_action_experience_check
 from .grounded_action_experience_influence import run_grounded_action_experience_influence_check
 from .instinct_random_walk_runner import run_instinct_random_walk
+from .integrated_experience_session_trace import run_integrated_experience_session_trace
 from .item_reward_event import run_item_reward_event_check
 from .prediction_accuracy_check import run_prediction_accuracy_check
 from .reward_biased_action_tendency import run_reward_biased_action_tendency_check
@@ -3408,6 +3409,8 @@ def run_command(command: str) -> dict[str, Any] | str:
         return run_approved_candidate_preview_check()
     if command == "run-reviewed-candidate-apply-verification-check":
         return run_reviewed_candidate_apply_verification_check()
+    if command == "run-integrated-experience-session-trace":
+        return run_integrated_experience_session_trace()
     return {
         "command": command,
         "status": "error",
@@ -3476,6 +3479,7 @@ def main(argv: list[str] | None = None) -> int:
             "run-rule-candidate-review-gate-check",
             "run-approved-candidate-preview-check",
             "run-reviewed-candidate-apply-verification-check",
+            "run-integrated-experience-session-trace",
         ],
     )
     parser.add_argument("--review-id", default="review_001")
@@ -3499,7 +3503,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--level-id", default="approach_box_dead_end_v0")
     parser.add_argument("--max-records", type=int, default=20)
     parser.add_argument("--action-sequence", default=None)
-    parser.add_argument("--scenario", choices=["wall", "empty", "item", "doorway", "exit"], default=None)
+    parser.add_argument("--scenario", choices=["mixed", "wall", "empty", "item", "doorway", "exit"], default=None)
     parser.add_argument("--mode", choices=["demo", "contact", "observed-map"], default="demo")
     parser.add_argument("--host", default="127.0.0.1")
     parser.add_argument("--port", type=int, default=7860)
@@ -3666,6 +3670,10 @@ def main(argv: list[str] | None = None) -> int:
         result = run_approved_candidate_preview_check()
     elif args.command == "run-reviewed-candidate-apply-verification-check":
         result = run_reviewed_candidate_apply_verification_check()
+    elif args.command == "run-integrated-experience-session-trace":
+        raw_argv = argv if argv is not None else sys.argv[1:]
+        max_steps = args.max_steps if "--max-steps" in raw_argv else 8
+        result = run_integrated_experience_session_trace(scenario=args.scenario or "mixed", max_steps=max_steps)
     else:
         result = run_command(args.command)
     if hasattr(sys.stdout, "reconfigure"):

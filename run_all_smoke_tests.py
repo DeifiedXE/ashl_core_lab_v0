@@ -41,6 +41,7 @@ from ashl_core.guard import guard_output
 from ashl_core.grounded_action_experience import run_grounded_action_experience_check
 from ashl_core.grounded_action_experience_influence import run_grounded_action_experience_influence_check
 from ashl_core.instinct_random_walk_runner import run_instinct_random_walk
+from ashl_core.integrated_experience_session_trace import run_integrated_experience_session_trace
 from ashl_core.item_reward_event import run_item_reward_event_check
 from ashl_core.integrated_loop import run_turn
 from ashl_core.lesson_candidate_drafts import build_lesson_candidate_draft_trace, validate_lesson_candidate_draft_trace
@@ -2050,6 +2051,76 @@ def smoke_reviewed_candidate_apply_verification() -> dict:
             "applications": applications,
             "summary": summary,
             "boundary": boundary,
+        },
+    )
+
+
+def smoke_integrated_experience_session_trace() -> dict:
+    result = run_integrated_experience_session_trace()
+    steps = result.get("step_trace", [])
+    summary = result.get("session_summary", {})
+    boundary = result.get("boundary_check", {})
+    mismatch_steps = [
+        step
+        for step in steps
+        if step.get("prediction_check", {}).get("mismatch_type") == "outcome_mismatch"
+    ]
+    pending_steps = [
+        step
+        for step in steps
+        if (step.get("review_gate_result") or {}).get("review_status") == "pending_review"
+    ]
+    passed = (
+        result.get("command") == "run-integrated-experience-session-trace"
+        and result.get("flow") == "integrated_experience_session_trace_v0"
+        and result.get("status") == "ok"
+        and result.get("level_id") == "simulated_vision_larger_sandbox_v0"
+        and result.get("scenario") == "mixed"
+        and len(steps) >= 4
+        and all(step.get("viewport") for step in steps)
+        and all(step.get("front_symbol") for step in steps)
+        and all(step.get("action") for step in steps)
+        and all(step.get("outcome") for step in steps)
+        and all(step.get("reason_classification") for step in steps)
+        and all(step.get("similar_context_key") for step in steps)
+        and summary.get("step_count") == len(steps)
+        and summary.get("prediction_match_count", 0) >= 1
+        and summary.get("prediction_mismatch_count", 0) >= 1
+        and summary.get("candidate_created_count", 0) >= 1
+        and summary.get("pending_review_count", 0) >= 1
+        and summary.get("approved_count") == 0
+        and summary.get("applied_count") == 0
+        and any(
+            step.get("candidate_result", {}).get("candidate_type") == "outcome_rule_revision_candidate"
+            for step in mismatch_steps
+        )
+        and len(pending_steps) >= 1
+        and boundary.get("integrated_experience_session_trace_enabled") is True
+        and boundary.get("integration_trace_only") is True
+        and boundary.get("scripted_controlled_session") is True
+        and boundary.get("autonomous_action_loop_enabled") is False
+        and boundary.get("candidate_auto_approved") is False
+        and boundary.get("qingyin_self_approval_allowed") is False
+        and boundary.get("candidate_application_enabled") is False
+        and boundary.get("persistent_rule_application_enabled") is False
+        and boundary.get("action_selection_modified") is False
+        and boundary.get("prediction_used_for_action_selection") is False
+        and boundary.get("global_predictor_modified") is False
+        and boundary.get("lesson_store_write") is False
+        and boundary.get("memory_layer_write") is False
+        and boundary.get("long_term_memory_write") is False
+        and boundary.get("pathfinding_used") is False
+        and boundary.get("llm_reasoning_used") is False
+        and boundary.get("general_learning_claimed") is False
+    )
+    return _result(
+        "integrated_experience_session_trace",
+        passed,
+        {
+            "summary": summary,
+            "boundary": boundary,
+            "mismatch_steps": [step.get("case_name") for step in mismatch_steps],
+            "pending_steps": [step.get("case_name") for step in pending_steps],
         },
     )
 
@@ -7990,6 +8061,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_rule_candidate_review_gate(),
         smoke_approved_candidate_preview(),
         smoke_reviewed_candidate_apply_verification(),
+        smoke_integrated_experience_session_trace(),
         smoke_micro_navigation_goal_reach(),
         smoke_micro_navigation_trial_metrics_cli(),
         smoke_micro_navigation_multi_goal_level(),

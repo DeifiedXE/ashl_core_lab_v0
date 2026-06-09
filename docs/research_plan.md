@@ -4352,3 +4352,20 @@ Scope:
 
 Non-goals:
 - no runtime behavior, CLI, UI, action selection change, predictor rule change, persistent rule application, lesson_store write, Memory Layer write, long-term memory, lesson_candidate pipeline connection, LLM reasoning, pathfinding, autonomous learning claim, or Boundary Index modification
+
+## Integrated Experience Session Trace v0
+
+Status: completed / scripted-integration-trace / no-new-capability-layer.
+
+Goal:
+Connect the existing symbolic vision, outcome classification, similar context key, prediction, mismatch, candidate creation, and review gate modules into one observable scripted trace.
+
+Scope:
+- adds `ashl_core.integrated_experience_session_trace`
+- adds `py -3 -m ashl_core.teaching_cli run-integrated-experience-session-trace`
+- runs a bounded controlled `mixed` scenario with empty, wall, item, passage, mismatch, and unknown-prediction steps
+- records each step from viewport through pending_review where a candidate exists
+- keeps prior prediction records runner-local and read-only
+
+Non-goals:
+- no autonomous loop, auto exploration, decision loop, action selection modification, prediction-driven suppression/preference, candidate auto-approval, Qingyin self-approval, persistent rule application, global predictor modification, lesson_store write, Memory Layer write, long-term memory, lesson_candidate pipeline connection, pathfinding, route planner, item seeking, item collection, reward change, random walk change, UI change, LLM reasoning, LLM planning, LLM vision, general learning claim, visual understanding claim, solved symbol grounding claim, consciousness claim, subjective experience claim, or Boundary Index modification
