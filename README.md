@@ -1880,3 +1880,10 @@ Two-Trial History Boundary:
 - Verifies that prior `front_symbol=w|action=move_forward` wall-blocked experience can suppress a later matching `move_forward` action.
 - Includes a no-experience control proving that seeing `w` alone does not trigger suppression.
 - Does not add item reward bias, dopamine-like signals, pathfinding, route planning, item seeking, or long-term memory.
+
+## Instinct / Wall Influence UI Observation Bridge v0
+
+- Adds Instinct / Experience Observation controls to `py -3 -m ashl_core.teaching_cli run-larger-sandbox-ui`.
+- Lets the user run one bounded random walk sample or one wall-experience influence check and view summaries from the Qingyin UI.
+- Adds read-only `/experiment_state.json` for the current experiment observation summary.
+- UI observation only: no continuous autonomy, auto exploration, item reward bias, dopamine-like signals, pathfinding, route planning, or long-term memory is added.

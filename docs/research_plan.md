@@ -4063,3 +4063,25 @@ Non-goals:
 - no item collection, pickup, inventory, exit activation, win condition, task completion, curiosity, prediction error, place memory, or home sandbox
 - no pathfinding, BFS, A*, route planner, full-map knowledge, LLM planning, LLM vision, lesson_store write, Memory Layer write, long-term memory, or lesson_candidate pipeline connection
 - no self-awareness, consciousness, subjective experience, visual understanding, solved symbol grounding, or general learning claim
+
+## Instinct / Wall Influence UI Observation Bridge v0
+
+Status: completed / UI-observation-only / bounded-button-runs.
+
+Goal:
+Make bounded instinct random walk and wall-experience influence experiment summaries observable from the Qingyin Flask UI.
+
+Scope:
+- adds `ashl_core.instinct_wall_ui_observation`
+- extends `ashl_core.larger_sandbox_flask_ui`
+- extends `ashl_core.qingyin_ui_observation`
+- adds UI controls for one bounded random walk sample, one wall influence check, and clear experiment observation
+- adds read-only `GET /experiment_state.json`
+- stores summary fields only; full random walk traces are not rendered in the UI
+
+Non-goals:
+- no continuous autonomous loop, auto exploration, background timer loop, or decision loop
+- no item reward bias, dopamine-like signal, item seeking, or two-round item comparison
+- no item collection, pickup, inventory, exit activation, win condition, task completion, curiosity, prediction error, place memory, or home sandbox
+- no pathfinding, BFS, A*, route planner, full-map planning, LLM planning, LLM vision, lesson_store write, Memory Layer write, long-term memory, or lesson_candidate pipeline connection
+- no self-awareness, consciousness, subjective experience, visual understanding, solved symbol grounding, or general learning claim

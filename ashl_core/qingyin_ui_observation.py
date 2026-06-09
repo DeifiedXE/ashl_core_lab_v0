@@ -43,6 +43,7 @@ def build_qingyin_observation_state(ui_state: dict[str, Any]) -> dict[str, Any]:
         "cooldown_seconds": ui_state["action_cooldown_seconds"],
         "cooldown_remaining_seconds": ui_state["cooldown_remaining_seconds"],
         "cooldown_remaining_display": ui_state["cooldown_remaining_display"],
+        "experiment_observation": ui_state.get("experiment_observation"),
         "observation_note": "Manual observation only; user button presses drive actions.",
         "boundary_check": build_qingyin_observation_boundary_check(),
     }
@@ -71,14 +72,23 @@ def format_qingyin_log_entry(action: str, result: str, effects: list[str], failu
 def build_qingyin_observation_boundary_check() -> dict[str, bool]:
     return {
         "qingyin_observation_bridge_enabled": True,
+        "instinct_random_walk_ui_observation_enabled": True,
+        "wall_experience_influence_ui_observation_enabled": True,
+        "bounded_runner_only": True,
+        "continuous_autonomous_loop_enabled": False,
+        "random_walk_runner_available": True,
+        "wall_experience_influence_available": True,
         "manual_observation_only": True,
         "autonomous_action_loop_enabled": False,
         "auto_exploration_enabled": False,
         "decision_loop_enabled": False,
+        "item_reward_bias_enabled": False,
+        "dopamine_like_signal_enabled": False,
         "llm_planning_used": False,
         "pathfinding_used": False,
         "route_planner_added": False,
         "action_selection_modified": False,
+        "action_selection_modified_by_ui": False,
         "symbolic_sandbox_body": True,
         "real_robot_body": False,
         "real_image_vision": False,
@@ -98,4 +108,5 @@ def build_qingyin_observation_boundary_check() -> dict[str, bool]:
         "symbol_grounding_solved_claimed": False,
         "general_learning_claimed": False,
         "consciousness_claimed": False,
+        "subjective_experience_claimed": False,
     }

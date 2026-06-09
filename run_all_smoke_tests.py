@@ -781,6 +781,79 @@ def smoke_larger_sandbox_flask_ui() -> dict:
     )
 
 
+def smoke_instinct_wall_ui_observation() -> dict:
+    reset_larger_sandbox_ui_state()
+    app = create_larger_sandbox_ui_app()
+    client = app.test_client()
+    index_response = client.get("/")
+    index_html = index_response.get_data(as_text=True)
+    random_response = client.post("/experiment/random-walk", data={"seed": "1", "max_steps": "10"})
+    random_html = client.get("/").get_data(as_text=True)
+    random_state = client.get("/experiment_state.json").get_json() or {}
+    wall_response = client.post("/experiment/wall-influence", data={"seed": "1", "max_steps": "50"})
+    wall_html = client.get("/").get_data(as_text=True)
+    wall_state = client.get("/experiment_state.json").get_json() or {}
+    qingyin_state = client.get("/qingyin_state.json").get_json() or {}
+    clear_response = client.post("/experiment/clear")
+    clear_state = client.get("/experiment_state.json").get_json() or {}
+    boundary = wall_state.get("boundary_check", {})
+    random_walk = random_state.get("random_walk", {}) or {}
+    wall_influence = wall_state.get("wall_influence", {}) or {}
+    passed = (
+        index_response.status_code == 200
+        and "Instinct / Experience Observation" in index_html
+        and "Run random walk sample" in index_html
+        and "Run wall influence check" in index_html
+        and "Clear experiment observation" in index_html
+        and "No continuous loop." in index_html
+        and "No pathfinding." in index_html
+        and "No reward bias." in index_html
+        and random_response.status_code == 302
+        and random_state.get("mode") == "instinct_random_walk"
+        and random_walk.get("step_count") == 10
+        and "Step count" in random_html
+        and "Wall blocked count" in random_html
+        and "Item contact count" in random_html
+        and "Experience count" in random_html
+        and "Reward bias enabled</dt><dd>false" in random_html
+        and wall_response.status_code == 302
+        and wall_state.get("mode") == "wall_experience_influence"
+        and wall_influence.get("control_passed") is True
+        and wall_influence.get("influence_passed") is True
+        and wall_influence.get("selected_action_without_experience") == "move_forward"
+        and wall_influence.get("selected_action_with_wall_experience") == "turn_right"
+        and wall_influence.get("experience_used_for_decision") is True
+        and "No-experience control" in wall_html
+        and "With-prior-experience influence" in wall_html
+        and "Selected action without experience" in wall_html
+        and "Selected action with wall experience" in wall_html
+        and qingyin_state.get("experiment_observation", {}).get("mode") == "wall_experience_influence"
+        and boundary.get("instinct_random_walk_ui_observation_enabled") is True
+        and boundary.get("wall_experience_influence_ui_observation_enabled") is True
+        and boundary.get("bounded_runner_only") is True
+        and boundary.get("continuous_autonomous_loop_enabled") is False
+        and boundary.get("auto_exploration_enabled") is False
+        and boundary.get("decision_loop_enabled") is False
+        and boundary.get("item_reward_bias_enabled") is False
+        and boundary.get("dopamine_like_signal_enabled") is False
+        and boundary.get("pathfinding_used") is False
+        and boundary.get("route_planner_added") is False
+        and boundary.get("long_term_memory_write") is False
+        and clear_response.status_code == 302
+        and clear_state.get("mode") == "none"
+    )
+    return _result(
+        "instinct_wall_ui_observation",
+        passed,
+        {
+            "random_state": random_state,
+            "wall_state": wall_state,
+            "qingyin_state": qingyin_state,
+            "clear_state": clear_state,
+        },
+    )
+
+
 def smoke_simulated_vision_memory_bridge() -> dict:
     result = run_simulated_vision_memory_bridge_demo()
     blocked_result = run_simulated_vision_memory_bridge_demo(
@@ -7090,6 +7163,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_larger_sandbox_symbol_contact_smoke(),
         smoke_larger_sandbox_human_replay(),
         smoke_larger_sandbox_flask_ui(),
+        smoke_instinct_wall_ui_observation(),
         smoke_simulated_vision_memory_bridge(),
         smoke_simulated_vision_observed_map(),
         smoke_simulated_vision_symbol_grounding(),

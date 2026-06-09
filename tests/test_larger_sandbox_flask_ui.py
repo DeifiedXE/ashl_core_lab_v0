@@ -66,6 +66,13 @@ class LargerSandboxFlaskUiTests(unittest.TestCase):
         self.assertIn("No auto exploration.", html)
         self.assertIn("No LLM planning.", html)
         self.assertIn("No action selection change.", html)
+        self.assertIn("Instinct / Experience Observation", html)
+        self.assertIn("Run random walk sample", html)
+        self.assertIn("Run wall influence check", html)
+        self.assertIn("Clear experiment observation", html)
+        self.assertIn("Current experiment mode", html)
+        self.assertIn("No continuous loop.", html)
+        self.assertIn("No reward bias.", html)
 
     def test_state_json_is_read_only_snapshot(self):
         response = self.client.get("/state.json")
@@ -82,6 +89,8 @@ class LargerSandboxFlaskUiTests(unittest.TestCase):
         self.assertTrue(data["can_act"])
         self.assertEqual(data["qingyin_observation"]["name"], "Qingyin")
         self.assertEqual(data["qingyin_observation"]["mode"], "manual_observation")
+        self.assertEqual(data["experiment_observation"]["mode"], "none")
+        self.assertTrue(data["experiment_observation"]["boundary_check"]["bounded_runner_only"])
 
     def test_post_action_look_redirects_and_logs(self):
         response = self.client.post("/action", data={"action": "look"})
@@ -166,6 +175,12 @@ class LargerSandboxFlaskUiTests(unittest.TestCase):
         self.assertFalse(boundary["route_planner_added"])
         self.assertFalse(boundary["item_collection_enabled"])
         self.assertFalse(boundary["exit_activation_enabled"])
+        self.assertTrue(boundary["instinct_random_walk_ui_observation_enabled"])
+        self.assertTrue(boundary["wall_experience_influence_ui_observation_enabled"])
+        self.assertTrue(boundary["bounded_runner_only"])
+        self.assertFalse(boundary["continuous_autonomous_loop_enabled"])
+        self.assertFalse(boundary["item_reward_bias_enabled"])
+        self.assertFalse(boundary["dopamine_like_signal_enabled"])
 
     def test_run_command_reports_nonblocking_launch_config(self):
         result = run_command("run-larger-sandbox-ui")
@@ -201,6 +216,13 @@ class LargerSandboxFlaskUiTests(unittest.TestCase):
         self.assertFalse(boundary["memory_layer_write"])
         self.assertFalse(boundary["long_term_memory_write"])
         self.assertFalse(boundary["consciousness_claimed"])
+        self.assertTrue(boundary["instinct_random_walk_ui_observation_enabled"])
+        self.assertTrue(boundary["wall_experience_influence_ui_observation_enabled"])
+        self.assertTrue(boundary["bounded_runner_only"])
+        self.assertFalse(boundary["continuous_autonomous_loop_enabled"])
+        self.assertFalse(boundary["item_reward_bias_enabled"])
+        self.assertFalse(boundary["dopamine_like_signal_enabled"])
+        self.assertFalse(boundary["subjective_experience_claimed"])
 
     def test_qingyin_state_json_returns_observation_summary(self):
         response = self.client.get("/qingyin_state.json")
@@ -234,6 +256,11 @@ class LargerSandboxFlaskUiTests(unittest.TestCase):
         self.assertFalse(boundary["real_image_vision"])
         self.assertFalse(boundary["long_term_memory_write"])
         self.assertFalse(boundary["consciousness_claimed"])
+        self.assertEqual(data["experiment_observation"]["mode"], "none")
+        self.assertTrue(boundary["bounded_runner_only"])
+        self.assertFalse(boundary["continuous_autonomous_loop_enabled"])
+        self.assertFalse(boundary["item_reward_bias_enabled"])
+        self.assertFalse(boundary["dopamine_like_signal_enabled"])
 
     def test_qingyin_observation_updates_after_action(self):
         self.client.post("/action", data={"action": "turn_right"})
@@ -339,6 +366,94 @@ class LargerSandboxFlaskUiTests(unittest.TestCase):
         self.assertEqual(state["facing"], "north")
         self.assertTrue(state["can_act"])
         self.assertEqual(state["action_log"], [])
+
+    def test_experiment_state_json_reports_boundary(self):
+        response = self.client.get("/experiment_state.json")
+        data = response.get_json()
+        boundary = data["boundary_check"]
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(data["mode"], "none")
+        self.assertTrue(boundary["instinct_random_walk_ui_observation_enabled"])
+        self.assertTrue(boundary["wall_experience_influence_ui_observation_enabled"])
+        self.assertTrue(boundary["bounded_runner_only"])
+        self.assertFalse(boundary["continuous_autonomous_loop_enabled"])
+        self.assertFalse(boundary["auto_exploration_enabled"])
+        self.assertFalse(boundary["decision_loop_enabled"])
+        self.assertFalse(boundary["item_reward_bias_enabled"])
+        self.assertFalse(boundary["dopamine_like_signal_enabled"])
+        self.assertFalse(boundary["pathfinding_used"])
+        self.assertFalse(boundary["route_planner_added"])
+        self.assertFalse(boundary["long_term_memory_write"])
+        self.assertFalse(boundary["consciousness_claimed"])
+
+    def test_post_random_walk_experiment_shows_summary_without_moving_sandbox(self):
+        before = get_ui_state()
+        response = self.client.post("/experiment/random-walk", data={"seed": "1", "max_steps": "10"})
+        state = get_ui_state()
+        html = self.client.get("/").get_data(as_text=True)
+        experiment = state["experiment_observation"]
+
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(state["pos"], before["pos"])
+        self.assertEqual(state["facing"], before["facing"])
+        self.assertEqual(experiment["mode"], "instinct_random_walk")
+        self.assertEqual(experiment["seed"], 1)
+        self.assertEqual(experiment["max_steps"], 10)
+        self.assertEqual(experiment["random_walk"]["step_count"], 10)
+        self.assertIn("Step count", html)
+        self.assertIn("Wall blocked count", html)
+        self.assertIn("Item contact count", html)
+        self.assertIn("Experience count", html)
+        self.assertIn("Reward bias enabled</dt><dd>false", html)
+        self.assertIn("Qingyin ran a bounded random walk sample.", "\n".join(state["action_log"]))
+
+    def test_post_wall_influence_experiment_shows_control_and_influence(self):
+        response = self.client.post("/experiment/wall-influence", data={"seed": "1", "max_steps": "50"})
+        state = get_ui_state()
+        html = self.client.get("/").get_data(as_text=True)
+        experiment = state["experiment_observation"]
+        wall = experiment["wall_influence"]
+
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(experiment["mode"], "wall_experience_influence")
+        self.assertTrue(wall["control_passed"])
+        self.assertTrue(wall["influence_passed"])
+        self.assertEqual(wall["selected_action_without_experience"], "move_forward")
+        self.assertEqual(wall["selected_action_with_wall_experience"], "turn_right")
+        self.assertTrue(wall["experience_used_for_decision"])
+        self.assertIn("No-experience control", html)
+        self.assertIn("With-prior-experience influence", html)
+        self.assertIn("Selected action without experience", html)
+        self.assertIn("Selected action with wall experience", html)
+        self.assertIn("Experience used for decision", html)
+        self.assertIn("Item reward bias</dt><dd>false", html)
+        self.assertIn("Dopamine_like_signal</dt><dd>false", html)
+
+    def test_clear_experiment_observation_does_not_reset_sandbox_position(self):
+        self.client.post("/cooldown", data={"cooldown_seconds": "0.0"})
+        self.client.post("/action", data={"action": "turn_right"})
+        self.client.post("/action", data={"action": "move_forward"})
+        moved = get_ui_state()
+        self.client.post("/experiment/random-walk", data={"seed": "1", "max_steps": "5"})
+        response = self.client.post("/experiment/clear")
+        state = get_ui_state()
+
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(state["pos"], moved["pos"])
+        self.assertEqual(state["facing"], moved["facing"])
+        self.assertEqual(state["experiment_observation"]["mode"], "none")
+        self.assertIn("Experiment observation cleared.", state["action_log"][-1])
+
+    def test_experiment_observation_has_no_continuous_loop_side_effect(self):
+        self.client.post("/experiment/random-walk", data={"seed": "1", "max_steps": "10"})
+        first = self.client.get("/experiment_state.json").get_json()
+        second = self.client.get("/experiment_state.json").get_json()
+
+        self.assertEqual(first, second)
+        self.assertTrue(first["boundary_check"]["bounded_runner_only"])
+        self.assertFalse(first["boundary_check"]["continuous_autonomous_loop_enabled"])
+        self.assertFalse(first["boundary_check"]["auto_exploration_enabled"])
 
 
 if __name__ == "__main__":

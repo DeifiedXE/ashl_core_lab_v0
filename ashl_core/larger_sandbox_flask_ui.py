@@ -8,6 +8,13 @@ from typing import Any
 
 from flask import Flask, redirect, render_template_string, request, url_for
 
+from .instinct_random_walk_runner import run_instinct_random_walk
+from .instinct_wall_ui_observation import (
+    build_empty_experiment_observation,
+    build_random_walk_observation,
+    build_wall_influence_observation,
+    copy_experiment_observation,
+)
 from .qingyin_ui_observation import build_qingyin_observation_state, format_qingyin_log_entry
 from .simulated_vision_larger_sandbox import (
     apply_larger_sandbox_action,
@@ -16,6 +23,7 @@ from .simulated_vision_larger_sandbox import (
     render_larger_sandbox_viewport,
 )
 from .simulated_vision_larger_sandbox_human_replay import get_front_symbol_for_replay
+from .wall_experience_influence import run_wall_experience_influence_check
 
 
 DEFAULT_UI_HOST = "127.0.0.1"
@@ -63,6 +71,25 @@ def create_app() -> Flask:
         reset_ui_state()
         return redirect(url_for("index"))
 
+    @app.post("/experiment/random-walk")
+    def experiment_random_walk() -> Any:
+        seed = _parse_experiment_int(request.form.get("seed"), 1)
+        max_steps = _parse_experiment_int(request.form.get("max_steps"), 50)
+        run_random_walk_experiment_observation(seed=seed, max_steps=max_steps)
+        return redirect(url_for("index"))
+
+    @app.post("/experiment/wall-influence")
+    def experiment_wall_influence() -> Any:
+        seed = _parse_experiment_int(request.form.get("seed"), 1)
+        max_steps = _parse_experiment_int(request.form.get("max_steps"), 50)
+        run_wall_influence_experiment_observation(seed=seed, max_steps=max_steps)
+        return redirect(url_for("index"))
+
+    @app.post("/experiment/clear")
+    def experiment_clear() -> Any:
+        clear_experiment_observation()
+        return redirect(url_for("index"))
+
     @app.get("/state.json")
     def state_json() -> dict[str, Any]:
         return get_ui_state()
@@ -70,6 +97,10 @@ def create_app() -> Flask:
     @app.get("/qingyin_state.json")
     def qingyin_state_json() -> dict[str, Any]:
         return get_ui_state()["qingyin_observation"]
+
+    @app.get("/experiment_state.json")
+    def experiment_state_json() -> dict[str, Any]:
+        return get_ui_state()["experiment_observation"]
 
     return app
 
@@ -88,6 +119,7 @@ def get_launch_config(host: str = DEFAULT_UI_HOST, port: int = DEFAULT_UI_PORT) 
         "action_cooldown_enabled": True,
         "action_cooldown_configurable": True,
         "qingyin_observation_bridge_enabled": True,
+        "instinct_wall_ui_observation_bridge_enabled": True,
         "manual_observation_only": True,
         "boundary_check": build_ui_boundary_check(host=host),
     }
@@ -131,6 +163,7 @@ def reset_ui_state() -> dict[str, Any]:
         "action_cooldown_seconds": DEFAULT_ACTION_COOLDOWN_SECONDS,
         "last_action_time": None,
         "last_action_result": None,
+        "experiment_observation": build_empty_experiment_observation(),
     }
     return get_ui_state()
 
@@ -183,6 +216,40 @@ def apply_ui_action(action: str) -> dict[str, Any]:
     return get_ui_state()
 
 
+def run_random_walk_experiment_observation(seed: int = 1, max_steps: int = 50) -> dict[str, Any]:
+    internal = _get_internal_state()
+    result = run_instinct_random_walk(seed=seed, max_steps=max_steps)
+    internal["experiment_observation"] = build_random_walk_observation(result)
+    internal["action_log"].append(
+        f"Experiment: random walk sample\n"
+        f"Qingyin ran a bounded random walk sample.\n"
+        f"Step count: {result['metrics']['step_count']}\n"
+        f"Wall blocked: {result['metrics']['wall_blocked_count']}\n"
+        f"Item contact: {result['metrics']['item_contact_count']}"
+    )
+    return get_ui_state()
+
+
+def run_wall_influence_experiment_observation(seed: int = 1, max_steps: int = 50) -> dict[str, Any]:
+    internal = _get_internal_state()
+    result = run_wall_experience_influence_check(seed=seed, max_steps=max_steps)
+    internal["experiment_observation"] = build_wall_influence_observation(result)
+    internal["action_log"].append(
+        f"Experiment: wall influence check\n"
+        f"Wall experience influence check passed: {str(result['summary']['all_wall_experience_influence_checks_passed']).lower()}\n"
+        f"Without experience: {result['control_result']['selected_action']}\n"
+        f"With wall experience: {result['influence_result']['selected_action']}"
+    )
+    return get_ui_state()
+
+
+def clear_experiment_observation() -> dict[str, Any]:
+    internal = _get_internal_state()
+    internal["experiment_observation"] = build_empty_experiment_observation()
+    internal["action_log"].append("Experiment observation cleared.")
+    return get_ui_state()
+
+
 def cooldown_remaining_seconds(*, now: float, last_action_time: float | None, cooldown_seconds: float) -> float:
     if cooldown_seconds <= 0 or last_action_time is None:
         return 0.0
@@ -197,13 +264,22 @@ def build_ui_boundary_check(host: str = DEFAULT_UI_HOST) -> dict[str, Any]:
         "action_cooldown_enabled": True,
         "action_cooldown_configurable": True,
         "qingyin_observation_bridge_enabled": True,
+        "instinct_random_walk_ui_observation_enabled": True,
+        "wall_experience_influence_ui_observation_enabled": True,
+        "bounded_runner_only": True,
+        "continuous_autonomous_loop_enabled": False,
+        "random_walk_runner_available": True,
+        "wall_experience_influence_available": True,
         "manual_observation_only": True,
         "autonomous_action_loop_enabled": False,
         "auto_exploration_enabled": False,
         "decision_loop_enabled": False,
+        "item_reward_bias_enabled": False,
+        "dopamine_like_signal_enabled": False,
         "runtime_behavior_modified": False,
         "viewport_geometry_modified": False,
         "action_selection_modified": False,
+        "action_selection_modified_by_ui": False,
         "pathfinding_used": False,
         "route_planner_added": False,
         "item_collection_enabled": False,
@@ -229,6 +305,7 @@ def build_ui_boundary_check(host: str = DEFAULT_UI_HOST) -> dict[str, Any]:
         "symbol_grounding_solved_claimed": False,
         "general_learning_claimed": False,
         "consciousness_claimed": False,
+        "subjective_experience_claimed": False,
     }
 
 
@@ -238,6 +315,7 @@ def _get_internal_state() -> dict[str, Any]:
         reset_ui_state()
     if _UI_STATE is None:
         raise RuntimeError("larger sandbox UI state was not initialized")
+    _UI_STATE.setdefault("experiment_observation", build_empty_experiment_observation())
     return _UI_STATE
 
 
@@ -267,6 +345,7 @@ def _public_state(state: dict[str, Any], viewport: list[list[str]], action_log: 
         "can_act_display": "yes" if remaining <= 0 else "no",
         "last_action_time": internal["last_action_time"],
         "last_action_result": deepcopy(internal["last_action_result"]),
+        "experiment_observation": copy_experiment_observation(internal["experiment_observation"]),
         "boundary_check": build_ui_boundary_check(),
     }
     public_state["qingyin_observation"] = build_qingyin_observation_state(public_state)
@@ -303,6 +382,14 @@ def _clamp_cooldown_seconds(value: Any) -> float:
     except (TypeError, ValueError):
         cooldown_seconds = DEFAULT_ACTION_COOLDOWN_SECONDS
     return min(MAX_ACTION_COOLDOWN_SECONDS, max(MIN_ACTION_COOLDOWN_SECONDS, cooldown_seconds))
+
+
+def _parse_experiment_int(value: Any, default: int) -> int:
+    try:
+        parsed = int(value)
+    except (TypeError, ValueError):
+        parsed = default
+    return max(0, parsed)
 
 
 _HTML_TEMPLATE = """<!doctype html>
@@ -445,12 +532,36 @@ _HTML_TEMPLATE = """<!doctype html>
       padding: 7px 8px;
       font: inherit;
     }
+    .experiment input {
+      width: 92px;
+      min-height: 36px;
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 7px 8px;
+      font: inherit;
+    }
+    .experiment form {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+      margin: 8px 0;
+    }
+    .experiment dl {
+      display: grid;
+      grid-template-columns: max-content 1fr;
+      gap: 6px 12px;
+      margin: 10px 0 0;
+      font-size: 14px;
+    }
+    .experiment dt { font-weight: 700; }
+    .experiment dd { margin: 0; color: var(--muted); }
     .cooldown p {
       margin: 4px 0;
       color: var(--muted);
       font-size: 14px;
     }
-    .observation, .legend, .boundary, .log {
+    .observation, .experiment, .legend, .boundary, .log {
       border-top: 1px solid var(--line);
       padding-top: 12px;
       margin-top: 12px;
@@ -556,6 +667,57 @@ _HTML_TEMPLATE = """<!doctype html>
           <dt>Can act</dt><dd>{{ ui.qingyin_observation.can_act_display }}</dd>
         </dl>
         <p>Manual observation only. No autonomy. No auto exploration. No LLM planning. No pathfinding.</p>
+      </div>
+      <div class="experiment">
+        <h2>Instinct / Experience Observation</h2>
+        <form method="post" action="{{ url_for('experiment_random_walk') }}">
+          <label for="random_seed">Seed</label>
+          <input id="random_seed" name="seed" type="number" step="1" value="{{ ui.experiment_observation.seed }}">
+          <label for="random_max_steps">Max steps</label>
+          <input id="random_max_steps" name="max_steps" type="number" min="0" step="1" value="{{ ui.experiment_observation.max_steps }}">
+          <button>Run random walk sample</button>
+        </form>
+        <form method="post" action="{{ url_for('experiment_wall_influence') }}">
+          <input name="seed" type="hidden" value="{{ ui.experiment_observation.seed }}">
+          <input name="max_steps" type="hidden" value="{{ ui.experiment_observation.max_steps }}">
+          <button>Run wall influence check</button>
+        </form>
+        <form method="post" action="{{ url_for('experiment_clear') }}">
+          <button>Clear experiment observation</button>
+        </form>
+        <dl>
+          <dt>Current experiment mode</dt><dd>{{ ui.experiment_observation.mode }}</dd>
+          <dt>Random seed</dt><dd>{{ ui.experiment_observation.seed }}</dd>
+          <dt>Max steps</dt><dd>{{ ui.experiment_observation.max_steps }}</dd>
+          {% if ui.experiment_observation.random_walk %}
+            <dt>Instinct Random Walk</dt><dd>sample shown</dd>
+            <dt>Step count</dt><dd>{{ ui.experiment_observation.random_walk.step_count }}</dd>
+            <dt>Wall blocked count</dt><dd>{{ ui.experiment_observation.random_walk.wall_blocked_count }}</dd>
+            <dt>Item contact count</dt><dd>{{ ui.experiment_observation.random_walk.item_contact_count }}</dd>
+            <dt>First item contact step</dt><dd>{{ ui.experiment_observation.random_walk.first_item_contact_step if ui.experiment_observation.random_walk.first_item_contact_step is not none else 'none' }}</dd>
+            <dt>Experience count</dt><dd>{{ ui.experiment_observation.random_walk.experience_count }}</dd>
+            <dt>Experience keys</dt><dd>{% if ui.experiment_observation.random_walk.experience_keys %}{{ ui.experiment_observation.random_walk.experience_keys | join(', ') }}{% else %}none{% endif %}</dd>
+            <dt>Prior experience loaded</dt><dd>{{ ui.experiment_observation.random_walk.prior_experience_loaded | string | lower }}</dd>
+            <dt>Experience influence enabled</dt><dd>{{ ui.experiment_observation.random_walk.experience_influence_enabled | string | lower }}</dd>
+            <dt>Reward bias enabled</dt><dd>{{ ui.experiment_observation.random_walk.reward_bias_enabled | string | lower }}</dd>
+            <dt>Dopamine_like_signal enabled</dt><dd>{{ ui.experiment_observation.random_walk.dopamine_like_signal_enabled | string | lower }}</dd>
+          {% endif %}
+          {% if ui.experiment_observation.wall_influence %}
+            <dt>Wall Experience Influence</dt><dd>check shown</dd>
+            <dt>No-experience control</dt><dd>{{ 'passed' if ui.experiment_observation.wall_influence.control_passed else 'failed' }}</dd>
+            <dt>With-prior-experience influence</dt><dd>{{ 'passed' if ui.experiment_observation.wall_influence.influence_passed else 'failed' }}</dd>
+            <dt>Selected action without experience</dt><dd>{{ ui.experiment_observation.wall_influence.selected_action_without_experience }}</dd>
+            <dt>Selected action with wall experience</dt><dd>{{ ui.experiment_observation.wall_influence.selected_action_with_wall_experience }}</dd>
+            <dt>Experience used for decision</dt><dd>{{ ui.experiment_observation.wall_influence.experience_used_for_decision | string | lower }}</dd>
+            <dt>Influence type</dt><dd>{{ ui.experiment_observation.wall_influence.influence_type }}</dd>
+            <dt>Item reward bias</dt><dd>{{ ui.experiment_observation.wall_influence.item_reward_bias_enabled | string | lower }}</dd>
+            <dt>Dopamine_like_signal</dt><dd>{{ ui.experiment_observation.wall_influence.dopamine_like_signal_enabled | string | lower }}</dd>
+          {% endif %}
+          <dt>Wall influence enabled</dt><dd>{{ ui.experiment_observation.boundary_check.wall_experience_influence_ui_observation_enabled | string | lower }}</dd>
+          <dt>Reward bias enabled</dt><dd>{{ ui.experiment_observation.boundary_check.item_reward_bias_enabled | string | lower }}</dd>
+          <dt>Dopamine_like_signal enabled</dt><dd>{{ ui.experiment_observation.boundary_check.dopamine_like_signal_enabled | string | lower }}</dd>
+        </dl>
+        <p>No continuous loop. No auto exploration. No pathfinding. No reward bias.</p>
       </div>
       <div class="legend">
         <h2>Legend</h2>
