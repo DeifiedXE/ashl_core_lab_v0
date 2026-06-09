@@ -2326,3 +2326,9 @@ Two-Trial History Boundary:
 - Adds `docs/history_runtime_persistence_gap_review_v0.md`.
 - Clarifies that current generalized memory exact-key aggregation uses cross-session demo records and does not yet prove a persisted history runtime.
 - Records the missing persistence / retention layer without adding storage, memory write, persistent learning, predictor mutation, or action selection influence.
+
+## Lesson Candidate Human Review Decision Schema v0
+
+- Adds `py -3 -m ashl_core.teaching_cli run-lesson-candidate-human-review-decision-schema-check`.
+- Defines human/manual review decision records for `lesson_candidate` evidence summaries.
+- `approved_for_preview` permits only future trace-only preview and does not approve lesson application, memory write, persistence, or predictor mutation.

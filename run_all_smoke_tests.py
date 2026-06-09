@@ -58,6 +58,9 @@ from ashl_core.integrated_experience_session_trace import run_integrated_experie
 from ashl_core.integrated_trace_chain_break_audit import run_integrated_trace_chain_break_audit
 from ashl_core.item_reward_event import run_item_reward_event_check
 from ashl_core.lesson_candidate_from_failure_reason import run_lesson_candidate_from_failure_reason_check
+from ashl_core.lesson_candidate_human_review_decision_schema import (
+    run_lesson_candidate_human_review_decision_schema_check,
+)
 from ashl_core.lesson_candidate_review_evidence_summary import run_lesson_candidate_review_evidence_summary_check
 from ashl_core.lesson_candidate_review_gate import run_lesson_candidate_review_gate_check
 from ashl_core.mimetic_endocrine_signal_schema import run_mimetic_endocrine_signal_schema_check
@@ -2149,6 +2152,59 @@ def smoke_lesson_candidate_review_evidence_summary() -> dict:
             "summary": summary,
             "evidence_summaries": result.get("evidence_summaries", []),
             "evidence_summary_validations": result.get("evidence_summary_validations", []),
+            "boundary": boundary,
+        },
+    )
+
+
+def smoke_lesson_candidate_human_review_decision_schema() -> dict:
+    result = run_lesson_candidate_human_review_decision_schema_check()
+    summary = result.get("summary", {})
+    boundary = result.get("boundary_check", {})
+    passed = (
+        result.get("command") == "run-lesson-candidate-human-review-decision-schema-check"
+        and result.get("flow") == "lesson_candidate_human_review_decision_schema_v0"
+        and result.get("status") == "ok"
+        and summary.get("review_decision_record_count") == 13
+        and summary.get("valid_review_decision_count") == 4
+        and summary.get("invalid_review_decision_count") == 9
+        and summary.get("approved_for_preview_count") == 1
+        and summary.get("rejected_count") == 1
+        and summary.get("needs_revision_count") == 1
+        and summary.get("stale_count") == 1
+        and summary.get("missing_evidence_linkage_blocked_count") >= 1
+        and summary.get("non_human_reviewer_blocked_count") >= 1
+        and summary.get("automatic_review_blocked_count") >= 1
+        and summary.get("approved_for_application_blocked_count") >= 1
+        and summary.get("memory_write_allowed_blocked_count") >= 1
+        and summary.get("predictor_mutation_allowed_blocked_count") >= 1
+        and summary.get("behavior_preview_created_blocked_count") >= 1
+        and summary.get("lesson_applied_blocked_count") >= 1
+        and summary.get("action_selection_influence_blocked_count") >= 1
+        and summary.get("lesson_application_runtime_count") == 0
+        and summary.get("memory_write_count") == 0
+        and summary.get("predictor_modified_count") == 0
+        and summary.get("persistent_rule_write_count") == 0
+        and summary.get("action_selection_influence_count") == 0
+        and summary.get("autonomy_enabled_count") == 0
+        and boundary.get("schema_check_only") is True
+        and boundary.get("human_manual_review_required") is True
+        and boundary.get("approved_for_preview_is_application_approval") is False
+        and boundary.get("behavior_preview_created") is False
+        and boundary.get("lesson_application_runtime_added") is False
+        and boundary.get("runtime_action_selection_added") is False
+        and boundary.get("memory_write_added") is False
+        and boundary.get("predictor_mutation_added") is False
+        and boundary.get("automatic_review_decision_added") is False
+        and boundary.get("llm_review_decision_added") is False
+        and boundary.get("autonomy_added") is False
+    )
+    return _result(
+        "lesson_candidate_human_review_decision_schema",
+        passed,
+        {
+            "summary": summary,
+            "validation_results": result.get("validation_results", []),
             "boundary": boundary,
         },
     )
@@ -10266,6 +10322,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_lesson_candidate_from_failure_reason(),
         smoke_lesson_candidate_review_gate(),
         smoke_lesson_candidate_review_evidence_summary(),
+        smoke_lesson_candidate_human_review_decision_schema(),
         smoke_prediction_accuracy_check(),
         smoke_rule_candidate_from_mismatch(),
         smoke_rule_candidate_review_gate(),

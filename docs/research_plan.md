@@ -5202,3 +5202,20 @@ Scope:
 
 Non-goals:
 - does not add storage, memory write, persistent learning, persistent rule write, runtime history lookup, repetition_key runtime evaluation, predictor mutation, action selection influence, lesson approval, lesson rejection, behavior preview, lesson application, autonomy, semantic vision, consciousness, or subjective claims
+
+## Lesson Candidate Human Review Decision Schema v0
+
+Status: completed / schema-check-only / no-runtime-change.
+
+Goal:
+Define deterministic human/manual review decision records for `lesson_candidate` evidence summaries.
+
+Scope:
+- adds `ashl_core.lesson_candidate_human_review_decision_schema`
+- adds `py -3 -m ashl_core.teaching_cli run-lesson-candidate-human-review-decision-schema-check`
+- allows only `approved_for_preview`, `rejected`, `needs_revision`, and `stale`
+- enforces source linkage to evidence_summary, lesson_candidate, review_gate, failure_reason, outcome_pair, and action_intent
+- keeps `approved_for_preview` separate from lesson application approval
+
+Non-goals:
+- does not create behavior correction preview, apply lessons, add runtime action selection, modify action selection or action behavior, add persistent learning, create persistent candidates, write persistent rules, write memory, mutate predictors, add perception-to-action or focus-to-action bridge, add endocrine runtime, autonomy, semantic vision, consciousness, or subjective claims
