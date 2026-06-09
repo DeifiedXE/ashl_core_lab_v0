@@ -1,7 +1,7 @@
-Boundary Index Version: 2026-06-09-b37
-Last update log: Persistent Eligibility Checker Milestone + Boundary Sync
-Previous Boundary Index Version: 2026-06-09-b36
-Previous Last update log: Integrated Experience Session Trace Milestone + Boundary Sync
+Boundary Index Version: 2026-06-09-b38
+Last update log: Generalized Memory Line Milestone + Boundary Sync
+Previous Boundary Index Version: 2026-06-09-b37
+Previous Last update log: Persistent Eligibility Checker Milestone + Boundary Sync
 Clean count at last update log reset: 0/5
 Current clean count: 0/5
 
@@ -125,6 +125,7 @@ Current clean count: 0/5
 ## Integrated Experience Session Trace Milestone
 - Integrated Experience Session Trace Milestone (2026-06-09): first connected scripted trace across perception/action/outcome/experience/reason/similar_context_key/prediction/mismatch/candidate/review gate. Result: 6 steps, 4 prediction matches, 2 mismatches, 2 candidates, 2 pending_review, 0 approved, 0 applied. Chain break audit: only break was expected unknown_prediction at tick 6 due to no prior prediction; candidate and review gate were present. Non-claims: no autonomy, no action selection modification, no auto-approval, no candidate application, no global predictor modification, no long-term memory, no lesson_store/Memory Layer writes, no LLM reasoning/planning/vision. Log: docs/milestone_logs/integrated_experience_session_trace_milestone_2026-06-09.md
 - Persistent Eligibility Checker Milestone (2026-06-09): completed checker-only gate for approved candidates entering persistent_candidate review. Result: 10 cases, 1 eligible_for_persistent_candidate_review, 9 blocked, 0 eligible_for_persistent_rule, 0 persistent_rule_write_allowed. Gates checked: temporary apply verification, repeated similar-context validation, challenge survival, low recent failure, low active conflict, trace preserved, rollback path exists. Boundary: checker only; no persistent preview/dry-run, no persistent write/storage/table/activation, no global predictor modification, no action selection modification, no long-term memory, no lesson_store/Memory Layer writes, no lesson internalization. Next planned direction: generalized memory loop. Log: docs/milestone_logs/persistent_eligibility_checker_milestone_2026-06-09.md
+- Generalized Memory Line Milestone (2026-06-09): completed exact-key generalized memory check line: design -> exact similar_context_key buckets -> prediction confidence suggestions -> generalized_candidate -> human review -> approved preview. Results: 4 buckets, 2 high-confidence stable patterns, 2 generalized candidates, 2 approved previews; 0 applied, 0 predictor_modified, 0 action_selection_influence, 0 memory_write, 0 persistent_candidate. Boundary: exact key only; no fuzzy/semantic/LLM/visual similarity, no predictor mutation, no action selection change, no long-term memory / lesson_store / Memory Layer writes, no persistent write. Next planned direction: mimetic endocrine system. Log: docs/milestone_logs/generalized_memory_line_milestone_2026-06-09.md
 
 ## Current Claim Boundary
 - Can claim: Bounded local memory effect observed across 3 validated dead-end maps.

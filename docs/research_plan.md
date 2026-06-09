@@ -4548,3 +4548,16 @@ Scope:
 
 Non-goals:
 - no fuzzy similarity, semantic similarity, LLM similarity, visual similarity, cross-session database, persistent storage, long-term memory write, lesson_store write, Memory Layer write, generalized candidate persistence, candidate auto-approval, Qingyin self-approval, candidate application, persistent candidate creation, persistent rule write, persistent preview/dry-run, predictor behavior modification, prediction confidence application, prediction rule modification, global predictor modification, action selection modification, prediction-driven suppression/preference, lesson internalization, instinct-like behavior layer, pathfinding, BFS, A*, route planner, item seeking, item collection, reward changes, random walk changes, UI changes, autonomous exploration, decision loop, LLM reasoning, LLM planning, LLM vision, Boundary Index modification, general learning claim, autonomous learning claim, visual understanding claim, solved symbol grounding claim, consciousness claim, or subjective experience claim
+
+## Generalized Memory Line Milestone + Boundary Sync v0
+
+Status: completed / documentation-milestone / boundary-index-sync.
+
+Scope:
+- adds `docs/milestone_logs/generalized_memory_line_milestone_2026-06-09.md`
+- syncs the completed exact-key generalized memory line into `docs/current_boundary_index.md` as Boundary Index Version `2026-06-09-b38`
+- records the line from design through exact-key buckets, prediction confidence suggestions, generalized candidates, human review, and approved preview
+- sets next planned direction as mimetic endocrine system without defining or implementing it
+
+Non-goals:
+- no runtime behavior, new CLI, fuzzy similarity, semantic similarity, LLM similarity, visual similarity, cross-session database, persistent storage, long-term memory write, lesson_store write, Memory Layer write, generalized candidate persistence, candidate auto-approval, Qingyin self-approval, candidate application, persistent candidate creation, persistent rule write, persistent preview/dry-run, predictor behavior modification, prediction confidence application, prediction rule modification, global predictor modification, action selection modification, lesson internalization, instinct-like behavior layer, mimetic endocrine system implementation, pathfinding, BFS, A*, UI, autonomous exploration, decision loop, LLM reasoning, LLM planning, LLM vision, general learning claim, autonomous learning claim, consciousness claim, or subjective experience claim

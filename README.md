@@ -2072,3 +2072,10 @@ Two-Trial History Boundary:
 - Routes `generalized_candidate` records through human review and creates approved preview records.
 - Supports approved, rejected, and deferred review outcomes, and blocks Qingyin self-approval.
 - Preview-only: does not apply candidates, modify predictors, write memory, create persistent candidates, or affect action selection.
+
+## Generalized Memory Line Milestone v0
+
+- Adds `docs/milestone_logs/generalized_memory_line_milestone_2026-06-09.md`.
+- Syncs `docs/current_boundary_index.md` to Boundary Index Version `2026-06-09-b38`.
+- Completes the exact-key generalized memory check line through approved preview.
+- Keeps fuzzy similarity, predictor mutation, action selection influence, persistent promotion, and memory writes disabled.
