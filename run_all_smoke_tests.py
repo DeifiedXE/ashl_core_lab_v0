@@ -155,6 +155,7 @@ from ashl_core.simulated_vision_larger_sandbox import (
     render_larger_sandbox_viewport,
     run_simulated_vision_larger_sandbox_demo,
 )
+from ashl_core.simulated_vision_larger_sandbox_observed_map import run_larger_sandbox_observed_map_smoke
 from ashl_core.simulated_vision_memory_bridge import run_simulated_vision_memory_bridge_demo
 from ashl_core.simulated_vision_observed_map import run_simulated_vision_observed_map_demo
 from ashl_core.simulated_vision_symbol_grounding import run_symbol_grounding_check
@@ -461,6 +462,64 @@ def smoke_simulated_vision_larger_sandbox_static_runtime() -> dict:
             "exit_result": exit_result["trace"]["result"],
             "item_result": item_result["trace"]["result"],
             "wall_result": wall_result["trace"]["result"],
+            "boundary": boundary,
+        },
+    )
+
+
+def smoke_larger_sandbox_observed_map_smoke() -> dict:
+    result = run_larger_sandbox_observed_map_smoke()
+    boundary = result.get("boundary_check", {})
+    scenarios = {item.get("scenario"): item for item in result.get("scenario_results", [])}
+    summary = result.get("observed_map_summary", {})
+    persistence_checks = result.get("persistence_checks", [])
+    map_summary = result.get("map_summary", {})
+    total_map_cells = map_summary.get("width", 0) * map_summary.get("height", 0)
+    passed = (
+        result.get("command") == "run-larger-sandbox-observed-map-smoke"
+        and result.get("flow") == "larger_sandbox_observed_map_smoke_v0"
+        and result.get("level_id") == "simulated_vision_larger_sandbox_v0"
+        and map_summary.get("item_count") == 4
+        and map_summary.get("doorway_count") == 2
+        and map_summary.get("exit_count") == 1
+        and scenarios.get("doorway_d", {}).get("passed") is True
+        and scenarios.get("item_i", {}).get("passed") is True
+        and scenarios.get("exit_g", {}).get("passed") is True
+        and "d" in summary.get("remembered_symbols", [])
+        and "i" in summary.get("remembered_symbols", [])
+        and "g" in summary.get("remembered_symbols", [])
+        and summary.get("remembered_d_count", 0) >= 1
+        and summary.get("remembered_i_count", 0) >= 1
+        and summary.get("remembered_g_count", 0) >= 1
+        and summary.get("x_does_not_erase_known_cells") is True
+        and summary.get("unseen_cells_not_inferred") is True
+        and 0 < summary.get("known_cell_count", 0) < total_map_cells
+        and all(check.get("passed") is True for check in persistence_checks)
+        and boundary.get("larger_static_sandbox_used") is True
+        and boundary.get("observed_local_map_enabled") is True
+        and boundary.get("doorway_remembered") is True
+        and boundary.get("item_remembered") is True
+        and boundary.get("exit_remembered") is True
+        and boundary.get("x_does_not_erase_known_cells") is True
+        and boundary.get("unseen_cells_not_inferred") is True
+        and boundary.get("item_collection_enabled") is False
+        and boundary.get("exit_conditional_spawn_enabled") is False
+        and boundary.get("task_completion_enabled") is False
+        and boundary.get("curiosity_enabled") is False
+        and boundary.get("prediction_error_enabled") is False
+        and boundary.get("place_memory_enabled") is False
+        and boundary.get("home_sandbox_enabled") is False
+        and boundary.get("pathfinding_used") is False
+        and boundary.get("route_planner_added") is False
+        and boundary.get("long_term_memory_write") is False
+    )
+    return _result(
+        "larger_sandbox_observed_map_smoke",
+        passed,
+        {
+            "map_summary": map_summary,
+            "observed_map_summary": summary,
+            "persistence_checks": persistence_checks,
             "boundary": boundary,
         },
     )
@@ -6647,6 +6706,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_simulated_vision_viewport(),
         smoke_simulated_vision_first_person_viewport(),
         smoke_simulated_vision_larger_sandbox_static_runtime(),
+        smoke_larger_sandbox_observed_map_smoke(),
         smoke_simulated_vision_memory_bridge(),
         smoke_simulated_vision_observed_map(),
         smoke_simulated_vision_symbol_grounding(),

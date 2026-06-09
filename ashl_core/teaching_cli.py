@@ -44,6 +44,7 @@ from .session_working_memory import (
 )
 from .simulated_vision_sandbox import run_simulated_vision_viewport_demo
 from .simulated_vision_larger_sandbox import run_simulated_vision_larger_sandbox_demo
+from .simulated_vision_larger_sandbox_observed_map import run_larger_sandbox_observed_map_smoke
 from .simulated_vision_memory_bridge import run_simulated_vision_memory_bridge_demo
 from .simulated_vision_observed_map import run_simulated_vision_observed_map_demo
 from .simulated_vision_symbol_grounding import run_symbol_grounding_check
@@ -3344,6 +3345,8 @@ def run_command(command: str) -> dict[str, Any]:
         return run_simulated_vision_viewport_demo()
     if command == "run-simulated-vision-larger-sandbox-demo":
         return run_simulated_vision_larger_sandbox_demo()
+    if command == "run-larger-sandbox-observed-map-smoke":
+        return run_larger_sandbox_observed_map_smoke()
     if command == "run-simulated-vision-memory-bridge-demo":
         return run_simulated_vision_memory_bridge_demo()
     if command == "run-simulated-vision-observed-map-demo":
@@ -3399,6 +3402,7 @@ def main(argv: list[str] | None = None) -> int:
             "run-session-working-memory-trial",
             "run-simulated-vision-viewport-demo",
             "run-simulated-vision-larger-sandbox-demo",
+            "run-larger-sandbox-observed-map-smoke",
             "run-simulated-vision-memory-bridge-demo",
             "run-simulated-vision-observed-map-demo",
             "run-simulated-vision-symbol-grounding-check",
@@ -3525,6 +3529,11 @@ def main(argv: list[str] | None = None) -> int:
         if args.action_sequence:
             action_sequence = [action.strip() for action in args.action_sequence.split(",") if action.strip()]
         result = run_simulated_vision_larger_sandbox_demo(action_sequence=action_sequence)
+    elif args.command == "run-larger-sandbox-observed-map-smoke":
+        action_sequence = None
+        if args.action_sequence:
+            action_sequence = [action.strip() for action in args.action_sequence.split(",") if action.strip()]
+        result = run_larger_sandbox_observed_map_smoke(action_sequence=action_sequence)
     elif args.command == "run-simulated-vision-memory-bridge-demo":
         action_sequence = None
         if args.action_sequence:

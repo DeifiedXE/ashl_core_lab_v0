@@ -3869,3 +3869,25 @@ Non-goals:
 - no place memory, home sandbox, room inference, or semantic room understanding
 - no pathfinding / BFS / A* or route planner
 - no lesson_store write, Memory Layer write, Long-term Memory write, or lesson_candidate pipeline connection
+
+## Larger Sandbox Observed Map Smoke v0
+
+Status: completed / smoke-validation / observed-map-only.
+
+Goal:
+Verify that observed_local_map can remember larger static sandbox symbols `d`, `i`, and `g`.
+
+Scope:
+- adds `ashl_core.simulated_vision_larger_sandbox_observed_map`
+- adds `py -3 -m ashl_core.teaching_cli run-larger-sandbox-observed-map-smoke`
+- uses controlled scenario snapshots for doorway, item, and exit placeholder visibility
+- verifies observed_local_map records `d`, `i`, and `g`
+- verifies `x` does not erase known cells after view changes
+- verifies unseen cells are not inferred
+
+Non-goals:
+- no item collection, pickup, inventory, or item seeking
+- no exit activation, win condition, or task completion
+- no curiosity or prediction error implementation
+- no place memory, home sandbox, pathfinding, route planner, or map solving
+- no lesson_store write, Memory Layer write, Long-term Memory write, or lesson_candidate pipeline connection

@@ -1817,3 +1817,10 @@ Two-Trial History Boundary:
 - `D` is passable and rendered as `d`, but is not taught as a semantic room boundary.
 - `E` is rendered as static placeholder `g`; no conditional exit activation or task completion is added.
 - No item collection, curiosity, prediction error, place memory, pathfinding, route planner, or home sandbox behavior is added.
+
+## Larger Sandbox Observed Map Smoke v0
+
+- Adds `py -3 -m ashl_core.teaching_cli run-larger-sandbox-observed-map-smoke`.
+- Verifies `observed_local_map` can remember `d/i/g` symbols in the larger static sandbox.
+- Confirms `x` does not erase known cells and unseen cells are not inferred.
+- Does not add item collection, exit activation, curiosity, prediction error, place memory, pathfinding, or home sandbox behavior.
