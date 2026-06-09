@@ -4670,3 +4670,21 @@ Scope:
 
 Non-goals:
 - no endocrine runtime behavior, formulas that update values from real runtime, signal interactions, blind trust behavior, review gate override, candidate auto-approval, Qingyin self-approval permission, candidate application, trust-driven action selection, predictor behavior modification, global predictor modification, long-term memory write, lesson_store write, Memory Layer write, user identity inference beyond explicit source records, implicit identity trust, personality weight modification, personality drift, autonomous drive system, persistent rule write, persistent preview/dry-run, pathfinding, BFS, A*, route planner, UI change, LLM reasoning, LLM planning, LLM vision, biological hormone simulation claim, subjective trust claim, attachment claim, love claim, consciousness claim, subjective experience claim, or denial of future subjective possibility
+
+## Mimetic Endocrine Four-Axis Trace Integration v0
+
+Status: completed / integration-check-only / no-runtime-change.
+
+Goal:
+Combine the four mimetic endocrine trace checkers into a unified four-axis trace summary while keeping all control paths disabled.
+
+Scope:
+- adds `ashl_core.mimetic_endocrine_four_axis_trace_integration`
+- adds `py -3 -m ashl_core.teaching_cli run-mimetic-endocrine-four-axis-trace-integration-check`
+- reuses the dopamine-like, norepinephrine-like, cortisol-like, and oxytocin-like trace checker outputs directly
+- summarizes trace counts, valid trace counts, blocked event counts, subjective-claim blocks, and shared safety totals by axis
+- verifies all valid traces remain schema-valid, non-subjective, blocked from action selection, blocked from memory write, and blocked from candidate approval
+- verifies action selection influence, memory write, candidate approval influence, predictor mutation, runtime formulas, signal interaction runtime, and endocrine runtime totals remain zero
+
+Non-goals:
+- no endocrine runtime behavior, endocrine state runtime, formulas that update values from real runtime, signal interactions, cortisol dampens dopamine logic, norepinephrine attention narrowing, reward bias modification, reward-biased action tendency modification, random-walk modification, autonomous attention control, observation priority runtime modification, protective mechanism addition or trigger, cooldown behavior modification, risk avoidance behavior modification, blind trust behavior, review gate override, candidate auto-approval, Qingyin self-approval permission, candidate application, action selection modification, endocrine suppression/preference of actions, predictor behavior modification, global predictor modification, long-term memory write, lesson_store write, Memory Layer write, personality weight modification, personality drift, autonomous drive system, persistent rule write, persistent preview/dry-run, pathfinding, BFS, A*, route planner, UI change, LLM reasoning, LLM planning, LLM vision, biological hormone simulation claim, happiness claim, pleasure claim, alertness claim, anxiety claim, stress claim, pain claim, trust claim, attachment claim, love claim, consciousness claim, subjective experience claim, or denial of future subjective possibility

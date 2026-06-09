@@ -26,6 +26,9 @@ from .integrated_experience_session_trace import run_integrated_experience_sessi
 from .integrated_trace_chain_break_audit import run_integrated_trace_chain_break_audit
 from .item_reward_event import run_item_reward_event_check
 from .mimetic_endocrine_signal_schema import run_mimetic_endocrine_signal_schema_check
+from .mimetic_endocrine_four_axis_trace_integration import (
+    run_mimetic_endocrine_four_axis_trace_integration_check,
+)
 from .norepinephrine_like_change_attention_trace_check import (
     run_norepinephrine_like_change_attention_trace_check,
 )
@@ -3446,6 +3449,8 @@ def run_command(command: str) -> dict[str, Any] | str:
         return run_cortisol_like_failure_load_trace_check()
     if command == "run-oxytocin-like-review-trust-trace-check":
         return run_oxytocin_like_review_trust_trace_check()
+    if command == "run-mimetic-endocrine-four-axis-trace-integration-check":
+        return run_mimetic_endocrine_four_axis_trace_integration_check()
     return {
         "command": command,
         "status": "error",
@@ -3526,6 +3531,7 @@ def main(argv: list[str] | None = None) -> int:
             "run-norepinephrine-like-change-attention-trace-check",
             "run-cortisol-like-failure-load-trace-check",
             "run-oxytocin-like-review-trust-trace-check",
+            "run-mimetic-endocrine-four-axis-trace-integration-check",
         ],
     )
     parser.add_argument("--review-id", default="review_001")
@@ -3742,6 +3748,8 @@ def main(argv: list[str] | None = None) -> int:
         result = run_cortisol_like_failure_load_trace_check()
     elif args.command == "run-oxytocin-like-review-trust-trace-check":
         result = run_oxytocin_like_review_trust_trace_check()
+    elif args.command == "run-mimetic-endocrine-four-axis-trace-integration-check":
+        result = run_mimetic_endocrine_four_axis_trace_integration_check()
     else:
         result = run_command(args.command)
     if hasattr(sys.stdout, "reconfigure"):

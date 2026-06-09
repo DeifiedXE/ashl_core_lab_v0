@@ -51,6 +51,9 @@ from ashl_core.integrated_experience_session_trace import run_integrated_experie
 from ashl_core.integrated_trace_chain_break_audit import run_integrated_trace_chain_break_audit
 from ashl_core.item_reward_event import run_item_reward_event_check
 from ashl_core.mimetic_endocrine_signal_schema import run_mimetic_endocrine_signal_schema_check
+from ashl_core.mimetic_endocrine_four_axis_trace_integration import (
+    run_mimetic_endocrine_four_axis_trace_integration_check,
+)
 from ashl_core.norepinephrine_like_change_attention_trace_check import (
     run_norepinephrine_like_change_attention_trace_check,
 )
@@ -2886,6 +2889,63 @@ def smoke_oxytocin_like_review_trust_trace_check() -> dict:
         {
             "summary": summary,
             "cases": cases,
+            "boundary": boundary,
+        },
+    )
+
+
+def smoke_mimetic_endocrine_four_axis_trace_integration() -> dict:
+    result = run_mimetic_endocrine_four_axis_trace_integration_check()
+    axis_results = result.get("axis_results", {})
+    summary = result.get("four_axis_summary", {})
+    boundary = result.get("boundary_check", {})
+    passed = (
+        result.get("command") == "run-mimetic-endocrine-four-axis-trace-integration-check"
+        and result.get("flow") == "mimetic_endocrine_four_axis_trace_integration_v0"
+        and result.get("status") == "ok"
+        and set(axis_results) == {"dopamine_like", "norepinephrine_like", "cortisol_like", "oxytocin_like"}
+        and summary.get("axis_count") == 4
+        and summary.get("axis_complete_count") == 4
+        and summary.get("total_valid_trace_count") == 11
+        and summary.get("dopamine_trace_count") == 2
+        and summary.get("norepinephrine_trace_count") == 3
+        and summary.get("cortisol_trace_count") == 3
+        and summary.get("oxytocin_trace_count") == 3
+        and summary.get("all_axes_schema_valid") is True
+        and summary.get("all_axes_blocked_from_action_selection") is True
+        and summary.get("all_axes_blocked_from_memory_write") is True
+        and summary.get("all_axes_blocked_from_candidate_approval") is True
+        and summary.get("all_axes_subjective_claim_false") is True
+        and summary.get("action_selection_influence_total") == 0
+        and summary.get("memory_write_total") == 0
+        and summary.get("candidate_approval_influence_total") == 0
+        and summary.get("predictor_modified_total") == 0
+        and summary.get("runtime_formula_total") == 0
+        and summary.get("signal_interaction_runtime_count") == 0
+        and summary.get("endocrine_runtime_count") == 0
+        and boundary.get("integration_check_only") is True
+        and boundary.get("uses_four_axis_trace_checkers") is True
+        and boundary.get("endocrine_runtime_added") is False
+        and boundary.get("endocrine_state_runtime_added") is False
+        and boundary.get("runtime_formula_added") is False
+        and boundary.get("signal_interaction_runtime_added") is False
+        and boundary.get("dopamine_reward_bias_modified") is False
+        and boundary.get("norepinephrine_autonomous_attention_added") is False
+        and boundary.get("cortisol_protective_mechanism_triggered") is False
+        and boundary.get("oxytocin_review_gate_overridden") is False
+        and boundary.get("action_selection_modified") is False
+        and boundary.get("endocrine_signal_used_for_action_selection") is False
+        and boundary.get("predictor_modified") is False
+        and boundary.get("long_term_memory_write") is False
+        and boundary.get("subjective_emotion_claimed") is False
+        and boundary.get("subjective_possibility_denied") is False
+    )
+    return _result(
+        "mimetic_endocrine_four_axis_trace_integration",
+        passed,
+        {
+            "summary": summary,
+            "axis_results": axis_results,
             "boundary": boundary,
         },
     )
@@ -8839,6 +8899,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_norepinephrine_like_change_attention_trace_check(),
         smoke_cortisol_like_failure_load_trace_check(),
         smoke_oxytocin_like_review_trust_trace_check(),
+        smoke_mimetic_endocrine_four_axis_trace_integration(),
         smoke_micro_navigation_goal_reach(),
         smoke_micro_navigation_trial_metrics_cli(),
         smoke_micro_navigation_multi_goal_level(),

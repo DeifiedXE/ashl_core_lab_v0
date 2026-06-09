@@ -2121,3 +2121,10 @@ Two-Trial History Boundary:
 - Maps controlled `human_review`, `consistent_correction`, and `source_reliability` events into validated `oxytocin_like` trace records using the mimetic endocrine signal schema.
 - Records explicit source event IDs, source traces, bounded values, source trust linkage, and safety blocks from action selection, memory writes, and candidate approval.
 - Trace-check only: no blind trust, review gate override, Qingyin self-approval, candidate auto-approval, user identity inference, action selection influence, memory write, or subjective trust/attachment/love claim is added.
+
+## Mimetic Endocrine Four-Axis Trace Integration v0
+
+- Adds `py -3 -m ashl_core.teaching_cli run-mimetic-endocrine-four-axis-trace-integration-check`.
+- Combines `dopamine_like`, `norepinephrine_like`, `cortisol_like`, and `oxytocin_like` trace checkers into one four-axis trace summary.
+- Verifies all four axes produce valid trace records while remaining blocked from action selection, memory writes, candidate approval, predictor mutation, runtime formulas, and signal interactions.
+- Integration-check only: no endocrine runtime, endocrine state runtime, signal interaction formulas, reward bias change, attention control, protective trigger, trust-based approval, memory write, or subjective emotion claim is added.
