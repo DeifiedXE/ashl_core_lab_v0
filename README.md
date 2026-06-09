@@ -2314,3 +2314,9 @@ Two-Trial History Boundary:
 - Adds `py -3 -m ashl_core.teaching_cli run-lesson-candidate-review-gate-check`.
 - Evaluates whether trace-only `lesson_candidate` records may enter pending human review.
 - Does not approve, reject, apply, persist, write memory, change action selection, or mutate predictors.
+
+## Lesson Candidate Review Evidence Summary v0
+
+- Adds `py -3 -m ashl_core.teaching_cli run-lesson-candidate-review-evidence-summary-check`.
+- Builds reviewer-facing evidence summaries for pending_review `lesson_candidate` records.
+- Remains review-support-only and does not approve, reject, preview, apply, persist, write memory, change action selection, or mutate predictors.

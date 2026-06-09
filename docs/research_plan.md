@@ -5169,3 +5169,19 @@ Scope:
 
 Non-goals:
 - does not approve or reject lesson_candidates as a human decision, apply lessons, change action selection, change action behavior, create persistent candidates, write memory, persist learning, mutate predictors, add endocrine runtime, add autonomy, or claim semantic vision / consciousness / subjective experience
+
+## Lesson Candidate Review Evidence Summary v0
+
+Status: completed / review-support-only / trace-check-only / no-runtime-change.
+
+Goal:
+Build reviewer-facing evidence summaries for pending_review `lesson_candidate` records.
+
+Scope:
+- adds `ashl_core.lesson_candidate_review_evidence_summary`
+- adds `py -3 -m ashl_core.teaching_cli run-lesson-candidate-review-evidence-summary-check`
+- reuses the lesson_candidate review gate and upstream action/outcome/failure evidence pipeline
+- summarizes action_intent, outcome_pair, failure_reason, lesson_candidate, and review_gate evidence
+
+Non-goals:
+- does not add human review decision schema, approval, rejection, needs_revision, stale decision, behavior correction preview, lesson application, action selection influence, persistent learning, memory write, predictor mutation, endocrine runtime, autonomy, or semantic vision / consciousness / subjective claims

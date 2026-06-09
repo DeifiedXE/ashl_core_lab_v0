@@ -58,6 +58,7 @@ from ashl_core.integrated_experience_session_trace import run_integrated_experie
 from ashl_core.integrated_trace_chain_break_audit import run_integrated_trace_chain_break_audit
 from ashl_core.item_reward_event import run_item_reward_event_check
 from ashl_core.lesson_candidate_from_failure_reason import run_lesson_candidate_from_failure_reason_check
+from ashl_core.lesson_candidate_review_evidence_summary import run_lesson_candidate_review_evidence_summary_check
 from ashl_core.lesson_candidate_review_gate import run_lesson_candidate_review_gate_check
 from ashl_core.mimetic_endocrine_signal_schema import run_mimetic_endocrine_signal_schema_check
 from ashl_core.mimetic_endocrine_four_axis_trace_integration import (
@@ -2093,6 +2094,61 @@ def smoke_lesson_candidate_review_gate() -> dict:
             "summary": summary,
             "review_gate_results": result.get("review_gate_results", []),
             "gate_validations": result.get("gate_validations", []),
+            "boundary": boundary,
+        },
+    )
+
+
+def smoke_lesson_candidate_review_evidence_summary() -> dict:
+    result = run_lesson_candidate_review_evidence_summary_check()
+    summary = result.get("summary", {})
+    boundary = result.get("boundary_check", {})
+    passed = (
+        result.get("command") == "run-lesson-candidate-review-evidence-summary-check"
+        and result.get("flow") == "lesson_candidate_review_evidence_summary_v0"
+        and result.get("status") == "ok"
+        and summary.get("lesson_candidate_record_count") == 15
+        and summary.get("valid_lesson_candidate_count") == 2
+        and summary.get("review_gate_result_count") == 15
+        and summary.get("pending_review_count") == 1
+        and summary.get("blocked_gate_count") == 14
+        and summary.get("valid_evidence_summary_count") == 1
+        and summary.get("invalid_evidence_summary_count") >= 1
+        and summary.get("blocked_summary_count") >= 1
+        and summary.get("missing_action_intent_summary_blocked_count") >= 1
+        and summary.get("missing_outcome_pair_summary_blocked_count") >= 1
+        and summary.get("missing_failure_reason_summary_blocked_count") >= 1
+        and summary.get("missing_lesson_candidate_summary_blocked_count") >= 1
+        and summary.get("missing_review_gate_summary_blocked_count") >= 1
+        and summary.get("approval_decision_created_blocked_count") >= 1
+        and summary.get("lesson_approved_blocked_count") >= 1
+        and summary.get("lesson_rejected_blocked_count") >= 1
+        and summary.get("lesson_applied_blocked_count") >= 1
+        and summary.get("behavior_preview_created_blocked_count") >= 1
+        and summary.get("action_selection_influence_count") == 0
+        and summary.get("memory_write_count") == 0
+        and summary.get("predictor_modified_count") == 0
+        and summary.get("persistent_rule_write_count") == 0
+        and boundary.get("trace_check_only") is True
+        and boundary.get("review_support_only") is True
+        and boundary.get("uses_lesson_candidate_review_gate") is True
+        and boundary.get("uses_lesson_candidate_from_failure_reason") is True
+        and boundary.get("human_review_decision_schema_added") is False
+        and boundary.get("approval_decision_created") is False
+        and boundary.get("behavior_preview_created") is False
+        and boundary.get("lesson_application_runtime_added") is False
+        and boundary.get("runtime_action_selection_added") is False
+        and boundary.get("memory_write_added") is False
+        and boundary.get("predictor_mutation_added") is False
+        and boundary.get("autonomy_added") is False
+    )
+    return _result(
+        "lesson_candidate_review_evidence_summary",
+        passed,
+        {
+            "summary": summary,
+            "evidence_summaries": result.get("evidence_summaries", []),
+            "evidence_summary_validations": result.get("evidence_summary_validations", []),
             "boundary": boundary,
         },
     )
@@ -10169,6 +10225,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_failure_reason_from_outcome_pair(),
         smoke_lesson_candidate_from_failure_reason(),
         smoke_lesson_candidate_review_gate(),
+        smoke_lesson_candidate_review_evidence_summary(),
         smoke_prediction_accuracy_check(),
         smoke_rule_candidate_from_mismatch(),
         smoke_rule_candidate_review_gate(),
