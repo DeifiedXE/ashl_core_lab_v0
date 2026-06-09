@@ -245,6 +245,7 @@ from ashl_core.visual_frame_assembly_from_retina_features import (
 )
 from ashl_core.visual_frame_buffer_schema import run_visual_frame_buffer_schema_check
 from ashl_core.visual_frame_change_schema import run_visual_frame_change_schema_check
+from ashl_core.visual_frame_pair_demo_assembly import run_visual_frame_pair_demo_assembly_check
 from ashl_core.wall_experience_influence import run_wall_experience_influence_check
 
 
@@ -2906,6 +2907,65 @@ def smoke_visual_frame_change_schema() -> dict:
         {
             "summary": summary,
             "validation_results": result.get("validation_results", []),
+            "boundary": boundary,
+        },
+    )
+
+
+def smoke_visual_frame_pair_demo_assembly() -> dict:
+    result = run_visual_frame_pair_demo_assembly_check()
+    summary = result.get("summary", {})
+    boundary = result.get("boundary_check", {})
+    passed = (
+        result.get("command") == "run-visual-frame-pair-demo-assembly-check"
+        and result.get("flow") == "visual_frame_pair_demo_assembly_v0"
+        and result.get("status") == "ok"
+        and summary.get("pair_count") == 1
+        and summary.get("valid_pair_count") == 1
+        and summary.get("invalid_pair_count") == 0
+        and summary.get("previous_frame_count") == 1
+        and summary.get("current_frame_count") == 1
+        and summary.get("previous_frame_valid_count") == 1
+        and summary.get("current_frame_valid_count") == 1
+        and summary.get("previous_retina_feature_record_count") == 4
+        and summary.get("current_retina_feature_record_count") == 4
+        and summary.get("previous_retina_invalid_feature_count") == 0
+        and summary.get("current_retina_invalid_feature_count") == 0
+        and summary.get("previous_semantic_label_non_null_count") == 0
+        and summary.get("current_semantic_label_non_null_count") == 0
+        and summary.get("change_record_created_count") == 0
+        and summary.get("frame_comparison_runtime_count") == 0
+        and summary.get("change_detection_runtime_count") == 0
+        and summary.get("runtime_frame_buffer_count") == 0
+        and summary.get("focus_candidate_created_count") == 0
+        and summary.get("object_recognition_count") == 0
+        and summary.get("object_tracking_count") == 0
+        and summary.get("semantic_vision_count") == 0
+        and summary.get("action_selection_influence_count") == 0
+        and summary.get("memory_write_count") == 0
+        and summary.get("focus_selection_count") == 0
+        and summary.get("endocrine_control_count") == 0
+        and summary.get("predictor_modified_count") == 0
+        and boundary.get("fixture_check_only") is True
+        and boundary.get("uses_retina_decoder_feature_schema") is True
+        and boundary.get("uses_visual_frame_assembly_from_retina_features") is True
+        and boundary.get("uses_visual_frame_buffer_schema") is True
+        and boundary.get("frame_comparison_runner_added") is False
+        and boundary.get("change_detection_runtime_added") is False
+        and boundary.get("change_record_creation_added") is False
+        and boundary.get("focus_selector_added") is False
+        and boundary.get("action_selection_modified") is False
+        and boundary.get("visual_memory_write") is False
+        and boundary.get("object_tracking_enabled") is False
+        and boundary.get("semantic_vision_claimed") is False
+        and boundary.get("llm_vision_used") is False
+    )
+    return _result(
+        "visual_frame_pair_demo_assembly",
+        passed,
+        {
+            "summary": summary,
+            "pair_validation_results": result.get("pair_validation_results", []),
             "boundary": boundary,
         },
     )
@@ -9217,6 +9277,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_visual_frame_assembly_from_retina_features(),
         smoke_visual_frame_change_design(),
         smoke_visual_frame_change_schema(),
+        smoke_visual_frame_pair_demo_assembly(),
         smoke_micro_navigation_goal_reach(),
         smoke_micro_navigation_trial_metrics_cli(),
         smoke_micro_navigation_multi_goal_level(),

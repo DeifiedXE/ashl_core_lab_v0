@@ -4838,3 +4838,20 @@ Scope:
 
 Non-goals:
 - no frame comparison runtime, change detection runtime, runtime frame storage, runtime current_frame / previous_frame storage, visual change records runtime, focus selector, focus candidates, attention mechanism, action selection influence, memory write, predictor mutation, object tracking, object recognition, semantic vision, LLM vision, CNN, YOLO, UNet, symbol grounding claim, consciousness claim, or subjective visual experience claim
+
+## Visual Frame Pair Demo Assembly Check v0
+
+Status: completed / fixture-check-only / no-runtime-change.
+
+Goal:
+Assemble deterministic `previous_frame` and `current_frame` demo records for future change-trace fixtures.
+
+Scope:
+- adds `ashl_core.visual_frame_pair_demo_assembly`
+- adds `py -3 -m ashl_core.teaching_cli run-visual-frame-pair-demo-assembly-check`
+- builds two deterministic symbolic / hybrid demo inputs
+- decodes both inputs into retina feature records and validates them through the retina feature schema
+- assembles and validates both frames through the visual frame assembly and visual frame buffer schema path
+
+Non-goals:
+- no runtime frame storage, runtime current_frame / previous_frame storage, automatic frame replacement, frame comparison runner, change detection runtime, runtime change_record creation, visual change records runtime, focus selector, focus candidates, attention mechanism, action selection influence, memory write, predictor mutation, object recognition, object tracking, semantic labels, semantic vision, LLM vision, CNN, YOLO, UNet, symbol grounding claim, consciousness claim, or subjective visual experience claim

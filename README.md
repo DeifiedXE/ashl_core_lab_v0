@@ -2189,3 +2189,9 @@ Two-Trial History Boundary:
 - Adds `py -3 -m ashl_core.teaching_cli run-visual-frame-change-schema-check`.
 - Validates low-level `change_record` structures and required downstream safety flags.
 - Checker-only: no frame comparison runtime, change detection runtime, focus selection, action selection influence, or memory write is added.
+
+## Visual Frame Pair Demo Assembly Check v0
+
+- Adds `py -3 -m ashl_core.teaching_cli run-visual-frame-pair-demo-assembly-check`.
+- Assembles deterministic `previous_frame` / `current_frame` demo records and validates both frames.
+- Fixture/check-only: no frame comparison, change detection runtime, focus selection, action selection influence, or memory write is added.
