@@ -2429,6 +2429,31 @@ No pathfinding / BFS / A*.
 No LLM planning.
 This is not proof of general learning.
 
+## Session Working Memory Phase Handoff v0
+
+Status:
+docs-only / phase-handoff / cleanup / no-runtime-change
+
+Summary:
+Adds `docs/session_working_memory_phase_handoff_v0.md`.
+The handoff closes the Session Working Memory phase, records completed memory capabilities, summarizes the generic current-session memory shape, and prepares the next phase direction.
+The recommended next package is Simulated Vision Facing / Viewport v0.
+
+Boundary:
+No simulated vision runtime.
+No facing runtime.
+No turn_left / turn_right behavior.
+No viewport renderer.
+No action selection change.
+No goal bias change.
+No state-action memory behavior change.
+No dead-end A/B behavior change.
+No Long-term Memory.
+No lesson_store / Memory Layer / lesson_candidate.
+No pathfinding.
+No LLM planning.
+No proof of general learning claim.
+
 ## Micro Navigation Trial Metrics CLI v0
 
 Status:

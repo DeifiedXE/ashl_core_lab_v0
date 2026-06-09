@@ -1263,6 +1263,12 @@ Two-Trial History Boundary:
 - Missing optional fields such as `box_pos` or `goal_pos` use stable `null` placeholders.
 - This does not modify action selection, does not write Long-term Memory, and does not connect lesson_store or Memory Layer.
 
+## Session Working Memory Phase Handoff v0
+
+- `docs/session_working_memory_phase_handoff_v0.md`
+- Closes the current Session Working Memory phase and summarizes completed memory capabilities, boundaries, and current data shape.
+- Next phase direction: Simulated Vision Facing / Viewport v0 using structured symbolic simulated vision, not real images, pathfinding, or LLM vision.
+
 ## Micro Navigation Trial Metrics CLI v0
 
 - Adds `py -3 -m ashl_core.teaching_cli run-navigation-trial-metrics --runs 4 --trial-count 5 --max-steps 10`.
