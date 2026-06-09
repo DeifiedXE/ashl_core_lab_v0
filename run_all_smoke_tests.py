@@ -36,6 +36,7 @@ from ashl_core.failure_events import (
 from ashl_core.first_output_runtime import UTTERANCE_MAP, generate_minimal_first_output
 from ashl_core.guard import guard_output
 from ashl_core.grounded_action_experience import run_grounded_action_experience_check
+from ashl_core.grounded_action_experience_influence import run_grounded_action_experience_influence_check
 from ashl_core.integrated_loop import run_turn
 from ashl_core.lesson_candidate_drafts import build_lesson_candidate_draft_trace, validate_lesson_candidate_draft_trace
 from ashl_core.lesson_runner import (
@@ -507,6 +508,67 @@ def smoke_grounded_action_experience() -> dict:
         {
             "experience_summary": summary,
             "scenario_results": result.get("scenario_results", []),
+            "boundary": boundary,
+        },
+    )
+
+
+def smoke_grounded_action_experience_influence() -> dict:
+    result = run_grounded_action_experience_influence_check()
+    summary = result.get("summary", {})
+    store_summary = result.get("experience_store_summary", {})
+    boundary = result.get("boundary_check", {})
+    scenarios = {item.get("scenario"): item for item in result.get("scenario_results", [])}
+    control = result.get("control_results", [{}])[0]
+    wall = scenarios.get("wall", {})
+    empty = scenarios.get("empty", {})
+    item = scenarios.get("item", {})
+    passed = (
+        result.get("command") == "run-grounded-action-experience-influence-check"
+        and result.get("flow") == "grounded_action_experience_influence_v0"
+        and summary.get("scenario_count") == 3
+        and summary.get("passed_count") == 3
+        and summary.get("failed_count") == 0
+        and summary.get("wall_experience_influence_passed") is True
+        and summary.get("empty_experience_influence_passed") is True
+        and summary.get("item_experience_influence_passed") is True
+        and summary.get("no_experience_control_passed") is True
+        and summary.get("all_grounded_action_experience_influence_checks_passed") is True
+        and wall.get("trial1", {}).get("outcome_type") == "blocked"
+        and wall.get("matching_experience_found") is True
+        and wall.get("experience_used_for_decision") is True
+        and wall.get("selected_action") != "move_forward"
+        and wall.get("influence_type") == "suppress"
+        and empty.get("trial1", {}).get("outcome_type") == "moved"
+        and empty.get("selected_action") == "move_forward"
+        and empty.get("influence_type") == "allow"
+        and item.get("trial1", {}).get("outcome_type") == "item_contact"
+        and item.get("selected_action") == "move_forward"
+        and item.get("influence_type") == "allow_contact"
+        and control.get("selected_action") == "move_forward"
+        and control.get("experience_used_for_decision") is False
+        and control.get("influence_applied") is False
+        and control.get("passed") is True
+        and store_summary.get("experience_count") == 3
+        and store_summary.get("wall_experience_available") is True
+        and store_summary.get("empty_experience_available") is True
+        and store_summary.get("item_experience_available") is True
+        and boundary.get("grounded_action_experience_influence_enabled") is True
+        and boundary.get("requires_prior_experience_for_influence") is True
+        and boundary.get("no_experience_control_used") is True
+        and boundary.get("action_selection_modified_in_this_runner_only") is True
+        and boundary.get("existing_navigation_action_selection_modified") is False
+        and boundary.get("pathfinding_used") is False
+        and boundary.get("llm_vision_used") is False
+        and boundary.get("long_term_memory_write") is False
+    )
+    return _result(
+        "grounded_action_experience_influence",
+        passed,
+        {
+            "summary": summary,
+            "experience_store_summary": store_summary,
+            "control": control,
             "boundary": boundary,
         },
     )
@@ -6425,6 +6487,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_simulated_vision_observed_map(),
         smoke_simulated_vision_symbol_grounding(),
         smoke_grounded_action_experience(),
+        smoke_grounded_action_experience_influence(),
         smoke_micro_navigation_goal_reach(),
         smoke_micro_navigation_trial_metrics_cli(),
         smoke_micro_navigation_multi_goal_level(),

@@ -1312,6 +1312,14 @@ Two-Trial History Boundary:
 - This does not use real images, LLM vision, pathfinding, or long-term memory.
 - This does not claim visual understanding, solved symbol grounding, or general learning.
 
+## Grounded Action Experience Influence v0
+
+- Adds `py -3 -m ashl_core.teaching_cli run-grounded-action-experience-influence-check`.
+- Tests the chain: `see -> interact -> outcome -> experience -> later action influence`.
+- Influence requires a matching prior experience; a no-experience wall control proves seeing `w` alone does not suppress `move_forward`.
+- In this runner only, prior `w + move_forward -> blocked` suppresses a later `move_forward` candidate and selects a turn fallback.
+- This does not add pathfinding, route planning, item seeking, long-term memory, or visual understanding claims.
+
 ## Micro Navigation Trial Metrics CLI v0
 
 - Adds `py -3 -m ashl_core.teaching_cli run-navigation-trial-metrics --runs 4 --trial-count 5 --max-steps 10`.

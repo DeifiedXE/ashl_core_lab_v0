@@ -2634,6 +2634,50 @@ No visual understanding claim.
 No symbol grounding solved claim.
 No general learning claim.
 
+## Grounded Action Experience Influence v0
+
+Status:
+minimal-runtime / runner-local-action-influence / requires-prior-experience / no-routing
+
+Summary:
+Adds `ashl_core.grounded_action_experience_influence`.
+Adds `py -3 -m ashl_core.teaching_cli run-grounded-action-experience-influence-check`.
+Tests the chain see -> interact -> outcome -> experience -> later action influence.
+Influence requires a matching prior experience key, such as front_symbol=w|action=move_forward.
+The no-experience wall control proves seeing w alone does not suppress move_forward.
+Wall prior experience suppresses move_forward in this runner only and selects a turn fallback.
+Empty and item prior experiences allow move_forward.
+
+Boundary:
+Runner-local influence only.
+Requires prior experience for influence.
+Uses a session-local experience store.
+No hardcoded reaction from symbol alone.
+No existing navigation action selection changes.
+No existing dead-end A/B behavior changes.
+No base simulated vision movement rule changes.
+No pathfinding / BFS / A*.
+No route planner.
+No item seeking.
+No item pickup.
+No inventory.
+No observed_local_map route planning.
+No Session Working Memory route planning.
+No real images.
+No computer vision.
+No LLM vision.
+No LLM planning.
+No full-map vision exposure.
+No persistent memory write.
+No session memory write.
+No lesson_store write.
+No Memory Layer write.
+No Long-term Memory.
+No lesson_candidate pipeline connection.
+No visual understanding claim.
+No symbol grounding solved claim.
+No general learning claim.
+
 ## Micro Navigation Trial Metrics CLI v0
 
 Status:
