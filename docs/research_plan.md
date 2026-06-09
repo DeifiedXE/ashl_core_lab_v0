@@ -4736,3 +4736,21 @@ Scope:
 
 Non-goals:
 - no retina decoder runtime, RGB quantization runtime, image processing runtime, frame buffer, focus selector, endocrine signal connection, dopamine_like focus use, norepinephrine_like attention use, vision-driven action selection, action selection modification, CNN, YOLO, UNet, ML visual model, object recognition, semantic labels, image understanding claim, visual memory write, long-term memory write, lesson_store write, Memory Layer write, predictor behavior modification, global predictor modification, pathfinding, BFS, A*, route planner, UI change, LLM vision, LLM reasoning, LLM planning, solved symbol grounding claim, consciousness claim, or subjective visual experience claim
+
+## Retina Decoder Symbolic Feature Decode Check v0
+
+Status: completed / trace-check-only / no-runtime-change.
+
+Goal:
+Convert deterministic symbolic / hybrid demo input cells into low-level retina feature records and validate them through the existing Retina Decoder Feature Schema v0 checker.
+
+Scope:
+- adds `ashl_core.retina_decoder_symbolic_feature_decode`
+- adds `py -3 -m ashl_core.teaching_cli run-retina-decoder-symbolic-feature-decode-check`
+- builds a local symbolic / hybrid demo input with cell id, position, symbol, optional RGB, brightness hint, color family hint, contrast hint, edge-like hint, and relation hints
+- produces schema-compatible retina feature records with source trace and v0 block flags
+- validates all generated records with `retina_decoder_feature_schema.validate_feature_record`
+- preserves symbol hints without converting them into semantic labels
+
+Non-goals:
+- no retina decoder runtime, RGB quantization runtime, image processing runtime, frame buffer, focus selector, endocrine connection, dopamine_like focus use, norepinephrine_like attention use, vision-driven action selection, action selection modification, visual memory write, long-term memory write, lesson_store write, Memory Layer write, predictor mutation, global predictor mutation, CNN, YOLO, UNet, ML visual model, object recognition, semantic labels, image understanding claim, pathfinding, BFS, A*, route planner, UI change, LLM vision, LLM reasoning, LLM planning, solved symbol grounding claim, consciousness claim, or subjective visual experience claim

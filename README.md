@@ -2149,3 +2149,10 @@ Two-Trial History Boundary:
 - Defines and validates low-level retina feature records with position, raw input, brightness, color family, contrast, edge-like flag, relations, confidence, source trace, required null `semantic_label`, and required v0 block flags.
 - Includes deterministic symbolic, RGB, hybrid, edge-like, invalid semantic-label, invalid RGB-range, and action-selection-unblocked demo cases.
 - Schema/checker only: no retina runtime, RGB quantization runtime, object recognition, semantic vision, focus selector, frame buffer, endocrine connection, action selection influence, or visual memory write is added.
+
+## Retina Decoder Symbolic Feature Decode Check v0
+
+- Adds `py -3 -m ashl_core.teaching_cli run-retina-decoder-symbolic-feature-decode-check`.
+- Deterministically converts symbolic / hybrid demo input cells into low-level retina feature records and validates them through the Retina Decoder Feature Schema v0 checker.
+- Preserves symbol hints as hints only while keeping `semantic_label` null for all valid generated records.
+- Trace/checker only: no retina runtime, RGB quantization runtime, image processing runtime, frame buffer, focus selector, endocrine connection, vision-driven action selection, visual memory write, object recognition, semantic vision, or symbol grounding claim is added.

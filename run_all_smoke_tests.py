@@ -156,6 +156,7 @@ from ashl_core.prompt_leakage_check import build_decision_input_snapshot, check_
 from ashl_core.reward_biased_action_tendency import run_reward_biased_action_tendency_check
 from ashl_core.reward_biased_random_walk_check import run_reward_biased_random_walk_check
 from ashl_core.retina_decoder_feature_schema import run_retina_decoder_feature_schema_check
+from ashl_core.retina_decoder_symbolic_feature_decode import run_retina_decoder_symbolic_feature_decode_check
 from ashl_core.reviewed_candidate_apply_verification import run_reviewed_candidate_apply_verification_check
 from ashl_core.rule_candidate_from_mismatch import run_rule_candidate_from_mismatch_check
 from ashl_core.rule_candidate_review_gate import run_rule_candidate_review_gate_check
@@ -2653,6 +2654,56 @@ def smoke_retina_decoder_feature_schema() -> dict:
         {
             "summary": summary,
             "cases": cases,
+            "boundary": boundary,
+        },
+    )
+
+
+def smoke_retina_decoder_symbolic_feature_decode() -> dict:
+    result = run_retina_decoder_symbolic_feature_decode_check()
+    summary = result.get("summary", {})
+    boundary = result.get("boundary_check", {})
+    passed = (
+        result.get("command") == "run-retina-decoder-symbolic-feature-decode-check"
+        and result.get("flow") == "retina_decoder_symbolic_feature_decode_v0"
+        and result.get("status") == "ok"
+        and summary.get("input_cell_count", 0) > 0
+        and summary.get("feature_record_count") == summary.get("input_cell_count")
+        and summary.get("valid_feature_count") == summary.get("feature_record_count")
+        and summary.get("invalid_feature_count") == 0
+        and summary.get("semantic_label_non_null_count") == 0
+        and summary.get("semantic_label_non_null_blocked_count") == 0
+        and summary.get("action_selection_influence_count") == 0
+        and summary.get("memory_write_count") == 0
+        and summary.get("focus_selection_count") == 0
+        and summary.get("endocrine_control_count") == 0
+        and summary.get("object_recognition_count") == 0
+        and summary.get("semantic_vision_count") == 0
+        and summary.get("runtime_decoder_count") == 0
+        and summary.get("rgb_quantization_runtime_count") == 0
+        and summary.get("image_processing_runtime_count") == 0
+        and all(record.get("semantic_label") is None for record in result.get("feature_records", []))
+        and all(item.get("valid") is True for item in result.get("validation_results", []))
+        and boundary.get("trace_check_only") is True
+        and boundary.get("uses_retina_decoder_feature_schema") is True
+        and boundary.get("retina_decoder_runtime_added") is False
+        and boundary.get("rgb_quantization_runtime_added") is False
+        and boundary.get("image_processing_runtime_added") is False
+        and boundary.get("focus_selector_added") is False
+        and boundary.get("frame_buffer_added") is False
+        and boundary.get("endocrine_connection_added") is False
+        and boundary.get("action_selection_modified") is False
+        and boundary.get("visual_memory_write") is False
+        and boundary.get("object_recognition_enabled") is False
+        and boundary.get("semantic_vision_claimed") is False
+        and boundary.get("llm_vision_used") is False
+    )
+    return _result(
+        "retina_decoder_symbolic_feature_decode",
+        passed,
+        {
+            "summary": summary,
+            "feature_records": result.get("feature_records", []),
             "boundary": boundary,
         },
     )
@@ -8959,6 +9010,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_oxytocin_like_review_trust_trace_check(),
         smoke_mimetic_endocrine_four_axis_trace_integration(),
         smoke_retina_decoder_feature_schema(),
+        smoke_retina_decoder_symbolic_feature_decode(),
         smoke_micro_navigation_goal_reach(),
         smoke_micro_navigation_trial_metrics_cli(),
         smoke_micro_navigation_multi_goal_level(),
