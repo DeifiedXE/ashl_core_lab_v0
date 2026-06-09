@@ -42,6 +42,7 @@ from ashl_core.grounded_action_experience import run_grounded_action_experience_
 from ashl_core.grounded_action_experience_influence import run_grounded_action_experience_influence_check
 from ashl_core.generalized_memory_exact_key_bucket import run_generalized_memory_exact_key_bucket_check
 from ashl_core.generalized_candidate_from_pattern import run_generalized_candidate_from_pattern_check
+from ashl_core.generalized_candidate_review_preview import run_generalized_candidate_review_preview_check
 from ashl_core.generalized_prediction_confidence_check import run_generalized_prediction_confidence_check
 from ashl_core.instinct_random_walk_runner import run_instinct_random_walk
 from ashl_core.integrated_experience_session_trace import run_integrated_experience_session_trace
@@ -2453,6 +2454,79 @@ def smoke_generalized_candidate_from_pattern() -> dict:
             "stable_item_bucket": stable_item,
             "mixed_empty_bucket": mixed_empty,
             "single_session_bucket": single_session,
+            "boundary": boundary,
+        },
+    )
+
+
+def smoke_generalized_candidate_review_preview() -> dict:
+    result = run_generalized_candidate_review_preview_check()
+    cases = {item.get("case_name"): item for item in result.get("case_results", [])}
+    summary = result.get("summary", {})
+    boundary = result.get("boundary_check", {})
+    wall = cases.get("approve_stable_wall_candidate", {})
+    item = cases.get("approve_stable_item_candidate", {})
+    rejected = cases.get("reject_candidate_preview_blocked", {})
+    deferred = cases.get("defer_candidate_preview_blocked", {})
+    self_approval = cases.get("qingyin_self_approval_blocked", {})
+    pending = cases.get("pending_candidate_preview_blocked", {})
+    previews = [
+        case.get("preview_result")
+        for case in cases.values()
+        if case.get("preview_allowed") is True
+    ]
+    passed = (
+        result.get("command") == "run-generalized-candidate-review-preview-check"
+        and result.get("flow") == "generalized_candidate_review_preview_v0"
+        and result.get("status") == "ok"
+        and summary.get("case_count") == 6
+        and summary.get("source_candidate_count") == 2
+        and summary.get("review_allowed_count") == 4
+        and summary.get("review_blocked_count") == 2
+        and summary.get("approved_count") == 2
+        and summary.get("rejected_count") == 1
+        and summary.get("deferred_count") == 1
+        and summary.get("pending_review_count") == 2
+        and summary.get("preview_created_count") == 2
+        and summary.get("preview_blocked_count") == 4
+        and summary.get("applied_count") == 0
+        and summary.get("persistent_candidate_count") == 0
+        and summary.get("persistent_rule_write_allowed_count") == 0
+        and summary.get("action_selection_influence_count") == 0
+        and summary.get("predictor_modified_count") == 0
+        and summary.get("memory_write_count") == 0
+        and wall.get("preview_allowed") is True
+        and item.get("preview_allowed") is True
+        and rejected.get("preview_allowed") is False
+        and deferred.get("preview_allowed") is False
+        and pending.get("preview_allowed") is False
+        and self_approval.get("review_allowed") is False
+        and self_approval.get("candidate_status_after_review") == "pending_review"
+        and all(preview.get("applied_now") is False for preview in previews)
+        and all(preview.get("would_modify_predictor") is False for preview in previews)
+        and all(preview.get("would_modify_action_selection") is False for preview in previews)
+        and boundary.get("review_preview_only") is True
+        and boundary.get("human_review_required") is True
+        and boundary.get("qingyin_self_approval_allowed") is False
+        and boundary.get("candidate_auto_approved") is False
+        and boundary.get("candidate_auto_applied") is False
+        and boundary.get("approved_preview_enabled") is True
+        and boundary.get("preview_applied") is False
+        and boundary.get("prediction_confidence_applied_to_predictor") is False
+        and boundary.get("global_predictor_modified") is False
+        and boundary.get("action_selection_modified") is False
+        and boundary.get("persistent_candidate_created") is False
+        and boundary.get("persistent_rule_write_enabled") is False
+        and boundary.get("long_term_memory_write") is False
+        and boundary.get("fuzzy_similarity_enabled") is False
+        and boundary.get("llm_similarity_enabled") is False
+    )
+    return _result(
+        "generalized_candidate_review_preview",
+        passed,
+        {
+            "summary": summary,
+            "cases": cases,
             "boundary": boundary,
         },
     )
@@ -8400,6 +8474,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_generalized_memory_exact_key_bucket(),
         smoke_generalized_prediction_confidence_check(),
         smoke_generalized_candidate_from_pattern(),
+        smoke_generalized_candidate_review_preview(),
         smoke_micro_navigation_goal_reach(),
         smoke_micro_navigation_trial_metrics_cli(),
         smoke_micro_navigation_multi_goal_level(),

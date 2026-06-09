@@ -2065,3 +2065,10 @@ Two-Trial History Boundary:
 - Creates review-gated `generalized_candidate` records from stable exact-key patterns and confidence suggestions.
 - Created candidates remain `pending_review`, unapproved, unapplied, and non-persistent.
 - Checker-output only: does not persist candidates, modify predictors, write persistent rules, or affect action selection.
+
+## Generalized Candidate Review + Preview v0
+
+- Adds `py -3 -m ashl_core.teaching_cli run-generalized-candidate-review-preview-check`.
+- Routes `generalized_candidate` records through human review and creates approved preview records.
+- Supports approved, rejected, and deferred review outcomes, and blocks Qingyin self-approval.
+- Preview-only: does not apply candidates, modify predictors, write memory, create persistent candidates, or affect action selection.
