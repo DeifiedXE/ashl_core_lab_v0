@@ -2248,3 +2248,9 @@ Two-Trial History Boundary:
 
 - Syncs the focus line milestone: validated low-level `change_records` -> `focus_candidate` records -> deterministic `ranking_trace`.
 - All outputs remain schema-validated and blocked from `active_focus` selection, focus application, attention control, action selection, memory write, endocrine runtime, predictor mutation, and semantic/object claims.
+
+## Focus Application Boundary Review v0
+
+- Adds `docs/focus_application_boundary_review_v0.md`.
+- Documents the boundary between trace-only `ranking_trace` records and any future `active_focus` / `focus_applied` behavior.
+- Design-only: no runtime focus selection, attention control, action selection influence, endocrine runtime, or memory write is added.

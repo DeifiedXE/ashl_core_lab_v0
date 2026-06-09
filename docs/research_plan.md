@@ -4987,3 +4987,18 @@ Progress:
 - completed focus trace/checker path through Focus Candidate Ranking Trace Check v0
 - synced `docs/current_boundary_index.md` to Boundary Index Version `2026-06-09-b41`
 - possible next stage: Focus Application Boundary Review v0 or Perception-to-Action Boundary Review v0 before any `active_focus` or `focus_applied` behavior
+
+## Focus Application Boundary Review v0
+
+Status: completed / design-boundary-review / no-runtime-change.
+
+Goal:
+Document the boundary between trace-only `ranking_trace` records and any future `active_focus` / `focus_applied` behavior.
+
+Scope:
+- adds `docs/focus_application_boundary_review_v0.md`
+- records that `ranking_trace`, `rank_position 1`, and highest `total_score` do not select focus
+- defines future focus application gate concepts, mentor interrupt priority, endocrine boundary, and Perception-to-Action Boundary Review dependency
+
+Non-goals:
+- no runtime focus selector, runtime ranking, active_focus selection, focus application, attention control, focus-to-action bridge, perception-to-action bridge, endocrine runtime, action selection influence, memory write, predictor mutation, object recognition, object tracking, semantic vision, LLM vision, CNN, YOLO, UNet, symbol grounding claim, consciousness claim, or subjective visual experience claim
