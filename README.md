@@ -2219,3 +2219,9 @@ Two-Trial History Boundary:
 - Adds `py -3 -m ashl_core.teaching_cli run-focus-candidate-schema-check`.
 - Validates `focus_candidate` records from the focus selector design.
 - Checker-only: no runtime focus selection, attention control, action selection influence, endocrine control, memory write, or semantic/object understanding is added.
+
+## Focus Candidate From Change Trace Check v0
+
+- Adds `py -3 -m ashl_core.teaching_cli run-focus-candidate-from-change-trace-check`.
+- Creates validated `focus_candidate` records from validated low-level `change_records`.
+- Trace/check-only: no runtime focus selection, attention control, ranking runtime, action selection influence, endocrine control, memory write, or semantic/object understanding is added.

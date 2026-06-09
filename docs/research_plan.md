@@ -4914,3 +4914,19 @@ Scope:
 
 Non-goals:
 - no runtime focus selector, attention control, focus application, focus candidate ranking runtime, focus-to-action bridge, perception-to-action bridge, endocrine connection, norepinephrine-controlled attention, action selection influence, memory write, predictor mutation, object recognition, object tracking, semantic labels, semantic vision, LLM vision, CNN, YOLO, UNet, symbol grounding claim, consciousness claim, or subjective visual experience claim
+
+## Focus Candidate From Change Trace Check v0
+
+Status: completed / trace-check-only / no-runtime-change.
+
+Goal:
+Create validated `focus_candidate` records from validated low-level `change_records`.
+
+Scope:
+- adds `ashl_core.focus_candidate_from_change_trace`
+- adds `py -3 -m ashl_core.teaching_cli run-focus-candidate-from-change-trace-check`
+- reuses `visual_frame_change_trace`, `visual_frame_change_schema`, and `focus_candidate_schema`
+- generates focus candidates only from changed records, not `no_change` records
+
+Non-goals:
+- no runtime focus selector, attention control, focus application, focus candidate ranking runtime, focus-to-action bridge, perception-to-action bridge, endocrine runtime, endocrine-controlled attention, action selection influence, memory write, predictor mutation, object recognition, object tracking, semantic labels, semantic vision, LLM vision, CNN, YOLO, UNet, symbol grounding claim, consciousness claim, or subjective visual experience claim

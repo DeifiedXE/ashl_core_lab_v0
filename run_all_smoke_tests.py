@@ -40,6 +40,7 @@ from ashl_core.failure_events import (
 )
 from ashl_core.first_output_runtime import UTTERANCE_MAP, generate_minimal_first_output
 from ashl_core.focus_candidate_schema import run_focus_candidate_schema_check
+from ashl_core.focus_candidate_from_change_trace import run_focus_candidate_from_change_trace_check
 from ashl_core.guard import guard_output
 from ashl_core.grounded_action_experience import run_grounded_action_experience_check
 from ashl_core.grounded_action_experience_influence import run_grounded_action_experience_influence_check
@@ -3114,6 +3115,63 @@ def smoke_focus_candidate_schema() -> dict:
         {
             "summary": summary,
             "validation_results": result.get("validation_results", []),
+            "boundary": boundary,
+        },
+    )
+
+
+def smoke_focus_candidate_from_change_trace() -> dict:
+    result = run_focus_candidate_from_change_trace_check()
+    summary = result.get("summary", {})
+    boundary = result.get("boundary_check", {})
+    passed = (
+        result.get("command") == "run-focus-candidate-from-change-trace-check"
+        and result.get("flow") == "focus_candidate_from_change_trace_v0"
+        and result.get("status") == "ok"
+        and summary.get("change_record_count") == 4
+        and summary.get("valid_change_record_count") == 4
+        and summary.get("invalid_change_record_count") == 0
+        and summary.get("feature_modified_source_count") == 3
+        and summary.get("no_change_source_count") == 1
+        and summary.get("generated_focus_candidate_count") == 3
+        and summary.get("valid_focus_candidate_count") == 3
+        and summary.get("invalid_focus_candidate_count") == 0
+        and summary.get("no_change_candidate_count") == 0
+        and summary.get("semantic_label_non_null_count") == 0
+        and summary.get("semantic_label_non_null_blocked_count") >= 1
+        and summary.get("unknown_candidate_source_blocked_count") >= 1
+        and summary.get("unknown_reason_code_blocked_count") >= 1
+        and summary.get("runtime_focus_selector_count") == 0
+        and summary.get("attention_control_count") == 0
+        and summary.get("focus_applied_count") == 0
+        and summary.get("object_recognition_count") == 0
+        and summary.get("object_tracking_count") == 0
+        and summary.get("semantic_vision_count") == 0
+        and summary.get("action_selection_influence_count") == 0
+        and summary.get("memory_write_count") == 0
+        and summary.get("endocrine_control_count") == 0
+        and summary.get("predictor_modified_count") == 0
+        and boundary.get("trace_check_only") is True
+        and boundary.get("uses_visual_frame_change_trace") is True
+        and boundary.get("uses_visual_frame_change_schema") is True
+        and boundary.get("uses_focus_candidate_schema") is True
+        and boundary.get("no_change_candidate_added") is False
+        and boundary.get("ranking_runtime_added") is False
+        and boundary.get("runtime_focus_selector_added") is False
+        and boundary.get("attention_control_added") is False
+        and boundary.get("focus_application_added") is False
+        and boundary.get("action_selection_modified") is False
+        and boundary.get("visual_memory_write") is False
+        and boundary.get("object_tracking_enabled") is False
+        and boundary.get("semantic_vision_claimed") is False
+        and boundary.get("llm_vision_used") is False
+    )
+    return _result(
+        "focus_candidate_from_change_trace",
+        passed,
+        {
+            "summary": summary,
+            "focus_candidate_validation_results": result.get("focus_candidate_validation_results", []),
             "boundary": boundary,
         },
     )
@@ -9429,6 +9487,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_visual_frame_change_trace(),
         smoke_focus_selector_design(),
         smoke_focus_candidate_schema(),
+        smoke_focus_candidate_from_change_trace(),
         smoke_micro_navigation_goal_reach(),
         smoke_micro_navigation_trial_metrics_cli(),
         smoke_micro_navigation_multi_goal_level(),
