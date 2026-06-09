@@ -2128,3 +2128,10 @@ Two-Trial History Boundary:
 - Combines `dopamine_like`, `norepinephrine_like`, `cortisol_like`, and `oxytocin_like` trace checkers into one four-axis trace summary.
 - Verifies all four axes produce valid trace records while remaining blocked from action selection, memory writes, candidate approval, predictor mutation, runtime formulas, and signal interactions.
 - Integration-check only: no endocrine runtime, endocrine state runtime, signal interaction formulas, reward bias change, attention control, protective trigger, trust-based approval, memory write, or subjective emotion claim is added.
+
+## Mimetic Endocrine Line Milestone v0
+
+- Adds `docs/milestone_logs/mimetic_endocrine_line_milestone_2026-06-09.md`.
+- Syncs `docs/current_boundary_index.md` to Boundary Index Version `2026-06-09-b39`.
+- Completes the four-axis trace line for `dopamine_like`, `norepinephrine_like`, `cortisol_like`, and `oxytocin_like`.
+- Milestone-indexed only: keeps formulas, signal interactions, endocrine runtime, action selection influence, predictor mutation, memory writes, candidate approval influence, and subjective emotion/consciousness claims disabled.

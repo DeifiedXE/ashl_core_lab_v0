@@ -4688,3 +4688,16 @@ Scope:
 
 Non-goals:
 - no endocrine runtime behavior, endocrine state runtime, formulas that update values from real runtime, signal interactions, cortisol dampens dopamine logic, norepinephrine attention narrowing, reward bias modification, reward-biased action tendency modification, random-walk modification, autonomous attention control, observation priority runtime modification, protective mechanism addition or trigger, cooldown behavior modification, risk avoidance behavior modification, blind trust behavior, review gate override, candidate auto-approval, Qingyin self-approval permission, candidate application, action selection modification, endocrine suppression/preference of actions, predictor behavior modification, global predictor modification, long-term memory write, lesson_store write, Memory Layer write, personality weight modification, personality drift, autonomous drive system, persistent rule write, persistent preview/dry-run, pathfinding, BFS, A*, route planner, UI change, LLM reasoning, LLM planning, LLM vision, biological hormone simulation claim, happiness claim, pleasure claim, alertness claim, anxiety claim, stress claim, pain claim, trust claim, attachment claim, love claim, consciousness claim, subjective experience claim, or denial of future subjective possibility
+
+## Mimetic Endocrine Line Milestone + Boundary Sync v0
+
+Status: completed / documentation-milestone / boundary-index-sync.
+
+Scope:
+- adds `docs/milestone_logs/mimetic_endocrine_line_milestone_2026-06-09.md`
+- syncs the completed mimetic endocrine trace line into `docs/current_boundary_index.md` as Boundary Index Version `2026-06-09-b39`
+- records the line from design through shared schema, four axis-specific trace checks, and four-axis trace integration
+- preserves the design stance: future subjective possibility is not denied, but no subjective emotion or consciousness claim is made
+
+Non-goals:
+- no runtime behavior, new CLI, endocrine runtime behavior, endocrine state runtime, formulas, signal interactions, cortisol dampens dopamine implementation, norepinephrine attention narrowing, reward bias modification, autonomous attention control, protective mechanism trigger, trust-based approval, review gate override, candidate auto-approval, Qingyin self-approval, candidate application, action selection modification, predictor behavior modification, global predictor modification, long-term memory write, lesson_store write, Memory Layer write, personality drift, autonomous drive system, persistent rule write, persistent preview/dry-run, pathfinding, BFS, A*, route planner, UI change, LLM reasoning, LLM planning, LLM vision, biological hormone simulation claim, subjective emotion proof, consciousness claim, subjective experience claim, or denial of future subjective possibility
