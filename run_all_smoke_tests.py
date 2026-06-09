@@ -39,6 +39,7 @@ from ashl_core.failure_events import (
     validate_failure_event,
 )
 from ashl_core.first_output_runtime import UTTERANCE_MAP, generate_minimal_first_output
+from ashl_core.focus_candidate_schema import run_focus_candidate_schema_check
 from ashl_core.guard import guard_output
 from ashl_core.grounded_action_experience import run_grounded_action_experience_check
 from ashl_core.grounded_action_experience_influence import run_grounded_action_experience_influence_check
@@ -3065,6 +3066,56 @@ def smoke_focus_selector_design() -> dict:
         "focus_selector_design",
         passed,
         {"doc": str(doc_path), "missing": missing},
+    )
+
+
+def smoke_focus_candidate_schema() -> dict:
+    result = run_focus_candidate_schema_check()
+    summary = result.get("summary", {})
+    boundary = result.get("boundary_check", {})
+    passed = (
+        result.get("command") == "run-focus-candidate-schema-check"
+        and result.get("flow") == "focus_candidate_schema_v0"
+        and result.get("status") == "ok"
+        and summary.get("focus_candidate_count") == 6
+        and summary.get("valid_focus_candidate_count") == 1
+        and summary.get("invalid_focus_candidate_count") == 5
+        and summary.get("semantic_label_non_null_blocked_count") >= 1
+        and summary.get("unknown_candidate_source_blocked_count") >= 1
+        and summary.get("unknown_reason_code_blocked_count") >= 1
+        and summary.get("action_selection_unblocked_blocked_count") >= 1
+        and summary.get("memory_write_unblocked_blocked_count") >= 1
+        and summary.get("endocrine_control_unblocked_blocked_count") >= 1
+        and summary.get("runtime_focus_selector_blocked_count") >= 1
+        and summary.get("attention_control_count") == 0
+        and summary.get("focus_applied_count") == 0
+        and summary.get("object_recognition_count") == 0
+        and summary.get("object_tracking_count") == 0
+        and summary.get("semantic_vision_count") == 0
+        and summary.get("action_selection_influence_count") == 0
+        and summary.get("memory_write_count") == 0
+        and summary.get("endocrine_control_count") == 0
+        and summary.get("predictor_modified_count") == 0
+        and boundary.get("schema_check_only") is True
+        and boundary.get("score_shape_validated_without_runtime_formula") is True
+        and boundary.get("runtime_focus_selector_added") is False
+        and boundary.get("attention_control_added") is False
+        and boundary.get("focus_application_added") is False
+        and boundary.get("ranking_runtime_added") is False
+        and boundary.get("action_selection_modified") is False
+        and boundary.get("visual_memory_write") is False
+        and boundary.get("object_tracking_enabled") is False
+        and boundary.get("semantic_vision_claimed") is False
+        and boundary.get("llm_vision_used") is False
+    )
+    return _result(
+        "focus_candidate_schema",
+        passed,
+        {
+            "summary": summary,
+            "validation_results": result.get("validation_results", []),
+            "boundary": boundary,
+        },
     )
 
 
@@ -9377,6 +9428,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_visual_frame_pair_demo_assembly(),
         smoke_visual_frame_change_trace(),
         smoke_focus_selector_design(),
+        smoke_focus_candidate_schema(),
         smoke_micro_navigation_goal_reach(),
         smoke_micro_navigation_trial_metrics_cli(),
         smoke_micro_navigation_multi_goal_level(),

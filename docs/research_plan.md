@@ -4897,3 +4897,19 @@ Scope:
 
 Non-goals:
 - no runtime focus selector, attention control, focus application, focus candidate ranking runtime, focus-to-action bridge, perception-to-action bridge, endocrine connection, norepinephrine-controlled attention, action selection influence, memory write, predictor mutation, object recognition, object tracking, semantic labels, semantic vision, LLM vision, CNN, YOLO, UNet, symbol grounding claim, consciousness claim, or subjective visual experience claim
+
+## Focus Candidate Schema Check v0
+
+Status: completed / schema-check-only / no-runtime-change.
+
+Goal:
+Validate `focus_candidate` records from Focus Selector Design v0.
+
+Scope:
+- adds `ashl_core.focus_candidate_schema`
+- adds `py -3 -m ashl_core.teaching_cli run-focus-candidate-schema-check`
+- enforces allowed candidate sources, low-level reason codes, score field shape, null `semantic_label`, source trace provenance, and downstream safety flags
+- validates score fields without calculating scores, ranking candidates, or defining a runtime scoring formula
+
+Non-goals:
+- no runtime focus selector, attention control, focus application, focus candidate ranking runtime, focus-to-action bridge, perception-to-action bridge, endocrine connection, norepinephrine-controlled attention, action selection influence, memory write, predictor mutation, object recognition, object tracking, semantic labels, semantic vision, LLM vision, CNN, YOLO, UNet, symbol grounding claim, consciousness claim, or subjective visual experience claim

@@ -2212,3 +2212,9 @@ Two-Trial History Boundary:
 - Adds `docs/focus_selector_design_v0.md`.
 - Defines design-only `focus_candidate` records from low-level visual features and change traces.
 - Design-only: no runtime focus selection, attention control, action selection influence, endocrine control, memory write, or semantic/object understanding is added.
+
+## Focus Candidate Schema Check v0
+
+- Adds `py -3 -m ashl_core.teaching_cli run-focus-candidate-schema-check`.
+- Validates `focus_candidate` records from the focus selector design.
+- Checker-only: no runtime focus selection, attention control, action selection influence, endocrine control, memory write, or semantic/object understanding is added.
