@@ -4191,3 +4191,16 @@ Non-goals:
 - no random walk base behavior change, Flask UI behavior change, runtime movement rule change, or existing navigation action selection change
 - no LLM planning, LLM vision, lesson_store write, Memory Layer write, long-term memory, or lesson_candidate pipeline connection
 - no pleasure, desire, self-awareness, consciousness, subjective experience, visual understanding, solved symbol grounding, or general learning claim
+
+## Instinct Reward Line Milestone Log v0
+
+Status: completed / documentation-only / no-runtime-change.
+
+Scope:
+- adds `docs/milestone_logs/instinct_reward_line_milestone_2026-06-09.md`
+- records completion of the instinct / wall / item reward immediate-tendency line
+- records that UI expansion is paused and pushed later
+- identifies Experience Abstraction Layer as the next main line
+
+Non-goals:
+- no runtime behavior, CLI, UI, Boundary Index patch, pathfinding, item seeking, long-term memory, Memory Layer write, lesson_store write, or general learning claim

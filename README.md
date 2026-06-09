@@ -1923,3 +1923,9 @@ Two-Trial History Boundary:
 - Round 1 has no carried experience or reward; Round 2 carries wall experience and item reward experience.
 - Verifies immediate wall suppression and visible-item reward bias in controlled scenarios.
 - Does not claim map-level item seeking, pathfinding, item collection, long-term memory, pleasure, desire, or consciousness.
+
+## Instinct Reward Line Milestone Log v0
+
+- Added `docs/milestone_logs/instinct_reward_line_milestone_2026-06-09.md`.
+- Records completion of the instinct / wall / item reward immediate-tendency line.
+- UI expansion is paused; next main line is Experience Abstraction Layer.
