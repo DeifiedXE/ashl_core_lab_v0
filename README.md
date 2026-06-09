@@ -2135,3 +2135,10 @@ Two-Trial History Boundary:
 - Syncs `docs/current_boundary_index.md` to Boundary Index Version `2026-06-09-b39`.
 - Completes the four-axis trace line for `dopamine_like`, `norepinephrine_like`, `cortisol_like`, and `oxytocin_like`.
 - Milestone-indexed only: keeps formulas, signal interactions, endocrine runtime, action selection influence, predictor mutation, memory writes, candidate approval influence, and subjective emotion/consciousness claims disabled.
+
+## Retina Decoder Design v0
+
+- Adds `docs/retina_decoder_design_v0.md`.
+- Opens the eye-structure simulation line with a design-only retina decoder boundary.
+- Defines conceptual RGB grid, symbolic cell, and hybrid input shapes plus low-level feature records for brightness, color family, contrast, edge-like change, position, front relation, and symbol hints.
+- Design-only: no runtime decoder, new CLI, RGB quantization code, frame buffer, focus selector, endocrine connection, action selection influence, visual memory write, CNN / YOLO / UNet, object recognition, semantic vision, LLM vision, solved symbol grounding claim, or subjective visual experience claim is added.

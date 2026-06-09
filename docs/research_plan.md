@@ -4701,3 +4701,21 @@ Scope:
 
 Non-goals:
 - no runtime behavior, new CLI, endocrine runtime behavior, endocrine state runtime, formulas, signal interactions, cortisol dampens dopamine implementation, norepinephrine attention narrowing, reward bias modification, autonomous attention control, protective mechanism trigger, trust-based approval, review gate override, candidate auto-approval, Qingyin self-approval, candidate application, action selection modification, predictor behavior modification, global predictor modification, long-term memory write, lesson_store write, Memory Layer write, personality drift, autonomous drive system, persistent rule write, persistent preview/dry-run, pathfinding, BFS, A*, route planner, UI change, LLM reasoning, LLM planning, LLM vision, biological hormone simulation claim, subjective emotion proof, consciousness claim, subjective experience claim, or denial of future subjective possibility
+
+## Retina Decoder Design v0
+
+Status: completed / design-only / no-runtime-change.
+
+Goal:
+Define the first safe retina decoder design for converting low-level visual input into traceable visual feature records.
+
+Scope:
+- adds `docs/retina_decoder_design_v0.md`
+- defines conceptual RGB grid input, symbolic pixel / cell input, and hybrid structured input
+- defines feature output shape with `semantic_label` required to remain null in v0
+- defines low-level features: brightness, color_family, contrast_to_neighbors, edge_like, position, front_relation, center_relation, and known_symbol_hint
+- positions retina decoder before future visual frame buffer and focus selector modules
+- records that future endocrine links may be designed later but are not connected in v0
+
+Non-goals:
+- no runtime behavior, new CLI, retina decoder runtime, RGB quantization code, frame buffer, focus selector, endocrine connection, dopamine_like focus priority, norepinephrine_like attention threshold, vision-driven action selection, action selection modification, CNN, YOLO, UNet, ML visual model, object recognition, semantic labels, image understanding claim, visual memory write, long-term memory write, lesson_store write, Memory Layer write, predictor behavior modification, global predictor modification, pathfinding, BFS, A*, route planner, UI change, LLM vision, LLM reasoning, LLM planning, solved symbol grounding claim, consciousness claim, or subjective visual experience claim
