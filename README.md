@@ -2308,3 +2308,9 @@ Two-Trial History Boundary:
 - Adds `py -3 -m ashl_core.teaching_cli run-lesson-candidate-from-failure-reason-check`.
 - Creates trace-only review-required `lesson_candidate` records from valid `failure_reason` records with v0-local validation.
 - Does not approve or apply lessons, change action selection, write memory, persist learning, or mutate predictors.
+
+## Lesson Candidate Review Gate Check v0
+
+- Adds `py -3 -m ashl_core.teaching_cli run-lesson-candidate-review-gate-check`.
+- Evaluates whether trace-only `lesson_candidate` records may enter pending human review.
+- Does not approve, reject, apply, persist, write memory, change action selection, or mutate predictors.

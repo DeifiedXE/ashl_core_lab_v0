@@ -5152,3 +5152,20 @@ Scope:
 
 Non-goals:
 - does not approve lesson_candidates, apply lessons, change action selection, change action behavior, write memory, persist learning, mutate predictors, add endocrine runtime, add autonomy, or claim semantic vision / consciousness / subjective experience
+
+## Lesson Candidate Review Gate Check v0
+
+Status: completed / trace-check-only / no-runtime-change.
+
+Goal:
+Evaluate whether trace-only `lesson_candidate` records may enter pending human review.
+
+Scope:
+- adds `ashl_core.lesson_candidate_review_gate`
+- adds `py -3 -m ashl_core.teaching_cli run-lesson-candidate-review-gate-check`
+- reuses `lesson_candidate_from_failure_reason`
+- produces only `pending_review` or `blocked` review gate results
+- keeps `pending_review` and `eligible_for_human_review` explicitly separate from approval
+
+Non-goals:
+- does not approve or reject lesson_candidates as a human decision, apply lessons, change action selection, change action behavior, create persistent candidates, write memory, persist learning, mutate predictors, add endocrine runtime, add autonomy, or claim semantic vision / consciousness / subjective experience
