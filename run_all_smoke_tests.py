@@ -57,6 +57,7 @@ from ashl_core.instinct_random_walk_runner import run_instinct_random_walk
 from ashl_core.integrated_experience_session_trace import run_integrated_experience_session_trace
 from ashl_core.integrated_trace_chain_break_audit import run_integrated_trace_chain_break_audit
 from ashl_core.item_reward_event import run_item_reward_event_check
+from ashl_core.lesson_candidate_from_failure_reason import run_lesson_candidate_from_failure_reason_check
 from ashl_core.mimetic_endocrine_signal_schema import run_mimetic_endocrine_signal_schema_check
 from ashl_core.mimetic_endocrine_four_axis_trace_integration import (
     run_mimetic_endocrine_four_axis_trace_integration_check,
@@ -1972,6 +1973,64 @@ def smoke_failure_reason_from_outcome_pair() -> dict:
         {
             "summary": summary,
             "pair_results": result.get("pair_results", []),
+            "validation_results": result.get("validation_results", []),
+            "boundary": boundary,
+        },
+    )
+
+
+def smoke_lesson_candidate_from_failure_reason() -> dict:
+    result = run_lesson_candidate_from_failure_reason_check()
+    summary = result.get("summary", {})
+    boundary = result.get("boundary_check", {})
+    passed = (
+        result.get("command") == "run-lesson-candidate-from-failure-reason-check"
+        and result.get("flow") == "lesson_candidate_from_failure_reason_v0"
+        and result.get("status") == "ok"
+        and summary.get("failure_reason_record_count") == 11
+        and summary.get("valid_failure_reason_count") == 1
+        and summary.get("invalid_failure_reason_count") == 10
+        and summary.get("generated_lesson_candidate_count") == 1
+        and summary.get("valid_lesson_candidate_count") == 1
+        and summary.get("invalid_lesson_candidate_count") == 12
+        and summary.get("missing_failure_reason_source_blocked_count") == 1
+        and summary.get("unknown_candidate_type_blocked_count") == 1
+        and summary.get("unknown_correction_type_blocked_count") == 1
+        and summary.get("review_required_missing_blocked_count") == 1
+        and summary.get("approved_lesson_blocked_count") == 1
+        and summary.get("lesson_application_allowed_blocked_count") == 1
+        and summary.get("persistent_learning_allowed_blocked_count") == 1
+        and summary.get("memory_write_allowed_blocked_count") == 1
+        and summary.get("predictor_mutation_allowed_blocked_count") == 1
+        and summary.get("action_selection_unblocked_blocked_count") == 1
+        and summary.get("lesson_applied_blocked_count") == 1
+        and summary.get("action_selection_influence_count") == 0
+        and summary.get("action_behavior_changed_count") == 0
+        and summary.get("lesson_application_runtime_count") == 0
+        and summary.get("memory_write_count") == 0
+        and summary.get("predictor_modified_count") == 0
+        and summary.get("persistent_rule_write_count") == 0
+        and summary.get("endocrine_control_count") == 0
+        and summary.get("autonomy_enabled_count") == 0
+        and boundary.get("trace_check_only") is True
+        and boundary.get("uses_failure_reason_from_outcome_pair") is True
+        and boundary.get("v0_local_lesson_candidate_validator") is True
+        and boundary.get("lesson_candidate_approval_added") is False
+        and boundary.get("runtime_action_selection_added") is False
+        and boundary.get("action_selection_modified") is False
+        and boundary.get("new_action_behavior_added") is False
+        and boundary.get("lesson_application_runtime_added") is False
+        and boundary.get("persistent_learning_added") is False
+        and boundary.get("memory_write_added") is False
+        and boundary.get("predictor_mutation_added") is False
+        and boundary.get("autonomy_added") is False
+    )
+    return _result(
+        "lesson_candidate_from_failure_reason",
+        passed,
+        {
+            "summary": summary,
+            "failure_results": result.get("failure_results", []),
             "validation_results": result.get("validation_results", []),
             "boundary": boundary,
         },
@@ -10047,6 +10106,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_expected_actual_outcome_pair_schema(),
         smoke_outcome_pair_from_action_trial_trace(),
         smoke_failure_reason_from_outcome_pair(),
+        smoke_lesson_candidate_from_failure_reason(),
         smoke_prediction_accuracy_check(),
         smoke_rule_candidate_from_mismatch(),
         smoke_rule_candidate_review_gate(),

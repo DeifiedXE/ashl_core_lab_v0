@@ -5135,3 +5135,20 @@ Scope:
 
 Non-goals:
 - does not generate lesson_candidates, change action selection, change action behavior, apply lessons, write memory, persist learning, mutate predictors, add endocrine runtime, add autonomy, or claim semantic vision / consciousness / subjective experience
+
+## Lesson Candidate From Failure Reason Check v0
+
+Status: completed / trace-check-only / no-runtime-change.
+
+Goal:
+Create trace-only review-required `lesson_candidate` records from valid `failure_reason` records.
+
+Scope:
+- adds `ashl_core.lesson_candidate_from_failure_reason`
+- adds `py -3 -m ashl_core.teaching_cli run-lesson-candidate-from-failure-reason-check`
+- reuses `failure_reason_from_outcome_pair`
+- uses a v0-local lesson_candidate validator because existing lesson candidate draft/review modules do not provide this standalone trace-only record schema
+- enforces no approval, no lesson application, no memory write, no persistence, and no predictor mutation
+
+Non-goals:
+- does not approve lesson_candidates, apply lessons, change action selection, change action behavior, write memory, persist learning, mutate predictors, add endocrine runtime, add autonomy, or claim semantic vision / consciousness / subjective experience

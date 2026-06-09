@@ -2302,3 +2302,9 @@ Two-Trial History Boundary:
 - Adds `py -3 -m ashl_core.teaching_cli run-failure-reason-from-outcome-pair-check`.
 - Extracts validated structured `failure_reason` records from valid mismatch outcome pairs with v0-local validation.
 - Trace/check-only: does not generate lesson_candidates, change action selection, apply lessons, write memory, persist learning, or mutate predictors.
+
+## Lesson Candidate From Failure Reason Check v0
+
+- Adds `py -3 -m ashl_core.teaching_cli run-lesson-candidate-from-failure-reason-check`.
+- Creates trace-only review-required `lesson_candidate` records from valid `failure_reason` records with v0-local validation.
+- Does not approve or apply lessons, change action selection, write memory, persist learning, or mutate predictors.
