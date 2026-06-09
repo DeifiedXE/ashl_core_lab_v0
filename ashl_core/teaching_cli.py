@@ -11,6 +11,7 @@ from typing import Any
 from .approved_candidate_preview import run_approved_candidate_preview_check
 from .action_outcome_predictor import run_action_outcome_predictor_check
 from .focus_candidate_from_change_trace import run_focus_candidate_from_change_trace_check
+from .focus_candidate_ranking_trace_schema import run_focus_candidate_ranking_trace_schema_check
 from .focus_candidate_schema import run_focus_candidate_schema_check
 from .cortisol_like_failure_load_trace_check import run_cortisol_like_failure_load_trace_check
 from .fake_sandbox import build_initial_sandbox_state, observe, pick_up
@@ -3478,6 +3479,8 @@ def run_command(command: str) -> dict[str, Any] | str:
         return run_focus_candidate_schema_check()
     if command == "run-focus-candidate-from-change-trace-check":
         return run_focus_candidate_from_change_trace_check()
+    if command == "run-focus-candidate-ranking-trace-schema-check":
+        return run_focus_candidate_ranking_trace_schema_check()
     return {
         "command": command,
         "status": "error",
@@ -3568,6 +3571,7 @@ def main(argv: list[str] | None = None) -> int:
             "run-visual-frame-pair-demo-assembly-check",
             "run-focus-candidate-schema-check",
             "run-focus-candidate-from-change-trace-check",
+            "run-focus-candidate-ranking-trace-schema-check",
         ],
     )
     parser.add_argument("--review-id", default="review_001")
@@ -3804,6 +3808,8 @@ def main(argv: list[str] | None = None) -> int:
         result = run_focus_candidate_schema_check()
     elif args.command == "run-focus-candidate-from-change-trace-check":
         result = run_focus_candidate_from_change_trace_check()
+    elif args.command == "run-focus-candidate-ranking-trace-schema-check":
+        result = run_focus_candidate_ranking_trace_schema_check()
     else:
         result = run_command(args.command)
     if hasattr(sys.stdout, "reconfigure"):
