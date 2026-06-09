@@ -18,6 +18,7 @@ from .focus_candidate_schema import run_focus_candidate_schema_check
 from .cortisol_like_failure_load_trace_check import run_cortisol_like_failure_load_trace_check
 from .expected_actual_outcome_pair_schema import run_expected_actual_outcome_pair_schema_check
 from .fake_sandbox import build_initial_sandbox_state, observe, pick_up
+from .failure_reason_from_outcome_pair import run_failure_reason_from_outcome_pair_check
 from .failure_reason_classifier import run_failure_reason_classifier_check
 from .first_output_runtime import generate_minimal_first_output
 from .dopamine_like_reward_trace_check import run_dopamine_like_reward_trace_check
@@ -3431,6 +3432,8 @@ def run_command(command: str) -> dict[str, Any] | str:
         return run_action_outcome_predictor_check()
     if command == "run-expected-actual-outcome-pair-schema-check":
         return run_expected_actual_outcome_pair_schema_check()
+    if command == "run-failure-reason-from-outcome-pair-check":
+        return run_failure_reason_from_outcome_pair_check()
     if command == "run-prediction-accuracy-check":
         return run_prediction_accuracy_check()
     if command == "run-rule-candidate-from-mismatch-check":
@@ -3557,6 +3560,7 @@ def main(argv: list[str] | None = None) -> int:
             "run-similar-context-key-check",
             "run-action-outcome-predictor-check",
             "run-expected-actual-outcome-pair-schema-check",
+            "run-failure-reason-from-outcome-pair-check",
             "run-prediction-accuracy-check",
             "run-rule-candidate-from-mismatch-check",
             "run-rule-candidate-review-gate-check",
@@ -3770,6 +3774,8 @@ def main(argv: list[str] | None = None) -> int:
         result = run_action_outcome_predictor_check()
     elif args.command == "run-expected-actual-outcome-pair-schema-check":
         result = run_expected_actual_outcome_pair_schema_check()
+    elif args.command == "run-failure-reason-from-outcome-pair-check":
+        result = run_failure_reason_from_outcome_pair_check()
     elif args.command == "run-prediction-accuracy-check":
         result = run_prediction_accuracy_check()
     elif args.command == "run-rule-candidate-from-mismatch-check":

@@ -32,6 +32,7 @@ from ashl_core.expected_actual_outcome_pair_schema import run_expected_actual_ou
 from ashl_core.expression import build_expression_package
 from ashl_core.experience_log import list_experience_events, list_lesson_candidates
 from ashl_core.fake_sandbox import build_initial_sandbox_state, pick_up
+from ashl_core.failure_reason_from_outcome_pair import run_failure_reason_from_outcome_pair_check
 from ashl_core.failure_reason_classifier import run_failure_reason_classifier_check
 from ashl_core.failure_events import (
     build_failure_event,
@@ -1910,6 +1911,68 @@ def smoke_outcome_pair_from_action_trial_trace() -> dict:
         {
             "summary": summary,
             "trial_results": result.get("trial_results", []),
+            "boundary": boundary,
+        },
+    )
+
+
+def smoke_failure_reason_from_outcome_pair() -> dict:
+    result = run_failure_reason_from_outcome_pair_check()
+    summary = result.get("summary", {})
+    boundary = result.get("boundary_check", {})
+    passed = (
+        result.get("command") == "run-failure-reason-from-outcome-pair-check"
+        and result.get("flow") == "failure_reason_from_outcome_pair_v0"
+        and result.get("status") == "ok"
+        and summary.get("outcome_pair_count") == 3
+        and summary.get("valid_outcome_pair_count") == 2
+        and summary.get("invalid_outcome_pair_count") == 1
+        and summary.get("mismatch_true_pair_count") == 1
+        and summary.get("mismatch_false_pair_count") == 1
+        and summary.get("failure_reason_record_count") == 11
+        and summary.get("valid_failure_reason_count") == 1
+        and summary.get("invalid_failure_reason_count") == 10
+        and summary.get("no_failure_reason_needed_count") == 1
+        and summary.get("missing_source_pair_blocked_count") == 1
+        and summary.get("unknown_category_blocked_count") == 1
+        and summary.get("missing_evidence_blocked_count") == 1
+        and summary.get("review_boundary_violation_blocked_count") == 1
+        and summary.get("lesson_candidate_created_blocked_count") == 1
+        and summary.get("action_selection_unblocked_blocked_count") == 1
+        and summary.get("lesson_application_unblocked_blocked_count") == 1
+        and summary.get("memory_write_unblocked_blocked_count") == 1
+        and summary.get("predictor_mutation_unblocked_blocked_count") == 1
+        and summary.get("persistent_rule_write_unblocked_blocked_count") == 1
+        and summary.get("action_selection_influence_count") == 0
+        and summary.get("action_behavior_changed_count") == 0
+        and summary.get("lesson_application_runtime_count") == 0
+        and summary.get("lesson_candidate_created_count") == 0
+        and summary.get("memory_write_count") == 0
+        and summary.get("predictor_modified_count") == 0
+        and summary.get("persistent_rule_write_count") == 0
+        and summary.get("endocrine_control_count") == 0
+        and summary.get("autonomy_enabled_count") == 0
+        and boundary.get("trace_check_only") is True
+        and boundary.get("uses_outcome_pair_from_action_trial_trace") is True
+        and boundary.get("uses_expected_actual_outcome_pair_schema") is True
+        and boundary.get("v0_local_failure_reason_validator") is True
+        and boundary.get("lesson_candidate_generation_added") is False
+        and boundary.get("runtime_action_selection_added") is False
+        and boundary.get("action_selection_modified") is False
+        and boundary.get("new_action_behavior_added") is False
+        and boundary.get("lesson_application_runtime_added") is False
+        and boundary.get("persistent_learning_added") is False
+        and boundary.get("memory_write_added") is False
+        and boundary.get("predictor_mutation_added") is False
+        and boundary.get("autonomy_added") is False
+    )
+    return _result(
+        "failure_reason_from_outcome_pair",
+        passed,
+        {
+            "summary": summary,
+            "pair_results": result.get("pair_results", []),
+            "validation_results": result.get("validation_results", []),
             "boundary": boundary,
         },
     )
@@ -9983,6 +10046,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_action_outcome_predictor(),
         smoke_expected_actual_outcome_pair_schema(),
         smoke_outcome_pair_from_action_trial_trace(),
+        smoke_failure_reason_from_outcome_pair(),
         smoke_prediction_accuracy_check(),
         smoke_rule_candidate_from_mismatch(),
         smoke_rule_candidate_review_gate(),

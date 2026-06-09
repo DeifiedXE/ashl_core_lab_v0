@@ -2296,3 +2296,9 @@ Two-Trial History Boundary:
 - Adds `py -3 -m ashl_core.teaching_cli run-outcome-pair-from-action-trial-trace-check`.
 - Generates validated `expected_actual_outcome_pair` records from deterministic demo action trial traces.
 - Trace/check-only: does not change action selection, action behavior, lesson application, memory, persistence, or predictor behavior.
+
+## Failure Reason From Outcome Pair Check v0
+
+- Adds `py -3 -m ashl_core.teaching_cli run-failure-reason-from-outcome-pair-check`.
+- Extracts validated structured `failure_reason` records from valid mismatch outcome pairs with v0-local validation.
+- Trace/check-only: does not generate lesson_candidates, change action selection, apply lessons, write memory, persist learning, or mutate predictors.

@@ -5118,3 +5118,20 @@ Scope:
 
 Non-goals:
 - does not add runtime action selection, action selection influence, new action behavior, action candidate scoring changes, movement control changes, lesson application runtime, automatic lesson application, persistent learning, persistent rule write, memory write, predictor mutation, perception-to-action bridge, focus-to-action bridge, active_focus, focus_applied, attention control, runtime focus selector, runtime ranking, endocrine runtime, endocrine-controlled action, autonomy, object recognition, semantic vision, LLM semantic comparison, free-form outcome comparison, consciousness claim, or subjective claim
+
+## Failure Reason From Outcome Pair Check v0
+
+Status: completed / trace-check-only / no-runtime-change.
+
+Goal:
+Extract validated structured `failure_reason` records from valid mismatch outcome pairs.
+
+Scope:
+- adds `ashl_core.failure_reason_from_outcome_pair`
+- adds `py -3 -m ashl_core.teaching_cli run-failure-reason-from-outcome-pair-check`
+- reuses `outcome_pair_from_action_trial_trace` and `expected_actual_outcome_pair_schema`
+- uses a v0-local failure_reason validator because no standalone reusable failure_reason record schema exists
+- counts mismatch false as `no_failure_reason_needed`
+
+Non-goals:
+- does not generate lesson_candidates, change action selection, change action behavior, apply lessons, write memory, persist learning, mutate predictors, add endocrine runtime, add autonomy, or claim semantic vision / consciousness / subjective experience
