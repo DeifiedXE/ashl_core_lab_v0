@@ -1801,3 +1801,7 @@ Two-Trial History Boundary:
 - The immediate front cell for `move_forward` is `viewport[1][1]`.
 - The far front cell is `viewport[0][1]`.
 - This remains symbolic simulated vision, not real image vision or visual understanding.
+
+## Simulated Vision Grounding Milestone Log v0
+
+- Added `docs/milestone_logs/simulated_vision_grounding_milestone_2026-06-09.md` after first-person viewport correction and grounded action experience influence validation.
