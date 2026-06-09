@@ -690,7 +690,9 @@ def smoke_larger_sandbox_flask_ui() -> dict:
     passed = (
         index_response.status_code == 200
         and "Larger Sandbox" in index_html
-        and "First-person viewport" in index_html
+        and "Manual View" in index_html
+        and "Random Walk Playback" in index_html
+        and "No playback trace" in index_html
         and "Position: [2, 2]" in index_html
         and "Facing: north" in index_html
         and "look" in index_html
@@ -850,6 +852,85 @@ def smoke_instinct_wall_ui_observation() -> dict:
             "wall_state": wall_state,
             "qingyin_state": qingyin_state,
             "clear_state": clear_state,
+        },
+    )
+
+
+def smoke_larger_sandbox_live_step_playback_ui() -> dict:
+    reset_larger_sandbox_ui_state()
+    app = create_larger_sandbox_ui_app()
+    client = app.test_client()
+    initial_response = client.get("/")
+    initial_html = initial_response.get_data(as_text=True)
+    random_response = client.post("/experiment/random-walk", data={"seed": "1", "max_steps": "4"})
+    first_html = client.get("/").get_data(as_text=True)
+    first_playback = client.get("/playback_state.json").get_json() or {}
+    manual_before = get_larger_sandbox_ui_state()
+    next_response = client.post("/playback/next")
+    next_playback = client.get("/playback_state.json").get_json() or {}
+    previous_response = client.post("/playback/previous")
+    previous_playback = client.get("/playback_state.json").get_json() or {}
+    client.post("/playback/previous")
+    below_playback = client.get("/playback_state.json").get_json() or {}
+    client.post("/playback/next")
+    client.post("/playback/next")
+    client.post("/playback/next")
+    client.post("/playback/next")
+    above_playback = client.get("/playback_state.json").get_json() or {}
+    reset_response = client.post("/playback/reset")
+    reset_playback = client.get("/playback_state.json").get_json() or {}
+    manual_after = get_larger_sandbox_ui_state()
+    boundary = first_playback.get("boundary_check", {})
+    first_step = first_playback.get("current_step", {}) or {}
+    next_step = next_playback.get("current_step", {}) or {}
+    passed = (
+        initial_response.status_code == 200
+        and "Random Walk Playback" in initial_html
+        and "No playback trace" in initial_html
+        and "Recorded trace only" in initial_html
+        and random_response.status_code == 302
+        and "Playback: step 1 / 4" in first_html
+        and "Playback View" in first_html
+        and "Selected action" in first_html
+        and "Result" in first_html
+        and "Front symbol" in first_html
+        and first_playback.get("playback_mode") == "recorded_random_walk"
+        and first_playback.get("playback_index") == 0
+        and first_playback.get("playback_length") == 4
+        and first_step.get("selected_action") is not None
+        and first_step.get("result") is not None
+        and next_response.status_code == 302
+        and next_playback.get("playback_index") == 1
+        and next_step.get("tick") != first_step.get("tick")
+        and previous_response.status_code == 302
+        and previous_playback.get("playback_index") == 0
+        and below_playback.get("playback_index") == 0
+        and above_playback.get("playback_index") == 3
+        and reset_response.status_code == 302
+        and reset_playback.get("playback_index") == 0
+        and manual_after.get("pos") == manual_before.get("pos")
+        and manual_after.get("facing") == manual_before.get("facing")
+        and boundary.get("trace_playback_enabled") is True
+        and boundary.get("playback_from_recorded_trace_only") is True
+        and boundary.get("server_side_autonomous_loop_enabled") is False
+        and boundary.get("auto_exploration_enabled") is False
+        and boundary.get("decision_loop_enabled") is False
+        and boundary.get("manual_state_modified_by_playback") is False
+        and boundary.get("reward_bias_enabled") is False
+        and boundary.get("dopamine_like_signal_enabled") is False
+        and boundary.get("pathfinding_used") is False
+        and boundary.get("route_planner_added") is False
+        and boundary.get("long_term_memory_write") is False
+    )
+    return _result(
+        "larger_sandbox_live_step_playback_ui",
+        passed,
+        {
+            "first_playback": first_playback,
+            "next_playback": next_playback,
+            "reset_playback": reset_playback,
+            "manual_before": manual_before,
+            "manual_after": manual_after,
         },
     )
 
@@ -7164,6 +7245,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_larger_sandbox_human_replay(),
         smoke_larger_sandbox_flask_ui(),
         smoke_instinct_wall_ui_observation(),
+        smoke_larger_sandbox_live_step_playback_ui(),
         smoke_simulated_vision_memory_bridge(),
         smoke_simulated_vision_observed_map(),
         smoke_simulated_vision_symbol_grounding(),

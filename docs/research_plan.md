@@ -4085,3 +4085,26 @@ Non-goals:
 - no item collection, pickup, inventory, exit activation, win condition, task completion, curiosity, prediction error, place memory, or home sandbox
 - no pathfinding, BFS, A*, route planner, full-map planning, LLM planning, LLM vision, lesson_store write, Memory Layer write, long-term memory, or lesson_candidate pipeline connection
 - no self-awareness, consciousness, subjective experience, visual understanding, solved symbol grounding, or general learning claim
+
+## Larger Sandbox Live Step Playback UI v0
+
+Status: completed / recorded-trace-playback / no-autonomy.
+
+Goal:
+Let the user inspect a bounded random walk trace step by step in the larger sandbox Flask UI.
+
+Scope:
+- adds `ashl_core.larger_sandbox_trace_playback`
+- extends `ashl_core.larger_sandbox_flask_ui`
+- adds `POST /playback/next`, `POST /playback/previous`, and `POST /playback/reset`
+- adds read-only `GET /playback_state.json`
+- stores compact playback trace fields from `run_instinct_random_walk`
+- renders a separate Random Walk Playback panel and viewport
+- keeps playback state separate from manual sandbox state
+
+Non-goals:
+- no server-side autonomous loop, timer-generated actions, auto exploration, background decision loop, or real-time planning
+- no reward bias, dopamine-like signal, item seeking, or two-round item comparison
+- no item collection, pickup, inventory, exit activation, win condition, task completion, curiosity, prediction error, place memory, or home sandbox
+- no pathfinding, BFS, A*, route planner, LLM planning, LLM vision, lesson_store write, Memory Layer write, long-term memory, or lesson_candidate pipeline connection
+- no self-awareness, consciousness, subjective experience, visual understanding, solved symbol grounding, or general learning claim

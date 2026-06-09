@@ -43,7 +43,10 @@ class LargerSandboxFlaskUiTests(unittest.TestCase):
         self.assertIn("Level: simulated_vision_larger_sandbox_v0", html)
         self.assertIn("Position: [2, 2]", html)
         self.assertIn("Facing: north", html)
-        self.assertIn("First-person viewport", html)
+        self.assertIn("Manual View", html)
+        self.assertIn("Random Walk Playback", html)
+        self.assertIn("No playback trace", html)
+        self.assertIn("Recorded trace only.", html)
         self.assertIn("w", html)
         self.assertIn("e", html)
         self.assertIn("a", html)
@@ -91,6 +94,8 @@ class LargerSandboxFlaskUiTests(unittest.TestCase):
         self.assertEqual(data["qingyin_observation"]["mode"], "manual_observation")
         self.assertEqual(data["experiment_observation"]["mode"], "none")
         self.assertTrue(data["experiment_observation"]["boundary_check"]["bounded_runner_only"])
+        self.assertEqual(data["playback_state"]["playback_mode"], "none")
+        self.assertEqual(data["playback_state"]["playback_length"], 0)
 
     def test_post_action_look_redirects_and_logs(self):
         response = self.client.post("/action", data={"action": "look"})
@@ -181,6 +186,10 @@ class LargerSandboxFlaskUiTests(unittest.TestCase):
         self.assertFalse(boundary["continuous_autonomous_loop_enabled"])
         self.assertFalse(boundary["item_reward_bias_enabled"])
         self.assertFalse(boundary["dopamine_like_signal_enabled"])
+        self.assertTrue(boundary["trace_playback_enabled"])
+        self.assertTrue(boundary["playback_from_recorded_trace_only"])
+        self.assertFalse(boundary["server_side_autonomous_loop_enabled"])
+        self.assertFalse(boundary["manual_state_modified_by_playback"])
 
     def test_run_command_reports_nonblocking_launch_config(self):
         result = run_command("run-larger-sandbox-ui")
@@ -223,6 +232,10 @@ class LargerSandboxFlaskUiTests(unittest.TestCase):
         self.assertFalse(boundary["item_reward_bias_enabled"])
         self.assertFalse(boundary["dopamine_like_signal_enabled"])
         self.assertFalse(boundary["subjective_experience_claimed"])
+        self.assertTrue(boundary["trace_playback_enabled"])
+        self.assertTrue(boundary["playback_from_recorded_trace_only"])
+        self.assertFalse(boundary["server_side_autonomous_loop_enabled"])
+        self.assertFalse(boundary["manual_state_modified_by_playback"])
 
     def test_qingyin_state_json_returns_observation_summary(self):
         response = self.client.get("/qingyin_state.json")
@@ -257,7 +270,12 @@ class LargerSandboxFlaskUiTests(unittest.TestCase):
         self.assertFalse(boundary["long_term_memory_write"])
         self.assertFalse(boundary["consciousness_claimed"])
         self.assertEqual(data["experiment_observation"]["mode"], "none")
+        self.assertEqual(data["playback_state"]["playback_mode"], "none")
         self.assertTrue(boundary["bounded_runner_only"])
+        self.assertTrue(boundary["trace_playback_enabled"])
+        self.assertTrue(boundary["playback_from_recorded_trace_only"])
+        self.assertFalse(boundary["server_side_autonomous_loop_enabled"])
+        self.assertFalse(boundary["manual_state_modified_by_playback"])
         self.assertFalse(boundary["continuous_autonomous_loop_enabled"])
         self.assertFalse(boundary["item_reward_bias_enabled"])
         self.assertFalse(boundary["dopamine_like_signal_enabled"])
@@ -454,6 +472,105 @@ class LargerSandboxFlaskUiTests(unittest.TestCase):
         self.assertTrue(first["boundary_check"]["bounded_runner_only"])
         self.assertFalse(first["boundary_check"]["continuous_autonomous_loop_enabled"])
         self.assertFalse(first["boundary_check"]["auto_exploration_enabled"])
+
+    def test_playback_state_json_reports_empty_state_before_random_walk(self):
+        response = self.client.get("/playback_state.json")
+        data = response.get_json()
+        boundary = data["boundary_check"]
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(data["playback_mode"], "none")
+        self.assertEqual(data["playback_index"], 0)
+        self.assertEqual(data["playback_length"], 0)
+        self.assertIsNone(data["current_step"])
+        self.assertTrue(boundary["trace_playback_enabled"])
+        self.assertTrue(boundary["playback_from_recorded_trace_only"])
+        self.assertFalse(boundary["server_side_autonomous_loop_enabled"])
+        self.assertFalse(boundary["auto_exploration_enabled"])
+        self.assertFalse(boundary["decision_loop_enabled"])
+        self.assertFalse(boundary["manual_state_modified_by_playback"])
+        self.assertFalse(boundary["pathfinding_used"])
+        self.assertFalse(boundary["route_planner_added"])
+
+    def test_random_walk_creates_playback_trace_and_panel(self):
+        response = self.client.post("/experiment/random-walk", data={"seed": "1", "max_steps": "10"})
+        html = self.client.get("/").get_data(as_text=True)
+        playback = self.client.get("/playback_state.json").get_json()
+
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(playback["playback_mode"], "recorded_random_walk")
+        self.assertEqual(playback["playback_index"], 0)
+        self.assertEqual(playback["playback_length"], 10)
+        self.assertEqual(playback["playback_seed"], 1)
+        self.assertEqual(playback["playback_max_steps"], 10)
+        self.assertIsNotNone(playback["current_step"])
+        self.assertIn("Playback: step 1 / 10", html)
+        self.assertIn("Playback View", html)
+        self.assertIn("Selected action", html)
+        self.assertIn("Result", html)
+        self.assertIn("Front symbol", html)
+        self.assertIn("Position before", html)
+        self.assertIn("Position after", html)
+        self.assertIn("Recorded trace playback only. No autonomous loop.", html)
+
+    def test_playback_next_previous_and_reset(self):
+        self.client.post("/experiment/random-walk", data={"seed": "1", "max_steps": "3"})
+        initial = self.client.get("/playback_state.json").get_json()
+        response_next = self.client.post("/playback/next")
+        after_next = self.client.get("/playback_state.json").get_json()
+        response_previous = self.client.post("/playback/previous")
+        after_previous = self.client.get("/playback_state.json").get_json()
+        self.client.post("/playback/next")
+        self.client.post("/playback/next")
+        response_reset = self.client.post("/playback/reset")
+        after_reset = self.client.get("/playback_state.json").get_json()
+
+        self.assertEqual(response_next.status_code, 302)
+        self.assertEqual(response_previous.status_code, 302)
+        self.assertEqual(response_reset.status_code, 302)
+        self.assertEqual(initial["playback_index"], 0)
+        self.assertEqual(after_next["playback_index"], 1)
+        self.assertNotEqual(initial["current_step"]["tick"], after_next["current_step"]["tick"])
+        self.assertEqual(after_previous["playback_index"], 0)
+        self.assertEqual(after_reset["playback_index"], 0)
+
+    def test_playback_index_is_clamped(self):
+        self.client.post("/experiment/random-walk", data={"seed": "1", "max_steps": "2"})
+        self.client.post("/playback/previous")
+        below = self.client.get("/playback_state.json").get_json()
+        self.client.post("/playback/next")
+        self.client.post("/playback/next")
+        self.client.post("/playback/next")
+        above = self.client.get("/playback_state.json").get_json()
+
+        self.assertEqual(below["playback_index"], 0)
+        self.assertEqual(above["playback_index"], 1)
+
+    def test_playback_controls_do_not_modify_manual_state(self):
+        self.client.post("/cooldown", data={"cooldown_seconds": "0.0"})
+        self.client.post("/action", data={"action": "turn_right"})
+        self.client.post("/action", data={"action": "move_forward"})
+        manual_before = get_ui_state()
+        self.client.post("/experiment/random-walk", data={"seed": "1", "max_steps": "5"})
+        self.client.post("/playback/next")
+        self.client.post("/playback/next")
+        self.client.post("/playback/previous")
+        manual_after = get_ui_state()
+
+        self.assertEqual(manual_after["pos"], manual_before["pos"])
+        self.assertEqual(manual_after["facing"], manual_before["facing"])
+        self.assertEqual(manual_after["tick"], manual_before["tick"])
+        self.assertTrue(manual_after["playback_state"]["boundary_check"]["manual_state_modified_by_playback"] is False)
+
+    def test_playback_routes_without_trace_are_noops(self):
+        self.client.post("/playback/next")
+        self.client.post("/playback/previous")
+        self.client.post("/playback/reset")
+        playback = self.client.get("/playback_state.json").get_json()
+
+        self.assertEqual(playback["playback_index"], 0)
+        self.assertEqual(playback["playback_length"], 0)
+        self.assertIsNone(playback["current_step"])
 
 
 if __name__ == "__main__":

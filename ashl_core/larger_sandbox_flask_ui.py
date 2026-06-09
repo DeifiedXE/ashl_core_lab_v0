@@ -15,6 +15,14 @@ from .instinct_wall_ui_observation import (
     build_wall_influence_observation,
     copy_experiment_observation,
 )
+from .larger_sandbox_trace_playback import (
+    build_empty_playback_state,
+    build_playback_state_from_random_walk,
+    copy_playback_state,
+    next_playback_step,
+    previous_playback_step,
+    reset_playback_step,
+)
 from .qingyin_ui_observation import build_qingyin_observation_state, format_qingyin_log_entry
 from .simulated_vision_larger_sandbox import (
     apply_larger_sandbox_action,
@@ -90,6 +98,21 @@ def create_app() -> Flask:
         clear_experiment_observation()
         return redirect(url_for("index"))
 
+    @app.post("/playback/next")
+    def playback_next() -> Any:
+        advance_playback_next()
+        return redirect(url_for("index"))
+
+    @app.post("/playback/previous")
+    def playback_previous() -> Any:
+        advance_playback_previous()
+        return redirect(url_for("index"))
+
+    @app.post("/playback/reset")
+    def playback_reset() -> Any:
+        reset_playback()
+        return redirect(url_for("index"))
+
     @app.get("/state.json")
     def state_json() -> dict[str, Any]:
         return get_ui_state()
@@ -101,6 +124,10 @@ def create_app() -> Flask:
     @app.get("/experiment_state.json")
     def experiment_state_json() -> dict[str, Any]:
         return get_ui_state()["experiment_observation"]
+
+    @app.get("/playback_state.json")
+    def playback_state_json() -> dict[str, Any]:
+        return get_ui_state()["playback_state"]
 
     return app
 
@@ -120,6 +147,7 @@ def get_launch_config(host: str = DEFAULT_UI_HOST, port: int = DEFAULT_UI_PORT) 
         "action_cooldown_configurable": True,
         "qingyin_observation_bridge_enabled": True,
         "instinct_wall_ui_observation_bridge_enabled": True,
+        "live_step_playback_ui_enabled": True,
         "manual_observation_only": True,
         "boundary_check": build_ui_boundary_check(host=host),
     }
@@ -164,6 +192,7 @@ def reset_ui_state() -> dict[str, Any]:
         "last_action_time": None,
         "last_action_result": None,
         "experiment_observation": build_empty_experiment_observation(),
+        "playback_state": build_empty_playback_state(),
     }
     return get_ui_state()
 
@@ -220,6 +249,7 @@ def run_random_walk_experiment_observation(seed: int = 1, max_steps: int = 50) -
     internal = _get_internal_state()
     result = run_instinct_random_walk(seed=seed, max_steps=max_steps)
     internal["experiment_observation"] = build_random_walk_observation(result)
+    internal["playback_state"] = build_playback_state_from_random_walk(result)
     internal["action_log"].append(
         f"Experiment: random walk sample\n"
         f"Qingyin ran a bounded random walk sample.\n"
@@ -227,6 +257,33 @@ def run_random_walk_experiment_observation(seed: int = 1, max_steps: int = 50) -
         f"Wall blocked: {result['metrics']['wall_blocked_count']}\n"
         f"Item contact: {result['metrics']['item_contact_count']}"
     )
+    return get_ui_state()
+
+
+def advance_playback_next() -> dict[str, Any]:
+    internal = _get_internal_state()
+    before = internal["playback_state"].get("playback_index", 0)
+    internal["playback_state"] = next_playback_step(internal["playback_state"])
+    after = internal["playback_state"].get("playback_index", 0)
+    if before != after:
+        internal["action_log"].append(f"Playback advanced to step {after + 1}.")
+    return get_ui_state()
+
+
+def advance_playback_previous() -> dict[str, Any]:
+    internal = _get_internal_state()
+    before = internal["playback_state"].get("playback_index", 0)
+    internal["playback_state"] = previous_playback_step(internal["playback_state"])
+    after = internal["playback_state"].get("playback_index", 0)
+    if before != after:
+        internal["action_log"].append(f"Playback moved back to step {after + 1}.")
+    return get_ui_state()
+
+
+def reset_playback() -> dict[str, Any]:
+    internal = _get_internal_state()
+    internal["playback_state"] = reset_playback_step(internal["playback_state"])
+    internal["action_log"].append("Playback reset to first step.")
     return get_ui_state()
 
 
@@ -266,8 +323,13 @@ def build_ui_boundary_check(host: str = DEFAULT_UI_HOST) -> dict[str, Any]:
         "qingyin_observation_bridge_enabled": True,
         "instinct_random_walk_ui_observation_enabled": True,
         "wall_experience_influence_ui_observation_enabled": True,
+        "trace_playback_enabled": True,
+        "playback_from_recorded_trace_only": True,
         "bounded_runner_only": True,
         "continuous_autonomous_loop_enabled": False,
+        "server_side_autonomous_loop_enabled": False,
+        "client_side_playback_only": False,
+        "manual_state_modified_by_playback": False,
         "random_walk_runner_available": True,
         "wall_experience_influence_available": True,
         "manual_observation_only": True,
@@ -316,6 +378,7 @@ def _get_internal_state() -> dict[str, Any]:
     if _UI_STATE is None:
         raise RuntimeError("larger sandbox UI state was not initialized")
     _UI_STATE.setdefault("experiment_observation", build_empty_experiment_observation())
+    _UI_STATE.setdefault("playback_state", build_empty_playback_state())
     return _UI_STATE
 
 
@@ -346,6 +409,7 @@ def _public_state(state: dict[str, Any], viewport: list[list[str]], action_log: 
         "last_action_time": internal["last_action_time"],
         "last_action_result": deepcopy(internal["last_action_result"]),
         "experiment_observation": copy_experiment_observation(internal["experiment_observation"]),
+        "playback_state": copy_playback_state(internal["playback_state"]),
         "boundary_check": build_ui_boundary_check(),
     }
     public_state["qingyin_observation"] = build_qingyin_observation_state(public_state)
@@ -561,6 +625,22 @@ _HTML_TEMPLATE = """<!doctype html>
       color: var(--muted);
       font-size: 14px;
     }
+    .playback {
+      border-top: 1px solid var(--line);
+      padding-top: 12px;
+      margin-top: 12px;
+    }
+    .playback dl {
+      display: grid;
+      grid-template-columns: max-content 1fr;
+      gap: 6px 12px;
+      margin: 10px 0;
+      font-size: 14px;
+    }
+    .playback dt { font-weight: 700; }
+    .playback dd { margin: 0; color: var(--muted); }
+    .playback .viewport { max-width: 260px; }
+    .playback .cell { font-size: 20px; }
     .observation, .experiment, .legend, .boundary, .log {
       border-top: 1px solid var(--line);
       padding-top: 12px;
@@ -619,7 +699,7 @@ _HTML_TEMPLATE = """<!doctype html>
   </header>
   <main>
     <section>
-      <h2>First-person viewport</h2>
+      <h2>Manual View</h2>
       <div class="viewport" aria-label="first-person viewport">
         {% for row in ui.viewport %}
           {% for symbol in row %}
@@ -629,6 +709,46 @@ _HTML_TEMPLATE = """<!doctype html>
             </div>
           {% endfor %}
         {% endfor %}
+      </div>
+      <div class="playback">
+        <h2>Random Walk Playback</h2>
+        {% if ui.playback_state.playback_length %}
+          <p>Playback: step {{ ui.playback_state.playback_index + 1 }} / {{ ui.playback_state.playback_length }}</p>
+          <p>Playback View</p>
+          <div class="viewport" aria-label="random walk playback viewport">
+            {% for row in ui.playback_state.current_step.viewport_before %}
+              {% for symbol in row %}
+                <div class="cell symbol-{{ symbol }}" title="{{ symbol }} {{ symbols[symbol] }}">
+                  {{ symbol }}
+                  <small>{{ symbols[symbol] }}</small>
+                </div>
+              {% endfor %}
+            {% endfor %}
+          </div>
+          <div class="controls" aria-label="playback controls">
+            <form method="post" action="{{ url_for('playback_previous') }}"><button>Previous step</button></form>
+            <form method="post" action="{{ url_for('playback_next') }}"><button>Next step</button></form>
+            <form method="post" action="{{ url_for('playback_reset') }}"><button>Reset playback</button></form>
+          </div>
+          <dl>
+            <dt>Seed</dt><dd>{{ ui.playback_state.playback_seed }}</dd>
+            <dt>Max steps</dt><dd>{{ ui.playback_state.playback_max_steps }}</dd>
+            <dt>Selected action</dt><dd>{{ ui.playback_state.current_step.selected_action }}</dd>
+            <dt>Result</dt><dd>{{ ui.playback_state.current_step.result }}</dd>
+            <dt>Front symbol</dt><dd>{{ ui.playback_state.current_step.front_symbol_before }}</dd>
+            <dt>Effects</dt><dd>{% if ui.playback_state.current_step.effect_tags %}{{ ui.playback_state.current_step.effect_tags | join(', ') }}{% else %}none{% endif %}</dd>
+            <dt>Failures</dt><dd>{% if ui.playback_state.current_step.failure_reasons %}{{ ui.playback_state.current_step.failure_reasons | join(', ') }}{% else %}none{% endif %}</dd>
+            <dt>Position before</dt><dd>[{{ ui.playback_state.current_step.pos_before[0] }}, {{ ui.playback_state.current_step.pos_before[1] }}]</dd>
+            <dt>Facing before</dt><dd>{{ ui.playback_state.current_step.facing_before }}</dd>
+            <dt>Position after</dt><dd>[{{ ui.playback_state.current_step.pos_after[0] }}, {{ ui.playback_state.current_step.pos_after[1] }}]</dd>
+            <dt>Facing after</dt><dd>{{ ui.playback_state.current_step.facing_after }}</dd>
+          </dl>
+          <p>{{ ui.playback_state.current_step.readable_text }}</p>
+          <p>Recorded trace playback only. No autonomous loop.</p>
+        {% else %}
+          <p>No playback trace. Run random walk sample to generate a recorded trace.</p>
+          <p>Recorded trace only. No autonomous loop. No pathfinding.</p>
+        {% endif %}
       </div>
       <div class="controls" aria-label="actions">
         <form method="post" action="{{ url_for('action') }}"><button name="action" value="look">look</button></form>

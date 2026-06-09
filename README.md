@@ -1887,3 +1887,10 @@ Two-Trial History Boundary:
 - Lets the user run one bounded random walk sample or one wall-experience influence check and view summaries from the Qingyin UI.
 - Adds read-only `/experiment_state.json` for the current experiment observation summary.
 - UI observation only: no continuous autonomy, auto exploration, item reward bias, dopamine-like signals, pathfinding, route planning, or long-term memory is added.
+
+## Larger Sandbox Live Step Playback UI v0
+
+- Adds step-by-step playback of bounded random walk traces in the larger sandbox Flask UI.
+- Adds Previous step, Next step, and Reset playback controls plus read-only `/playback_state.json`.
+- Shows a separate Random Walk Playback view so manual sandbox state is not overwritten by playback.
+- Playback replays recorded traces only; it does not generate new actions, add autonomy, pathfinding, reward bias, or long-term memory.
