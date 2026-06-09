@@ -155,6 +155,7 @@ from ashl_core.simulated_vision_larger_sandbox import (
     render_larger_sandbox_viewport,
     run_simulated_vision_larger_sandbox_demo,
 )
+from ashl_core.simulated_vision_larger_sandbox_contact import run_larger_sandbox_symbol_contact_smoke
 from ashl_core.simulated_vision_larger_sandbox_observed_map import run_larger_sandbox_observed_map_smoke
 from ashl_core.simulated_vision_memory_bridge import run_simulated_vision_memory_bridge_demo
 from ashl_core.simulated_vision_observed_map import run_simulated_vision_observed_map_demo
@@ -520,6 +521,70 @@ def smoke_larger_sandbox_observed_map_smoke() -> dict:
             "map_summary": map_summary,
             "observed_map_summary": summary,
             "persistence_checks": persistence_checks,
+            "boundary": boundary,
+        },
+    )
+
+
+def smoke_larger_sandbox_symbol_contact_smoke() -> dict:
+    result = run_larger_sandbox_symbol_contact_smoke()
+    summary = result.get("summary", {})
+    boundary = result.get("boundary_check", {})
+    scenarios = {item.get("scenario"): item for item in result.get("scenario_results", [])}
+    doorway = scenarios.get("doorway_d", {})
+    item = scenarios.get("item_i", {})
+    exit_result = scenarios.get("exit_g", {})
+    passed = (
+        result.get("command") == "run-larger-sandbox-symbol-contact-smoke"
+        and result.get("flow") == "larger_sandbox_symbol_contact_smoke_v0"
+        and result.get("level_id") == "simulated_vision_larger_sandbox_v0"
+        and summary.get("scenario_count") == 3
+        and summary.get("passed_count") == 3
+        and summary.get("failed_count") == 0
+        and summary.get("doorway_contact_passed") is True
+        and summary.get("item_contact_passed") is True
+        and summary.get("exit_contact_passed") is True
+        and summary.get("all_larger_sandbox_symbol_contact_checks_passed") is True
+        and doorway.get("front_symbol") == "d"
+        and doorway.get("actual_outcome") == "moved"
+        and "passage_crossed" in doorway.get("effect_tags", [])
+        and doorway.get("position_changed") is True
+        and doorway.get("contact_match") is True
+        and item.get("front_symbol") == "i"
+        and item.get("actual_outcome") == "item_contact"
+        and "item_contact" in item.get("effect_tags", [])
+        and item.get("contact_match") is True
+        and exit_result.get("front_symbol") == "g"
+        and exit_result.get("actual_outcome") == "exit_contact"
+        and "exit_contact" in exit_result.get("effect_tags", [])
+        and exit_result.get("contact_match") is True
+        and boundary.get("larger_static_sandbox_used") is True
+        and boundary.get("symbol_contact_smoke_enabled") is True
+        and boundary.get("doorway_contact_checked") is True
+        and boundary.get("doorway_passable") is True
+        and boundary.get("doorway_semantic_boundary_given_to_agent") is False
+        and boundary.get("item_contact_checked") is True
+        and boundary.get("item_collection_enabled") is False
+        and boundary.get("item_pickup_enabled") is False
+        and boundary.get("inventory_enabled") is False
+        and boundary.get("exit_contact_checked") is True
+        and boundary.get("exit_conditional_spawn_enabled") is False
+        and boundary.get("task_completion_enabled") is False
+        and boundary.get("win_condition_enabled") is False
+        and boundary.get("curiosity_enabled") is False
+        and boundary.get("prediction_error_enabled") is False
+        and boundary.get("place_memory_enabled") is False
+        and boundary.get("home_sandbox_enabled") is False
+        and boundary.get("pathfinding_used") is False
+        and boundary.get("route_planner_added") is False
+        and boundary.get("long_term_memory_write") is False
+    )
+    return _result(
+        "larger_sandbox_symbol_contact_smoke",
+        passed,
+        {
+            "summary": summary,
+            "scenario_results": result.get("scenario_results", []),
             "boundary": boundary,
         },
     )
@@ -6707,6 +6772,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_simulated_vision_first_person_viewport(),
         smoke_simulated_vision_larger_sandbox_static_runtime(),
         smoke_larger_sandbox_observed_map_smoke(),
+        smoke_larger_sandbox_symbol_contact_smoke(),
         smoke_simulated_vision_memory_bridge(),
         smoke_simulated_vision_observed_map(),
         smoke_simulated_vision_symbol_grounding(),

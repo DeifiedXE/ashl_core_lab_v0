@@ -44,6 +44,7 @@ from .session_working_memory import (
 )
 from .simulated_vision_sandbox import run_simulated_vision_viewport_demo
 from .simulated_vision_larger_sandbox import run_simulated_vision_larger_sandbox_demo
+from .simulated_vision_larger_sandbox_contact import run_larger_sandbox_symbol_contact_smoke
 from .simulated_vision_larger_sandbox_observed_map import run_larger_sandbox_observed_map_smoke
 from .simulated_vision_memory_bridge import run_simulated_vision_memory_bridge_demo
 from .simulated_vision_observed_map import run_simulated_vision_observed_map_demo
@@ -3347,6 +3348,8 @@ def run_command(command: str) -> dict[str, Any]:
         return run_simulated_vision_larger_sandbox_demo()
     if command == "run-larger-sandbox-observed-map-smoke":
         return run_larger_sandbox_observed_map_smoke()
+    if command == "run-larger-sandbox-symbol-contact-smoke":
+        return run_larger_sandbox_symbol_contact_smoke()
     if command == "run-simulated-vision-memory-bridge-demo":
         return run_simulated_vision_memory_bridge_demo()
     if command == "run-simulated-vision-observed-map-demo":
@@ -3403,6 +3406,7 @@ def main(argv: list[str] | None = None) -> int:
             "run-simulated-vision-viewport-demo",
             "run-simulated-vision-larger-sandbox-demo",
             "run-larger-sandbox-observed-map-smoke",
+            "run-larger-sandbox-symbol-contact-smoke",
             "run-simulated-vision-memory-bridge-demo",
             "run-simulated-vision-observed-map-demo",
             "run-simulated-vision-symbol-grounding-check",
@@ -3429,7 +3433,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--level-id", default="approach_box_dead_end_v0")
     parser.add_argument("--max-records", type=int, default=20)
     parser.add_argument("--action-sequence", default=None)
-    parser.add_argument("--scenario", choices=["wall", "empty", "item"], default=None)
+    parser.add_argument("--scenario", choices=["wall", "empty", "item", "doorway", "exit"], default=None)
     args = parser.parse_args(argv)
     if args.command == "run-review-approve":
         result = run_review_approve(review_id=args.review_id, notes=args.notes)
@@ -3534,6 +3538,8 @@ def main(argv: list[str] | None = None) -> int:
         if args.action_sequence:
             action_sequence = [action.strip() for action in args.action_sequence.split(",") if action.strip()]
         result = run_larger_sandbox_observed_map_smoke(action_sequence=action_sequence)
+    elif args.command == "run-larger-sandbox-symbol-contact-smoke":
+        result = run_larger_sandbox_symbol_contact_smoke(scenario=args.scenario)
     elif args.command == "run-simulated-vision-memory-bridge-demo":
         action_sequence = None
         if args.action_sequence:

@@ -3891,3 +3891,25 @@ Non-goals:
 - no curiosity or prediction error implementation
 - no place memory, home sandbox, pathfinding, route planner, or map solving
 - no lesson_store write, Memory Layer write, Long-term Memory write, or lesson_candidate pipeline connection
+
+## Larger Sandbox Symbol Contact Smoke v0
+
+Status: completed / smoke-validation / immediate-contact-only.
+
+Goal:
+Verify immediate contact outcomes for larger static sandbox symbols `d`, `i`, and `g`.
+
+Scope:
+- adds `ashl_core.simulated_vision_larger_sandbox_contact`
+- adds `py -3 -m ashl_core.teaching_cli run-larger-sandbox-symbol-contact-smoke`
+- verifies `d + move_forward -> moved` with `passage_crossed`
+- verifies `i + move_forward -> item_contact`
+- verifies `g + move_forward -> exit_contact`
+- uses controlled scenario snapshots and visible `viewport[1][1]` front symbols
+
+Non-goals:
+- no item collection, pickup, inventory, or item seeking
+- no exit activation, win condition, or task completion
+- no curiosity or prediction error implementation
+- no place memory, home sandbox, pathfinding, route planner, or map solving
+- no lesson_store write, Memory Layer write, Long-term Memory write, or lesson_candidate pipeline connection

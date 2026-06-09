@@ -1824,3 +1824,9 @@ Two-Trial History Boundary:
 - Verifies `observed_local_map` can remember `d/i/g` symbols in the larger static sandbox.
 - Confirms `x` does not erase known cells and unseen cells are not inferred.
 - Does not add item collection, exit activation, curiosity, prediction error, place memory, pathfinding, or home sandbox behavior.
+
+## Larger Sandbox Symbol Contact Smoke v0
+
+- Adds `py -3 -m ashl_core.teaching_cli run-larger-sandbox-symbol-contact-smoke`.
+- Verifies immediate contact outcomes: `d -> moved / passage_crossed`, `i -> item_contact`, and `g -> exit_contact`.
+- Does not add item collection, exit activation, task completion, curiosity, prediction error, place memory, pathfinding, or home sandbox behavior.
