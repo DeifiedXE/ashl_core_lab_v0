@@ -25,6 +25,9 @@ from .integrated_experience_session_trace import run_integrated_experience_sessi
 from .integrated_trace_chain_break_audit import run_integrated_trace_chain_break_audit
 from .item_reward_event import run_item_reward_event_check
 from .mimetic_endocrine_signal_schema import run_mimetic_endocrine_signal_schema_check
+from .norepinephrine_like_change_attention_trace_check import (
+    run_norepinephrine_like_change_attention_trace_check,
+)
 from .persistent_eligibility_checker import run_persistent_eligibility_checker_check
 from .prediction_accuracy_check import run_prediction_accuracy_check
 from .reward_biased_action_tendency import run_reward_biased_action_tendency_check
@@ -3435,6 +3438,8 @@ def run_command(command: str) -> dict[str, Any] | str:
         return run_mimetic_endocrine_signal_schema_check()
     if command == "run-dopamine-like-reward-trace-check":
         return run_dopamine_like_reward_trace_check()
+    if command == "run-norepinephrine-like-change-attention-trace-check":
+        return run_norepinephrine_like_change_attention_trace_check()
     return {
         "command": command,
         "status": "error",
@@ -3512,6 +3517,7 @@ def main(argv: list[str] | None = None) -> int:
             "run-generalized-candidate-review-preview-check",
             "run-mimetic-endocrine-signal-schema-check",
             "run-dopamine-like-reward-trace-check",
+            "run-norepinephrine-like-change-attention-trace-check",
         ],
     )
     parser.add_argument("--review-id", default="review_001")
@@ -3722,6 +3728,8 @@ def main(argv: list[str] | None = None) -> int:
         result = run_mimetic_endocrine_signal_schema_check()
     elif args.command == "run-dopamine-like-reward-trace-check":
         result = run_dopamine_like_reward_trace_check()
+    elif args.command == "run-norepinephrine-like-change-attention-trace-check":
+        result = run_norepinephrine_like_change_attention_trace_check()
     else:
         result = run_command(args.command)
     if hasattr(sys.stdout, "reconfigure"):

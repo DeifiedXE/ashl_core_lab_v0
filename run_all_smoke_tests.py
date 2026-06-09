@@ -50,6 +50,9 @@ from ashl_core.integrated_experience_session_trace import run_integrated_experie
 from ashl_core.integrated_trace_chain_break_audit import run_integrated_trace_chain_break_audit
 from ashl_core.item_reward_event import run_item_reward_event_check
 from ashl_core.mimetic_endocrine_signal_schema import run_mimetic_endocrine_signal_schema_check
+from ashl_core.norepinephrine_like_change_attention_trace_check import (
+    run_norepinephrine_like_change_attention_trace_check,
+)
 from ashl_core.persistent_eligibility_checker import run_persistent_eligibility_checker_check
 from ashl_core.integrated_loop import run_turn
 from ashl_core.lesson_candidate_drafts import build_lesson_candidate_draft_trace, validate_lesson_candidate_draft_trace
@@ -2648,6 +2651,76 @@ def smoke_dopamine_like_reward_trace_check() -> dict:
     )
     return _result(
         "dopamine_like_reward_trace_check",
+        passed,
+        {
+            "summary": summary,
+            "cases": cases,
+            "boundary": boundary,
+        },
+    )
+
+
+def smoke_norepinephrine_like_change_attention_trace_check() -> dict:
+    result = run_norepinephrine_like_change_attention_trace_check()
+    cases = {item.get("case_name"): item for item in result.get("norepinephrine_trace_results", [])}
+    summary = result.get("summary", {})
+    boundary = result.get("boundary_check", {})
+    prediction_error = cases.get("prediction_error_event", {})
+    unknown_pattern = cases.get("unknown_pattern_event", {})
+    conflict = cases.get("conflict_like_distribution_event", {})
+    no_change = cases.get("no_change_control_event", {})
+    subjective = cases.get("invalid_subjective_attention_event", {})
+    prediction_record = prediction_error.get("signal_record") or {}
+    passed = (
+        result.get("command") == "run-norepinephrine-like-change-attention-trace-check"
+        and result.get("flow") == "norepinephrine_like_change_attention_trace_check_v0"
+        and result.get("status") == "ok"
+        and summary.get("source_event_count") == 5
+        and summary.get("salience_event_count") == 4
+        and summary.get("neutral_event_count") == 1
+        and summary.get("norepinephrine_trace_created_count") == 3
+        and summary.get("valid_norepinephrine_trace_count") == 3
+        and summary.get("blocked_event_count") == 2
+        and summary.get("subjective_claim_blocked_count") >= 1
+        and summary.get("autonomous_attention_control_count") == 0
+        and summary.get("action_selection_influence_count") == 0
+        and summary.get("memory_write_count") == 0
+        and summary.get("candidate_approval_influence_count") == 0
+        and summary.get("predictor_modified_count") == 0
+        and summary.get("runtime_formula_count") == 0
+        and prediction_error.get("signal_created") is True
+        and prediction_error.get("valid_signal") is True
+        and prediction_record.get("axis") == "attention_salience"
+        and prediction_record.get("value", 0) >= prediction_record.get("baseline", 1)
+        and prediction_record.get("blocked_from_action_selection") is True
+        and prediction_record.get("blocked_from_memory_write") is True
+        and prediction_record.get("blocked_from_candidate_approval") is True
+        and prediction_record.get("subjective_claim") is False
+        and prediction_record.get("autonomous_attention_control") is False
+        and unknown_pattern.get("signal_created") is True
+        and unknown_pattern.get("valid_signal") is True
+        and conflict.get("signal_created") is True
+        and conflict.get("valid_signal") is True
+        and no_change.get("signal_created") is False
+        and subjective.get("signal_created") is False
+        and "subjective_claim_blocked" in subjective.get("block_reasons", [])
+        and boundary.get("trace_check_only") is True
+        and boundary.get("uses_mimetic_endocrine_signal_schema") is True
+        and boundary.get("runtime_behavior_modified") is False
+        and boundary.get("endocrine_runtime_added") is False
+        and boundary.get("runtime_formula_added") is False
+        and boundary.get("autonomous_attention_control_added") is False
+        and boundary.get("observation_priority_runtime_modified") is False
+        and boundary.get("action_selection_modified") is False
+        and boundary.get("norepinephrine_signal_used_for_action_selection") is False
+        and boundary.get("long_term_memory_write") is False
+        and boundary.get("alertness_claimed") is False
+        and boundary.get("anxiety_claimed") is False
+        and boundary.get("subjective_attention_claimed") is False
+        and boundary.get("subjective_possibility_denied") is False
+    )
+    return _result(
+        "norepinephrine_like_change_attention_trace_check",
         passed,
         {
             "summary": summary,
@@ -8602,6 +8675,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_generalized_candidate_review_preview(),
         smoke_mimetic_endocrine_signal_schema(),
         smoke_dopamine_like_reward_trace_check(),
+        smoke_norepinephrine_like_change_attention_trace_check(),
         smoke_micro_navigation_goal_reach(),
         smoke_micro_navigation_trial_metrics_cli(),
         smoke_micro_navigation_multi_goal_level(),

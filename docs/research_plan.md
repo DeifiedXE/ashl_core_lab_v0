@@ -4616,3 +4616,21 @@ Scope:
 
 Non-goals:
 - no endocrine runtime behavior, formulas that update values from real runtime, signal interactions, dopamine-driven action selection, dopamine-driven reward bias modification, reward-biased action tendency modification, random-walk modification, predictor behavior modification, global predictor modification, candidate auto-approval, candidate application, human review override, long-term memory write, lesson_store write, Memory Layer write, personality weight modification, personality drift, autonomous drive system, persistent rule write, persistent preview/dry-run, pathfinding, BFS, A*, route planner, UI change, LLM reasoning, LLM planning, LLM vision, biological hormone simulation claim, proof of happiness, pleasure claim, consciousness claim, subjective experience claim, or denial of future subjective possibility
+
+## Norepinephrine-Like Change Attention Trace Check v0
+
+Status: completed / trace-check-only / no-runtime-change.
+
+Goal:
+Map controlled change, uncertainty, and conflict events into validated `norepinephrine_like` trace records without activating attention control.
+
+Scope:
+- adds `ashl_core.norepinephrine_like_change_attention_trace_check`
+- adds `py -3 -m ashl_core.teaching_cli run-norepinephrine-like-change-attention-trace-check`
+- creates deterministic source events for prediction error, unknown pattern, conflict-like distribution, stable no-change control, and subjective-attention invalid event
+- creates valid `norepinephrine_like` trace records for salience-linked events using the mimetic endocrine signal schema
+- validates source event IDs, source traces, bounded values, value >= baseline, attention salience linkage, and safety blocks from action selection, memory write, and candidate approval
+- blocks stable no-change and subjective-claim events from valid norepinephrine-like attention traces
+
+Non-goals:
+- no endocrine runtime behavior, formulas that update values from real runtime, signal interactions, autonomous attention control, observation priority runtime modification, attention-driven action selection, predictor behavior modification, global predictor modification, candidate auto-approval, candidate application, human review override, long-term memory write, lesson_store write, Memory Layer write, personality weight modification, personality drift, autonomous drive system, persistent rule write, persistent preview/dry-run, pathfinding, BFS, A*, route planner, UI change, LLM reasoning, LLM planning, LLM vision, biological hormone simulation claim, subjective alertness claim, anxiety claim, subjective attention claim, consciousness claim, subjective experience claim, or denial of future subjective possibility
