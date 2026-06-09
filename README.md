@@ -1988,3 +1988,9 @@ Two-Trial History Boundary:
 - Reruns prediction against the temporary table and verifies expected outcome/reason changes.
 - Blocks pending, rejected, and self-approved candidates.
 - Does not persist rules, modify the global predictor, modify action selection, write lesson_store, write Memory Layer, or write long-term memory.
+
+## Experience Abstraction Layer Milestone Log v0
+
+- Adds `docs/milestone_logs/experience_abstraction_layer_milestone_2026-06-09.md`.
+- Records the completed Experience Abstraction Layer chain from reason classification through temporary in-memory apply verification.
+- Documents safety boundaries, explicit non-claims, and the recommended Boundary Index sync follow-up.

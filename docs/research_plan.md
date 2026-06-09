@@ -4339,3 +4339,16 @@ Scope:
 
 Non-goals:
 - no persistent rule application, global predictor modification, action selection modification, applied-rule suppression/preference, lesson_store write, Memory Layer write, long-term memory, lesson_candidate pipeline connection, auto-approval, Qingyin self-approval, automatic rule revision, persistent rule learning, pathfinding, route planner, item seeking, reward change, random walk change, UI change, autonomous exploration, decision loop, LLM reasoning, or general learning claim
+
+## Experience Abstraction Layer Milestone Log v0
+
+Status: completed / documentation-milestone / no-runtime-change.
+
+Scope:
+- adds `docs/milestone_logs/experience_abstraction_layer_milestone_2026-06-09.md`
+- records the completed reason classification, similar context key, prediction, mismatch candidate, review gate, approved preview, and temporary in-memory apply verification chain
+- documents safety boundaries and explicit non-claims
+- recommends `Experience Abstraction Boundary Index Sync v0` as the next package
+
+Non-goals:
+- no runtime behavior, CLI, UI, action selection change, predictor rule change, persistent rule application, lesson_store write, Memory Layer write, long-term memory, lesson_candidate pipeline connection, LLM reasoning, pathfinding, autonomous learning claim, or Boundary Index modification
