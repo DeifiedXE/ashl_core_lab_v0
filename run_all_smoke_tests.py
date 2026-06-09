@@ -3311,6 +3311,44 @@ def smoke_focus_application_boundary_review() -> dict:
     )
 
 
+def smoke_perception_to_action_boundary_review() -> dict:
+    doc_path = Path("docs/perception_to_action_boundary_review_v0.md")
+    doc = doc_path.read_text(encoding="utf-8") if doc_path.exists() else ""
+    readme = Path("README.md").read_text(encoding="utf-8")
+    research_plan = Path("docs/research_plan.md").read_text(encoding="utf-8")
+    required_phrases = [
+        "A retina feature is not an action reason.",
+        "A visual_frame is not an action context.",
+        "A change_record is not an action trigger.",
+        "A focus_candidate is not an action intent.",
+        "A ranking_trace is not action selection.",
+        "A focus_application_gate_record does not authorize action influence.",
+        "No package may allow perception or focus records to modify action_context",
+        "No direct mapping from focus rank to action is allowed.",
+        "No direct mapping from total_score to action is allowed.",
+        "No direct mapping from change_salience to movement is allowed.",
+        "external_mentor_interrupt has unconditional priority",
+        "No endocrine signal may authorize perception-to-action influence in v0.",
+        "No direct memory write is allowed from perception/focus traces.",
+        "No predictor mutation is allowed from perception/focus traces.",
+        "Perception-to-Action Gate Schema Check v0",
+        "Action Influence Human Review Gate v0",
+    ]
+    missing = [phrase for phrase in required_phrases if phrase not in doc]
+    passed = (
+        doc_path.exists()
+        and not missing
+        and "Perception-to-Action Boundary Review v0" in readme
+        and "Perception-to-Action Boundary Review v0" in research_plan
+        and "does not add active_focus" in research_plan
+    )
+    return _result(
+        "perception_to_action_boundary_review",
+        passed,
+        {"doc": str(doc_path), "missing": missing},
+    )
+
+
 def smoke_focus_application_gate_schema() -> dict:
     result = run_focus_application_gate_schema_check()
     summary = result.get("summary", {})
@@ -9739,6 +9777,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_focus_candidate_ranking_trace_schema(),
         smoke_focus_candidate_ranking_trace(),
         smoke_focus_application_boundary_review(),
+        smoke_perception_to_action_boundary_review(),
         smoke_focus_application_gate_schema(),
         smoke_focus_candidate_from_change_trace(),
         smoke_micro_navigation_goal_reach(),

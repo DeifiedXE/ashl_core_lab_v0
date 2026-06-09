@@ -2260,3 +2260,9 @@ Two-Trial History Boundary:
 - Adds `py -3 -m ashl_core.teaching_cli run-focus-application-gate-schema-check`.
 - Validates review-only gate records for future focus application boundaries.
 - Schema/checker-only: no `active_focus`, `focus_applied`, attention control, action selection influence, endocrine runtime, or memory write is authorized.
+
+## Perception-to-Action Boundary Review v0
+
+- Adds `docs/perception_to_action_boundary_review_v0.md`.
+- Documents the boundary between perception/focus traces and any future action influence.
+- Design-only: does not add active_focus, attention control, perception-to-action bridge, action selection influence, memory write, endocrine runtime, or predictor mutation.

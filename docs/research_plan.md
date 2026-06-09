@@ -5018,3 +5018,19 @@ Scope:
 
 Non-goals:
 - no runtime focus selector, runtime ranking, active_focus selection, focus application, attention control, focus-to-action bridge, perception-to-action bridge, endocrine runtime, action selection influence, memory write, predictor mutation, object recognition, object tracking, semantic vision, LLM vision, CNN, YOLO, UNet, symbol grounding claim, consciousness claim, or subjective visual experience claim
+
+## Perception-to-Action Boundary Review v0
+
+Status: completed / design-only / no-runtime-change.
+
+Goal:
+Document the boundary between perception/focus traces and any future action influence.
+
+Scope:
+- adds `docs/perception_to_action_boundary_review_v0.md`
+- states that retina features, visual_frame records, change_records, focus_candidate records, ranking_trace records, and focus_application_gate records are not action reasons, action context, action triggers, action intent, or action selection
+- defines future review gates and dry-run/human-review preconditions before any perception-to-action bridge
+- records mentor override, endocrine, memory, and predictor boundaries
+
+Non-goals:
+- does not add active_focus, focus_applied, attention control, perception-to-action bridge, focus-to-action bridge, action selection influence, action candidate scoring from vision, memory write, predictor mutation, persistent rule creation, endocrine runtime, object recognition, object tracking, semantic vision, symbol grounding claim, consciousness claim, or subjective visual experience claim
