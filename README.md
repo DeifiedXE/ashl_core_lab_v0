@@ -1277,6 +1277,14 @@ Two-Trial History Boundary:
 - Viewport symbols are `w` wall, `e` empty, `i` item/object, and `x` out of view/unknown; the center may use `a` for the agent.
 - This is not real image vision, does not use LLM vision, does not use pathfinding, and does not prove visual grounding.
 
+## Simulated Vision Session Memory Bridge v0
+
+- Adds `py -3 -m ashl_core.teaching_cli run-simulated-vision-memory-bridge-demo`.
+- Records symbolic viewport observations and simulated vision action outcomes into session-local working memory.
+- Memory records include `state_key`, `state_snapshot`, viewport, visible symbols, action, outcome, failure reasons, and trace metadata.
+- Session memory is cleared at session end.
+- This does not modify action selection, does not use real images, LLM vision, or pathfinding, and does not prove visual understanding or symbol grounding.
+
 ## Micro Navigation Trial Metrics CLI v0
 
 - Adds `py -3 -m ashl_core.teaching_cli run-navigation-trial-metrics --runs 4 --trial-count 5 --max-steps 10`.

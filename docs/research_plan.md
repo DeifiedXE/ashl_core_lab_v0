@@ -2486,6 +2486,38 @@ No lesson_candidate pipeline connection.
 No visual understanding claim.
 No symbol grounding solved claim.
 
+## Simulated Vision Session Memory Bridge v0
+
+Status:
+minimal-runtime / session-local-memory-bridge / symbolic-viewport-recording / no-decision-use
+
+Summary:
+Adds `ashl_core.simulated_vision_memory_bridge`.
+Adds `py -3 -m ashl_core.teaching_cli run-simulated-vision-memory-bridge-demo`.
+The bridge records each symbolic simulated vision action and viewport observation into Session Working Memory as generic state-action-outcome records.
+Records include state_key, state_snapshot with facing, viewport, visible_symbols, action, outcome_type, failure_reasons, and metadata.
+Memory is session-local and cleared at session end.
+
+Boundary:
+Records only; memory does not influence action selection.
+Structured symbols only.
+No real images.
+No computer vision.
+No LLM vision.
+No LLM planning.
+No full-map vision exposure.
+No pathfinding / BFS / A*.
+No route planner.
+No item seeking.
+No existing dead-end A/B behavior changes.
+No existing navigation action selection changes.
+No lesson_store write.
+No Memory Layer write.
+No Long-term Memory.
+No lesson_candidate pipeline connection.
+No visual understanding claim.
+No symbol grounding solved claim.
+
 ## Micro Navigation Trial Metrics CLI v0
 
 Status:

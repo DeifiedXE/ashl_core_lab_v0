@@ -142,6 +142,7 @@ from ashl_core.simulated_vision_sandbox import (
     render_viewport,
     run_simulated_vision_viewport_demo,
 )
+from ashl_core.simulated_vision_memory_bridge import run_simulated_vision_memory_bridge_demo
 from ashl_core.state_core import StateCore
 from ashl_core.state_persistence import (
     read_last_trace_summary,
@@ -314,6 +315,51 @@ def smoke_simulated_vision_viewport() -> dict:
             "item_result": item_contact["trace"]["result"],
             "viewport_symbols": sorted(viewport_symbols),
             "edge_symbols": sorted(edge_symbols),
+            "boundary": boundary,
+        },
+    )
+
+
+def smoke_simulated_vision_memory_bridge() -> dict:
+    result = run_simulated_vision_memory_bridge_demo()
+    blocked_result = run_simulated_vision_memory_bridge_demo(
+        action_sequence=["move_forward", "move_forward", "move_forward"],
+    )
+    boundary = result.get("boundary_check", {})
+    query_summary = result.get("query_summary", {})
+    records = result.get("memory_records", [])
+    blocked_summary = blocked_result.get("query_summary", {})
+    passed = (
+        result.get("command") == "run-simulated-vision-memory-bridge-demo"
+        and result.get("flow") == "simulated_vision_session_memory_bridge_v0"
+        and len(result.get("action_trace", [])) == len(records)
+        and query_summary.get("record_count_before_clear") == len(result.get("action_trace", []))
+        and result.get("clear_summary", {}).get("record_count_after_clear") == 0
+        and all(record.get("state_key") for record in records)
+        and all("viewport" in record.get("state_snapshot", {}) for record in records)
+        and all("visible_symbols" in record.get("state_snapshot", {}) for record in records)
+        and query_summary.get("query_by_action_look_count") == 4
+        and query_summary.get("query_by_action_move_forward_count") == 1
+        and "query_by_visible_symbol_i_count" in query_summary
+        and blocked_summary.get("query_by_outcome_type_blocked_count") == 1
+        and blocked_summary.get("query_by_failure_reason_wall_blocked_count") == 1
+        and boundary.get("simulated_vision_only") is True
+        and boundary.get("structured_symbols_only") is True
+        and boundary.get("real_image_vision") is False
+        and boundary.get("llm_vision_used") is False
+        and boundary.get("pathfinding_used") is False
+        and boundary.get("session_memory_write") is True
+        and boundary.get("session_memory_cleared") is True
+        and boundary.get("action_selection_modified") is False
+    )
+    return _result(
+        "simulated_vision_memory_bridge",
+        passed,
+        {
+            "action_trace_count": len(result.get("action_trace", [])),
+            "memory_record_count": len(records),
+            "query_summary": query_summary,
+            "blocked_query_summary": blocked_summary,
             "boundary": boundary,
         },
     )
@@ -6228,6 +6274,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_body_state(),
         smoke_action_sandbox(),
         smoke_simulated_vision_viewport(),
+        smoke_simulated_vision_memory_bridge(),
         smoke_micro_navigation_goal_reach(),
         smoke_micro_navigation_trial_metrics_cli(),
         smoke_micro_navigation_multi_goal_level(),

@@ -24,6 +24,8 @@ def build_state_snapshot_key(state_snapshot: dict[str, Any] | None) -> str:
     agent_pos = _format_position_for_state_key(state_snapshot.get("agent_pos"))
     box_pos = _format_position_for_state_key(state_snapshot.get("box_pos"))
     goal_pos = _format_position_for_state_key(state_snapshot.get("goal_pos"))
+    if "facing" in state_snapshot:
+        return f"level={level_id}|agent={agent_pos}|facing={state_snapshot.get('facing')}|box={box_pos}|goal={goal_pos}"
     return f"level={level_id}|agent={agent_pos}|box={box_pos}|goal={goal_pos}"
 
 
