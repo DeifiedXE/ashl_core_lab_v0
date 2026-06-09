@@ -4771,3 +4771,20 @@ Scope:
 
 Non-goals:
 - no runtime visual frame buffer, runtime current_frame / previous_frame storage, automatic frame replacement, frame comparison, frame change detection, focus selector, focus candidate generation, attention mechanism, endocrine connection, vision-driven action selection, visual memory write, long-term memory write, lesson_store write, Memory Layer write, predictor mutation, global predictor mutation, CNN, YOLO, UNet, image processing runtime, RGB quantization runtime, object recognition, semantic labels, scene understanding, symbol grounding claim, consciousness claim, or subjective visual experience claim
+
+## Visual Frame Buffer Schema Check v0
+
+Status: completed / schema-check-only / no-runtime-change.
+
+Goal:
+Validate visual frame records that group already validated retina feature records while keeping runtime frame buffering and downstream effects disabled.
+
+Scope:
+- adds `ashl_core.visual_frame_buffer_schema`
+- adds `py -3 -m ashl_core.teaching_cli run-visual-frame-buffer-schema-check`
+- reuses `retina_decoder_feature_schema.validate_feature_record` for every feature record inside a frame
+- validates required visual frame fields, source trace, count consistency, null semantic labels, and safety flags
+- includes deterministic valid frame and invalid controls for invalid feature record, non-null semantic label, and downstream unblocked flags
+
+Non-goals:
+- no runtime visual frame buffer, current_frame / previous_frame runtime storage, automatic frame replacement, frame comparison, frame change detection, visual change records, focus selector, focus candidates, attention mechanism, endocrine connection, vision-driven action selection, visual memory write, long-term memory write, lesson_store write, Memory Layer write, predictor mutation, LLM vision, CNN, YOLO, UNet, image processing runtime, RGB quantization runtime, object recognition, semantic labels, scene understanding, symbol grounding claim, consciousness claim, or subjective visual experience claim

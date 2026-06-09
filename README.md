@@ -2163,3 +2163,10 @@ Two-Trial History Boundary:
 - Defines a design-only visual frame container for grouping already validated retina feature records.
 - Defines future `current_frame` / `previous_frame` concepts and source trace / safety flag requirements.
 - Design-only: no runtime frame buffer, frame storage, frame comparison, change detection, focus selector, action selection influence, memory write, object recognition, semantic vision, or visual understanding claim is added.
+
+## Visual Frame Buffer Schema Check v0
+
+- Adds `py -3 -m ashl_core.teaching_cli run-visual-frame-buffer-schema-check`.
+- Validates visual frame records composed of already validated retina feature records.
+- Enforces frame count consistency, null retina `semantic_label`, and downstream safety flags.
+- Schema/checker only: no runtime frame buffering, current/previous frame storage, frame comparison, focus selection, action selection influence, memory write, object recognition, or semantic vision is added.
