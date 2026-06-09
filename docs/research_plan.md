@@ -2592,6 +2592,48 @@ No lesson_candidate pipeline connection.
 No visual understanding claim.
 No symbol grounding solved claim.
 
+## Grounded Action Experience v0
+
+Status:
+minimal-runtime / local-experience-records / no-action-influence / no-learning-claim
+
+Summary:
+Adds `ashl_core.grounded_action_experience`.
+Adds `py -3 -m ashl_core.teaching_cli run-grounded-action-experience-check`.
+Records bounded grounded action experiences: visible front symbol + attempted action + immediate outcome.
+The intended chain is see -> interact -> outcome -> experience record.
+Records are local to the runner and are not used to choose actions.
+Default scenarios record w + move_forward -> blocked, e + move_forward -> moved, and i + move_forward -> item_contact.
+
+Boundary:
+Experience recording only.
+No grounded action influence.
+No direct reaction from sight.
+No suppression of move_forward when seeing w.
+No preference for move_forward when seeing e.
+No item seeking.
+No item pickup.
+No inventory.
+No action selection changes.
+No goal bias changes.
+No route planner.
+No pathfinding / BFS / A*.
+No real images.
+No computer vision.
+No LLM vision.
+No LLM planning.
+No full-map vision exposure.
+No observed_local_map route planning.
+No Session Working Memory route planning.
+No persistent memory write.
+No lesson_store write.
+No Memory Layer write.
+No Long-term Memory.
+No lesson_candidate pipeline connection.
+No visual understanding claim.
+No symbol grounding solved claim.
+No general learning claim.
+
 ## Micro Navigation Trial Metrics CLI v0
 
 Status:

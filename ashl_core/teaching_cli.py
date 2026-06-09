@@ -10,6 +10,7 @@ from typing import Any
 
 from .fake_sandbox import build_initial_sandbox_state, observe, pick_up
 from .first_output_runtime import generate_minimal_first_output
+from .grounded_action_experience import run_grounded_action_experience_check
 from .lesson_runner import run_lesson_causality_test, run_session_2a_with_lesson
 from .lesson_store import (
     build_lesson_from_failure,
@@ -3345,6 +3346,8 @@ def run_command(command: str) -> dict[str, Any]:
         return run_simulated_vision_observed_map_demo()
     if command == "run-simulated-vision-symbol-grounding-check":
         return run_symbol_grounding_check()
+    if command == "run-grounded-action-experience-check":
+        return run_grounded_action_experience_check()
     return {
         "command": command,
         "status": "error",
@@ -3392,6 +3395,7 @@ def main(argv: list[str] | None = None) -> int:
             "run-simulated-vision-memory-bridge-demo",
             "run-simulated-vision-observed-map-demo",
             "run-simulated-vision-symbol-grounding-check",
+            "run-grounded-action-experience-check",
         ],
     )
     parser.add_argument("--review-id", default="review_001")
@@ -3523,6 +3527,8 @@ def main(argv: list[str] | None = None) -> int:
         result = run_simulated_vision_observed_map_demo(action_sequence=action_sequence)
     elif args.command == "run-simulated-vision-symbol-grounding-check":
         result = run_symbol_grounding_check(scenario=args.scenario)
+    elif args.command == "run-grounded-action-experience-check":
+        result = run_grounded_action_experience_check(scenario=args.scenario)
     else:
         result = run_command(args.command)
     if hasattr(sys.stdout, "reconfigure"):

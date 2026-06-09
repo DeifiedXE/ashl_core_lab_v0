@@ -1303,6 +1303,15 @@ Two-Trial History Boundary:
 - This is structured symbolic vision only; it does not use real images, LLM vision, or pathfinding.
 - This does not prove visual understanding or solve symbol grounding.
 
+## Grounded Action Experience v0
+
+- Adds `py -3 -m ashl_core.teaching_cli run-grounded-action-experience-check`.
+- Records bounded experiences: front symbol + attempted action + immediate outcome.
+- Follows the intended chain: `see -> interact -> outcome -> experience record`.
+- This does not make the agent react directly from sight and does not use experience to modify action selection yet.
+- This does not use real images, LLM vision, pathfinding, or long-term memory.
+- This does not claim visual understanding, solved symbol grounding, or general learning.
+
 ## Micro Navigation Trial Metrics CLI v0
 
 - Adds `py -3 -m ashl_core.teaching_cli run-navigation-trial-metrics --runs 4 --trial-count 5 --max-steps 10`.

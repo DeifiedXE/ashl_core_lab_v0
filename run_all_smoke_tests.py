@@ -35,6 +35,7 @@ from ashl_core.failure_events import (
 )
 from ashl_core.first_output_runtime import UTTERANCE_MAP, generate_minimal_first_output
 from ashl_core.guard import guard_output
+from ashl_core.grounded_action_experience import run_grounded_action_experience_check
 from ashl_core.integrated_loop import run_turn
 from ashl_core.lesson_candidate_drafts import build_lesson_candidate_draft_trace, validate_lesson_candidate_draft_trace
 from ashl_core.lesson_runner import (
@@ -456,6 +457,55 @@ def smoke_simulated_vision_symbol_grounding() -> dict:
         passed,
         {
             "summary": summary,
+            "scenario_results": result.get("scenario_results", []),
+            "boundary": boundary,
+        },
+    )
+
+
+def smoke_grounded_action_experience() -> dict:
+    result = run_grounded_action_experience_check()
+    summary = result.get("experience_summary", {})
+    boundary = result.get("boundary_check", {})
+    scenarios = {item.get("scenario"): item for item in result.get("scenario_results", [])}
+    records = {item.get("front_symbol"): item for item in result.get("experience_records", [])}
+    wall = scenarios.get("wall", {})
+    empty = scenarios.get("empty", {})
+    item = scenarios.get("item", {})
+    passed = (
+        result.get("command") == "run-grounded-action-experience-check"
+        and result.get("flow") == "grounded_action_experience_v0"
+        and summary.get("experience_count") == 3
+        and summary.get("wall_experience_recorded") is True
+        and summary.get("empty_experience_recorded") is True
+        and summary.get("item_experience_recorded") is True
+        and summary.get("experience_records_have_front_symbol") is True
+        and summary.get("experience_records_have_action") is True
+        and summary.get("experience_records_have_outcome") is True
+        and summary.get("all_grounded_action_experiences_recorded") is True
+        and wall.get("front_symbol") == "w"
+        and wall.get("actual_outcome") == "blocked"
+        and wall.get("failure_reasons") == ["wall_blocked"]
+        and empty.get("front_symbol") == "e"
+        and empty.get("actual_outcome") == "moved"
+        and item.get("front_symbol") == "i"
+        and item.get("actual_outcome") == "item_contact"
+        and records.get("w", {}).get("outcome_type") == "blocked"
+        and records.get("e", {}).get("outcome_type") == "moved"
+        and records.get("i", {}).get("outcome_type") == "item_contact"
+        and boundary.get("grounded_action_experience_enabled") is True
+        and boundary.get("grounded_action_influence_enabled") is False
+        and boundary.get("action_selection_modified") is False
+        and boundary.get("experience_used_for_decision") is False
+        and boundary.get("pathfinding_used") is False
+        and boundary.get("llm_vision_used") is False
+        and boundary.get("long_term_memory_write") is False
+    )
+    return _result(
+        "grounded_action_experience",
+        passed,
+        {
+            "experience_summary": summary,
             "scenario_results": result.get("scenario_results", []),
             "boundary": boundary,
         },
@@ -6374,6 +6424,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_simulated_vision_memory_bridge(),
         smoke_simulated_vision_observed_map(),
         smoke_simulated_vision_symbol_grounding(),
+        smoke_grounded_action_experience(),
         smoke_micro_navigation_goal_reach(),
         smoke_micro_navigation_trial_metrics_cli(),
         smoke_micro_navigation_multi_goal_level(),
