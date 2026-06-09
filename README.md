@@ -1805,3 +1805,7 @@ Two-Trial History Boundary:
 ## Simulated Vision Grounding Milestone Log v0
 
 - Added `docs/milestone_logs/simulated_vision_grounding_milestone_2026-06-09.md` after first-person viewport correction and grounded action experience influence validation.
+
+## Simulated Vision Larger Sandbox Design v0
+
+- Added `docs/simulated_vision_larger_sandbox_design_v0.md` as a design-only larger test-room sandbox plan; no runtime, CLI, pathfinding, item collection, exit activation, curiosity, prediction error, or home sandbox behavior was added.

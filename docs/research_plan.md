@@ -3823,3 +3823,26 @@ Non-goals:
 - no route planner, item seeking, item pickup, or inventory
 - no long-term memory, lesson_store write, Memory Layer write, or lesson_candidate pipeline connection
 - no visual understanding, solved symbol grounding, or general learning claim
+
+## Simulated Vision Larger Sandbox Design v0
+
+Status: completed / design-only / no-runtime.
+
+Goal:
+Define the next larger symbolic simulated vision test-room sandbox without implementing it.
+
+Scope:
+- defines a larger symbolic map with walls, empty cells, agent start, interactable objects, doorway/passable markers, and a future conditional exit
+- documents first-person vision, observed local map, experience influence, future curiosity hooks, and future prediction error hooks as design targets
+- defines `D` as a passable symbol, not a taught semantic room boundary
+- records that the same `I` symbol may later have different outcomes at different positions
+- keeps `E` as a future conditional exit only
+
+Non-goals:
+- no runtime behavior
+- no new CLI or map loader
+- no item collection, pickup, inventory, or exit activation
+- no curiosity or prediction error implementation
+- no place memory or home sandbox
+- no pathfinding / BFS / A*
+- no lesson_store write, Memory Layer write, Long-term Memory write, or lesson_candidate pipeline connection
