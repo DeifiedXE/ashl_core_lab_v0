@@ -5219,3 +5219,20 @@ Scope:
 
 Non-goals:
 - does not create behavior correction preview, apply lessons, add runtime action selection, modify action selection or action behavior, add persistent learning, create persistent candidates, write persistent rules, write memory, mutate predictors, add perception-to-action or focus-to-action bridge, add endocrine runtime, autonomy, semantic vision, consciousness, or subjective claims
+
+## Reviewed Lesson Trace Preview v0
+
+Status: completed / trace-check-only / no-runtime-change.
+
+Goal:
+Create deterministic trace-only preview records from valid human-reviewed `lesson_candidate` records.
+
+Scope:
+- adds `ashl_core.reviewed_lesson_trace_preview`
+- adds `py -3 -m ashl_core.teaching_cli run-reviewed-lesson-trace-preview-check`
+- reuses `lesson_candidate_from_failure_reason`, `lesson_candidate_review_gate`, `lesson_candidate_review_evidence_summary`, and `lesson_candidate_human_review_decision_schema`
+- permits a valid preview only for a valid human review decision with `decision.status == approved_for_preview`
+- blocks rejected, needs_revision, stale, missing review decision, source linkage mismatch, unknown preview type, lesson application, action selection influence, action behavior change, memory write, predictor mutation, persistent rule write, and persistent learning flags
+
+Non-goals:
+- does not apply lessons, change action selection, change action behavior, write memory, persist learning, write persistent rules, mutate predictors, add runtime lesson application, add LLM planning, add pathfinding, replay routes, or claim proof of learning / consciousness / subjective experience

@@ -2332,3 +2332,10 @@ Two-Trial History Boundary:
 - Adds `py -3 -m ashl_core.teaching_cli run-lesson-candidate-human-review-decision-schema-check`.
 - Defines human/manual review decision records for `lesson_candidate` evidence summaries.
 - `approved_for_preview` permits only future trace-only preview and does not approve lesson application, memory write, persistence, or predictor mutation.
+
+## Reviewed Lesson Trace Preview v0
+
+- Adds `py -3 -m ashl_core.teaching_cli run-reviewed-lesson-trace-preview-check`.
+- Creates deterministic trace-only preview records only when a valid `lesson_candidate` has a valid human review decision with `decision.status == approved_for_preview`.
+- Blocks rejected, needs_revision, stale, missing-decision, source-linkage mismatch, unknown preview type, and any application/action/memory/predictor/persistence side-effect flags.
+- Preview remains trace-only: no lesson is applied, no action selection or behavior changes, no memory is written, and no predictor or persistent rule is modified.

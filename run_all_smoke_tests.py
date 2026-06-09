@@ -63,6 +63,7 @@ from ashl_core.lesson_candidate_human_review_decision_schema import (
 )
 from ashl_core.lesson_candidate_review_evidence_summary import run_lesson_candidate_review_evidence_summary_check
 from ashl_core.lesson_candidate_review_gate import run_lesson_candidate_review_gate_check
+from ashl_core.reviewed_lesson_trace_preview import run_reviewed_lesson_trace_preview_check
 from ashl_core.mimetic_endocrine_signal_schema import run_mimetic_endocrine_signal_schema_check
 from ashl_core.mimetic_endocrine_four_axis_trace_integration import (
     run_mimetic_endocrine_four_axis_trace_integration_check,
@@ -2201,6 +2202,69 @@ def smoke_lesson_candidate_human_review_decision_schema() -> dict:
     )
     return _result(
         "lesson_candidate_human_review_decision_schema",
+        passed,
+        {
+            "summary": summary,
+            "validation_results": result.get("validation_results", []),
+            "boundary": boundary,
+        },
+    )
+
+
+def smoke_reviewed_lesson_trace_preview() -> dict:
+    result = run_reviewed_lesson_trace_preview_check()
+    summary = result.get("summary", {})
+    boundary = result.get("boundary_check", {})
+    passed = (
+        result.get("command") == "run-reviewed-lesson-trace-preview-check"
+        and result.get("flow") == "reviewed_lesson_trace_preview_v0"
+        and result.get("status") == "ok"
+        and summary.get("review_decision_record_count") == 13
+        and summary.get("valid_review_decision_count") == 4
+        and summary.get("approved_for_preview_count") == 1
+        and summary.get("rejected_count") == 1
+        and summary.get("needs_revision_count") == 1
+        and summary.get("stale_count") == 1
+        and summary.get("preview_record_count") == 22
+        and summary.get("valid_preview_count") == 1
+        and summary.get("invalid_preview_count") == 21
+        and summary.get("blocked_preview_count") == 21
+        and summary.get("rejected_preview_blocked_count") >= 1
+        and summary.get("needs_revision_preview_blocked_count") >= 1
+        and summary.get("stale_preview_blocked_count") >= 1
+        and summary.get("missing_review_decision_blocked_count") >= 1
+        and summary.get("source_linkage_mismatch_blocked_count") >= 1
+        and summary.get("unknown_preview_type_blocked_count") >= 1
+        and summary.get("lesson_application_allowed_blocked_count") >= 1
+        and summary.get("lesson_applied_blocked_count") >= 1
+        and summary.get("action_selection_influence_blocked_count") >= 1
+        and summary.get("action_behavior_changed_blocked_count") >= 1
+        and summary.get("memory_write_blocked_count") >= 1
+        and summary.get("predictor_mutation_blocked_count") >= 1
+        and summary.get("persistent_rule_write_blocked_count") >= 1
+        and summary.get("persistent_learning_blocked_count") >= 1
+        and summary.get("lesson_application_runtime_count") == 0
+        and summary.get("action_selection_influence_count") == 0
+        and summary.get("action_behavior_changed_count") == 0
+        and summary.get("memory_write_count") == 0
+        and summary.get("predictor_modified_count") == 0
+        and summary.get("persistent_rule_write_count") == 0
+        and summary.get("autonomy_enabled_count") == 0
+        and boundary.get("trace_only_preview") is True
+        and boundary.get("approved_for_preview_only") is True
+        and boundary.get("lesson_application_allowed") is False
+        and boundary.get("lesson_applied") is False
+        and boundary.get("action_selection_influence") is False
+        and boundary.get("action_behavior_changed") is False
+        and boundary.get("memory_write") is False
+        and boundary.get("predictor_modified") is False
+        and boundary.get("persistent_rule_write") is False
+        and boundary.get("persistent_learning") is False
+        and boundary.get("llm_planning_used") is False
+        and boundary.get("pathfinding_used") is False
+    )
+    return _result(
+        "reviewed_lesson_trace_preview",
         passed,
         {
             "summary": summary,
@@ -10323,6 +10387,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_lesson_candidate_review_gate(),
         smoke_lesson_candidate_review_evidence_summary(),
         smoke_lesson_candidate_human_review_decision_schema(),
+        smoke_reviewed_lesson_trace_preview(),
         smoke_prediction_accuracy_check(),
         smoke_rule_candidate_from_mismatch(),
         smoke_rule_candidate_review_gate(),
