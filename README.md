@@ -2015,3 +2015,10 @@ Two-Trial History Boundary:
 - Records the first connected scripted trace from symbolic perception through review gate pending state.
 - Syncs the milestone into `docs/current_boundary_index.md` as Boundary Index Version `2026-06-09-b36`.
 - Documents the expected `unknown_prediction` chain break and keeps approval/application disabled.
+
+## Persistent Rule Application Design v0
+
+- Adds `docs/persistent_rule_application_design_v0.md`.
+- Defines the safety gate between approved candidate and persistent rule.
+- Requires temporary verification, repeated validation, challenge survival, low recent failure, low active conflict, preserved trace, rollback path, and separate human persistent approval.
+- Design-only: does not implement persistent rule storage, write persistent rules, modify global predictor, modify action selection, or add long-term memory.

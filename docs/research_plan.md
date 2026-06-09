@@ -4400,3 +4400,20 @@ Scope:
 
 Non-goals:
 - no runtime behavior, new CLI, UI, action selection modification, prediction-driven suppression/preference, candidate auto-approval, Qingyin self-approval, candidate application, global predictor modification, persistent rule application, lesson_store write, Memory Layer write, long-term memory, lesson_candidate pipeline connection, pathfinding, route planner, item seeking, item collection, reward change, random walk change, autonomous exploration, decision loop, LLM reasoning, LLM planning, LLM vision, general learning claim, autonomous learning claim, visual understanding claim, solved symbol grounding claim, consciousness claim, or subjective experience claim
+
+## Persistent Rule Application Design v0
+
+Status: completed / design-only / no-runtime-change.
+
+Goal:
+Define the safety gate between an approved candidate and a persistent rule before any implementation is allowed.
+
+Scope:
+- adds `docs/persistent_rule_application_design_v0.md`
+- defines `approved_candidate != persistent_rule`
+- requires temporary apply verification, repeated similar-context validation, challenge survival, low recent failure, low active conflict, trace preservation, rollback path, and separate human persistent approval
+- defines suggested persistent status flow and blocked / terminal statuses
+- separates formal persistent rule application from later instinct-like internalization
+
+Non-goals:
+- no runtime behavior, new CLI, runtime tests, persistent rule storage, persistent rule table, persistent rule write, global predictor modification, action selection modification, prediction-driven suppression/preference, candidate auto-approval, Qingyin self-approval, candidate application, lesson_store write, Memory Layer write, long-term memory, lesson_candidate pipeline connection, lesson internalization, instinct-like behavior layer, pathfinding, route planner, item seeking, item collection, reward change, random walk change, UI change, autonomous exploration, decision loop, LLM reasoning, LLM planning, LLM vision, Boundary Index modification, general learning claim, autonomous learning claim, visual understanding claim, solved symbol grounding claim, consciousness claim, or subjective experience claim
