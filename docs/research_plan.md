@@ -4855,3 +4855,20 @@ Scope:
 
 Non-goals:
 - no runtime frame storage, runtime current_frame / previous_frame storage, automatic frame replacement, frame comparison runner, change detection runtime, runtime change_record creation, visual change records runtime, focus selector, focus candidates, attention mechanism, action selection influence, memory write, predictor mutation, object recognition, object tracking, semantic labels, semantic vision, LLM vision, CNN, YOLO, UNet, symbol grounding claim, consciousness claim, or subjective visual experience claim
+
+## Visual Frame Change Trace Check v0
+
+Status: completed / trace-check-only / no-runtime-change.
+
+Goal:
+Generate deterministic low-level `change_records` from a valid `previous_frame` / `current_frame` demo pair.
+
+Scope:
+- adds `ashl_core.visual_frame_change_trace`
+- adds `py -3 -m ashl_core.teaching_cli run-visual-frame-change-trace-check`
+- reuses `visual_frame_pair_demo_assembly` for valid previous/current frame fixtures
+- compares retina feature records by position tuple across low-level fields only
+- validates generated change records through `visual_frame_change_schema`
+
+Non-goals:
+- no runtime frame storage, runtime current_frame / previous_frame storage, automatic frame replacement, continuous frame comparison runtime, continuous change detection runtime, focus selector, focus candidates, attention mechanism, action selection influence, memory write, predictor mutation, object tracking, object recognition, semantic labels, semantic vision, LLM vision, CNN, YOLO, UNet, symbol grounding claim, consciousness claim, or subjective visual experience claim

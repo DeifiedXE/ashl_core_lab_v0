@@ -47,6 +47,7 @@ from .two_round_instinct_reward_comparison import run_two_round_instinct_reward_
 from .visual_frame_assembly_from_retina_features import run_visual_frame_assembly_from_retina_features_check
 from .visual_frame_buffer_schema import run_visual_frame_buffer_schema_check
 from .visual_frame_change_schema import run_visual_frame_change_schema_check
+from .visual_frame_change_trace import run_visual_frame_change_trace_check
 from .visual_frame_pair_demo_assembly import run_visual_frame_pair_demo_assembly_check
 from .wall_experience_influence import run_wall_experience_influence_check
 from .lesson_runner import run_lesson_causality_test, run_session_2a_with_lesson
@@ -3467,6 +3468,8 @@ def run_command(command: str) -> dict[str, Any] | str:
         return run_visual_frame_assembly_from_retina_features_check()
     if command == "run-visual-frame-change-schema-check":
         return run_visual_frame_change_schema_check()
+    if command == "run-visual-frame-change-trace-check":
+        return run_visual_frame_change_trace_check()
     if command == "run-visual-frame-pair-demo-assembly-check":
         return run_visual_frame_pair_demo_assembly_check()
     return {
@@ -3555,6 +3558,7 @@ def main(argv: list[str] | None = None) -> int:
             "run-visual-frame-buffer-schema-check",
             "run-visual-frame-assembly-from-retina-features-check",
             "run-visual-frame-change-schema-check",
+            "run-visual-frame-change-trace-check",
             "run-visual-frame-pair-demo-assembly-check",
         ],
     )
@@ -3784,6 +3788,8 @@ def main(argv: list[str] | None = None) -> int:
         result = run_visual_frame_assembly_from_retina_features_check()
     elif args.command == "run-visual-frame-change-schema-check":
         result = run_visual_frame_change_schema_check()
+    elif args.command == "run-visual-frame-change-trace-check":
+        result = run_visual_frame_change_trace_check()
     elif args.command == "run-visual-frame-pair-demo-assembly-check":
         result = run_visual_frame_pair_demo_assembly_check()
     else:

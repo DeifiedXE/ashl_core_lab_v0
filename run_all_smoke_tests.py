@@ -245,6 +245,7 @@ from ashl_core.visual_frame_assembly_from_retina_features import (
 )
 from ashl_core.visual_frame_buffer_schema import run_visual_frame_buffer_schema_check
 from ashl_core.visual_frame_change_schema import run_visual_frame_change_schema_check
+from ashl_core.visual_frame_change_trace import run_visual_frame_change_trace_check
 from ashl_core.visual_frame_pair_demo_assembly import run_visual_frame_pair_demo_assembly_check
 from ashl_core.wall_experience_influence import run_wall_experience_influence_check
 
@@ -2966,6 +2967,63 @@ def smoke_visual_frame_pair_demo_assembly() -> dict:
         {
             "summary": summary,
             "pair_validation_results": result.get("pair_validation_results", []),
+            "boundary": boundary,
+        },
+    )
+
+
+def smoke_visual_frame_change_trace() -> dict:
+    result = run_visual_frame_change_trace_check()
+    summary = result.get("summary", {})
+    boundary = result.get("boundary_check", {})
+    passed = (
+        result.get("command") == "run-visual-frame-change-trace-check"
+        and result.get("flow") == "visual_frame_change_trace_v0"
+        and result.get("status") == "ok"
+        and summary.get("pair_count") == 1
+        and summary.get("valid_pair_count") == 1
+        and summary.get("previous_frame_valid_count") == 1
+        and summary.get("current_frame_valid_count") == 1
+        and summary.get("generated_change_record_count", 0) > 0
+        and summary.get("valid_change_record_count") == summary.get("generated_change_record_count")
+        and summary.get("invalid_change_record_count") == 0
+        and summary.get("feature_modified_count", 0) > 0
+        and summary.get("position_changed_count") == 0
+        and summary.get("semantic_label_non_null_count") == 0
+        and summary.get("object_recognition_count") == 0
+        and summary.get("semantic_vision_count") == 0
+        and summary.get("object_tracking_count") == 0
+        and summary.get("runtime_change_detection_count") == 0
+        and summary.get("focus_candidate_created_count") == 0
+        and summary.get("frame_comparison_runtime_count") == 0
+        and summary.get("change_detection_runtime_count") == 0
+        and summary.get("runtime_frame_storage_count") == 0
+        and summary.get("action_selection_influence_count") == 0
+        and summary.get("memory_write_count") == 0
+        and summary.get("focus_selection_count") == 0
+        and summary.get("endocrine_control_count") == 0
+        and summary.get("predictor_modified_count") == 0
+        and boundary.get("trace_check_only") is True
+        and boundary.get("uses_visual_frame_pair_demo_assembly") is True
+        and boundary.get("uses_visual_frame_change_schema") is True
+        and boundary.get("position_matching_only") is True
+        and boundary.get("position_changed_added") is False
+        and boundary.get("runtime_frame_storage_added") is False
+        and boundary.get("continuous_frame_comparison_runtime_added") is False
+        and boundary.get("continuous_change_detection_runtime_added") is False
+        and boundary.get("focus_selector_added") is False
+        and boundary.get("action_selection_modified") is False
+        and boundary.get("visual_memory_write") is False
+        and boundary.get("object_tracking_enabled") is False
+        and boundary.get("semantic_vision_claimed") is False
+        and boundary.get("llm_vision_used") is False
+    )
+    return _result(
+        "visual_frame_change_trace",
+        passed,
+        {
+            "summary": summary,
+            "change_record_validation_results": result.get("change_record_validation_results", []),
             "boundary": boundary,
         },
     )
@@ -9278,6 +9336,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_visual_frame_change_design(),
         smoke_visual_frame_change_schema(),
         smoke_visual_frame_pair_demo_assembly(),
+        smoke_visual_frame_change_trace(),
         smoke_micro_navigation_goal_reach(),
         smoke_micro_navigation_trial_metrics_cli(),
         smoke_micro_navigation_multi_goal_level(),
