@@ -147,6 +147,14 @@ from ashl_core.simulated_vision_sandbox import (
     render_viewport,
     run_simulated_vision_viewport_demo,
 )
+from ashl_core.simulated_vision_larger_sandbox import (
+    apply_larger_sandbox_action,
+    build_initial_larger_sandbox_state,
+    build_larger_sandbox_map_summary,
+    create_simulated_vision_larger_sandbox,
+    render_larger_sandbox_viewport,
+    run_simulated_vision_larger_sandbox_demo,
+)
 from ashl_core.simulated_vision_memory_bridge import run_simulated_vision_memory_bridge_demo
 from ashl_core.simulated_vision_observed_map import run_simulated_vision_observed_map_demo
 from ashl_core.simulated_vision_symbol_grounding import run_symbol_grounding_check
@@ -363,6 +371,96 @@ def smoke_simulated_vision_first_person_viewport() -> dict:
             "initial_viewport": initial_viewport,
             "wall_front_symbol": wall_viewport[1][1],
             "item_front_symbol": item_viewport[1][1],
+            "boundary": boundary,
+        },
+    )
+
+
+def smoke_simulated_vision_larger_sandbox_static_runtime() -> dict:
+    level = create_simulated_vision_larger_sandbox()
+    initial_state = build_initial_larger_sandbox_state(level)
+    summary = build_larger_sandbox_map_summary(level)
+    initial_viewport = render_larger_sandbox_viewport(initial_state, level)
+    doorway_state = {"level_id": level["level_id"], "pos": (3, 2), "facing": "east", "tick": 0}
+    doorway_viewport = render_larger_sandbox_viewport(doorway_state, level)
+    doorway_result = apply_larger_sandbox_action(doorway_state, level, "move_forward")
+    exit_state = {"level_id": level["level_id"], "pos": (10, 7), "facing": "east", "tick": 0}
+    exit_viewport = render_larger_sandbox_viewport(exit_state, level)
+    exit_result = apply_larger_sandbox_action(exit_state, level, "move_forward")
+    item_state = {"level_id": level["level_id"], "pos": (8, 2), "facing": "north", "tick": 0}
+    item_result = apply_larger_sandbox_action(item_state, level, "move_forward")
+    wall_state = {"level_id": level["level_id"], "pos": (2, 1), "facing": "north", "tick": 0}
+    wall_result = apply_larger_sandbox_action(wall_state, level, "move_forward")
+    result = run_simulated_vision_larger_sandbox_demo()
+    boundary = result.get("boundary_check", {})
+    passed = (
+        level["level_id"] == "simulated_vision_larger_sandbox_v0"
+        and summary.get("width") == 12
+        and summary.get("height") == 9
+        and summary.get("agent_start") == [2, 2]
+        and summary.get("initial_facing") == "north"
+        and summary.get("item_count") == 4
+        and summary.get("doorway_count") == 2
+        and summary.get("exit_count") == 1
+        and summary.get("unsupported_symbols") == []
+        and initial_viewport[2][1] == "a"
+        and initial_viewport[1][1] != "a"
+        and doorway_viewport[1][1] == "d"
+        and doorway_result["trace"]["result"] == "moved"
+        and doorway_result["trace"]["effect_tags"] == ["passage_crossed"]
+        and exit_viewport[1][1] == "g"
+        and exit_result["trace"]["result"] == "exit_contact"
+        and exit_result["trace"]["effect_tags"] == ["exit_contact"]
+        and item_result["trace"]["result"] == "item_contact"
+        and item_result["trace"]["effect_tags"] == ["item_contact"]
+        and wall_result["trace"]["result"] == "blocked"
+        and wall_result["trace"]["failure_reasons"] == ["wall_blocked"]
+        and result.get("command") == "run-simulated-vision-larger-sandbox-demo"
+        and result.get("flow") == "simulated_vision_larger_sandbox_static_runtime_v0"
+        and len(result.get("action_trace", [])) == 7
+        and boundary.get("larger_static_sandbox_enabled") is True
+        and boundary.get("simulated_vision_only") is True
+        and boundary.get("structured_symbols_only") is True
+        and boundary.get("real_image_vision") is False
+        and boundary.get("llm_vision_used") is False
+        and boundary.get("pathfinding_used") is False
+        and boundary.get("route_planner_added") is False
+        and boundary.get("full_map_visible_to_agent") is False
+        and boundary.get("first_person_viewport") is True
+        and boundary.get("agent_viewport_position") == [2, 1]
+        and boundary.get("front_symbol_position") == [1, 1]
+        and boundary.get("centered_top_down_viewport") is False
+        and boundary.get("doorway_symbol_supported") is True
+        and boundary.get("doorway_passable") is True
+        and boundary.get("doorway_semantic_boundary_given_to_agent") is False
+        and boundary.get("exit_placeholder_supported") is True
+        and boundary.get("exit_conditional_spawn_enabled") is False
+        and boundary.get("task_completion_enabled") is False
+        and boundary.get("item_collection_enabled") is False
+        and boundary.get("item_pickup_enabled") is False
+        and boundary.get("inventory_enabled") is False
+        and boundary.get("curiosity_enabled") is False
+        and boundary.get("prediction_error_enabled") is False
+        and boundary.get("place_memory_enabled") is False
+        and boundary.get("home_sandbox_enabled") is False
+        and boundary.get("action_selection_modified") is False
+        and boundary.get("existing_navigation_action_selection_modified") is False
+        and boundary.get("lesson_store_write") is False
+        and boundary.get("memory_layer_write") is False
+        and boundary.get("long_term_memory_write") is False
+        and boundary.get("visual_understanding_claimed") is False
+        and boundary.get("symbol_grounding_solved_claimed") is False
+        and boundary.get("general_learning_claimed") is False
+    )
+    return _result(
+        "simulated_vision_larger_sandbox_static_runtime",
+        passed,
+        {
+            "map_summary": summary,
+            "doorway_result": doorway_result["trace"]["result"],
+            "exit_result": exit_result["trace"]["result"],
+            "item_result": item_result["trace"]["result"],
+            "wall_result": wall_result["trace"]["result"],
             "boundary": boundary,
         },
     )
@@ -6548,6 +6646,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_action_sandbox(),
         smoke_simulated_vision_viewport(),
         smoke_simulated_vision_first_person_viewport(),
+        smoke_simulated_vision_larger_sandbox_static_runtime(),
         smoke_simulated_vision_memory_bridge(),
         smoke_simulated_vision_observed_map(),
         smoke_simulated_vision_symbol_grounding(),

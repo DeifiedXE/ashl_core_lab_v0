@@ -3846,3 +3846,26 @@ Non-goals:
 - no place memory or home sandbox
 - no pathfinding / BFS / A*
 - no lesson_store write, Memory Layer write, Long-term Memory write, or lesson_candidate pipeline connection
+
+## Simulated Vision Larger Sandbox Static Runtime v0
+
+Status: completed / static-runtime / no-planning.
+
+Goal:
+Load the larger symbolic simulated vision test-room map and render it through the existing first-person viewport convention.
+
+Scope:
+- adds `ashl_core.simulated_vision_larger_sandbox`
+- adds `py -3 -m ashl_core.teaching_cli run-simulated-vision-larger-sandbox-demo`
+- supports first-person viewport symbols `w/e/i/d/g/x/a`
+- maps `D` to `d`; `D` is passable and can produce `passage_crossed`
+- maps `E` to static placeholder `g`; contact can produce `exit_contact`
+- keeps `E` static only, with no conditional spawn or task completion
+
+Non-goals:
+- no item collection, pickup, inventory, or item seeking
+- no exit activation, win condition, or task completion
+- no curiosity or prediction error implementation
+- no place memory, home sandbox, room inference, or semantic room understanding
+- no pathfinding / BFS / A* or route planner
+- no lesson_store write, Memory Layer write, Long-term Memory write, or lesson_candidate pipeline connection

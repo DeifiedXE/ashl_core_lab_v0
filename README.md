@@ -1809,3 +1809,11 @@ Two-Trial History Boundary:
 ## Simulated Vision Larger Sandbox Design v0
 
 - Added `docs/simulated_vision_larger_sandbox_design_v0.md` as a design-only larger test-room sandbox plan; no runtime, CLI, pathfinding, item collection, exit activation, curiosity, prediction error, or home sandbox behavior was added.
+
+## Simulated Vision Larger Sandbox Static Runtime v0
+
+- Adds `py -3 -m ashl_core.teaching_cli run-simulated-vision-larger-sandbox-demo`.
+- Loads the larger symbolic test-room map with first-person viewport symbols `w/e/i/d/g/x/a`.
+- `D` is passable and rendered as `d`, but is not taught as a semantic room boundary.
+- `E` is rendered as static placeholder `g`; no conditional exit activation or task completion is added.
+- No item collection, curiosity, prediction error, place memory, pathfinding, route planner, or home sandbox behavior is added.
