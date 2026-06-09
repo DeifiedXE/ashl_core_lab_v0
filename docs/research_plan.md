@@ -4204,3 +4204,19 @@ Scope:
 
 Non-goals:
 - no runtime behavior, CLI, UI, Boundary Index patch, pathfinding, item seeking, long-term memory, Memory Layer write, lesson_store write, or general learning claim
+
+## Failure Reason Classifier v0
+
+Status: completed / deterministic-reason-classification / no-prediction.
+
+Goal:
+Start the Experience Abstraction Layer by converting raw action outcomes into deterministic reason categories.
+
+Scope:
+- adds `ashl_core.failure_reason_classifier`
+- adds `py -3 -m ashl_core.teaching_cli run-failure-reason-classifier-check`
+- classifies wall-blocked, empty-moved, item-contact, passage-crossed, exit-contact, turn, look, and unknown cases
+- upgrades the local record shape from `action -> outcome` toward `action -> outcome -> reason classification`
+
+Non-goals:
+- no prediction, similar-context matching, rule learning, rule revision, action selection change, reward change, random walk change, UI change, LLM reasoning, memory write, or general learning claim

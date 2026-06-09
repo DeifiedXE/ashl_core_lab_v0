@@ -27,6 +27,7 @@ from ashl_core.deliberation import deliberate
 from ashl_core.expression import build_expression_package
 from ashl_core.experience_log import list_experience_events, list_lesson_candidates
 from ashl_core.fake_sandbox import build_initial_sandbox_state, pick_up
+from ashl_core.failure_reason_classifier import run_failure_reason_classifier_check
 from ashl_core.failure_events import (
     build_failure_event,
     build_lesson_candidate_input_trace,
@@ -1590,6 +1591,57 @@ def smoke_two_round_instinct_reward_comparison() -> dict:
             "round1": round1,
             "round2": round2,
             "comparison": comparison,
+            "boundary": boundary,
+        },
+    )
+
+
+def smoke_failure_reason_classifier() -> dict:
+    result = run_failure_reason_classifier_check()
+    classification_results = result.get("classification_results", [])
+    summary = result.get("summary", {})
+    boundary = result.get("boundary_check", {})
+    reasons = {
+        item.get("case_name"): item.get("classification", {}).get("primary_reason")
+        for item in classification_results
+    }
+    passed = (
+        result.get("command") == "run-failure-reason-classifier-check"
+        and result.get("flow") == "failure_reason_classifier_v0"
+        and result.get("status") == "ok"
+        and reasons.get("wall_blocked") == "front_cell_wall"
+        and reasons.get("empty_moved") == "front_cell_empty_walkable"
+        and reasons.get("item_contact") == "front_cell_item_contact"
+        and reasons.get("passage_crossed") == "front_cell_passage_crossed"
+        and reasons.get("exit_contact") == "front_cell_exit_contact"
+        and reasons.get("turn_right") == "turn_action_orientation_change"
+        and reasons.get("look") == "look_action_observation_only"
+        and reasons.get("unknown") == "unknown_outcome_reason"
+        and summary.get("case_count") == 8
+        and summary.get("passed_count") == 8
+        and summary.get("failed_count") == 0
+        and summary.get("known_reason_count") == 7
+        and summary.get("unknown_reason_count") == 1
+        and summary.get("all_failure_reason_classifier_checks_passed") is True
+        and boundary.get("failure_reason_classifier_enabled") is True
+        and boundary.get("experience_abstraction_layer_started") is True
+        and boundary.get("deterministic_rules_only") is True
+        and boundary.get("action_selection_modified") is False
+        and boundary.get("prediction_enabled") is False
+        and boundary.get("similar_context_matching_enabled") is False
+        and boundary.get("rule_learning_enabled") is False
+        and boundary.get("rule_revision_enabled") is False
+        and boundary.get("pathfinding_used") is False
+        and boundary.get("llm_reasoning_used") is False
+        and boundary.get("long_term_memory_write") is False
+        and boundary.get("general_learning_claimed") is False
+    )
+    return _result(
+        "failure_reason_classifier",
+        passed,
+        {
+            "reasons": reasons,
+            "summary": summary,
             "boundary": boundary,
         },
     )
@@ -7523,6 +7575,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_reward_biased_action_tendency(),
         smoke_reward_biased_random_walk_check(),
         smoke_two_round_instinct_reward_comparison(),
+        smoke_failure_reason_classifier(),
         smoke_micro_navigation_goal_reach(),
         smoke_micro_navigation_trial_metrics_cli(),
         smoke_micro_navigation_multi_goal_level(),

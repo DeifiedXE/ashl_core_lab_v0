@@ -1929,3 +1929,10 @@ Two-Trial History Boundary:
 - Added `docs/milestone_logs/instinct_reward_line_milestone_2026-06-09.md`.
 - Records completion of the instinct / wall / item reward immediate-tendency line.
 - UI expansion is paused; next main line is Experience Abstraction Layer.
+
+## Failure Reason Classifier v0
+
+- Adds `py -3 -m ashl_core.teaching_cli run-failure-reason-classifier-check`.
+- Starts the Experience Abstraction Layer by converting raw action outcomes into deterministic reason categories.
+- Classifies wall-blocked, empty-moved, item-contact, passage-crossed, exit-contact, turn, look, and unknown cases.
+- Does not add prediction, similar-context matching, rule learning, action selection changes, LLM reasoning, or long-term memory.

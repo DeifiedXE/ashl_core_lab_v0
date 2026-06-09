@@ -9,6 +9,7 @@ from pathlib import Path
 from typing import Any
 
 from .fake_sandbox import build_initial_sandbox_state, observe, pick_up
+from .failure_reason_classifier import run_failure_reason_classifier_check
 from .first_output_runtime import generate_minimal_first_output
 from .grounded_action_experience import run_grounded_action_experience_check
 from .grounded_action_experience_influence import run_grounded_action_experience_influence_check
@@ -3384,6 +3385,8 @@ def run_command(command: str) -> dict[str, Any] | str:
         return run_reward_biased_random_walk_check()
     if command == "run-two-round-instinct-reward-comparison":
         return run_two_round_instinct_reward_comparison()
+    if command == "run-failure-reason-classifier-check":
+        return run_failure_reason_classifier_check()
     return {
         "command": command,
         "status": "error",
@@ -3444,6 +3447,7 @@ def main(argv: list[str] | None = None) -> int:
             "run-reward-biased-action-tendency-check",
             "run-reward-biased-random-walk-check",
             "run-two-round-instinct-reward-comparison",
+            "run-failure-reason-classifier-check",
         ],
     )
     parser.add_argument("--review-id", default="review_001")
@@ -3618,6 +3622,8 @@ def main(argv: list[str] | None = None) -> int:
         result = run_reward_biased_random_walk_check(seed=args.seed, trials=args.trials)
     elif args.command == "run-two-round-instinct-reward-comparison":
         result = run_two_round_instinct_reward_comparison(seed=args.seed, trials=args.trials)
+    elif args.command == "run-failure-reason-classifier-check":
+        result = run_failure_reason_classifier_check()
     else:
         result = run_command(args.command)
     if hasattr(sys.stdout, "reconfigure"):
