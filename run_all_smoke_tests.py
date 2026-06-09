@@ -42,6 +42,7 @@ from ashl_core.grounded_action_experience import run_grounded_action_experience_
 from ashl_core.grounded_action_experience_influence import run_grounded_action_experience_influence_check
 from ashl_core.instinct_random_walk_runner import run_instinct_random_walk
 from ashl_core.integrated_experience_session_trace import run_integrated_experience_session_trace
+from ashl_core.integrated_trace_chain_break_audit import run_integrated_trace_chain_break_audit
 from ashl_core.item_reward_event import run_item_reward_event_check
 from ashl_core.integrated_loop import run_turn
 from ashl_core.lesson_candidate_drafts import build_lesson_candidate_draft_trace, validate_lesson_candidate_draft_trace
@@ -2121,6 +2122,68 @@ def smoke_integrated_experience_session_trace() -> dict:
             "boundary": boundary,
             "mismatch_steps": [step.get("case_name") for step in mismatch_steps],
             "pending_steps": [step.get("case_name") for step in pending_steps],
+        },
+    )
+
+
+def smoke_integrated_trace_chain_break_audit() -> dict:
+    result = run_integrated_trace_chain_break_audit()
+    source = result.get("source_trace_summary", {})
+    audit_results = result.get("break_audit_results", [])
+    summary = result.get("audit_summary", {})
+    boundary = result.get("boundary_check", {})
+    breaks = [item for item in audit_results if item.get("break_detected")]
+    match_steps = [item for item in audit_results if item.get("chain_status") == "completed_no_mismatch"]
+    mismatch_step = next(
+        (item for item in audit_results if item.get("case_name") == "mismatch_empty_to_wall"),
+        {},
+    )
+    passed = (
+        result.get("command") == "run-integrated-trace-chain-break-audit"
+        and result.get("flow") == "integrated_trace_chain_break_audit_v0"
+        and result.get("status") == "ok"
+        and source.get("step_count") == len(audit_results)
+        and source.get("source_chain_break_count") == 1
+        and source.get("approved_count") == 0
+        and source.get("applied_count") == 0
+        and summary.get("break_detected_count") == 1
+        and summary.get("expected_break_count") == 1
+        and summary.get("unexpected_break_count") == 0
+        and summary.get("source_chain_break_count_matches_audit") is True
+        and summary.get("chain_break_explained") is True
+        and summary.get("recommended_next_action") == "document_expected_skip"
+        and len(breaks) == 1
+        and breaks[0].get("case_name") == "unknown_prediction"
+        and breaks[0].get("break_category") == "intentional_no_prediction_available"
+        and breaks[0].get("expected_or_unexpected") == "expected_break"
+        and breaks[0].get("has_candidate_result") is True
+        and breaks[0].get("has_review_gate_result") is True
+        and all(item.get("break_detected") is False for item in match_steps)
+        and mismatch_step.get("has_candidate_result") is True
+        and mismatch_step.get("has_review_gate_result") is True
+        and mismatch_step.get("break_detected") is False
+        and boundary.get("integrated_trace_chain_break_audit_enabled") is True
+        and boundary.get("audit_only") is True
+        and boundary.get("source_trace_modified") is False
+        and boundary.get("runtime_behavior_modified") is False
+        and boundary.get("action_selection_modified") is False
+        and boundary.get("candidate_application_enabled") is False
+        and boundary.get("candidate_auto_approved") is False
+        and boundary.get("global_predictor_modified") is False
+        and boundary.get("lesson_store_write") is False
+        and boundary.get("memory_layer_write") is False
+        and boundary.get("long_term_memory_write") is False
+        and boundary.get("llm_reasoning_used") is False
+        and boundary.get("general_learning_claimed") is False
+    )
+    return _result(
+        "integrated_trace_chain_break_audit",
+        passed,
+        {
+            "source": source,
+            "summary": summary,
+            "boundary": boundary,
+            "breaks": breaks,
         },
     )
 
@@ -8062,6 +8125,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_approved_candidate_preview(),
         smoke_reviewed_candidate_apply_verification(),
         smoke_integrated_experience_session_trace(),
+        smoke_integrated_trace_chain_break_audit(),
         smoke_micro_navigation_goal_reach(),
         smoke_micro_navigation_trial_metrics_cli(),
         smoke_micro_navigation_multi_goal_level(),

@@ -17,6 +17,7 @@ from .grounded_action_experience import run_grounded_action_experience_check
 from .grounded_action_experience_influence import run_grounded_action_experience_influence_check
 from .instinct_random_walk_runner import run_instinct_random_walk
 from .integrated_experience_session_trace import run_integrated_experience_session_trace
+from .integrated_trace_chain_break_audit import run_integrated_trace_chain_break_audit
 from .item_reward_event import run_item_reward_event_check
 from .prediction_accuracy_check import run_prediction_accuracy_check
 from .reward_biased_action_tendency import run_reward_biased_action_tendency_check
@@ -3411,6 +3412,8 @@ def run_command(command: str) -> dict[str, Any] | str:
         return run_reviewed_candidate_apply_verification_check()
     if command == "run-integrated-experience-session-trace":
         return run_integrated_experience_session_trace()
+    if command == "run-integrated-trace-chain-break-audit":
+        return run_integrated_trace_chain_break_audit()
     return {
         "command": command,
         "status": "error",
@@ -3480,6 +3483,7 @@ def main(argv: list[str] | None = None) -> int:
             "run-approved-candidate-preview-check",
             "run-reviewed-candidate-apply-verification-check",
             "run-integrated-experience-session-trace",
+            "run-integrated-trace-chain-break-audit",
         ],
     )
     parser.add_argument("--review-id", default="review_001")
@@ -3674,6 +3678,8 @@ def main(argv: list[str] | None = None) -> int:
         raw_argv = argv if argv is not None else sys.argv[1:]
         max_steps = args.max_steps if "--max-steps" in raw_argv else 8
         result = run_integrated_experience_session_trace(scenario=args.scenario or "mixed", max_steps=max_steps)
+    elif args.command == "run-integrated-trace-chain-break-audit":
+        result = run_integrated_trace_chain_break_audit()
     else:
         result = run_command(args.command)
     if hasattr(sys.stdout, "reconfigure"):

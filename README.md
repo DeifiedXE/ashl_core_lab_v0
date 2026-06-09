@@ -2001,3 +2001,10 @@ Two-Trial History Boundary:
 - Connects existing symbolic vision, outcome classification, similar context keys, prediction, mismatch, candidate creation, and review gate into one scripted trace.
 - Stops candidates at pending_review and keeps predictions read-only.
 - Integration-only: does not add autonomy, action selection changes, persistent rule application, long-term memory, LLM reasoning, or pathfinding.
+
+## Integrated Trace Chain Break Audit v0
+
+- Adds `py -3 -m ashl_core.teaching_cli run-integrated-trace-chain-break-audit`.
+- Audits the integrated experience session trace and explains chain breaks without modifying runtime behavior.
+- Identifies where a step stops in the chain and whether the stop is expected or unexpected.
+- Does not fix the break, modify action selection, apply candidates, write long-term memory, or use LLM reasoning.

@@ -4369,3 +4369,20 @@ Scope:
 
 Non-goals:
 - no autonomous loop, auto exploration, decision loop, action selection modification, prediction-driven suppression/preference, candidate auto-approval, Qingyin self-approval, persistent rule application, global predictor modification, lesson_store write, Memory Layer write, long-term memory, lesson_candidate pipeline connection, pathfinding, route planner, item seeking, item collection, reward change, random walk change, UI change, LLM reasoning, LLM planning, LLM vision, general learning claim, visual understanding claim, solved symbol grounding claim, consciousness claim, subjective experience claim, or Boundary Index modification
+
+## Integrated Trace Chain Break Audit v0
+
+Status: completed / deterministic-audit / no-runtime-change.
+
+Goal:
+Audit the integrated experience session trace and explain the reported chain break without changing the source trace or runtime behavior.
+
+Scope:
+- adds `ashl_core.integrated_trace_chain_break_audit`
+- adds `py -3 -m ashl_core.teaching_cli run-integrated-trace-chain-break-audit`
+- inspects each integrated trace step for missing downstream fields or expected terminal stops
+- explains the v0 `prediction_unknown` chain break as an expected no-prior-prediction stop with candidate and review gate present
+- reports recommended next action as documentation only
+
+Non-goals:
+- no chain break fix, integrated trace behavior change, action selection modification, prediction-driven suppression/preference, candidate auto-approval, Qingyin self-approval, candidate application, global predictor modification, lesson_store write, Memory Layer write, long-term memory, lesson_candidate pipeline connection, pathfinding, route planner, item seeking, item collection, reward change, random walk change, UI change, autonomous exploration, decision loop, LLM reasoning, LLM planning, LLM vision, general learning claim, autonomous learning claim, visual understanding claim, solved symbol grounding claim, consciousness claim, subjective experience claim, or Boundary Index modification
