@@ -2029,3 +2029,10 @@ Two-Trial History Boundary:
 - Evaluates whether an approved candidate has enough evidence to enter persistent-candidate review.
 - Checks temporary apply verification, repeated similar-context validation, challenge survival, low recent failure, low active conflict, preserved trace, and rollback path.
 - Checker-only: does not write persistent rules, add persistent storage, modify global predictors, or modify action selection.
+
+## Project State Audit / Pause Point v0
+
+- Adds `docs/project_state_audit_pause_point_2026-06-09.md`.
+- Adds `docs/milestone_logs/project_state_pause_point_2026-06-09.md`.
+- Classifies implemented, trace-only, checker-only, design-only, and not-present capabilities after the integrated trace and persistent eligibility checker line.
+- Pause-only: does not add runtime behavior, CLI, persistent writes, action selection changes, global predictor mutation, or Boundary Index changes.

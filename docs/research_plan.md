@@ -4434,3 +4434,19 @@ Scope:
 
 Non-goals:
 - no persistent rule storage, persistent rule table, persistent rule write, persistent rule activation, global predictor modification, action selection modification, prediction-driven suppression/preference, candidate auto-approval, Qingyin self-approval, auto-promotion to persistent rule, persistent candidate application, lesson_store write, Memory Layer write, long-term memory, lesson_candidate pipeline connection, lesson internalization, instinct-like behavior layer, pathfinding, route planner, item seeking, item collection, reward change, random walk change, UI change, autonomous exploration, decision loop, LLM reasoning, LLM planning, LLM vision, Boundary Index modification, general learning claim, autonomous learning claim, visual understanding claim, solved symbol grounding claim, consciousness claim, or subjective experience claim
+
+## Project State Audit / Pause Point v0
+
+Status: completed / audit-documentation / pause-point-only.
+
+Goal:
+Pause after integrated trace and persistent eligibility checker work to classify what is implemented, trace-only, checker-only, design-only, and not present.
+
+Scope:
+- adds `docs/project_state_audit_pause_point_2026-06-09.md`
+- adds `docs/milestone_logs/project_state_pause_point_2026-06-09.md`
+- states that ASHL Core has a scripted integrated trace and persistent-candidate eligibility checker, but not persistent learning, autonomous learning, global predictor mutation, or prediction-driven action selection
+- lists high-risk boundaries and possible next directions without selecting one
+
+Non-goals:
+- no runtime behavior, new CLI, runtime tests, action selection modification, prediction-driven suppression/preference, persistent rule storage, persistent rule table, persistent rule write, persistent rule activation, global predictor modification, candidate auto-approval, Qingyin self-approval, candidate application, lesson_store write, Memory Layer write, long-term memory, lesson_candidate pipeline connection, lesson internalization, instinct-like behavior layer, pathfinding, route planner, item seeking, item collection, reward change, random walk change, UI change, autonomous exploration, decision loop, LLM reasoning, LLM planning, LLM vision, Boundary Index modification, general learning claim, autonomous learning claim, visual understanding claim, solved symbol grounding claim, consciousness claim, or subjective experience claim
