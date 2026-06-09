@@ -4719,3 +4719,20 @@ Scope:
 
 Non-goals:
 - no runtime behavior, new CLI, retina decoder runtime, RGB quantization code, frame buffer, focus selector, endocrine connection, dopamine_like focus priority, norepinephrine_like attention threshold, vision-driven action selection, action selection modification, CNN, YOLO, UNet, ML visual model, object recognition, semantic labels, image understanding claim, visual memory write, long-term memory write, lesson_store write, Memory Layer write, predictor behavior modification, global predictor modification, pathfinding, BFS, A*, route planner, UI change, LLM vision, LLM reasoning, LLM planning, solved symbol grounding claim, consciousness claim, or subjective visual experience claim
+
+## Retina Decoder Feature Schema v0
+
+Status: completed / schema-check-only / no-runtime-change.
+
+Goal:
+Validate Retina Decoder v0 low-level feature records while keeping semantic, runtime, focus, endocrine, action-selection, and memory paths disabled.
+
+Scope:
+- adds `ashl_core.retina_decoder_feature_schema`
+- adds `py -3 -m ashl_core.teaching_cli run-retina-decoder-feature-schema-check`
+- validates required feature fields: position, raw_symbol, raw_rgb, brightness, color_family, contrast_to_neighbors, edge_like, front_relation, center_relation, known_symbol_hint, feature_confidence, source_trace, semantic_label, and v0 block flags
+- requires `semantic_label` to remain null for valid records
+- includes deterministic valid symbolic, RGB, hybrid, and edge-like feature cases plus invalid semantic-label, RGB-range, and action-selection-unblocked controls
+
+Non-goals:
+- no retina decoder runtime, RGB quantization runtime, image processing runtime, frame buffer, focus selector, endocrine signal connection, dopamine_like focus use, norepinephrine_like attention use, vision-driven action selection, action selection modification, CNN, YOLO, UNet, ML visual model, object recognition, semantic labels, image understanding claim, visual memory write, long-term memory write, lesson_store write, Memory Layer write, predictor behavior modification, global predictor modification, pathfinding, BFS, A*, route planner, UI change, LLM vision, LLM reasoning, LLM planning, solved symbol grounding claim, consciousness claim, or subjective visual experience claim

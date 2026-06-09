@@ -155,6 +155,7 @@ from ashl_core.prediction_accuracy_check import run_prediction_accuracy_check
 from ashl_core.prompt_leakage_check import build_decision_input_snapshot, check_leakage
 from ashl_core.reward_biased_action_tendency import run_reward_biased_action_tendency_check
 from ashl_core.reward_biased_random_walk_check import run_reward_biased_random_walk_check
+from ashl_core.retina_decoder_feature_schema import run_retina_decoder_feature_schema_check
 from ashl_core.reviewed_candidate_apply_verification import run_reviewed_candidate_apply_verification_check
 from ashl_core.rule_candidate_from_mismatch import run_rule_candidate_from_mismatch_check
 from ashl_core.rule_candidate_review_gate import run_rule_candidate_review_gate_check
@@ -2595,6 +2596,63 @@ def smoke_mimetic_endocrine_signal_schema() -> dict:
             "summary": summary,
             "records": records,
             "invalid_cases": invalid_cases,
+            "boundary": boundary,
+        },
+    )
+
+
+def smoke_retina_decoder_feature_schema() -> dict:
+    result = run_retina_decoder_feature_schema_check()
+    cases = {item.get("case_name"): item for item in result.get("validation_results", [])}
+    summary = result.get("summary", {})
+    boundary = result.get("boundary_check", {})
+    passed = (
+        result.get("command") == "run-retina-decoder-feature-schema-check"
+        and result.get("flow") == "retina_decoder_feature_schema_v0"
+        and result.get("status") == "ok"
+        and summary.get("feature_record_count") == 7
+        and summary.get("valid_feature_count") >= 4
+        and summary.get("invalid_feature_count") == 3
+        and summary.get("semantic_label_non_null_blocked_count") >= 1
+        and summary.get("invalid_rgb_blocked_count") >= 1
+        and summary.get("action_selection_unblocked_blocked_count") >= 1
+        and summary.get("object_recognition_count") == 0
+        and summary.get("semantic_vision_count") == 0
+        and summary.get("runtime_decoder_count") == 0
+        and summary.get("rgb_quantization_runtime_count") == 0
+        and summary.get("action_selection_influence_count") == 0
+        and summary.get("memory_write_count") == 0
+        and summary.get("focus_selection_count") == 0
+        and summary.get("endocrine_control_count") == 0
+        and cases.get("symbolic_wall_feature", {}).get("valid") is True
+        and cases.get("rgb_red_feature", {}).get("valid") is True
+        and cases.get("hybrid_item_feature", {}).get("valid") is True
+        and cases.get("edge_like_high_contrast_feature", {}).get("valid") is True
+        and cases.get("invalid_semantic_label_feature", {}).get("valid") is False
+        and cases.get("invalid_rgb_range_feature", {}).get("valid") is False
+        and cases.get("invalid_action_selection_unblocked_feature", {}).get("valid") is False
+        and boundary.get("schema_check_only") is True
+        and boundary.get("retina_decoder_runtime_added") is False
+        and boundary.get("rgb_quantization_runtime_added") is False
+        and boundary.get("semantic_label_required_null_v0") is True
+        and boundary.get("object_recognition_enabled") is False
+        and boundary.get("semantic_vision_claimed") is False
+        and boundary.get("cnn_used") is False
+        and boundary.get("yolo_used") is False
+        and boundary.get("unet_used") is False
+        and boundary.get("llm_vision_used") is False
+        and boundary.get("focus_selector_added") is False
+        and boundary.get("frame_buffer_added") is False
+        and boundary.get("endocrine_connection_added") is False
+        and boundary.get("action_selection_modified") is False
+        and boundary.get("visual_memory_write") is False
+    )
+    return _result(
+        "retina_decoder_feature_schema",
+        passed,
+        {
+            "summary": summary,
+            "cases": cases,
             "boundary": boundary,
         },
     )
@@ -8900,6 +8958,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_cortisol_like_failure_load_trace_check(),
         smoke_oxytocin_like_review_trust_trace_check(),
         smoke_mimetic_endocrine_four_axis_trace_integration(),
+        smoke_retina_decoder_feature_schema(),
         smoke_micro_navigation_goal_reach(),
         smoke_micro_navigation_trial_metrics_cli(),
         smoke_micro_navigation_multi_goal_level(),

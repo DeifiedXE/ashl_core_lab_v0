@@ -37,6 +37,7 @@ from .persistent_eligibility_checker import run_persistent_eligibility_checker_c
 from .prediction_accuracy_check import run_prediction_accuracy_check
 from .reward_biased_action_tendency import run_reward_biased_action_tendency_check
 from .reward_biased_random_walk_check import run_reward_biased_random_walk_check
+from .retina_decoder_feature_schema import run_retina_decoder_feature_schema_check
 from .reviewed_candidate_apply_verification import run_reviewed_candidate_apply_verification_check
 from .rule_candidate_from_mismatch import run_rule_candidate_from_mismatch_check
 from .rule_candidate_review_gate import run_rule_candidate_review_gate_check
@@ -3451,6 +3452,8 @@ def run_command(command: str) -> dict[str, Any] | str:
         return run_oxytocin_like_review_trust_trace_check()
     if command == "run-mimetic-endocrine-four-axis-trace-integration-check":
         return run_mimetic_endocrine_four_axis_trace_integration_check()
+    if command == "run-retina-decoder-feature-schema-check":
+        return run_retina_decoder_feature_schema_check()
     return {
         "command": command,
         "status": "error",
@@ -3532,6 +3535,7 @@ def main(argv: list[str] | None = None) -> int:
             "run-cortisol-like-failure-load-trace-check",
             "run-oxytocin-like-review-trust-trace-check",
             "run-mimetic-endocrine-four-axis-trace-integration-check",
+            "run-retina-decoder-feature-schema-check",
         ],
     )
     parser.add_argument("--review-id", default="review_001")
@@ -3750,6 +3754,8 @@ def main(argv: list[str] | None = None) -> int:
         result = run_oxytocin_like_review_trust_trace_check()
     elif args.command == "run-mimetic-endocrine-four-axis-trace-integration-check":
         result = run_mimetic_endocrine_four_axis_trace_integration_check()
+    elif args.command == "run-retina-decoder-feature-schema-check":
+        result = run_retina_decoder_feature_schema_check()
     else:
         result = run_command(args.command)
     if hasattr(sys.stdout, "reconfigure"):
