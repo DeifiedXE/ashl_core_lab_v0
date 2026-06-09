@@ -4305,3 +4305,20 @@ Scope:
 
 Non-goals:
 - no candidate application, predictor rule modification, rule learning, rule revision, action selection modification, reviewed-candidate suppression/preference, lesson_store write, Memory Layer write, long-term memory, pathfinding, route planner, item seeking, reward change, random walk change, UI change, autonomous exploration, decision loop, LLM reasoning, or general learning claim
+
+## Approved Candidate Preview v0
+
+Status: completed / deterministic-application-preview / no-rule-application.
+
+Goal:
+Continue the Experience Abstraction Layer by showing what an approved candidate would change before any application step.
+
+Scope:
+- adds `ashl_core.approved_candidate_preview`
+- adds `py -3 -m ashl_core.teaching_cli run-approved-candidate-preview-check`
+- previews outcome revision, reason revision, and unknown-context candidate changes
+- blocks pending, rejected, and other non-approved candidates from applicable previews
+- keeps `applied_now=false` and `predictor_modified_now=false`
+
+Non-goals:
+- no approved candidate application, predictor rule modification, rule learning, rule revision, rule application, action selection modification, preview-driven suppression/preference, lesson_store write, Memory Layer write, long-term memory, pathfinding, route planner, item seeking, reward change, random walk change, UI change, autonomous exploration, decision loop, LLM reasoning, or general learning claim

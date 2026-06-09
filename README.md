@@ -1972,3 +1972,11 @@ Two-Trial History Boundary:
 - Candidates can become pending_review, approved, rejected, or deferred.
 - Approval does not apply a rule yet, and Qingyin self-approval is blocked.
 - Does not revise rules, modify action selection, use LLM reasoning, write lesson_store, or write long-term memory.
+
+## Approved Candidate Preview v0
+
+- Adds `py -3 -m ashl_core.teaching_cli run-approved-candidate-preview-check`.
+- Creates deterministic previews for approved rule candidates.
+- Shows proposed predictor-entry changes before any application step.
+- Blocks non-approved candidates from applicable previews.
+- Does not apply rules, modify predictor rules, modify action selection, write lesson_store, or write long-term memory.

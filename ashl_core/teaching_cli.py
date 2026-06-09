@@ -8,6 +8,7 @@ import sys
 from pathlib import Path
 from typing import Any
 
+from .approved_candidate_preview import run_approved_candidate_preview_check
 from .action_outcome_predictor import run_action_outcome_predictor_check
 from .fake_sandbox import build_initial_sandbox_state, observe, pick_up
 from .failure_reason_classifier import run_failure_reason_classifier_check
@@ -3402,6 +3403,8 @@ def run_command(command: str) -> dict[str, Any] | str:
         return run_rule_candidate_from_mismatch_check()
     if command == "run-rule-candidate-review-gate-check":
         return run_rule_candidate_review_gate_check()
+    if command == "run-approved-candidate-preview-check":
+        return run_approved_candidate_preview_check()
     return {
         "command": command,
         "status": "error",
@@ -3468,6 +3471,7 @@ def main(argv: list[str] | None = None) -> int:
             "run-prediction-accuracy-check",
             "run-rule-candidate-from-mismatch-check",
             "run-rule-candidate-review-gate-check",
+            "run-approved-candidate-preview-check",
         ],
     )
     parser.add_argument("--review-id", default="review_001")
@@ -3654,6 +3658,8 @@ def main(argv: list[str] | None = None) -> int:
         result = run_rule_candidate_from_mismatch_check()
     elif args.command == "run-rule-candidate-review-gate-check":
         result = run_rule_candidate_review_gate_check()
+    elif args.command == "run-approved-candidate-preview-check":
+        result = run_approved_candidate_preview_check()
     else:
         result = run_command(args.command)
     if hasattr(sys.stdout, "reconfigure"):

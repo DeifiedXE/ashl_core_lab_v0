@@ -9,6 +9,7 @@ import sys
 import tempfile
 from pathlib import Path
 
+from ashl_core.approved_candidate_preview import run_approved_candidate_preview_check
 from ashl_core.action_outcome_predictor import run_action_outcome_predictor_check
 from ashl_core.candidate_review import (
     append_candidate_review,
@@ -1923,6 +1924,64 @@ def smoke_rule_candidate_review_gate() -> dict:
         passed,
         {
             "reviews": reviews,
+            "summary": summary,
+            "boundary": boundary,
+        },
+    )
+
+
+def smoke_approved_candidate_preview() -> dict:
+    result = run_approved_candidate_preview_check()
+    previews = {item.get("case_name"): item.get("preview", {}) for item in result.get("preview_results", [])}
+    summary = result.get("summary", {})
+    boundary = result.get("boundary_check", {})
+    passed = (
+        result.get("command") == "run-approved-candidate-preview-check"
+        and result.get("flow") == "approved_candidate_preview_v0"
+        and result.get("status") == "ok"
+        and previews.get("approved_outcome_revision_preview", {}).get("preview_created") is True
+        and "predicted_outcome_type" in previews.get("approved_outcome_revision_preview", {}).get("changed_fields", [])
+        and "predicted_primary_reason" in previews.get("approved_outcome_revision_preview", {}).get("changed_fields", [])
+        and previews.get("approved_reason_revision_preview", {}).get("preview_created") is True
+        and "predicted_primary_reason" in previews.get("approved_reason_revision_preview", {}).get("changed_fields", [])
+        and previews.get("approved_unknown_context_preview", {}).get("preview_type") == "new_prediction_entry_preview"
+        and "new_prediction_entry" in previews.get("approved_unknown_context_preview", {}).get("changed_fields", [])
+        and previews.get("pending_candidate_preview_blocked", {}).get("preview_created") is False
+        and previews.get("pending_candidate_preview_blocked", {}).get("preview_blocked_reason") == "candidate_not_approved"
+        and previews.get("rejected_candidate_preview_blocked", {}).get("preview_created") is False
+        and previews.get("rejected_candidate_preview_blocked", {}).get("preview_blocked_reason") == "candidate_not_approved"
+        and all(preview.get("applied_now") is False for preview in previews.values())
+        and all(preview.get("predictor_modified_now") is False for preview in previews.values())
+        and summary.get("case_count") == 5
+        and summary.get("passed_count") == 5
+        and summary.get("failed_count") == 0
+        and summary.get("preview_created_count") == 3
+        and summary.get("preview_blocked_count") == 2
+        and summary.get("approved_preview_count") == 3
+        and summary.get("applied_now_count") == 0
+        and summary.get("predictor_modified_now_count") == 0
+        and summary.get("all_approved_candidate_preview_checks_passed") is True
+        and boundary.get("approved_candidate_preview_enabled") is True
+        and boundary.get("requires_approved_candidate") is True
+        and boundary.get("preview_only") is True
+        and boundary.get("application_step_enabled") is False
+        and boundary.get("candidate_application_enabled") is False
+        and boundary.get("predictor_rule_modified") is False
+        and boundary.get("action_selection_modified") is False
+        and boundary.get("rule_learning_enabled") is False
+        and boundary.get("rule_revision_enabled") is False
+        and boundary.get("rule_application_enabled") is False
+        and boundary.get("lesson_store_write") is False
+        and boundary.get("memory_layer_write") is False
+        and boundary.get("long_term_memory_write") is False
+        and boundary.get("llm_reasoning_used") is False
+        and boundary.get("general_learning_claimed") is False
+    )
+    return _result(
+        "approved_candidate_preview",
+        passed,
+        {
+            "previews": previews,
             "summary": summary,
             "boundary": boundary,
         },
@@ -7863,6 +7922,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_prediction_accuracy_check(),
         smoke_rule_candidate_from_mismatch(),
         smoke_rule_candidate_review_gate(),
+        smoke_approved_candidate_preview(),
         smoke_micro_navigation_goal_reach(),
         smoke_micro_navigation_trial_metrics_cli(),
         smoke_micro_navigation_multi_goal_level(),
