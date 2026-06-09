@@ -2156,3 +2156,10 @@ Two-Trial History Boundary:
 - Deterministically converts symbolic / hybrid demo input cells into low-level retina feature records and validates them through the Retina Decoder Feature Schema v0 checker.
 - Preserves symbol hints as hints only while keeping `semantic_label` null for all valid generated records.
 - Trace/checker only: no retina runtime, RGB quantization runtime, image processing runtime, frame buffer, focus selector, endocrine connection, vision-driven action selection, visual memory write, object recognition, semantic vision, or symbol grounding claim is added.
+
+## Simple Visual Frame Buffer Design v0
+
+- Adds `docs/simple_visual_frame_buffer_design_v0.md`.
+- Defines a design-only visual frame container for grouping already validated retina feature records.
+- Defines future `current_frame` / `previous_frame` concepts and source trace / safety flag requirements.
+- Design-only: no runtime frame buffer, frame storage, frame comparison, change detection, focus selector, action selection influence, memory write, object recognition, semantic vision, or visual understanding claim is added.

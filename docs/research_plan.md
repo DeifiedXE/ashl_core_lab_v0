@@ -4754,3 +4754,20 @@ Scope:
 
 Non-goals:
 - no retina decoder runtime, RGB quantization runtime, image processing runtime, frame buffer, focus selector, endocrine connection, dopamine_like focus use, norepinephrine_like attention use, vision-driven action selection, action selection modification, visual memory write, long-term memory write, lesson_store write, Memory Layer write, predictor mutation, global predictor mutation, CNN, YOLO, UNet, ML visual model, object recognition, semantic labels, image understanding claim, pathfinding, BFS, A*, route planner, UI change, LLM vision, LLM reasoning, LLM planning, solved symbol grounding claim, consciousness claim, or subjective visual experience claim
+
+## Simple Visual Frame Buffer Design v0
+
+Status: completed / design-only / no-runtime-change.
+
+Goal:
+Define a simple visual frame container for grouping already validated retina feature records into future `current_frame` and `previous_frame` concepts.
+
+Scope:
+- adds `docs/simple_visual_frame_buffer_design_v0.md`
+- defines a visual frame as a deterministic grouping of retina feature records that already pass `retina_decoder_feature_schema` validation
+- defines future `previous_frame = last accepted visual frame` and `current_frame = newest accepted visual frame`
+- defines frame metadata, feature record reference rule, source trace rule, and safety flags
+- states that invalid feature records must not enter a valid frame
+
+Non-goals:
+- no runtime visual frame buffer, runtime current_frame / previous_frame storage, automatic frame replacement, frame comparison, frame change detection, focus selector, focus candidate generation, attention mechanism, endocrine connection, vision-driven action selection, visual memory write, long-term memory write, lesson_store write, Memory Layer write, predictor mutation, global predictor mutation, CNN, YOLO, UNet, image processing runtime, RGB quantization runtime, object recognition, semantic labels, scene understanding, symbol grounding claim, consciousness claim, or subjective visual experience claim
