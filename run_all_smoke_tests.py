@@ -3120,6 +3120,44 @@ def smoke_focus_candidate_schema() -> dict:
     )
 
 
+def smoke_focus_candidate_ranking_trace_design() -> dict:
+    doc_path = Path("docs/focus_candidate_ranking_trace_design_v0.md")
+    doc = doc_path.read_text(encoding="utf-8") if doc_path.exists() else ""
+    readme = Path("README.md").read_text(encoding="utf-8")
+    research_plan = Path("docs/research_plan.md").read_text(encoding="utf-8")
+    required_phrases = [
+        "ranking_trace",
+        "rank_position",
+        "score_snapshot",
+        "total_score is a ranking reference",
+        "not a sole winner condition",
+        "cooldown_state",
+        "decay_state",
+        "interruptible",
+        "forced_interrupt_reason",
+        "external_mentor_interrupt",
+        "active_focus_id = None",
+        "focus_applied = False",
+        "attention_control = False",
+        "No runtime ranking.",
+        "No active_focus selection.",
+        "Perception-to-Action Boundary Review",
+    ]
+    missing = [phrase for phrase in required_phrases if phrase not in doc]
+    passed = (
+        doc_path.exists()
+        and not missing
+        and "Focus Candidate Ranking Trace Design v0" in readme
+        and "Focus Candidate Ranking Trace Design v0" in research_plan
+        and "no runtime focus selector" in research_plan
+    )
+    return _result(
+        "focus_candidate_ranking_trace_design",
+        passed,
+        {"doc": str(doc_path), "missing": missing},
+    )
+
+
 def smoke_focus_candidate_from_change_trace() -> dict:
     result = run_focus_candidate_from_change_trace_check()
     summary = result.get("summary", {})
@@ -9487,6 +9525,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_visual_frame_change_trace(),
         smoke_focus_selector_design(),
         smoke_focus_candidate_schema(),
+        smoke_focus_candidate_ranking_trace_design(),
         smoke_focus_candidate_from_change_trace(),
         smoke_micro_navigation_goal_reach(),
         smoke_micro_navigation_trial_metrics_cli(),

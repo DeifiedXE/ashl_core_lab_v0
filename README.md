@@ -2225,3 +2225,9 @@ Two-Trial History Boundary:
 - Adds `py -3 -m ashl_core.teaching_cli run-focus-candidate-from-change-trace-check`.
 - Creates validated `focus_candidate` records from validated low-level `change_records`.
 - Trace/check-only: no runtime focus selection, attention control, ranking runtime, action selection influence, endocrine control, memory write, or semantic/object understanding is added.
+
+## Focus Candidate Ranking Trace Design v0
+
+- Adds `docs/focus_candidate_ranking_trace_design_v0.md`.
+- Defines trace-only ranking records for validated `focus_candidate` records, including score snapshots and lock-prevention fields.
+- Design-only: no `active_focus` selection, focus application, attention control, runtime ranking, action selection influence, endocrine runtime, or memory write is added.

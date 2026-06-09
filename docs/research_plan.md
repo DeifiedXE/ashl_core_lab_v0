@@ -4930,3 +4930,19 @@ Scope:
 
 Non-goals:
 - no runtime focus selector, attention control, focus application, focus candidate ranking runtime, focus-to-action bridge, perception-to-action bridge, endocrine runtime, endocrine-controlled attention, action selection influence, memory write, predictor mutation, object recognition, object tracking, semantic labels, semantic vision, LLM vision, CNN, YOLO, UNet, symbol grounding claim, consciousness claim, or subjective visual experience claim
+
+## Focus Candidate Ranking Trace Design v0
+
+Status: completed / design-only / no-runtime-change.
+
+Goal:
+Define trace-only ranking records for validated `focus_candidate` records.
+
+Scope:
+- adds `docs/focus_candidate_ranking_trace_design_v0.md`
+- defines `ranking_trace` and ranking item shapes with `rank_position` and `score_snapshot`
+- records `total_score` as a ranking reference, not a sole winner condition
+- records cooldown, decay, interrupt, and external mentor interruption fields as future lock-prevention safety design
+
+Non-goals:
+- no runtime focus selector, runtime ranking, active_focus selection, focus application, attention control, focus candidate ranking runtime, focus-to-action bridge, perception-to-action bridge, endocrine runtime, endocrine-controlled attention, action selection influence, memory write, predictor mutation, object recognition, object tracking, semantic labels, semantic vision, LLM vision, CNN, YOLO, UNet, symbol grounding claim, consciousness claim, or subjective visual experience claim
