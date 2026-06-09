@@ -39,6 +39,7 @@ from ashl_core.failure_events import (
     validate_failure_event,
 )
 from ashl_core.first_output_runtime import UTTERANCE_MAP, generate_minimal_first_output
+from ashl_core.focus_application_gate_schema import run_focus_application_gate_schema_check
 from ashl_core.focus_candidate_schema import run_focus_candidate_schema_check
 from ashl_core.focus_candidate_from_change_trace import run_focus_candidate_from_change_trace_check
 from ashl_core.focus_candidate_ranking_trace import run_focus_candidate_ranking_trace_check
@@ -3307,6 +3308,63 @@ def smoke_focus_application_boundary_review() -> dict:
         "focus_application_boundary_review",
         passed,
         {"doc": str(doc_path), "missing": missing},
+    )
+
+
+def smoke_focus_application_gate_schema() -> dict:
+    result = run_focus_application_gate_schema_check()
+    summary = result.get("summary", {})
+    boundary = result.get("boundary_check", {})
+    passed = (
+        result.get("command") == "run-focus-application-gate-schema-check"
+        and result.get("flow") == "focus_application_gate_schema_v0"
+        and result.get("status") == "ok"
+        and summary.get("gate_record_count") == 6
+        and summary.get("valid_gate_record_count") == 1
+        and summary.get("invalid_gate_record_count") == 5
+        and summary.get("gate_count") == 6
+        and summary.get("required_gate_count") == 6
+        and summary.get("missing_required_gate_blocked_count") >= 1
+        and summary.get("active_focus_non_null_blocked_count") >= 1
+        and summary.get("focus_applied_blocked_count") >= 1
+        and summary.get("attention_control_blocked_count") >= 1
+        and summary.get("runtime_permission_enabled_blocked_count") >= 1
+        and summary.get("runtime_focus_selector_count") == 0
+        and summary.get("runtime_ranking_count") == 0
+        and summary.get("active_focus_enabled_count") == 0
+        and summary.get("focus_to_action_bridge_count") == 0
+        and summary.get("perception_to_action_bridge_count") == 0
+        and summary.get("endocrine_runtime_count") == 0
+        and summary.get("action_selection_influence_count") == 0
+        and summary.get("memory_write_count") == 0
+        and summary.get("endocrine_control_count") == 0
+        and summary.get("predictor_modified_count") == 0
+        and summary.get("object_recognition_count") == 0
+        and summary.get("object_tracking_count") == 0
+        and summary.get("semantic_vision_count") == 0
+        and boundary.get("schema_check_only") is True
+        and boundary.get("review_only_gates") is True
+        and boundary.get("runtime_focus_selector_added") is False
+        and boundary.get("runtime_ranking_added") is False
+        and boundary.get("active_focus_selection_added") is False
+        and boundary.get("focus_application_added") is False
+        and boundary.get("attention_control_added") is False
+        and boundary.get("focus_to_action_bridge_added") is False
+        and boundary.get("perception_to_action_bridge_added") is False
+        and boundary.get("endocrine_runtime_added") is False
+        and boundary.get("action_selection_modified") is False
+        and boundary.get("visual_memory_write") is False
+        and boundary.get("object_tracking_enabled") is False
+        and boundary.get("semantic_vision_claimed") is False
+    )
+    return _result(
+        "focus_application_gate_schema",
+        passed,
+        {
+            "summary": summary,
+            "validation_results": result.get("validation_results", []),
+            "boundary": boundary,
+        },
     )
 
 
@@ -9681,6 +9739,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_focus_candidate_ranking_trace_schema(),
         smoke_focus_candidate_ranking_trace(),
         smoke_focus_application_boundary_review(),
+        smoke_focus_application_gate_schema(),
         smoke_focus_candidate_from_change_trace(),
         smoke_micro_navigation_goal_reach(),
         smoke_micro_navigation_trial_metrics_cli(),

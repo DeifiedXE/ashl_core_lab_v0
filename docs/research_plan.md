@@ -5002,3 +5002,19 @@ Scope:
 
 Non-goals:
 - no runtime focus selector, runtime ranking, active_focus selection, focus application, attention control, focus-to-action bridge, perception-to-action bridge, endocrine runtime, action selection influence, memory write, predictor mutation, object recognition, object tracking, semantic vision, LLM vision, CNN, YOLO, UNet, symbol grounding claim, consciousness claim, or subjective visual experience claim
+
+## Focus Application Gate Schema Check v0
+
+Status: completed / schema-check-only / no-runtime-change.
+
+Goal:
+Validate review-only `focus_application_gate` records for future focus application boundaries.
+
+Scope:
+- adds `ashl_core.focus_application_gate_schema`
+- adds `py -3 -m ashl_core.teaching_cli run-focus-application-gate-schema-check`
+- validates required review-only gates, required reason codes, source trace, and safety flags
+- enforces all gates remain not passed in v0 and do not authorize runtime focus
+
+Non-goals:
+- no runtime focus selector, runtime ranking, active_focus selection, focus application, attention control, focus-to-action bridge, perception-to-action bridge, endocrine runtime, action selection influence, memory write, predictor mutation, object recognition, object tracking, semantic vision, LLM vision, CNN, YOLO, UNet, symbol grounding claim, consciousness claim, or subjective visual experience claim

@@ -2254,3 +2254,9 @@ Two-Trial History Boundary:
 - Adds `docs/focus_application_boundary_review_v0.md`.
 - Documents the boundary between trace-only `ranking_trace` records and any future `active_focus` / `focus_applied` behavior.
 - Design-only: no runtime focus selection, attention control, action selection influence, endocrine runtime, or memory write is added.
+
+## Focus Application Gate Schema Check v0
+
+- Adds `py -3 -m ashl_core.teaching_cli run-focus-application-gate-schema-check`.
+- Validates review-only gate records for future focus application boundaries.
+- Schema/checker-only: no `active_focus`, `focus_applied`, attention control, action selection influence, endocrine runtime, or memory write is authorized.

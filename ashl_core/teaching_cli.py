@@ -10,6 +10,7 @@ from typing import Any
 
 from .approved_candidate_preview import run_approved_candidate_preview_check
 from .action_outcome_predictor import run_action_outcome_predictor_check
+from .focus_application_gate_schema import run_focus_application_gate_schema_check
 from .focus_candidate_from_change_trace import run_focus_candidate_from_change_trace_check
 from .focus_candidate_ranking_trace import run_focus_candidate_ranking_trace_check
 from .focus_candidate_ranking_trace_schema import run_focus_candidate_ranking_trace_schema_check
@@ -3484,6 +3485,8 @@ def run_command(command: str) -> dict[str, Any] | str:
         return run_focus_candidate_ranking_trace_schema_check()
     if command == "run-focus-candidate-ranking-trace-check":
         return run_focus_candidate_ranking_trace_check()
+    if command == "run-focus-application-gate-schema-check":
+        return run_focus_application_gate_schema_check()
     return {
         "command": command,
         "status": "error",
@@ -3576,6 +3579,7 @@ def main(argv: list[str] | None = None) -> int:
             "run-focus-candidate-from-change-trace-check",
             "run-focus-candidate-ranking-trace-schema-check",
             "run-focus-candidate-ranking-trace-check",
+            "run-focus-application-gate-schema-check",
         ],
     )
     parser.add_argument("--review-id", default="review_001")
@@ -3816,6 +3820,8 @@ def main(argv: list[str] | None = None) -> int:
         result = run_focus_candidate_ranking_trace_schema_check()
     elif args.command == "run-focus-candidate-ranking-trace-check":
         result = run_focus_candidate_ranking_trace_check()
+    elif args.command == "run-focus-application-gate-schema-check":
+        result = run_focus_application_gate_schema_check()
     else:
         result = run_command(args.command)
     if hasattr(sys.stdout, "reconfigure"):
