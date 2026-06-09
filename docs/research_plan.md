@@ -4652,3 +4652,21 @@ Scope:
 
 Non-goals:
 - no endocrine runtime behavior, formulas that update values from real runtime, signal interactions, protective mechanism addition or trigger, cooldown behavior modification, risk avoidance behavior modification, pressure-driven action selection, predictor behavior modification, global predictor modification, candidate auto-approval, candidate application, human review override, long-term memory write, lesson_store write, Memory Layer write, personality weight modification, personality drift, autonomous drive system, persistent rule write, persistent preview/dry-run, pathfinding, BFS, A*, route planner, UI change, LLM reasoning, LLM planning, LLM vision, biological hormone simulation claim, subjective stress claim, anxiety claim, pain claim, suffering claim, subjective pressure claim, consciousness claim, subjective experience claim, or denial of future subjective possibility
+
+## Oxytocin-Like Review Trust Trace Check v0
+
+Status: completed / trace-check-only / no-runtime-change.
+
+Goal:
+Map controlled review, correction, and explicit source-reliability events into validated `oxytocin_like` trace records without activating trust-based control.
+
+Scope:
+- adds `ashl_core.oxytocin_like_review_trust_trace_check`
+- adds `py -3 -m ashl_core.teaching_cli run-oxytocin-like-review-trust-trace-check`
+- creates deterministic source events for human review approval, consistent correction, source reliability, unverified source control, self-approval attempt, and subjective-trust invalid event
+- creates valid `oxytocin_like` trace records for explicit source-trust events using the mimetic endocrine signal schema
+- validates source event IDs, source traces, bounded values, value >= baseline, source trust linkage, and safety blocks from action selection, memory write, and candidate approval
+- blocks unverified source, self-approval, and subjective-claim events from valid oxytocin-like trust traces
+
+Non-goals:
+- no endocrine runtime behavior, formulas that update values from real runtime, signal interactions, blind trust behavior, review gate override, candidate auto-approval, Qingyin self-approval permission, candidate application, trust-driven action selection, predictor behavior modification, global predictor modification, long-term memory write, lesson_store write, Memory Layer write, user identity inference beyond explicit source records, implicit identity trust, personality weight modification, personality drift, autonomous drive system, persistent rule write, persistent preview/dry-run, pathfinding, BFS, A*, route planner, UI change, LLM reasoning, LLM planning, LLM vision, biological hormone simulation claim, subjective trust claim, attachment claim, love claim, consciousness claim, subjective experience claim, or denial of future subjective possibility

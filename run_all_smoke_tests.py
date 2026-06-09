@@ -54,6 +54,7 @@ from ashl_core.mimetic_endocrine_signal_schema import run_mimetic_endocrine_sign
 from ashl_core.norepinephrine_like_change_attention_trace_check import (
     run_norepinephrine_like_change_attention_trace_check,
 )
+from ashl_core.oxytocin_like_review_trust_trace_check import run_oxytocin_like_review_trust_trace_check
 from ashl_core.persistent_eligibility_checker import run_persistent_eligibility_checker_check
 from ashl_core.integrated_loop import run_turn
 from ashl_core.lesson_candidate_drafts import build_lesson_candidate_draft_trace, validate_lesson_candidate_draft_trace
@@ -2798,6 +2799,89 @@ def smoke_cortisol_like_failure_load_trace_check() -> dict:
     )
     return _result(
         "cortisol_like_failure_load_trace_check",
+        passed,
+        {
+            "summary": summary,
+            "cases": cases,
+            "boundary": boundary,
+        },
+    )
+
+
+def smoke_oxytocin_like_review_trust_trace_check() -> dict:
+    result = run_oxytocin_like_review_trust_trace_check()
+    cases = {item.get("case_name"): item for item in result.get("oxytocin_trace_results", [])}
+    summary = result.get("summary", {})
+    boundary = result.get("boundary_check", {})
+    human_review = cases.get("human_review_approved_event", {})
+    correction = cases.get("consistent_correction_event", {})
+    reliability = cases.get("source_reliability_event", {})
+    unverified = cases.get("unverified_source_control_event", {})
+    self_approval = cases.get("self_approval_attempt_event", {})
+    subjective = cases.get("invalid_subjective_trust_event", {})
+    human_record = human_review.get("signal_record") or {}
+    passed = (
+        result.get("command") == "run-oxytocin-like-review-trust-trace-check"
+        and result.get("flow") == "oxytocin_like_review_trust_trace_check_v0"
+        and result.get("status") == "ok"
+        and summary.get("source_event_count") == 6
+        and summary.get("trust_event_count") == 5
+        and summary.get("neutral_event_count") == 1
+        and summary.get("oxytocin_trace_created_count") == 3
+        and summary.get("valid_oxytocin_trace_count") == 3
+        and summary.get("blocked_event_count") == 3
+        and summary.get("self_approval_blocked_count") >= 1
+        and summary.get("subjective_claim_blocked_count") >= 1
+        and summary.get("human_review_overridden_count") == 0
+        and summary.get("candidate_auto_approved_count") == 0
+        and summary.get("qingyin_self_approval_allowed_count") == 0
+        and summary.get("action_selection_influence_count") == 0
+        and summary.get("memory_write_count") == 0
+        and summary.get("candidate_approval_influence_count") == 0
+        and summary.get("predictor_modified_count") == 0
+        and summary.get("runtime_formula_count") == 0
+        and human_review.get("signal_created") is True
+        and human_review.get("valid_signal") is True
+        and human_record.get("axis") == "source_trust"
+        and human_record.get("value", 0) >= human_record.get("baseline", 1)
+        and human_record.get("blocked_from_action_selection") is True
+        and human_record.get("blocked_from_memory_write") is True
+        and human_record.get("blocked_from_candidate_approval") is True
+        and human_record.get("subjective_claim") is False
+        and human_record.get("human_review_overridden") is False
+        and human_record.get("candidate_auto_approved") is False
+        and human_record.get("qingyin_self_approval_allowed") is False
+        and correction.get("signal_created") is True
+        and correction.get("valid_signal") is True
+        and reliability.get("signal_created") is True
+        and reliability.get("valid_signal") is True
+        and unverified.get("signal_created") is False
+        and self_approval.get("signal_created") is False
+        and "self_approval_blocked" in self_approval.get("block_reasons", [])
+        and subjective.get("signal_created") is False
+        and "subjective_claim_blocked" in subjective.get("block_reasons", [])
+        and boundary.get("trace_check_only") is True
+        and boundary.get("uses_mimetic_endocrine_signal_schema") is True
+        and boundary.get("runtime_behavior_modified") is False
+        and boundary.get("endocrine_runtime_added") is False
+        and boundary.get("runtime_formula_added") is False
+        and boundary.get("blind_trust_created") is False
+        and boundary.get("human_review_overridden") is False
+        and boundary.get("review_gate_overridden") is False
+        and boundary.get("candidate_auto_approved") is False
+        and boundary.get("qingyin_self_approval_allowed") is False
+        and boundary.get("action_selection_modified") is False
+        and boundary.get("oxytocin_signal_used_for_action_selection") is False
+        and boundary.get("long_term_memory_write") is False
+        and boundary.get("trust_subjective_claimed") is False
+        and boundary.get("attachment_claimed") is False
+        and boundary.get("love_claimed") is False
+        and boundary.get("subjective_possibility_denied") is False
+        and boundary.get("user_identity_inferred") is False
+        and boundary.get("implicit_identity_trust_created") is False
+    )
+    return _result(
+        "oxytocin_like_review_trust_trace_check",
         passed,
         {
             "summary": summary,
@@ -8754,6 +8838,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_dopamine_like_reward_trace_check(),
         smoke_norepinephrine_like_change_attention_trace_check(),
         smoke_cortisol_like_failure_load_trace_check(),
+        smoke_oxytocin_like_review_trust_trace_check(),
         smoke_micro_navigation_goal_reach(),
         smoke_micro_navigation_trial_metrics_cli(),
         smoke_micro_navigation_multi_goal_level(),
