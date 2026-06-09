@@ -4978,3 +4978,12 @@ Scope:
 
 Non-goals:
 - no runtime focus selector, runtime ranking, active_focus selection, focus application, attention control, focus candidate ranking runtime, focus-to-action bridge, perception-to-action bridge, endocrine runtime, endocrine-controlled attention, action selection influence, memory write, predictor mutation, object recognition, object tracking, semantic labels, semantic vision, LLM vision, CNN, YOLO, UNet, symbol grounding claim, consciousness claim, or subjective visual experience claim
+
+## Focus Line Milestone Sync v0
+
+Status: completed / documentation-milestone / boundary-index-sync.
+
+Progress:
+- completed focus trace/checker path through Focus Candidate Ranking Trace Check v0
+- synced `docs/current_boundary_index.md` to Boundary Index Version `2026-06-09-b41`
+- possible next stage: Focus Application Boundary Review v0 or Perception-to-Action Boundary Review v0 before any `active_focus` or `focus_applied` behavior

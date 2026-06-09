@@ -2243,3 +2243,8 @@ Two-Trial History Boundary:
 - Adds `py -3 -m ashl_core.teaching_cli run-focus-candidate-ranking-trace-check`.
 - Creates a deterministic trace-only `ranking_trace` from validated `focus_candidate` records and validates it with the ranking trace schema.
 - Trace/check-only: no runtime ranking, `active_focus` selection, attention control, action selection influence, endocrine control, or memory write is added.
+
+## Focus Line Milestone Sync v0
+
+- Syncs the focus line milestone: validated low-level `change_records` -> `focus_candidate` records -> deterministic `ranking_trace`.
+- All outputs remain schema-validated and blocked from `active_focus` selection, focus application, attention control, action selection, memory write, endocrine runtime, predictor mutation, and semantic/object claims.
