@@ -1793,3 +1793,11 @@ Two-Trial History Boundary:
 - Incorporates Maier & Seligman 2016: passivity is the default response; control must be learned.
 - Requires protected success contexts to preserve traceable action_candidate -> outcome causality.
 - Does not implement deprivation_error, learning_progress, curiosity satisfaction, actor_trust_delta, or protection runtime.
+
+## Simulated Vision First-Person Viewport Correction v0
+
+- Corrects the symbolic simulated vision 3x3 viewport from a centered top-down crop to a Doom-like forward view.
+- The agent marker `a` is at bottom center `viewport[2][1]`.
+- The immediate front cell for `move_forward` is `viewport[1][1]`.
+- The far front cell is `viewport[0][1]`.
+- This remains symbolic simulated vision, not real image vision or visual understanding.

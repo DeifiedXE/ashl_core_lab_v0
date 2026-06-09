@@ -106,6 +106,11 @@ class GroundedActionExperienceInfluenceTests(unittest.TestCase):
     def test_boundary_check(self):
         boundary = run_grounded_action_experience_influence_check()["boundary_check"]
 
+        self.assertIs(boundary["first_person_viewport"], True)
+        self.assertEqual(boundary["agent_viewport_position"], [2, 1])
+        self.assertEqual(boundary["front_symbol_position"], [1, 1])
+        self.assertEqual(boundary["far_front_symbol_position"], [0, 1])
+        self.assertIs(boundary["centered_top_down_viewport"], False)
         self.assertIs(boundary["requires_prior_experience_for_influence"], True)
         self.assertIs(boundary["no_experience_control_used"], True)
         self.assertIs(boundary["action_selection_modified_in_this_runner_only"], True)

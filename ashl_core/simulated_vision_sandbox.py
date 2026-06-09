@@ -45,6 +45,9 @@ _VIEWPORT_AXES = {
     "south": ((0, 1), (-1, 0)),
     "west": ((-1, 0), (0, -1)),
 }
+FIRST_PERSON_AGENT_VIEWPORT_POSITION = [2, 1]
+FIRST_PERSON_FRONT_SYMBOL_POSITION = [1, 1]
+FIRST_PERSON_FAR_FRONT_SYMBOL_POSITION = [0, 1]
 
 
 def create_simulated_vision_room() -> dict[str, Any]:
@@ -78,20 +81,30 @@ def turn_right(facing: str) -> str:
 
 
 def render_viewport(state: dict[str, Any], level: dict[str, Any], size: int = 3) -> list[list[str]]:
+    rows = viewport_cells_for_facing(tuple(state["pos"]), state["facing"], size=size)
+    center = tuple(state["pos"])
+    return [["a" if pos == center else _symbol_at(level, pos) for pos in row] for row in rows]
+
+
+def viewport_cells_for_facing(
+    agent_pos: tuple[int, int],
+    facing: str,
+    size: int = 3,
+) -> list[list[tuple[int, int]]]:
     if size <= 0 or size % 2 == 0:
         raise ValueError("viewport size must be a positive odd number")
-    facing = state["facing"]
     _validate_facing(facing)
     forward_axis, right_axis = _VIEWPORT_AXES[facing]
     radius = size // 2
-    center = tuple(state["pos"])
-    rows: list[list[str]] = []
-    for forward_offset in range(radius, -radius - 1, -1):
-        row: list[str] = []
+    center = tuple(agent_pos)
+    rows: list[list[tuple[int, int]]] = []
+    for row_index in range(size):
+        forward_offset = size - 1 - row_index
+        row = []
         for right_offset in range(-radius, radius + 1):
             pos = _add(center, _scale(forward_axis, forward_offset))
             pos = _add(pos, _scale(right_axis, right_offset))
-            row.append("a" if pos == center else _symbol_at(level, pos))
+            row.append(pos)
         rows.append(row)
     return rows
 
@@ -203,6 +216,11 @@ def run_simulated_vision_viewport_demo(
         "final_state": _public_state(state),
         "boundary_check": {
             "simulated_vision_only": True,
+            "first_person_viewport": True,
+            "agent_viewport_position": FIRST_PERSON_AGENT_VIEWPORT_POSITION,
+            "front_symbol_position": FIRST_PERSON_FRONT_SYMBOL_POSITION,
+            "far_front_symbol_position": FIRST_PERSON_FAR_FRONT_SYMBOL_POSITION,
+            "centered_top_down_viewport": False,
             "real_image_vision": False,
             "structured_symbols_only": True,
             "full_map_visible_to_agent": False,
@@ -221,7 +239,8 @@ def run_simulated_vision_viewport_demo(
         },
         "notes": [
             "This is structured symbolic simulated vision, not real image vision.",
-            "The agent receives only a bounded rotated viewport, not the full map as vision.",
+            "The agent receives only a bounded first-person rotated viewport, not the full map as vision.",
+            "The agent marker is at viewport[2][1]; immediate front is viewport[1][1].",
             "Session Working Memory bridge is deferred to next package.",
         ],
     }

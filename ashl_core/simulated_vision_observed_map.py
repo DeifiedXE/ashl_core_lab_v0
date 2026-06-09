@@ -5,9 +5,13 @@ from __future__ import annotations
 from typing import Any
 
 from .simulated_vision_sandbox import (
+    FIRST_PERSON_AGENT_VIEWPORT_POSITION,
+    FIRST_PERSON_FAR_FRONT_SYMBOL_POSITION,
+    FIRST_PERSON_FRONT_SYMBOL_POSITION,
     apply_simulated_vision_action,
     build_initial_simulated_vision_state,
     create_simulated_vision_room,
+    viewport_cells_for_facing,
 )
 
 
@@ -18,14 +22,6 @@ DEFAULT_OBSERVED_MAP_ACTIONS = (
     "turn_right",
     "look",
 )
-
-_VIEWPORT_AXES = {
-    "north": ((0, -1), (1, 0)),
-    "east": ((1, 0), (0, 1)),
-    "south": ((0, 1), (-1, 0)),
-    "west": ((-1, 0), (0, -1)),
-}
-
 
 def create_observed_local_map(level_id: str) -> dict[str, Any]:
     return {
@@ -75,21 +71,12 @@ def iter_viewport_world_symbols(
     state: dict[str, Any],
     viewport: list[list[str]],
 ) -> list[tuple[tuple[int, int], str]]:
-    facing = state["facing"]
-    if facing not in _VIEWPORT_AXES:
-        raise ValueError(f"unsupported facing: {facing}")
-    forward_axis, right_axis = _VIEWPORT_AXES[facing]
     size = len(viewport)
-    radius = size // 2
-    center = tuple(state["pos"])
+    cells = viewport_cells_for_facing(tuple(state["pos"]), state["facing"], size=size)
     symbols: list[tuple[tuple[int, int], str]] = []
     for row_index, row in enumerate(viewport):
-        forward_offset = radius - row_index
         for col_index, symbol in enumerate(row):
-            right_offset = col_index - radius
-            pos = _add(center, _scale(forward_axis, forward_offset))
-            pos = _add(pos, _scale(right_axis, right_offset))
-            symbols.append((pos, symbol))
+            symbols.append((cells[row_index][col_index], symbol))
     return symbols
 
 
@@ -203,6 +190,11 @@ def run_simulated_vision_observed_map_demo(
         "boundary_check": {
             "simulated_vision_only": True,
             "structured_symbols_only": True,
+            "first_person_viewport": True,
+            "agent_viewport_position": FIRST_PERSON_AGENT_VIEWPORT_POSITION,
+            "front_symbol_position": FIRST_PERSON_FRONT_SYMBOL_POSITION,
+            "far_front_symbol_position": FIRST_PERSON_FAR_FRONT_SYMBOL_POSITION,
+            "centered_top_down_viewport": False,
             "real_image_vision": False,
             "llm_vision_used": False,
             "llm_planning_used": False,
@@ -226,6 +218,7 @@ def run_simulated_vision_observed_map_demo(
         },
         "notes": [
             "current_viewport is what is visible now.",
+            "current_viewport uses a first-person layout with agent at viewport[2][1].",
             "observed_local_map is the session-local set of cells seen so far.",
             "x means currently unseen or unknown and does not erase known cells.",
         ],
@@ -269,11 +262,3 @@ def _cell_key(pos: tuple[int, int]) -> str:
 def _parse_cell_key(key: str) -> tuple[int, int]:
     left, right = key.strip("()").split(",", 1)
     return (int(left), int(right))
-
-
-def _add(first: tuple[int, int], second: tuple[int, int]) -> tuple[int, int]:
-    return (first[0] + second[0], first[1] + second[1])
-
-
-def _scale(vector: tuple[int, int], amount: int) -> tuple[int, int]:
-    return (vector[0] * amount, vector[1] * amount)

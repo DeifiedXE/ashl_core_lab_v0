@@ -3799,3 +3799,27 @@ v1.7a 不測 unknown failure_reason，不證明開放式泛化能力；v1.7b 才
 - v1.8 Minimal Teaching CLI：延後
 - v1.9 Multi-lesson Conflict / Priority：延後
 - v2.0 Stale / Supersede：延後
+
+## Simulated Vision First-Person Viewport Correction v0
+
+Status: completed / runtime-correction / perception-geometry-only.
+
+Goal:
+Correct the symbolic simulated vision 3x3 viewport from a centered top-down crop to a Doom-like forward view.
+
+Scope:
+- agent marker `a` is at bottom center `viewport[2][1]`
+- immediate front cell for `move_forward` is `viewport[1][1]`
+- far front cell is `viewport[0][1]`
+- observed local map coordinate conversion follows the corrected first-person viewport cells
+- symbol grounding and grounded action experience checks read the corrected immediate front cell
+
+Non-goals:
+- no real images
+- no computer vision
+- no LLM vision or LLM planning
+- no full-map vision exposure
+- no pathfinding / BFS / A*
+- no route planner, item seeking, item pickup, or inventory
+- no long-term memory, lesson_store write, Memory Layer write, or lesson_candidate pipeline connection
+- no visual understanding, solved symbol grounding, or general learning claim

@@ -31,6 +31,13 @@ class SimulatedVisionMemoryBridgeTests(unittest.TestCase):
             self.assertIn("visible_symbols", record["metadata"])
             self.assertEqual(record["metadata"]["source"], "simulated_vision_memory_bridge_v0")
 
+    def test_memory_records_corrected_first_person_viewport(self):
+        result = run_simulated_vision_memory_bridge_demo(action_sequence=["look"])
+        viewport = result["memory_records"][0]["state_snapshot"]["viewport"]
+
+        self.assertEqual(viewport[2][1], "a")
+        self.assertNotEqual(viewport[1][1], "a")
+
     def test_vision_state_key_includes_facing_without_breaking_non_vision_key(self):
         vision_snapshot = {"level_id": "simulated_vision_room_v0", "agent_pos": [3, 3], "facing": "north"}
         non_vision_snapshot = {"level_id": "demo", "agent_pos": [1, 1]}
@@ -82,6 +89,10 @@ class SimulatedVisionMemoryBridgeTests(unittest.TestCase):
 
         self.assertIs(boundary["session_memory_write"], True)
         self.assertIs(boundary["session_memory_cleared"], True)
+        self.assertIs(boundary["first_person_viewport"], True)
+        self.assertEqual(boundary["agent_viewport_position"], [2, 1])
+        self.assertEqual(boundary["front_symbol_position"], [1, 1])
+        self.assertIs(boundary["centered_top_down_viewport"], False)
         self.assertIs(boundary["real_image_vision"], False)
         self.assertIs(boundary["llm_vision_used"], False)
         self.assertIs(boundary["pathfinding_used"], False)

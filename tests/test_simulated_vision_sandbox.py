@@ -5,6 +5,9 @@ import unittest
 
 from ashl_core.simulated_vision_sandbox import (
     ALLOWED_VIEWPORT_SYMBOLS,
+    FIRST_PERSON_AGENT_VIEWPORT_POSITION,
+    FIRST_PERSON_FAR_FRONT_SYMBOL_POSITION,
+    FIRST_PERSON_FRONT_SYMBOL_POSITION,
     apply_simulated_vision_action,
     build_initial_simulated_vision_state,
     create_simulated_vision_room,
@@ -64,6 +67,31 @@ class SimulatedVisionSandboxTests(unittest.TestCase):
         symbols = {symbol for row in viewport for symbol in row}
 
         self.assertTrue(symbols <= ALLOWED_VIEWPORT_SYMBOLS)
+
+    def test_initial_north_viewport_is_first_person(self):
+        level = create_simulated_vision_room()
+        state = build_initial_simulated_vision_state(level)
+
+        viewport = render_viewport(state, level)
+
+        self.assertEqual(FIRST_PERSON_AGENT_VIEWPORT_POSITION, [2, 1])
+        self.assertEqual(FIRST_PERSON_FRONT_SYMBOL_POSITION, [1, 1])
+        self.assertEqual(FIRST_PERSON_FAR_FRONT_SYMBOL_POSITION, [0, 1])
+        self.assertEqual(viewport[2][1], "a")
+        self.assertNotEqual(viewport[1][1], "a")
+        self.assertEqual(viewport[1][1], "e")
+        self.assertEqual(viewport[0][1], "e")
+        self.assertEqual(viewport, [["e", "e", "i"], ["e", "e", "e"], ["e", "a", "e"]])
+
+    def test_first_person_viewport_rotates_with_facing(self):
+        level = create_simulated_vision_room()
+        state = {"level_id": level["level_id"], "pos": (3, 1), "facing": "east", "tick": 0}
+
+        viewport = render_viewport(state, level)
+
+        self.assertEqual(viewport[2][1], "a")
+        self.assertEqual(viewport[1][1], "i")
+        self.assertEqual(viewport[0][1], "e")
 
     def test_viewport_renders_wall_empty_item_and_out_of_view(self):
         level = create_simulated_vision_room()
@@ -127,6 +155,11 @@ class SimulatedVisionSandboxTests(unittest.TestCase):
         self.assertEqual(result["initial_state"], {"pos": [3, 3], "facing": "north"})
         self.assertEqual(len(result["action_trace"]), 7)
         self.assertIs(boundary["simulated_vision_only"], True)
+        self.assertIs(boundary["first_person_viewport"], True)
+        self.assertEqual(boundary["agent_viewport_position"], [2, 1])
+        self.assertEqual(boundary["front_symbol_position"], [1, 1])
+        self.assertEqual(boundary["far_front_symbol_position"], [0, 1])
+        self.assertIs(boundary["centered_top_down_viewport"], False)
         self.assertIs(boundary["real_image_vision"], False)
         self.assertIs(boundary["pathfinding_used"], False)
         self.assertIs(boundary["llm_vision_used"], False)

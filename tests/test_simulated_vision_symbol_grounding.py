@@ -14,7 +14,7 @@ from ashl_core.teaching_cli import run_symbol_grounding_check as run_cli_helper
 
 class SimulatedVisionSymbolGroundingTests(unittest.TestCase):
     def test_front_symbol_uses_front_center_cell(self):
-        viewport = [["w", "i", "e"], ["e", "a", "e"], ["e", "e", "e"]]
+        viewport = [["w", "e", "e"], ["e", "i", "e"], ["e", "a", "e"]]
 
         self.assertEqual(get_front_symbol_from_viewport(viewport), "i")
 
@@ -79,6 +79,11 @@ class SimulatedVisionSymbolGroundingTests(unittest.TestCase):
         boundary = run_symbol_grounding_check()["boundary_check"]
 
         self.assertIs(boundary["symbol_grounding_check_enabled"], True)
+        self.assertIs(boundary["first_person_viewport"], True)
+        self.assertEqual(boundary["agent_viewport_position"], [2, 1])
+        self.assertEqual(boundary["front_symbol_position"], [1, 1])
+        self.assertEqual(boundary["far_front_symbol_position"], [0, 1])
+        self.assertIs(boundary["centered_top_down_viewport"], False)
         self.assertIs(boundary["symbol_grounding_solved_claimed"], False)
         self.assertIs(boundary["visual_understanding_claimed"], False)
         self.assertIs(boundary["pathfinding_used"], False)

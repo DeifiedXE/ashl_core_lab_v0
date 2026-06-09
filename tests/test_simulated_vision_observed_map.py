@@ -24,7 +24,7 @@ class SimulatedVisionObservedMapTests(unittest.TestCase):
     def test_look_increases_known_cell_count(self):
         observed_map = create_observed_local_map("simulated_vision_room_v0")
         state = {"level_id": "simulated_vision_room_v0", "pos": (3, 3), "facing": "north", "tick": 1}
-        viewport = [["e", "e", "e"], ["e", "a", "e"], ["e", "e", "e"]]
+        viewport = [["e", "e", "i"], ["e", "e", "e"], ["e", "a", "e"]]
 
         update = update_observed_map_from_viewport(observed_map, state, viewport)
 
@@ -33,21 +33,22 @@ class SimulatedVisionObservedMapTests(unittest.TestCase):
 
     def test_viewport_symbols_map_to_world_coordinates(self):
         state = {"level_id": "simulated_vision_room_v0", "pos": (3, 3), "facing": "north", "tick": 1}
-        viewport = [["w", "e", "i"], ["e", "a", "e"], ["e", "e", "e"]]
+        viewport = [["w", "e", "i"], ["e", "e", "e"], ["e", "a", "e"]]
 
         mapped = dict(iter_viewport_world_symbols(state, viewport))
 
-        self.assertEqual(mapped[(2, 2)], "w")
+        self.assertEqual(mapped[(2, 1)], "w")
+        self.assertEqual(mapped[(3, 1)], "e")
+        self.assertEqual(mapped[(4, 1)], "i")
         self.assertEqual(mapped[(3, 2)], "e")
-        self.assertEqual(mapped[(4, 2)], "i")
         self.assertEqual(mapped[(3, 3)], "a")
 
     def test_x_does_not_erase_known_cell(self):
         observed_map = create_observed_local_map("simulated_vision_room_v0")
         state = {"level_id": "simulated_vision_room_v0", "pos": (3, 3), "facing": "north", "tick": 1}
-        update_observed_map_from_viewport(observed_map, state, [["e", "e", "e"], ["e", "a", "e"], ["e", "e", "e"]])
+        update_observed_map_from_viewport(observed_map, state, [["e", "e", "e"], ["e", "e", "e"], ["e", "a", "e"]])
 
-        update_observed_map_from_viewport(observed_map, state, [["x", "x", "x"], ["x", "a", "x"], ["x", "x", "x"]])
+        update_observed_map_from_viewport(observed_map, state, [["x", "x", "x"], ["x", "x", "x"], ["x", "a", "x"]])
 
         self.assertEqual(observed_map["known_cells"]["(3,2)"], "e")
 
@@ -84,14 +85,14 @@ class SimulatedVisionObservedMapTests(unittest.TestCase):
         observed_map = create_observed_local_map("simulated_vision_room_v0")
         state = {"level_id": "simulated_vision_room_v0", "pos": (3, 3), "facing": "north", "tick": 1}
 
-        update_observed_map_from_viewport(observed_map, state, [["e", "e", "e"], ["e", "a", "e"], ["e", "e", "e"]])
+        update_observed_map_from_viewport(observed_map, state, [["e", "e", "e"], ["e", "e", "e"], ["e", "a", "e"]])
 
         self.assertEqual(observed_map["known_cells"]["(3,3)"], "e")
         self.assertIn("a", "".join(render_observed_local_map(observed_map)))
 
     def test_symbol_for_world_cell_returns_x_when_not_currently_visible(self):
         state = {"level_id": "simulated_vision_room_v0", "pos": (4, 3), "facing": "north", "tick": 1}
-        viewport = [["e", "e", "e"], ["e", "a", "e"], ["e", "e", "e"]]
+        viewport = [["e", "e", "e"], ["e", "e", "e"], ["e", "a", "e"]]
 
         self.assertEqual(symbol_for_world_cell_in_viewport((2, 2), state, viewport), "x")
 
@@ -105,6 +106,10 @@ class SimulatedVisionObservedMapTests(unittest.TestCase):
         self.assertEqual(len(result["action_trace"]), len(result["observed_map_trace"]))
         self.assertTrue(result["persistence_check"]["passed"])
         self.assertIs(boundary["observed_local_map_enabled"], True)
+        self.assertIs(boundary["first_person_viewport"], True)
+        self.assertEqual(boundary["agent_viewport_position"], [2, 1])
+        self.assertEqual(boundary["front_symbol_position"], [1, 1])
+        self.assertIs(boundary["centered_top_down_viewport"], False)
         self.assertIs(boundary["x_does_not_erase_known_cells"], True)
         self.assertIs(boundary["unseen_cells_not_inferred"], True)
         self.assertIs(boundary["action_selection_modified"], False)

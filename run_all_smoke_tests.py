@@ -138,6 +138,9 @@ from ashl_core.session_working_memory import (
 )
 from ashl_core.simulated_vision_sandbox import (
     ALLOWED_VIEWPORT_SYMBOLS,
+    FIRST_PERSON_AGENT_VIEWPORT_POSITION,
+    FIRST_PERSON_FAR_FRONT_SYMBOL_POSITION,
+    FIRST_PERSON_FRONT_SYMBOL_POSITION,
     apply_simulated_vision_action,
     build_initial_simulated_vision_state,
     create_simulated_vision_room,
@@ -301,6 +304,11 @@ def smoke_simulated_vision_viewport() -> dict:
         and result.get("flow") == "simulated_vision_facing_viewport_v0"
         and len(result.get("action_trace", [])) == 7
         and boundary.get("simulated_vision_only") is True
+        and boundary.get("first_person_viewport") is True
+        and boundary.get("agent_viewport_position") == [2, 1]
+        and boundary.get("front_symbol_position") == [1, 1]
+        and boundary.get("far_front_symbol_position") == [0, 1]
+        and boundary.get("centered_top_down_viewport") is False
         and boundary.get("real_image_vision") is False
         and boundary.get("structured_symbols_only") is True
         and boundary.get("full_map_visible_to_agent") is False
@@ -319,6 +327,42 @@ def smoke_simulated_vision_viewport() -> dict:
             "item_result": item_contact["trace"]["result"],
             "viewport_symbols": sorted(viewport_symbols),
             "edge_symbols": sorted(edge_symbols),
+            "boundary": boundary,
+        },
+    )
+
+
+def smoke_simulated_vision_first_person_viewport() -> dict:
+    level = create_simulated_vision_room()
+    initial_state = build_initial_simulated_vision_state(level)
+    initial_viewport = render_viewport(initial_state, level)
+    wall_state = {"level_id": level["level_id"], "pos": (3, 1), "facing": "north", "tick": 0}
+    wall_viewport = render_viewport(wall_state, level)
+    item_state = {"level_id": level["level_id"], "pos": (4, 2), "facing": "north", "tick": 0}
+    item_viewport = render_viewport(item_state, level)
+    result = run_simulated_vision_viewport_demo(action_sequence=["look"])
+    boundary = result.get("boundary_check", {})
+    passed = (
+        initial_viewport[2][1] == "a"
+        and initial_viewport[1][1] == "e"
+        and initial_viewport[0][1] == "e"
+        and wall_viewport[2][1] == "a"
+        and wall_viewport[1][1] == "w"
+        and item_viewport[2][1] == "a"
+        and item_viewport[1][1] == "i"
+        and FIRST_PERSON_AGENT_VIEWPORT_POSITION == [2, 1]
+        and FIRST_PERSON_FRONT_SYMBOL_POSITION == [1, 1]
+        and FIRST_PERSON_FAR_FRONT_SYMBOL_POSITION == [0, 1]
+        and boundary.get("first_person_viewport") is True
+        and boundary.get("centered_top_down_viewport") is False
+    )
+    return _result(
+        "simulated_vision_first_person_viewport",
+        passed,
+        {
+            "initial_viewport": initial_viewport,
+            "wall_front_symbol": wall_viewport[1][1],
+            "item_front_symbol": item_viewport[1][1],
             "boundary": boundary,
         },
     )
@@ -349,6 +393,10 @@ def smoke_simulated_vision_memory_bridge() -> dict:
         and blocked_summary.get("query_by_failure_reason_wall_blocked_count") == 1
         and boundary.get("simulated_vision_only") is True
         and boundary.get("structured_symbols_only") is True
+        and boundary.get("first_person_viewport") is True
+        and boundary.get("agent_viewport_position") == [2, 1]
+        and boundary.get("front_symbol_position") == [1, 1]
+        and boundary.get("centered_top_down_viewport") is False
         and boundary.get("real_image_vision") is False
         and boundary.get("llm_vision_used") is False
         and boundary.get("pathfinding_used") is False
@@ -389,6 +437,10 @@ def smoke_simulated_vision_observed_map() -> dict:
         and persistence.get("current_viewport_symbol_for_same_cell_or_x") == "x"
         and boundary.get("simulated_vision_only") is True
         and boundary.get("structured_symbols_only") is True
+        and boundary.get("first_person_viewport") is True
+        and boundary.get("agent_viewport_position") == [2, 1]
+        and boundary.get("front_symbol_position") == [1, 1]
+        and boundary.get("centered_top_down_viewport") is False
         and boundary.get("real_image_vision") is False
         and boundary.get("llm_vision_used") is False
         and boundary.get("pathfinding_used") is False
@@ -443,6 +495,10 @@ def smoke_simulated_vision_symbol_grounding() -> dict:
         and item.get("item_grounding_match") is True
         and boundary.get("simulated_vision_only") is True
         and boundary.get("structured_symbols_only") is True
+        and boundary.get("first_person_viewport") is True
+        and boundary.get("agent_viewport_position") == [2, 1]
+        and boundary.get("front_symbol_position") == [1, 1]
+        and boundary.get("centered_top_down_viewport") is False
         and boundary.get("real_image_vision") is False
         and boundary.get("llm_vision_used") is False
         and boundary.get("pathfinding_used") is False
@@ -495,6 +551,10 @@ def smoke_grounded_action_experience() -> dict:
         and records.get("e", {}).get("outcome_type") == "moved"
         and records.get("i", {}).get("outcome_type") == "item_contact"
         and boundary.get("grounded_action_experience_enabled") is True
+        and boundary.get("first_person_viewport") is True
+        and boundary.get("agent_viewport_position") == [2, 1]
+        and boundary.get("front_symbol_position") == [1, 1]
+        and boundary.get("centered_top_down_viewport") is False
         and boundary.get("grounded_action_influence_enabled") is False
         and boundary.get("action_selection_modified") is False
         and boundary.get("experience_used_for_decision") is False
@@ -554,6 +614,10 @@ def smoke_grounded_action_experience_influence() -> dict:
         and store_summary.get("empty_experience_available") is True
         and store_summary.get("item_experience_available") is True
         and boundary.get("grounded_action_experience_influence_enabled") is True
+        and boundary.get("first_person_viewport") is True
+        and boundary.get("agent_viewport_position") == [2, 1]
+        and boundary.get("front_symbol_position") == [1, 1]
+        and boundary.get("centered_top_down_viewport") is False
         and boundary.get("requires_prior_experience_for_influence") is True
         and boundary.get("no_experience_control_used") is True
         and boundary.get("action_selection_modified_in_this_runner_only") is True
@@ -6483,6 +6547,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_body_state(),
         smoke_action_sandbox(),
         smoke_simulated_vision_viewport(),
+        smoke_simulated_vision_first_person_viewport(),
         smoke_simulated_vision_memory_bridge(),
         smoke_simulated_vision_observed_map(),
         smoke_simulated_vision_symbol_grounding(),

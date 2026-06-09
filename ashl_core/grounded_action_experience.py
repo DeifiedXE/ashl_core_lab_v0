@@ -5,7 +5,14 @@ from __future__ import annotations
 from typing import Any
 
 from .session_working_memory import build_state_snapshot_key
-from .simulated_vision_sandbox import apply_simulated_vision_action, create_simulated_vision_room, render_viewport
+from .simulated_vision_sandbox import (
+    FIRST_PERSON_AGENT_VIEWPORT_POSITION,
+    FIRST_PERSON_FAR_FRONT_SYMBOL_POSITION,
+    FIRST_PERSON_FRONT_SYMBOL_POSITION,
+    apply_simulated_vision_action,
+    create_simulated_vision_room,
+    render_viewport,
+)
 from .simulated_vision_symbol_grounding import (
     SCENARIO_ORDER,
     build_symbol_grounding_scenarios,
@@ -54,7 +61,7 @@ def build_grounded_action_experience_record(
             "source": "grounded_action_experience_v0",
             "chain": "see -> interact -> outcome -> experience record",
             "raw_result": action_trace["result"],
-            "front_symbol_source": "current_viewport_front_center",
+            "front_symbol_source": "current_viewport[1][1]",
             "experience_used_for_decision": False,
         },
     }
@@ -95,6 +102,11 @@ def run_grounded_action_experience_check(scenario: str | None = None) -> dict[st
         "boundary_check": {
             "simulated_vision_only": True,
             "structured_symbols_only": True,
+            "first_person_viewport": True,
+            "agent_viewport_position": FIRST_PERSON_AGENT_VIEWPORT_POSITION,
+            "front_symbol_position": FIRST_PERSON_FRONT_SYMBOL_POSITION,
+            "far_front_symbol_position": FIRST_PERSON_FAR_FRONT_SYMBOL_POSITION,
+            "centered_top_down_viewport": False,
             "real_image_vision": False,
             "llm_vision_used": False,
             "llm_planning_used": False,

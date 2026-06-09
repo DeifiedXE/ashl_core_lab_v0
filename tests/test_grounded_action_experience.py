@@ -82,6 +82,7 @@ class GroundedActionExperienceTests(unittest.TestCase):
             self.assertIn("outcome_type", record)
             self.assertIn("failure_reasons", record)
             self.assertIn("metadata", record)
+            self.assertEqual(record["metadata"]["front_symbol_source"], "current_viewport[1][1]")
             self.assertIs(record["metadata"]["experience_used_for_decision"], False)
 
     def test_experience_summary(self):
@@ -100,6 +101,11 @@ class GroundedActionExperienceTests(unittest.TestCase):
         boundary = run_grounded_action_experience_check()["boundary_check"]
 
         self.assertIs(boundary["grounded_action_experience_enabled"], True)
+        self.assertIs(boundary["first_person_viewport"], True)
+        self.assertEqual(boundary["agent_viewport_position"], [2, 1])
+        self.assertEqual(boundary["front_symbol_position"], [1, 1])
+        self.assertEqual(boundary["far_front_symbol_position"], [0, 1])
+        self.assertIs(boundary["centered_top_down_viewport"], False)
         self.assertIs(boundary["grounded_action_influence_enabled"], False)
         self.assertIs(boundary["action_selection_modified"], False)
         self.assertIs(boundary["experience_used_for_decision"], False)

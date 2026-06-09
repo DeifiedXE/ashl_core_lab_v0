@@ -5,6 +5,9 @@ from __future__ import annotations
 from typing import Any
 
 from .simulated_vision_sandbox import (
+    FIRST_PERSON_AGENT_VIEWPORT_POSITION,
+    FIRST_PERSON_FAR_FRONT_SYMBOL_POSITION,
+    FIRST_PERSON_FRONT_SYMBOL_POSITION,
     apply_simulated_vision_action,
     create_simulated_vision_room,
     render_viewport,
@@ -15,9 +18,10 @@ SCENARIO_ORDER = ("wall", "empty", "item")
 
 
 def get_front_symbol_from_viewport(viewport: list[list[str]]) -> str:
-    if len(viewport) < 1 or len(viewport[0]) < 2:
+    row_index, col_index = FIRST_PERSON_FRONT_SYMBOL_POSITION
+    if len(viewport) <= row_index or len(viewport[row_index]) <= col_index:
         raise ValueError("viewport must include a front-center cell")
-    return viewport[0][1]
+    return viewport[row_index][col_index]
 
 
 def build_symbol_grounding_scenarios(level: dict[str, Any] | None = None) -> dict[str, dict[str, Any]]:
@@ -71,6 +75,11 @@ def run_symbol_grounding_check(scenario: str | None = None) -> dict[str, Any]:
         "boundary_check": {
             "simulated_vision_only": True,
             "structured_symbols_only": True,
+            "first_person_viewport": True,
+            "agent_viewport_position": FIRST_PERSON_AGENT_VIEWPORT_POSITION,
+            "front_symbol_position": FIRST_PERSON_FRONT_SYMBOL_POSITION,
+            "far_front_symbol_position": FIRST_PERSON_FAR_FRONT_SYMBOL_POSITION,
+            "centered_top_down_viewport": False,
             "real_image_vision": False,
             "llm_vision_used": False,
             "llm_planning_used": False,
@@ -92,7 +101,7 @@ def run_symbol_grounding_check(scenario: str | None = None) -> dict[str, Any]:
         },
         "notes": [
             "This checks a bounded symbolic relation between visible symbols and immediate move_forward outcomes.",
-            "front-center is viewport[0][1] for the 3x3 viewport where the top row is forward.",
+            "Immediate front-center is viewport[1][1] for the first-person 3x3 viewport.",
             "This does not claim visual understanding or solved symbol grounding.",
         ],
     }
