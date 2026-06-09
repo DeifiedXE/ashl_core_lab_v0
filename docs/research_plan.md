@@ -4237,3 +4237,20 @@ Scope:
 
 Non-goals:
 - no prediction, action outcome predictor, rule learning, rule revision, action selection change, reward change, random walk change, UI change, item seeking, pathfinding, LLM reasoning, memory write, or general learning claim
+
+## Action Outcome Predictor v0
+
+Status: completed / deterministic-immediate-prediction / no-decision-change.
+
+Goal:
+Continue the Experience Abstraction Layer by predicting immediate outcomes from prior classified experiences and `similar_context_key`.
+
+Scope:
+- adds `ashl_core.action_outcome_predictor`
+- adds `py -3 -m ashl_core.teaching_cli run-action-outcome-predictor-check`
+- predicts wall, empty, item, passage, exit, and unknown immediate outcomes
+- verifies position-independent prediction for same-structure contexts
+- keeps predictions read-only and separate from action selection
+
+Non-goals:
+- no action selection modification, prediction-driven suppression/preference, rule learning, rule revision, long-term memory, lesson_store write, Memory Layer write, pathfinding, route planner, item seeking, reward change, random walk change, UI change, LLM reasoning, or general learning claim

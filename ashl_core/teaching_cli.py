@@ -8,6 +8,7 @@ import sys
 from pathlib import Path
 from typing import Any
 
+from .action_outcome_predictor import run_action_outcome_predictor_check
 from .fake_sandbox import build_initial_sandbox_state, observe, pick_up
 from .failure_reason_classifier import run_failure_reason_classifier_check
 from .first_output_runtime import generate_minimal_first_output
@@ -3390,6 +3391,8 @@ def run_command(command: str) -> dict[str, Any] | str:
         return run_failure_reason_classifier_check()
     if command == "run-similar-context-key-check":
         return run_similar_context_key_check()
+    if command == "run-action-outcome-predictor-check":
+        return run_action_outcome_predictor_check()
     return {
         "command": command,
         "status": "error",
@@ -3452,6 +3455,7 @@ def main(argv: list[str] | None = None) -> int:
             "run-two-round-instinct-reward-comparison",
             "run-failure-reason-classifier-check",
             "run-similar-context-key-check",
+            "run-action-outcome-predictor-check",
         ],
     )
     parser.add_argument("--review-id", default="review_001")
@@ -3630,6 +3634,8 @@ def main(argv: list[str] | None = None) -> int:
         result = run_failure_reason_classifier_check()
     elif args.command == "run-similar-context-key-check":
         result = run_similar_context_key_check()
+    elif args.command == "run-action-outcome-predictor-check":
+        result = run_action_outcome_predictor_check()
     else:
         result = run_command(args.command)
     if hasattr(sys.stdout, "reconfigure"):

@@ -9,6 +9,7 @@ import sys
 import tempfile
 from pathlib import Path
 
+from ashl_core.action_outcome_predictor import run_action_outcome_predictor_check
 from ashl_core.candidate_review import (
     append_candidate_review,
     build_candidate_review,
@@ -1699,6 +1700,64 @@ def smoke_similar_context_key() -> dict:
         {
             "keys": keys,
             "comparison": comparison,
+            "summary": summary,
+            "boundary": boundary,
+        },
+    )
+
+
+def smoke_action_outcome_predictor() -> dict:
+    result = run_action_outcome_predictor_check()
+    prediction_results = result.get("prediction_results", [])
+    predictions = {item.get("case_name"): item.get("prediction", {}) for item in prediction_results}
+    summary = result.get("summary", {})
+    boundary = result.get("boundary_check", {})
+    passed = (
+        result.get("command") == "run-action-outcome-predictor-check"
+        and result.get("flow") == "action_outcome_predictor_v0"
+        and result.get("status") == "ok"
+        and predictions.get("wall_prediction", {}).get("predicted_outcome_type") == "blocked"
+        and predictions.get("wall_prediction", {}).get("predicted_primary_reason") == "front_cell_wall"
+        and predictions.get("wall_position_transfer_prediction", {}).get("predicted_outcome_type") == "blocked"
+        and predictions.get("wall_position_transfer_prediction", {}).get("predicted_primary_reason")
+        == "front_cell_wall"
+        and predictions.get("empty_prediction", {}).get("predicted_outcome_type") == "moved"
+        and predictions.get("empty_prediction", {}).get("predicted_primary_reason") == "front_cell_empty_walkable"
+        and predictions.get("item_prediction", {}).get("predicted_outcome_type") == "item_contact"
+        and predictions.get("item_prediction", {}).get("predicted_primary_reason") == "front_cell_item_contact"
+        and predictions.get("passage_prediction", {}).get("predicted_outcome_type") == "moved"
+        and predictions.get("passage_prediction", {}).get("predicted_primary_reason")
+        == "front_cell_passage_crossed"
+        and predictions.get("exit_prediction", {}).get("predicted_outcome_type") == "exit_contact"
+        and predictions.get("exit_prediction", {}).get("predicted_primary_reason") == "front_cell_exit_contact"
+        and predictions.get("unknown_prediction", {}).get("predicted_outcome_type") == "unknown"
+        and predictions.get("unknown_prediction", {}).get("unknown_prediction") is True
+        and predictions.get("unknown_prediction", {}).get("confidence") == 0.0
+        and summary.get("case_count") == 7
+        and summary.get("passed_count") == 7
+        and summary.get("failed_count") == 0
+        and summary.get("known_prediction_count") == 6
+        and summary.get("unknown_prediction_count") == 1
+        and summary.get("position_transfer_prediction_passed") is True
+        and summary.get("all_action_outcome_predictor_checks_passed") is True
+        and boundary.get("action_outcome_predictor_enabled") is True
+        and boundary.get("uses_failure_reason_classifier") is True
+        and boundary.get("uses_similar_context_key") is True
+        and boundary.get("position_independent_prediction") is True
+        and boundary.get("action_selection_modified") is False
+        and boundary.get("prediction_used_for_action_selection") is False
+        and boundary.get("rule_learning_enabled") is False
+        and boundary.get("rule_revision_enabled") is False
+        and boundary.get("pathfinding_used") is False
+        and boundary.get("llm_reasoning_used") is False
+        and boundary.get("long_term_memory_write") is False
+        and boundary.get("general_learning_claimed") is False
+    )
+    return _result(
+        "action_outcome_predictor",
+        passed,
+        {
+            "predictions": predictions,
             "summary": summary,
             "boundary": boundary,
         },
@@ -7635,6 +7694,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_two_round_instinct_reward_comparison(),
         smoke_failure_reason_classifier(),
         smoke_similar_context_key(),
+        smoke_action_outcome_predictor(),
         smoke_micro_navigation_goal_reach(),
         smoke_micro_navigation_trial_metrics_cli(),
         smoke_micro_navigation_multi_goal_level(),

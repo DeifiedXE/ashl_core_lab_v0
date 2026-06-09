@@ -1943,3 +1943,10 @@ Two-Trial History Boundary:
 - Continues the Experience Abstraction Layer by generating deterministic structural keys from classified experiences.
 - Keys are position-independent by default, enabling same-structure different-position experiences to match.
 - Does not add prediction, rule learning, action selection changes, LLM reasoning, or long-term memory.
+
+## Action Outcome Predictor v0
+
+- Adds `py -3 -m ashl_core.teaching_cli run-action-outcome-predictor-check`.
+- Continues the Experience Abstraction Layer by predicting immediate outcomes from prior classified experiences and `similar_context_key`.
+- Supports position-independent prediction for same-structure contexts.
+- Does not modify action selection, add rule learning, use LLM reasoning, or write long-term memory.
