@@ -2008,3 +2008,10 @@ Two-Trial History Boundary:
 - Audits the integrated experience session trace and explains chain breaks without modifying runtime behavior.
 - Identifies where a step stops in the chain and whether the stop is expected or unexpected.
 - Does not fix the break, modify action selection, apply candidates, write long-term memory, or use LLM reasoning.
+
+## Integrated Experience Session Trace Milestone Log v0
+
+- Adds `docs/milestone_logs/integrated_experience_session_trace_milestone_2026-06-09.md`.
+- Records the first connected scripted trace from symbolic perception through review gate pending state.
+- Syncs the milestone into `docs/current_boundary_index.md` as Boundary Index Version `2026-06-09-b36`.
+- Documents the expected `unknown_prediction` chain break and keeps approval/application disabled.

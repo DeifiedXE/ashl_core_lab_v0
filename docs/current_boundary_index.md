@@ -1,7 +1,7 @@
-Boundary Index Version: 2026-06-09-b35
-Last update log: Experience Abstraction Boundary Index Sync
-Previous Boundary Index Version: 2026-06-09-b34
-Previous Last update log: Simulated Vision Grounding Boundary Index Sync
+Boundary Index Version: 2026-06-09-b36
+Last update log: Integrated Experience Session Trace Milestone + Boundary Sync
+Previous Boundary Index Version: 2026-06-09-b35
+Previous Last update log: Experience Abstraction Boundary Index Sync
 Clean count at last update log reset: 0/5
 Current clean count: 0/5
 
@@ -104,14 +104,8 @@ Current clean count: 0/5
 - Dead-End Map Trial1 Validation v0 classified valid maps and shortcut maps; Candidate Map Trial1 ASCII Replay v0 is observer-only and does not run A/B memory control.
 
 ## Valid Dead-End Maps A/B Control v0
-- CLI: py -3 -m ashl_core.teaching_cli run-valid-dead-end-maps-ab-control --runs-per-map 3 --max-steps 100.
-- Included valid maps: approach_box_dead_end_v0 / mid_branch_dead_end_candidate_v0 / lower_branch_dead_end_candidate_v0.
-- Excluded map: user_maze_dead_end_candidate_v0.
-- Exclusion reason: has_shortcut_no_dead_end_event.
-- A/B result: maps_with_memory_effect_observed=3; maps_without_memory_effect_observed=0; maps_with_mixed_result=0; overall_interpretation=Bounded local memory effect observed across all 3 valid maps.
-- Per-map deltas: approach_box_dead_end_v0 average_step_count_delta=-6.0 entered_dead_end_count_delta=-3; mid_branch and lower_branch average_step_count_delta=-3.0 entered_dead_end_count_delta=-3.
-- Latest commit: a2713a8 Add valid dead-end maps AB control.
-- Latest tests: py -3 run_all_smoke_tests.py all passed; py -3 -m unittest discover Ran 939 tests OK; git status --short clean.
+- CLI: py -3 -m ashl_core.teaching_cli run-valid-dead-end-maps-ab-control --runs-per-map 3 --max-steps 100; included maps: approach_box_dead_end_v0 / mid_branch_dead_end_candidate_v0 / lower_branch_dead_end_candidate_v0; excluded user_maze_dead_end_candidate_v0 for has_shortcut_no_dead_end_event.
+- A/B result: maps_with_memory_effect_observed=3; maps_without_memory_effect_observed=0; maps_with_mixed_result=0; overall_interpretation=Bounded local memory effect observed across all 3 valid maps; per-map deltas: approach_box -6 steps, mid/lower_branch -3 steps.
 
 ## Simulated Vision Grounding Milestone
 - Completed symbolic first-person vision loop: first-person see -> interact -> outcome -> experience -> see exact same front_symbol again -> consult experience -> influence immediate action.
@@ -128,10 +122,14 @@ Current clean count: 0/5
 - Review rule: human reviewer required; Qingyin self-approval blocked; approved does not mean applied.
 - Log: docs/milestone_logs/experience_abstraction_layer_milestone_2026-06-09.md.
 
+## Integrated Experience Session Trace Milestone
+- Integrated Experience Session Trace Milestone (2026-06-09): first connected scripted trace across perception/action/outcome/experience/reason/similar_context_key/prediction/mismatch/candidate/review gate. Result: 6 steps, 4 prediction matches, 2 mismatches, 2 candidates, 2 pending_review, 0 approved, 0 applied. Chain break audit: only break was expected unknown_prediction at tick 6 due to no prior prediction; candidate and review gate were present. Non-claims: no autonomy, no action selection modification, no auto-approval, no candidate application, no global predictor modification, no long-term memory, no lesson_store/Memory Layer writes, no LLM reasoning/planning/vision. Log: docs/milestone_logs/integrated_experience_session_trace_milestone_2026-06-09.md
+
 ## Current Claim Boundary
 - Can claim: Bounded local memory effect observed across 3 validated dead-end maps.
 - Can claim: In approach_box_dead_end_v0, local state-action outcome memory has a bounded, repeatable, controlled effect on Trial 2 behavior.
 - Can claim: ASHL Core can convert controlled experience records through deterministic reason classification, position-independent keys, prediction, mismatch, review-required candidates, human-gated review, approved preview, and temporary in-memory apply verification.
+- Can claim: ASHL Core can run a scripted integrated trace connecting symbolic perception/action/outcome/experience/reason/similar_context_key/prediction/mismatch/candidate/review gate pending state while keeping approval and application disabled.
 - Cannot claim: proof of general learning / map understanding / maze solving / pathfinding / Long-term Memory / lesson-store learning / generalization across arbitrary levels / consciousness or subjective understanding.
 
 ## Currently Deferred Areas

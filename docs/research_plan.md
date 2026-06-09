@@ -4386,3 +4386,17 @@ Scope:
 
 Non-goals:
 - no chain break fix, integrated trace behavior change, action selection modification, prediction-driven suppression/preference, candidate auto-approval, Qingyin self-approval, candidate application, global predictor modification, lesson_store write, Memory Layer write, long-term memory, lesson_candidate pipeline connection, pathfinding, route planner, item seeking, item collection, reward change, random walk change, UI change, autonomous exploration, decision loop, LLM reasoning, LLM planning, LLM vision, general learning claim, autonomous learning claim, visual understanding claim, solved symbol grounding claim, consciousness claim, subjective experience claim, or Boundary Index modification
+
+## Integrated Experience Session Trace Milestone Log v0
+
+Status: completed / documentation-milestone / boundary-index-sync.
+
+Scope:
+- adds `docs/milestone_logs/integrated_experience_session_trace_milestone_2026-06-09.md`
+- records the first connected scripted trace across symbolic perception, action outcome, experience record, reason classification, similar context key, prediction, mismatch detection, candidate creation, and review gate pending state
+- records the chain break audit conclusion: tick 6 `unknown_prediction` is an expected no-prior-prediction stop with candidate and review gate present
+- syncs the milestone into `docs/current_boundary_index.md` as Boundary Index Version `2026-06-09-b36`
+- recommends `Persistent Rule Application Design v0` as design-only follow-up
+
+Non-goals:
+- no runtime behavior, new CLI, UI, action selection modification, prediction-driven suppression/preference, candidate auto-approval, Qingyin self-approval, candidate application, global predictor modification, persistent rule application, lesson_store write, Memory Layer write, long-term memory, lesson_candidate pipeline connection, pathfinding, route planner, item seeking, item collection, reward change, random walk change, autonomous exploration, decision loop, LLM reasoning, LLM planning, LLM vision, general learning claim, autonomous learning claim, visual understanding claim, solved symbol grounding claim, consciousness claim, or subjective experience claim
