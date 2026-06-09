@@ -1294,6 +1294,15 @@ Two-Trial History Boundary:
 - No unseen cells are inferred from the source map.
 - This does not use real images, LLM vision, or pathfinding, and does not prove visual understanding or symbol grounding.
 
+## Simulated Vision Symbol Grounding Check v0
+
+- Adds `py -3 -m ashl_core.teaching_cli run-simulated-vision-symbol-grounding-check`.
+- Verifies bounded symbolic relations between visible front symbols and immediate `move_forward` outcomes: `w -> blocked`, `e -> moved`, and `i -> item_contact`.
+- The front symbol is read from the current symbolic viewport front-center cell.
+- This checks a bounded symbolic relation between visible symbols and immediate move_forward outcomes.
+- This is structured symbolic vision only; it does not use real images, LLM vision, or pathfinding.
+- This does not prove visual understanding or solve symbol grounding.
+
 ## Micro Navigation Trial Metrics CLI v0
 
 - Adds `py -3 -m ashl_core.teaching_cli run-navigation-trial-metrics --runs 4 --trial-count 5 --max-steps 10`.

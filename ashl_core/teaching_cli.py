@@ -43,6 +43,7 @@ from .session_working_memory import (
 from .simulated_vision_sandbox import run_simulated_vision_viewport_demo
 from .simulated_vision_memory_bridge import run_simulated_vision_memory_bridge_demo
 from .simulated_vision_observed_map import run_simulated_vision_observed_map_demo
+from .simulated_vision_symbol_grounding import run_symbol_grounding_check
 from .tactile_state_mapping import map_tactile_result_to_state_key
 from .trace_persistence import append_first_output_trace, append_mentor_feedback_trace
 
@@ -3342,6 +3343,8 @@ def run_command(command: str) -> dict[str, Any]:
         return run_simulated_vision_memory_bridge_demo()
     if command == "run-simulated-vision-observed-map-demo":
         return run_simulated_vision_observed_map_demo()
+    if command == "run-simulated-vision-symbol-grounding-check":
+        return run_symbol_grounding_check()
     return {
         "command": command,
         "status": "error",
@@ -3388,6 +3391,7 @@ def main(argv: list[str] | None = None) -> int:
             "run-simulated-vision-viewport-demo",
             "run-simulated-vision-memory-bridge-demo",
             "run-simulated-vision-observed-map-demo",
+            "run-simulated-vision-symbol-grounding-check",
         ],
     )
     parser.add_argument("--review-id", default="review_001")
@@ -3409,6 +3413,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--level-id", default="approach_box_dead_end_v0")
     parser.add_argument("--max-records", type=int, default=20)
     parser.add_argument("--action-sequence", default=None)
+    parser.add_argument("--scenario", choices=["wall", "empty", "item"], default=None)
     args = parser.parse_args(argv)
     if args.command == "run-review-approve":
         result = run_review_approve(review_id=args.review_id, notes=args.notes)
@@ -3516,6 +3521,8 @@ def main(argv: list[str] | None = None) -> int:
         if args.action_sequence:
             action_sequence = [action.strip() for action in args.action_sequence.split(",") if action.strip()]
         result = run_simulated_vision_observed_map_demo(action_sequence=action_sequence)
+    elif args.command == "run-simulated-vision-symbol-grounding-check":
+        result = run_symbol_grounding_check(scenario=args.scenario)
     else:
         result = run_command(args.command)
     if hasattr(sys.stdout, "reconfigure"):

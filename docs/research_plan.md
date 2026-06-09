@@ -2554,6 +2554,44 @@ No lesson_candidate pipeline connection.
 No visual understanding claim.
 No symbol grounding solved claim.
 
+## Simulated Vision Symbol Grounding Check v0
+
+Status:
+minimal-runtime / bounded-symbol-outcome-check / immediate-action-grounding / no-solved-grounding-claim
+
+Summary:
+Adds `ashl_core.simulated_vision_symbol_grounding`.
+Adds `py -3 -m ashl_core.teaching_cli run-simulated-vision-symbol-grounding-check`.
+The check verifies bounded symbolic relations between visible front symbols and immediate move_forward outcomes:
+w -> blocked / wall_blocked.
+e -> moved.
+i -> item_contact.
+The front symbol is read from the current symbolic viewport front-center cell, `viewport[0][1]`.
+This checks a bounded symbolic relation between visible symbols and immediate move_forward outcomes.
+
+Boundary:
+Structured symbols only.
+No real images.
+No computer vision.
+No LLM vision.
+No LLM planning.
+No full-map vision exposure.
+No pathfinding / BFS / A*.
+No route planner.
+No item seeking.
+No item pickup.
+No inventory.
+No action selection changes.
+No goal bias changes.
+No existing dead-end A/B behavior changes.
+No Session Working Memory influence on action selection.
+No lesson_store write.
+No Memory Layer write.
+No Long-term Memory.
+No lesson_candidate pipeline connection.
+No visual understanding claim.
+No symbol grounding solved claim.
+
 ## Micro Navigation Trial Metrics CLI v0
 
 Status:

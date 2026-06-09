@@ -144,6 +144,7 @@ from ashl_core.simulated_vision_sandbox import (
 )
 from ashl_core.simulated_vision_memory_bridge import run_simulated_vision_memory_bridge_demo
 from ashl_core.simulated_vision_observed_map import run_simulated_vision_observed_map_demo
+from ashl_core.simulated_vision_symbol_grounding import run_symbol_grounding_check
 from ashl_core.state_core import StateCore
 from ashl_core.state_persistence import (
     read_last_trace_summary,
@@ -408,6 +409,54 @@ def smoke_simulated_vision_observed_map() -> dict:
             "known_cell_count_final": final_map.get("known_cell_count"),
             "remembered_symbols": remembered_symbols,
             "persistence_check": persistence,
+            "boundary": boundary,
+        },
+    )
+
+
+def smoke_simulated_vision_symbol_grounding() -> dict:
+    result = run_symbol_grounding_check()
+    summary = result.get("summary", {})
+    boundary = result.get("boundary_check", {})
+    scenarios = {item.get("scenario"): item for item in result.get("scenario_results", [])}
+    wall = scenarios.get("wall", {})
+    empty = scenarios.get("empty", {})
+    item = scenarios.get("item", {})
+    passed = (
+        result.get("command") == "run-simulated-vision-symbol-grounding-check"
+        and result.get("flow") == "simulated_vision_symbol_grounding_check_v0"
+        and summary.get("scenario_count") == 3
+        and summary.get("passed_count") == 3
+        and summary.get("failed_count") == 0
+        and summary.get("all_grounding_checks_passed") is True
+        and wall.get("front_symbol") == "w"
+        and wall.get("actual_outcome") == "blocked"
+        and wall.get("failure_reasons") == ["wall_blocked"]
+        and wall.get("position_changed") is False
+        and empty.get("front_symbol") == "e"
+        and empty.get("actual_outcome") == "moved"
+        and empty.get("position_changed") is True
+        and item.get("front_symbol") == "i"
+        and item.get("actual_outcome") == "item_contact"
+        and item.get("item_grounding_match") is True
+        and boundary.get("simulated_vision_only") is True
+        and boundary.get("structured_symbols_only") is True
+        and boundary.get("real_image_vision") is False
+        and boundary.get("llm_vision_used") is False
+        and boundary.get("pathfinding_used") is False
+        and boundary.get("symbol_grounding_check_enabled") is True
+        and boundary.get("symbol_grounding_solved_claimed") is False
+        and boundary.get("visual_understanding_claimed") is False
+        and boundary.get("action_selection_modified") is False
+        and boundary.get("item_seeking_added") is False
+        and boundary.get("inventory_added") is False
+    )
+    return _result(
+        "simulated_vision_symbol_grounding",
+        passed,
+        {
+            "summary": summary,
+            "scenario_results": result.get("scenario_results", []),
             "boundary": boundary,
         },
     )
@@ -6324,6 +6373,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_simulated_vision_viewport(),
         smoke_simulated_vision_memory_bridge(),
         smoke_simulated_vision_observed_map(),
+        smoke_simulated_vision_symbol_grounding(),
         smoke_micro_navigation_goal_reach(),
         smoke_micro_navigation_trial_metrics_cli(),
         smoke_micro_navigation_multi_goal_level(),
