@@ -1894,3 +1894,10 @@ Two-Trial History Boundary:
 - Adds Previous step, Next step, and Reset playback controls plus read-only `/playback_state.json`.
 - Shows a separate Random Walk Playback view so manual sandbox state is not overwritten by playback.
 - Playback replays recorded traces only; it does not generate new actions, add autonomy, pathfinding, reward bias, or long-term memory.
+
+## Item Reward Event v0
+
+- Adds `py -3 -m ashl_core.teaching_cli run-item-reward-event-check`.
+- Creates a non-subjective `reward_event` when `front_symbol=i + move_forward` produces `item_contact`.
+- Exposes `dopamine_like_signal` as a data field only.
+- Does not add reward bias, item seeking, item collection, pathfinding, long-term memory, pleasure claims, or consciousness claims.

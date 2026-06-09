@@ -4108,3 +4108,23 @@ Non-goals:
 - no item collection, pickup, inventory, exit activation, win condition, task completion, curiosity, prediction error, place memory, or home sandbox
 - no pathfinding, BFS, A*, route planner, LLM planning, LLM vision, lesson_store write, Memory Layer write, long-term memory, or lesson_candidate pipeline connection
 - no self-awareness, consciousness, subjective experience, visual understanding, solved symbol grounding, or general learning claim
+
+## Item Reward Event v0
+
+Status: completed / data-event-only / no-reward-bias.
+
+Goal:
+Create the first non-subjective item reward event when item contact occurs.
+
+Scope:
+- adds `ashl_core.item_reward_event`
+- adds `py -3 -m ashl_core.teaching_cli run-item-reward-event-check`
+- verifies `front_symbol=i + move_forward -> item_contact`
+- creates deterministic `reward_event` data with `reward_type=item_contact_reward`
+- exposes `dopamine_like_signal` as a data field only
+
+Non-goals:
+- no reward-biased action tendency, item seeking, autonomous exploration, decision loop, or action selection change
+- no item collection, pickup, inventory, exit activation, win condition, task completion, curiosity, prediction error, place memory, or home sandbox
+- no pathfinding, BFS, A*, route planner, LLM planning, LLM vision, lesson_store write, Memory Layer write, long-term memory, or lesson_candidate pipeline connection
+- no pleasure, desire, self-awareness, consciousness, subjective experience, visual understanding, solved symbol grounding, or general learning claim

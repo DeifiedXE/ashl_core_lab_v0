@@ -38,6 +38,7 @@ from ashl_core.guard import guard_output
 from ashl_core.grounded_action_experience import run_grounded_action_experience_check
 from ashl_core.grounded_action_experience_influence import run_grounded_action_experience_influence_check
 from ashl_core.instinct_random_walk_runner import run_instinct_random_walk
+from ashl_core.item_reward_event import run_item_reward_event_check
 from ashl_core.integrated_loop import run_turn
 from ashl_core.lesson_candidate_drafts import build_lesson_candidate_draft_trace, validate_lesson_candidate_draft_trace
 from ashl_core.lesson_runner import (
@@ -1324,6 +1325,63 @@ def smoke_grounded_action_experience_influence() -> dict:
             "summary": summary,
             "experience_store_summary": store_summary,
             "control": control,
+            "boundary": boundary,
+        },
+    )
+
+
+def smoke_item_reward_event() -> dict:
+    result = run_item_reward_event_check()
+    scenario = result.get("scenario_result", {})
+    event = result.get("reward_event", {})
+    summary = result.get("reward_summary", {})
+    boundary = result.get("boundary_check", {})
+    passed = (
+        result.get("command") == "run-item-reward-event-check"
+        and result.get("flow") == "item_reward_event_v0"
+        and result.get("status") == "ok"
+        and result.get("level_id") == "simulated_vision_larger_sandbox_v0"
+        and scenario.get("scenario") == "item_contact_reward"
+        and scenario.get("front_symbol") == "i"
+        and scenario.get("action") == "move_forward"
+        and scenario.get("actual_outcome") == "item_contact"
+        and "item_contact" in scenario.get("effect_tags", [])
+        and event.get("source") == "grounded_action_experience"
+        and event.get("trigger") == "item_contact"
+        and event.get("front_symbol") == "i"
+        and event.get("action") == "move_forward"
+        and event.get("outcome_type") == "item_contact"
+        and event.get("reward_type") == "item_contact_reward"
+        and event.get("reward_value") == 1.0
+        and event.get("dopamine_like_signal") is True
+        and event.get("non_subjective") is True
+        and summary.get("reward_event_created") is True
+        and summary.get("reward_event_count") == 1
+        and summary.get("item_contact_reward_count") == 1
+        and summary.get("dopamine_like_signal_count") == 1
+        and summary.get("total_reward_value") == 1.0
+        and summary.get("non_subjective_reward_events") == 1
+        and boundary.get("item_reward_event_enabled") is True
+        and boundary.get("dopamine_like_signal_enabled") is True
+        and boundary.get("reward_bias_enabled") is False
+        and boundary.get("item_seeking_enabled") is False
+        and boundary.get("reward_used_for_action_selection") is False
+        and boundary.get("pathfinding_used") is False
+        and boundary.get("route_planner_added") is False
+        and boundary.get("item_collection_enabled") is False
+        and boundary.get("long_term_memory_write") is False
+        and boundary.get("pleasure_claimed") is False
+        and boundary.get("desire_claimed") is False
+        and boundary.get("consciousness_claimed") is False
+        and boundary.get("subjective_experience_claimed") is False
+    )
+    return _result(
+        "item_reward_event",
+        passed,
+        {
+            "scenario": scenario,
+            "reward_event": event,
+            "summary": summary,
             "boundary": boundary,
         },
     )
@@ -7253,6 +7311,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_grounded_action_experience_influence(),
         smoke_instinct_random_walk_runner(),
         smoke_wall_experience_influence(),
+        smoke_item_reward_event(),
         smoke_micro_navigation_goal_reach(),
         smoke_micro_navigation_trial_metrics_cli(),
         smoke_micro_navigation_multi_goal_level(),
