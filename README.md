@@ -1964,3 +1964,11 @@ Two-Trial History Boundary:
 - Converts prediction mismatches into proposed review-required candidates.
 - Supports outcome mismatch, reason mismatch, unknown prediction, and no-candidate-for-match cases.
 - Does not auto-approve, apply, revise rules, modify action selection, use LLM reasoning, or write long-term memory.
+
+## Rule Candidate Review Gate v0
+
+- Adds `py -3 -m ashl_core.teaching_cli run-rule-candidate-review-gate-check`.
+- Adds a human-review gate for rule candidates.
+- Candidates can become pending_review, approved, rejected, or deferred.
+- Approval does not apply a rule yet, and Qingyin self-approval is blocked.
+- Does not revise rules, modify action selection, use LLM reasoning, write lesson_store, or write long-term memory.

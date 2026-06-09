@@ -138,6 +138,7 @@ from ashl_core.prompt_leakage_check import build_decision_input_snapshot, check_
 from ashl_core.reward_biased_action_tendency import run_reward_biased_action_tendency_check
 from ashl_core.reward_biased_random_walk_check import run_reward_biased_random_walk_check
 from ashl_core.rule_candidate_from_mismatch import run_rule_candidate_from_mismatch_check
+from ashl_core.rule_candidate_review_gate import run_rule_candidate_review_gate_check
 from ashl_core.rule_candidates import append_rule_candidate
 from ashl_core.review_tasks import build_review_task_trace
 from ashl_core.senses import build_sensor_event, build_visual_concept_candidate, validate_sensor_event
@@ -1867,6 +1868,61 @@ def smoke_rule_candidate_from_mismatch() -> dict:
         passed,
         {
             "candidates": candidates,
+            "summary": summary,
+            "boundary": boundary,
+        },
+    )
+
+
+def smoke_rule_candidate_review_gate() -> dict:
+    result = run_rule_candidate_review_gate_check()
+    reviews = {item.get("case_name"): item for item in result.get("review_results", [])}
+    summary = result.get("summary", {})
+    boundary = result.get("boundary_check", {})
+    self_block = reviews.get("non_human_self_approval_blocked", {})
+    self_result = self_block.get("review_result", {})
+    passed = (
+        result.get("command") == "run-rule-candidate-review-gate-check"
+        and result.get("flow") == "rule_candidate_review_gate_v0"
+        and result.get("status") == "ok"
+        and reviews.get("enter_pending_review", {}).get("candidate_after", {}).get("candidate_status") == "pending_review"
+        and reviews.get("approve_candidate", {}).get("candidate_after", {}).get("candidate_status") == "approved"
+        and reviews.get("reject_candidate", {}).get("candidate_after", {}).get("candidate_status") == "rejected"
+        and reviews.get("defer_candidate", {}).get("candidate_after", {}).get("candidate_status") == "deferred"
+        and self_result.get("review_allowed") is False
+        and self_result.get("applied") is False
+        and self_block.get("candidate_after", {}).get("candidate_status") != "approved"
+        and all(item.get("review_result", {}).get("applied") is False for item in reviews.values())
+        and summary.get("case_count") == 5
+        and summary.get("passed_count") == 5
+        and summary.get("failed_count") == 0
+        and summary.get("pending_review_count") == 2
+        and summary.get("approved_count") == 1
+        and summary.get("rejected_count") == 1
+        and summary.get("deferred_count") == 1
+        and summary.get("self_approval_blocked_count") == 1
+        and summary.get("all_rule_candidate_review_gate_checks_passed") is True
+        and boundary.get("rule_candidate_review_gate_enabled") is True
+        and boundary.get("human_reviewer_required") is True
+        and boundary.get("qingyin_self_approval_allowed") is False
+        and boundary.get("candidate_review_only") is True
+        and boundary.get("candidate_application_enabled") is False
+        and boundary.get("rule_learning_enabled") is False
+        and boundary.get("rule_revision_enabled") is False
+        and boundary.get("rule_application_enabled") is False
+        and boundary.get("predictor_rule_modified") is False
+        and boundary.get("action_selection_modified") is False
+        and boundary.get("lesson_store_write") is False
+        and boundary.get("memory_layer_write") is False
+        and boundary.get("long_term_memory_write") is False
+        and boundary.get("llm_reasoning_used") is False
+        and boundary.get("general_learning_claimed") is False
+    )
+    return _result(
+        "rule_candidate_review_gate",
+        passed,
+        {
+            "reviews": reviews,
             "summary": summary,
             "boundary": boundary,
         },
@@ -7806,6 +7862,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_action_outcome_predictor(),
         smoke_prediction_accuracy_check(),
         smoke_rule_candidate_from_mismatch(),
+        smoke_rule_candidate_review_gate(),
         smoke_micro_navigation_goal_reach(),
         smoke_micro_navigation_trial_metrics_cli(),
         smoke_micro_navigation_multi_goal_level(),

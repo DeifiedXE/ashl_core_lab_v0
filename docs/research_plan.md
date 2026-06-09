@@ -4288,3 +4288,20 @@ Scope:
 
 Non-goals:
 - no candidate auto-approval, candidate application, predictor rule modification, rule learning, rule revision, action selection modification, prediction-driven suppression/preference, lesson_store write, Memory Layer write, long-term memory, pathfinding, route planner, item seeking, reward change, random walk change, UI change, autonomous exploration, decision loop, LLM reasoning, or general learning claim
+
+## Rule Candidate Review Gate v0
+
+Status: completed / deterministic-human-review-gate / no-rule-application.
+
+Goal:
+Continue the Experience Abstraction Layer by adding a human-review gate for proposed rule candidates.
+
+Scope:
+- adds `ashl_core.rule_candidate_review_gate`
+- adds `py -3 -m ashl_core.teaching_cli run-rule-candidate-review-gate-check`
+- supports pending_review, approved, rejected, and deferred review states
+- blocks Qingyin self-approval
+- keeps approved candidates as review decisions only, with `applied=false`
+
+Non-goals:
+- no candidate application, predictor rule modification, rule learning, rule revision, action selection modification, reviewed-candidate suppression/preference, lesson_store write, Memory Layer write, long-term memory, pathfinding, route planner, item seeking, reward change, random walk change, UI change, autonomous exploration, decision loop, LLM reasoning, or general learning claim

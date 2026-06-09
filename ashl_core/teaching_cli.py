@@ -20,6 +20,7 @@ from .prediction_accuracy_check import run_prediction_accuracy_check
 from .reward_biased_action_tendency import run_reward_biased_action_tendency_check
 from .reward_biased_random_walk_check import run_reward_biased_random_walk_check
 from .rule_candidate_from_mismatch import run_rule_candidate_from_mismatch_check
+from .rule_candidate_review_gate import run_rule_candidate_review_gate_check
 from .similar_context_key import run_similar_context_key_check
 from .two_round_instinct_reward_comparison import run_two_round_instinct_reward_comparison
 from .wall_experience_influence import run_wall_experience_influence_check
@@ -3399,6 +3400,8 @@ def run_command(command: str) -> dict[str, Any] | str:
         return run_prediction_accuracy_check()
     if command == "run-rule-candidate-from-mismatch-check":
         return run_rule_candidate_from_mismatch_check()
+    if command == "run-rule-candidate-review-gate-check":
+        return run_rule_candidate_review_gate_check()
     return {
         "command": command,
         "status": "error",
@@ -3464,6 +3467,7 @@ def main(argv: list[str] | None = None) -> int:
             "run-action-outcome-predictor-check",
             "run-prediction-accuracy-check",
             "run-rule-candidate-from-mismatch-check",
+            "run-rule-candidate-review-gate-check",
         ],
     )
     parser.add_argument("--review-id", default="review_001")
@@ -3648,6 +3652,8 @@ def main(argv: list[str] | None = None) -> int:
         result = run_prediction_accuracy_check()
     elif args.command == "run-rule-candidate-from-mismatch-check":
         result = run_rule_candidate_from_mismatch_check()
+    elif args.command == "run-rule-candidate-review-gate-check":
+        result = run_rule_candidate_review_gate_check()
     else:
         result = run_command(args.command)
     if hasattr(sys.stdout, "reconfigure"):
