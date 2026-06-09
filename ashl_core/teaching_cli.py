@@ -10,6 +10,7 @@ from typing import Any
 
 from .approved_candidate_preview import run_approved_candidate_preview_check
 from .action_outcome_predictor import run_action_outcome_predictor_check
+from .cortisol_like_failure_load_trace_check import run_cortisol_like_failure_load_trace_check
 from .fake_sandbox import build_initial_sandbox_state, observe, pick_up
 from .failure_reason_classifier import run_failure_reason_classifier_check
 from .first_output_runtime import generate_minimal_first_output
@@ -3440,6 +3441,8 @@ def run_command(command: str) -> dict[str, Any] | str:
         return run_dopamine_like_reward_trace_check()
     if command == "run-norepinephrine-like-change-attention-trace-check":
         return run_norepinephrine_like_change_attention_trace_check()
+    if command == "run-cortisol-like-failure-load-trace-check":
+        return run_cortisol_like_failure_load_trace_check()
     return {
         "command": command,
         "status": "error",
@@ -3518,6 +3521,7 @@ def main(argv: list[str] | None = None) -> int:
             "run-mimetic-endocrine-signal-schema-check",
             "run-dopamine-like-reward-trace-check",
             "run-norepinephrine-like-change-attention-trace-check",
+            "run-cortisol-like-failure-load-trace-check",
         ],
     )
     parser.add_argument("--review-id", default="review_001")
@@ -3730,6 +3734,8 @@ def main(argv: list[str] | None = None) -> int:
         result = run_dopamine_like_reward_trace_check()
     elif args.command == "run-norepinephrine-like-change-attention-trace-check":
         result = run_norepinephrine_like_change_attention_trace_check()
+    elif args.command == "run-cortisol-like-failure-load-trace-check":
+        result = run_cortisol_like_failure_load_trace_check()
     else:
         result = run_command(args.command)
     if hasattr(sys.stdout, "reconfigure"):

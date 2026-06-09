@@ -2107,3 +2107,10 @@ Two-Trial History Boundary:
 - Maps controlled `prediction_error`, `unknown_pattern`, and `conflict_like_distribution` events into validated `norepinephrine_like` trace records using the mimetic endocrine signal schema.
 - Records source event IDs, source traces, bounded values, attention salience linkage, and safety blocks from action selection, memory writes, and candidate approval.
 - Trace-check only: no autonomous attention control, observation priority runtime changes, predictor mutation, action selection influence, memory write, candidate approval, or subjective alertness/anxiety claim is added.
+
+## Cortisol-Like Failure Load Trace Check v0
+
+- Adds `py -3 -m ashl_core.teaching_cli run-cortisol-like-failure-load-trace-check`.
+- Maps controlled `failure_accumulation`, `active_conflict`, and `challenge_failure` events into validated `cortisol_like` trace records using the mimetic endocrine signal schema.
+- Records source event IDs, source traces, bounded values, pressure load linkage, and safety blocks from action selection, memory writes, and candidate approval.
+- Trace-check only: no protective mechanism trigger, cooldown change, risk avoidance behavior, predictor mutation, action selection influence, memory write, candidate approval, or subjective stress/anxiety/pain claim is added.

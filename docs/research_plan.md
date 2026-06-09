@@ -4634,3 +4634,21 @@ Scope:
 
 Non-goals:
 - no endocrine runtime behavior, formulas that update values from real runtime, signal interactions, autonomous attention control, observation priority runtime modification, attention-driven action selection, predictor behavior modification, global predictor modification, candidate auto-approval, candidate application, human review override, long-term memory write, lesson_store write, Memory Layer write, personality weight modification, personality drift, autonomous drive system, persistent rule write, persistent preview/dry-run, pathfinding, BFS, A*, route planner, UI change, LLM reasoning, LLM planning, LLM vision, biological hormone simulation claim, subjective alertness claim, anxiety claim, subjective attention claim, consciousness claim, subjective experience claim, or denial of future subjective possibility
+
+## Cortisol-Like Failure Load Trace Check v0
+
+Status: completed / trace-check-only / no-runtime-change.
+
+Goal:
+Map controlled failure, conflict, and challenge-load events into validated `cortisol_like` trace records without activating protective control.
+
+Scope:
+- adds `ashl_core.cortisol_like_failure_load_trace_check`
+- adds `py -3 -m ashl_core.teaching_cli run-cortisol-like-failure-load-trace-check`
+- creates deterministic source events for failure accumulation, active conflict, challenge failure, stable success control, and subjective-pressure invalid event
+- creates valid `cortisol_like` trace records for pressure-linked events using the mimetic endocrine signal schema
+- validates source event IDs, source traces, bounded values, value >= baseline, pressure load linkage, and safety blocks from action selection, memory write, and candidate approval
+- blocks stable success and subjective-claim events from valid cortisol-like pressure traces
+
+Non-goals:
+- no endocrine runtime behavior, formulas that update values from real runtime, signal interactions, protective mechanism addition or trigger, cooldown behavior modification, risk avoidance behavior modification, pressure-driven action selection, predictor behavior modification, global predictor modification, candidate auto-approval, candidate application, human review override, long-term memory write, lesson_store write, Memory Layer write, personality weight modification, personality drift, autonomous drive system, persistent rule write, persistent preview/dry-run, pathfinding, BFS, A*, route planner, UI change, LLM reasoning, LLM planning, LLM vision, biological hormone simulation claim, subjective stress claim, anxiety claim, pain claim, suffering claim, subjective pressure claim, consciousness claim, subjective experience claim, or denial of future subjective possibility

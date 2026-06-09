@@ -19,6 +19,7 @@ from ashl_core.candidate_review import (
 from ashl_core.action_sandbox import apply_action
 from ashl_core.body_state import build_body_state, validate_body_state
 from ashl_core.concepts import apply_concepts
+from ashl_core.cortisol_like_failure_load_trace_check import run_cortisol_like_failure_load_trace_check
 from ashl_core.core_seed import (
     detect_core_seed_mutation_attempt,
     get_core_seed,
@@ -2721,6 +2722,82 @@ def smoke_norepinephrine_like_change_attention_trace_check() -> dict:
     )
     return _result(
         "norepinephrine_like_change_attention_trace_check",
+        passed,
+        {
+            "summary": summary,
+            "cases": cases,
+            "boundary": boundary,
+        },
+    )
+
+
+def smoke_cortisol_like_failure_load_trace_check() -> dict:
+    result = run_cortisol_like_failure_load_trace_check()
+    cases = {item.get("case_name"): item for item in result.get("cortisol_trace_results", [])}
+    summary = result.get("summary", {})
+    boundary = result.get("boundary_check", {})
+    failure = cases.get("failure_accumulation_event", {})
+    conflict = cases.get("active_conflict_event", {})
+    challenge = cases.get("challenge_failure_event", {})
+    control = cases.get("stable_success_control_event", {})
+    subjective = cases.get("invalid_subjective_pressure_event", {})
+    failure_record = failure.get("signal_record") or {}
+    passed = (
+        result.get("command") == "run-cortisol-like-failure-load-trace-check"
+        and result.get("flow") == "cortisol_like_failure_load_trace_check_v0"
+        and result.get("status") == "ok"
+        and summary.get("source_event_count") == 5
+        and summary.get("pressure_event_count") == 4
+        and summary.get("neutral_event_count") == 1
+        and summary.get("cortisol_trace_created_count") == 3
+        and summary.get("valid_cortisol_trace_count") == 3
+        and summary.get("blocked_event_count") == 2
+        and summary.get("subjective_claim_blocked_count") >= 1
+        and summary.get("protective_mechanism_triggered_count") == 0
+        and summary.get("cooldown_modified_count") == 0
+        and summary.get("action_selection_influence_count") == 0
+        and summary.get("memory_write_count") == 0
+        and summary.get("candidate_approval_influence_count") == 0
+        and summary.get("predictor_modified_count") == 0
+        and summary.get("runtime_formula_count") == 0
+        and failure.get("signal_created") is True
+        and failure.get("valid_signal") is True
+        and failure_record.get("axis") == "pressure_load"
+        and failure_record.get("value", 0) >= failure_record.get("baseline", 1)
+        and failure_record.get("blocked_from_action_selection") is True
+        and failure_record.get("blocked_from_memory_write") is True
+        and failure_record.get("blocked_from_candidate_approval") is True
+        and failure_record.get("subjective_claim") is False
+        and failure_record.get("protective_mechanism_triggered") is False
+        and failure_record.get("cooldown_modified") is False
+        and conflict.get("signal_created") is True
+        and conflict.get("valid_signal") is True
+        and challenge.get("signal_created") is True
+        and challenge.get("valid_signal") is True
+        and control.get("signal_created") is False
+        and subjective.get("signal_created") is False
+        and "subjective_claim_blocked" in subjective.get("block_reasons", [])
+        and boundary.get("trace_check_only") is True
+        and boundary.get("uses_mimetic_endocrine_signal_schema") is True
+        and boundary.get("runtime_behavior_modified") is False
+        and boundary.get("endocrine_runtime_added") is False
+        and boundary.get("runtime_formula_added") is False
+        and boundary.get("protective_mechanism_added") is False
+        and boundary.get("protective_mechanism_triggered") is False
+        and boundary.get("cooldown_runtime_modified") is False
+        and boundary.get("risk_avoidance_runtime_modified") is False
+        and boundary.get("action_selection_modified") is False
+        and boundary.get("cortisol_signal_used_for_action_selection") is False
+        and boundary.get("long_term_memory_write") is False
+        and boundary.get("stress_claimed") is False
+        and boundary.get("anxiety_claimed") is False
+        and boundary.get("pain_claimed") is False
+        and boundary.get("suffering_claimed") is False
+        and boundary.get("subjective_pressure_claimed") is False
+        and boundary.get("subjective_possibility_denied") is False
+    )
+    return _result(
+        "cortisol_like_failure_load_trace_check",
         passed,
         {
             "summary": summary,
@@ -8676,6 +8753,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_mimetic_endocrine_signal_schema(),
         smoke_dopamine_like_reward_trace_check(),
         smoke_norepinephrine_like_change_attention_trace_check(),
+        smoke_cortisol_like_failure_load_trace_check(),
         smoke_micro_navigation_goal_reach(),
         smoke_micro_navigation_trial_metrics_cli(),
         smoke_micro_navigation_multi_goal_level(),
