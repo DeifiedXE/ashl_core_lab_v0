@@ -2211,6 +2211,7 @@ Two-Trial History Boundary:
 
 - Adds `docs/focus_selector_design_v0.md`.
 - Defines design-only `focus_candidate` records from low-level visual features and change traces.
+- Records future focus-lock prevention principles: attention intensity cap, bounded duration/decay, norepinephrine-like interruption, and cortisol-like forced diffusion, without implementing runtime attention or endocrine control.
 - Design-only: no runtime focus selection, attention control, action selection influence, endocrine control, memory write, or semantic/object understanding is added.
 
 ## Focus Candidate Schema Check v0

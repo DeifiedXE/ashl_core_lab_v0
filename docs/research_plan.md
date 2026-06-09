@@ -4893,6 +4893,7 @@ Scope:
 - adds `docs/focus_selector_design_v0.md`
 - defines low-level focus source types, reason codes, and score fields
 - records score fields without defining runtime formulas or endocrine modulation
+- records focus-lock prevention as a future design safety requirement: bounded intensity, bounded duration/decay, interruption by new low-level change signals, and forced diffusion under high pressure load
 - requires focus candidates to remain blocked from action selection, memory write, and endocrine control
 
 Non-goals:

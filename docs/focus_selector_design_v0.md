@@ -212,6 +212,97 @@ No endocrine signal may alter focus score in v0.
 
 No action selection may consume focus score in v0.
 
+## Focus Lock Prevention / Attention Transfer Safety
+
+Focus selector future design must prevent attention from becoming locked on one candidate.
+
+A `focus_candidate` must not imply permanent or unlimited attention.
+
+Future runtime focus selection, if implemented, must consider these safety principles:
+
+```text
+attention_intensity_cap
+attention_duration_limit
+norepinephrine_like_interrupt
+cortisol_like_forced_diffusion
+```
+
+### attention_intensity_cap
+
+Attention intensity must have an upper bound.
+No focus candidate may accumulate unlimited salience.
+
+### attention_duration_limit
+
+Attention duration must have an upper bound.
+A selected focus target must decay after a bounded duration.
+
+### norepinephrine_like_interrupt
+
+A future norepinephrine-like change signal may interrupt the current focus when a sufficiently strong new low-level change is detected.
+
+This is only a future design direction.
+Focus Selector Design v0 does not implement endocrine-controlled attention.
+
+### cortisol_like_forced_diffusion
+
+A future cortisol-like pressure-load signal may force attention diffusion when pressure is too high.
+
+This means the system may reduce single-point fixation and distribute inspection across multiple candidates.
+
+This is only a future design direction.
+Focus Selector Design v0 does not implement cortisol-controlled focus behavior.
+
+Boundary:
+
+```text
+no runtime focus selector
+no attention control
+no endocrine runtime
+no norepinephrine-controlled attention
+no cortisol-controlled attention
+no action selection influence
+no memory write
+```
+
+Design rule:
+
+Focus candidates are proposals only.
+They must remain interruptible, decayable, bounded, and blocked from action selection in v0.
+
+## Attention Forced Interruption Conditions
+
+Future runtime focus selection, if implemented, must support forced interruption conditions.
+
+A current focus may be interrupted or diffused when any of these conditions is met:
+
+### attention_duration_exceeded
+
+If attention remains on the same focus target for more than N ticks, the focus must decay or be interrupted.
+
+### norepinephrine_like_new_change_interrupt
+
+If a norepinephrine-like change signal detects a sufficiently strong new low-level change, the current focus may be interrupted.
+
+### cortisol_threshold_forced_diffusion
+
+If cortisol-like pressure load exceeds a threshold, attention must be diffused across multiple candidates instead of staying locked on one target.
+
+### external_mentor_interrupt
+
+If an external mentor instruction interrupts focus, the current focus must stop unconditionally.
+
+Boundary:
+
+```text
+N is not defined in v0.
+Threshold values are not defined in v0.
+No runtime focus selector is implemented.
+No endocrine-controlled attention is implemented.
+No action selection influence is allowed.
+No memory write is allowed.
+```
+
 ## Source Trace Rule
 
 Every `focus_candidate` should keep source trace evidence for:
