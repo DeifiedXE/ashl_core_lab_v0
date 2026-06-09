@@ -14,6 +14,7 @@ from .grounded_action_experience import run_grounded_action_experience_check
 from .grounded_action_experience_influence import run_grounded_action_experience_influence_check
 from .instinct_random_walk_runner import run_instinct_random_walk
 from .item_reward_event import run_item_reward_event_check
+from .reward_biased_action_tendency import run_reward_biased_action_tendency_check
 from .wall_experience_influence import run_wall_experience_influence_check
 from .lesson_runner import run_lesson_causality_test, run_session_2a_with_lesson
 from .lesson_store import (
@@ -3375,6 +3376,8 @@ def run_command(command: str) -> dict[str, Any] | str:
         return run_wall_experience_influence_check()
     if command == "run-item-reward-event-check":
         return run_item_reward_event_check()
+    if command == "run-reward-biased-action-tendency-check":
+        return run_reward_biased_action_tendency_check()
     return {
         "command": command,
         "status": "error",
@@ -3432,6 +3435,7 @@ def main(argv: list[str] | None = None) -> int:
             "run-instinct-random-walk",
             "run-wall-experience-influence-check",
             "run-item-reward-event-check",
+            "run-reward-biased-action-tendency-check",
         ],
     )
     parser.add_argument("--review-id", default="review_001")
@@ -3599,6 +3603,8 @@ def main(argv: list[str] | None = None) -> int:
         result = run_wall_experience_influence_check(seed=args.seed, max_steps=max_steps)
     elif args.command == "run-item-reward-event-check":
         result = run_item_reward_event_check(scenario=args.scenario)
+    elif args.command == "run-reward-biased-action-tendency-check":
+        result = run_reward_biased_action_tendency_check()
     else:
         result = run_command(args.command)
     if hasattr(sys.stdout, "reconfigure"):

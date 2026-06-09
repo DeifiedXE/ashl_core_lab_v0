@@ -4128,3 +4128,24 @@ Non-goals:
 - no item collection, pickup, inventory, exit activation, win condition, task completion, curiosity, prediction error, place memory, or home sandbox
 - no pathfinding, BFS, A*, route planner, LLM planning, LLM vision, lesson_store write, Memory Layer write, long-term memory, or lesson_candidate pipeline connection
 - no pleasure, desire, self-awareness, consciousness, subjective experience, visual understanding, solved symbol grounding, or general learning claim
+
+## Reward-Biased Action Tendency v0
+
+Status: completed / immediate-visible-symbol-bias / no-item-seeking.
+
+Goal:
+Verify that a prior non-subjective item reward event can increase immediate move_forward/contact action tendency when `front_symbol=i` is visible again.
+
+Scope:
+- adds `ashl_core.reward_biased_action_tendency`
+- adds `py -3 -m ashl_core.teaching_cli run-reward-biased-action-tendency-check`
+- uses deterministic score fields: base action score, reward bias delta, and final action score
+- includes a no-reward control proving that seeing `i` alone does not apply reward bias
+- requires matching reward key `front_symbol=i|action=move_forward|reward_type=item_contact_reward`
+
+Non-goals:
+- no route-level item seeking, observed_map navigation toward `I`, pathfinding, BFS, A*, route planner, autonomous exploration, or decision loop
+- no item collection, pickup, inventory, exit activation, win condition, task completion, curiosity, prediction error, place memory, or home sandbox
+- no random walk runner change, Flask UI behavior change, runtime movement rule change, or existing navigation action selection change
+- no LLM planning, LLM vision, lesson_store write, Memory Layer write, long-term memory, or lesson_candidate pipeline connection
+- no pleasure, desire, self-awareness, consciousness, subjective experience, visual understanding, solved symbol grounding, or general learning claim

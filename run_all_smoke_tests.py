@@ -132,6 +132,7 @@ from ashl_core.mentor_feedback_runtime import build_minimal_mentor_feedback_trac
 from ashl_core.persistence import append_jsonl, read_jsonl
 from ashl_core.perception import perceive
 from ashl_core.prompt_leakage_check import build_decision_input_snapshot, check_leakage
+from ashl_core.reward_biased_action_tendency import run_reward_biased_action_tendency_check
 from ashl_core.rule_candidates import append_rule_candidate
 from ashl_core.review_tasks import build_review_task_trace
 from ashl_core.senses import build_sensor_event, build_visual_concept_candidate, validate_sensor_event
@@ -1381,6 +1382,72 @@ def smoke_item_reward_event() -> dict:
         {
             "scenario": scenario,
             "reward_event": event,
+            "summary": summary,
+            "boundary": boundary,
+        },
+    )
+
+
+def smoke_reward_biased_action_tendency() -> dict:
+    result = run_reward_biased_action_tendency_check()
+    control = result.get("control_result", {})
+    reward_bias = result.get("reward_bias_result", {})
+    store_summary = result.get("reward_store_summary", {})
+    summary = result.get("summary", {})
+    boundary = result.get("boundary_check", {})
+    passed = (
+        result.get("command") == "run-reward-biased-action-tendency-check"
+        and result.get("flow") == "reward_biased_action_tendency_v0"
+        and result.get("status") == "ok"
+        and result.get("level_id") == "simulated_vision_larger_sandbox_v0"
+        and control.get("scenario") == "no_reward_control"
+        and control.get("front_symbol") == "i"
+        and control.get("candidate_action") == "move_forward"
+        and control.get("matching_reward_event_found") is False
+        and control.get("reward_bias_applied") is False
+        and control.get("reward_used_for_decision") is False
+        and control.get("reward_bias_delta") == 0.0
+        and control.get("passed") is True
+        and reward_bias.get("scenario") == "with_item_reward"
+        and reward_bias.get("trial1_reward_event", {}).get("reward_type") == "item_contact_reward"
+        and reward_bias.get("front_symbol") == "i"
+        and reward_bias.get("candidate_action") == "move_forward"
+        and reward_bias.get("matching_reward_event_found") is True
+        and reward_bias.get("reward_bias_applied") is True
+        and reward_bias.get("reward_used_for_decision") is True
+        and reward_bias.get("selected_action") == "move_forward"
+        and reward_bias.get("reward_bias_delta") > 0.0
+        and reward_bias.get("final_action_score") > reward_bias.get("base_action_score")
+        and reward_bias.get("passed") is True
+        and store_summary.get("reward_event_count") == 1
+        and store_summary.get("item_contact_reward_available") is True
+        and store_summary.get("dopamine_like_signal_count") == 1
+        and summary.get("control_passed") is True
+        and summary.get("reward_bias_passed") is True
+        and summary.get("requires_prior_reward_for_bias") is True
+        and summary.get("all_reward_biased_action_tendency_checks_passed") is True
+        and boundary.get("reward_biased_action_tendency_enabled") is True
+        and boundary.get("requires_prior_reward_for_bias") is True
+        and boundary.get("no_reward_control_used") is True
+        and boundary.get("item_reward_event_enabled") is True
+        and boundary.get("dopamine_like_signal_enabled") is True
+        and boundary.get("item_seeking_enabled") is False
+        and boundary.get("pathfinding_used") is False
+        and boundary.get("route_planner_added") is False
+        and boundary.get("observed_map_route_use") is False
+        and boundary.get("item_collection_enabled") is False
+        and boundary.get("long_term_memory_write") is False
+        and boundary.get("pleasure_claimed") is False
+        and boundary.get("desire_claimed") is False
+        and boundary.get("consciousness_claimed") is False
+    )
+    return _result(
+        "reward_biased_action_tendency",
+        passed,
+        {
+            "control": control,
+            "reward_bias": reward_bias,
+            "store_summary": store_summary,
             "summary": summary,
             "boundary": boundary,
         },
@@ -7312,6 +7379,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_instinct_random_walk_runner(),
         smoke_wall_experience_influence(),
         smoke_item_reward_event(),
+        smoke_reward_biased_action_tendency(),
         smoke_micro_navigation_goal_reach(),
         smoke_micro_navigation_trial_metrics_cli(),
         smoke_micro_navigation_multi_goal_level(),

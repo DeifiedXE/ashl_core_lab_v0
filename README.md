@@ -1901,3 +1901,10 @@ Two-Trial History Boundary:
 - Creates a non-subjective `reward_event` when `front_symbol=i + move_forward` produces `item_contact`.
 - Exposes `dopamine_like_signal` as a data field only.
 - Does not add reward bias, item seeking, item collection, pathfinding, long-term memory, pleasure claims, or consciousness claims.
+
+## Reward-Biased Action Tendency v0
+
+- Adds `py -3 -m ashl_core.teaching_cli run-reward-biased-action-tendency-check`.
+- Verifies that a prior non-subjective `item_contact_reward` can increase immediate `move_forward` action tendency when `front_symbol=i` is visible again.
+- Includes a no-reward control proving that seeing `i` alone does not apply reward bias.
+- Does not add item seeking, pathfinding, item collection, long-term memory, pleasure claims, or consciousness claims.
