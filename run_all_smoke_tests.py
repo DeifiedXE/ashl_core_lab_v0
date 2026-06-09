@@ -137,6 +137,7 @@ from ashl_core.prediction_accuracy_check import run_prediction_accuracy_check
 from ashl_core.prompt_leakage_check import build_decision_input_snapshot, check_leakage
 from ashl_core.reward_biased_action_tendency import run_reward_biased_action_tendency_check
 from ashl_core.reward_biased_random_walk_check import run_reward_biased_random_walk_check
+from ashl_core.rule_candidate_from_mismatch import run_rule_candidate_from_mismatch_check
 from ashl_core.rule_candidates import append_rule_candidate
 from ashl_core.review_tasks import build_review_task_trace
 from ashl_core.senses import build_sensor_event, build_visual_concept_candidate, validate_sensor_event
@@ -1808,6 +1809,64 @@ def smoke_prediction_accuracy_check() -> dict:
         passed,
         {
             "checks": checks,
+            "summary": summary,
+            "boundary": boundary,
+        },
+    )
+
+
+def smoke_rule_candidate_from_mismatch() -> dict:
+    result = run_rule_candidate_from_mismatch_check()
+    candidates = {item.get("case_name"): item.get("candidate", {}) for item in result.get("candidate_results", [])}
+    summary = result.get("summary", {})
+    boundary = result.get("boundary_check", {})
+    created = [
+        candidate
+        for candidate in candidates.values()
+        if candidate.get("candidate_created") is True
+    ]
+    passed = (
+        result.get("command") == "run-rule-candidate-from-mismatch-check"
+        and result.get("flow") == "rule_candidate_from_mismatch_v0"
+        and result.get("status") == "ok"
+        and candidates.get("match_no_candidate", {}).get("candidate_created") is False
+        and candidates.get("match_no_candidate", {}).get("candidate_type") == "no_candidate_for_match"
+        and candidates.get("outcome_mismatch_candidate", {}).get("candidate_type")
+        == "outcome_rule_revision_candidate"
+        and candidates.get("reason_mismatch_candidate", {}).get("candidate_type")
+        == "reason_rule_revision_candidate"
+        and candidates.get("unknown_prediction_candidate", {}).get("candidate_type")
+        == "unknown_context_rule_candidate"
+        and all(candidate.get("requires_review") is True for candidate in created)
+        and all(candidate.get("candidate_status") == "proposed" for candidate in created)
+        and summary.get("case_count") == 4
+        and summary.get("passed_count") == 4
+        and summary.get("failed_count") == 0
+        and summary.get("candidate_created_count") == 3
+        and summary.get("no_candidate_count") == 1
+        and summary.get("outcome_revision_candidate_count") == 1
+        and summary.get("reason_revision_candidate_count") == 1
+        and summary.get("unknown_context_candidate_count") == 1
+        and summary.get("all_rule_candidate_from_mismatch_checks_passed") is True
+        and boundary.get("rule_candidate_from_mismatch_enabled") is True
+        and boundary.get("candidate_creation_only") is True
+        and boundary.get("requires_review") is True
+        and boundary.get("rule_learning_enabled") is False
+        and boundary.get("rule_revision_enabled") is False
+        and boundary.get("rule_application_enabled") is False
+        and boundary.get("candidate_auto_approved") is False
+        and boundary.get("action_selection_modified") is False
+        and boundary.get("lesson_store_write") is False
+        and boundary.get("memory_layer_write") is False
+        and boundary.get("long_term_memory_write") is False
+        and boundary.get("llm_reasoning_used") is False
+        and boundary.get("general_learning_claimed") is False
+    )
+    return _result(
+        "rule_candidate_from_mismatch",
+        passed,
+        {
+            "candidates": candidates,
             "summary": summary,
             "boundary": boundary,
         },
@@ -7746,6 +7805,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_similar_context_key(),
         smoke_action_outcome_predictor(),
         smoke_prediction_accuracy_check(),
+        smoke_rule_candidate_from_mismatch(),
         smoke_micro_navigation_goal_reach(),
         smoke_micro_navigation_trial_metrics_cli(),
         smoke_micro_navigation_multi_goal_level(),

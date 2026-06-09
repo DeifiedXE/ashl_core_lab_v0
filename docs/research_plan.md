@@ -4271,3 +4271,20 @@ Scope:
 
 Non-goals:
 - no action selection modification, prediction-driven suppression/preference, predictor rule revision, rule learning, rule revision, lesson_store write, Memory Layer write, long-term memory, pathfinding, route planner, item seeking, reward change, random walk change, UI change, LLM reasoning, or general learning claim
+
+## Rule Candidate From Prediction Mismatch v0
+
+Status: completed / deterministic-candidate-extraction / review-required.
+
+Goal:
+Continue the Experience Abstraction Layer by converting prediction mismatches into proposed candidates for later review.
+
+Scope:
+- adds `ashl_core.rule_candidate_from_mismatch`
+- adds `py -3 -m ashl_core.teaching_cli run-rule-candidate-from-mismatch-check`
+- supports outcome mismatch, reason mismatch, unknown prediction, and no-candidate-for-match cases
+- creates proposed candidates with review required
+- records mismatch evidence inside the candidate object
+
+Non-goals:
+- no candidate auto-approval, candidate application, predictor rule modification, rule learning, rule revision, action selection modification, prediction-driven suppression/preference, lesson_store write, Memory Layer write, long-term memory, pathfinding, route planner, item seeking, reward change, random walk change, UI change, autonomous exploration, decision loop, LLM reasoning, or general learning claim

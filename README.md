@@ -1957,3 +1957,10 @@ Two-Trial History Boundary:
 - Continues the Experience Abstraction Layer by comparing predicted outcomes with actual classified observations.
 - Records match, outcome mismatch, reason mismatch, and unknown prediction cases.
 - Does not revise rules, modify action selection, use LLM reasoning, or write long-term memory.
+
+## Rule Candidate From Prediction Mismatch v0
+
+- Adds `py -3 -m ashl_core.teaching_cli run-rule-candidate-from-mismatch-check`.
+- Converts prediction mismatches into proposed review-required candidates.
+- Supports outcome mismatch, reason mismatch, unknown prediction, and no-candidate-for-match cases.
+- Does not auto-approve, apply, revise rules, modify action selection, use LLM reasoning, or write long-term memory.
