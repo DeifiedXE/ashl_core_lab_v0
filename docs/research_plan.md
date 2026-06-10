@@ -5366,3 +5366,11 @@ Status: completed / trace-check-only / temporary-bridge-only / no-runtime-change
 Progress:
 - Lets new demo trial traces query the temporary cross-session experience space by same_exact_key_only and produce trace-only link previews.
 - The path remains temporary, deprecated by future four-layer memory, and does not write memory, retain/apply lessons, create history runtime, influence action, mutate predictors, or prove learning.
+
+## Temporary Cross-Session Reality Boundary Clarification v0
+
+Status: completed / clarification-only / no-runtime-change.
+
+Progress:
+- Clarifies that temporary cross-session space v0 means controlled demo/fixture handoff only.
+- It is not durable persistence, memory, history runtime, or lesson retention, and must be deprecated or bypassed after the future four-layer memory system exists.

@@ -21,6 +21,7 @@ EXPECTED_FIELDS = {
     "space_type",
     "trace_only",
     "deprecated_by_future_memory",
+    "reality_boundary",
     "records",
     "index",
     "blocked_flags",
@@ -55,6 +56,8 @@ class TemporaryCrossSessionExperienceSpaceMinimalTests(unittest.TestCase):
         self.assertEqual(space["space_type"], "temporary_cross_session_experience_space")
         self.assertTrue(space["trace_only"])
         self.assertTrue(space["deprecated_by_future_memory"])
+        self.assertEqual(space["reality_boundary"]["persistence_model"], "demo_or_fixture_handoff_only")
+        self.assertFalse(space["reality_boundary"]["durable_across_process_restart"])
         self.assertEqual(len(space["records"]), 1)
         self.assertEqual(space["records"][0]["experience_record_id"], experience["experience_record_id"])
         self.assertEqual(space["records"][0]["exact_key"], experience["exact_key"])
@@ -64,7 +67,7 @@ class TemporaryCrossSessionExperienceSpaceMinimalTests(unittest.TestCase):
         space = self._valid_space()
 
         self.assertEqual(set(space), EXPECTED_FIELDS)
-        self.assertEqual(len(space), 7)
+        self.assertEqual(len(space), 8)
 
     def test_invalid_or_retained_experience_does_not_enter_space(self):
         invalid = self._valid_experience()
@@ -109,6 +112,16 @@ class TemporaryCrossSessionExperienceSpaceMinimalTests(unittest.TestCase):
         space["deprecated_by_future_memory"] = False
         self._assert_invalid(space, "deprecated_by_future_memory_not_true")
 
+    def test_durable_across_process_restart_true_blocks(self):
+        space = self._valid_space()
+        space["reality_boundary"]["durable_across_process_restart"] = True
+        self._assert_invalid(space, "durable_across_process_restart_not_false")
+
+    def test_persistence_model_other_than_demo_handoff_blocks(self):
+        space = self._valid_space()
+        space["reality_boundary"]["persistence_model"] = "durable_persistence"
+        self._assert_invalid(space, "persistence_model_not_demo_or_fixture_handoff_only")
+
     def test_retention_status_retained_blocks(self):
         space = self._valid_space()
         space["records"][0]["retention_status"] = "retained"
@@ -142,15 +155,17 @@ class TemporaryCrossSessionExperienceSpaceMinimalTests(unittest.TestCase):
         self.assertEqual(result["command"], "run-temporary-cross-session-experience-space-minimal-check")
         self.assertEqual(result["flow"], "temporary_cross_session_experience_space_minimal_v0")
         self.assertEqual(result["status"], "ok")
-        self.assertEqual(summary["temporary_space_count"], 11)
+        self.assertEqual(summary["temporary_space_count"], 13)
         self.assertEqual(summary["valid_temporary_space_count"], 1)
-        self.assertEqual(summary["invalid_temporary_space_count"], 10)
+        self.assertEqual(summary["invalid_temporary_space_count"], 12)
         self.assertEqual(summary["temporary_record_count"], 1)
         self.assertEqual(summary["matched_query_count"], 1)
         self.assertEqual(summary["not_matched_query_count"], 1)
         self.assertEqual(summary["trace_only_false_blocked_count"], 1)
         self.assertEqual(summary["deprecated_by_future_memory_false_blocked_count"], 1)
         self.assertEqual(summary["retention_status_blocked_count"], 1)
+        self.assertEqual(summary["durable_across_process_restart_blocked_count"], 1)
+        self.assertEqual(summary["persistence_model_blocked_count"], 1)
         self.assertEqual(summary["match_scope_blocked_count"], 1)
         self.assertEqual(summary["memory_write_blocked_count"], 1)
         self.assertEqual(summary["lesson_retained_blocked_count"], 1)
@@ -172,9 +187,11 @@ class TemporaryCrossSessionExperienceSpaceMinimalTests(unittest.TestCase):
                 self.assertEqual(summary[field], 0)
         self.assertTrue(boundary["trace_only"])
         self.assertTrue(boundary["minimal_record_shape"])
-        self.assertEqual(boundary["top_level_field_count"], 7)
+        self.assertEqual(boundary["top_level_field_count"], 8)
         self.assertTrue(boundary["same_exact_key_only"])
         self.assertTrue(boundary["deprecated_by_future_memory"])
+        self.assertTrue(boundary["persistence_model_demo_or_fixture_handoff_only"])
+        self.assertFalse(boundary["durable_across_process_restart"])
         self.assertFalse(boundary["real_memory_added"])
         self.assertFalse(boundary["long_term_memory_added"])
         self.assertFalse(boundary["lesson_retention_added"])
@@ -208,7 +225,7 @@ class TemporaryCrossSessionExperienceSpaceMinimalTests(unittest.TestCase):
         result = json.loads(completed.stdout)
 
         self.assertEqual(result["command"], "run-temporary-cross-session-experience-space-minimal-check")
-        self.assertEqual(result["summary"]["temporary_space_count"], 11)
+        self.assertEqual(result["summary"]["temporary_space_count"], 13)
         self.assertEqual(result["summary"]["matched_query_count"], 1)
         self.assertEqual(result["summary"]["not_matched_query_count"], 1)
 

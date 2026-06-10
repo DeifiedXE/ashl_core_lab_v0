@@ -1,4 +1,7 @@
-"""Temporary trace-only cross-session experience handoff space."""
+"""Temporary trace-only cross-session experience handoff space.
+
+In v0, cross-session means controlled demo/fixture handoff only, not durable persistence.
+"""
 
 from __future__ import annotations
 
@@ -20,6 +23,7 @@ REQUIRED_FIELDS = {
     "space_type",
     "trace_only",
     "deprecated_by_future_memory",
+    "reality_boundary",
     "records",
     "index",
     "blocked_flags",
@@ -35,6 +39,11 @@ REQUIRED_INDEX_FIELDS = {
     "match_scope",
     "key_count",
     "record_count",
+}
+
+REQUIRED_REALITY_BOUNDARY_FIELDS = {
+    "persistence_model",
+    "durable_across_process_restart",
 }
 
 REQUIRED_BLOCKED_FLAGS = {
@@ -80,6 +89,10 @@ def build_temporary_experience_space(records: list[dict[str, Any]]) -> dict[str,
         "space_type": "temporary_cross_session_experience_space",
         "trace_only": True,
         "deprecated_by_future_memory": True,
+        "reality_boundary": {
+            "persistence_model": "demo_or_fixture_handoff_only",
+            "durable_across_process_restart": False,
+        },
         "records": accepted_records,
         "index": {
             "match_scope": "same_exact_key_only",
@@ -125,6 +138,18 @@ def validate_temporary_experience_space(space: dict[str, Any]) -> dict[str, Any]
         errors.append("trace_only_not_true")
     if space.get("deprecated_by_future_memory") is not True:
         errors.append("deprecated_by_future_memory_not_true")
+
+    reality_boundary = space.get("reality_boundary")
+    if not isinstance(reality_boundary, dict):
+        errors.append("reality_boundary_missing_or_not_dict")
+        reality_boundary = {}
+    for field in sorted(REQUIRED_REALITY_BOUNDARY_FIELDS):
+        if field not in reality_boundary:
+            errors.append(f"reality_boundary_missing_field:{field}")
+    if reality_boundary.get("persistence_model") != "demo_or_fixture_handoff_only":
+        errors.append("persistence_model_not_demo_or_fixture_handoff_only")
+    if reality_boundary.get("durable_across_process_restart") is not False:
+        errors.append("durable_across_process_restart_not_false")
 
     records = space.get("records")
     if not isinstance(records, list):
@@ -175,6 +200,8 @@ def validate_temporary_experience_space(space: dict[str, Any]) -> dict[str, Any]
         "space_type": space.get("space_type"),
         "trace_only": space.get("trace_only") is True,
         "deprecated_by_future_memory": space.get("deprecated_by_future_memory") is True,
+        "persistence_model": reality_boundary.get("persistence_model"),
+        "durable_across_process_restart": reality_boundary.get("durable_across_process_restart") is True,
         "record_count": len(records),
         "match_scope": index_record.get("match_scope"),
         "memory_write": blocked_flags.get("memory_write") is True,
@@ -237,6 +264,14 @@ def _invalid_demo_spaces(valid_space: dict[str, Any]) -> list[dict[str, Any]]:
     deprecated_false["deprecated_by_future_memory"] = False
     records.append(deprecated_false)
 
+    durable_true = _copy_case(valid_space, "durable_across_process_restart_true")
+    durable_true["reality_boundary"]["durable_across_process_restart"] = True
+    records.append(durable_true)
+
+    persistence_model = _copy_case(valid_space, "persistence_model")
+    persistence_model["reality_boundary"]["persistence_model"] = "durable_persistence"
+    records.append(persistence_model)
+
     retained = _copy_case(valid_space, "retention_status_retained")
     retained["records"][0]["retention_status"] = "retained"
     records.append(retained)
@@ -279,6 +314,12 @@ def _build_summary(
         "retention_status_blocked_count": _count_error(
             validation_results, "retention_status_not_not_retained"
         ),
+        "durable_across_process_restart_blocked_count": _count_error(
+            validation_results, "durable_across_process_restart_not_false"
+        ),
+        "persistence_model_blocked_count": _count_error(
+            validation_results, "persistence_model_not_demo_or_fixture_handoff_only"
+        ),
         "match_scope_blocked_count": _count_error(
             validation_results, "match_scope_not_same_exact_key_only"
         ),
@@ -313,15 +354,17 @@ def _build_summary(
 
 def _all_checks_passed(summary: dict[str, Any]) -> bool:
     return (
-        summary["temporary_space_count"] == 11
+        summary["temporary_space_count"] == 13
         and summary["valid_temporary_space_count"] == 1
-        and summary["invalid_temporary_space_count"] == 10
+        and summary["invalid_temporary_space_count"] == 12
         and summary["temporary_record_count"] == 1
         and summary["matched_query_count"] == 1
         and summary["not_matched_query_count"] == 1
         and summary["trace_only_false_blocked_count"] == 1
         and summary["deprecated_by_future_memory_false_blocked_count"] == 1
         and summary["retention_status_blocked_count"] == 1
+        and summary["durable_across_process_restart_blocked_count"] == 1
+        and summary["persistence_model_blocked_count"] == 1
         and summary["match_scope_blocked_count"] == 1
         and summary["memory_write_blocked_count"] == 1
         and summary["lesson_retained_blocked_count"] == 1
@@ -348,6 +391,8 @@ def _boundary_check(summary: dict[str, Any]) -> dict[str, bool | int]:
         "top_level_field_count": len(REQUIRED_FIELDS),
         "same_exact_key_only": True,
         "deprecated_by_future_memory": True,
+        "persistence_model_demo_or_fixture_handoff_only": True,
+        "durable_across_process_restart": False,
         "real_memory_added": False,
         "long_term_memory_added": False,
         "lesson_retention_added": False,

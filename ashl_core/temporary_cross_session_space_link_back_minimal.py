@@ -1,4 +1,7 @@
-"""Trace-only link-back from temporary experience space to trial bucket preview."""
+"""Trace-only link-back from temporary experience space to trial bucket preview.
+
+In v0, cross-session means controlled demo/fixture handoff only, not durable persistence.
+"""
 
 from __future__ import annotations
 

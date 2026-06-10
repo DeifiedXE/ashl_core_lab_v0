@@ -3409,15 +3409,17 @@ def smoke_temporary_cross_session_experience_space_minimal() -> dict:
         result.get("command") == "run-temporary-cross-session-experience-space-minimal-check"
         and result.get("flow") == "temporary_cross_session_experience_space_minimal_v0"
         and result.get("status") == "ok"
-        and summary.get("temporary_space_count") == 11
+        and summary.get("temporary_space_count") == 13
         and summary.get("valid_temporary_space_count") == 1
-        and summary.get("invalid_temporary_space_count") == 10
+        and summary.get("invalid_temporary_space_count") == 12
         and summary.get("temporary_record_count") == 1
         and summary.get("matched_query_count") == 1
         and summary.get("not_matched_query_count") == 1
         and summary.get("trace_only_false_blocked_count") == 1
         and summary.get("deprecated_by_future_memory_false_blocked_count") == 1
         and summary.get("retention_status_blocked_count") == 1
+        and summary.get("durable_across_process_restart_blocked_count") == 1
+        and summary.get("persistence_model_blocked_count") == 1
         and summary.get("match_scope_blocked_count") == 1
         and summary.get("memory_write_blocked_count") == 1
         and summary.get("lesson_retained_blocked_count") == 1
@@ -3440,15 +3442,18 @@ def smoke_temporary_cross_session_experience_space_minimal() -> dict:
             "space_type",
             "trace_only",
             "deprecated_by_future_memory",
+            "reality_boundary",
             "records",
             "index",
             "blocked_flags",
         }
         and boundary.get("trace_only") is True
         and boundary.get("minimal_record_shape") is True
-        and boundary.get("top_level_field_count") == 7
+        and boundary.get("top_level_field_count") == 8
         and boundary.get("same_exact_key_only") is True
         and boundary.get("deprecated_by_future_memory") is True
+        and boundary.get("persistence_model_demo_or_fixture_handoff_only") is True
+        and boundary.get("durable_across_process_restart") is False
         and boundary.get("real_memory_added") is False
         and boundary.get("long_term_memory_added") is False
         and boundary.get("lesson_retention_added") is False
@@ -3471,6 +3476,43 @@ def smoke_temporary_cross_session_experience_space_minimal() -> dict:
             "summary": summary,
             "first_record_keys": sorted(records[0].keys()) if records else [],
             "boundary": boundary,
+        },
+    )
+
+
+def smoke_temporary_cross_session_reality_boundary() -> dict:
+    doc_path = Path("docs/temporary_cross_session_reality_boundary_clarification_v0.md")
+    doc = doc_path.read_text(encoding="utf-8") if doc_path.exists() else ""
+    result = run_temporary_cross_session_experience_space_minimal_check()
+    boundary = result.get("boundary_check", {})
+    summary = result.get("summary", {})
+    required_phrases = [
+        "cross-session in v0 means controlled demo handoff, not durable persistence",
+        "not durable across process restart",
+        "not memory",
+        "not history runtime",
+        "not lesson retention",
+        "deprecated or bypassed after future four-layer memory exists",
+        "separate persistence boundary review",
+    ]
+    passed = (
+        all(phrase in doc for phrase in required_phrases)
+        and boundary.get("persistence_model_demo_or_fixture_handoff_only") is True
+        and boundary.get("durable_across_process_restart") is False
+        and summary.get("durable_across_process_restart_blocked_count") == 1
+        and summary.get("persistence_model_blocked_count") == 1
+        and boundary.get("real_memory_added") is False
+        and boundary.get("history_runtime_added") is False
+        and boundary.get("lesson_retention_added") is False
+        and boundary.get("proof_of_learning_claimed") is False
+    )
+    return _result(
+        "temporary_cross_session_reality_boundary",
+        passed,
+        {
+            "doc_path": str(doc_path),
+            "boundary": boundary,
+            "summary": summary,
         },
     )
 
@@ -11189,6 +11231,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_demo_readable_before_after_report_minimal(),
         smoke_trial_bucket_link_preview_minimal(),
         smoke_temporary_cross_session_experience_space_minimal(),
+        smoke_temporary_cross_session_reality_boundary(),
         smoke_temporary_cross_session_space_link_back_minimal(),
         smoke_history_runtime_persistence_gap_review(),
         smoke_generalized_prediction_confidence_check(),
