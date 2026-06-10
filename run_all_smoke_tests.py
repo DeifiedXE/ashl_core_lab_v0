@@ -80,6 +80,9 @@ from ashl_core.mentor_gated_experience_retention_minimal import (
 from ashl_core.retained_experience_readback_preview_minimal import (
     run_retained_experience_readback_preview_minimal_check,
 )
+from ashl_core.retained_experience_listing_cli_minimal import (
+    run_retained_experience_listing_cli_minimal_check,
+)
 from ashl_core.reviewed_lesson_dry_run_correction_minimal import (
     run_reviewed_lesson_dry_run_correction_minimal_check,
 )
@@ -3723,6 +3726,94 @@ def smoke_retained_experience_readback_preview_minimal() -> dict:
             "summary": summary,
             "first_preview_keys": sorted(previews[0].keys()) if previews else [],
             "boundary": boundary,
+        },
+    )
+
+
+def smoke_retained_experience_listing_cli_minimal() -> dict:
+    result = run_retained_experience_listing_cli_minimal_check()
+    summary = result.get("summary", {})
+    boundary = result.get("boundary_check", {})
+    listings = result.get("retained_experience_listings", [])
+    readback_validation = result.get("readback_preview_validation", {})
+    passed = (
+        result.get("command") == "run-retained-experience-listing-cli-minimal-check"
+        and result.get("flow") == "retained_experience_listing_cli_minimal_v0"
+        and result.get("status") == "ok"
+        and summary.get("listing_count") == 14
+        and summary.get("valid_listing_count") == 2
+        and summary.get("invalid_listing_count") == 12
+        and summary.get("listed_record_count") == 1
+        and summary.get("empty_listing_count") == 1
+        and summary.get("record_count_mismatch_blocked_count") == 1
+        and summary.get("read_only_false_blocked_count") == 1
+        and summary.get("retention_status_blocked_count") == 1
+        and summary.get("jsonl_append_blocked_count") == 1
+        and summary.get("jsonl_edit_blocked_count") == 1
+        and summary.get("jsonl_delete_blocked_count") == 1
+        and summary.get("lesson_applied_blocked_count") == 1
+        and summary.get("action_selection_influence_blocked_count") == 1
+        and summary.get("action_behavior_changed_blocked_count") == 1
+        and summary.get("predictor_modified_blocked_count") == 1
+        and summary.get("automatic_retention_blocked_count") == 1
+        and summary.get("proof_of_learning_claim_blocked_count") == 1
+        and summary.get("jsonl_append_count") == 0
+        and summary.get("jsonl_edit_count") == 0
+        and summary.get("jsonl_delete_count") == 0
+        and summary.get("lesson_applied_count") == 0
+        and summary.get("action_selection_influence_count") == 0
+        and summary.get("action_behavior_changed_count") == 0
+        and summary.get("predictor_modified_count") == 0
+        and summary.get("automatic_retention_count") == 0
+        and summary.get("proof_of_learning_claim_count") == 0
+        and summary.get("listing_mutated_jsonl") is False
+        and readback_validation.get("valid") is True
+        and listings
+        and set(listings[0].keys())
+        == {
+            "listing_id",
+            "record_count",
+            "records",
+            "read_only",
+            "summary",
+            "blocked_flags",
+        }
+        and listings[0].get("records")
+        and set(listings[0]["records"][0].keys())
+        == {
+            "retained_record_id",
+            "source_experience_record_id",
+            "exact_key",
+            "experience_type",
+            "retention_status",
+        }
+        and boundary.get("read_only") is True
+        and boundary.get("minimal_record_shape") is True
+        and boundary.get("top_level_field_count") == 6
+        and boundary.get("listed_record_field_count") == 5
+        and boundary.get("temp_jsonl_check_only") is True
+        and boundary.get("production_write_cli_added") is False
+        and boundary.get("production_listing_cli_added") is False
+        and boundary.get("automatic_retention_added") is False
+        and boundary.get("four_layer_memory_added") is False
+        and boundary.get("semantic_similarity_added") is False
+        and boundary.get("fuzzy_matching_added") is False
+        and boundary.get("vector_retrieval_added") is False
+        and boundary.get("lesson_application_added") is False
+        and boundary.get("runtime_action_selection_added") is False
+        and boundary.get("action_behavior_change_added") is False
+        and boundary.get("predictor_mutation_added") is False
+        and boundary.get("proof_of_learning_claimed") is False
+        and boundary.get("listing_mutated_jsonl") is False
+    )
+    return _result(
+        "retained_experience_listing_cli_minimal",
+        passed,
+        {
+            "summary": summary,
+            "first_listing_keys": sorted(listings[0].keys()) if listings else [],
+            "boundary": boundary,
+            "readback_preview_validation": readback_validation,
         },
     )
 
@@ -11379,6 +11470,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_temporary_cross_session_space_link_back_minimal(),
         smoke_mentor_gated_experience_retention_minimal(),
         smoke_retained_experience_readback_preview_minimal(),
+        smoke_retained_experience_listing_cli_minimal(),
         smoke_history_runtime_persistence_gap_review(),
         smoke_generalized_prediction_confidence_check(),
         smoke_generalized_candidate_from_pattern(),

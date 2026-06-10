@@ -2437,3 +2437,9 @@ Two-Trial History Boundary:
 - Adds `py -3 -m ashl_core.teaching_cli run-retained-experience-readback-preview-minimal-check`.
 - Creates a safe read-only human-readable preview from mentor-gated retained JSONL records.
 - Does not apply lessons, influence action selection, change behavior, mutate predictors, add automatic retention, or prove learning.
+
+## Retained Experience Listing CLI Minimal v0
+
+- Adds `py -3 -m ashl_core.teaching_cli run-retained-experience-listing-cli-minimal-check`.
+- Adds a read-only listing for mentor-gated retained JSONL records so the mentor can inspect retained experiences.
+- Does not append/edit/delete JSONL, apply lessons, influence action selection, change behavior, mutate predictors, add automatic retention, or prove learning.

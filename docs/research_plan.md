@@ -5403,3 +5403,11 @@ Status: completed / readback-preview-only / no-runtime-change.
 Progress:
 - Creates a safe read-only human-readable preview from mentor-gated retained JSONL records.
 - Does not apply lessons, influence action selection, change behavior, mutate predictors, add automatic retention, or prove learning.
+
+## Retained Experience Listing CLI Minimal v0
+
+Status: completed / read-only-listing / no-runtime-change.
+
+Progress:
+- Adds a read-only listing for mentor-gated retained JSONL records so the mentor can inspect retained experiences.
+- Does not append/edit/delete JSONL, apply lessons, influence action selection, change behavior, mutate predictors, add automatic retention, or prove learning.

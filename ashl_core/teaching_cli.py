@@ -66,6 +66,9 @@ from .prediction_accuracy_check import run_prediction_accuracy_check
 from .retained_experience_readback_preview_minimal import (
     run_retained_experience_readback_preview_minimal_check,
 )
+from .retained_experience_listing_cli_minimal import (
+    run_retained_experience_listing_cli_minimal_check,
+)
 from .reward_biased_action_tendency import run_reward_biased_action_tendency_check
 from .reward_biased_random_walk_check import run_reward_biased_random_walk_check
 from .retina_decoder_feature_schema import run_retina_decoder_feature_schema_check
@@ -3517,6 +3520,8 @@ def run_command(command: str) -> dict[str, Any] | str:
         return run_mentor_gated_experience_retention_minimal_check()
     if command == "run-retained-experience-readback-preview-minimal-check":
         return run_retained_experience_readback_preview_minimal_check()
+    if command == "run-retained-experience-listing-cli-minimal-check":
+        return run_retained_experience_listing_cli_minimal_check()
     if command == "run-generalized-prediction-confidence-check":
         return run_generalized_prediction_confidence_check()
     if command == "run-generalized-candidate-from-pattern-check":
@@ -3652,6 +3657,7 @@ def main(argv: list[str] | None = None) -> int:
             "run-temporary-cross-session-space-link-back-minimal-check",
             "run-mentor-gated-experience-retention-minimal-check",
             "run-retained-experience-readback-preview-minimal-check",
+            "run-retained-experience-listing-cli-minimal-check",
             "run-generalized-prediction-confidence-check",
             "run-generalized-candidate-from-pattern-check",
             "run-generalized-candidate-review-preview-check",
@@ -3912,6 +3918,8 @@ def main(argv: list[str] | None = None) -> int:
         result = run_mentor_gated_experience_retention_minimal_check()
     elif args.command == "run-retained-experience-readback-preview-minimal-check":
         result = run_retained_experience_readback_preview_minimal_check()
+    elif args.command == "run-retained-experience-listing-cli-minimal-check":
+        result = run_retained_experience_listing_cli_minimal_check()
     elif args.command == "run-generalized-prediction-confidence-check":
         result = run_generalized_prediction_confidence_check()
     elif args.command == "run-generalized-candidate-from-pattern-check":
