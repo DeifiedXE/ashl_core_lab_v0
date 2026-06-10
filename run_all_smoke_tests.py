@@ -3818,6 +3818,49 @@ def smoke_retained_experience_listing_cli_minimal() -> dict:
     )
 
 
+def smoke_five_layer_memory_design_assumption() -> dict:
+    doc_path = Path("docs/five_layer_memory_design_assumption_v0_1.md")
+    doc = doc_path.read_text(encoding="utf-8") if doc_path.exists() else ""
+    readme = Path("README.md").read_text(encoding="utf-8")
+    research_plan = Path("docs/research_plan.md").read_text(encoding="utf-8")
+    required_phrases = [
+        "Core Memory",
+        "Long-term Memory",
+        "Working Memory",
+        "Archive Memory",
+        "Anchor Layer",
+        "Anchor Layer is a navigation index",
+        "Anchor Layer does not store memory content",
+        "mentor-gated JSONL retention",
+        "Archive Memory: not implemented",
+        "Anchor Layer: not implemented",
+        "No endocrine-driven anchor lookup is implemented",
+        "mimetic endocrine system = compass",
+        "Anchor Layer = map",
+        "dopamine-like: query reward-related anchors",
+        "norepinephrine-like: query change-related anchors",
+        "cortisol-like: move away from failure-accumulated anchors",
+        "oxytocin-like: query trusted-source anchors",
+        "五層記憶系統已完整實作",
+    ]
+    passed = (
+        doc_path.exists()
+        and all(phrase in doc for phrase in required_phrases)
+        and doc.count("五層記憶系統已完整實作") == 1
+        and "Five-Layer Memory Design Assumption v0.1" in readme
+        and "Five-Layer Memory Design Assumption v0.1" in research_plan
+        and "Archive Memory, Anchor Layer, specialty anchors, and endocrine-driven anchor lookup are not implemented" in readme
+    )
+    return _result(
+        "five_layer_memory_design_assumption",
+        passed,
+        {
+            "doc": str(doc_path),
+            "required_phrase_count": len(required_phrases),
+        },
+    )
+
+
 def smoke_history_runtime_persistence_gap_review() -> dict:
     doc_path = Path("docs/history_runtime_persistence_gap_review_v0.md")
     doc = doc_path.read_text(encoding="utf-8") if doc_path.exists() else ""
@@ -11471,6 +11514,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_mentor_gated_experience_retention_minimal(),
         smoke_retained_experience_readback_preview_minimal(),
         smoke_retained_experience_listing_cli_minimal(),
+        smoke_five_layer_memory_design_assumption(),
         smoke_history_runtime_persistence_gap_review(),
         smoke_generalized_prediction_confidence_check(),
         smoke_generalized_candidate_from_pattern(),

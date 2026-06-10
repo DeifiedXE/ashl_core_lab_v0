@@ -5424,3 +5424,12 @@ Next options:
 1. Retained Experience Lookup by Exact Key Minimal v0
 2. Four-Layer Memory Design Boundary v0
 3. Return to perception/eye line after retention readback/listing sync
+
+## Five-Layer Memory Design Assumption v0.1
+
+Status: completed / design-assumption-only / no-runtime-change.
+
+Progress:
+- Records the future memory architecture: Core Memory, Long-term Memory, Working Memory, Archive Memory, and Anchor Layer.
+- Current implemented/prototype lines cover Core Seed, mentor-gated JSONL retention, and session working memory only.
+- Archive Memory, Anchor Layer, specialty anchors, and endocrine-driven anchor lookup are not implemented.

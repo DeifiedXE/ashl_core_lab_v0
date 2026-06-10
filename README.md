@@ -2448,3 +2448,9 @@ Two-Trial History Boundary:
 
 - Retention readback/listing is now complete at Minimal v0: mentor-gated retained JSONL records can be loaded back, shown in read-only preview, and listed read-only.
 - This does not add automatic retention, four-layer memory, lesson application, action influence, behavior change, predictor mutation, semantic retrieval, JSONL edit/delete during listing, or proof of learning.
+
+## Five-Layer Memory Design Assumption v0.1
+
+- Records the future memory architecture: Core Memory, Long-term Memory, Working Memory, Archive Memory, and Anchor Layer.
+- Current implemented/prototype lines cover Core Seed, mentor-gated JSONL retention, and session working memory only.
+- Archive Memory, Anchor Layer, specialty anchors, and endocrine-driven anchor lookup are not implemented.
