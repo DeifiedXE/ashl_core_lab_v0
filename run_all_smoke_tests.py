@@ -84,6 +84,9 @@ from ashl_core.session_experience_record_schema_minimal import (
 from ashl_core.temporary_cross_session_experience_space_minimal import (
     run_temporary_cross_session_experience_space_minimal_check,
 )
+from ashl_core.temporary_cross_session_space_link_back_minimal import (
+    run_temporary_cross_session_space_link_back_minimal_check,
+)
 from ashl_core.trial_bucket_link_preview_minimal import run_trial_bucket_link_preview_minimal_check
 from ashl_core.mimetic_endocrine_signal_schema import run_mimetic_endocrine_signal_schema_check
 from ashl_core.mimetic_endocrine_four_axis_trace_integration import (
@@ -3467,6 +3470,72 @@ def smoke_temporary_cross_session_experience_space_minimal() -> dict:
         {
             "summary": summary,
             "first_record_keys": sorted(records[0].keys()) if records else [],
+            "boundary": boundary,
+        },
+    )
+
+
+def smoke_temporary_cross_session_space_link_back_minimal() -> dict:
+    result = run_temporary_cross_session_space_link_back_minimal_check()
+    summary = result.get("summary", {})
+    boundary = result.get("boundary_check", {})
+    trial_bucket_validation = result.get("trial_bucket_link_preview_validation", {})
+    passed = (
+        result.get("command") == "run-temporary-cross-session-space-link-back-minimal-check"
+        and result.get("flow") == "temporary_cross_session_space_link_back_minimal_v0"
+        and result.get("status") == "ok"
+        and summary.get("space_link_back_result_count") == 10
+        and summary.get("matched_link_back_count") == 1
+        and summary.get("not_matched_link_back_count") == 1
+        and summary.get("valid_trial_bucket_link_preview_from_space_count") == 1
+        and summary.get("invalid_link_back_count") == 11
+        and summary.get("trace_only_false_blocked_count") == 1
+        and summary.get("deprecated_by_future_memory_false_blocked_count") == 1
+        and summary.get("match_scope_blocked_count") == 1
+        and summary.get("memory_read_blocked_count") == 1
+        and summary.get("memory_write_blocked_count") == 1
+        and summary.get("lesson_retained_blocked_count") == 1
+        and summary.get("lesson_applied_blocked_count") == 1
+        and summary.get("history_runtime_write_blocked_count") == 1
+        and summary.get("action_selection_influence_blocked_count") == 1
+        and summary.get("action_behavior_changed_blocked_count") == 1
+        and summary.get("proof_of_learning_claim_blocked_count") == 1
+        and summary.get("memory_read_count") == 0
+        and summary.get("memory_write_count") == 0
+        and summary.get("lesson_retained_count") == 0
+        and summary.get("lesson_applied_count") == 0
+        and summary.get("history_runtime_write_count") == 0
+        and summary.get("persistent_rule_write_count") == 0
+        and summary.get("action_selection_influence_count") == 0
+        and summary.get("action_behavior_changed_count") == 0
+        and summary.get("predictor_modified_count") == 0
+        and summary.get("proof_of_learning_claim_count") == 0
+        and trial_bucket_validation.get("valid") is True
+        and boundary.get("trace_only") is True
+        and boundary.get("same_exact_key_only") is True
+        and boundary.get("temporary_space_deprecated_by_future_memory") is True
+        and boundary.get("real_memory_read_added") is False
+        and boundary.get("real_memory_write_added") is False
+        and boundary.get("lesson_retention_added") is False
+        and boundary.get("lesson_application_added") is False
+        and boundary.get("lesson_store_write_added") is False
+        and boundary.get("history_runtime_added") is False
+        and boundary.get("persistent_learning_added") is False
+        and boundary.get("persistent_rule_write_added") is False
+        and boundary.get("runtime_action_selection_added") is False
+        and boundary.get("action_behavior_change_added") is False
+        and boundary.get("semantic_similarity_added") is False
+        and boundary.get("fuzzy_matching_added") is False
+        and boundary.get("vector_retrieval_added") is False
+        and boundary.get("predictor_mutation_added") is False
+        and boundary.get("proof_of_learning_claimed") is False
+    )
+    return _result(
+        "temporary_cross_session_space_link_back_minimal",
+        passed,
+        {
+            "summary": summary,
+            "trial_bucket_link_preview_validation": trial_bucket_validation,
             "boundary": boundary,
         },
     )
@@ -11120,6 +11189,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_demo_readable_before_after_report_minimal(),
         smoke_trial_bucket_link_preview_minimal(),
         smoke_temporary_cross_session_experience_space_minimal(),
+        smoke_temporary_cross_session_space_link_back_minimal(),
         smoke_history_runtime_persistence_gap_review(),
         smoke_generalized_prediction_confidence_check(),
         smoke_generalized_candidate_from_pattern(),

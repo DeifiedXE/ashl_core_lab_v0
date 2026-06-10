@@ -72,6 +72,9 @@ from .similar_context_key import run_similar_context_key_check
 from .temporary_cross_session_experience_space_minimal import (
     run_temporary_cross_session_experience_space_minimal_check,
 )
+from .temporary_cross_session_space_link_back_minimal import (
+    run_temporary_cross_session_space_link_back_minimal_check,
+)
 from .trial_bucket_link_preview_minimal import run_trial_bucket_link_preview_minimal_check
 from .two_round_instinct_reward_comparison import run_two_round_instinct_reward_comparison
 from .visual_frame_assembly_from_retina_features import run_visual_frame_assembly_from_retina_features_check
@@ -3502,6 +3505,8 @@ def run_command(command: str) -> dict[str, Any] | str:
         return run_trial_bucket_link_preview_minimal_check()
     if command == "run-temporary-cross-session-experience-space-minimal-check":
         return run_temporary_cross_session_experience_space_minimal_check()
+    if command == "run-temporary-cross-session-space-link-back-minimal-check":
+        return run_temporary_cross_session_space_link_back_minimal_check()
     if command == "run-generalized-prediction-confidence-check":
         return run_generalized_prediction_confidence_check()
     if command == "run-generalized-candidate-from-pattern-check":
@@ -3634,6 +3639,7 @@ def main(argv: list[str] | None = None) -> int:
             "run-demo-readable-before-after-report-minimal-check",
             "run-trial-bucket-link-preview-minimal-check",
             "run-temporary-cross-session-experience-space-minimal-check",
+            "run-temporary-cross-session-space-link-back-minimal-check",
             "run-generalized-prediction-confidence-check",
             "run-generalized-candidate-from-pattern-check",
             "run-generalized-candidate-review-preview-check",
@@ -3888,6 +3894,8 @@ def main(argv: list[str] | None = None) -> int:
         result = run_trial_bucket_link_preview_minimal_check()
     elif args.command == "run-temporary-cross-session-experience-space-minimal-check":
         result = run_temporary_cross_session_experience_space_minimal_check()
+    elif args.command == "run-temporary-cross-session-space-link-back-minimal-check":
+        result = run_temporary_cross_session_space_link_back_minimal_check()
     elif args.command == "run-generalized-prediction-confidence-check":
         result = run_generalized_prediction_confidence_check()
     elif args.command == "run-generalized-candidate-from-pattern-check":

@@ -2409,3 +2409,9 @@ Two-Trial History Boundary:
 - Adds `py -3 -m ashl_core.teaching_cli run-temporary-cross-session-experience-space-minimal-check`.
 - Adds a temporary trace-only exact-key handoff space for `not_retained` `session_experience_record` candidates.
 - It is explicitly deprecated by the future four-layer memory system and is not memory, retention, history runtime, action influence, or proof of learning.
+
+## Temporary Cross-Session Space Link Back Minimal v0
+
+- Adds `py -3 -m ashl_core.teaching_cli run-temporary-cross-session-space-link-back-minimal-check`.
+- Lets new demo trial traces query the temporary cross-session experience space by `same_exact_key_only` and produce trace-only link previews.
+- The path remains temporary, deprecated by future four-layer memory, and does not write memory, retain/apply lessons, create history runtime, influence action, mutate predictors, or prove learning.
