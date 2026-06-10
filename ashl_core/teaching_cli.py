@@ -45,6 +45,7 @@ from .lesson_candidate_human_review_decision_schema import run_lesson_candidate_
 from .lesson_candidate_review_evidence_summary import run_lesson_candidate_review_evidence_summary_check
 from .lesson_candidate_review_gate import run_lesson_candidate_review_gate_check
 from .lesson_effect_evidence_trace_minimal import run_lesson_effect_evidence_trace_minimal_check
+from .minimal_visual_grounding_trial import run_minimal_visual_grounding_trial_check
 from .mentor_gated_experience_retention_minimal import (
     run_mentor_gated_experience_retention_minimal_check,
 )
@@ -3573,6 +3574,8 @@ def run_command(command: str) -> dict[str, Any] | str:
         return run_visual_retained_experience_link_preview_minimal_check()
     if command == "run-visual-retention-demo-snapshot-minimal-check":
         return run_visual_retention_demo_snapshot_minimal_check()
+    if command == "run-minimal-visual-grounding-trial-check":
+        return run_minimal_visual_grounding_trial_check()
     if command == "run-visual-frame-pair-demo-assembly-check":
         return run_visual_frame_pair_demo_assembly_check()
     if command == "run-focus-candidate-schema-check":
@@ -3698,6 +3701,7 @@ def main(argv: list[str] | None = None) -> int:
             "run-visual-trace-as-lesson-evidence-minimal-check",
             "run-visual-retained-experience-link-preview-minimal-check",
             "run-visual-retention-demo-snapshot-minimal-check",
+            "run-minimal-visual-grounding-trial-check",
             "run-visual-frame-pair-demo-assembly-check",
             "run-focus-candidate-schema-check",
             "run-focus-candidate-from-change-trace-check",
@@ -3986,6 +3990,8 @@ def main(argv: list[str] | None = None) -> int:
         result = run_visual_retained_experience_link_preview_minimal_check()
     elif args.command == "run-visual-retention-demo-snapshot-minimal-check":
         result = run_visual_retention_demo_snapshot_minimal_check()
+    elif args.command == "run-minimal-visual-grounding-trial-check":
+        result = run_minimal_visual_grounding_trial_check()
     elif args.command == "run-visual-frame-pair-demo-assembly-check":
         result = run_visual_frame_pair_demo_assembly_check()
     elif args.command == "run-focus-candidate-schema-check":

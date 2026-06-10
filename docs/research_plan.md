@@ -5479,6 +5479,13 @@ Next options:
 2. Prediction-Error Attention Preview Minimal v0
 3. Return to deeper retina/frame/focus improvements
 
+## Minimal Visual Grounding Trial v0
+
+Status: completed / read-only-trial-summary / no-runtime-change.
+
+Progress:
+- Minimal Visual Grounding Trial v0 runs a controlled symbolic visual change through the existing visual_experience_candidate -> retina_focus_preview -> visual_lesson_evidence_candidate -> visual_retention_demo_snapshot path and produces a read-only human-readable trial summary. It does not add object recognition, semantic vision, active focus, lesson creation/application, action influence, memory write, new retention write, semantic/fuzzy/vector retrieval, predictor mutation, or proof-of-learning claims.
+
 ## Visual-Retention Demo Snapshot Minimal v0
 
 Status: completed / read-only-snapshot / no-runtime-change.

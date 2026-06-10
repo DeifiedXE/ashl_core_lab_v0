@@ -74,6 +74,7 @@ from ashl_core.lesson_candidate_review_gate import run_lesson_candidate_review_g
 from ashl_core.lesson_effect_evidence_trace_minimal import (
     run_lesson_effect_evidence_trace_minimal_check,
 )
+from ashl_core.minimal_visual_grounding_trial import run_minimal_visual_grounding_trial_check
 from ashl_core.mentor_gated_experience_retention_minimal import (
     run_mentor_gated_experience_retention_minimal_check,
 )
@@ -4935,6 +4936,101 @@ def smoke_visual_retention_demo_snapshot_minimal() -> dict:
     )
     return _result(
         "visual_retention_demo_snapshot_minimal",
+        passed,
+        {
+            "summary": summary,
+            "valid_human_summaries": result.get("valid_human_summaries", []),
+            "validation_results": result.get("validation_results", []),
+            "boundary": boundary,
+        },
+    )
+
+
+def smoke_minimal_visual_grounding_trial() -> dict:
+    result = run_minimal_visual_grounding_trial_check()
+    summary = result.get("summary", {})
+    boundary = result.get("boundary_check", {})
+    passed = (
+        result.get("command") == "run-minimal-visual-grounding-trial-check"
+        and result.get("flow") == "minimal_visual_grounding_trial_v0"
+        and result.get("status") == "ok"
+        and summary.get("minimal_visual_grounding_trial_count") == 28
+        and summary.get("valid_minimal_visual_grounding_trial_count") == 2
+        and summary.get("invalid_minimal_visual_grounding_trial_count") == 26
+        and summary.get("matched_trial_count") == 1
+        and summary.get("not_matched_trial_count") == 1
+        and summary.get("read_only_false_blocked_count") == 1
+        and summary.get("input_type_blocked_count") == 1
+        and summary.get("missing_source_id_blocked_count") == 1
+        and summary.get("empty_what_happened_blocked_count") == 1
+        and summary.get("empty_plain_result_blocked_count") == 1
+        and summary.get("retained_match_status_blocked_count") == 1
+        and summary.get("visual_change_observed_false_blocked_count") == 1
+        and summary.get("focus_preview_available_false_blocked_count") == 1
+        and summary.get("lesson_evidence_available_false_blocked_count") == 1
+        and summary.get("retained_link_preview_available_false_blocked_count") == 1
+        and summary.get("same_exact_key_only_false_blocked_count") == 1
+        and summary.get("object_recognition_blocked_count") == 1
+        and summary.get("semantic_vision_blocked_count") == 1
+        and summary.get("active_focus_applied_blocked_count") == 1
+        and summary.get("attention_control_blocked_count") == 1
+        and summary.get("lesson_candidate_created_blocked_count") == 1
+        and summary.get("lesson_applied_blocked_count") == 1
+        and summary.get("action_selection_influence_blocked_count") == 1
+        and summary.get("action_behavior_changed_blocked_count") == 1
+        and summary.get("memory_write_blocked_count") == 1
+        and summary.get("new_retention_written_blocked_count") == 1
+        and summary.get("semantic_match_blocked_count") == 1
+        and summary.get("fuzzy_match_blocked_count") == 1
+        and summary.get("vector_match_blocked_count") == 1
+        and summary.get("predictor_modified_blocked_count") == 1
+        and summary.get("proof_of_learning_claim_blocked_count") == 1
+        and summary.get("object_recognition_count") == 0
+        and summary.get("semantic_vision_count") == 0
+        and summary.get("active_focus_applied_count") == 0
+        and summary.get("attention_control_count") == 0
+        and summary.get("lesson_candidate_created_count") == 0
+        and summary.get("lesson_applied_count") == 0
+        and summary.get("action_selection_influence_count") == 0
+        and summary.get("action_behavior_changed_count") == 0
+        and summary.get("memory_write_count") == 0
+        and summary.get("new_retention_written_count") == 0
+        and summary.get("semantic_match_count") == 0
+        and summary.get("fuzzy_match_count") == 0
+        and summary.get("vector_match_count") == 0
+        and summary.get("predictor_modified_count") == 0
+        and summary.get("proof_of_learning_claim_count") == 0
+        and boundary.get("read_only") is True
+        and boundary.get("trace_only") is True
+        and boundary.get("minimal_record_shape") is True
+        and boundary.get("top_level_field_count") == 7
+        and boundary.get("uses_visual_experience_candidate_from_frame_change_minimal") is True
+        and boundary.get("uses_simple_retina_focus_preview_minimal") is True
+        and boundary.get("uses_visual_trace_as_lesson_evidence_minimal") is True
+        and boundary.get("uses_visual_retained_experience_link_preview_minimal") is True
+        and boundary.get("uses_visual_retention_demo_snapshot_minimal") is True
+        and boundary.get("same_exact_key_only") is True
+        and boundary.get("full_nested_source_records_included") is False
+        and boundary.get("writes_retained_jsonl") is False
+        and boundary.get("object_recognition_added") is False
+        and boundary.get("semantic_vision_added") is False
+        and boundary.get("active_focus_added") is False
+        and boundary.get("focus_applied_added") is False
+        and boundary.get("attention_control_added") is False
+        and boundary.get("automatic_lesson_candidate_creation_added") is False
+        and boundary.get("lesson_application_added") is False
+        and boundary.get("runtime_action_selection_added") is False
+        and boundary.get("action_behavior_change_added") is False
+        and boundary.get("memory_write_added") is False
+        and boundary.get("new_retention_write_added") is False
+        and boundary.get("semantic_matching_added") is False
+        and boundary.get("fuzzy_retrieval_added") is False
+        and boundary.get("vector_retrieval_added") is False
+        and boundary.get("predictor_mutation_added") is False
+        and boundary.get("proof_of_learning_claimed") is False
+    )
+    return _result(
+        "minimal_visual_grounding_trial",
         passed,
         {
             "summary": summary,
@@ -11899,6 +11995,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_visual_trace_as_lesson_evidence_minimal(),
         smoke_visual_retained_experience_link_preview_minimal(),
         smoke_visual_retention_demo_snapshot_minimal(),
+        smoke_minimal_visual_grounding_trial(),
         smoke_focus_selector_design(),
         smoke_focus_candidate_schema(),
         smoke_focus_candidate_ranking_trace_design(),
