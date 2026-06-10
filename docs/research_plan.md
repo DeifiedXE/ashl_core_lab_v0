@@ -5342,3 +5342,11 @@ Status: completed / trace-check-only / no-runtime-change.
 Progress:
 - Links a new demo trial trace to prior exact-key bucket and not_retained session experience candidates using same_exact_key_only matching.
 - Does not write memory, retain or apply lessons, change behavior, create history runtime, mutate predictors, or claim proof of learning.
+
+## Current Trial/Bucket Link Log + Boundary Index Sync Minimal v0
+
+Status: completed / documentation-only / no-runtime-change.
+
+Progress:
+- Completed: human-readable before/after report and same_exact_key_only trial/bucket link preview.
+- Next: Temporary Cross-Session Experience Space Minimal v0, a temporary non-persistent cross-session handoff space for experience candidates. It must not be history runtime or memory retention.

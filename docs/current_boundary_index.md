@@ -1,7 +1,7 @@
-Boundary Index Version: 2026-06-09-b43
-Last update log: Current Phase Milestone / Progress Sync Minimal
-Previous Boundary Index Version: 2026-06-09-b42
-Previous Last update log: Lesson Review Line Milestone + Boundary Sync
+Boundary Index Version: 2026-06-09-b44
+Last update log: Current Trial/Bucket Link Log + Boundary Index Sync Minimal
+Previous Boundary Index Version: 2026-06-09-b43
+Previous Last update log: Current Phase Milestone / Progress Sync Minimal
 Clean count at last update log reset: 0/5
 Current clean count: 0/5
 
@@ -107,6 +107,9 @@ Current clean count: 0/5
 - Status: trace-only / not_retained.
 - Safe claim: visible trace-level difference can be packaged as evidence and a not_retained session experience record.
 - Forbidden: no lesson application, action selection influence, behavior change, memory write, lesson retention, history runtime, persistent learning, predictor mutation, or proof-of-learning claim.
+- Trial/Bucket Link Preview milestone (2026-06-10): demo_readable_before_after_report and trial_bucket_link_preview completed.
+- Safe claim: before/after trace difference is human-readable, and a new same-exact-key demo trial can trace-only link to a prior not_retained session_experience_record candidate.
+- Forbidden: no cross-session storage, memory write, lesson retention/application, behavior change, action selection influence, history runtime, semantic/fuzzy/vector retrieval, predictor mutation, or proof-of-learning claim.
 
 ## Current Claim Boundary
 - Can claim: Bounded local memory effect observed across 3 validated dead-end maps.

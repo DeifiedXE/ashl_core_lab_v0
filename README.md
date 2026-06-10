@@ -2398,3 +2398,8 @@ Two-Trial History Boundary:
 
 - Adds `py -3 -m ashl_core.teaching_cli run-trial-bucket-link-preview-minimal-check`.
 - Links a new demo trial trace to prior exact-key bucket and `not_retained` session experience candidates using `same_exact_key_only` matching, without memory write, retention, lesson application, behavior change, history runtime, predictor mutation, or proof-of-learning claims.
+
+## Trial / Bucket Link Boundary Sync
+
+- Trial / Bucket Link Preview Minimal v0 now shows that a new demo trial trace can trace-only link to a prior `not_retained` `session_experience_record` through `same_exact_key_only` matching.
+- This remains non-persistent and does not write memory, retain lessons, apply lessons, change behavior, create history runtime, use semantic/fuzzy/vector retrieval, mutate predictors, or prove learning.
