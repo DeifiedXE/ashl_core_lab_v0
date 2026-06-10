@@ -5284,3 +5284,11 @@ Status: completed / trace-check-only / no-runtime-change.
 Progress:
 - Packages before/after contrast into trace-level lesson effect evidence.
 - Blocks learning claims, proof-of-learning claims, runtime effect claims, action influence, memory write, predictor mutation, and persistence.
+
+## Minimal Lesson Effect Retention Boundary Review v0
+
+Status: completed / boundary-review-only / no-runtime-change.
+
+Progress:
+- Records that `lesson_effect_evidence_trace` is trace-level evidence only.
+- It cannot become retained learning without a separate memory/persistence boundary.

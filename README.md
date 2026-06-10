@@ -2369,3 +2369,7 @@ Two-Trial History Boundary:
 
 - Adds `py -3 -m ashl_core.teaching_cli run-lesson-effect-evidence-trace-minimal-check`.
 - Packages before/after contrast into trace-level lesson effect evidence while blocking learning claims, action influence, memory write, predictor mutation, and persistence.
+
+## Minimal Lesson Effect Retention Boundary Review v0
+
+- Records that `lesson_effect_evidence_trace` is trace-level evidence only and cannot become retained learning without a separate memory/persistence boundary.

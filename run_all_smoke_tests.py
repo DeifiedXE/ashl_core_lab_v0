@@ -4249,6 +4249,35 @@ def smoke_lesson_application_boundary_review() -> dict:
     )
 
 
+def smoke_minimal_lesson_effect_retention_boundary_review() -> dict:
+    doc_path = Path("docs/minimal_lesson_effect_retention_boundary_review_v0.md")
+    doc = doc_path.read_text(encoding="utf-8") if doc_path.exists() else ""
+    readme = Path("README.md").read_text(encoding="utf-8")
+    research_plan = Path("docs/research_plan.md").read_text(encoding="utf-8")
+    required_phrases = [
+        "lesson_effect_evidence_trace is not retained learning",
+        "visible_trace_difference is not proof of learning",
+        "trace-level evidence is not behavior change",
+        "retention requires separate memory / persistence boundary",
+        "human approval for retention",
+        "rollback / delete path",
+    ]
+    missing = [phrase for phrase in required_phrases if phrase not in doc]
+    passed = (
+        doc_path.exists()
+        and not missing
+        and "Minimal Lesson Effect Retention Boundary Review v0" in readme
+        and "Minimal Lesson Effect Retention Boundary Review v0" in research_plan
+        and "cannot become retained learning" in readme
+        and "separate memory/persistence boundary" in research_plan
+    )
+    return _result(
+        "minimal_lesson_effect_retention_boundary_review",
+        passed,
+        {"doc": str(doc_path), "missing": missing},
+    )
+
+
 def smoke_action_outcome_contrast_baseline_review() -> dict:
     doc_path = Path("docs/action_outcome_contrast_baseline_review_v0.md")
     doc = doc_path.read_text(encoding="utf-8") if doc_path.exists() else ""
@@ -10736,6 +10765,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_focus_perception_boundary_construction_log(),
         smoke_phase0_action_lesson_loop_return_planning(),
         smoke_lesson_application_boundary_review(),
+        smoke_minimal_lesson_effect_retention_boundary_review(),
         smoke_action_outcome_contrast_baseline_review(),
         smoke_focus_application_gate_schema(),
         smoke_focus_candidate_from_change_trace(),
