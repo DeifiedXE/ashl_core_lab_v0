@@ -2403,3 +2403,9 @@ Two-Trial History Boundary:
 
 - Trial / Bucket Link Preview Minimal v0 now shows that a new demo trial trace can trace-only link to a prior `not_retained` `session_experience_record` through `same_exact_key_only` matching.
 - This remains non-persistent and does not write memory, retain lessons, apply lessons, change behavior, create history runtime, use semantic/fuzzy/vector retrieval, mutate predictors, or prove learning.
+
+## Temporary Cross-Session Experience Space Minimal v0
+
+- Adds `py -3 -m ashl_core.teaching_cli run-temporary-cross-session-experience-space-minimal-check`.
+- Adds a temporary trace-only exact-key handoff space for `not_retained` `session_experience_record` candidates.
+- It is explicitly deprecated by the future four-layer memory system and is not memory, retention, history runtime, action influence, or proof of learning.

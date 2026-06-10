@@ -5350,3 +5350,11 @@ Status: completed / documentation-only / no-runtime-change.
 Progress:
 - Completed: human-readable before/after report and same_exact_key_only trial/bucket link preview.
 - Next: Temporary Cross-Session Experience Space Minimal v0, a temporary non-persistent cross-session handoff space for experience candidates. It must not be history runtime or memory retention.
+
+## Temporary Cross-Session Experience Space Minimal v0
+
+Status: completed / trace-check-only / temporary-bridge-only / no-runtime-change.
+
+Progress:
+- Adds a temporary trace-only exact-key handoff space for not_retained session_experience_record candidates.
+- It is explicitly deprecated by the future four-layer memory system and is not memory, retention, history runtime, action influence, or proof of learning.
