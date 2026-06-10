@@ -3942,6 +3942,44 @@ def smoke_phase0_action_lesson_loop_return_planning() -> dict:
     )
 
 
+def smoke_lesson_application_boundary_review() -> dict:
+    doc_path = Path("docs/lesson_application_boundary_review_v0.md")
+    doc = doc_path.read_text(encoding="utf-8") if doc_path.exists() else ""
+    readme = Path("README.md").read_text(encoding="utf-8")
+    research_plan = Path("docs/research_plan.md").read_text(encoding="utf-8")
+    required_phrases = [
+        "reviewed_lesson_trace_preview is not lesson application",
+        "approved_for_preview is not approval for application",
+        "preview_content is not an action command",
+        "Only preview currently exists.",
+        "Dry-run correction is a future trace-only stage.",
+        "Application is forbidden in v0.",
+        "No direct mapping from lesson preview to action selection",
+        "No direct mapping from correction_type to action command",
+        "No direct mapping from lesson_candidate to behavior change",
+        "Reviewed lesson preview must not write memory in v0.",
+        "Reviewed lesson preview must not write lesson_store in v0.",
+        "Reviewed lesson preview must not create persistent rules in v0.",
+        "Reviewed lesson preview must not enter history runtime in v0.",
+        "Reviewed lesson preview must not modify predictor behavior.",
+        "external mentor instruction has unconditional priority",
+        "Reviewed Lesson Dry-Run Correction Combined Package",
+    ]
+    missing = [phrase for phrase in required_phrases if phrase not in doc]
+    passed = (
+        doc_path.exists()
+        and not missing
+        and "Lesson Application Boundary Review v0" in readme
+        and "Lesson Application Boundary Review v0" in research_plan
+        and "does not apply lessons" in research_plan
+    )
+    return _result(
+        "lesson_application_boundary_review",
+        passed,
+        {"doc": str(doc_path), "missing": missing},
+    )
+
+
 def smoke_action_outcome_contrast_baseline_review() -> dict:
     doc_path = Path("docs/action_outcome_contrast_baseline_review_v0.md")
     doc = doc_path.read_text(encoding="utf-8") if doc_path.exists() else ""
@@ -10424,6 +10462,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_perception_to_action_boundary_review(),
         smoke_focus_perception_boundary_construction_log(),
         smoke_phase0_action_lesson_loop_return_planning(),
+        smoke_lesson_application_boundary_review(),
         smoke_action_outcome_contrast_baseline_review(),
         smoke_focus_application_gate_schema(),
         smoke_focus_candidate_from_change_trace(),

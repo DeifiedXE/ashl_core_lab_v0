@@ -2344,3 +2344,8 @@ Two-Trial History Boundary:
 
 - Phase 0 action-lesson review line now reaches trace-only reviewed lesson previews: demo action trial -> outcome_pair -> failure_reason -> lesson_candidate -> review_gate -> evidence_summary -> human_review_decision -> reviewed_lesson_trace_preview.
 - This remains review/preview-only and does not apply lessons, change action selection, write memory, mutate predictors, persist learning, or claim proof of learning.
+
+## Lesson Application Boundary Review v0
+
+- Documents the boundary between reviewed_lesson_trace_preview and any future dry-run correction or lesson application.
+- Design-only: does not apply lessons, change action selection, write memory, persist learning, or mutate predictors.
