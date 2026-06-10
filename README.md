@@ -2472,3 +2472,9 @@ Two-Trial History Boundary:
 - Adds `py -3 -m ashl_core.teaching_cli run-visual-trace-as-lesson-evidence-minimal-check`.
 - Lets read-only `retina_focus_preview` records become trace-only `visual_lesson_evidence_candidate` records for lesson review.
 - Evidence requires human review and cannot create/apply lessons, influence action, write memory, retain lessons, perform object recognition/semantic vision, mutate predictors, or prove learning.
+
+## Visual + Retained Experience Link Preview Minimal v0
+
+- Adds `py -3 -m ashl_core.teaching_cli run-visual-retained-experience-link-preview-minimal-check`.
+- Lets trace-only `visual_lesson_evidence_candidate` records preview-link to retained experience records by exact key only.
+- Supports matched and not_matched read-only previews without semantic/fuzzy/vector retrieval, lesson application, action influence, new retention writes, predictor mutation, or proof-of-learning claims.

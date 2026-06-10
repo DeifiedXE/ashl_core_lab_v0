@@ -5457,3 +5457,11 @@ Status: completed / trace-check-only / review-evidence-candidate / no-runtime-ch
 Progress:
 - Lets read-only retina_focus_preview records become trace-only visual_lesson_evidence_candidate records for lesson review.
 - Evidence requires human review and cannot create/apply lessons, influence action, write memory, retain lessons, perform object recognition/semantic vision, mutate predictors, or prove learning.
+
+## Visual + Retained Experience Link Preview Minimal v0
+
+Status: completed / read-only-preview / exact-key-only / no-runtime-change.
+
+Progress:
+- Lets trace-only visual_lesson_evidence_candidate records preview-link to retained experience records by exact key only.
+- Supports matched and not_matched read-only previews without semantic/fuzzy/vector retrieval, lesson application, action influence, new retention writes, predictor mutation, or proof-of-learning claims.

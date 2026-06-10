@@ -301,6 +301,9 @@ from ashl_core.visual_frame_pair_demo_assembly import run_visual_frame_pair_demo
 from ashl_core.visual_trace_as_lesson_evidence_minimal import (
     run_visual_trace_as_lesson_evidence_minimal_check,
 )
+from ashl_core.visual_retained_experience_link_preview_minimal import (
+    run_visual_retained_experience_link_preview_minimal_check,
+)
 from ashl_core.simple_retina_focus_preview_minimal import run_simple_retina_focus_preview_minimal_check
 from ashl_core.wall_experience_influence import run_wall_experience_influence_check
 
@@ -4778,6 +4781,73 @@ def smoke_visual_trace_as_lesson_evidence_minimal() -> dict:
     )
     return _result(
         "visual_trace_as_lesson_evidence_minimal",
+        passed,
+        {
+            "summary": summary,
+            "validation_results": result.get("validation_results", []),
+            "boundary": boundary,
+        },
+    )
+
+
+def smoke_visual_retained_experience_link_preview_minimal() -> dict:
+    result = run_visual_retained_experience_link_preview_minimal_check()
+    summary = result.get("summary", {})
+    boundary = result.get("boundary_check", {})
+    passed = (
+        result.get("command") == "run-visual-retained-experience-link-preview-minimal-check"
+        and result.get("flow") == "visual_retained_experience_link_preview_minimal_v0"
+        and result.get("status") == "ok"
+        and summary.get("visual_retained_experience_link_preview_count") == 18
+        and summary.get("valid_visual_retained_experience_link_preview_count") == 2
+        and summary.get("invalid_visual_retained_experience_link_preview_count") == 16
+        and summary.get("matched_link_preview_count") == 1
+        and summary.get("not_matched_link_preview_count") == 1
+        and summary.get("read_only_false_blocked_count") == 1
+        and summary.get("match_status_blocked_count") == 1
+        and summary.get("match_rule_blocked_count") == 1
+        and summary.get("missing_source_visual_evidence_blocked_count") == 1
+        and summary.get("empty_visual_evidence_seen_blocked_count") == 1
+        and summary.get("empty_plain_result_blocked_count") == 1
+        and summary.get("semantic_match_blocked_count") == 1
+        and summary.get("fuzzy_match_blocked_count") == 1
+        and summary.get("vector_match_blocked_count") == 1
+        and summary.get("lesson_applied_blocked_count") == 1
+        and summary.get("action_selection_influence_blocked_count") == 1
+        and summary.get("action_behavior_changed_blocked_count") == 1
+        and summary.get("memory_write_blocked_count") == 1
+        and summary.get("new_retention_written_blocked_count") == 1
+        and summary.get("predictor_modified_blocked_count") == 1
+        and summary.get("proof_of_learning_claim_blocked_count") == 1
+        and summary.get("semantic_match_count") == 0
+        and summary.get("fuzzy_match_count") == 0
+        and summary.get("vector_match_count") == 0
+        and summary.get("lesson_applied_count") == 0
+        and summary.get("action_selection_influence_count") == 0
+        and summary.get("action_behavior_changed_count") == 0
+        and summary.get("memory_write_count") == 0
+        and summary.get("new_retention_written_count") == 0
+        and summary.get("predictor_modified_count") == 0
+        and summary.get("proof_of_learning_claim_count") == 0
+        and boundary.get("read_only") is True
+        and boundary.get("minimal_record_shape") is True
+        and boundary.get("top_level_field_count") == 8
+        and boundary.get("same_exact_key_only") is True
+        and boundary.get("writes_retained_jsonl") is False
+        and boundary.get("uses_visual_trace_as_lesson_evidence_minimal") is True
+        and boundary.get("uses_retained_experience_listing_cli_minimal") is True
+        and boundary.get("uses_retained_experience_readback_preview_minimal") is True
+        and boundary.get("semantic_matching_added") is False
+        and boundary.get("fuzzy_retrieval_added") is False
+        and boundary.get("vector_retrieval_added") is False
+        and boundary.get("lesson_application_added") is False
+        and boundary.get("runtime_action_selection_added") is False
+        and boundary.get("memory_write_added") is False
+        and boundary.get("new_retention_write_added") is False
+        and boundary.get("proof_of_learning_claimed") is False
+    )
+    return _result(
+        "visual_retained_experience_link_preview_minimal",
         passed,
         {
             "summary": summary,
@@ -11739,6 +11809,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_visual_experience_candidate_from_frame_change_minimal(),
         smoke_simple_retina_focus_preview_minimal(),
         smoke_visual_trace_as_lesson_evidence_minimal(),
+        smoke_visual_retained_experience_link_preview_minimal(),
         smoke_focus_selector_design(),
         smoke_focus_candidate_schema(),
         smoke_focus_candidate_ranking_trace_design(),

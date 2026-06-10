@@ -95,6 +95,9 @@ from .visual_experience_candidate_from_frame_change_minimal import (
     run_visual_experience_candidate_from_frame_change_minimal_check,
 )
 from .visual_frame_pair_demo_assembly import run_visual_frame_pair_demo_assembly_check
+from .visual_retained_experience_link_preview_minimal import (
+    run_visual_retained_experience_link_preview_minimal_check,
+)
 from .visual_trace_as_lesson_evidence_minimal import run_visual_trace_as_lesson_evidence_minimal_check
 from .wall_experience_influence import run_wall_experience_influence_check
 from .lesson_runner import run_lesson_causality_test, run_session_2a_with_lesson
@@ -3565,6 +3568,8 @@ def run_command(command: str) -> dict[str, Any] | str:
         return run_visual_experience_candidate_from_frame_change_minimal_check()
     if command == "run-visual-trace-as-lesson-evidence-minimal-check":
         return run_visual_trace_as_lesson_evidence_minimal_check()
+    if command == "run-visual-retained-experience-link-preview-minimal-check":
+        return run_visual_retained_experience_link_preview_minimal_check()
     if command == "run-visual-frame-pair-demo-assembly-check":
         return run_visual_frame_pair_demo_assembly_check()
     if command == "run-focus-candidate-schema-check":
@@ -3688,6 +3693,7 @@ def main(argv: list[str] | None = None) -> int:
             "run-visual-frame-change-trace-check",
             "run-visual-experience-candidate-from-frame-change-minimal-check",
             "run-visual-trace-as-lesson-evidence-minimal-check",
+            "run-visual-retained-experience-link-preview-minimal-check",
             "run-visual-frame-pair-demo-assembly-check",
             "run-focus-candidate-schema-check",
             "run-focus-candidate-from-change-trace-check",
@@ -3972,6 +3978,8 @@ def main(argv: list[str] | None = None) -> int:
         result = run_visual_experience_candidate_from_frame_change_minimal_check()
     elif args.command == "run-visual-trace-as-lesson-evidence-minimal-check":
         result = run_visual_trace_as_lesson_evidence_minimal_check()
+    elif args.command == "run-visual-retained-experience-link-preview-minimal-check":
+        result = run_visual_retained_experience_link_preview_minimal_check()
     elif args.command == "run-visual-frame-pair-demo-assembly-check":
         result = run_visual_frame_pair_demo_assembly_check()
     elif args.command == "run-focus-candidate-schema-check":
