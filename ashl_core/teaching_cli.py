@@ -69,6 +69,7 @@ from .rule_candidate_from_mismatch import run_rule_candidate_from_mismatch_check
 from .rule_candidate_review_gate import run_rule_candidate_review_gate_check
 from .session_experience_record_schema_minimal import run_session_experience_record_schema_minimal_check
 from .similar_context_key import run_similar_context_key_check
+from .trial_bucket_link_preview_minimal import run_trial_bucket_link_preview_minimal_check
 from .two_round_instinct_reward_comparison import run_two_round_instinct_reward_comparison
 from .visual_frame_assembly_from_retina_features import run_visual_frame_assembly_from_retina_features_check
 from .visual_frame_buffer_schema import run_visual_frame_buffer_schema_check
@@ -3494,6 +3495,8 @@ def run_command(command: str) -> dict[str, Any] | str:
         return run_session_experience_record_schema_minimal_check()
     if command == "run-demo-readable-before-after-report-minimal-check":
         return run_demo_readable_before_after_report_minimal_check()
+    if command == "run-trial-bucket-link-preview-minimal-check":
+        return run_trial_bucket_link_preview_minimal_check()
     if command == "run-generalized-prediction-confidence-check":
         return run_generalized_prediction_confidence_check()
     if command == "run-generalized-candidate-from-pattern-check":
@@ -3624,6 +3627,7 @@ def main(argv: list[str] | None = None) -> int:
             "run-generalized-memory-exact-key-bucket-enhancement-minimal-check",
             "run-session-experience-record-schema-minimal-check",
             "run-demo-readable-before-after-report-minimal-check",
+            "run-trial-bucket-link-preview-minimal-check",
             "run-generalized-prediction-confidence-check",
             "run-generalized-candidate-from-pattern-check",
             "run-generalized-candidate-review-preview-check",
@@ -3874,6 +3878,8 @@ def main(argv: list[str] | None = None) -> int:
         result = run_session_experience_record_schema_minimal_check()
     elif args.command == "run-demo-readable-before-after-report-minimal-check":
         result = run_demo_readable_before_after_report_minimal_check()
+    elif args.command == "run-trial-bucket-link-preview-minimal-check":
+        result = run_trial_bucket_link_preview_minimal_check()
     elif args.command == "run-generalized-prediction-confidence-check":
         result = run_generalized_prediction_confidence_check()
     elif args.command == "run-generalized-candidate-from-pattern-check":

@@ -81,6 +81,7 @@ from ashl_core.reviewed_lesson_trace_preview import run_reviewed_lesson_trace_pr
 from ashl_core.session_experience_record_schema_minimal import (
     run_session_experience_record_schema_minimal_check,
 )
+from ashl_core.trial_bucket_link_preview_minimal import run_trial_bucket_link_preview_minimal_check
 from ashl_core.mimetic_endocrine_signal_schema import run_mimetic_endocrine_signal_schema_check
 from ashl_core.mimetic_endocrine_four_axis_trace_integration import (
     run_mimetic_endocrine_four_axis_trace_integration_check,
@@ -3309,6 +3310,84 @@ def smoke_demo_readable_before_after_report_minimal() -> dict:
         {
             "summary": summary,
             "human_summary": human_summary,
+            "first_record_keys": sorted(records[0].keys()) if records else [],
+            "boundary": boundary,
+        },
+    )
+
+
+def smoke_trial_bucket_link_preview_minimal() -> dict:
+    result = run_trial_bucket_link_preview_minimal_check()
+    summary = result.get("summary", {})
+    boundary = result.get("boundary_check", {})
+    records = result.get("trial_bucket_link_previews", [])
+    passed = (
+        result.get("command") == "run-trial-bucket-link-preview-minimal-check"
+        and result.get("flow") == "trial_bucket_link_preview_minimal_v0"
+        and result.get("status") == "ok"
+        and summary.get("trial_bucket_link_preview_count") == 14
+        and summary.get("valid_trial_bucket_link_preview_count") == 2
+        and summary.get("invalid_trial_bucket_link_preview_count") == 12
+        and summary.get("matched_link_preview_count") == 1
+        and summary.get("not_matched_link_preview_count") == 1
+        and summary.get("empty_exact_key_blocked_count") == 1
+        and summary.get("match_scope_blocked_count") == 1
+        and summary.get("trace_only_false_blocked_count") == 1
+        and summary.get("memory_write_blocked_count") == 1
+        and summary.get("lesson_retained_blocked_count") == 1
+        and summary.get("lesson_applied_blocked_count") == 1
+        and summary.get("action_selection_influence_blocked_count") == 1
+        and summary.get("action_behavior_changed_blocked_count") == 1
+        and summary.get("history_runtime_write_blocked_count") == 1
+        and summary.get("predictor_modified_blocked_count") == 1
+        and summary.get("persistent_rule_write_blocked_count") == 1
+        and summary.get("proof_of_learning_claim_blocked_count") == 1
+        and summary.get("memory_write_count") == 0
+        and summary.get("lesson_retained_count") == 0
+        and summary.get("lesson_applied_count") == 0
+        and summary.get("action_selection_influence_count") == 0
+        and summary.get("action_behavior_changed_count") == 0
+        and summary.get("history_runtime_write_count") == 0
+        and summary.get("predictor_modified_count") == 0
+        and summary.get("persistent_rule_write_count") == 0
+        and summary.get("proof_of_learning_claim_count") == 0
+        and records
+        and set(records[0].keys())
+        == {
+            "link_preview_id",
+            "source_trial_trace_id",
+            "source_bucket_candidate_id",
+            "source_experience_record_id",
+            "exact_key",
+            "match_result",
+            "trace_only",
+            "blocked_flags",
+        }
+        and boundary.get("trace_only") is True
+        and boundary.get("minimal_record_shape") is True
+        and boundary.get("top_level_field_count") == 8
+        and boundary.get("same_exact_key_only") is True
+        and boundary.get("matched_preview_supported") is True
+        and boundary.get("not_matched_preview_supported") is True
+        and boundary.get("memory_write_added") is False
+        and boundary.get("lesson_retention_added") is False
+        and boundary.get("lesson_application_added") is False
+        and boundary.get("runtime_action_selection_added") is False
+        and boundary.get("action_behavior_change_added") is False
+        and boundary.get("history_runtime_added") is False
+        and boundary.get("persistent_learning_added") is False
+        and boundary.get("persistent_rule_write_added") is False
+        and boundary.get("semantic_similarity_added") is False
+        and boundary.get("fuzzy_matching_added") is False
+        and boundary.get("vector_retrieval_added") is False
+        and boundary.get("predictor_mutation_added") is False
+        and boundary.get("proof_of_learning_claimed") is False
+    )
+    return _result(
+        "trial_bucket_link_preview_minimal",
+        passed,
+        {
+            "summary": summary,
             "first_record_keys": sorted(records[0].keys()) if records else [],
             "boundary": boundary,
         },
@@ -10961,6 +11040,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_generalized_memory_exact_key_bucket_enhancement_minimal(),
         smoke_session_experience_record_schema_minimal(),
         smoke_demo_readable_before_after_report_minimal(),
+        smoke_trial_bucket_link_preview_minimal(),
         smoke_history_runtime_persistence_gap_review(),
         smoke_generalized_prediction_confidence_check(),
         smoke_generalized_candidate_from_pattern(),

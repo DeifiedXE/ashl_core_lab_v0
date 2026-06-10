@@ -5334,3 +5334,11 @@ Status: completed / report-check-only / no-runtime-change.
 Progress:
 - Creates a small human-readable report from trace-only contrast/evidence/session-experience records.
 - Makes the visible dry-run difference inspectable without claiming learning, retention, behavior change, memory write, or proof of learning.
+
+## Trial / Bucket Link Preview Minimal v0
+
+Status: completed / trace-check-only / no-runtime-change.
+
+Progress:
+- Links a new demo trial trace to prior exact-key bucket and not_retained session experience candidates using same_exact_key_only matching.
+- Does not write memory, retain or apply lessons, change behavior, create history runtime, mutate predictors, or claim proof of learning.

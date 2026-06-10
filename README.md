@@ -2393,3 +2393,8 @@ Two-Trial History Boundary:
 
 - Adds `py -3 -m ashl_core.teaching_cli run-demo-readable-before-after-report-minimal-check`.
 - Creates a small human-readable report from trace-only contrast/evidence/session-experience records, making the visible dry-run difference inspectable without claiming learning, retention, behavior change, memory write, or proof of learning.
+
+## Trial / Bucket Link Preview Minimal v0
+
+- Adds `py -3 -m ashl_core.teaching_cli run-trial-bucket-link-preview-minimal-check`.
+- Links a new demo trial trace to prior exact-key bucket and `not_retained` session experience candidates using `same_exact_key_only` matching, without memory write, retention, lesson application, behavior change, history runtime, predictor mutation, or proof-of-learning claims.
