@@ -5326,3 +5326,11 @@ Next options:
 Workflow rule:
 - Use Minimal / Combined packages for low-risk trace/schema/check/dry-run work.
 - Reserve detailed boundary reviews for action, memory, persistence, or predictor mutation.
+
+## Demo-Readable Before/After Report Minimal v0
+
+Status: completed / report-check-only / no-runtime-change.
+
+Progress:
+- Creates a small human-readable report from trace-only contrast/evidence/session-experience records.
+- Makes the visible dry-run difference inspectable without claiming learning, retention, behavior change, memory write, or proof of learning.

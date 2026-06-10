@@ -28,6 +28,9 @@ from ashl_core.core_seed import (
     validate_core_seed,
 )
 from ashl_core.deliberation import deliberate
+from ashl_core.demo_readable_before_after_report_minimal import (
+    run_demo_readable_before_after_report_minimal_check,
+)
 from ashl_core.dopamine_like_reward_trace_check import run_dopamine_like_reward_trace_check
 from ashl_core.dry_run_correction_into_trial_trace import run_dry_run_correction_into_trial_trace_check
 from ashl_core.expected_actual_outcome_pair_schema import run_expected_actual_outcome_pair_schema_check
@@ -3235,6 +3238,77 @@ def smoke_session_experience_record_schema_minimal() -> dict:
         passed,
         {
             "summary": summary,
+            "first_record_keys": sorted(records[0].keys()) if records else [],
+            "boundary": boundary,
+        },
+    )
+
+
+def smoke_demo_readable_before_after_report_minimal() -> dict:
+    result = run_demo_readable_before_after_report_minimal_check()
+    summary = result.get("summary", {})
+    boundary = result.get("boundary_check", {})
+    human_summary = result.get("valid_human_summary", {})
+    records = result.get("demo_readable_reports", [])
+    passed = (
+        result.get("command") == "run-demo-readable-before-after-report-minimal-check"
+        and result.get("flow") == "demo_readable_before_after_report_minimal_v0"
+        and result.get("status") == "ok"
+        and summary.get("demo_readable_report_count") == 11
+        and summary.get("valid_demo_readable_report_count") == 1
+        and summary.get("invalid_demo_readable_report_count") == 10
+        and summary.get("empty_before_blocked_count") == 1
+        and summary.get("empty_after_blocked_count") == 1
+        and summary.get("empty_visible_difference_blocked_count") == 1
+        and summary.get("trace_only_false_blocked_count") == 1
+        and summary.get("learning_claim_blocked_count") == 1
+        and summary.get("behavior_change_claim_blocked_count") == 1
+        and summary.get("retention_claim_blocked_count") == 1
+        and summary.get("memory_write_blocked_count") == 1
+        and summary.get("lesson_retained_blocked_count") == 1
+        and summary.get("proof_of_learning_claim_blocked_count") == 1
+        and summary.get("learning_claim_count") == 0
+        and summary.get("behavior_change_claim_count") == 0
+        and summary.get("retention_claim_count") == 0
+        and summary.get("memory_write_count") == 0
+        and summary.get("lesson_retained_count") == 0
+        and summary.get("proof_of_learning_claim_count") == 0
+        and human_summary.get("before")
+        and human_summary.get("after")
+        and human_summary.get("visible_difference")
+        and human_summary.get("plain_result")
+        and records
+        and set(records[0].keys())
+        == {
+            "report_id",
+            "source_contrast_id",
+            "source_evidence_trace_id",
+            "source_experience_record_id",
+            "trace_only",
+            "human_summary",
+            "claim_limits",
+            "blocked_flags",
+        }
+        and boundary.get("trace_only") is True
+        and boundary.get("human_readable_only") is True
+        and boundary.get("minimal_record_shape") is True
+        and boundary.get("top_level_field_count") == 8
+        and boundary.get("lesson_application_added") is False
+        and boundary.get("runtime_action_selection_added") is False
+        and boundary.get("action_behavior_change_added") is False
+        and boundary.get("memory_write_added") is False
+        and boundary.get("lesson_retention_added") is False
+        and boundary.get("history_runtime_added") is False
+        and boundary.get("predictor_mutation_added") is False
+        and boundary.get("persistent_rule_write_added") is False
+        and boundary.get("proof_of_learning_claimed") is False
+    )
+    return _result(
+        "demo_readable_before_after_report_minimal",
+        passed,
+        {
+            "summary": summary,
+            "human_summary": human_summary,
             "first_record_keys": sorted(records[0].keys()) if records else [],
             "boundary": boundary,
         },
@@ -10886,6 +10960,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_generalized_memory_exact_key_bucket(),
         smoke_generalized_memory_exact_key_bucket_enhancement_minimal(),
         smoke_session_experience_record_schema_minimal(),
+        smoke_demo_readable_before_after_report_minimal(),
         smoke_history_runtime_persistence_gap_review(),
         smoke_generalized_prediction_confidence_check(),
         smoke_generalized_candidate_from_pattern(),

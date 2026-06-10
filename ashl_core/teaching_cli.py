@@ -23,6 +23,9 @@ from .failure_reason_from_outcome_pair import run_failure_reason_from_outcome_pa
 from .failure_reason_classifier import run_failure_reason_classifier_check
 from .first_output_runtime import generate_minimal_first_output
 from .dopamine_like_reward_trace_check import run_dopamine_like_reward_trace_check
+from .demo_readable_before_after_report_minimal import (
+    run_demo_readable_before_after_report_minimal_check,
+)
 from .dry_run_correction_into_trial_trace import run_dry_run_correction_into_trial_trace_check
 from .grounded_action_experience import run_grounded_action_experience_check
 from .grounded_action_experience_influence import run_grounded_action_experience_influence_check
@@ -3489,6 +3492,8 @@ def run_command(command: str) -> dict[str, Any] | str:
         return run_generalized_memory_exact_key_bucket_enhancement_minimal_check()
     if command == "run-session-experience-record-schema-minimal-check":
         return run_session_experience_record_schema_minimal_check()
+    if command == "run-demo-readable-before-after-report-minimal-check":
+        return run_demo_readable_before_after_report_minimal_check()
     if command == "run-generalized-prediction-confidence-check":
         return run_generalized_prediction_confidence_check()
     if command == "run-generalized-candidate-from-pattern-check":
@@ -3618,6 +3623,7 @@ def main(argv: list[str] | None = None) -> int:
             "run-generalized-memory-exact-key-bucket-check",
             "run-generalized-memory-exact-key-bucket-enhancement-minimal-check",
             "run-session-experience-record-schema-minimal-check",
+            "run-demo-readable-before-after-report-minimal-check",
             "run-generalized-prediction-confidence-check",
             "run-generalized-candidate-from-pattern-check",
             "run-generalized-candidate-review-preview-check",
@@ -3866,6 +3872,8 @@ def main(argv: list[str] | None = None) -> int:
         result = run_generalized_memory_exact_key_bucket_enhancement_minimal_check()
     elif args.command == "run-session-experience-record-schema-minimal-check":
         result = run_session_experience_record_schema_minimal_check()
+    elif args.command == "run-demo-readable-before-after-report-minimal-check":
+        result = run_demo_readable_before_after_report_minimal_check()
     elif args.command == "run-generalized-prediction-confidence-check":
         result = run_generalized_prediction_confidence_check()
     elif args.command == "run-generalized-candidate-from-pattern-check":

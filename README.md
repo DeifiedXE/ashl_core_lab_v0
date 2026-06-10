@@ -2388,3 +2388,8 @@ Two-Trial History Boundary:
 
 - Phase 0 lesson dry-run / evidence / experience-record line now reaches a trace-only `not_retained` `session_experience_record`: `reviewed_lesson_trace_preview -> dry_run_correction_minimal -> corrected_trial_trace_preview -> before_after_trial_contrast -> lesson_effect_evidence_trace -> exact_key_bucket_candidate -> session_experience_record`.
 - This supports trace-level evidence only and does not apply lessons, change behavior, write memory, retain lessons, create history runtime, mutate predictors, or prove learning.
+
+## Demo-Readable Before/After Report Minimal v0
+
+- Adds `py -3 -m ashl_core.teaching_cli run-demo-readable-before-after-report-minimal-check`.
+- Creates a small human-readable report from trace-only contrast/evidence/session-experience records, making the visible dry-run difference inspectable without claiming learning, retention, behavior change, memory write, or proof of learning.
