@@ -2354,3 +2354,8 @@ Two-Trial History Boundary:
 
 - Adds `py -3 -m ashl_core.teaching_cli run-reviewed-lesson-dry-run-correction-minimal-check`.
 - Creates a small trace-only `dry_run_correction` record from `reviewed_lesson_trace_preview` and blocks all applied/action/memory/predictor/persistent/proof side effects.
+
+## Dry-Run Correction Into Trial Trace Check v0
+
+- Adds `py -3 -m ashl_core.teaching_cli run-dry-run-correction-into-trial-trace-check`.
+- Creates a trace-only `corrected_trial_trace_preview` from a valid `dry_run_correction` and demo trial trace without changing action selection, action behavior, memory, predictor, persistence, or learning claims.

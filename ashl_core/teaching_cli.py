@@ -22,6 +22,7 @@ from .failure_reason_from_outcome_pair import run_failure_reason_from_outcome_pa
 from .failure_reason_classifier import run_failure_reason_classifier_check
 from .first_output_runtime import generate_minimal_first_output
 from .dopamine_like_reward_trace_check import run_dopamine_like_reward_trace_check
+from .dry_run_correction_into_trial_trace import run_dry_run_correction_into_trial_trace_check
 from .grounded_action_experience import run_grounded_action_experience_check
 from .grounded_action_experience_influence import run_grounded_action_experience_influence_check
 from .generalized_memory_exact_key_bucket import run_generalized_memory_exact_key_bucket_check
@@ -3454,6 +3455,8 @@ def run_command(command: str) -> dict[str, Any] | str:
         return run_reviewed_lesson_trace_preview_check()
     if command == "run-reviewed-lesson-dry-run-correction-minimal-check":
         return run_reviewed_lesson_dry_run_correction_minimal_check()
+    if command == "run-dry-run-correction-into-trial-trace-check":
+        return run_dry_run_correction_into_trial_trace_check()
     if command == "run-prediction-accuracy-check":
         return run_prediction_accuracy_check()
     if command == "run-rule-candidate-from-mismatch-check":
@@ -3587,6 +3590,7 @@ def main(argv: list[str] | None = None) -> int:
             "run-lesson-candidate-human-review-decision-schema-check",
             "run-reviewed-lesson-trace-preview-check",
             "run-reviewed-lesson-dry-run-correction-minimal-check",
+            "run-dry-run-correction-into-trial-trace-check",
             "run-prediction-accuracy-check",
             "run-rule-candidate-from-mismatch-check",
             "run-rule-candidate-review-gate-check",
@@ -3814,6 +3818,8 @@ def main(argv: list[str] | None = None) -> int:
         result = run_reviewed_lesson_trace_preview_check()
     elif args.command == "run-reviewed-lesson-dry-run-correction-minimal-check":
         result = run_reviewed_lesson_dry_run_correction_minimal_check()
+    elif args.command == "run-dry-run-correction-into-trial-trace-check":
+        result = run_dry_run_correction_into_trial_trace_check()
     elif args.command == "run-prediction-accuracy-check":
         result = run_prediction_accuracy_check()
     elif args.command == "run-rule-candidate-from-mismatch-check":

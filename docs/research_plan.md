@@ -5260,3 +5260,11 @@ Status: completed / trace-check-only / no-runtime-change.
 Progress:
 - Creates a small trace-only `dry_run_correction` record from `reviewed_lesson_trace_preview` and blocks all side effects.
 - Does not apply lessons, change action selection or action behavior, write memory, mutate predictors, create persistent rules, or claim proof of learning.
+
+## Dry-Run Correction Into Trial Trace Check v0
+
+Status: completed / trace-check-only / no-runtime-change.
+
+Progress:
+- Creates a trace-only `corrected_trial_trace_preview` from a valid `dry_run_correction` and demo trial trace.
+- Does not change real action selection, action behavior, memory, predictor, persistence, or learning claims.
