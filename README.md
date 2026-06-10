@@ -2364,3 +2364,8 @@ Two-Trial History Boundary:
 
 - Adds `py -3 -m ashl_core.teaching_cli run-before-after-trial-contrast-check`.
 - Compares original trial traces with corrected trial trace previews and records visible trace-level differences without claiming learning or changing behavior.
+
+## Lesson Effect Evidence Trace Minimal v0
+
+- Adds `py -3 -m ashl_core.teaching_cli run-lesson-effect-evidence-trace-minimal-check`.
+- Packages before/after contrast into trace-level lesson effect evidence while blocking learning claims, action influence, memory write, predictor mutation, and persistence.

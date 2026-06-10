@@ -5276,3 +5276,11 @@ Status: completed / trace-check-only / no-runtime-change.
 Progress:
 - Compares original trial traces with corrected trial trace previews and records visible trace-level differences.
 - Does not claim learning, apply lessons, change behavior, write memory, mutate predictors, or persist rules.
+
+## Lesson Effect Evidence Trace Minimal v0
+
+Status: completed / trace-check-only / no-runtime-change.
+
+Progress:
+- Packages before/after contrast into trace-level lesson effect evidence.
+- Blocks learning claims, proof-of-learning claims, runtime effect claims, action influence, memory write, predictor mutation, and persistence.

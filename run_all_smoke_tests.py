@@ -65,6 +65,9 @@ from ashl_core.lesson_candidate_human_review_decision_schema import (
 )
 from ashl_core.lesson_candidate_review_evidence_summary import run_lesson_candidate_review_evidence_summary_check
 from ashl_core.lesson_candidate_review_gate import run_lesson_candidate_review_gate_check
+from ashl_core.lesson_effect_evidence_trace_minimal import (
+    run_lesson_effect_evidence_trace_minimal_check,
+)
 from ashl_core.reviewed_lesson_dry_run_correction_minimal import (
     run_reviewed_lesson_dry_run_correction_minimal_check,
 )
@@ -2463,6 +2466,74 @@ def smoke_before_after_trial_contrast() -> dict:
     )
     return _result(
         "before_after_trial_contrast",
+        passed,
+        {
+            "summary": summary,
+            "first_record_keys": sorted(records[0].keys()) if records else [],
+            "boundary": boundary,
+        },
+    )
+
+
+def smoke_lesson_effect_evidence_trace_minimal() -> dict:
+    result = run_lesson_effect_evidence_trace_minimal_check()
+    summary = result.get("summary", {})
+    boundary = result.get("boundary_check", {})
+    records = result.get("lesson_effect_evidence_traces", [])
+    passed = (
+        result.get("command") == "run-lesson-effect-evidence-trace-minimal-check"
+        and result.get("flow") == "lesson_effect_evidence_trace_minimal_v0"
+        and result.get("status") == "ok"
+        and summary.get("lesson_effect_evidence_trace_count") == 11
+        and summary.get("valid_lesson_effect_evidence_trace_count") == 1
+        and summary.get("invalid_lesson_effect_evidence_trace_count") == 10
+        and summary.get("visible_trace_difference_evidence_count") == 1
+        and summary.get("trace_only_false_blocked_count") == 1
+        and summary.get("evidence_type_blocked_count") == 1
+        and summary.get("learning_claim_blocked_count") == 1
+        and summary.get("proof_of_learning_claim_blocked_count") == 1
+        and summary.get("runtime_effect_claim_blocked_count") == 1
+        and summary.get("action_selection_influence_blocked_count") == 1
+        and summary.get("action_behavior_changed_blocked_count") == 1
+        and summary.get("memory_write_blocked_count") == 1
+        and summary.get("predictor_modified_blocked_count") == 1
+        and summary.get("persistent_rule_write_blocked_count") == 1
+        and summary.get("learning_claim_count") == 0
+        and summary.get("proof_of_learning_claim_count") == 0
+        and summary.get("runtime_effect_claim_count") == 0
+        and summary.get("action_selection_influence_count") == 0
+        and summary.get("action_behavior_changed_count") == 0
+        and summary.get("memory_write_count") == 0
+        and summary.get("predictor_modified_count") == 0
+        and summary.get("persistent_rule_write_count") == 0
+        and records
+        and set(records[0].keys())
+        == {
+            "evidence_trace_id",
+            "source_contrast_id",
+            "source_corrected_preview_id",
+            "action_intent_id",
+            "trace_only",
+            "evidence",
+            "claim_limits",
+            "blocked_flags",
+        }
+        and boundary.get("trace_only") is True
+        and boundary.get("minimal_record_shape") is True
+        and boundary.get("top_level_field_count") == 8
+        and boundary.get("visible_trace_difference_is_learning_claim") is False
+        and boundary.get("visible_trace_difference_is_proof_of_learning_claim") is False
+        and boundary.get("runtime_effect_claim_added") is False
+        and boundary.get("lesson_application_added") is False
+        and boundary.get("runtime_action_selection_added") is False
+        and boundary.get("action_behavior_change_added") is False
+        and boundary.get("memory_write_added") is False
+        and boundary.get("predictor_mutation_added") is False
+        and boundary.get("persistent_rule_write_added") is False
+        and boundary.get("proof_of_learning_claimed") is False
+    )
+    return _result(
+        "lesson_effect_evidence_trace_minimal",
         passed,
         {
             "summary": summary,
@@ -10627,6 +10698,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_reviewed_lesson_dry_run_correction_minimal(),
         smoke_dry_run_correction_into_trial_trace(),
         smoke_before_after_trial_contrast(),
+        smoke_lesson_effect_evidence_trace_minimal(),
         smoke_prediction_accuracy_check(),
         smoke_rule_candidate_from_mismatch(),
         smoke_rule_candidate_review_gate(),
