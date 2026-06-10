@@ -1,7 +1,7 @@
-Boundary Index Version: 2026-06-09-b44
-Last update log: Current Trial/Bucket Link Log + Boundary Index Sync Minimal
-Previous Boundary Index Version: 2026-06-09-b43
-Previous Last update log: Current Phase Milestone / Progress Sync Minimal
+Boundary Index Version: 2026-06-09-b45
+Last update log: Retention Line Progress Log + Boundary Index Sync Minimal
+Previous Boundary Index Version: 2026-06-09-b44
+Previous Last update log: Current Trial/Bucket Link Log + Boundary Index Sync Minimal
 Clean count at last update log reset: 0/5
 Current clean count: 0/5
 
@@ -110,6 +110,8 @@ Current clean count: 0/5
 - Trial/Bucket Link Preview milestone (2026-06-10): demo_readable_before_after_report and trial_bucket_link_preview completed.
 - Safe claim: before/after trace difference is human-readable, and a new same-exact-key demo trial can trace-only link to a prior not_retained session_experience_record candidate.
 - Forbidden: no cross-session storage, memory write, lesson retention/application, behavior change, action selection influence, history runtime, semantic/fuzzy/vector retrieval, predictor mutation, or proof-of-learning claim.
+- Mentor-Gated Retention milestone (2026-06-10): temporary cross-session reality boundary clarified as demo/fixture handoff only, not durable persistence or memory. First true retention path added: valid session_experience_record + exact mentor_text "留" -> append-only JSONL -> load back. Status: mentor-gated durable retention only.
+- Forbidden: no automatic retention, four-layer memory, semantic/fuzzy/vector retrieval, lesson application, action selection influence, behavior change, predictor mutation, history runtime beyond append/load JSONL, or proof-of-learning claim.
 
 ## Current Claim Boundary
 - Can claim: Bounded local memory effect observed across 3 validated dead-end maps.

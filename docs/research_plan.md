@@ -5382,3 +5382,16 @@ Status: completed / mentor-gated-retention / append-only-jsonl / no-action-influ
 Progress:
 - Adds the first real durable retention path: a valid `session_experience_record` can be appended to JSONL only when the mentor explicitly says `留`.
 - This is append-only, manually rollbackable by removing/archive line, and does not influence action selection, change behavior, mutate predictors, implement four-layer memory, or prove learning.
+
+## Retention Line Progress Log + Boundary Index Sync Minimal v0
+
+Status: completed / documentation-only / no-runtime-change.
+
+Progress:
+- Completed: temporary cross-session reality boundary clarification and mentor-gated JSONL retention.
+- Temporary cross-session space must be deprecated or bypassed after four-layer memory exists.
+
+Next options:
+1. Retained Experience Readback Preview Minimal v0
+2. Retained Experience Listing CLI Minimal v0
+3. Four-Layer Memory Design Boundary v0
