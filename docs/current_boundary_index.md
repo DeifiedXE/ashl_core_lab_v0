@@ -1,7 +1,7 @@
-Boundary Index Version: 2026-06-09-b42
-Last update log: Lesson Review Line Milestone + Boundary Sync
-Previous Boundary Index Version: 2026-06-09-b41
-Previous Last update log: Focus Line Milestone + Boundary Sync
+Boundary Index Version: 2026-06-09-b43
+Last update log: Current Phase Milestone / Progress Sync Minimal
+Previous Boundary Index Version: 2026-06-09-b42
+Previous Last update log: Lesson Review Line Milestone + Boundary Sync
 Clean count at last update log reset: 0/5
 Current clean count: 0/5
 
@@ -67,26 +67,11 @@ Current clean count: 0/5
 - Qingyin's importance is not in birth, but in growth.
 - Experience Abstraction Layer v0: temporary apply verification must not modify global predictors/action selection/persistent stores; human reviewer required; Qingyin self-approval blocked; approved means reviewed, not persistent application.
 - UI expansion is paused until eye-structure simulation, generalized memory loop, and mimetic endocrine system are more developed.
-- No proof of general learning.
-- No autonomous learning claim.
-- No visual understanding claim.
-- No solved symbol grounding claim.
-- No consciousness / subjective understanding claim.
-- No subjective emotion proof.
-- Future subjective possibility is not denied.
-- No pathfinding / BFS / A* unless explicitly scoped.
-- No LLM reasoning / planning / vision unless explicitly scoped.
-- No long-term memory write unless explicitly scoped.
-- No lesson_store / Memory Layer write unless explicitly scoped.
-- No global predictor modification.
-- No action selection modification.
-- Qingyin self-approval remains blocked.
-- Persistent Candidate Preview / Dry-run is not part of current work.
-- Generalized memory v0 uses exact similar_context_key only.
-- Fuzzy similarity is out of v0 scope.
-- Mimetic endocrine v0 is trace-only.
-- Signal interaction runtime is out of current scope.
-- Endocrine runtime is out of current scope.
+- Non-claims: no proof of general/autonomous learning, visual understanding, solved symbol grounding, consciousness, subjective understanding, or subjective emotion proof; future subjective possibility is not denied.
+- No pathfinding / BFS / A*, LLM reasoning / planning / vision, long-term memory write, lesson_store / Memory Layer write, global predictor modification, or action selection modification unless explicitly scoped.
+- Qingyin self-approval remains blocked; Persistent Candidate Preview / Dry-run is not part of current work.
+- Generalized memory v0 uses exact similar_context_key only; fuzzy similarity is out of v0 scope.
+- Mimetic endocrine v0 is trace-only; signal interaction runtime and endocrine runtime are out of current scope.
 
 ## Current Dead-End Memory Milestones (compressed)
 - Legacy anchors: Boundary Index Version: 2026-06-06-b30; Last update log: Batch 30.
@@ -117,9 +102,11 @@ Current clean count: 0/5
 - Mimetic Endocrine Line Milestone (2026-06-09): completed design/schema/trace/integration for four functional axes: dopamine_like approach_reward, norepinephrine_like attention_salience, cortisol_like pressure_load, oxytocin_like source_trust. Results: four-axis trace integration has 4 axes, 11 valid traces, 0 action_selection_influence, 0 memory_write, 0 candidate_approval_influence, 0 predictor_modified, 0 runtime_formula, 0 signal_interaction_runtime, 0 endocrine_runtime. Boundary: trace only; no formulas, no signal interactions, no endocrine runtime/state runtime, no reward bias modification, no autonomous attention, no protective mechanism, no trust-based approval, no action selection change, no memory writes, no subjective emotion/consciousness proof; future subjective possibility not denied. Log: docs/milestone_logs/mimetic_endocrine_line_milestone_2026-06-09.md
 - Eye-Structure Simulation Line Milestone (2026-06-09): completed Retina Decoder -> Feature Schema -> Symbolic Decode -> Visual Frame Schema/Assembly -> Frame Pair -> Change Schema/Trace. Status: low-level trace/checker only; no runtime frame storage, continuous change detection, focus selector, action selection influence, memory write, predictor mutation, object recognition, object tracking, semantic vision, or subjective visual proof.
 - Focus Selector Trace/Checker Milestone (2026-06-09): completed Focus Selector Design -> Focus Candidate Schema -> Candidate From Change Trace -> Ranking Trace Design/Schema/Check. Status: trace/checker only; no runtime focus selector/ranking, active_focus, focus_applied, attention_control, endocrine runtime, action selection influence, memory write, predictor mutation, object/tracking/semantic vision, or subjective proof.
-- Phase 0 Action-Lesson Review Line Milestone (2026-06-09): Outcome Pair -> Failure Reason -> Lesson Candidate -> Review Gate -> Evidence Summary -> Human Review Decision -> Reviewed Lesson Trace Preview completed.
-- Status: trace/checker/review/preview only.
-- No lesson application, action selection influence, action behavior change, memory write, predictor mutation, persistent learning, persistent rule write, history runtime, or proof of learning claim.
+- Phase 0 Action-Lesson Review Line Milestone (2026-06-09): Outcome Pair -> Failure Reason -> Lesson Candidate -> Review Gate -> Evidence Summary -> Human Review Decision -> Reviewed Lesson Trace Preview completed; trace/checker/review/preview only; no lesson application, action selection influence, behavior change, memory write, predictor mutation, persistent learning/rule write, history runtime, or proof of learning claim.
+- Phase 0 Lesson Dry-Run / Evidence / Experience milestone (2026-06-10): reviewed_lesson_trace_preview -> dry_run_correction_minimal -> corrected_trial_trace_preview -> before_after_trial_contrast -> lesson_effect_evidence_trace -> exact_key_bucket_candidate -> session_experience_record completed.
+- Status: trace-only / not_retained.
+- Safe claim: visible trace-level difference can be packaged as evidence and a not_retained session experience record.
+- Forbidden: no lesson application, action selection influence, behavior change, memory write, lesson retention, history runtime, persistent learning, predictor mutation, or proof-of-learning claim.
 
 ## Current Claim Boundary
 - Can claim: Bounded local memory effect observed across 3 validated dead-end maps.

@@ -5308,3 +5308,21 @@ Status: completed / schema-check-only / no-runtime-change.
 Progress:
 - Defines a small trace-only `session_experience_record` from lesson effect evidence and exact-key bucket candidates.
 - Does not write memory, retain lessons, create history runtime, change behavior, or claim proof of learning.
+
+## Current Phase Milestone / Progress Sync Minimal v0
+
+Status: completed / documentation-only / no-runtime-change.
+
+Progress:
+- Completed milestone: Phase 0 lesson dry-run / evidence / experience-record line.
+- Completed line: reviewed_lesson_trace_preview -> dry_run_correction_minimal -> corrected_trial_trace_preview -> before_after_trial_contrast -> lesson_effect_evidence_trace -> exact_key_bucket_candidate -> session_experience_record.
+- Current status: trace-only / not_retained.
+
+Next options:
+1. Trial / Bucket Link Preview Minimal v0
+2. Demo-Readable Before/After Report Minimal v0
+3. Retention precondition work, only after explicit memory/persistence boundary.
+
+Workflow rule:
+- Use Minimal / Combined packages for low-risk trace/schema/check/dry-run work.
+- Reserve detailed boundary reviews for action, memory, persistence, or predictor mutation.
