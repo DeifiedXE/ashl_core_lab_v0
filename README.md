@@ -2431,3 +2431,9 @@ Two-Trial History Boundary:
 
 - Mentor-Gated Experience Retention Minimal v0 adds the first durable retention path: a valid `session_experience_record` can be appended to JSONL only when the mentor explicitly says `留`, and can be loaded back later.
 - Temporary cross-session space remains demo/fixture handoff only; Retention v0 does not add automatic retention, four-layer memory, lesson application, action influence, behavior change, predictor mutation, or proof of learning.
+
+## Retained Experience Readback Preview Minimal v0
+
+- Adds `py -3 -m ashl_core.teaching_cli run-retained-experience-readback-preview-minimal-check`.
+- Creates a safe read-only human-readable preview from mentor-gated retained JSONL records.
+- Does not apply lessons, influence action selection, change behavior, mutate predictors, add automatic retention, or prove learning.

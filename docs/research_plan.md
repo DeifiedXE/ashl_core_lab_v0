@@ -5395,3 +5395,11 @@ Next options:
 1. Retained Experience Readback Preview Minimal v0
 2. Retained Experience Listing CLI Minimal v0
 3. Four-Layer Memory Design Boundary v0
+
+## Retained Experience Readback Preview Minimal v0
+
+Status: completed / readback-preview-only / no-runtime-change.
+
+Progress:
+- Creates a safe read-only human-readable preview from mentor-gated retained JSONL records.
+- Does not apply lessons, influence action selection, change behavior, mutate predictors, add automatic retention, or prove learning.

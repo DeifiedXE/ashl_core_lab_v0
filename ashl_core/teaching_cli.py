@@ -63,6 +63,9 @@ from .oxytocin_like_review_trust_trace_check import run_oxytocin_like_review_tru
 from .outcome_pair_from_action_trial_trace import run_outcome_pair_from_action_trial_trace_check
 from .persistent_eligibility_checker import run_persistent_eligibility_checker_check
 from .prediction_accuracy_check import run_prediction_accuracy_check
+from .retained_experience_readback_preview_minimal import (
+    run_retained_experience_readback_preview_minimal_check,
+)
 from .reward_biased_action_tendency import run_reward_biased_action_tendency_check
 from .reward_biased_random_walk_check import run_reward_biased_random_walk_check
 from .retina_decoder_feature_schema import run_retina_decoder_feature_schema_check
@@ -3512,6 +3515,8 @@ def run_command(command: str) -> dict[str, Any] | str:
         return run_temporary_cross_session_space_link_back_minimal_check()
     if command == "run-mentor-gated-experience-retention-minimal-check":
         return run_mentor_gated_experience_retention_minimal_check()
+    if command == "run-retained-experience-readback-preview-minimal-check":
+        return run_retained_experience_readback_preview_minimal_check()
     if command == "run-generalized-prediction-confidence-check":
         return run_generalized_prediction_confidence_check()
     if command == "run-generalized-candidate-from-pattern-check":
@@ -3646,6 +3651,7 @@ def main(argv: list[str] | None = None) -> int:
             "run-temporary-cross-session-experience-space-minimal-check",
             "run-temporary-cross-session-space-link-back-minimal-check",
             "run-mentor-gated-experience-retention-minimal-check",
+            "run-retained-experience-readback-preview-minimal-check",
             "run-generalized-prediction-confidence-check",
             "run-generalized-candidate-from-pattern-check",
             "run-generalized-candidate-review-preview-check",
@@ -3904,6 +3910,8 @@ def main(argv: list[str] | None = None) -> int:
         result = run_temporary_cross_session_space_link_back_minimal_check()
     elif args.command == "run-mentor-gated-experience-retention-minimal-check":
         result = run_mentor_gated_experience_retention_minimal_check()
+    elif args.command == "run-retained-experience-readback-preview-minimal-check":
+        result = run_retained_experience_readback_preview_minimal_check()
     elif args.command == "run-generalized-prediction-confidence-check":
         result = run_generalized_prediction_confidence_check()
     elif args.command == "run-generalized-candidate-from-pattern-check":
