@@ -5236,3 +5236,11 @@ Scope:
 
 Non-goals:
 - does not apply lessons, change action selection, change action behavior, write memory, persist learning, write persistent rules, mutate predictors, add runtime lesson application, add LLM planning, add pathfinding, replay routes, or claim proof of learning / consciousness / subjective experience
+
+## Lesson Review Line Milestone Sync v0
+
+Status: completed / documentation-only / no-runtime-change.
+
+Progress:
+- Completed milestone: Phase 0 action-lesson review/preview line through Reviewed Lesson Trace Preview v0.
+- Next priority group: Lesson Application Boundary Review v0, then combined Reviewed Lesson Dry-Run Correction design/schema/check, followed by dry-run correction into trial traces and before/after contrast checks.

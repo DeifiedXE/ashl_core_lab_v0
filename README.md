@@ -2339,3 +2339,8 @@ Two-Trial History Boundary:
 - Creates deterministic trace-only preview records only when a valid `lesson_candidate` has a valid human review decision with `decision.status == approved_for_preview`.
 - Blocks rejected, needs_revision, stale, missing-decision, source-linkage mismatch, unknown preview type, and any application/action/memory/predictor/persistence side-effect flags.
 - Preview remains trace-only: no lesson is applied, no action selection or behavior changes, no memory is written, and no predictor or persistent rule is modified.
+
+## Phase 0 Action-Lesson Review Line Milestone
+
+- Phase 0 action-lesson review line now reaches trace-only reviewed lesson previews: demo action trial -> outcome_pair -> failure_reason -> lesson_candidate -> review_gate -> evidence_summary -> human_review_decision -> reviewed_lesson_trace_preview.
+- This remains review/preview-only and does not apply lessons, change action selection, write memory, mutate predictors, persist learning, or claim proof of learning.
