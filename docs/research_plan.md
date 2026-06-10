@@ -5292,3 +5292,11 @@ Status: completed / boundary-review-only / no-runtime-change.
 Progress:
 - Records that `lesson_effect_evidence_trace` is trace-level evidence only.
 - It cannot become retained learning without a separate memory/persistence boundary.
+
+## Generalized Memory Exact-Key Bucket Enhancement Minimal v0
+
+Status: completed / trace-check-only / no-runtime-change.
+
+Progress:
+- Creates trace-only exact-key bucket candidates from lesson effect evidence.
+- Does not write memory, retain lessons, create history runtime, mutate predictors, change behavior, or claim proof of learning.

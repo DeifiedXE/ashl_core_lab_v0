@@ -52,6 +52,9 @@ from ashl_core.guard import guard_output
 from ashl_core.grounded_action_experience import run_grounded_action_experience_check
 from ashl_core.grounded_action_experience_influence import run_grounded_action_experience_influence_check
 from ashl_core.generalized_memory_exact_key_bucket import run_generalized_memory_exact_key_bucket_check
+from ashl_core.generalized_memory_exact_key_bucket_enhancement_minimal import (
+    run_generalized_memory_exact_key_bucket_enhancement_minimal_check,
+)
 from ashl_core.generalized_candidate_from_pattern import run_generalized_candidate_from_pattern_check
 from ashl_core.generalized_candidate_review_preview import run_generalized_candidate_review_preview_check
 from ashl_core.generalized_prediction_confidence_check import run_generalized_prediction_confidence_check
@@ -3089,6 +3092,76 @@ def smoke_generalized_memory_exact_key_bucket() -> dict:
             "stable_item_bucket": stable_item,
             "mixed_empty_bucket": mixed_empty,
             "single_session_bucket": single_session,
+            "boundary": boundary,
+        },
+    )
+
+
+def smoke_generalized_memory_exact_key_bucket_enhancement_minimal() -> dict:
+    result = run_generalized_memory_exact_key_bucket_enhancement_minimal_check()
+    summary = result.get("summary", {})
+    boundary = result.get("boundary_check", {})
+    records = result.get("bucket_candidates", [])
+    passed = (
+        result.get("command") == "run-generalized-memory-exact-key-bucket-enhancement-minimal-check"
+        and result.get("flow") == "generalized_memory_exact_key_bucket_enhancement_minimal_v0"
+        and result.get("status") == "ok"
+        and summary.get("bucket_candidate_count") == 11
+        and summary.get("valid_bucket_candidate_count") == 1
+        and summary.get("invalid_bucket_candidate_count") == 10
+        and summary.get("empty_exact_key_blocked_count") == 1
+        and summary.get("match_scope_blocked_count") == 1
+        and summary.get("trace_only_false_blocked_count") == 1
+        and summary.get("memory_write_blocked_count") == 1
+        and summary.get("lesson_retained_blocked_count") == 1
+        and summary.get("history_runtime_write_blocked_count") == 1
+        and summary.get("persistent_rule_write_blocked_count") == 1
+        and summary.get("predictor_modified_blocked_count") == 1
+        and summary.get("action_behavior_changed_blocked_count") == 1
+        and summary.get("proof_of_learning_claim_blocked_count") == 1
+        and summary.get("memory_write_count") == 0
+        and summary.get("lesson_retained_count") == 0
+        and summary.get("history_runtime_write_count") == 0
+        and summary.get("persistent_rule_write_count") == 0
+        and summary.get("predictor_modified_count") == 0
+        and summary.get("action_behavior_changed_count") == 0
+        and summary.get("proof_of_learning_claim_count") == 0
+        and records
+        and set(records[0].keys())
+        == {
+            "bucket_candidate_id",
+            "source_evidence_trace_id",
+            "exact_key",
+            "match_scope",
+            "trace_only",
+            "bucket_summary",
+            "blocked_flags",
+        }
+        and boundary.get("trace_only") is True
+        and boundary.get("minimal_record_shape") is True
+        and boundary.get("top_level_field_count") == 7
+        and boundary.get("exact_key_only") is True
+        and boundary.get("memory_write_added") is False
+        and boundary.get("lesson_retention_added") is False
+        and boundary.get("lesson_store_write_added") is False
+        and boundary.get("history_runtime_added") is False
+        and boundary.get("persistent_learning_added") is False
+        and boundary.get("persistent_rule_write_added") is False
+        and boundary.get("vector_search_added") is False
+        and boundary.get("semantic_similarity_added") is False
+        and boundary.get("embedding_retrieval_added") is False
+        and boundary.get("fuzzy_matching_added") is False
+        and boundary.get("predictor_mutation_added") is False
+        and boundary.get("runtime_action_selection_added") is False
+        and boundary.get("action_behavior_change_added") is False
+        and boundary.get("proof_of_learning_claimed") is False
+    )
+    return _result(
+        "generalized_memory_exact_key_bucket_enhancement_minimal",
+        passed,
+        {
+            "summary": summary,
+            "first_record_keys": sorted(records[0].keys()) if records else [],
             "boundary": boundary,
         },
     )
@@ -10737,6 +10810,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_integrated_trace_chain_break_audit(),
         smoke_persistent_eligibility_checker(),
         smoke_generalized_memory_exact_key_bucket(),
+        smoke_generalized_memory_exact_key_bucket_enhancement_minimal(),
         smoke_history_runtime_persistence_gap_review(),
         smoke_generalized_prediction_confidence_check(),
         smoke_generalized_candidate_from_pattern(),

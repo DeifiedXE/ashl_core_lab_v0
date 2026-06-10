@@ -2373,3 +2373,8 @@ Two-Trial History Boundary:
 ## Minimal Lesson Effect Retention Boundary Review v0
 
 - Records that `lesson_effect_evidence_trace` is trace-level evidence only and cannot become retained learning without a separate memory/persistence boundary.
+
+## Generalized Memory Exact-Key Bucket Enhancement Minimal v0
+
+- Adds `py -3 -m ashl_core.teaching_cli run-generalized-memory-exact-key-bucket-enhancement-minimal-check`.
+- Creates trace-only exact-key bucket candidates from lesson effect evidence without writing memory, retaining lessons, creating history runtime, mutating predictors, changing behavior, or claiming proof of learning.

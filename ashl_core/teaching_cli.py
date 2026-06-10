@@ -27,6 +27,9 @@ from .dry_run_correction_into_trial_trace import run_dry_run_correction_into_tri
 from .grounded_action_experience import run_grounded_action_experience_check
 from .grounded_action_experience_influence import run_grounded_action_experience_influence_check
 from .generalized_memory_exact_key_bucket import run_generalized_memory_exact_key_bucket_check
+from .generalized_memory_exact_key_bucket_enhancement_minimal import (
+    run_generalized_memory_exact_key_bucket_enhancement_minimal_check,
+)
 from .generalized_candidate_from_pattern import run_generalized_candidate_from_pattern_check
 from .generalized_candidate_review_preview import run_generalized_candidate_review_preview_check
 from .generalized_prediction_confidence_check import run_generalized_prediction_confidence_check
@@ -3481,6 +3484,8 @@ def run_command(command: str) -> dict[str, Any] | str:
         return run_persistent_eligibility_checker_check()
     if command == "run-generalized-memory-exact-key-bucket-check":
         return run_generalized_memory_exact_key_bucket_check()
+    if command == "run-generalized-memory-exact-key-bucket-enhancement-minimal-check":
+        return run_generalized_memory_exact_key_bucket_enhancement_minimal_check()
     if command == "run-generalized-prediction-confidence-check":
         return run_generalized_prediction_confidence_check()
     if command == "run-generalized-candidate-from-pattern-check":
@@ -3608,6 +3613,7 @@ def main(argv: list[str] | None = None) -> int:
             "run-integrated-trace-chain-break-audit",
             "run-persistent-eligibility-checker-check",
             "run-generalized-memory-exact-key-bucket-check",
+            "run-generalized-memory-exact-key-bucket-enhancement-minimal-check",
             "run-generalized-prediction-confidence-check",
             "run-generalized-candidate-from-pattern-check",
             "run-generalized-candidate-review-preview-check",
@@ -3852,6 +3858,8 @@ def main(argv: list[str] | None = None) -> int:
         result = run_persistent_eligibility_checker_check()
     elif args.command == "run-generalized-memory-exact-key-bucket-check":
         result = run_generalized_memory_exact_key_bucket_check()
+    elif args.command == "run-generalized-memory-exact-key-bucket-enhancement-minimal-check":
+        result = run_generalized_memory_exact_key_bucket_enhancement_minimal_check()
     elif args.command == "run-generalized-prediction-confidence-check":
         result = run_generalized_prediction_confidence_check()
     elif args.command == "run-generalized-candidate-from-pattern-check":
