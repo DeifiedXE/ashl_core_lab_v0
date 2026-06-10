@@ -5441,3 +5441,11 @@ Status: completed / trace-check-only / no-runtime-change.
 Progress:
 - Reconnects the eye/perception line to the experience-review line by creating trace-only visual_experience_candidate records from visual frame change traces and optional focus candidates.
 - Does not perform object recognition, semantic vision, active focus application, action influence, memory write, retention, predictor mutation, or proof of learning.
+
+## Simple Retina Focus Preview Minimal v0
+
+Status: completed / read-only-preview / no-runtime-change.
+
+Progress:
+- Creates read-only human-readable previews from visual_experience_candidate and optional focus/ranking traces.
+- Shows what visual change was noticed without object recognition, semantic vision, active focus application, action influence, memory write, retention, or proof-of-learning claims.

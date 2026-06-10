@@ -77,6 +77,7 @@ from .reviewed_candidate_apply_verification import run_reviewed_candidate_apply_
 from .rule_candidate_from_mismatch import run_rule_candidate_from_mismatch_check
 from .rule_candidate_review_gate import run_rule_candidate_review_gate_check
 from .session_experience_record_schema_minimal import run_session_experience_record_schema_minimal_check
+from .simple_retina_focus_preview_minimal import run_simple_retina_focus_preview_minimal_check
 from .similar_context_key import run_similar_context_key_check
 from .temporary_cross_session_experience_space_minimal import (
     run_temporary_cross_session_experience_space_minimal_check,
@@ -3525,6 +3526,8 @@ def run_command(command: str) -> dict[str, Any] | str:
         return run_retained_experience_readback_preview_minimal_check()
     if command == "run-retained-experience-listing-cli-minimal-check":
         return run_retained_experience_listing_cli_minimal_check()
+    if command == "run-simple-retina-focus-preview-minimal-check":
+        return run_simple_retina_focus_preview_minimal_check()
     if command == "run-generalized-prediction-confidence-check":
         return run_generalized_prediction_confidence_check()
     if command == "run-generalized-candidate-from-pattern-check":
@@ -3663,6 +3666,7 @@ def main(argv: list[str] | None = None) -> int:
             "run-mentor-gated-experience-retention-minimal-check",
             "run-retained-experience-readback-preview-minimal-check",
             "run-retained-experience-listing-cli-minimal-check",
+            "run-simple-retina-focus-preview-minimal-check",
             "run-generalized-prediction-confidence-check",
             "run-generalized-candidate-from-pattern-check",
             "run-generalized-candidate-review-preview-check",
@@ -3926,6 +3930,8 @@ def main(argv: list[str] | None = None) -> int:
         result = run_retained_experience_readback_preview_minimal_check()
     elif args.command == "run-retained-experience-listing-cli-minimal-check":
         result = run_retained_experience_listing_cli_minimal_check()
+    elif args.command == "run-simple-retina-focus-preview-minimal-check":
+        result = run_simple_retina_focus_preview_minimal_check()
     elif args.command == "run-generalized-prediction-confidence-check":
         result = run_generalized_prediction_confidence_check()
     elif args.command == "run-generalized-candidate-from-pattern-check":
