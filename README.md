@@ -2466,3 +2466,9 @@ Two-Trial History Boundary:
 - Adds `py -3 -m ashl_core.teaching_cli run-simple-retina-focus-preview-minimal-check`.
 - Creates read-only human-readable previews from `visual_experience_candidate` and optional focus/ranking traces.
 - Shows what visual change was noticed without object recognition, semantic vision, active focus application, action influence, memory write, retention, or proof-of-learning claims.
+
+## Visual Trace as Lesson Evidence Minimal v0
+
+- Adds `py -3 -m ashl_core.teaching_cli run-visual-trace-as-lesson-evidence-minimal-check`.
+- Lets read-only `retina_focus_preview` records become trace-only `visual_lesson_evidence_candidate` records for lesson review.
+- Evidence requires human review and cannot create/apply lessons, influence action, write memory, retain lessons, perform object recognition/semantic vision, mutate predictors, or prove learning.

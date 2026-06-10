@@ -5449,3 +5449,11 @@ Status: completed / read-only-preview / no-runtime-change.
 Progress:
 - Creates read-only human-readable previews from visual_experience_candidate and optional focus/ranking traces.
 - Shows what visual change was noticed without object recognition, semantic vision, active focus application, action influence, memory write, retention, or proof-of-learning claims.
+
+## Visual Trace as Lesson Evidence Minimal v0
+
+Status: completed / trace-check-only / review-evidence-candidate / no-runtime-change.
+
+Progress:
+- Lets read-only retina_focus_preview records become trace-only visual_lesson_evidence_candidate records for lesson review.
+- Evidence requires human review and cannot create/apply lessons, influence action, write memory, retain lessons, perform object recognition/semantic vision, mutate predictors, or prove learning.
