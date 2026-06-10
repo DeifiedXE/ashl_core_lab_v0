@@ -5268,3 +5268,11 @@ Status: completed / trace-check-only / no-runtime-change.
 Progress:
 - Creates a trace-only `corrected_trial_trace_preview` from a valid `dry_run_correction` and demo trial trace.
 - Does not change real action selection, action behavior, memory, predictor, persistence, or learning claims.
+
+## Before / After Trial Contrast Check v0
+
+Status: completed / trace-check-only / no-runtime-change.
+
+Progress:
+- Compares original trial traces with corrected trial trace previews and records visible trace-level differences.
+- Does not claim learning, apply lessons, change behavior, write memory, mutate predictors, or persist rules.

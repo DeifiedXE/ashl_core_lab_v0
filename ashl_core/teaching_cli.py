@@ -10,6 +10,7 @@ from typing import Any
 
 from .approved_candidate_preview import run_approved_candidate_preview_check
 from .action_outcome_predictor import run_action_outcome_predictor_check
+from .before_after_trial_contrast import run_before_after_trial_contrast_check
 from .focus_application_gate_schema import run_focus_application_gate_schema_check
 from .focus_candidate_from_change_trace import run_focus_candidate_from_change_trace_check
 from .focus_candidate_ranking_trace import run_focus_candidate_ranking_trace_check
@@ -3457,6 +3458,8 @@ def run_command(command: str) -> dict[str, Any] | str:
         return run_reviewed_lesson_dry_run_correction_minimal_check()
     if command == "run-dry-run-correction-into-trial-trace-check":
         return run_dry_run_correction_into_trial_trace_check()
+    if command == "run-before-after-trial-contrast-check":
+        return run_before_after_trial_contrast_check()
     if command == "run-prediction-accuracy-check":
         return run_prediction_accuracy_check()
     if command == "run-rule-candidate-from-mismatch-check":
@@ -3591,6 +3594,7 @@ def main(argv: list[str] | None = None) -> int:
             "run-reviewed-lesson-trace-preview-check",
             "run-reviewed-lesson-dry-run-correction-minimal-check",
             "run-dry-run-correction-into-trial-trace-check",
+            "run-before-after-trial-contrast-check",
             "run-prediction-accuracy-check",
             "run-rule-candidate-from-mismatch-check",
             "run-rule-candidate-review-gate-check",
@@ -3820,6 +3824,8 @@ def main(argv: list[str] | None = None) -> int:
         result = run_reviewed_lesson_dry_run_correction_minimal_check()
     elif args.command == "run-dry-run-correction-into-trial-trace-check":
         result = run_dry_run_correction_into_trial_trace_check()
+    elif args.command == "run-before-after-trial-contrast-check":
+        result = run_before_after_trial_contrast_check()
     elif args.command == "run-prediction-accuracy-check":
         result = run_prediction_accuracy_check()
     elif args.command == "run-rule-candidate-from-mismatch-check":

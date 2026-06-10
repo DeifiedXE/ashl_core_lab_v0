@@ -2359,3 +2359,8 @@ Two-Trial History Boundary:
 
 - Adds `py -3 -m ashl_core.teaching_cli run-dry-run-correction-into-trial-trace-check`.
 - Creates a trace-only `corrected_trial_trace_preview` from a valid `dry_run_correction` and demo trial trace without changing action selection, action behavior, memory, predictor, persistence, or learning claims.
+
+## Before / After Trial Contrast Check v0
+
+- Adds `py -3 -m ashl_core.teaching_cli run-before-after-trial-contrast-check`.
+- Compares original trial traces with corrected trial trace previews and records visible trace-level differences without claiming learning or changing behavior.

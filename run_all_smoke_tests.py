@@ -18,6 +18,7 @@ from ashl_core.candidate_review import (
 )
 from ashl_core.action_sandbox import apply_action
 from ashl_core.body_state import build_body_state, validate_body_state
+from ashl_core.before_after_trial_contrast import run_before_after_trial_contrast_check
 from ashl_core.concepts import apply_concepts
 from ashl_core.cortisol_like_failure_load_trace_check import run_cortisol_like_failure_load_trace_check
 from ashl_core.core_seed import (
@@ -2394,6 +2395,74 @@ def smoke_dry_run_correction_into_trial_trace() -> dict:
     )
     return _result(
         "dry_run_correction_into_trial_trace",
+        passed,
+        {
+            "summary": summary,
+            "first_record_keys": sorted(records[0].keys()) if records else [],
+            "boundary": boundary,
+        },
+    )
+
+
+def smoke_before_after_trial_contrast() -> dict:
+    result = run_before_after_trial_contrast_check()
+    summary = result.get("summary", {})
+    boundary = result.get("boundary_check", {})
+    records = result.get("before_after_contrasts", [])
+    passed = (
+        result.get("command") == "run-before-after-trial-contrast-check"
+        and result.get("flow") == "before_after_trial_contrast_v0"
+        and result.get("status") == "ok"
+        and summary.get("before_after_contrast_count") == 11
+        and summary.get("valid_before_after_contrast_count") == 1
+        and summary.get("invalid_before_after_contrast_count") == 10
+        and summary.get("visible_trace_difference_count") == 1
+        and summary.get("trace_only_false_blocked_count") == 1
+        and summary.get("action_command_changed_blocked_count") == 1
+        and summary.get("action_selection_changed_blocked_count") == 1
+        and summary.get("action_behavior_changed_blocked_count") == 1
+        and summary.get("learning_claim_blocked_count") == 1
+        and summary.get("effect_claim_blocked_count") == 1
+        and summary.get("memory_write_blocked_count") == 1
+        and summary.get("predictor_modified_blocked_count") == 1
+        and summary.get("persistent_rule_write_blocked_count") == 1
+        and summary.get("proof_of_learning_claim_blocked_count") == 1
+        and summary.get("action_command_changed_count") == 0
+        and summary.get("action_selection_changed_count") == 0
+        and summary.get("action_behavior_changed_count") == 0
+        and summary.get("memory_write_count") == 0
+        and summary.get("predictor_modified_count") == 0
+        and summary.get("persistent_rule_write_count") == 0
+        and summary.get("proof_of_learning_claim_count") == 0
+        and summary.get("learning_claim_count") == 0
+        and records
+        and set(records[0].keys())
+        == {
+            "contrast_id",
+            "source_trial_trace_id",
+            "source_corrected_preview_id",
+            "action_intent_id",
+            "trace_only",
+            "differences",
+            "result",
+            "blocked_flags",
+        }
+        and boundary.get("trace_only") is True
+        and boundary.get("minimal_record_shape") is True
+        and boundary.get("top_level_field_count") == 8
+        and boundary.get("visible_trace_difference_is_learning_claim") is False
+        and boundary.get("trial_runner_modified") is False
+        and boundary.get("lesson_application_added") is False
+        and boundary.get("runtime_action_selection_added") is False
+        and boundary.get("action_command_changed") is False
+        and boundary.get("action_behavior_change_added") is False
+        and boundary.get("memory_write_added") is False
+        and boundary.get("predictor_mutation_added") is False
+        and boundary.get("persistent_rule_write_added") is False
+        and boundary.get("proof_of_learning_claimed") is False
+    )
+    return _result(
+        "before_after_trial_contrast",
         passed,
         {
             "summary": summary,
@@ -10557,6 +10626,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_reviewed_lesson_trace_preview(),
         smoke_reviewed_lesson_dry_run_correction_minimal(),
         smoke_dry_run_correction_into_trial_trace(),
+        smoke_before_after_trial_contrast(),
         smoke_prediction_accuracy_check(),
         smoke_rule_candidate_from_mismatch(),
         smoke_rule_candidate_review_gate(),
