@@ -2483,3 +2483,7 @@ Two-Trial History Boundary:
 
 - Visual-retention link preview is now available at Minimal v0: visual frame-change traces can produce `visual_experience_candidate` records, read-only `retina_focus_preview` records, `visual_lesson_evidence_candidate` records, and `visual_retained_experience_link_preview` records by `same_exact_key_only`.
 - This remains trace-only/read-only and does not add object recognition, semantic vision, active focus, lesson application, action influence, memory write, new retention write, semantic/fuzzy/vector retrieval, predictor mutation, or proof of learning.
+
+## Visual-Retention Demo Snapshot Minimal v0
+
+- Visual-Retention Demo Snapshot Minimal v0 creates a read-only human-readable snapshot of the visual -> lesson evidence -> retained experience preview bridge. It remains same_exact_key_only and does not add object recognition, semantic vision, active focus, lesson application, action influence, memory write, new retention write, semantic/fuzzy/vector retrieval, predictor mutation, or proof-of-learning claims.

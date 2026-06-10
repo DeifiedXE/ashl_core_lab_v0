@@ -304,6 +304,7 @@ from ashl_core.visual_trace_as_lesson_evidence_minimal import (
 from ashl_core.visual_retained_experience_link_preview_minimal import (
     run_visual_retained_experience_link_preview_minimal_check,
 )
+from ashl_core.visual_retention_demo_snapshot_minimal import run_visual_retention_demo_snapshot_minimal_check
 from ashl_core.simple_retina_focus_preview_minimal import run_simple_retina_focus_preview_minimal_check
 from ashl_core.wall_experience_influence import run_wall_experience_influence_check
 
@@ -4851,6 +4852,93 @@ def smoke_visual_retained_experience_link_preview_minimal() -> dict:
         passed,
         {
             "summary": summary,
+            "validation_results": result.get("validation_results", []),
+            "boundary": boundary,
+        },
+    )
+
+
+def smoke_visual_retention_demo_snapshot_minimal() -> dict:
+    result = run_visual_retention_demo_snapshot_minimal_check()
+    summary = result.get("summary", {})
+    boundary = result.get("boundary_check", {})
+    passed = (
+        result.get("command") == "run-visual-retention-demo-snapshot-minimal-check"
+        and result.get("flow") == "visual_retention_demo_snapshot_minimal_v0"
+        and result.get("status") == "ok"
+        and summary.get("visual_retention_demo_snapshot_count") == 23
+        and summary.get("valid_visual_retention_demo_snapshot_count") == 2
+        and summary.get("invalid_visual_retention_demo_snapshot_count") == 21
+        and summary.get("matched_snapshot_count") == 1
+        and summary.get("not_matched_snapshot_count") == 1
+        and summary.get("read_only_false_blocked_count") == 1
+        and summary.get("missing_source_retina_focus_preview_blocked_count") == 1
+        and summary.get("missing_source_visual_lesson_evidence_blocked_count") == 1
+        and summary.get("missing_source_visual_retained_link_blocked_count") == 1
+        and summary.get("empty_what_changed_blocked_count") == 1
+        and summary.get("empty_plain_result_blocked_count") == 1
+        and summary.get("retained_match_status_blocked_count") == 1
+        and summary.get("same_exact_key_only_false_blocked_count") == 1
+        and summary.get("object_recognition_blocked_count") == 1
+        and summary.get("semantic_vision_blocked_count") == 1
+        and summary.get("active_focus_applied_blocked_count") == 1
+        and summary.get("lesson_applied_blocked_count") == 1
+        and summary.get("action_selection_influence_blocked_count") == 1
+        and summary.get("action_behavior_changed_blocked_count") == 1
+        and summary.get("memory_write_blocked_count") == 1
+        and summary.get("new_retention_written_blocked_count") == 1
+        and summary.get("semantic_match_blocked_count") == 1
+        and summary.get("fuzzy_match_blocked_count") == 1
+        and summary.get("vector_match_blocked_count") == 1
+        and summary.get("predictor_modified_blocked_count") == 1
+        and summary.get("proof_of_learning_claim_blocked_count") == 1
+        and summary.get("object_recognition_count") == 0
+        and summary.get("semantic_vision_count") == 0
+        and summary.get("active_focus_applied_count") == 0
+        and summary.get("lesson_applied_count") == 0
+        and summary.get("action_selection_influence_count") == 0
+        and summary.get("action_behavior_changed_count") == 0
+        and summary.get("memory_write_count") == 0
+        and summary.get("new_retention_written_count") == 0
+        and summary.get("semantic_match_count") == 0
+        and summary.get("fuzzy_match_count") == 0
+        and summary.get("vector_match_count") == 0
+        and summary.get("predictor_modified_count") == 0
+        and summary.get("proof_of_learning_claim_count") == 0
+        and boundary.get("read_only") is True
+        and boundary.get("human_inspection_only") is True
+        and boundary.get("minimal_record_shape") is True
+        and boundary.get("top_level_field_count") == 8
+        and boundary.get("uses_simple_retina_focus_preview_minimal") is True
+        and boundary.get("uses_visual_trace_as_lesson_evidence_minimal") is True
+        and boundary.get("uses_visual_retained_experience_link_preview_minimal") is True
+        and boundary.get("same_exact_key_only") is True
+        and boundary.get("full_nested_source_records_included") is False
+        and boundary.get("writes_retained_jsonl") is False
+        and boundary.get("object_recognition_added") is False
+        and boundary.get("semantic_vision_added") is False
+        and boundary.get("active_focus_added") is False
+        and boundary.get("focus_applied_added") is False
+        and boundary.get("attention_control_added") is False
+        and boundary.get("automatic_lesson_candidate_creation_added") is False
+        and boundary.get("lesson_application_added") is False
+        and boundary.get("runtime_action_selection_added") is False
+        and boundary.get("action_behavior_change_added") is False
+        and boundary.get("memory_write_added") is False
+        and boundary.get("new_retention_write_added") is False
+        and boundary.get("automatic_retention_added") is False
+        and boundary.get("semantic_matching_added") is False
+        and boundary.get("fuzzy_retrieval_added") is False
+        and boundary.get("vector_retrieval_added") is False
+        and boundary.get("predictor_mutation_added") is False
+        and boundary.get("proof_of_learning_claimed") is False
+    )
+    return _result(
+        "visual_retention_demo_snapshot_minimal",
+        passed,
+        {
+            "summary": summary,
+            "valid_human_summaries": result.get("valid_human_summaries", []),
             "validation_results": result.get("validation_results", []),
             "boundary": boundary,
         },
@@ -11810,6 +11898,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_simple_retina_focus_preview_minimal(),
         smoke_visual_trace_as_lesson_evidence_minimal(),
         smoke_visual_retained_experience_link_preview_minimal(),
+        smoke_visual_retention_demo_snapshot_minimal(),
         smoke_focus_selector_design(),
         smoke_focus_candidate_schema(),
         smoke_focus_candidate_ranking_trace_design(),
