@@ -5475,13 +5475,20 @@ Progress:
 - Visual-retention links are preview-only and must not influence action selection or behavior.
 
 Next options:
-1. Visual-Retention Demo Snapshot Minimal v0
-2. Return to visual grounding trial design
-3. Retained Experience Exact-Key Lookup Minimal v0
+1. Minimal Visual Grounding Trial v0
+2. Prediction-Error Attention Preview Minimal v0
+3. Return to deeper retina/frame/focus improvements
 
 ## Visual-Retention Demo Snapshot Minimal v0
 
 Status: completed / read-only-snapshot / no-runtime-change.
 
 Progress:
-- Visual-Retention Demo Snapshot Minimal v0 creates a read-only human-readable snapshot of the visual -> lesson evidence -> retained experience preview bridge. It remains same_exact_key_only and does not add object recognition, semantic vision, active focus, lesson application, action influence, memory write, new retention write, semantic/fuzzy/vector retrieval, predictor mutation, or proof-of-learning claims.
+- Completed: Visual-Retention Demo Snapshot Minimal v0.
+- The visual-retention bridge is now inspectable as a read-only human-readable snapshot.
+- Visual-retention snapshots are inspection only and must not influence action selection or behavior.
+
+Next options:
+1. Minimal Visual Grounding Trial v0
+2. Prediction-Error Attention Preview Minimal v0
+3. Return to deeper retina/frame/focus improvements

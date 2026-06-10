@@ -2486,4 +2486,4 @@ Two-Trial History Boundary:
 
 ## Visual-Retention Demo Snapshot Minimal v0
 
-- Visual-Retention Demo Snapshot Minimal v0 creates a read-only human-readable snapshot of the visual -> lesson evidence -> retained experience preview bridge. It remains same_exact_key_only and does not add object recognition, semantic vision, active focus, lesson application, action influence, memory write, new retention write, semantic/fuzzy/vector retrieval, predictor mutation, or proof-of-learning claims.
+- Visual-Retention Demo Snapshot Minimal v0 creates a read-only human-readable snapshot of the visual → lesson evidence → retained experience preview bridge. It remains same_exact_key_only and does not add object recognition, semantic vision, active focus, lesson application, action influence, memory write, new retention write, semantic/fuzzy/vector retrieval, predictor mutation, or proof of learning.
