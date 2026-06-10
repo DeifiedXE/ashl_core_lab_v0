@@ -5411,3 +5411,16 @@ Status: completed / read-only-listing / no-runtime-change.
 Progress:
 - Adds a read-only listing for mentor-gated retained JSONL records so the mentor can inspect retained experiences.
 - Does not append/edit/delete JSONL, apply lessons, influence action selection, change behavior, mutate predictors, add automatic retention, or prove learning.
+
+## Retention Readback / Listing Sync Minimal v0
+
+Status: completed / documentation-only / no-runtime-change.
+
+Progress:
+- Completed: retained experience readback preview and read-only retained experience listing.
+- Keep retention commands mentor-gated and read-only unless a future boundary explicitly opens more behavior.
+
+Next options:
+1. Retained Experience Lookup by Exact Key Minimal v0
+2. Four-Layer Memory Design Boundary v0
+3. Return to perception/eye line after retention readback/listing sync

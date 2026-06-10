@@ -2443,3 +2443,8 @@ Two-Trial History Boundary:
 - Adds `py -3 -m ashl_core.teaching_cli run-retained-experience-listing-cli-minimal-check`.
 - Adds a read-only listing for mentor-gated retained JSONL records so the mentor can inspect retained experiences.
 - Does not append/edit/delete JSONL, apply lessons, influence action selection, change behavior, mutate predictors, add automatic retention, or prove learning.
+
+## Retention Readback / Listing Sync
+
+- Retention readback/listing is now complete at Minimal v0: mentor-gated retained JSONL records can be loaded back, shown in read-only preview, and listed read-only.
+- This does not add automatic retention, four-layer memory, lesson application, action influence, behavior change, predictor mutation, semantic retrieval, JSONL edit/delete during listing, or proof of learning.
