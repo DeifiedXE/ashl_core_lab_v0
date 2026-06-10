@@ -5374,3 +5374,11 @@ Status: completed / clarification-only / no-runtime-change.
 Progress:
 - Clarifies that temporary cross-session space v0 means controlled demo/fixture handoff only.
 - It is not durable persistence, memory, history runtime, or lesson retention, and must be deprecated or bypassed after the future four-layer memory system exists.
+
+## Mentor-Gated Experience Retention Minimal v0
+
+Status: completed / mentor-gated-retention / append-only-jsonl / no-action-influence.
+
+Progress:
+- Adds the first real durable retention path: a valid `session_experience_record` can be appended to JSONL only when the mentor explicitly says `留`.
+- This is append-only, manually rollbackable by removing/archive line, and does not influence action selection, change behavior, mutate predictors, implement four-layer memory, or prove learning.

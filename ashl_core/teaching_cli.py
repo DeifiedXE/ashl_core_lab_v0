@@ -45,6 +45,9 @@ from .lesson_candidate_human_review_decision_schema import run_lesson_candidate_
 from .lesson_candidate_review_evidence_summary import run_lesson_candidate_review_evidence_summary_check
 from .lesson_candidate_review_gate import run_lesson_candidate_review_gate_check
 from .lesson_effect_evidence_trace_minimal import run_lesson_effect_evidence_trace_minimal_check
+from .mentor_gated_experience_retention_minimal import (
+    run_mentor_gated_experience_retention_minimal_check,
+)
 from .reviewed_lesson_dry_run_correction_minimal import (
     run_reviewed_lesson_dry_run_correction_minimal_check,
 )
@@ -3507,6 +3510,8 @@ def run_command(command: str) -> dict[str, Any] | str:
         return run_temporary_cross_session_experience_space_minimal_check()
     if command == "run-temporary-cross-session-space-link-back-minimal-check":
         return run_temporary_cross_session_space_link_back_minimal_check()
+    if command == "run-mentor-gated-experience-retention-minimal-check":
+        return run_mentor_gated_experience_retention_minimal_check()
     if command == "run-generalized-prediction-confidence-check":
         return run_generalized_prediction_confidence_check()
     if command == "run-generalized-candidate-from-pattern-check":
@@ -3640,6 +3645,7 @@ def main(argv: list[str] | None = None) -> int:
             "run-trial-bucket-link-preview-minimal-check",
             "run-temporary-cross-session-experience-space-minimal-check",
             "run-temporary-cross-session-space-link-back-minimal-check",
+            "run-mentor-gated-experience-retention-minimal-check",
             "run-generalized-prediction-confidence-check",
             "run-generalized-candidate-from-pattern-check",
             "run-generalized-candidate-review-preview-check",
@@ -3896,6 +3902,8 @@ def main(argv: list[str] | None = None) -> int:
         result = run_temporary_cross_session_experience_space_minimal_check()
     elif args.command == "run-temporary-cross-session-space-link-back-minimal-check":
         result = run_temporary_cross_session_space_link_back_minimal_check()
+    elif args.command == "run-mentor-gated-experience-retention-minimal-check":
+        result = run_mentor_gated_experience_retention_minimal_check()
     elif args.command == "run-generalized-prediction-confidence-check":
         result = run_generalized_prediction_confidence_check()
     elif args.command == "run-generalized-candidate-from-pattern-check":

@@ -74,6 +74,9 @@ from ashl_core.lesson_candidate_review_gate import run_lesson_candidate_review_g
 from ashl_core.lesson_effect_evidence_trace_minimal import (
     run_lesson_effect_evidence_trace_minimal_check,
 )
+from ashl_core.mentor_gated_experience_retention_minimal import (
+    run_mentor_gated_experience_retention_minimal_check,
+)
 from ashl_core.reviewed_lesson_dry_run_correction_minimal import (
     run_reviewed_lesson_dry_run_correction_minimal_check,
 )
@@ -3578,6 +3581,70 @@ def smoke_temporary_cross_session_space_link_back_minimal() -> dict:
         {
             "summary": summary,
             "trial_bucket_link_preview_validation": trial_bucket_validation,
+            "boundary": boundary,
+        },
+    )
+
+
+def smoke_mentor_gated_experience_retention_minimal() -> dict:
+    result = run_mentor_gated_experience_retention_minimal_check()
+    summary = result.get("summary", {})
+    boundary = result.get("boundary_check", {})
+    append_result = result.get("append_result", {})
+    retained_record = append_result.get("retained_record", {})
+    passed = (
+        result.get("command") == "run-mentor-gated-experience-retention-minimal-check"
+        and result.get("flow") == "mentor_gated_experience_retention_minimal_v0"
+        and result.get("status") == "ok"
+        and summary.get("retention_decision_count") == 7
+        and summary.get("approved_retention_decision_count") == 1
+        and summary.get("blocked_retention_decision_count") == 6
+        and summary.get("jsonl_append_count") == 1
+        and summary.get("jsonl_load_back_count") == 1
+        and summary.get("retained_record_count") == 1
+        and summary.get("mentor_text_blocked_count") == 1
+        and summary.get("automatic_retention_blocked_count") == 1
+        and summary.get("action_selection_influence_blocked_count") == 1
+        and summary.get("action_behavior_changed_blocked_count") == 1
+        and summary.get("predictor_modified_blocked_count") == 1
+        and summary.get("proof_of_learning_claim_blocked_count") == 1
+        and summary.get("not_approved_append_blocked_count") == 1
+        and summary.get("source_mismatch_append_blocked_count") == 1
+        and summary.get("retained_action_selection_influence_count") == 0
+        and summary.get("retained_action_behavior_changed_count") == 0
+        and summary.get("retained_predictor_modified_count") == 0
+        and summary.get("retained_proof_of_learning_claim_count") == 0
+        and append_result.get("appended") is True
+        and append_result.get("append_only") is True
+        and append_result.get("loaded_records_include_appended") is True
+        and retained_record.get("retention_status") == "retained"
+        and retained_record.get("retained_by") == "mentor"
+        and retained_record.get("retention_reason") == "mentor_text:留"
+        and retained_record.get("source_snapshot", {}).get("original_retention_status") == "not_retained"
+        and boundary.get("first_true_retention_boundary") is True
+        and boundary.get("append_only_jsonl") is True
+        and boundary.get("durable_read_back_supported") is True
+        and boundary.get("mentor_text_exact_lau_only") is True
+        and boundary.get("production_write_cli_added") is False
+        and boundary.get("automatic_retention_added") is False
+        and boundary.get("four_layer_memory_added") is False
+        and boundary.get("semantic_similarity_added") is False
+        and boundary.get("fuzzy_matching_added") is False
+        and boundary.get("vector_retrieval_added") is False
+        and boundary.get("lesson_application_added") is False
+        and boundary.get("runtime_action_selection_added") is False
+        and boundary.get("action_behavior_change_added") is False
+        and boundary.get("predictor_mutation_added") is False
+        and boundary.get("proof_of_learning_claimed") is False
+        and boundary.get("rollback_manual_only") is True
+        and boundary.get("destructive_auto_delete_added") is False
+    )
+    return _result(
+        "mentor_gated_experience_retention_minimal",
+        passed,
+        {
+            "summary": summary,
+            "append_result": append_result,
             "boundary": boundary,
         },
     )
@@ -11233,6 +11300,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_temporary_cross_session_experience_space_minimal(),
         smoke_temporary_cross_session_reality_boundary(),
         smoke_temporary_cross_session_space_link_back_minimal(),
+        smoke_mentor_gated_experience_retention_minimal(),
         smoke_history_runtime_persistence_gap_review(),
         smoke_generalized_prediction_confidence_check(),
         smoke_generalized_candidate_from_pattern(),
