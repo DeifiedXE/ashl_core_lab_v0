@@ -36,6 +36,9 @@ from .lesson_candidate_from_failure_reason import run_lesson_candidate_from_fail
 from .lesson_candidate_human_review_decision_schema import run_lesson_candidate_human_review_decision_schema_check
 from .lesson_candidate_review_evidence_summary import run_lesson_candidate_review_evidence_summary_check
 from .lesson_candidate_review_gate import run_lesson_candidate_review_gate_check
+from .reviewed_lesson_dry_run_correction_minimal import (
+    run_reviewed_lesson_dry_run_correction_minimal_check,
+)
 from .reviewed_lesson_trace_preview import run_reviewed_lesson_trace_preview_check
 from .mimetic_endocrine_signal_schema import run_mimetic_endocrine_signal_schema_check
 from .mimetic_endocrine_four_axis_trace_integration import (
@@ -3449,6 +3452,8 @@ def run_command(command: str) -> dict[str, Any] | str:
         return run_lesson_candidate_human_review_decision_schema_check()
     if command == "run-reviewed-lesson-trace-preview-check":
         return run_reviewed_lesson_trace_preview_check()
+    if command == "run-reviewed-lesson-dry-run-correction-minimal-check":
+        return run_reviewed_lesson_dry_run_correction_minimal_check()
     if command == "run-prediction-accuracy-check":
         return run_prediction_accuracy_check()
     if command == "run-rule-candidate-from-mismatch-check":
@@ -3581,6 +3586,7 @@ def main(argv: list[str] | None = None) -> int:
             "run-lesson-candidate-review-evidence-summary-check",
             "run-lesson-candidate-human-review-decision-schema-check",
             "run-reviewed-lesson-trace-preview-check",
+            "run-reviewed-lesson-dry-run-correction-minimal-check",
             "run-prediction-accuracy-check",
             "run-rule-candidate-from-mismatch-check",
             "run-rule-candidate-review-gate-check",
@@ -3806,6 +3812,8 @@ def main(argv: list[str] | None = None) -> int:
         result = run_lesson_candidate_human_review_decision_schema_check()
     elif args.command == "run-reviewed-lesson-trace-preview-check":
         result = run_reviewed_lesson_trace_preview_check()
+    elif args.command == "run-reviewed-lesson-dry-run-correction-minimal-check":
+        result = run_reviewed_lesson_dry_run_correction_minimal_check()
     elif args.command == "run-prediction-accuracy-check":
         result = run_prediction_accuracy_check()
     elif args.command == "run-rule-candidate-from-mismatch-check":

@@ -63,6 +63,9 @@ from ashl_core.lesson_candidate_human_review_decision_schema import (
 )
 from ashl_core.lesson_candidate_review_evidence_summary import run_lesson_candidate_review_evidence_summary_check
 from ashl_core.lesson_candidate_review_gate import run_lesson_candidate_review_gate_check
+from ashl_core.reviewed_lesson_dry_run_correction_minimal import (
+    run_reviewed_lesson_dry_run_correction_minimal_check,
+)
 from ashl_core.reviewed_lesson_trace_preview import run_reviewed_lesson_trace_preview_check
 from ashl_core.mimetic_endocrine_signal_schema import run_mimetic_endocrine_signal_schema_check
 from ashl_core.mimetic_endocrine_four_axis_trace_integration import (
@@ -2269,6 +2272,67 @@ def smoke_reviewed_lesson_trace_preview() -> dict:
         {
             "summary": summary,
             "validation_results": result.get("validation_results", []),
+            "boundary": boundary,
+        },
+    )
+
+
+def smoke_reviewed_lesson_dry_run_correction_minimal() -> dict:
+    result = run_reviewed_lesson_dry_run_correction_minimal_check()
+    summary = result.get("summary", {})
+    boundary = result.get("boundary_check", {})
+    records = result.get("dry_run_correction_records", [])
+    passed = (
+        result.get("command") == "run-reviewed-lesson-dry-run-correction-minimal-check"
+        and result.get("flow") == "reviewed_lesson_dry_run_correction_minimal_v0"
+        and result.get("status") == "ok"
+        and summary.get("dry_run_correction_record_count") == 9
+        and summary.get("valid_dry_run_correction_count") == 1
+        and summary.get("invalid_dry_run_correction_count") == 8
+        and summary.get("unknown_correction_type_blocked_count") == 1
+        and summary.get("applied_true_blocked_count") == 1
+        and summary.get("action_selection_influence_blocked_count") == 1
+        and summary.get("action_behavior_changed_blocked_count") == 1
+        and summary.get("memory_write_blocked_count") == 1
+        and summary.get("predictor_modified_blocked_count") == 1
+        and summary.get("persistent_rule_write_blocked_count") == 1
+        and summary.get("proof_of_learning_claim_blocked_count") == 1
+        and summary.get("applied_count") == 0
+        and summary.get("action_selection_influence_count") == 0
+        and summary.get("action_behavior_changed_count") == 0
+        and summary.get("memory_write_count") == 0
+        and summary.get("predictor_modified_count") == 0
+        and summary.get("persistent_rule_write_count") == 0
+        and summary.get("proof_of_learning_claim_count") == 0
+        and records
+        and set(records[0].keys())
+        == {
+            "dry_run_correction_id",
+            "source_preview_id",
+            "source_lesson_candidate_id",
+            "source_review_decision_id",
+            "correction_type",
+            "target_action_type",
+            "trace_only",
+            "blocked_flags",
+        }
+        and boundary.get("trace_only") is True
+        and boundary.get("minimal_record_shape") is True
+        and boundary.get("top_level_field_count") == 8
+        and boundary.get("lesson_application_added") is False
+        and boundary.get("runtime_action_selection_added") is False
+        and boundary.get("action_behavior_change_added") is False
+        and boundary.get("memory_write_added") is False
+        and boundary.get("predictor_mutation_added") is False
+        and boundary.get("persistent_rule_write_added") is False
+        and boundary.get("proof_of_learning_claimed") is False
+    )
+    return _result(
+        "reviewed_lesson_dry_run_correction_minimal",
+        passed,
+        {
+            "summary": summary,
+            "first_record_keys": sorted(records[0].keys()) if records else [],
             "boundary": boundary,
         },
     )
@@ -10426,6 +10490,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_lesson_candidate_review_evidence_summary(),
         smoke_lesson_candidate_human_review_decision_schema(),
         smoke_reviewed_lesson_trace_preview(),
+        smoke_reviewed_lesson_dry_run_correction_minimal(),
         smoke_prediction_accuracy_check(),
         smoke_rule_candidate_from_mismatch(),
         smoke_rule_candidate_review_gate(),

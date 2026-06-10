@@ -5252,3 +5252,11 @@ Status: completed / design-only / no-runtime-change.
 Progress:
 - Documents the boundary between reviewed_lesson_trace_preview and any future dry-run correction or lesson application.
 - Does not apply lessons, change action selection, write memory, persist learning, or mutate predictors.
+
+## Reviewed Lesson Dry-Run Correction Minimal v0
+
+Status: completed / trace-check-only / no-runtime-change.
+
+Progress:
+- Creates a small trace-only `dry_run_correction` record from `reviewed_lesson_trace_preview` and blocks all side effects.
+- Does not apply lessons, change action selection or action behavior, write memory, mutate predictors, create persistent rules, or claim proof of learning.

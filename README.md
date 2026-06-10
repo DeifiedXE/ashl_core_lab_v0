@@ -2349,3 +2349,8 @@ Two-Trial History Boundary:
 
 - Documents the boundary between reviewed_lesson_trace_preview and any future dry-run correction or lesson application.
 - Design-only: does not apply lessons, change action selection, write memory, persist learning, or mutate predictors.
+
+## Reviewed Lesson Dry-Run Correction Minimal v0
+
+- Adds `py -3 -m ashl_core.teaching_cli run-reviewed-lesson-dry-run-correction-minimal-check`.
+- Creates a small trace-only `dry_run_correction` record from `reviewed_lesson_trace_preview` and blocks all applied/action/memory/predictor/persistent/proof side effects.
