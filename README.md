@@ -2378,3 +2378,8 @@ Two-Trial History Boundary:
 
 - Adds `py -3 -m ashl_core.teaching_cli run-generalized-memory-exact-key-bucket-enhancement-minimal-check`.
 - Creates trace-only exact-key bucket candidates from lesson effect evidence without writing memory, retaining lessons, creating history runtime, mutating predictors, changing behavior, or claiming proof of learning.
+
+## Session Experience Record Schema Minimal v0
+
+- Adds `py -3 -m ashl_core.teaching_cli run-session-experience-record-schema-minimal-check`.
+- Defines a small trace-only `session_experience_record` from lesson effect evidence and exact-key bucket candidates without writing memory, retaining lessons, creating history runtime, changing behavior, or claiming proof of learning.

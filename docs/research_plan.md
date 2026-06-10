@@ -5300,3 +5300,11 @@ Status: completed / trace-check-only / no-runtime-change.
 Progress:
 - Creates trace-only exact-key bucket candidates from lesson effect evidence.
 - Does not write memory, retain lessons, create history runtime, mutate predictors, change behavior, or claim proof of learning.
+
+## Session Experience Record Schema Minimal v0
+
+Status: completed / schema-check-only / no-runtime-change.
+
+Progress:
+- Defines a small trace-only `session_experience_record` from lesson effect evidence and exact-key bucket candidates.
+- Does not write memory, retain lessons, create history runtime, change behavior, or claim proof of learning.

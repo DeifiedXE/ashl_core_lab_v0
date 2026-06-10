@@ -75,6 +75,9 @@ from ashl_core.reviewed_lesson_dry_run_correction_minimal import (
     run_reviewed_lesson_dry_run_correction_minimal_check,
 )
 from ashl_core.reviewed_lesson_trace_preview import run_reviewed_lesson_trace_preview_check
+from ashl_core.session_experience_record_schema_minimal import (
+    run_session_experience_record_schema_minimal_check,
+)
 from ashl_core.mimetic_endocrine_signal_schema import run_mimetic_endocrine_signal_schema_check
 from ashl_core.mimetic_endocrine_four_axis_trace_integration import (
     run_mimetic_endocrine_four_axis_trace_integration_check,
@@ -3158,6 +3161,77 @@ def smoke_generalized_memory_exact_key_bucket_enhancement_minimal() -> dict:
     )
     return _result(
         "generalized_memory_exact_key_bucket_enhancement_minimal",
+        passed,
+        {
+            "summary": summary,
+            "first_record_keys": sorted(records[0].keys()) if records else [],
+            "boundary": boundary,
+        },
+    )
+
+
+def smoke_session_experience_record_schema_minimal() -> dict:
+    result = run_session_experience_record_schema_minimal_check()
+    summary = result.get("summary", {})
+    boundary = result.get("boundary_check", {})
+    records = result.get("session_experience_records", [])
+    passed = (
+        result.get("command") == "run-session-experience-record-schema-minimal-check"
+        and result.get("flow") == "session_experience_record_schema_minimal_v0"
+        and result.get("status") == "ok"
+        and summary.get("session_experience_record_count") == 12
+        and summary.get("valid_session_experience_record_count") == 1
+        and summary.get("invalid_session_experience_record_count") == 11
+        and summary.get("empty_exact_key_blocked_count") == 1
+        and summary.get("experience_type_blocked_count") == 1
+        and summary.get("retention_status_blocked_count") == 1
+        and summary.get("trace_only_false_blocked_count") == 1
+        and summary.get("memory_write_blocked_count") == 1
+        and summary.get("lesson_retained_blocked_count") == 1
+        and summary.get("history_runtime_write_blocked_count") == 1
+        and summary.get("persistent_rule_write_blocked_count") == 1
+        and summary.get("predictor_modified_blocked_count") == 1
+        and summary.get("action_behavior_changed_blocked_count") == 1
+        and summary.get("proof_of_learning_claim_blocked_count") == 1
+        and summary.get("memory_write_count") == 0
+        and summary.get("lesson_retained_count") == 0
+        and summary.get("history_runtime_write_count") == 0
+        and summary.get("persistent_rule_write_count") == 0
+        and summary.get("predictor_modified_count") == 0
+        and summary.get("action_behavior_changed_count") == 0
+        and summary.get("proof_of_learning_claim_count") == 0
+        and records
+        and set(records[0].keys())
+        == {
+            "experience_record_id",
+            "source_evidence_trace_id",
+            "source_bucket_candidate_id",
+            "exact_key",
+            "experience_type",
+            "trace_only",
+            "retention_status",
+            "blocked_flags",
+        }
+        and boundary.get("trace_only") is True
+        and boundary.get("minimal_record_shape") is True
+        and boundary.get("top_level_field_count") == 8
+        and boundary.get("retention_status_not_retained_only") is True
+        and boundary.get("memory_write_added") is False
+        and boundary.get("lesson_retention_added") is False
+        and boundary.get("lesson_store_write_added") is False
+        and boundary.get("history_runtime_added") is False
+        and boundary.get("persistent_learning_added") is False
+        and boundary.get("persistent_rule_write_added") is False
+        and boundary.get("semantic_similarity_added") is False
+        and boundary.get("fuzzy_matching_added") is False
+        and boundary.get("vector_retrieval_added") is False
+        and boundary.get("predictor_mutation_added") is False
+        and boundary.get("runtime_action_selection_added") is False
+        and boundary.get("action_behavior_change_added") is False
+        and boundary.get("proof_of_learning_claimed") is False
+    )
+    return _result(
+        "session_experience_record_schema_minimal",
         passed,
         {
             "summary": summary,
@@ -10811,6 +10885,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_persistent_eligibility_checker(),
         smoke_generalized_memory_exact_key_bucket(),
         smoke_generalized_memory_exact_key_bucket_enhancement_minimal(),
+        smoke_session_experience_record_schema_minimal(),
         smoke_history_runtime_persistence_gap_review(),
         smoke_generalized_prediction_confidence_check(),
         smoke_generalized_candidate_from_pattern(),
