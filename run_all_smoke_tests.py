@@ -294,6 +294,9 @@ from ashl_core.visual_frame_assembly_from_retina_features import (
 from ashl_core.visual_frame_buffer_schema import run_visual_frame_buffer_schema_check
 from ashl_core.visual_frame_change_schema import run_visual_frame_change_schema_check
 from ashl_core.visual_frame_change_trace import run_visual_frame_change_trace_check
+from ashl_core.visual_experience_candidate_from_frame_change_minimal import (
+    run_visual_experience_candidate_from_frame_change_minimal_check,
+)
 from ashl_core.visual_frame_pair_demo_assembly import run_visual_frame_pair_demo_assembly_check
 from ashl_core.wall_experience_influence import run_wall_experience_influence_check
 
@@ -4579,6 +4582,66 @@ def smoke_visual_frame_change_trace() -> dict:
         {
             "summary": summary,
             "change_record_validation_results": result.get("change_record_validation_results", []),
+            "boundary": boundary,
+        },
+    )
+
+
+def smoke_visual_experience_candidate_from_frame_change_minimal() -> dict:
+    result = run_visual_experience_candidate_from_frame_change_minimal_check()
+    summary = result.get("summary", {})
+    boundary = result.get("boundary_check", {})
+    passed = (
+        result.get("command") == "run-visual-experience-candidate-from-frame-change-minimal-check"
+        and result.get("flow") == "visual_experience_candidate_from_frame_change_minimal_v0"
+        and result.get("status") == "ok"
+        and summary.get("visual_experience_candidate_count") == 15
+        and summary.get("valid_visual_experience_candidate_count") == 2
+        and summary.get("invalid_visual_experience_candidate_count") == 13
+        and summary.get("with_focus_candidate_count") == 1
+        and summary.get("without_focus_candidate_count") == 1
+        and summary.get("trace_only_false_blocked_count") == 1
+        and summary.get("experience_type_blocked_count") == 1
+        and summary.get("missing_source_change_trace_blocked_count") == 1
+        and summary.get("empty_human_readable_blocked_count") == 1
+        and summary.get("object_recognition_blocked_count") == 1
+        and summary.get("semantic_labeling_blocked_count") == 1
+        and summary.get("active_focus_applied_blocked_count") == 1
+        and summary.get("action_selection_influence_blocked_count") == 1
+        and summary.get("action_behavior_changed_blocked_count") == 1
+        and summary.get("memory_write_blocked_count") == 1
+        and summary.get("lesson_retained_blocked_count") == 1
+        and summary.get("predictor_modified_blocked_count") == 1
+        and summary.get("proof_of_learning_claim_blocked_count") == 1
+        and summary.get("object_recognition_count") == 0
+        and summary.get("semantic_labeling_count") == 0
+        and summary.get("active_focus_applied_count") == 0
+        and summary.get("action_selection_influence_count") == 0
+        and summary.get("action_behavior_changed_count") == 0
+        and summary.get("memory_write_count") == 0
+        and summary.get("lesson_retained_count") == 0
+        and summary.get("predictor_modified_count") == 0
+        and summary.get("proof_of_learning_claim_count") == 0
+        and boundary.get("trace_check_only") is True
+        and boundary.get("minimal_record_shape") is True
+        and boundary.get("top_level_field_count") == 8
+        and boundary.get("uses_visual_frame_change_trace") is True
+        and boundary.get("uses_focus_candidate_from_change_trace") is True
+        and boundary.get("uses_focus_candidate_ranking_trace") is True
+        and boundary.get("object_recognition_added") is False
+        and boundary.get("semantic_vision_added") is False
+        and boundary.get("active_focus_added") is False
+        and boundary.get("runtime_action_selection_added") is False
+        and boundary.get("memory_write_added") is False
+        and boundary.get("retention_added") is False
+        and boundary.get("proof_of_learning_claimed") is False
+    )
+    return _result(
+        "visual_experience_candidate_from_frame_change_minimal",
+        passed,
+        {
+            "summary": summary,
+            "validation_results": result.get("validation_results", []),
             "boundary": boundary,
         },
     )
@@ -11533,6 +11596,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_visual_frame_change_schema(),
         smoke_visual_frame_pair_demo_assembly(),
         smoke_visual_frame_change_trace(),
+        smoke_visual_experience_candidate_from_frame_change_minimal(),
         smoke_focus_selector_design(),
         smoke_focus_candidate_schema(),
         smoke_focus_candidate_ranking_trace_design(),

@@ -2454,3 +2454,9 @@ Two-Trial History Boundary:
 - Records the future memory architecture: Core Memory, Long-term Memory, Working Memory, Archive Memory, and Anchor Layer.
 - Current implemented/prototype lines cover Core Seed, mentor-gated JSONL retention, and session working memory only.
 - Archive Memory, Anchor Layer, specialty anchors, and endocrine-driven anchor lookup are not implemented.
+
+## Visual Experience Candidate From Frame Change Minimal v0
+
+- Adds `py -3 -m ashl_core.teaching_cli run-visual-experience-candidate-from-frame-change-minimal-check`.
+- Reconnects the eye/perception line to the experience-review line by creating trace-only `visual_experience_candidate` records from visual frame change traces and optional focus candidates.
+- Does not perform object recognition, semantic vision, active focus application, action influence, memory write, retention, predictor mutation, or proof of learning.
