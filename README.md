@@ -2478,3 +2478,8 @@ Two-Trial History Boundary:
 - Adds `py -3 -m ashl_core.teaching_cli run-visual-retained-experience-link-preview-minimal-check`.
 - Lets trace-only `visual_lesson_evidence_candidate` records preview-link to retained experience records by exact key only.
 - Supports matched and not_matched read-only previews without semantic/fuzzy/vector retrieval, lesson application, action influence, new retention writes, predictor mutation, or proof-of-learning claims.
+
+## Visual-Retention Link Progress Sync
+
+- Visual-retention link preview is now available at Minimal v0: visual frame-change traces can produce `visual_experience_candidate` records, read-only `retina_focus_preview` records, `visual_lesson_evidence_candidate` records, and `visual_retained_experience_link_preview` records by `same_exact_key_only`.
+- This remains trace-only/read-only and does not add object recognition, semantic vision, active focus, lesson application, action influence, memory write, new retention write, semantic/fuzzy/vector retrieval, predictor mutation, or proof of learning.

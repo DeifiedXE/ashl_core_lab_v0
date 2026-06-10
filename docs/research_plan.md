@@ -5465,3 +5465,16 @@ Status: completed / read-only-preview / exact-key-only / no-runtime-change.
 Progress:
 - Lets trace-only visual_lesson_evidence_candidate records preview-link to retained experience records by exact key only.
 - Supports matched and not_matched read-only previews without semantic/fuzzy/vector retrieval, lesson application, action influence, new retention writes, predictor mutation, or proof-of-learning claims.
+
+## Visual-Retention Link Progress Sync Minimal v0
+
+Status: completed / documentation-only / no-runtime-change.
+
+Progress:
+- Completed: visual experience candidate, retina focus preview, visual trace as lesson evidence, and visual + retained experience link preview.
+- Visual-retention links are preview-only and must not influence action selection or behavior.
+
+Next options:
+1. Visual-Retention Demo Snapshot Minimal v0
+2. Return to visual grounding trial design
+3. Retained Experience Exact-Key Lookup Minimal v0

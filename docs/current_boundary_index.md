@@ -1,7 +1,7 @@
-Boundary Index Version: 2026-06-09-b46
-Last update log: Retention Readback / Listing Sync Minimal
-Previous Boundary Index Version: 2026-06-09-b45
-Previous Last update log: Retention Line Progress Log + Boundary Index Sync Minimal
+Boundary Index Version: 2026-06-09-b47
+Last update log: Visual-Retention Link Progress Sync Minimal
+Previous Boundary Index Version: 2026-06-09-b46
+Previous Last update log: Retention Readback / Listing Sync Minimal
 Clean count at last update log reset: 0/5
 Current clean count: 0/5
 
@@ -114,6 +114,10 @@ Current clean count: 0/5
 - Forbidden: no automatic retention, four-layer memory, semantic/fuzzy/vector retrieval, lesson application, action selection influence, behavior change, predictor mutation, history runtime beyond append/load JSONL, or proof-of-learning claim.
 - Retention Readback/Listing milestone (2026-06-10): Retained Experience Readback Preview Minimal v0 and Retained Experience Listing CLI Minimal v0 completed. Mentor-gated retained JSONL records can be loaded back, shown as read-only previews, and listed read-only. Status: durable append/load/list path exists for exact mentor_text "留"; no production write CLI beyond approved retention path.
 - Forbidden: no automatic retention, four-layer memory, semantic/fuzzy/vector retrieval, lesson application, action selection influence, behavior change, predictor mutation, JSONL edit/delete during listing, or proof-of-learning claim.
+
+- Visual-Retention Link milestone (2026-06-10): Visual Experience Candidate, Simple Retina Focus Preview, Visual Trace as Lesson Evidence, and Visual + Retained Experience Link Preview completed. Status: trace-only/read-only bridge from visual evidence to retained experience by same_exact_key_only.
+- Safe claim: new visual evidence can preview-link to a retained experience candidate.
+- Forbidden: no object recognition, semantic vision, active focus, lesson application, action influence, behavior change, memory write, new retention write, semantic/fuzzy/vector retrieval, predictor mutation, or proof-of-learning claim.
 
 ## Current Claim Boundary
 - Can claim: Bounded local memory effect observed across 3 validated dead-end maps.
