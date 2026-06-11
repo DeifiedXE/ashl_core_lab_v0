@@ -1618,9 +1618,11 @@ Two-Trial History Boundary:
 
 - `docs/current_boundary_index.md`
 - Adds a short, versioned, low-token source of global hard boundaries for future work packages.
-- Current version: `Boundary Index Version: 2026-06-06-b30`.
-- Lists current global hard boundaries and deferred areas.
-- Compression patch keeps the version at b25 while aggregating repeated boundary lines to preserve room for future sync packages.
+- Current version: `Boundary Index Version: 2026-06-09-b50`.
+- Current index is compacted and should stay under 120 lines when possible.
+- Older milestone details are preserved in `docs/boundary_index_archive_2026_06.md`.
+- Compaction is docs-only and does not change runtime behavior or claim meaning.
+- Lists current global hard boundaries, latest safe/forbidden claims, archive links, and deferred areas.
 - Requires the file to be updated every time an Update Log is generated.
 - Does not add runtime behavior, modify existing design document content, or introduce new boundary design decisions.
 

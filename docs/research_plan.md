@@ -5506,3 +5506,14 @@ Next options:
 1. Visual Prediction Error + Attention Priority Preview Minimal v0
 2. Retained Experience Exact-Key Lookup Minimal v0
 3. Return to deeper retina/frame/focus improvements
+
+## Boundary Index Compaction / Archive v0
+
+Status: completed / docs-only / archive-only / no-runtime-change.
+
+Progress:
+- Compacted `docs/current_boundary_index.md` to Boundary Index Version: 2026-06-09-b50.
+- Added `docs/boundary_index_archive_2026_06.md` for older Boundary Index milestone details.
+- Preserved b49 Minimal Visual Grounding Trial v0 milestone and boundaries in the current compact index.
+- No runtime behavior changed.
+- No claim meaning changed; older details were archived only.

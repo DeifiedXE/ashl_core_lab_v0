@@ -9332,11 +9332,61 @@ def smoke_formal_lesson_candidate_creation_boundary_audit_docs() -> dict:
 
 def smoke_current_boundary_index_docs() -> dict:
     doc_path = Path("docs/current_boundary_index.md")
+    archive_path = Path("docs/boundary_index_archive_2026_06.md")
     readme_path = Path("README.md")
     research_plan_path = Path("docs/research_plan.md")
     doc = doc_path.read_text(encoding="utf-8") if doc_path.exists() else ""
+    archive = archive_path.read_text(encoding="utf-8") if archive_path.exists() else ""
     readme = readme_path.read_text(encoding="utf-8") if readme_path.exists() else ""
     research_plan = research_plan_path.read_text(encoding="utf-8") if research_plan_path.exists() else ""
+    compact_required_terms = [
+        "Boundary Index Version: 2026-06-09-b50",
+        "Last update log: Boundary Index Compaction / Archive v0",
+        "docs/boundary_index_archive_2026_06.md",
+        "Minimal Visual Grounding Trial v0",
+        "controlled symbolic visual change",
+        "human-readable grounding trial summary",
+        "same_exact_key_only",
+        "No object recognition.",
+        "No semantic vision or semantic labels.",
+        "No active_focus, focus_applied, or attention_control.",
+        "No automatic lesson candidate creation.",
+        "No runtime action selection influence.",
+        "No action behavior change.",
+        "No new retention write from visual snapshots or visual grounding trials.",
+        "No semantic / fuzzy / vector retrieval.",
+        "No predictor mutation.",
+        "No proof-of-learning claim.",
+        "`current_boundary_index.md` should stay <= 120 lines when possible.",
+        "Hard limit: <= 150 lines.",
+    ]
+    archive_required_terms = [
+        "# Boundary Index Archive 2026-06",
+        "archive-only",
+        "It does not introduce runtime behavior.",
+        "It does not change safe claims or forbidden claims.",
+        "Legacy / Dead-End Memory Milestones",
+        "Simulated Vision Grounding Milestone",
+        "Experience And Memory Milestones",
+        "Recent Visual-Retention Milestones",
+        "Minimal Visual Grounding Trial milestone",
+    ]
+    line_count = len(doc.splitlines()) if doc else 0
+    compact_passed = (
+        doc_path.exists()
+        and archive_path.exists()
+        and all(term in doc for term in compact_required_terms)
+        and all(term in archive for term in archive_required_terms)
+        and line_count <= 120
+        and "Boundary Index Version: 2026-06-09-b50" in readme
+        and "docs/boundary_index_archive_2026_06.md" in readme
+        and "Boundary Index Compaction / Archive v0" in research_plan
+    )
+    return _result(
+        "boundary_index_compaction_archive",
+        compact_passed,
+        {"doc": str(doc_path), "archive": str(archive_path), "line_count": line_count},
+    )
     required_terms = [
         "Boundary Index Version: 2026-06-06-b30",
         "Last update log: Batch 30",
