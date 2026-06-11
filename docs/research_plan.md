@@ -5691,3 +5691,12 @@ Progress:
 - Confirms memory_off_again returns exactly to the memory_off baseline after memory influence is disabled.
 - Confirms no dirty state or persistent influence is detected in the controlled runner.
 - Runtime tendency memory influence remains scores-only and does not select final_action, execute actions, create direct commands, change real navigation/UI behavior, write persistent policy, generalize behavior, apply lessons, mutate predictors, or prove learning.
+
+## Runtime Tendency Memory Influence Safety Envelope Minimal v0
+
+Status: completed / bounded-safety-envelope / no-production-action-selection.
+
+Progress:
+- Defines the safety envelope required before reversible runtime tendency memory influence can move toward any future action-selection-adjacent layer.
+- Requires controlled runner scope, same-state/same-candidate evaluation, exact-key memory signal only, max_absolute_delta <= 0.10, rollback verification, no dirty state, no persistent influence, mentor override availability, exploration allowance, audit trace, and no-final-action/no-execution gates.
+- Runtime action selection, final actions, action execution, direct commands, persistent policy writes, generalized behavior, lesson application, predictor mutation, and proof-of-learning claims remain blocked.

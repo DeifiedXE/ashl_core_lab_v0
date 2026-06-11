@@ -89,6 +89,9 @@ from ashl_core.runtime_action_tendency_memory_influence_ab_minimal import (
 from ashl_core.runtime_tendency_memory_influence_rollback_check_minimal import (
     run_runtime_tendency_memory_influence_rollback_check_minimal_check,
 )
+from ashl_core.runtime_tendency_memory_influence_safety_envelope_minimal import (
+    run_runtime_tendency_memory_influence_safety_envelope_minimal_check,
+)
 from ashl_core.minimal_visual_grounding_trial import run_minimal_visual_grounding_trial_check
 from ashl_core.visual_prediction_error_attention_priority_preview_minimal import (
     run_visual_prediction_error_attention_priority_preview_minimal_check,
@@ -4504,6 +4507,98 @@ def smoke_runtime_tendency_memory_influence_rollback_check_minimal() -> dict:
             "memory_on_scores": memory_on_scores,
             "memory_off_again_scores": memory_off_again_scores,
             "rollback_check": rollback_check,
+        },
+    )
+
+
+def smoke_runtime_tendency_memory_influence_safety_envelope_minimal() -> dict:
+    result = run_runtime_tendency_memory_influence_safety_envelope_minimal_check()
+    summary = result.get("summary", {})
+    boundary = result.get("boundary_check", {})
+    envelopes = result.get("runtime_tendency_memory_influence_safety_envelopes", [])
+    valid_envelope = envelopes[0] if envelopes else {}
+    scope = valid_envelope.get("scope", {})
+    limits = valid_envelope.get("limits", {})
+    guards = valid_envelope.get("required_guards", {})
+    allowed = valid_envelope.get("allowed_future_use", {})
+    passed = (
+        result.get("command") == "run-runtime-tendency-memory-influence-safety-envelope-minimal-check"
+        and result.get("flow") == "runtime_tendency_memory_influence_safety_envelope_minimal_v0"
+        and result.get("status") == "ok"
+        and summary.get("safety_envelope_count") == 44
+        and summary.get("valid_safety_envelope_count") == 1
+        and summary.get("invalid_safety_envelope_count") == 43
+        and summary.get("rollback_verified_count") == 1
+        and summary.get("dirty_state_absent_count") == 1
+        and summary.get("persistent_influence_absent_count") == 1
+        and summary.get("mentor_override_available_count") == 1
+        and summary.get("exploration_allowed_count") == 1
+        and summary.get("runtime_selection_blocked_count") == 1
+        and summary.get("final_action_blocked_count") == 1
+        and summary.get("action_execution_blocked_count") == 1
+        and summary.get("policy_write_blocked_count") == 1
+        and summary.get("max_absolute_delta_violation_blocked_count") == 1
+        and summary.get("production_action_selection_blocked_count") == 1
+        and summary.get("final_action_created_blocked_count") == 1
+        and summary.get("action_executed_blocked_count") == 1
+        and summary.get("direct_action_command_blocked_count") == 1
+        and summary.get("real_navigation_changed_blocked_count") == 1
+        and summary.get("ui_behavior_changed_blocked_count") == 1
+        and summary.get("persistent_policy_written_blocked_count") == 1
+        and summary.get("general_behavior_changed_blocked_count") == 1
+        and summary.get("dirty_state_allowed_blocked_count") == 1
+        and summary.get("persistent_influence_allowed_blocked_count") == 1
+        and summary.get("exploration_blocked_count") == 1
+        and summary.get("curiosity_overridden_blocked_count") == 1
+        and summary.get("mentor_override_blocked_count") == 1
+        and summary.get("lesson_applied_blocked_count") == 1
+        and summary.get("memory_write_blocked_count") == 1
+        and summary.get("new_retention_written_blocked_count") == 1
+        and summary.get("predictor_modified_blocked_count") == 1
+        and summary.get("proof_of_learning_claim_blocked_count") == 1
+        and scope.get("runtime_tendency_only") is True
+        and scope.get("controlled_runner_only") is True
+        and scope.get("same_state_same_candidates_required") is True
+        and scope.get("exact_key_memory_signal_only") is True
+        and scope.get("production_action_selection_allowed") is False
+        and limits.get("max_absolute_delta") == 0.10
+        and limits.get("one_step_evaluation_only") is True
+        and limits.get("no_persistent_influence") is True
+        and limits.get("rollback_required") is True
+        and guards.get("rollback_verified") is True
+        and guards.get("dirty_state_absent") is True
+        and guards.get("persistent_influence_absent") is True
+        and guards.get("mentor_override_available") is True
+        and guards.get("exploration_allowed") is True
+        and guards.get("audit_trace_required") is True
+        and guards.get("no_final_action_gate") is True
+        and guards.get("no_action_execution_gate") is True
+        and allowed.get("may_feed_pre_action_consideration_design") is True
+        and allowed.get("may_feed_runtime_action_selection") is False
+        and allowed.get("may_create_final_action") is False
+        and allowed.get("may_execute_action") is False
+        and allowed.get("may_write_policy") is False
+        and boundary.get("runtime_action_selection_added") is False
+        and boundary.get("final_action_creation_added") is False
+        and boundary.get("action_execution_added") is False
+        and boundary.get("direct_action_command_added") is False
+        and boundary.get("real_navigation_change_added") is False
+        and boundary.get("ui_behavior_change_added") is False
+        and boundary.get("persistent_policy_write_added") is False
+        and boundary.get("general_behavior_change_added") is False
+        and boundary.get("proof_of_learning_claimed") is False
+    )
+    return _result(
+        "runtime_tendency_memory_influence_safety_envelope_minimal",
+        passed,
+        {
+            "summary": summary,
+            "validation_results": result.get("validation_results", []),
+            "boundary": boundary,
+            "scope": scope,
+            "limits": limits,
+            "required_guards": guards,
+            "allowed_future_use": allowed,
         },
     )
 
@@ -12933,6 +13028,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_memory_influence_dry_run_contrast_minimal(),
         smoke_runtime_action_tendency_memory_influence_ab_minimal(),
         smoke_runtime_tendency_memory_influence_rollback_check_minimal(),
+        smoke_runtime_tendency_memory_influence_safety_envelope_minimal(),
         smoke_memory_influence_behavior_gate_design(),
         smoke_first_memory_influenced_behavior_boundary(),
         smoke_five_layer_memory_design_assumption(),

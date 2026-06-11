@@ -2555,3 +2555,7 @@ Two-Trial History Boundary:
 ## Runtime Tendency Memory Influence Rollback Check Minimal v0
 
 - Runtime Tendency Memory Influence Rollback Check Minimal v0 demonstrates that controlled runtime tendency memory influence is reversible: memory_off establishes baseline scores, memory_on changes scores, and memory_off_again returns to baseline. This confirms no dirty state or persistent influence in the controlled runner. It does not select final_action, execute actions, create direct commands, change real navigation/UI behavior, write persistent policy, generalize behavior, apply lessons, mutate predictors, or prove learning.
+
+## Runtime Tendency Memory Influence Safety Envelope Minimal v0
+
+- Runtime Tendency Memory Influence Safety Envelope Minimal v0 defines a bounded safety envelope for reversible runtime tendency memory influence. It requires controlled runner scope, same-state/same-candidate evaluation, exact-key memory signal only, max_absolute_delta <= 0.10, rollback verification, no dirty state, no persistent influence, mentor override availability, exploration allowance, audit trace, and no-final-action/no-execution gates. Runtime action selection, final actions, execution, direct commands, persistent policy writes, generalized behavior, lesson application, predictor mutation, and proof-of-learning claims remain blocked.
