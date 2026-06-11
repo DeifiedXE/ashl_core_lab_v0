@@ -2579,3 +2579,7 @@ Two-Trial History Boundary:
 ## Pre-Action Consideration Candidate Minimal v0
 
 - Pre-Action Consideration Candidate Minimal v0 converts bounded runtime tendency memory-influence deltas into pre-action consideration candidates. A candidate means an action deserves consideration before selection; it is not a final action, not action selection, not execution, not a direct command, and not generalized behavior.
+
+## Pre-Action Consideration Gate Check Minimal v0
+
+- Pre-Action Consideration Gate Check Minimal v0 gates bounded pre-action consideration candidates for action-selection-adjacent review only. Candidates may pass into review when they are exact-key sourced, positive-delta derived, safety-envelope covered, rollback verified, mentor-overridable, exploration-preserving, and audit-traced. Runtime action selection, final actions, action execution, direct commands, persistent policy, generalized behavior, lesson application, predictor mutation, and proof-of-learning claims remain blocked.

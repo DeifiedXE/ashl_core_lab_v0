@@ -5754,3 +5754,12 @@ Progress:
 - A candidate means an action deserves consideration before selection; it is not a final action, not action selection, not execution, not a direct command, and not generalized behavior.
 - Produces exact-key candidates for check_before_retry, slow_down_or_reduce_cost, and ask_for_help from the three controlled multi-scenario cases.
 - Production action selection, final_action, action execution, direct commands, persistent policy, generalized behavior, semantic/fuzzy matching, lesson application, predictor mutation, and proof-of-learning claims remain blocked.
+
+## Pre-Action Consideration Gate Check Minimal v0
+
+Status: completed / pre-action-gate-data-layer / action-selection-adjacent-review-only.
+
+Progress:
+- Gates bounded pre-action consideration candidates for action-selection-adjacent review only.
+- Requires exact-key sourcing, positive-delta derivation, safety-envelope coverage, rollback verification, mentor override availability, exploration preservation, audit trace, no-final-action gate, and no-action-execution gate.
+- Confirms check_before_retry, slow_down_or_reduce_cost, and ask_for_help candidates may pass to review while runtime action selection, final actions, action execution, direct commands, persistent policy, generalized behavior, lesson application, predictor mutation, and proof-of-learning claims remain blocked.
