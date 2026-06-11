@@ -2490,4 +2490,4 @@ Two-Trial History Boundary:
 
 ## Minimal Visual Grounding Trial v0
 
-- Minimal Visual Grounding Trial v0 runs a controlled symbolic visual change through the existing visual_experience_candidate → retina_focus_preview → visual_lesson_evidence_candidate → visual_retention_demo_snapshot path and produces a read-only human-readable trial summary. It does not add object recognition, semantic vision, active focus, lesson creation/application, action influence, memory write, new retention write, semantic/fuzzy/vector retrieval, predictor mutation, or proof-of-learning claims.
+- Minimal Visual Grounding Trial v0 runs a controlled symbolic visual change through the visual experience, focus preview, visual lesson evidence, and retained experience preview path, producing a read-only human-readable grounding trial summary. This remains trace/read-only and does not add object recognition, semantic vision, active focus, lesson application, action influence, memory write, new retention write, semantic/fuzzy/vector retrieval, predictor mutation, or proof of learning.

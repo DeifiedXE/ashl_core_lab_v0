@@ -1,7 +1,7 @@
-Boundary Index Version: 2026-06-09-b48
-Last update log: Visual-Retention Snapshot Boundary Index Sync Minimal
-Previous Boundary Index Version: 2026-06-09-b47
-Previous Last update log: Visual-Retention Link Progress Sync Minimal
+Boundary Index Version: 2026-06-09-b49
+Last update log: Minimal Visual Grounding Trial Sync Minimal
+Previous Boundary Index Version: 2026-06-09-b48
+Previous Last update log: Visual-Retention Snapshot Boundary Index Sync Minimal
 Clean count at last update log reset: 0/5
 Current clean count: 0/5
 
@@ -115,8 +115,9 @@ Current clean count: 0/5
 - Retention Readback/Listing milestone (2026-06-10): Retained Experience Readback Preview Minimal v0 and Retained Experience Listing CLI Minimal v0 completed. Mentor-gated retained JSONL records can be loaded back, shown as read-only previews, and listed read-only. Status: durable append/load/list path exists for exact mentor_text "留"; no production write CLI beyond approved retention path.
 - Forbidden: no automatic retention, four-layer memory, semantic/fuzzy/vector retrieval, lesson application, action selection influence, behavior change, predictor mutation, JSONL edit/delete during listing, or proof-of-learning claim.
 
-- Visual-Retention Snapshot milestone (2026-06-10): Visual-Retention Demo Snapshot Minimal v0 completed; visual change -> focus preview -> visual lesson evidence -> retained experience link preview -> demo snapshot is read-only/human-inspection-only.
-- Safe claim: a visual frame-level change can be preview-linked to a retained experience by same_exact_key_only and displayed for human inspection.
+- Visual-Retention Snapshot milestone (2026-06-10): Visual-Retention Demo Snapshot Minimal v0 completed; visual change -> focus preview -> visual lesson evidence -> retained experience link preview -> demo snapshot is read-only/human-inspection-only; exact-key preview only; no object/semantic vision, active focus, lesson/action influence, memory/new retention write, retrieval expansion, predictor mutation, or proof claim.
+- Minimal Visual Grounding Trial milestone (2026-06-10): Minimal Visual Grounding Trial v0 completed; controlled symbolic visual change -> visual_experience_candidate -> retina_focus_preview -> visual_lesson_evidence_candidate -> visual_retention_demo_snapshot -> human-readable grounding trial summary.
+- Safe claim: trace/read-only visual grounding can show what changed, what focus preview points to, what evidence says, and whether retained experience matched by same_exact_key_only.
 - Forbidden: no object recognition, semantic vision, active focus, lesson application, action influence, behavior change, memory write, new retention write, semantic/fuzzy/vector retrieval, predictor mutation, or proof-of-learning claim.
 
 ## Current Claim Boundary

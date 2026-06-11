@@ -5475,16 +5475,23 @@ Progress:
 - Visual-retention links are preview-only and must not influence action selection or behavior.
 
 Next options:
-1. Minimal Visual Grounding Trial v0
-2. Prediction-Error Attention Preview Minimal v0
-3. Return to deeper retina/frame/focus improvements
+1. Visual Prediction Error + Attention Priority Preview Minimal v0
+2. Retained Experience Exact-Key Lookup Minimal v0
+3. Deeper retina/frame/focus improvements
 
 ## Minimal Visual Grounding Trial v0
 
 Status: completed / read-only-trial-summary / no-runtime-change.
 
 Progress:
-- Minimal Visual Grounding Trial v0 runs a controlled symbolic visual change through the existing visual_experience_candidate -> retina_focus_preview -> visual_lesson_evidence_candidate -> visual_retention_demo_snapshot path and produces a read-only human-readable trial summary. It does not add object recognition, semantic vision, active focus, lesson creation/application, action influence, memory write, new retention write, semantic/fuzzy/vector retrieval, predictor mutation, or proof-of-learning claims.
+- Completed: Minimal Visual Grounding Trial v0.
+- The eye line now has a controlled symbolic visual grounding trial with human-readable summary.
+- Visual grounding trials are inspection only and must not influence action selection or behavior.
+
+Next options:
+1. Visual Prediction Error + Attention Priority Preview Minimal v0
+2. Retained Experience Exact-Key Lookup Minimal v0
+3. Deeper retina/frame/focus improvements
 
 ## Visual-Retention Demo Snapshot Minimal v0
 
@@ -5496,6 +5503,6 @@ Progress:
 - Visual-retention snapshots are inspection only and must not influence action selection or behavior.
 
 Next options:
-1. Minimal Visual Grounding Trial v0
-2. Prediction-Error Attention Preview Minimal v0
+1. Visual Prediction Error + Attention Priority Preview Minimal v0
+2. Retained Experience Exact-Key Lookup Minimal v0
 3. Return to deeper retina/frame/focus improvements
