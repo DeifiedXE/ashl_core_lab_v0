@@ -83,6 +83,9 @@ from ashl_core.memory_influenced_action_tendency_preview_minimal import (
 from ashl_core.memory_influence_dry_run_contrast_minimal import (
     run_memory_influence_dry_run_contrast_minimal_check,
 )
+from ashl_core.runtime_action_tendency_memory_influence_ab_minimal import (
+    run_runtime_action_tendency_memory_influence_ab_minimal_check,
+)
 from ashl_core.minimal_visual_grounding_trial import run_minimal_visual_grounding_trial_check
 from ashl_core.visual_prediction_error_attention_priority_preview_minimal import (
     run_visual_prediction_error_attention_priority_preview_minimal_check,
@@ -4307,6 +4310,93 @@ def smoke_memory_influence_dry_run_contrast_minimal() -> dict:
             "first_contrast_keys": sorted(contrasts[0].keys()) if contrasts else [],
             "valid_human_summaries": result.get("valid_human_summaries", []),
             "boundary": boundary,
+        },
+    )
+
+
+def smoke_runtime_action_tendency_memory_influence_ab_minimal() -> dict:
+    result = run_runtime_action_tendency_memory_influence_ab_minimal_check()
+    summary = result.get("summary", {})
+    boundary = result.get("boundary_check", {})
+    ab_results = result.get("runtime_action_tendency_memory_influence_ab_results", [])
+    valid_result = ab_results[0] if ab_results else {}
+    memory_off_scores = valid_result.get("memory_off_result", {}).get("scores", {})
+    memory_on_scores = valid_result.get("memory_on_result", {}).get("scores", {})
+    score_deltas = valid_result.get("score_deltas", {})
+    passed = (
+        result.get("command") == "run-runtime-action-tendency-memory-influence-ab-minimal-check"
+        and result.get("flow") == "runtime_action_tendency_memory_influence_ab_minimal_v0"
+        and result.get("status") == "ok"
+        and summary.get("runtime_tendency_ab_result_count") == 28
+        and summary.get("valid_runtime_tendency_ab_result_count") == 1
+        and summary.get("invalid_runtime_tendency_ab_result_count") == 27
+        and summary.get("runtime_tendency_changed_count") == 1
+        and summary.get("same_runner_violation_blocked_count") == 1
+        and summary.get("same_state_violation_blocked_count") == 1
+        and summary.get("same_candidate_actions_violation_blocked_count") == 1
+        and summary.get("memory_off_enabled_violation_blocked_count") == 1
+        and summary.get("memory_on_disabled_violation_blocked_count") == 1
+        and summary.get("wrong_check_before_retry_delta_blocked_count") == 1
+        and summary.get("wrong_retry_same_action_delta_blocked_count") == 1
+        and summary.get("runtime_tendency_changed_false_blocked_count") == 1
+        and summary.get("final_action_selected_blocked_count") == 1
+        and summary.get("action_executed_blocked_count") == 2
+        and summary.get("direct_command_created_blocked_count") == 1
+        and summary.get("real_behavior_changed_blocked_count") == 1
+        and summary.get("final_action_created_blocked_count") == 1
+        and summary.get("direct_action_command_blocked_count") == 1
+        and summary.get("real_navigation_changed_blocked_count") == 1
+        and summary.get("ui_behavior_changed_blocked_count") == 1
+        and summary.get("persistent_policy_written_blocked_count") == 1
+        and summary.get("general_behavior_changed_blocked_count") == 1
+        and summary.get("exploration_blocked_count") == 1
+        and summary.get("curiosity_overridden_blocked_count") == 1
+        and summary.get("mentor_override_blocked_count") == 1
+        and summary.get("lesson_applied_blocked_count") == 1
+        and summary.get("memory_write_blocked_count") == 1
+        and summary.get("new_retention_written_blocked_count") == 1
+        and summary.get("predictor_modified_blocked_count") == 1
+        and summary.get("proof_of_learning_claim_blocked_count") == 1
+        and memory_off_scores.get("retry_same_action") == 0.50
+        and memory_off_scores.get("check_before_retry") == 0.50
+        and memory_off_scores.get("ask_for_help") == 0.20
+        and memory_off_scores.get("slow_down_or_reduce_cost") == 0.30
+        and memory_on_scores.get("retry_same_action") == 0.45
+        and memory_on_scores.get("check_before_retry") == 0.60
+        and memory_on_scores.get("ask_for_help") == 0.20
+        and memory_on_scores.get("slow_down_or_reduce_cost") == 0.30
+        and score_deltas.get("retry_same_action") == -0.05
+        and score_deltas.get("check_before_retry") == 0.10
+        and score_deltas.get("ask_for_help") == 0.00
+        and score_deltas.get("slow_down_or_reduce_cost") == 0.00
+        and boundary.get("same_runner_used") is True
+        and boundary.get("same_state_used") is True
+        and boundary.get("same_candidate_actions_used") is True
+        and boundary.get("memory_influence_changes_runtime_tendency_scores") is True
+        and boundary.get("runtime_tendency_scores_only") is True
+        and boundary.get("final_action_creation_added") is False
+        and boundary.get("action_execution_added") is False
+        and boundary.get("direct_action_command_added") is False
+        and boundary.get("real_navigation_change_added") is False
+        and boundary.get("ui_behavior_change_added") is False
+        and boundary.get("persistent_policy_write_added") is False
+        and boundary.get("general_behavior_change_added") is False
+        and boundary.get("lesson_application_added") is False
+        and boundary.get("memory_write_added") is False
+        and boundary.get("new_retention_write_added") is False
+        and boundary.get("predictor_mutation_added") is False
+        and boundary.get("proof_of_learning_claimed") is False
+    )
+    return _result(
+        "runtime_action_tendency_memory_influence_ab_minimal",
+        passed,
+        {
+            "summary": summary,
+            "validation_results": result.get("validation_results", []),
+            "boundary": boundary,
+            "memory_off_scores": memory_off_scores,
+            "memory_on_scores": memory_on_scores,
+            "score_deltas": score_deltas,
         },
     )
 
@@ -12730,6 +12820,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_memory_influence_candidate_preview_minimal(),
         smoke_memory_influenced_action_tendency_preview_minimal(),
         smoke_memory_influence_dry_run_contrast_minimal(),
+        smoke_runtime_action_tendency_memory_influence_ab_minimal(),
         smoke_memory_influence_behavior_gate_design(),
         smoke_first_memory_influenced_behavior_boundary(),
         smoke_five_layer_memory_design_assumption(),

@@ -2541,3 +2541,9 @@ Two-Trial History Boundary:
 ## Memory Influence Behavior Gate Design Minimal v0
 
 - Memory Influence Behavior Gate Design Minimal v0 defines the future high-risk gate between memory dry-run contrast evidence and any pre-action consideration layer. The gate is not an action selector, final_action generator, or direct command layer. Runtime action selection and final actions remain blocked.
+
+## Runtime Action Tendency Memory Influence A/B Minimal v0
+
+- Adds `py -3 -m ashl_core.teaching_cli run-runtime-action-tendency-memory-influence-ab-minimal-check`.
+- Demonstrates that the same controlled runtime tendency runner, with the same state and candidate actions, produces different action tendency scores when memory influence is enabled.
+- This changes runtime tendency scores only; it does not select `final_action`, execute actions, create direct commands, change real navigation/UI behavior, write persistent policy, generalize behavior, apply lessons, mutate predictors, or prove learning.

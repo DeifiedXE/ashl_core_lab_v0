@@ -5655,3 +5655,14 @@ Progress:
 - The behavior gate is not an action selector, final_action generator, or direct command layer.
 - Required gate conditions preserve preview-only upstream records, bounded influence, mentor override, exploration, rollback, and audit.
 - Runtime action selection and final actions remain blocked.
+
+## Runtime Action Tendency Memory Influence A/B Minimal v0
+
+Status: completed / controlled-runtime-tendency-ab / scores-only / no-action-selection.
+
+Progress:
+- Uses the same deterministic runtime tendency runner for memory_off and memory_on.
+- Uses the same state and same candidate actions.
+- Demonstrates that memory_on changes check_before_retry from 0.50 to 0.60 and retry_same_action from 0.50 to 0.45.
+- Confirms ask_for_help and slow_down_or_reduce_cost remain unchanged.
+- This changes runtime tendency scores only; it does not select final_action, execute actions, create direct commands, change real navigation/UI behavior, write persistent policy, generalize behavior, apply lessons, mutate predictors, or prove learning.
