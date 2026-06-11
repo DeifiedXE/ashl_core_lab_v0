@@ -92,6 +92,9 @@ from ashl_core.runtime_tendency_memory_influence_rollback_check_minimal import (
 from ashl_core.runtime_tendency_memory_influence_safety_envelope_minimal import (
     run_runtime_tendency_memory_influence_safety_envelope_minimal_check,
 )
+from ashl_core.runtime_tendency_mentor_override_check_minimal import (
+    run_runtime_tendency_mentor_override_check_minimal_check,
+)
 from ashl_core.minimal_visual_grounding_trial import run_minimal_visual_grounding_trial_check
 from ashl_core.visual_prediction_error_attention_priority_preview_minimal import (
     run_visual_prediction_error_attention_priority_preview_minimal_check,
@@ -10391,6 +10394,95 @@ def smoke_current_boundary_index_docs() -> dict:
     )
 
 
+def smoke_runtime_tendency_mentor_override_check_minimal() -> dict:
+    result = run_runtime_tendency_mentor_override_check_minimal_check()
+    summary = result.get("summary", {})
+    boundary = result.get("boundary_check", {})
+    records = result.get("runtime_tendency_mentor_override_results", [])
+    valid_result = records[0] if records else {}
+    sequence = valid_result.get("sequence", {})
+    memory_off_scores = sequence.get("memory_off", {}).get("scores", {})
+    memory_on_scores = sequence.get("memory_on", {}).get("scores", {})
+    override_scores = sequence.get("memory_on_with_mentor_override", {}).get("scores", {})
+    check = valid_result.get("mentor_override_check", {})
+    passed = (
+        result.get("command") == "run-runtime-tendency-mentor-override-check-minimal-check"
+        and result.get("flow") == "runtime_tendency_mentor_override_check_minimal_v0"
+        and result.get("status") == "ok"
+        and summary.get("mentor_override_result_count") == 31
+        and summary.get("valid_mentor_override_result_count") == 1
+        and summary.get("invalid_mentor_override_result_count") == 30
+        and summary.get("memory_on_changed_scores_count") == 1
+        and summary.get("mentor_override_suppressed_memory_influence_count") == 1
+        and summary.get("override_result_matches_baseline_count") == 1
+        and summary.get("mentor_override_available_count") == 1
+        and summary.get("same_runner_violation_blocked_count") == 1
+        and summary.get("same_state_violation_blocked_count") == 1
+        and summary.get("same_candidate_actions_violation_blocked_count") == 1
+        and summary.get("memory_off_enabled_violation_blocked_count") == 1
+        and summary.get("memory_on_disabled_violation_blocked_count") == 1
+        and summary.get("override_memory_enabled_false_blocked_count") == 1
+        and summary.get("override_inactive_blocked_count") == 1
+        and summary.get("memory_on_no_change_blocked_count") == 1
+        and summary.get("override_not_suppressed_blocked_count") == 1
+        and summary.get("override_baseline_mismatch_blocked_count") == 1
+        and summary.get("mentor_override_unavailable_blocked_count") == 1
+        and summary.get("safe_to_continue_false_blocked_count") == 1
+        and summary.get("empty_override_summary_blocked_count") == 1
+        and summary.get("empty_plain_result_blocked_count") == 1
+        and summary.get("production_action_selection_blocked_count") == 1
+        and summary.get("final_action_created_blocked_count") == 1
+        and summary.get("action_executed_blocked_count") == 1
+        and summary.get("direct_action_command_blocked_count") == 1
+        and summary.get("real_navigation_changed_blocked_count") == 1
+        and summary.get("ui_behavior_changed_blocked_count") == 1
+        and summary.get("persistent_policy_written_blocked_count") == 1
+        and summary.get("general_behavior_changed_blocked_count") == 1
+        and summary.get("exploration_blocked_count") == 1
+        and summary.get("curiosity_overridden_blocked_count") == 1
+        and summary.get("mentor_override_blocked_count") == 1
+        and summary.get("lesson_applied_blocked_count") == 1
+        and summary.get("memory_write_blocked_count") == 1
+        and summary.get("new_retention_written_blocked_count") == 1
+        and summary.get("predictor_modified_blocked_count") == 1
+        and summary.get("proof_of_learning_claim_blocked_count") == 1
+        and memory_off_scores.get("retry_same_action") == 0.50
+        and memory_off_scores.get("check_before_retry") == 0.50
+        and memory_on_scores.get("retry_same_action") == 0.45
+        and memory_on_scores.get("check_before_retry") == 0.60
+        and override_scores == memory_off_scores
+        and check.get("memory_on_changed_scores") is True
+        and check.get("mentor_override_suppressed_memory_influence") is True
+        and check.get("override_result_matches_baseline") is True
+        and check.get("mentor_override_available") is True
+        and check.get("safe_to_continue_to_multi_scenario_check") is True
+        and boundary.get("mentor_override_suppresses_memory_influence") is True
+        and boundary.get("override_result_matches_baseline") is True
+        and boundary.get("production_action_selection_added") is False
+        and boundary.get("final_action_creation_added") is False
+        and boundary.get("action_execution_added") is False
+        and boundary.get("direct_action_command_added") is False
+        and boundary.get("real_navigation_change_added") is False
+        and boundary.get("ui_behavior_change_added") is False
+        and boundary.get("persistent_policy_write_added") is False
+        and boundary.get("general_behavior_change_added") is False
+        and boundary.get("proof_of_learning_claimed") is False
+    )
+    return _result(
+        "runtime_tendency_mentor_override_check_minimal",
+        passed,
+        {
+            "summary": summary,
+            "validation_results": result.get("validation_results", []),
+            "boundary": boundary,
+            "memory_off_scores": memory_off_scores,
+            "memory_on_scores": memory_on_scores,
+            "override_scores": override_scores,
+            "mentor_override_check": check,
+        },
+    )
+
+
 def smoke_phase0_current_capability_snapshot() -> dict:
     doc_path = Path("docs/phase0_current_capability_snapshot_2026-06-10.md")
     doc = doc_path.read_text(encoding="utf-8") if doc_path.exists() else ""
@@ -13068,6 +13160,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_runtime_action_tendency_memory_influence_ab_minimal(),
         smoke_runtime_tendency_memory_influence_rollback_check_minimal(),
         smoke_runtime_tendency_memory_influence_safety_envelope_minimal(),
+        smoke_runtime_tendency_mentor_override_check_minimal(),
         smoke_phase0_current_capability_snapshot(),
         smoke_memory_influence_behavior_gate_design(),
         smoke_first_memory_influenced_behavior_boundary(),

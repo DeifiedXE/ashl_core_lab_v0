@@ -67,6 +67,9 @@ from .runtime_tendency_memory_influence_rollback_check_minimal import (
 from .runtime_tendency_memory_influence_safety_envelope_minimal import (
     run_runtime_tendency_memory_influence_safety_envelope_minimal_check,
 )
+from .runtime_tendency_mentor_override_check_minimal import (
+    run_runtime_tendency_mentor_override_check_minimal_check,
+)
 from .reviewed_lesson_dry_run_correction_minimal import (
     run_reviewed_lesson_dry_run_correction_minimal_check,
 )
@@ -3575,6 +3578,8 @@ def run_command(command: str) -> dict[str, Any] | str:
         return run_runtime_tendency_memory_influence_rollback_check_minimal_check()
     if command == "run-runtime-tendency-memory-influence-safety-envelope-minimal-check":
         return run_runtime_tendency_memory_influence_safety_envelope_minimal_check()
+    if command == "run-runtime-tendency-mentor-override-check-minimal-check":
+        return run_runtime_tendency_mentor_override_check_minimal_check()
     if command == "run-simple-retina-focus-preview-minimal-check":
         return run_simple_retina_focus_preview_minimal_check()
     if command == "run-generalized-prediction-confidence-check":
@@ -3733,6 +3738,7 @@ def main(argv: list[str] | None = None) -> int:
             "run-runtime-action-tendency-memory-influence-ab-minimal-check",
             "run-runtime-tendency-memory-influence-rollback-check-minimal-check",
             "run-runtime-tendency-memory-influence-safety-envelope-minimal-check",
+            "run-runtime-tendency-mentor-override-check-minimal-check",
             "run-simple-retina-focus-preview-minimal-check",
             "run-generalized-prediction-confidence-check",
             "run-generalized-candidate-from-pattern-check",
@@ -4018,6 +4024,8 @@ def main(argv: list[str] | None = None) -> int:
         result = run_runtime_tendency_memory_influence_rollback_check_minimal_check()
     elif args.command == "run-runtime-tendency-memory-influence-safety-envelope-minimal-check":
         result = run_runtime_tendency_memory_influence_safety_envelope_minimal_check()
+    elif args.command == "run-runtime-tendency-mentor-override-check-minimal-check":
+        result = run_runtime_tendency_mentor_override_check_minimal_check()
     elif args.command == "run-simple-retina-focus-preview-minimal-check":
         result = run_simple_retina_focus_preview_minimal_check()
     elif args.command == "run-generalized-prediction-confidence-check":
