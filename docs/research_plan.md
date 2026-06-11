@@ -5621,3 +5621,13 @@ Progress:
 - Supports increase and decrease tendency previews with bounded baseline_score, memory_delta, and preview_score.
 - Memory can tilt a previewed tendency, but cannot choose an action.
 - Does not create final actions, direct commands, runtime action selection, behavior change, exploration blocking, curiosity override, mentor override blocking, lesson application, memory writes, new retention, predictor mutation, or proof-of-learning claims.
+
+## Memory Influence Dry-Run Contrast Minimal v0
+
+Status: completed / trace-level-dry-run-contrast / no-runtime-behavior-change.
+
+Progress:
+- Compares baseline and memory-influenced action tendency previews.
+- Produces trace-level contrast evidence with baseline_score, memory_influenced_score, delta, direction, and visible_tendency_difference.
+- Supports increase, decrease, and none contrast cases.
+- Does not create final actions, direct commands, runtime action selection, action influence, behavior change, exploration blocking, curiosity override, mentor override blocking, lesson application, memory writes, new retention, predictor mutation, or proof-of-learning claims.

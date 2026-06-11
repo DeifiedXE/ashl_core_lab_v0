@@ -2529,3 +2529,7 @@ Two-Trial History Boundary:
 ## Memory-Influenced Action Tendency Preview Minimal v0
 
 - Memory-Influenced Action Tendency Preview Minimal v0 converts preview-only memory influence candidates into bounded before/after action tendency previews. Memory can tilt a previewed tendency, but cannot create final actions, direct commands, runtime action selection, behavior change, exploration blocking, curiosity override, mentor override blocking, lesson application, memory writes, new retention, predictor mutation, or proof-of-learning claims.
+
+## Memory Influence Dry-Run Contrast Minimal v0
+
+- Memory Influence Dry-Run Contrast Minimal v0 compares baseline and memory-influenced action tendency previews, producing trace-level contrast evidence only. It does not create final actions, direct commands, runtime action selection, action influence, behavior change, exploration blocking, curiosity override, mentor override blocking, lesson application, memory writes, new retention, predictor mutation, or proof-of-learning claims.
