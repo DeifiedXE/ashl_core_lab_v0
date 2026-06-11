@@ -2505,3 +2505,7 @@ Two-Trial History Boundary:
 ## Five-Layer Memory Framework Boundary Minimal v0
 
 - Five-Layer Memory Framework Boundary Minimal v0 defines current and future boundaries for Core Memory, Long-term Memory, Working Memory, Archive Memory, and Anchor Layer. Current prototypes cover Core Seed assumptions, mentor-gated JSONL retention, and session working memory only. Archive Memory, Anchor Layer, five-layer runtime, semantic retrieval, anchor lookup, and memory-influenced behavior are not implemented.
+
+## Retained Experience Exact-Key Lookup Minimal v0
+
+- Retained Experience Exact-Key Lookup Minimal v0 adds read-only same_exact_key_only lookup over mentor-gated retained JSONL records. It supports matched and not_matched previews without JSONL mutation, semantic/fuzzy/vector retrieval, dry-run injection, lesson application, action influence, behavior change, new retention writes, predictor mutation, or proof-of-learning claims.

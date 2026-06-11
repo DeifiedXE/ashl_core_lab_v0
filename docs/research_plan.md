@@ -5553,3 +5553,13 @@ Progress:
 - Current prototypes cover Core Seed assumptions, mentor-gated JSONL retention, and session working memory only.
 - Archive Memory, Anchor Layer, five-layer runtime, semantic retrieval, anchor lookup, and memory-influenced behavior are not implemented.
 - Next roadmap remains retained exact-key lookup, retained experience into dry-run, then first memory-influenced behavior boundary review.
+
+## Retained Experience Exact-Key Lookup Minimal v0
+
+Status: completed / read-only-lookup / no-runtime-behavior-change.
+
+Progress:
+- Adds read-only same_exact_key_only lookup over mentor-gated retained JSONL records.
+- Supports matched and not_matched retained_exact_key_lookup_preview records.
+- Does not mutate JSONL, add semantic/fuzzy/vector retrieval, inject retained records into dry-run, apply lessons, influence action, change behavior, write memory, add new retention, mutate predictors, or claim proof of learning.
+- Next roadmap remains Retained Experience Into Dry-Run Minimal v0, then First Memory-Influenced Behavior Boundary / Minimal v0.

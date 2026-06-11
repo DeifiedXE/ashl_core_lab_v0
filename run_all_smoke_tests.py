@@ -87,6 +87,9 @@ from ashl_core.retained_experience_readback_preview_minimal import (
 from ashl_core.retained_experience_listing_cli_minimal import (
     run_retained_experience_listing_cli_minimal_check,
 )
+from ashl_core.retained_experience_exact_key_lookup_minimal import (
+    run_retained_experience_exact_key_lookup_minimal_check,
+)
 from ashl_core.reviewed_lesson_dry_run_correction_minimal import (
     run_reviewed_lesson_dry_run_correction_minimal_check,
 )
@@ -3829,6 +3832,103 @@ def smoke_retained_experience_listing_cli_minimal() -> dict:
             "first_listing_keys": sorted(listings[0].keys()) if listings else [],
             "boundary": boundary,
             "readback_preview_validation": readback_validation,
+        },
+    )
+
+
+def smoke_retained_experience_exact_key_lookup_minimal() -> dict:
+    result = run_retained_experience_exact_key_lookup_minimal_check()
+    summary = result.get("summary", {})
+    boundary = result.get("boundary_check", {})
+    lookups = result.get("retained_exact_key_lookup_previews", [])
+    passed = (
+        result.get("command") == "run-retained-experience-exact-key-lookup-minimal-check"
+        and result.get("flow") == "retained_experience_exact_key_lookup_minimal_v0"
+        and result.get("status") == "ok"
+        and summary.get("lookup_preview_count") == 20
+        and summary.get("valid_lookup_preview_count") == 2
+        and summary.get("invalid_lookup_preview_count") == 18
+        and summary.get("matched_lookup_count") == 1
+        and summary.get("not_matched_lookup_count") == 1
+        and summary.get("retained_record_source_count") == 1
+        and summary.get("empty_query_exact_key_blocked_count") == 1
+        and summary.get("match_rule_blocked_count") == 1
+        and summary.get("read_only_false_blocked_count") == 1
+        and summary.get("matched_count_mismatch_blocked_count") == 1
+        and summary.get("jsonl_append_blocked_count") == 1
+        and summary.get("jsonl_edit_blocked_count") == 1
+        and summary.get("jsonl_delete_blocked_count") == 1
+        and summary.get("semantic_match_blocked_count") == 1
+        and summary.get("fuzzy_match_blocked_count") == 1
+        and summary.get("vector_match_blocked_count") == 1
+        and summary.get("dry_run_injection_blocked_count") == 1
+        and summary.get("lesson_applied_blocked_count") == 1
+        and summary.get("action_selection_influence_blocked_count") == 1
+        and summary.get("action_behavior_changed_blocked_count") == 1
+        and summary.get("memory_write_blocked_count") == 1
+        and summary.get("new_retention_written_blocked_count") == 1
+        and summary.get("predictor_modified_blocked_count") == 1
+        and summary.get("proof_of_learning_claim_blocked_count") == 1
+        and summary.get("jsonl_append_count") == 0
+        and summary.get("jsonl_edit_count") == 0
+        and summary.get("jsonl_delete_count") == 0
+        and summary.get("semantic_match_count") == 0
+        and summary.get("fuzzy_match_count") == 0
+        and summary.get("vector_match_count") == 0
+        and summary.get("dry_run_injection_count") == 0
+        and summary.get("lesson_applied_count") == 0
+        and summary.get("action_selection_influence_count") == 0
+        and summary.get("action_behavior_changed_count") == 0
+        and summary.get("memory_write_count") == 0
+        and summary.get("new_retention_written_count") == 0
+        and summary.get("predictor_modified_count") == 0
+        and summary.get("proof_of_learning_claim_count") == 0
+        and summary.get("retained_jsonl_record_written_count") == 1
+        and summary.get("lookup_mutated_jsonl") is False
+        and lookups
+        and set(lookups[0].keys())
+        == {
+            "lookup_preview_id",
+            "query_exact_key",
+            "match_rule",
+            "read_only",
+            "match_result",
+            "human_summary",
+            "blocked_flags",
+        }
+        and boundary.get("read_only") is True
+        and boundary.get("same_exact_key_only") is True
+        and boundary.get("minimal_record_shape") is True
+        and boundary.get("top_level_field_count") == 7
+        and boundary.get("uses_mentor_gated_experience_retention_minimal") is True
+        and boundary.get("uses_retained_experience_listing_cli_minimal") is True
+        and boundary.get("temp_jsonl_check_only") is True
+        and boundary.get("production_write_cli_added") is False
+        and boundary.get("production_lookup_cli_added") is False
+        and boundary.get("jsonl_append_added_by_lookup") is False
+        and boundary.get("jsonl_edit_added_by_lookup") is False
+        and boundary.get("jsonl_delete_added_by_lookup") is False
+        and boundary.get("semantic_retrieval_added") is False
+        and boundary.get("fuzzy_retrieval_added") is False
+        and boundary.get("vector_retrieval_added") is False
+        and boundary.get("dry_run_injection_added") is False
+        and boundary.get("lesson_application_added") is False
+        and boundary.get("runtime_action_selection_added") is False
+        and boundary.get("action_behavior_change_added") is False
+        and boundary.get("memory_write_added") is False
+        and boundary.get("new_retention_write_added") is False
+        and boundary.get("predictor_mutation_added") is False
+        and boundary.get("proof_of_learning_claimed") is False
+        and boundary.get("lookup_mutated_jsonl") is False
+    )
+    return _result(
+        "retained_experience_exact_key_lookup_minimal",
+        passed,
+        {
+            "summary": summary,
+            "first_lookup_keys": sorted(lookups[0].keys()) if lookups else [],
+            "valid_human_summaries": result.get("valid_human_summaries", []),
+            "boundary": boundary,
         },
     )
 
@@ -12154,6 +12254,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_mentor_gated_experience_retention_minimal(),
         smoke_retained_experience_readback_preview_minimal(),
         smoke_retained_experience_listing_cli_minimal(),
+        smoke_retained_experience_exact_key_lookup_minimal(),
         smoke_five_layer_memory_design_assumption(),
         smoke_five_layer_memory_framework_boundary(),
         smoke_history_runtime_persistence_gap_review(),
