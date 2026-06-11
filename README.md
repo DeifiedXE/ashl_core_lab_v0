@@ -2571,3 +2571,7 @@ Two-Trial History Boundary:
 ## Runtime Tendency Mentor Override Check Minimal v0
 
 - Runtime Tendency Mentor Override Check Minimal v0 demonstrates that mentor override can suppress controlled runtime tendency memory influence: memory_on changes scores, while memory_on with a valid disable-memory-influence override returns to the memory_off baseline. This confirms mentor override availability before any action-selection-adjacent integration. It does not select final_action, execute actions, create direct commands, change real navigation/UI behavior, write persistent policy, generalize behavior, apply lessons, mutate predictors, or prove learning.
+
+## Runtime Tendency Memory Influence Multi-Scenario Check Minimal v0
+
+- Runtime Tendency Memory Influence Multi-Scenario Check Minimal v0 verifies that controlled runtime tendency memory influence is not limited to one obstacle case. Across three exact-key scenarios, retained memory shifts bounded runtime tendency scores while staying within max_absolute_delta <= 0.10 and preserving rollback readiness, mentor override readiness, exact-key-only matching, no-final-action, no-execution, and no-production-action-selection boundaries.

@@ -5733,3 +5733,14 @@ Progress:
 - Demonstrates that memory_on changes scores, while memory_on with a valid disable-memory-influence mentor override returns to the memory_off baseline.
 - Confirms mentor override availability before any action-selection-adjacent integration.
 - This remains controlled runtime tendency evidence only and does not select final_action, execute actions, create direct commands, change real navigation/UI behavior, write persistent policy, generalize behavior, apply lessons, mutate predictors, or prove learning.
+
+## Runtime Tendency Memory Influence Multi-Scenario Check Minimal v0
+
+Status: completed / controlled-multi-scenario-check / no-production-action-selection.
+
+Progress:
+- Tests controlled runtime tendency memory influence across three exact-key scenarios using the same candidate action set.
+- Confirms obstacle_retry_failed shifts check_before_retry +0.10 and retry_same_action -0.05.
+- Confirms costly_retry_failed shifts slow_down_or_reduce_cost +0.10 and retry_same_action -0.05.
+- Confirms unclear_failure_repeated shifts ask_for_help +0.10 and retry_same_action -0.05.
+- All scenarios remain within max_absolute_delta <= 0.10 and preserve rollback readiness, mentor override readiness, exact-key-only matching, no-final-action, no-execution, and no-production-action-selection boundaries.

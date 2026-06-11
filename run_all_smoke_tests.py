@@ -95,6 +95,9 @@ from ashl_core.runtime_tendency_memory_influence_safety_envelope_minimal import 
 from ashl_core.runtime_tendency_mentor_override_check_minimal import (
     run_runtime_tendency_mentor_override_check_minimal_check,
 )
+from ashl_core.runtime_tendency_memory_influence_multi_scenario_check_minimal import (
+    run_runtime_tendency_memory_influence_multi_scenario_check_minimal_check,
+)
 from ashl_core.minimal_visual_grounding_trial import run_minimal_visual_grounding_trial_check
 from ashl_core.visual_prediction_error_attention_priority_preview_minimal import (
     run_visual_prediction_error_attention_priority_preview_minimal_check,
@@ -10483,6 +10486,98 @@ def smoke_runtime_tendency_mentor_override_check_minimal() -> dict:
     )
 
 
+def smoke_runtime_tendency_memory_influence_multi_scenario_check_minimal() -> dict:
+    result = run_runtime_tendency_memory_influence_multi_scenario_check_minimal_check()
+    summary = result.get("summary", {})
+    boundary = result.get("boundary_check", {})
+    records = result.get("runtime_tendency_memory_influence_multi_scenario_results", [])
+    valid_result = records[0] if records else {}
+    scenarios = {
+        scenario.get("exact_key"): scenario
+        for scenario in valid_result.get("scenario_results", [])
+        if isinstance(scenario, dict)
+    }
+    obstacle = scenarios.get("obstacle_retry_failed", {})
+    costly = scenarios.get("costly_retry_failed", {})
+    unclear = scenarios.get("unclear_failure_repeated", {})
+    passed = (
+        result.get("command") == "run-runtime-tendency-memory-influence-multi-scenario-check-minimal-check"
+        and result.get("flow") == "runtime_tendency_memory_influence_multi_scenario_check_minimal_v0"
+        and result.get("status") == "ok"
+        and summary.get("multi_scenario_result_count") == 36
+        and summary.get("valid_multi_scenario_result_count") == 1
+        and summary.get("invalid_multi_scenario_result_count") == 35
+        and summary.get("scenario_count") == 3
+        and summary.get("changed_scenario_count") == 3
+        and summary.get("within_delta_limit_scenario_count") == 3
+        and summary.get("rollback_ready_scenario_count") == 3
+        and summary.get("mentor_override_ready_scenario_count") == 3
+        and summary.get("exact_key_only_scenario_count") == 3
+        and summary.get("obstacle_scenario_pass_count") == 1
+        and summary.get("costly_retry_scenario_pass_count") == 1
+        and summary.get("unclear_failure_scenario_pass_count") == 1
+        and summary.get("max_absolute_delta_violation_blocked_count") == 1
+        and summary.get("unknown_exact_key_blocked_count") == 1
+        and summary.get("wrong_delta_blocked_count") == 3
+        and summary.get("rollback_ready_false_blocked_count") == 1
+        and summary.get("mentor_override_ready_false_blocked_count") == 1
+        and summary.get("aggregate_changed_false_blocked_count") == 1
+        and summary.get("aggregate_delta_limit_false_blocked_count") == 1
+        and summary.get("aggregate_exact_key_false_blocked_count") == 1
+        and summary.get("aggregate_rollback_false_blocked_count") == 1
+        and summary.get("aggregate_mentor_override_false_blocked_count") == 1
+        and summary.get("safe_to_continue_false_blocked_count") == 1
+        and summary.get("production_action_selection_blocked_count") == 1
+        and summary.get("final_action_created_blocked_count") == 1
+        and summary.get("action_executed_blocked_count") == 1
+        and summary.get("direct_action_command_blocked_count") == 1
+        and summary.get("real_navigation_changed_blocked_count") == 1
+        and summary.get("ui_behavior_changed_blocked_count") == 1
+        and summary.get("persistent_policy_written_blocked_count") == 1
+        and summary.get("general_behavior_changed_blocked_count") == 1
+        and summary.get("semantic_or_fuzzy_match_used_blocked_count") == 1
+        and summary.get("exploration_blocked_count") == 1
+        and summary.get("curiosity_overridden_blocked_count") == 1
+        and summary.get("mentor_override_blocked_count") == 1
+        and summary.get("lesson_applied_blocked_count") == 1
+        and summary.get("memory_write_blocked_count") == 1
+        and summary.get("new_retention_written_blocked_count") == 1
+        and summary.get("predictor_modified_blocked_count") == 1
+        and summary.get("proof_of_learning_claim_blocked_count") == 1
+        and obstacle.get("score_deltas", {}).get("check_before_retry") == 0.10
+        and obstacle.get("score_deltas", {}).get("retry_same_action") == -0.05
+        and costly.get("score_deltas", {}).get("slow_down_or_reduce_cost") == 0.10
+        and costly.get("score_deltas", {}).get("retry_same_action") == -0.05
+        and unclear.get("score_deltas", {}).get("ask_for_help") == 0.10
+        and unclear.get("score_deltas", {}).get("retry_same_action") == -0.05
+        and boundary.get("scenario_count") == 3
+        and boundary.get("changed_scenario_count") == 3
+        and boundary.get("within_delta_limit_scenario_count") == 3
+        and boundary.get("rollback_ready_scenario_count") == 3
+        and boundary.get("mentor_override_ready_scenario_count") == 3
+        and boundary.get("exact_key_only_scenario_count") == 3
+        and boundary.get("production_action_selection_added") is False
+        and boundary.get("final_action_creation_added") is False
+        and boundary.get("action_execution_added") is False
+        and boundary.get("direct_action_command_added") is False
+        and boundary.get("semantic_or_fuzzy_matching_added") is False
+        and boundary.get("persistent_policy_write_added") is False
+        and boundary.get("general_behavior_change_added") is False
+        and boundary.get("predictor_mutation_added") is False
+        and boundary.get("proof_of_learning_claimed") is False
+    )
+    return _result(
+        "runtime_tendency_memory_influence_multi_scenario_check_minimal",
+        passed,
+        {
+            "summary": summary,
+            "validation_results": result.get("validation_results", []),
+            "boundary": boundary,
+            "scenario_results": valid_result.get("scenario_results", []),
+        },
+    )
+
+
 def smoke_phase0_current_capability_snapshot() -> dict:
     doc_path = Path("docs/phase0_current_capability_snapshot_2026-06-10.md")
     doc = doc_path.read_text(encoding="utf-8") if doc_path.exists() else ""
@@ -13161,6 +13256,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_runtime_tendency_memory_influence_rollback_check_minimal(),
         smoke_runtime_tendency_memory_influence_safety_envelope_minimal(),
         smoke_runtime_tendency_mentor_override_check_minimal(),
+        smoke_runtime_tendency_memory_influence_multi_scenario_check_minimal(),
         smoke_phase0_current_capability_snapshot(),
         smoke_memory_influence_behavior_gate_design(),
         smoke_first_memory_influenced_behavior_boundary(),
