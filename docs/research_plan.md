@@ -5543,3 +5543,13 @@ Next roadmap:
 4. First Memory-Influenced Behavior Boundary / Minimal v0
 
 Do not open active_focus or behavior influence until retained lookup and dry-run evidence paths are stable and boundary-reviewed.
+
+## Five-Layer Memory Framework Boundary Minimal v0
+
+Status: completed / boundary-design-only / no-runtime-change.
+
+Progress:
+- Defines current and future boundaries for Core Memory, Long-term Memory, Working Memory, Archive Memory, and Anchor Layer.
+- Current prototypes cover Core Seed assumptions, mentor-gated JSONL retention, and session working memory only.
+- Archive Memory, Anchor Layer, five-layer runtime, semantic retrieval, anchor lookup, and memory-influenced behavior are not implemented.
+- Next roadmap remains retained exact-key lookup, retained experience into dry-run, then first memory-influenced behavior boundary review.

@@ -2501,3 +2501,7 @@ Two-Trial History Boundary:
 ## Eye Line Pause + Next Memory-Influence Roadmap
 
 - The eye line is paused after controlled visual grounding and visual prediction-error attention-priority previews. Next roadmap: five-layer memory framework boundary, retained exact-key lookup, retained experience into dry-run, then a carefully gated first memory-influenced behavior step. Active focus, action influence, semantic vision, automatic retention, and proof-of-learning claims remain blocked.
+
+## Five-Layer Memory Framework Boundary Minimal v0
+
+- Five-Layer Memory Framework Boundary Minimal v0 defines current and future boundaries for Core Memory, Long-term Memory, Working Memory, Archive Memory, and Anchor Layer. Current prototypes cover Core Seed assumptions, mentor-gated JSONL retention, and session working memory only. Archive Memory, Anchor Layer, five-layer runtime, semantic retrieval, anchor lookup, and memory-influenced behavior are not implemented.

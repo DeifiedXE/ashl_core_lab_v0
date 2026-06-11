@@ -3876,6 +3876,48 @@ def smoke_five_layer_memory_design_assumption() -> dict:
     )
 
 
+def smoke_five_layer_memory_framework_boundary() -> dict:
+    doc_path = Path("docs/five_layer_memory_framework_boundary_v0.md")
+    doc = doc_path.read_text(encoding="utf-8") if doc_path.exists() else ""
+    readme = Path("README.md").read_text(encoding="utf-8")
+    research_plan = Path("docs/research_plan.md").read_text(encoding="utf-8")
+    required_phrases = [
+        "Core Memory",
+        "Long-term Memory",
+        "Working Memory",
+        "Archive Memory",
+        "Anchor Layer",
+        "Five-layer memory runtime: not implemented",
+        "Retained Experience Exact-Key Lookup Minimal v0",
+        "exact_key only",
+        "Retained Experience Into Dry-Run",
+        "first memory-influenced behavior",
+        "separate high-risk boundary review",
+        "Archive Memory is not implemented",
+        "Anchor Layer stores navigation/index paths, not memory content",
+        "Specialty anchors are not allowed until Qingyin has a stable self-model",
+        "No semantic/fuzzy/vector retrieval.",
+        "No runtime action selection or action behavior change.",
+        "No endocrine-driven anchor lookup.",
+        "No proof-of-learning claim.",
+    ]
+    passed = (
+        doc_path.exists()
+        and all(phrase in doc for phrase in required_phrases)
+        and "Five-Layer Memory Framework Boundary Minimal v0" in readme
+        and "Five-Layer Memory Framework Boundary Minimal v0" in research_plan
+        and "Archive Memory, Anchor Layer, five-layer runtime, semantic retrieval, anchor lookup, and memory-influenced behavior are not implemented" in readme
+    )
+    return _result(
+        "five_layer_memory_framework_boundary",
+        passed,
+        {
+            "doc": str(doc_path),
+            "required_phrase_count": len(required_phrases),
+        },
+    )
+
+
 def smoke_history_runtime_persistence_gap_review() -> dict:
     doc_path = Path("docs/history_runtime_persistence_gap_review_v0.md")
     doc = doc_path.read_text(encoding="utf-8") if doc_path.exists() else ""
@@ -12113,6 +12155,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_retained_experience_readback_preview_minimal(),
         smoke_retained_experience_listing_cli_minimal(),
         smoke_five_layer_memory_design_assumption(),
+        smoke_five_layer_memory_framework_boundary(),
         smoke_history_runtime_persistence_gap_review(),
         smoke_generalized_prediction_confidence_check(),
         smoke_generalized_candidate_from_pattern(),
