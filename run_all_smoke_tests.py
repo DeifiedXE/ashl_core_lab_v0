@@ -90,6 +90,9 @@ from ashl_core.retained_experience_listing_cli_minimal import (
 from ashl_core.retained_experience_exact_key_lookup_minimal import (
     run_retained_experience_exact_key_lookup_minimal_check,
 )
+from ashl_core.retained_experience_into_dry_run_minimal import (
+    run_retained_experience_into_dry_run_minimal_check,
+)
 from ashl_core.reviewed_lesson_dry_run_correction_minimal import (
     run_reviewed_lesson_dry_run_correction_minimal_check,
 )
@@ -3927,6 +3930,92 @@ def smoke_retained_experience_exact_key_lookup_minimal() -> dict:
         {
             "summary": summary,
             "first_lookup_keys": sorted(lookups[0].keys()) if lookups else [],
+            "valid_human_summaries": result.get("valid_human_summaries", []),
+            "boundary": boundary,
+        },
+    )
+
+
+def smoke_retained_experience_into_dry_run_minimal() -> dict:
+    result = run_retained_experience_into_dry_run_minimal_check()
+    summary = result.get("summary", {})
+    boundary = result.get("boundary_check", {})
+    contexts = result.get("retained_experience_dry_run_contexts", [])
+    passed = (
+        result.get("command") == "run-retained-experience-into-dry-run-minimal-check"
+        and result.get("flow") == "retained_experience_into_dry_run_minimal_v0"
+        and result.get("status") == "ok"
+        and summary.get("retained_dry_run_context_count") == 19
+        and summary.get("valid_retained_dry_run_context_count") == 2
+        and summary.get("invalid_retained_dry_run_context_count") == 17
+        and summary.get("matched_context_count") == 1
+        and summary.get("not_matched_context_count") == 1
+        and summary.get("trace_only_false_blocked_count") == 1
+        and summary.get("usable_for_dry_run_false_blocked_count") == 1
+        and summary.get("usable_for_runtime_action_blocked_count") == 1
+        and summary.get("missing_source_lookup_preview_blocked_count") == 1
+        and summary.get("empty_lookup_result_blocked_count") == 1
+        and summary.get("empty_plain_result_blocked_count") == 1
+        and summary.get("lesson_applied_blocked_count") == 1
+        and summary.get("runtime_action_selection_blocked_count") == 1
+        and summary.get("action_selection_influence_blocked_count") == 1
+        and summary.get("action_behavior_changed_blocked_count") == 1
+        and summary.get("memory_write_blocked_count") == 1
+        and summary.get("new_retention_written_blocked_count") == 1
+        and summary.get("semantic_match_blocked_count") == 1
+        and summary.get("fuzzy_match_blocked_count") == 1
+        and summary.get("vector_match_blocked_count") == 1
+        and summary.get("predictor_modified_blocked_count") == 1
+        and summary.get("proof_of_learning_claim_blocked_count") == 1
+        and summary.get("lesson_applied_count") == 0
+        and summary.get("runtime_action_selection_count") == 0
+        and summary.get("action_selection_influence_count") == 0
+        and summary.get("action_behavior_changed_count") == 0
+        and summary.get("memory_write_count") == 0
+        and summary.get("new_retention_written_count") == 0
+        and summary.get("semantic_match_count") == 0
+        and summary.get("fuzzy_match_count") == 0
+        and summary.get("vector_match_count") == 0
+        and summary.get("predictor_modified_count") == 0
+        and summary.get("proof_of_learning_claim_count") == 0
+        and contexts
+        and set(contexts[0].keys())
+        == {
+            "dry_run_context_id",
+            "source_lookup_preview_id",
+            "source_trial_intent_id",
+            "context_status",
+            "trace_only",
+            "human_summary",
+            "blocked_flags",
+        }
+        and boundary.get("retained_experience_into_dry_run_minimal_enabled") is True
+        and boundary.get("trace_only") is True
+        and boundary.get("dry_run_preview_only") is True
+        and boundary.get("top_level_field_count") == 7
+        and boundary.get("uses_retained_experience_exact_key_lookup_minimal") is True
+        and boundary.get("references_reviewed_lesson_dry_run_correction_minimal") is True
+        and boundary.get("references_dry_run_correction_into_trial_trace") is True
+        and boundary.get("retained_context_injected_into_existing_dry_run_flows") is False
+        and boundary.get("retained_context_can_enter_dry_run_context") is True
+        and boundary.get("usable_for_runtime_action") is False
+        and boundary.get("lesson_application_added") is False
+        and boundary.get("runtime_action_selection_added") is False
+        and boundary.get("action_behavior_change_added") is False
+        and boundary.get("memory_write_added") is False
+        and boundary.get("new_retention_write_added") is False
+        and boundary.get("semantic_retrieval_added") is False
+        and boundary.get("fuzzy_retrieval_added") is False
+        and boundary.get("vector_retrieval_added") is False
+        and boundary.get("predictor_mutation_added") is False
+        and boundary.get("proof_of_learning_claimed") is False
+    )
+    return _result(
+        "retained_experience_into_dry_run_minimal",
+        passed,
+        {
+            "summary": summary,
+            "first_context_keys": sorted(contexts[0].keys()) if contexts else [],
             "valid_human_summaries": result.get("valid_human_summaries", []),
             "boundary": boundary,
         },
@@ -12255,6 +12344,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_retained_experience_readback_preview_minimal(),
         smoke_retained_experience_listing_cli_minimal(),
         smoke_retained_experience_exact_key_lookup_minimal(),
+        smoke_retained_experience_into_dry_run_minimal(),
         smoke_five_layer_memory_design_assumption(),
         smoke_five_layer_memory_framework_boundary(),
         smoke_history_runtime_persistence_gap_review(),

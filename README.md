@@ -2509,3 +2509,7 @@ Two-Trial History Boundary:
 ## Retained Experience Exact-Key Lookup Minimal v0
 
 - Retained Experience Exact-Key Lookup Minimal v0 adds read-only same_exact_key_only lookup over mentor-gated retained JSONL records. It supports matched and not_matched previews without JSONL mutation, semantic/fuzzy/vector retrieval, dry-run injection, lesson application, action influence, behavior change, new retention writes, predictor mutation, or proof-of-learning claims.
+
+## Retained Experience Into Dry-Run Minimal v0
+
+- Retained Experience Into Dry-Run Minimal v0 allows read-only retained exact-key lookup previews to become trace-only dry-run context. It supports matched and not_matched contexts, but does not apply lessons, select actions, change behavior, write memory, create new retention, use semantic/fuzzy/vector retrieval, mutate predictors, or prove learning.

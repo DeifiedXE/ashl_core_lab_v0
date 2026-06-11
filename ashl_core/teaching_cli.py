@@ -73,6 +73,9 @@ from .retained_experience_listing_cli_minimal import (
 from .retained_experience_exact_key_lookup_minimal import (
     run_retained_experience_exact_key_lookup_minimal_check,
 )
+from .retained_experience_into_dry_run_minimal import (
+    run_retained_experience_into_dry_run_minimal_check,
+)
 from .reward_biased_action_tendency import run_reward_biased_action_tendency_check
 from .reward_biased_random_walk_check import run_reward_biased_random_walk_check
 from .retina_decoder_feature_schema import run_retina_decoder_feature_schema_check
@@ -3540,6 +3543,8 @@ def run_command(command: str) -> dict[str, Any] | str:
         return run_retained_experience_listing_cli_minimal_check()
     if command == "run-retained-experience-exact-key-lookup-minimal-check":
         return run_retained_experience_exact_key_lookup_minimal_check()
+    if command == "run-retained-experience-into-dry-run-minimal-check":
+        return run_retained_experience_into_dry_run_minimal_check()
     if command == "run-simple-retina-focus-preview-minimal-check":
         return run_simple_retina_focus_preview_minimal_check()
     if command == "run-generalized-prediction-confidence-check":
@@ -3691,6 +3696,7 @@ def main(argv: list[str] | None = None) -> int:
             "run-retained-experience-readback-preview-minimal-check",
             "run-retained-experience-listing-cli-minimal-check",
             "run-retained-experience-exact-key-lookup-minimal-check",
+            "run-retained-experience-into-dry-run-minimal-check",
             "run-simple-retina-focus-preview-minimal-check",
             "run-generalized-prediction-confidence-check",
             "run-generalized-candidate-from-pattern-check",
@@ -3962,6 +3968,8 @@ def main(argv: list[str] | None = None) -> int:
         result = run_retained_experience_listing_cli_minimal_check()
     elif args.command == "run-retained-experience-exact-key-lookup-minimal-check":
         result = run_retained_experience_exact_key_lookup_minimal_check()
+    elif args.command == "run-retained-experience-into-dry-run-minimal-check":
+        result = run_retained_experience_into_dry_run_minimal_check()
     elif args.command == "run-simple-retina-focus-preview-minimal-check":
         result = run_simple_retina_focus_preview_minimal_check()
     elif args.command == "run-generalized-prediction-confidence-check":

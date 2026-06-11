@@ -5563,3 +5563,14 @@ Progress:
 - Supports matched and not_matched retained_exact_key_lookup_preview records.
 - Does not mutate JSONL, add semantic/fuzzy/vector retrieval, inject retained records into dry-run, apply lessons, influence action, change behavior, write memory, add new retention, mutate predictors, or claim proof of learning.
 - Next roadmap remains Retained Experience Into Dry-Run Minimal v0, then First Memory-Influenced Behavior Boundary / Minimal v0.
+
+## Retained Experience Into Dry-Run Minimal v0
+
+Status: completed / trace-only-dry-run-context / no-runtime-behavior-change.
+
+Progress:
+- Allows read-only retained exact-key lookup previews to become trace-only dry-run context.
+- Supports matched and not_matched retained_experience_dry_run_context records.
+- Enforces usable_for_dry_run == True and usable_for_runtime_action == False.
+- Does not apply lessons, select actions, change behavior, write memory, create new retention, use semantic/fuzzy/vector retrieval, mutate predictors, or prove learning.
+- Next roadmap remains First Memory-Influenced Behavior Boundary / Minimal v0.
