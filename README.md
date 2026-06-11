@@ -2517,3 +2517,7 @@ Two-Trial History Boundary:
 ## Memory Influence Candidate Preview Minimal v0
 
 - Memory Influence Candidate Preview Minimal v0 creates preview-only tendency advice from retained dry-run context. Memory acts as a warning sign, not a ban command: past failure must not automatically block curiosity or exploration. The candidate cannot create final actions, direct commands, runtime action selection, behavior change, memory writes, new retention, predictor mutation, or proof-of-learning claims.
+
+## First Memory-Influenced Behavior Boundary Minimal v0
+
+- First Memory-Influenced Behavior Boundary Minimal v0 defines the high-risk boundary before retained memory can affect behavior. Memory may only advise bounded action tendency after dry-run evidence; it must not directly choose final actions, create direct commands, block exploration, override mentor instruction, change behavior, or prove learning. No runtime behavior influence is implemented.

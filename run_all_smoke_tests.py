@@ -4116,6 +4116,49 @@ def smoke_memory_influence_candidate_preview_minimal() -> dict:
     )
 
 
+def smoke_first_memory_influenced_behavior_boundary() -> dict:
+    doc_path = Path("docs/first_memory_influenced_behavior_boundary_v0.md")
+    doc = doc_path.read_text(encoding="utf-8") if doc_path.exists() else ""
+    readme = Path("README.md").read_text(encoding="utf-8")
+    research_plan = Path("docs/research_plan.md").read_text(encoding="utf-8")
+    required_phrases = [
+        "Memory may advise action tendency only",
+        "Memory must not directly choose final_action",
+        "Memory is a warning sign, not a ban command",
+        "Past failure is a warning, not a prohibition",
+        "retained memory matched → final_action",
+        "retained memory matched → direct action command",
+        "retained memory matched → runtime action selection",
+        "exploration not blocked",
+        "mentor override preserved",
+        "rollback path defined",
+        "runtime_action_selection_allowed must remain False",
+        "Retained memory and applied influence are separate",
+        "No real memory-influenced behavior.",
+        "No runtime action selection.",
+        "No final_action creation.",
+        "No direct action command.",
+        "No action behavior change.",
+        "No proof-of-learning claim.",
+    ]
+    passed = (
+        doc_path.exists()
+        and all(phrase in doc for phrase in required_phrases)
+        and "First Memory-Influenced Behavior Boundary Minimal v0" in readme
+        and "First Memory-Influenced Behavior Boundary Minimal v0" in research_plan
+        and "No runtime behavior influence is implemented" in readme
+        and "No runtime behavior influence is implemented" in research_plan
+    )
+    return _result(
+        "first_memory_influenced_behavior_boundary",
+        passed,
+        {
+            "doc": str(doc_path),
+            "required_phrase_count": len(required_phrases),
+        },
+    )
+
+
 def smoke_five_layer_memory_design_assumption() -> dict:
     doc_path = Path("docs/five_layer_memory_design_assumption_v0_1.md")
     doc = doc_path.read_text(encoding="utf-8") if doc_path.exists() else ""
@@ -12440,6 +12483,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_retained_experience_exact_key_lookup_minimal(),
         smoke_retained_experience_into_dry_run_minimal(),
         smoke_memory_influence_candidate_preview_minimal(),
+        smoke_first_memory_influenced_behavior_boundary(),
         smoke_five_layer_memory_design_assumption(),
         smoke_five_layer_memory_framework_boundary(),
         smoke_history_runtime_persistence_gap_review(),

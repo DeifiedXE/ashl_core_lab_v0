@@ -5586,3 +5586,14 @@ Progress:
 - Supports bounded tendency advice with influence_strength <= 0.3.
 - Does not create final actions, direct commands, runtime action selection, action influence, behavior change, memory writes, new retention, predictor mutation, or proof-of-learning claims.
 - Next roadmap remains First Memory-Influenced Behavior Boundary / Minimal v0.
+
+## First Memory-Influenced Behavior Boundary Minimal v0
+
+Status: completed / high-risk-boundary-design-only / no-runtime-behavior-change.
+
+Progress:
+- Defines the boundary before any future retained-memory behavior influence.
+- Memory may only advise bounded action tendency after dry-run evidence.
+- Memory must not directly choose final_action, create direct commands, block exploration, override mentor instruction, change behavior, or prove learning.
+- Requires valid exact-key lookup, retained dry-run context, memory influence candidate, dry-run contrast, bounded strength, mentor override, exploration not blocked, rollback path, and audit trace before any future behavior influence.
+- No runtime behavior influence is implemented.
