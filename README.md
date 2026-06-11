@@ -2575,3 +2575,7 @@ Two-Trial History Boundary:
 ## Runtime Tendency Memory Influence Multi-Scenario Check Minimal v0
 
 - Runtime Tendency Memory Influence Multi-Scenario Check Minimal v0 verifies that controlled runtime tendency memory influence is not limited to one obstacle case. Across three exact-key scenarios, retained memory shifts bounded runtime tendency scores while staying within max_absolute_delta <= 0.10 and preserving rollback readiness, mentor override readiness, exact-key-only matching, no-final-action, no-execution, and no-production-action-selection boundaries.
+
+## Pre-Action Consideration Candidate Minimal v0
+
+- Pre-Action Consideration Candidate Minimal v0 converts bounded runtime tendency memory-influence deltas into pre-action consideration candidates. A candidate means an action deserves consideration before selection; it is not a final action, not action selection, not execution, not a direct command, and not generalized behavior.

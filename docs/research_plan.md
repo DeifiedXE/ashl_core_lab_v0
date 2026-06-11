@@ -5744,3 +5744,13 @@ Progress:
 - Confirms costly_retry_failed shifts slow_down_or_reduce_cost +0.10 and retry_same_action -0.05.
 - Confirms unclear_failure_repeated shifts ask_for_help +0.10 and retry_same_action -0.05.
 - All scenarios remain within max_absolute_delta <= 0.10 and preserve rollback readiness, mentor override readiness, exact-key-only matching, no-final-action, no-execution, and no-production-action-selection boundaries.
+
+## Pre-Action Consideration Candidate Minimal v0
+
+Status: completed / pre-action-candidate-data-layer / no-action-selection.
+
+Progress:
+- Converts bounded runtime tendency memory-influence deltas into pre-action consideration candidates.
+- A candidate means an action deserves consideration before selection; it is not a final action, not action selection, not execution, not a direct command, and not generalized behavior.
+- Produces exact-key candidates for check_before_retry, slow_down_or_reduce_cost, and ask_for_help from the three controlled multi-scenario cases.
+- Production action selection, final_action, action execution, direct commands, persistent policy, generalized behavior, semantic/fuzzy matching, lesson application, predictor mutation, and proof-of-learning claims remain blocked.

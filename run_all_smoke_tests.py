@@ -98,6 +98,9 @@ from ashl_core.runtime_tendency_mentor_override_check_minimal import (
 from ashl_core.runtime_tendency_memory_influence_multi_scenario_check_minimal import (
     run_runtime_tendency_memory_influence_multi_scenario_check_minimal_check,
 )
+from ashl_core.pre_action_consideration_candidate_minimal import (
+    run_pre_action_consideration_candidate_minimal_check,
+)
 from ashl_core.minimal_visual_grounding_trial import run_minimal_visual_grounding_trial_check
 from ashl_core.visual_prediction_error_attention_priority_preview_minimal import (
     run_visual_prediction_error_attention_priority_preview_minimal_check,
@@ -10578,6 +10581,89 @@ def smoke_runtime_tendency_memory_influence_multi_scenario_check_minimal() -> di
     )
 
 
+def smoke_pre_action_consideration_candidate_minimal() -> dict:
+    result = run_pre_action_consideration_candidate_minimal_check()
+    summary = result.get("summary", {})
+    boundary = result.get("boundary_check", {})
+    records = result.get("pre_action_consideration_candidate_results", [])
+    valid_result = records[0] if records else {}
+    candidates = {
+        candidate.get("scenario_id"): candidate
+        for candidate in valid_result.get("candidates", [])
+        if isinstance(candidate, dict)
+    }
+    passed = (
+        result.get("command") == "run-pre-action-consideration-candidate-minimal-check"
+        and result.get("flow") == "pre_action_consideration_candidate_minimal_v0"
+        and result.get("status") == "ok"
+        and summary.get("pre_action_candidate_result_count") == 40
+        and summary.get("valid_pre_action_candidate_result_count") == 1
+        and summary.get("invalid_pre_action_candidate_result_count") == 39
+        and summary.get("candidate_count") == 3
+        and summary.get("positive_delta_candidate_count") == 3
+        and summary.get("pre_action_only_candidate_count") == 3
+        and summary.get("not_final_action_candidate_count") == 3
+        and summary.get("exact_key_candidate_count") == 3
+        and summary.get("obstacle_candidate_pass_count") == 1
+        and summary.get("costly_retry_candidate_pass_count") == 1
+        and summary.get("unclear_failure_candidate_pass_count") == 1
+        and summary.get("candidate_count_violation_blocked_count") == 2
+        and summary.get("unknown_scenario_blocked_count") == 1
+        and summary.get("unknown_exact_key_blocked_count") == 1
+        and summary.get("wrong_mapping_blocked_count") == 3
+        and summary.get("non_positive_delta_blocked_count") == 2
+        and summary.get("delta_too_high_blocked_count") == 1
+        and summary.get("pre_action_only_false_blocked_count") == 1
+        and summary.get("selected_as_final_action_blocked_count") == 1
+        and summary.get("production_action_selection_blocked_count") == 1
+        and summary.get("final_action_created_blocked_count") == 1
+        and summary.get("action_selected_blocked_count") == 1
+        and summary.get("action_executed_blocked_count") == 1
+        and summary.get("direct_action_command_blocked_count") == 1
+        and summary.get("real_navigation_changed_blocked_count") == 1
+        and summary.get("ui_behavior_changed_blocked_count") == 1
+        and summary.get("persistent_policy_written_blocked_count") == 1
+        and summary.get("general_behavior_changed_blocked_count") == 1
+        and summary.get("semantic_or_fuzzy_match_used_blocked_count") == 1
+        and summary.get("exploration_blocked_count") == 1
+        and summary.get("curiosity_overridden_blocked_count") == 1
+        and summary.get("mentor_override_blocked_count") == 1
+        and summary.get("lesson_applied_blocked_count") == 1
+        and summary.get("memory_write_blocked_count") == 1
+        and summary.get("new_retention_written_blocked_count") == 1
+        and summary.get("predictor_modified_blocked_count") == 1
+        and summary.get("proof_of_learning_claim_blocked_count") == 1
+        and candidates.get("obstacle_retry_failed_same_state", {}).get("considered_action") == "check_before_retry"
+        and candidates.get("costly_retry_same_state", {}).get("considered_action") == "slow_down_or_reduce_cost"
+        and candidates.get("unclear_failure_same_state", {}).get("considered_action") == "ask_for_help"
+        and boundary.get("candidate_count") == 3
+        and boundary.get("positive_delta_candidate_count") == 3
+        and boundary.get("pre_action_only_candidate_count") == 3
+        and boundary.get("not_final_action_candidate_count") == 3
+        and boundary.get("exact_key_candidate_count") == 3
+        and boundary.get("production_action_selection_added") is False
+        and boundary.get("final_action_creation_added") is False
+        and boundary.get("action_selection_added") is False
+        and boundary.get("action_execution_added") is False
+        and boundary.get("direct_action_command_added") is False
+        and boundary.get("semantic_or_fuzzy_matching_added") is False
+        and boundary.get("persistent_policy_write_added") is False
+        and boundary.get("general_behavior_change_added") is False
+        and boundary.get("predictor_mutation_added") is False
+        and boundary.get("proof_of_learning_claimed") is False
+    )
+    return _result(
+        "pre_action_consideration_candidate_minimal",
+        passed,
+        {
+            "summary": summary,
+            "validation_results": result.get("validation_results", []),
+            "boundary": boundary,
+            "candidates": valid_result.get("candidates", []),
+        },
+    )
+
+
 def smoke_phase0_current_capability_snapshot() -> dict:
     doc_path = Path("docs/phase0_current_capability_snapshot_2026-06-10.md")
     doc = doc_path.read_text(encoding="utf-8") if doc_path.exists() else ""
@@ -13257,6 +13343,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_runtime_tendency_memory_influence_safety_envelope_minimal(),
         smoke_runtime_tendency_mentor_override_check_minimal(),
         smoke_runtime_tendency_memory_influence_multi_scenario_check_minimal(),
+        smoke_pre_action_consideration_candidate_minimal(),
         smoke_phase0_current_capability_snapshot(),
         smoke_memory_influence_behavior_gate_design(),
         smoke_first_memory_influenced_behavior_boundary(),
