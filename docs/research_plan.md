@@ -5631,3 +5631,17 @@ Progress:
 - Produces trace-level contrast evidence with baseline_score, memory_influenced_score, delta, direction, and visible_tendency_difference.
 - Supports increase, decrease, and none contrast cases.
 - Does not create final actions, direct commands, runtime action selection, action influence, behavior change, exploration blocking, curiosity override, mentor override blocking, lesson application, memory writes, new retention, predictor mutation, or proof-of-learning claims.
+
+## Memory Influence Dry-Run Progress Sync Minimal v0
+
+Status: completed / docs-only / boundary-sync / no-runtime-change.
+
+Progress:
+- Completed: memory-influenced action tendency preview and memory influence dry-run contrast.
+- Recorded preview-only bounded tendency advice and dry-run contrast evidence, including check_before_retry 0.5 -> 0.6.
+- Do not implement real memory-influenced behavior until behavior gate, safety envelope, rollback, audit, mentor override, and exploration boundaries are stable.
+
+Next options:
+1. Memory Influence Behavior Gate Design Minimal v0
+2. Memory Influence Trial Safety Envelope Minimal v0
+3. Stop and review before any runtime action selection integration

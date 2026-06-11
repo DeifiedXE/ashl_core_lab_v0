@@ -1618,7 +1618,7 @@ Two-Trial History Boundary:
 
 - `docs/current_boundary_index.md`
 - Adds a short, versioned, low-token source of global hard boundaries for future work packages.
-- Current version: `Boundary Index Version: 2026-06-09-b51`.
+- Current version: `Boundary Index Version: 2026-06-09-b53`.
 - Current index is compacted and should stay under 120 lines when possible.
 - Older milestone details are preserved in `docs/boundary_index_archive_2026_06.md`.
 - Compaction is docs-only and does not change runtime behavior or claim meaning.
@@ -2533,3 +2533,7 @@ Two-Trial History Boundary:
 ## Memory Influence Dry-Run Contrast Minimal v0
 
 - Memory Influence Dry-Run Contrast Minimal v0 compares baseline and memory-influenced action tendency previews, producing trace-level contrast evidence only. It does not create final actions, direct commands, runtime action selection, action influence, behavior change, exploration blocking, curiosity override, mentor override blocking, lesson application, memory writes, new retention, predictor mutation, or proof-of-learning claims.
+
+## Memory Influence Dry-Run Progress Sync Minimal v0
+
+- Memory Influence Dry-Run Contrast Minimal v0 records that retained memory can produce preview-only bounded action tendency advice and visible dry-run contrast evidence, such as check_before_retry 0.5 -> 0.6. This remains preview-only and does not create final actions, direct commands, runtime action selection, behavior change, exploration blocking, curiosity override, mentor override blocking, lesson application, predictor mutation, or proof of learning.

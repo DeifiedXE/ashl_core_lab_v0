@@ -1,7 +1,7 @@
-Boundary Index Version: 2026-06-09-b52
-Last update log: Memory Influence Roadmap Sync Minimal v0
-Previous Boundary Index Version: 2026-06-09-b51
-Previous Last update log: Eye Line Pause + Next Memory-Influence Roadmap Sync Minimal v0
+Boundary Index Version: 2026-06-09-b53
+Last update log: Memory Influence Dry-Run Progress Sync Minimal v0
+Previous Boundary Index Version: 2026-06-09-b52
+Previous Last update log: Memory Influence Roadmap Sync Minimal v0
 Clean count at last update log reset: 0/5
 Current clean count: 0/5
 
@@ -37,6 +37,7 @@ Current clean count: 0/5
 - Minimal Visual Grounding Trial v0 can run a controlled symbolic visual change through visual_experience_candidate -> retina_focus_preview -> visual_lesson_evidence_candidate -> visual_retention_demo_snapshot -> human-readable grounding trial summary.
 - Visual Prediction Error + Attention Priority Preview Minimal v0 can compare expected vs actual controlled visual traces and produce read-only notice/ignore attention priority previews.
 - Retained memory can be read-only exact-key queried, shown as dry-run context, and converted into preview-only bounded action-tendency advice.
+- Memory-influenced action tendency previews and dry-run contrasts can show before/after tendency deltas as trace-level evidence only.
 - First memory-influenced behavior boundary exists as design only; real memory-influenced behavior remains blocked.
 
 ## Latest Safe Claims
@@ -45,6 +46,7 @@ Current clean count: 0/5
 - A controlled symbolic visual change can produce a human-readable grounding trial summary.
 - Expected-vs-actual controlled visual traces can produce read-only visual prediction error previews and notice/ignore attention priority previews.
 - Retained memory can be looked up by exact key, shown as dry-run context, and produce preview-only bounded action tendency advice.
+- Retained memory can be contrasted against baseline tendency in dry-run, e.g. check_before_retry 0.5 -> 0.6.
 - Memory is a warning sign, not a ban command; past failure is a warning, not a prohibition.
 - Retained records can be appended only through mentor-gated exact `留` approval and read back/listed as retained JSONL records.
 
@@ -80,6 +82,7 @@ Current clean count: 0/5
 - Minimal Visual Grounding Trial milestone: completed; current safe/forbidden claims retained above.
 - Eye Line Pause / Memory-Influence Roadmap milestone: eye line pauses after Minimal Visual Grounding Trial and Visual Prediction Error + Attention Priority Preview. Next roadmap: five-layer memory framework boundary -> retained exact-key lookup -> retained experience into dry-run -> first memory-influenced behavior gate. Forbidden: no object recognition, semantic vision, active focus, attention control, lesson application, action influence, behavior change, automatic retention, semantic/fuzzy/vector retrieval, predictor mutation, or proof-of-learning claim.
 - Memory Influence Roadmap milestone: retained exact-key lookup, retained experience into dry-run, memory influence candidate preview, and first memory-influenced behavior boundary completed. Safe claim: retained memory can be read-only exact-key queried, shown as dry-run context, and produce preview-only bounded action-tendency advice. Core rule: memory is a warning sign, not a ban command; past failure is not prohibition. Forbidden: no real memory-influenced behavior, runtime action selection, final_action, direct action command, behavior change, exploration blocking, curiosity override, mentor override blocking, lesson application, predictor mutation, or proof-of-learning claim.
+- Memory Influence Dry-Run Contrast milestone: Memory-Influenced Action Tendency Preview Minimal v0 and Memory Influence Dry-Run Contrast Minimal v0 completed. Safe claim: retained memory can produce preview-only bounded tendency advice and dry-run contrast evidence, e.g. check_before_retry 0.5 -> 0.6. Forbidden: no real memory-influenced behavior, runtime action selection, final_action, direct action command, behavior change, exploration blocking, curiosity override, mentor override blocking, lesson application, predictor mutation, or proof-of-learning claim.
 
 ## Archive
 - Older milestone details are archived in `docs/boundary_index_archive_2026_06.md`.
