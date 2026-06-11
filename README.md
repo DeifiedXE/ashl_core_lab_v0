@@ -2521,3 +2521,7 @@ Two-Trial History Boundary:
 ## First Memory-Influenced Behavior Boundary Minimal v0
 
 - First Memory-Influenced Behavior Boundary Minimal v0 defines the high-risk boundary before retained memory can affect behavior. Memory may only advise bounded action tendency after dry-run evidence; it must not directly choose final actions, create direct commands, block exploration, override mentor instruction, change behavior, or prove learning. No runtime behavior influence is implemented.
+
+## Memory Influence Roadmap Minimal v0
+
+- Memory Influence Roadmap Minimal v0 records that retained experiences can now be read-only exact-key looked up, shown as dry-run context, and converted into preview-only bounded action-tendency advice. Memory remains a warning sign, not a ban command, and cannot create final actions, direct commands, runtime action selection, behavior change, exploration blocking, curiosity override, mentor override blocking, lesson application, predictor mutation, or proof-of-learning claims.

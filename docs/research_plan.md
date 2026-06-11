@@ -5597,3 +5597,17 @@ Progress:
 - Memory must not directly choose final_action, create direct commands, block exploration, override mentor instruction, change behavior, or prove learning.
 - Requires valid exact-key lookup, retained dry-run context, memory influence candidate, dry-run contrast, bounded strength, mentor override, exploration not blocked, rollback path, and audit trace before any future behavior influence.
 - No runtime behavior influence is implemented.
+
+## Memory Influence Roadmap Sync Minimal v0
+
+Status: completed / docs-only / boundary-sync / no-runtime-change.
+
+Progress:
+- Completed: retained exact-key lookup, retained experience into dry-run, memory influence candidate preview, and first memory-influenced behavior boundary.
+- Retained memory can now be read-only exact-key looked up, shown as dry-run context, and converted into preview-only bounded action-tendency advice.
+- Do not implement real memory-influenced behavior until preview, contrast, rollback, mentor override, and exploration boundaries are stable.
+
+Next options:
+1. Memory-Influenced Action Tendency Preview Minimal v0
+2. Memory Influence Dry-Run Contrast Minimal v0
+3. Memory Influence Behavior Gate Design v0

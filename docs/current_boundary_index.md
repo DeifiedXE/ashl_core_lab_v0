@@ -1,7 +1,7 @@
-Boundary Index Version: 2026-06-09-b51
-Last update log: Eye Line Pause + Next Memory-Influence Roadmap Sync Minimal v0
-Previous Boundary Index Version: 2026-06-09-b50
-Previous Last update log: Boundary Index Compaction / Archive v0
+Boundary Index Version: 2026-06-09-b52
+Last update log: Memory Influence Roadmap Sync Minimal v0
+Previous Boundary Index Version: 2026-06-09-b51
+Previous Last update log: Eye Line Pause + Next Memory-Influence Roadmap Sync Minimal v0
 Clean count at last update log reset: 0/5
 Current clean count: 0/5
 
@@ -36,13 +36,16 @@ Current clean count: 0/5
 - Visual-Retention Demo Snapshot Minimal v0 can show visual change -> focus preview -> visual lesson evidence -> retained experience link preview -> demo snapshot.
 - Minimal Visual Grounding Trial v0 can run a controlled symbolic visual change through visual_experience_candidate -> retina_focus_preview -> visual_lesson_evidence_candidate -> visual_retention_demo_snapshot -> human-readable grounding trial summary.
 - Visual Prediction Error + Attention Priority Preview Minimal v0 can compare expected vs actual controlled visual traces and produce read-only notice/ignore attention priority previews.
-- Eye line pauses here; next roadmap is five-layer memory boundary -> retained exact-key lookup -> retained experience into dry-run -> first memory-influenced behavior gate.
+- Retained memory can be read-only exact-key queried, shown as dry-run context, and converted into preview-only bounded action-tendency advice.
+- First memory-influenced behavior boundary exists as design only; real memory-influenced behavior remains blocked.
 
 ## Latest Safe Claims
 - A visual frame-level change can be shown as a read-only demo snapshot and preview-linked to a retained experience by same_exact_key_only.
 - Trace/read-only visual grounding can show what changed, what focus preview points to, what evidence says, and whether retained experience matched by same_exact_key_only.
 - A controlled symbolic visual change can produce a human-readable grounding trial summary.
 - Expected-vs-actual controlled visual traces can produce read-only visual prediction error previews and notice/ignore attention priority previews.
+- Retained memory can be looked up by exact key, shown as dry-run context, and produce preview-only bounded action tendency advice.
+- Memory is a warning sign, not a ban command; past failure is a warning, not a prohibition.
 - Retained records can be appended only through mentor-gated exact `留` approval and read back/listed as retained JSONL records.
 
 ## Latest Forbidden Claims
@@ -52,7 +55,10 @@ Current clean count: 0/5
 - No automatic lesson candidate creation.
 - No lesson application.
 - No runtime action selection influence.
+- No real memory-influenced behavior.
+- No final_action creation or direct action command.
 - No action behavior change.
+- No exploration blocking, curiosity override, or mentor override blocking.
 - No memory write outside explicitly scoped mentor-gated retention.
 - No new retention write from visual snapshots or visual grounding trials.
 - No automatic retention.
@@ -73,6 +79,7 @@ Current clean count: 0/5
 - Visual-Retention Snapshot milestone: completed; current safe/forbidden claims retained above.
 - Minimal Visual Grounding Trial milestone: completed; current safe/forbidden claims retained above.
 - Eye Line Pause / Memory-Influence Roadmap milestone: eye line pauses after Minimal Visual Grounding Trial and Visual Prediction Error + Attention Priority Preview. Next roadmap: five-layer memory framework boundary -> retained exact-key lookup -> retained experience into dry-run -> first memory-influenced behavior gate. Forbidden: no object recognition, semantic vision, active focus, attention control, lesson application, action influence, behavior change, automatic retention, semantic/fuzzy/vector retrieval, predictor mutation, or proof-of-learning claim.
+- Memory Influence Roadmap milestone: retained exact-key lookup, retained experience into dry-run, memory influence candidate preview, and first memory-influenced behavior boundary completed. Safe claim: retained memory can be read-only exact-key queried, shown as dry-run context, and produce preview-only bounded action-tendency advice. Core rule: memory is a warning sign, not a ban command; past failure is not prohibition. Forbidden: no real memory-influenced behavior, runtime action selection, final_action, direct action command, behavior change, exploration blocking, curiosity override, mentor override blocking, lesson application, predictor mutation, or proof-of-learning claim.
 
 ## Archive
 - Older milestone details are archived in `docs/boundary_index_archive_2026_06.md`.
