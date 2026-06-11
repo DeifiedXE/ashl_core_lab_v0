@@ -2551,3 +2551,7 @@ Two-Trial History Boundary:
 - Adds `py -3 -m ashl_core.teaching_cli run-runtime-action-tendency-memory-influence-ab-minimal-check`.
 - Demonstrates that the same controlled runtime tendency runner, with the same state and candidate actions, produces different action tendency scores when memory influence is enabled.
 - This changes runtime tendency scores only; it does not select `final_action`, execute actions, create direct commands, change real navigation/UI behavior, write persistent policy, generalize behavior, apply lessons, mutate predictors, or prove learning.
+
+## Runtime Tendency Memory Influence Rollback Check Minimal v0
+
+- Runtime Tendency Memory Influence Rollback Check Minimal v0 demonstrates that controlled runtime tendency memory influence is reversible: memory_off establishes baseline scores, memory_on changes scores, and memory_off_again returns to baseline. This confirms no dirty state or persistent influence in the controlled runner. It does not select final_action, execute actions, create direct commands, change real navigation/UI behavior, write persistent policy, generalize behavior, apply lessons, mutate predictors, or prove learning.

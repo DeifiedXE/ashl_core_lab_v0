@@ -5681,3 +5681,13 @@ Progress:
 - Demonstrates that memory_on changes check_before_retry from 0.50 to 0.60 and retry_same_action from 0.50 to 0.45.
 - Confirms ask_for_help and slow_down_or_reduce_cost remain unchanged.
 - This changes runtime tendency scores only; it does not select final_action, execute actions, create direct commands, change real navigation/UI behavior, write persistent policy, generalize behavior, apply lessons, mutate predictors, or prove learning.
+
+## Runtime Tendency Memory Influence Rollback Check Minimal v0
+
+Status: completed / controlled-rollback-check / reversible-runtime-tendency-scores-only / no-action-selection.
+
+Progress:
+- Uses the same deterministic runtime tendency runner for memory_off, memory_on, and memory_off_again.
+- Confirms memory_off_again returns exactly to the memory_off baseline after memory influence is disabled.
+- Confirms no dirty state or persistent influence is detected in the controlled runner.
+- Runtime tendency memory influence remains scores-only and does not select final_action, execute actions, create direct commands, change real navigation/UI behavior, write persistent policy, generalize behavior, apply lessons, mutate predictors, or prove learning.
