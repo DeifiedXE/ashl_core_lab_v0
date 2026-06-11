@@ -5611,3 +5611,13 @@ Next options:
 1. Memory-Influenced Action Tendency Preview Minimal v0
 2. Memory Influence Dry-Run Contrast Minimal v0
 3. Memory Influence Behavior Gate Design v0
+
+## Memory-Influenced Action Tendency Preview Minimal v0
+
+Status: completed / preview-only-tendency-delta / no-runtime-behavior-change.
+
+Progress:
+- Converts preview-only memory influence candidates into bounded before/after action tendency previews.
+- Supports increase and decrease tendency previews with bounded baseline_score, memory_delta, and preview_score.
+- Memory can tilt a previewed tendency, but cannot choose an action.
+- Does not create final actions, direct commands, runtime action selection, behavior change, exploration blocking, curiosity override, mentor override blocking, lesson application, memory writes, new retention, predictor mutation, or proof-of-learning claims.
