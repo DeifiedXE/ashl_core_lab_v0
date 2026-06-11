@@ -2537,3 +2537,7 @@ Two-Trial History Boundary:
 ## Memory Influence Dry-Run Progress Sync Minimal v0
 
 - Memory Influence Dry-Run Contrast Minimal v0 records that retained memory can produce preview-only bounded action tendency advice and visible dry-run contrast evidence, such as check_before_retry 0.5 -> 0.6. This remains preview-only and does not create final actions, direct commands, runtime action selection, behavior change, exploration blocking, curiosity override, mentor override blocking, lesson application, predictor mutation, or proof of learning.
+
+## Memory Influence Behavior Gate Design Minimal v0
+
+- Memory Influence Behavior Gate Design Minimal v0 defines the future high-risk gate between memory dry-run contrast evidence and any pre-action consideration layer. The gate is not an action selector, final_action generator, or direct command layer. Runtime action selection and final actions remain blocked.

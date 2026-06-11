@@ -4311,6 +4311,54 @@ def smoke_memory_influence_dry_run_contrast_minimal() -> dict:
     )
 
 
+def smoke_memory_influence_behavior_gate_design() -> dict:
+    doc_path = Path("docs/memory_influence_behavior_gate_design_v0.md")
+    doc = doc_path.read_text(encoding="utf-8") if doc_path.exists() else ""
+    readme = Path("README.md").read_text(encoding="utf-8")
+    research_plan = Path("docs/research_plan.md").read_text(encoding="utf-8")
+    required_phrases = [
+        "The behavior gate is not an action selector",
+        "The behavior gate is not a final_action generator",
+        "The behavior gate is not a direct command layer",
+        "The behavior gate only decides whether a memory influence preview is eligible for future pre-action consideration",
+        "allowed_for_runtime_action_selection must remain False",
+        "allowed_for_final_action must remain False",
+        "valid memory_influence_dry_run_contrast",
+        "runtime_action_selection requested",
+        "final_action requested",
+        "direct_action_command requested",
+        "semantic_or_fuzzy_memory_match",
+        "proof_of_learning_claim",
+        "Past failure is a warning, not a prohibition",
+        "Curiosity must not be overwritten by retained memory alone",
+        "Mentor override must remain available",
+        "Rollback must disable the admitted influence without deleting retained memory",
+        "Retained memory, dry-run contrast, gate result, and future applied influence are separate records",
+        "No real memory-influenced behavior.",
+        "No runtime action selection.",
+        "No final_action creation.",
+        "No direct action command.",
+        "No action behavior change.",
+        "No proof-of-learning claim.",
+    ]
+    passed = (
+        doc_path.exists()
+        and all(phrase in doc for phrase in required_phrases)
+        and "Memory Influence Behavior Gate Design Minimal v0" in readme
+        and "Memory Influence Behavior Gate Design Minimal v0" in research_plan
+        and "The gate is not an action selector, final_action generator, or direct command layer" in readme
+        and "Runtime action selection and final actions remain blocked" in readme
+    )
+    return _result(
+        "memory_influence_behavior_gate_design",
+        passed,
+        {
+            "doc": str(doc_path),
+            "required_phrase_count": len(required_phrases),
+        },
+    )
+
+
 def smoke_first_memory_influenced_behavior_boundary() -> dict:
     doc_path = Path("docs/first_memory_influenced_behavior_boundary_v0.md")
     doc = doc_path.read_text(encoding="utf-8") if doc_path.exists() else ""
@@ -12682,6 +12730,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_memory_influence_candidate_preview_minimal(),
         smoke_memory_influenced_action_tendency_preview_minimal(),
         smoke_memory_influence_dry_run_contrast_minimal(),
+        smoke_memory_influence_behavior_gate_design(),
         smoke_first_memory_influenced_behavior_boundary(),
         smoke_five_layer_memory_design_assumption(),
         smoke_five_layer_memory_framework_boundary(),

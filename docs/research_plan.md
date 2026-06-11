@@ -5645,3 +5645,13 @@ Next options:
 1. Memory Influence Behavior Gate Design Minimal v0
 2. Memory Influence Trial Safety Envelope Minimal v0
 3. Stop and review before any runtime action selection integration
+
+## Memory Influence Behavior Gate Design Minimal v0
+
+Status: completed / high-risk-boundary-design-only / no-runtime-behavior-change.
+
+Progress:
+- Defines the future high-risk gate between memory dry-run contrast evidence and any pre-action consideration layer.
+- The behavior gate is not an action selector, final_action generator, or direct command layer.
+- Required gate conditions preserve preview-only upstream records, bounded influence, mentor override, exploration, rollback, and audit.
+- Runtime action selection and final actions remain blocked.
