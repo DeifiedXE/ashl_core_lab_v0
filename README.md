@@ -1618,7 +1618,7 @@ Two-Trial History Boundary:
 
 - `docs/current_boundary_index.md`
 - Adds a short, versioned, low-token source of global hard boundaries for future work packages.
-- Current version: `Boundary Index Version: 2026-06-09-b50`.
+- Current version: `Boundary Index Version: 2026-06-09-b51`.
 - Current index is compacted and should stay under 120 lines when possible.
 - Older milestone details are preserved in `docs/boundary_index_archive_2026_06.md`.
 - Compaction is docs-only and does not change runtime behavior or claim meaning.
@@ -2497,3 +2497,7 @@ Two-Trial History Boundary:
 ## Visual Prediction Error + Attention Priority Preview Minimal v0
 
 - Visual Prediction Error + Attention Priority Preview Minimal v0 adds read-only previews for expected-vs-actual visual trace differences and attention priority. It can mark visual_change_detected as notice and no_visual_prediction_error as ignore, but does not apply active focus, control attention, select actions, change behavior, write memory, add retention, mutate predictors, or prove learning.
+
+## Eye Line Pause + Next Memory-Influence Roadmap
+
+- The eye line is paused after controlled visual grounding and visual prediction-error attention-priority previews. Next roadmap: five-layer memory framework boundary, retained exact-key lookup, retained experience into dry-run, then a carefully gated first memory-influenced behavior step. Active focus, action influence, semantic vision, automatic retention, and proof-of-learning claims remain blocked.

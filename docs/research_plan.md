@@ -5526,3 +5526,20 @@ Progress:
 - Adds read-only previews for expected-vs-actual visual trace differences and attention priority.
 - Supports `visual_change_detected` -> `notice` and `no_visual_prediction_error` -> `ignore`.
 - Does not apply active focus, control attention, select actions, change behavior, write memory, add retention, mutate predictors, or prove learning.
+
+## Eye Line Pause + Next Memory-Influence Roadmap Sync Minimal v0
+
+Status: completed / docs-only / boundary-sync / no-runtime-change.
+
+Progress:
+- Updated `docs/current_boundary_index.md` to Boundary Index Version: 2026-06-09-b51.
+- Eye line pauses after Minimal Visual Grounding Trial v0 and Visual Prediction Error + Attention Priority Preview Minimal v0.
+- Current eye-line previews remain read-only and must not influence action selection or behavior.
+
+Next roadmap:
+1. Five-Layer Memory Framework Boundary Minimal v0
+2. Retained Experience Exact-Key Lookup Minimal v0
+3. Retained Experience Into Dry-Run Minimal v0
+4. First Memory-Influenced Behavior Boundary / Minimal v0
+
+Do not open active_focus or behavior influence until retained lookup and dry-run evidence paths are stable and boundary-reviewed.

@@ -1,7 +1,7 @@
-Boundary Index Version: 2026-06-09-b50
-Last update log: Boundary Index Compaction / Archive v0
-Previous Boundary Index Version: 2026-06-09-b49
-Previous Last update log: Minimal Visual Grounding Trial Sync Minimal
+Boundary Index Version: 2026-06-09-b51
+Last update log: Eye Line Pause + Next Memory-Influence Roadmap Sync Minimal v0
+Previous Boundary Index Version: 2026-06-09-b50
+Previous Last update log: Boundary Index Compaction / Archive v0
 Clean count at last update log reset: 0/5
 Current clean count: 0/5
 
@@ -35,11 +35,14 @@ Current clean count: 0/5
 - Visual evidence can preview-link to retained experiences by same_exact_key_only.
 - Visual-Retention Demo Snapshot Minimal v0 can show visual change -> focus preview -> visual lesson evidence -> retained experience link preview -> demo snapshot.
 - Minimal Visual Grounding Trial v0 can run a controlled symbolic visual change through visual_experience_candidate -> retina_focus_preview -> visual_lesson_evidence_candidate -> visual_retention_demo_snapshot -> human-readable grounding trial summary.
+- Visual Prediction Error + Attention Priority Preview Minimal v0 can compare expected vs actual controlled visual traces and produce read-only notice/ignore attention priority previews.
+- Eye line pauses here; next roadmap is five-layer memory boundary -> retained exact-key lookup -> retained experience into dry-run -> first memory-influenced behavior gate.
 
 ## Latest Safe Claims
 - A visual frame-level change can be shown as a read-only demo snapshot and preview-linked to a retained experience by same_exact_key_only.
 - Trace/read-only visual grounding can show what changed, what focus preview points to, what evidence says, and whether retained experience matched by same_exact_key_only.
 - A controlled symbolic visual change can produce a human-readable grounding trial summary.
+- Expected-vs-actual controlled visual traces can produce read-only visual prediction error previews and notice/ignore attention priority previews.
 - Retained records can be appended only through mentor-gated exact `留` approval and read back/listed as retained JSONL records.
 
 ## Latest Forbidden Claims
@@ -69,6 +72,7 @@ Current clean count: 0/5
 - Mentor-Gated Experience Retention, Retention Readback, and Retention Listing milestones are archived.
 - Visual-Retention Snapshot milestone: completed; current safe/forbidden claims retained above.
 - Minimal Visual Grounding Trial milestone: completed; current safe/forbidden claims retained above.
+- Eye Line Pause / Memory-Influence Roadmap milestone: eye line pauses after Minimal Visual Grounding Trial and Visual Prediction Error + Attention Priority Preview. Next roadmap: five-layer memory framework boundary -> retained exact-key lookup -> retained experience into dry-run -> first memory-influenced behavior gate. Forbidden: no object recognition, semantic vision, active focus, attention control, lesson application, action influence, behavior change, automatic retention, semantic/fuzzy/vector retrieval, predictor mutation, or proof-of-learning claim.
 
 ## Archive
 - Older milestone details are archived in `docs/boundary_index_archive_2026_06.md`.
