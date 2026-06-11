@@ -2513,3 +2513,7 @@ Two-Trial History Boundary:
 ## Retained Experience Into Dry-Run Minimal v0
 
 - Retained Experience Into Dry-Run Minimal v0 allows read-only retained exact-key lookup previews to become trace-only dry-run context. It supports matched and not_matched contexts, but does not apply lessons, select actions, change behavior, write memory, create new retention, use semantic/fuzzy/vector retrieval, mutate predictors, or prove learning.
+
+## Memory Influence Candidate Preview Minimal v0
+
+- Memory Influence Candidate Preview Minimal v0 creates preview-only tendency advice from retained dry-run context. Memory acts as a warning sign, not a ban command: past failure must not automatically block curiosity or exploration. The candidate cannot create final actions, direct commands, runtime action selection, behavior change, memory writes, new retention, predictor mutation, or proof-of-learning claims.

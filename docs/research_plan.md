@@ -5574,3 +5574,15 @@ Progress:
 - Enforces usable_for_dry_run == True and usable_for_runtime_action == False.
 - Does not apply lessons, select actions, change behavior, write memory, create new retention, use semantic/fuzzy/vector retrieval, mutate predictors, or prove learning.
 - Next roadmap remains First Memory-Influenced Behavior Boundary / Minimal v0.
+
+## Memory Influence Candidate Preview Minimal v0
+
+Status: completed / preview-only-tendency-advice / no-runtime-behavior-change.
+
+Progress:
+- Creates preview-only memory_influence_candidate records from retained dry-run context.
+- Defines memory as a warning sign, not a ban command.
+- Preserves curiosity and exploration: past failure must not automatically block exploration.
+- Supports bounded tendency advice with influence_strength <= 0.3.
+- Does not create final actions, direct commands, runtime action selection, action influence, behavior change, memory writes, new retention, predictor mutation, or proof-of-learning claims.
+- Next roadmap remains First Memory-Influenced Behavior Boundary / Minimal v0.

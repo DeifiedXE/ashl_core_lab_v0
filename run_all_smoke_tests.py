@@ -74,6 +74,9 @@ from ashl_core.lesson_candidate_review_gate import run_lesson_candidate_review_g
 from ashl_core.lesson_effect_evidence_trace_minimal import (
     run_lesson_effect_evidence_trace_minimal_check,
 )
+from ashl_core.memory_influence_candidate_preview_minimal import (
+    run_memory_influence_candidate_preview_minimal_check,
+)
 from ashl_core.minimal_visual_grounding_trial import run_minimal_visual_grounding_trial_check
 from ashl_core.visual_prediction_error_attention_priority_preview_minimal import (
     run_visual_prediction_error_attention_priority_preview_minimal_check,
@@ -4016,6 +4019,97 @@ def smoke_retained_experience_into_dry_run_minimal() -> dict:
         {
             "summary": summary,
             "first_context_keys": sorted(contexts[0].keys()) if contexts else [],
+            "valid_human_summaries": result.get("valid_human_summaries", []),
+            "boundary": boundary,
+        },
+    )
+
+
+def smoke_memory_influence_candidate_preview_minimal() -> dict:
+    result = run_memory_influence_candidate_preview_minimal_check()
+    summary = result.get("summary", {})
+    boundary = result.get("boundary_check", {})
+    candidates = result.get("memory_influence_candidates", [])
+    passed = (
+        result.get("command") == "run-memory-influence-candidate-preview-minimal-check"
+        and result.get("flow") == "memory_influence_candidate_preview_minimal_v0"
+        and result.get("status") == "ok"
+        and summary.get("memory_influence_candidate_count") == 21
+        and summary.get("valid_memory_influence_candidate_count") == 2
+        and summary.get("invalid_memory_influence_candidate_count") == 19
+        and summary.get("increase_tendency_count") == 1
+        and summary.get("decrease_tendency_count") == 1
+        and summary.get("preview_only_false_blocked_count") == 1
+        and summary.get("target_action_tendency_blocked_count") == 1
+        and summary.get("influence_direction_blocked_count") == 1
+        and summary.get("influence_strength_high_blocked_count") == 1
+        and summary.get("influence_strength_low_blocked_count") == 1
+        and summary.get("empty_exploration_note_blocked_count") == 1
+        and summary.get("final_action_created_blocked_count") == 1
+        and summary.get("direct_action_command_blocked_count") == 1
+        and summary.get("runtime_action_selection_blocked_count") == 1
+        and summary.get("action_selection_influence_blocked_count") == 1
+        and summary.get("action_behavior_changed_blocked_count") == 1
+        and summary.get("exploration_blocked_count") == 1
+        and summary.get("curiosity_overridden_blocked_count") == 1
+        and summary.get("mentor_override_blocked_count") == 1
+        and summary.get("lesson_applied_blocked_count") == 1
+        and summary.get("memory_write_blocked_count") == 1
+        and summary.get("new_retention_written_blocked_count") == 1
+        and summary.get("predictor_modified_blocked_count") == 1
+        and summary.get("proof_of_learning_claim_blocked_count") == 1
+        and summary.get("final_action_created_count") == 0
+        and summary.get("direct_action_command_count") == 0
+        and summary.get("runtime_action_selection_count") == 0
+        and summary.get("action_selection_influence_count") == 0
+        and summary.get("action_behavior_changed_count") == 0
+        and summary.get("exploration_blocked_valid_count") == 0
+        and summary.get("curiosity_overridden_count") == 0
+        and summary.get("mentor_override_blocked_valid_count") == 0
+        and summary.get("lesson_applied_count") == 0
+        and summary.get("memory_write_count") == 0
+        and summary.get("new_retention_written_count") == 0
+        and summary.get("predictor_modified_count") == 0
+        and summary.get("proof_of_learning_claim_count") == 0
+        and candidates
+        and set(candidates[0].keys())
+        == {
+            "memory_influence_candidate_id",
+            "source_dry_run_context_id",
+            "target_action_tendency",
+            "influence_direction",
+            "influence_strength",
+            "preview_only",
+            "human_summary",
+            "blocked_flags",
+        }
+        and boundary.get("preview_only") is True
+        and boundary.get("memory_is_warning_not_ban") is True
+        and boundary.get("past_failure_does_not_forbid_action") is True
+        and boundary.get("curiosity_exploration_preserved") is True
+        and boundary.get("top_level_field_count") == 8
+        and boundary.get("max_influence_strength") == 0.3
+        and boundary.get("uses_retained_experience_into_dry_run_minimal") is True
+        and boundary.get("real_memory_influenced_behavior_added") is False
+        and boundary.get("final_action_creation_added") is False
+        and boundary.get("direct_action_command_added") is False
+        and boundary.get("runtime_action_selection_added") is False
+        and boundary.get("action_behavior_change_added") is False
+        and boundary.get("exploration_blocking_added") is False
+        and boundary.get("curiosity_override_added") is False
+        and boundary.get("mentor_override_blocking_added") is False
+        and boundary.get("lesson_application_added") is False
+        and boundary.get("memory_write_added") is False
+        and boundary.get("new_retention_write_added") is False
+        and boundary.get("predictor_mutation_added") is False
+        and boundary.get("proof_of_learning_claimed") is False
+    )
+    return _result(
+        "memory_influence_candidate_preview_minimal",
+        passed,
+        {
+            "summary": summary,
+            "first_candidate_keys": sorted(candidates[0].keys()) if candidates else [],
             "valid_human_summaries": result.get("valid_human_summaries", []),
             "boundary": boundary,
         },
@@ -12345,6 +12439,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_retained_experience_listing_cli_minimal(),
         smoke_retained_experience_exact_key_lookup_minimal(),
         smoke_retained_experience_into_dry_run_minimal(),
+        smoke_memory_influence_candidate_preview_minimal(),
         smoke_five_layer_memory_design_assumption(),
         smoke_five_layer_memory_framework_boundary(),
         smoke_history_runtime_persistence_gap_review(),
