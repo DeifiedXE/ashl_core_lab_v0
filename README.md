@@ -2583,3 +2583,7 @@ Two-Trial History Boundary:
 ## Pre-Action Consideration Gate Check Minimal v0
 
 - Pre-Action Consideration Gate Check Minimal v0 gates bounded pre-action consideration candidates for action-selection-adjacent review only. Candidates may pass into review when they are exact-key sourced, positive-delta derived, safety-envelope covered, rollback verified, mentor-overridable, exploration-preserving, and audit-traced. Runtime action selection, final actions, action execution, direct commands, persistent policy, generalized behavior, lesson application, predictor mutation, and proof-of-learning claims remain blocked.
+
+## Action-Selection-Adjacent Review Minimal v0
+
+- Action-Selection-Adjacent Review Minimal v0 organizes gated pre-action consideration candidates into a review layer and highlights the most review-worthy candidate. This is not action selection: runtime action selection, selected actions, final actions, execution, direct commands, persistent policy, generalized behavior, lesson application, predictor mutation, and proof-of-learning claims remain blocked.

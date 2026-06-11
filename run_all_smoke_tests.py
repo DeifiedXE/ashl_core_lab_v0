@@ -104,6 +104,9 @@ from ashl_core.pre_action_consideration_candidate_minimal import (
 from ashl_core.pre_action_consideration_gate_check_minimal import (
     run_pre_action_consideration_gate_check_minimal_check,
 )
+from ashl_core.action_selection_adjacent_review_minimal import (
+    run_action_selection_adjacent_review_minimal_check,
+)
 from ashl_core.minimal_visual_grounding_trial import run_minimal_visual_grounding_trial_check
 from ashl_core.visual_prediction_error_attention_priority_preview_minimal import (
     run_visual_prediction_error_attention_priority_preview_minimal_check,
@@ -10760,6 +10763,79 @@ def smoke_pre_action_consideration_gate_check_minimal() -> dict:
     )
 
 
+def smoke_action_selection_adjacent_review_minimal() -> dict:
+    result = run_action_selection_adjacent_review_minimal_check()
+    summary = result.get("summary", {})
+    boundary = result.get("boundary_check", {})
+    records = result.get("action_selection_adjacent_reviews", [])
+    valid_result = records[0] if records else {}
+    review_items = {
+        item.get("scenario_id"): item
+        for item in valid_result.get("review_items", [])
+        if isinstance(item, dict)
+    }
+    review_summary = valid_result.get("review_summary", {})
+    allowed_next = valid_result.get("allowed_next_layer", {})
+    passed = (
+        result.get("command") == "run-action-selection-adjacent-review-minimal-check"
+        and result.get("flow") == "action_selection_adjacent_review_minimal_v0"
+        and result.get("status") == "ok"
+        and summary.get("action_selection_adjacent_review_count") == 41
+        and summary.get("valid_action_selection_adjacent_review_count") == 1
+        and summary.get("invalid_action_selection_adjacent_review_count") == 40
+        and summary.get("review_item_count") == 3
+        and summary.get("review_only_item_count") == 3
+        and summary.get("not_selected_action_item_count") == 3
+        and summary.get("not_final_action_item_count") == 3
+        and summary.get("not_action_execution_item_count") == 3
+        and summary.get("most_review_worthy_candidate_count") == 1
+        and summary.get("may_enter_non_executing_action_choice_candidate_count") == 1
+        and summary.get("runtime_action_selection_blocked_count") == 1
+        and summary.get("final_action_blocked_count") == 1
+        and summary.get("action_execution_blocked_count") == 1
+        and summary.get("direct_command_blocked_count") == 1
+        and summary.get("persistent_policy_blocked_count") == 1
+        and summary.get("wrong_mapping_blocked_count") == 1
+        and summary.get("selected_action_blocked_count") == 1
+        and summary.get("proof_of_learning_claim_blocked_count") == 1
+        and review_items.get("obstacle_retry_failed_same_state", {}).get("reviewed_action") == "check_before_retry"
+        and review_items.get("costly_retry_same_state", {}).get("reviewed_action") == "slow_down_or_reduce_cost"
+        and review_items.get("unclear_failure_same_state", {}).get("reviewed_action") == "ask_for_help"
+        and review_summary.get("most_review_worthy_candidate") == "check_before_retry"
+        and review_summary.get("selection_made") is False
+        and review_summary.get("final_action_created") is False
+        and allowed_next.get("may_enter_non_executing_action_choice_candidate") is True
+        and allowed_next.get("may_enter_runtime_action_selection") is False
+        and allowed_next.get("may_create_final_action") is False
+        and allowed_next.get("may_execute_action") is False
+        and allowed_next.get("may_create_direct_command") is False
+        and allowed_next.get("may_write_persistent_policy") is False
+        and boundary.get("review_item_count") == 3
+        and boundary.get("most_review_worthy_candidate") == "check_before_retry"
+        and boundary.get("review_is_selection") is False
+        and boundary.get("selected_action_added") is False
+        and boundary.get("runtime_action_selection_added") is False
+        and boundary.get("final_action_creation_added") is False
+        and boundary.get("action_execution_added") is False
+        and boundary.get("direct_action_command_added") is False
+        and boundary.get("persistent_policy_write_added") is False
+        and boundary.get("general_behavior_change_added") is False
+        and boundary.get("semantic_or_fuzzy_matching_added") is False
+        and boundary.get("predictor_mutation_added") is False
+        and boundary.get("proof_of_learning_claimed") is False
+    )
+    return _result(
+        "action_selection_adjacent_review_minimal",
+        passed,
+        {
+            "summary": summary,
+            "validation_results": result.get("validation_results", []),
+            "boundary": boundary,
+            "review_items": valid_result.get("review_items", []),
+        },
+    )
+
+
 def smoke_phase0_current_capability_snapshot() -> dict:
     doc_path = Path("docs/phase0_current_capability_snapshot_2026-06-10.md")
     doc = doc_path.read_text(encoding="utf-8") if doc_path.exists() else ""
@@ -13441,6 +13517,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_runtime_tendency_memory_influence_multi_scenario_check_minimal(),
         smoke_pre_action_consideration_candidate_minimal(),
         smoke_pre_action_consideration_gate_check_minimal(),
+        smoke_action_selection_adjacent_review_minimal(),
         smoke_phase0_current_capability_snapshot(),
         smoke_memory_influence_behavior_gate_design(),
         smoke_first_memory_influenced_behavior_boundary(),

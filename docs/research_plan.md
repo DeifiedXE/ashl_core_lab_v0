@@ -5763,3 +5763,19 @@ Progress:
 - Gates bounded pre-action consideration candidates for action-selection-adjacent review only.
 - Requires exact-key sourcing, positive-delta derivation, safety-envelope coverage, rollback verification, mentor override availability, exploration preservation, audit trace, no-final-action gate, and no-action-execution gate.
 - Confirms check_before_retry, slow_down_or_reduce_cost, and ask_for_help candidates may pass to review while runtime action selection, final actions, action execution, direct commands, persistent policy, generalized behavior, lesson application, predictor mutation, and proof-of-learning claims remain blocked.
+
+## Action-Selection-Adjacent Review Minimal v0
+
+Status: completed / action-selection-adjacent-review / no-action-selection.
+
+Progress:
+- Organizes gated pre-action consideration candidates into review items.
+- Highlights check_before_retry as most_review_worthy_candidate by deterministic review priority.
+- Review can organize candidates for future selection, but review is not selection.
+- Runtime action selection, selected actions, final actions, execution, direct commands, persistent policy, generalized behavior, lesson application, predictor mutation, and proof-of-learning claims remain blocked.
+
+Forward plan:
+1. Non-Executing Action Choice Candidate Minimal v0.
+2. One-Step Sandbox Action Intent Minimal v0.
+3. One-Step Sandbox Action Execution Minimal v0.
+4. Do not create standalone check packages unless final_action, execution, persistent policy, real navigation/UI, memory write, predictor mutation, semantic/fuzzy retrieval, or generalized behavior changes.
