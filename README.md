@@ -1618,7 +1618,7 @@ Two-Trial History Boundary:
 
 - `docs/current_boundary_index.md`
 - Adds a short, versioned, low-token source of global hard boundaries for future work packages.
-- Current version: `Boundary Index Version: 2026-06-09-b54`.
+- Current version: `Boundary Index Version: 2026-06-09-b55`.
 - Current index is compacted and should stay under 120 lines when possible.
 - Older milestone details are preserved in `docs/boundary_index_archive_2026_06.md`.
 - Compaction is docs-only and does not change runtime behavior or claim meaning.
@@ -2559,3 +2559,7 @@ Two-Trial History Boundary:
 ## Runtime Tendency Memory Influence Safety Envelope Minimal v0
 
 - Runtime Tendency Memory Influence Safety Envelope Minimal v0 defines a bounded safety envelope for reversible runtime tendency memory influence. It requires controlled runner scope, same-state/same-candidate evaluation, exact-key memory signal only, max_absolute_delta <= 0.10, rollback verification, no dirty state, no persistent influence, mentor override availability, exploration allowance, audit trace, and no-final-action/no-execution gates. Runtime action selection, final actions, execution, direct commands, persistent policy writes, generalized behavior, lesson application, predictor mutation, and proof-of-learning claims remain blocked.
+
+## Runtime Tendency Memory Influence Safety Sync Minimal v0
+
+- Runtime Tendency Memory Influence Safety Sync Minimal v0 records that retained memory can reversibly alter controlled runtime action tendency scores inside a bounded safety envelope. The evidence includes same-runner A/B score changes, rollback to baseline, no dirty state, no persistent influence, max_absolute_delta <= 0.10, mentor override availability, exploration allowance, audit trace, and no-final-action/no-execution gates. Production action selection, final actions, execution, direct commands, real navigation/UI changes, persistent policy, generalized behavior, lesson application, predictor mutation, and proof-of-learning claims remain blocked.

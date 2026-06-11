@@ -5700,3 +5700,17 @@ Progress:
 - Defines the safety envelope required before reversible runtime tendency memory influence can move toward any future action-selection-adjacent layer.
 - Requires controlled runner scope, same-state/same-candidate evaluation, exact-key memory signal only, max_absolute_delta <= 0.10, rollback verification, no dirty state, no persistent influence, mentor override availability, exploration allowance, audit trace, and no-final-action/no-execution gates.
 - Runtime action selection, final actions, action execution, direct commands, persistent policy writes, generalized behavior, lesson application, predictor mutation, and proof-of-learning claims remain blocked.
+
+## Runtime Tendency Memory Influence Safety Sync Minimal v0
+
+Status: completed / docs-only / boundary-sync / no-production-action-selection.
+
+Progress:
+- Completed: runtime tendency memory influence A/B, rollback check, and safety envelope.
+- Strongest safe claim: retained memory can reversibly alter controlled runtime action tendency scores inside a bounded safety envelope.
+- Do not integrate memory influence into production action selection until multi-scenario stability, mentor override, rollback, audit, exploration boundaries, and no-final-action/no-execution gates are stable across cases.
+
+Next options:
+1. Runtime Tendency Memory Influence Multi-Scenario Check Minimal v0
+2. Runtime Tendency Mentor Override Check Minimal v0
+3. Stop and review before action-selection-adjacent integration
