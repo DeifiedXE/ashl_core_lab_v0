@@ -5656,6 +5656,21 @@ Progress:
 - Required gate conditions preserve preview-only upstream records, bounded influence, mentor override, exploration, rollback, and audit.
 - Runtime action selection and final actions remain blocked.
 
+## Runtime Tendency Memory Influence Evidence Sync Minimal v0
+
+Status: completed / docs-only / boundary-sync / no-production-action-selection.
+
+Progress:
+- Completed: controlled runtime action tendency memory influence A/B evidence.
+- Recorded that the same deterministic runner, same state, and same candidate actions produce different runtime tendency scores with memory_on vs memory_off.
+- Evidence: retry_same_action 0.50 -> 0.45 and check_before_retry 0.50 -> 0.60.
+- Do not integrate memory influence into production action selection until safety envelope, rollback, audit, mentor override, exploration boundary, and no-final-action gates are stable.
+
+Next options:
+1. Runtime Tendency Memory Influence Safety Envelope Minimal v0
+2. Runtime Tendency Memory Influence Reversal / Rollback Check Minimal v0
+3. Stop and review before action selection integration
+
 ## Runtime Action Tendency Memory Influence A/B Minimal v0
 
 Status: completed / controlled-runtime-tendency-ab / scores-only / no-action-selection.

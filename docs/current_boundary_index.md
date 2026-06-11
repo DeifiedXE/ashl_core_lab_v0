@@ -1,7 +1,7 @@
-Boundary Index Version: 2026-06-09-b53
-Last update log: Memory Influence Dry-Run Progress Sync Minimal v0
-Previous Boundary Index Version: 2026-06-09-b52
-Previous Last update log: Memory Influence Roadmap Sync Minimal v0
+Boundary Index Version: 2026-06-09-b54
+Last update log: Runtime Tendency Memory Influence Evidence Sync Minimal v0
+Previous Boundary Index Version: 2026-06-09-b53
+Previous Last update log: Memory Influence Dry-Run Progress Sync Minimal v0
 Clean count at last update log reset: 0/5
 Current clean count: 0/5
 
@@ -38,6 +38,7 @@ Current clean count: 0/5
 - Visual Prediction Error + Attention Priority Preview Minimal v0 can compare expected vs actual controlled visual traces and produce read-only notice/ignore attention priority previews.
 - Retained memory can be read-only exact-key queried, shown as dry-run context, and converted into preview-only bounded action-tendency advice.
 - Memory-influenced action tendency previews and dry-run contrasts can show before/after tendency deltas as trace-level evidence only.
+- Runtime Action Tendency Memory Influence A/B Minimal v0 can show controlled runtime tendency score changes with memory_on vs memory_off using the same deterministic runner, same state, and same candidate actions.
 - First memory-influenced behavior boundary exists as design only; real memory-influenced behavior remains blocked.
 
 ## Latest Safe Claims
@@ -47,6 +48,7 @@ Current clean count: 0/5
 - Expected-vs-actual controlled visual traces can produce read-only visual prediction error previews and notice/ignore attention priority previews.
 - Retained memory can be looked up by exact key, shown as dry-run context, and produce preview-only bounded action tendency advice.
 - Retained memory can be contrasted against baseline tendency in dry-run, e.g. check_before_retry 0.5 -> 0.6.
+- In a controlled deterministic runtime tendency scorer, enabling valid memory influence can change runtime action tendency scores: retry_same_action/check_before_retry 0.50/0.50 -> 0.45/0.60.
 - Memory is a warning sign, not a ban command; past failure is a warning, not a prohibition.
 - Retained records can be appended only through mentor-gated exact `留` approval and read back/listed as retained JSONL records.
 
@@ -57,8 +59,10 @@ Current clean count: 0/5
 - No automatic lesson candidate creation.
 - No lesson application.
 - No runtime action selection influence.
+- No production action selection.
 - No real memory-influenced behavior.
 - No final_action creation or direct action command.
+- No action execution, real navigation, UI behavior change, or generalized behavior claim.
 - No action behavior change.
 - No exploration blocking, curiosity override, or mentor override blocking.
 - No memory write outside explicitly scoped mentor-gated retention.
@@ -83,6 +87,7 @@ Current clean count: 0/5
 - Eye Line Pause / Memory-Influence Roadmap milestone: eye line pauses after Minimal Visual Grounding Trial and Visual Prediction Error + Attention Priority Preview. Next roadmap: five-layer memory framework boundary -> retained exact-key lookup -> retained experience into dry-run -> first memory-influenced behavior gate. Forbidden: no object recognition, semantic vision, active focus, attention control, lesson application, action influence, behavior change, automatic retention, semantic/fuzzy/vector retrieval, predictor mutation, or proof-of-learning claim.
 - Memory Influence Roadmap milestone: retained exact-key lookup, retained experience into dry-run, memory influence candidate preview, and first memory-influenced behavior boundary completed. Safe claim: retained memory can be read-only exact-key queried, shown as dry-run context, and produce preview-only bounded action-tendency advice. Core rule: memory is a warning sign, not a ban command; past failure is not prohibition. Forbidden: no real memory-influenced behavior, runtime action selection, final_action, direct action command, behavior change, exploration blocking, curiosity override, mentor override blocking, lesson application, predictor mutation, or proof-of-learning claim.
 - Memory Influence Dry-Run Contrast milestone: Memory-Influenced Action Tendency Preview Minimal v0 and Memory Influence Dry-Run Contrast Minimal v0 completed. Safe claim: retained memory can produce preview-only bounded tendency advice and dry-run contrast evidence, e.g. check_before_retry 0.5 -> 0.6. Forbidden: no real memory-influenced behavior, runtime action selection, final_action, direct action command, behavior change, exploration blocking, curiosity override, mentor override blocking, lesson application, predictor mutation, or proof-of-learning claim.
+- Runtime Tendency Memory Influence Evidence milestone: Runtime Action Tendency Memory Influence A/B Minimal v0 completed. Safe claim: retained memory can alter controlled runtime action tendency scores in a deterministic A/B runner using the same state, same candidate actions, and same runner. Evidence: memory_off retry_same_action/check_before_retry 0.50/0.50; memory_on 0.45/0.60; runtime_tendency_changed=True. Forbidden: no production action selection, final_action, action execution, direct command, real navigation/UI change, persistent policy, generalized behavior, exploration blocking, curiosity override, mentor override blocking, lesson application, predictor mutation, or proof-of-learning claim.
 
 ## Archive
 - Older milestone details are archived in `docs/boundary_index_archive_2026_06.md`.

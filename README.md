@@ -1618,7 +1618,7 @@ Two-Trial History Boundary:
 
 - `docs/current_boundary_index.md`
 - Adds a short, versioned, low-token source of global hard boundaries for future work packages.
-- Current version: `Boundary Index Version: 2026-06-09-b53`.
+- Current version: `Boundary Index Version: 2026-06-09-b54`.
 - Current index is compacted and should stay under 120 lines when possible.
 - Older milestone details are preserved in `docs/boundary_index_archive_2026_06.md`.
 - Compaction is docs-only and does not change runtime behavior or claim meaning.
@@ -2541,6 +2541,10 @@ Two-Trial History Boundary:
 ## Memory Influence Behavior Gate Design Minimal v0
 
 - Memory Influence Behavior Gate Design Minimal v0 defines the future high-risk gate between memory dry-run contrast evidence and any pre-action consideration layer. The gate is not an action selector, final_action generator, or direct command layer. Runtime action selection and final actions remain blocked.
+
+## Runtime Tendency Memory Influence Evidence Sync Minimal v0
+
+- Runtime Action Tendency Memory Influence A/B Minimal v0 demonstrates that the same controlled deterministic runtime tendency scorer, with the same state and candidate actions, produces different action tendency scores when valid memory influence is enabled. This changes runtime tendency scores only; it does not select final_action, execute actions, create direct commands, change real navigation/UI behavior, write persistent policy, generalize behavior, apply lessons, mutate predictors, or prove learning.
 
 ## Runtime Action Tendency Memory Influence A/B Minimal v0
 
