@@ -5517,3 +5517,12 @@ Progress:
 - Preserved b49 Minimal Visual Grounding Trial v0 milestone and boundaries in the current compact index.
 - No runtime behavior changed.
 - No claim meaning changed; older details were archived only.
+
+## Visual Prediction Error + Attention Priority Preview Minimal v0
+
+Status: completed / preview-only / read-only / trace-only.
+
+Progress:
+- Adds read-only previews for expected-vs-actual visual trace differences and attention priority.
+- Supports `visual_change_detected` -> `notice` and `no_visual_prediction_error` -> `ignore`.
+- Does not apply active focus, control attention, select actions, change behavior, write memory, add retention, mutate predictors, or prove learning.

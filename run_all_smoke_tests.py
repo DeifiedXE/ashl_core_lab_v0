@@ -75,6 +75,9 @@ from ashl_core.lesson_effect_evidence_trace_minimal import (
     run_lesson_effect_evidence_trace_minimal_check,
 )
 from ashl_core.minimal_visual_grounding_trial import run_minimal_visual_grounding_trial_check
+from ashl_core.visual_prediction_error_attention_priority_preview_minimal import (
+    run_visual_prediction_error_attention_priority_preview_minimal_check,
+)
 from ashl_core.mentor_gated_experience_retention_minimal import (
     run_mentor_gated_experience_retention_minimal_check,
 )
@@ -5035,6 +5038,89 @@ def smoke_minimal_visual_grounding_trial() -> dict:
         {
             "summary": summary,
             "valid_human_summaries": result.get("valid_human_summaries", []),
+            "validation_results": result.get("validation_results", []),
+            "boundary": boundary,
+        },
+    )
+
+
+def smoke_visual_prediction_error_attention_priority_preview_minimal() -> dict:
+    result = run_visual_prediction_error_attention_priority_preview_minimal_check()
+    summary = result.get("summary", {})
+    boundary = result.get("boundary_check", {})
+    passed = (
+        result.get("command") == "run-visual-prediction-error-attention-priority-preview-minimal-check"
+        and result.get("flow") == "visual_prediction_error_attention_priority_preview_minimal_v0"
+        and result.get("status") == "ok"
+        and summary.get("prediction_error_preview_count") == 16
+        and summary.get("valid_prediction_error_preview_count") == 2
+        and summary.get("attention_priority_preview_count") == 14
+        and summary.get("valid_attention_priority_preview_count") == 2
+        and summary.get("visual_change_detected_count") == 1
+        and summary.get("no_visual_prediction_error_count") == 1
+        and summary.get("notice_priority_count") == 1
+        and summary.get("ignore_priority_count") == 1
+        and summary.get("invalid_preview_count") == 26
+        and summary.get("read_only_false_blocked_count") == 1
+        and summary.get("error_type_blocked_count") == 1
+        and summary.get("priority_level_blocked_count") == 1
+        and summary.get("empty_difference_blocked_count") == 1
+        and summary.get("empty_why_prioritized_blocked_count") == 1
+        and summary.get("active_focus_applied_blocked_count") == 2
+        and summary.get("attention_control_blocked_count") == 2
+        and summary.get("action_selection_influence_blocked_count") == 2
+        and summary.get("action_behavior_changed_blocked_count") == 2
+        and summary.get("memory_write_blocked_count") == 2
+        and summary.get("new_retention_written_blocked_count") == 2
+        and summary.get("lesson_applied_blocked_count") == 2
+        and summary.get("predictor_modified_blocked_count") == 2
+        and summary.get("proof_of_learning_claim_blocked_count") == 2
+        and summary.get("active_focus_applied_count") == 0
+        and summary.get("attention_control_count") == 0
+        and summary.get("action_selection_influence_count") == 0
+        and summary.get("action_behavior_changed_count") == 0
+        and summary.get("memory_write_count") == 0
+        and summary.get("new_retention_written_count") == 0
+        and summary.get("lesson_applied_count") == 0
+        and summary.get("predictor_modified_count") == 0
+        and summary.get("proof_of_learning_claim_count") == 0
+        and boundary.get("visual_prediction_error_preview_enabled") is True
+        and boundary.get("attention_priority_preview_enabled") is True
+        and boundary.get("read_only") is True
+        and boundary.get("preview_only") is True
+        and boundary.get("controlled_symbolic_visual_traces_only") is True
+        and boundary.get("prediction_error_top_level_field_count") == 8
+        and boundary.get("attention_priority_top_level_field_count") == 8
+        and boundary.get("uses_minimal_visual_grounding_trial") is True
+        and boundary.get("uses_visual_retained_experience_link_preview_minimal") is True
+        and boundary.get("uses_visual_retention_demo_snapshot_minimal") is True
+        and boundary.get("visual_change_detected_maps_to_notice") is True
+        and boundary.get("no_visual_prediction_error_maps_to_ignore") is True
+        and boundary.get("writes_retained_jsonl") is False
+        and boundary.get("active_focus_added") is False
+        and boundary.get("focus_applied_added") is False
+        and boundary.get("attention_control_added") is False
+        and boundary.get("runtime_action_selection_added") is False
+        and boundary.get("action_behavior_change_added") is False
+        and boundary.get("object_recognition_added") is False
+        and boundary.get("semantic_vision_added") is False
+        and boundary.get("memory_write_added") is False
+        and boundary.get("new_retention_write_added") is False
+        and boundary.get("lesson_application_added") is False
+        and boundary.get("predictor_mutation_added") is False
+        and boundary.get("proof_of_learning_claimed") is False
+    )
+    return _result(
+        "visual_prediction_error_attention_priority_preview_minimal",
+        passed,
+        {
+            "summary": summary,
+            "valid_prediction_error_human_summaries": result.get(
+                "valid_prediction_error_human_summaries", []
+            ),
+            "valid_attention_priority_human_summaries": result.get(
+                "valid_attention_priority_human_summaries", []
+            ),
             "validation_results": result.get("validation_results", []),
             "boundary": boundary,
         },
@@ -12046,6 +12132,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_visual_retained_experience_link_preview_minimal(),
         smoke_visual_retention_demo_snapshot_minimal(),
         smoke_minimal_visual_grounding_trial(),
+        smoke_visual_prediction_error_attention_priority_preview_minimal(),
         smoke_focus_selector_design(),
         smoke_focus_candidate_schema(),
         smoke_focus_candidate_ranking_trace_design(),

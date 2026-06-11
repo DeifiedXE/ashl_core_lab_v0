@@ -2493,3 +2493,7 @@ Two-Trial History Boundary:
 ## Minimal Visual Grounding Trial v0
 
 - Minimal Visual Grounding Trial v0 runs a controlled symbolic visual change through the visual experience, focus preview, visual lesson evidence, and retained experience preview path, producing a read-only human-readable grounding trial summary. This remains trace/read-only and does not add object recognition, semantic vision, active focus, lesson application, action influence, memory write, new retention write, semantic/fuzzy/vector retrieval, predictor mutation, or proof of learning.
+
+## Visual Prediction Error + Attention Priority Preview Minimal v0
+
+- Visual Prediction Error + Attention Priority Preview Minimal v0 adds read-only previews for expected-vs-actual visual trace differences and attention priority. It can mark visual_change_detected as notice and no_visual_prediction_error as ignore, but does not apply active focus, control attention, select actions, change behavior, write memory, add retention, mutate predictors, or prove learning.
