@@ -10389,6 +10389,43 @@ def smoke_current_boundary_index_docs() -> dict:
         compact_passed,
         {"doc": str(doc_path), "archive": str(archive_path), "line_count": line_count},
     )
+
+
+def smoke_phase0_current_capability_snapshot() -> dict:
+    doc_path = Path("docs/phase0_current_capability_snapshot_2026-06-10.md")
+    doc = doc_path.read_text(encoding="utf-8") if doc_path.exists() else ""
+    required_terms = [
+        "Boundary Index Version: 2026-06-09-b55",
+        "Retained memory can reversibly alter controlled runtime action tendency scores inside a bounded safety envelope",
+        "Action / Lesson Review Line",
+        "Vision / Eye Line",
+        "Focus / Attention Line",
+        "Retention / Memory Line",
+        "Memory Influence Preview Line",
+        "Runtime Tendency Memory Influence Line",
+        "Five-Layer Memory Framework Line",
+        "Temporary Cross-Session Space Line",
+        "AGE-to-AGE Teaching Line",
+        "No production action selection",
+        "No final_action",
+        "No action execution",
+        "No proof of learning",
+        "No object recognition",
+        "No semantic vision",
+        "No active_focus",
+        "No semantic memory search",
+        "No five-layer memory runtime",
+        "Temporary cross-session space is demo / fixture handoff only",
+        "AGE-to-AGE teaching is a future conceptual line only",
+    ]
+    passed = doc_path.exists() and all(term in doc for term in required_terms)
+    return _result(
+        "phase0_current_capability_snapshot",
+        passed,
+        {"doc": str(doc_path), "required_terms": required_terms},
+    )
+
+
     required_terms = [
         "Boundary Index Version: 2026-06-06-b30",
         "Last update log: Batch 30",
@@ -13031,6 +13068,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_runtime_action_tendency_memory_influence_ab_minimal(),
         smoke_runtime_tendency_memory_influence_rollback_check_minimal(),
         smoke_runtime_tendency_memory_influence_safety_envelope_minimal(),
+        smoke_phase0_current_capability_snapshot(),
         smoke_memory_influence_behavior_gate_design(),
         smoke_first_memory_influenced_behavior_boundary(),
         smoke_five_layer_memory_design_assumption(),

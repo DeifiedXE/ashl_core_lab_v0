@@ -5714,3 +5714,12 @@ Next options:
 1. Runtime Tendency Memory Influence Multi-Scenario Check Minimal v0
 2. Runtime Tendency Mentor Override Check Minimal v0
 3. Stop and review before action-selection-adjacent integration
+
+## Phase 0 Current Capability Snapshot Minimal v0
+
+Status: completed / documentation-snapshot / no-runtime-change.
+
+Progress:
+- Records the current safe capability state across action/lesson review, vision, focus, retention, memory influence preview, runtime tendency memory influence, five-layer memory framework, temporary cross-session space, and AGE-to-AGE future teaching lines.
+- Strongest safe claim: retained memory can reversibly alter controlled runtime action tendency scores inside a bounded safety envelope.
+- Production action selection, final actions, action execution, direct commands, proof of learning, consciousness claims, semantic vision, object recognition, active focus, five-layer runtime, and AGE-to-AGE runtime remain blocked.
