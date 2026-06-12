@@ -1618,7 +1618,7 @@ Two-Trial History Boundary:
 
 - `docs/current_boundary_index.md`
 - Adds a short, versioned, low-token source of global hard boundaries for future work packages.
-- Current version: `Boundary Index Version: 2026-06-09-b57`.
+- Current version: `Boundary Index Version: 2026-06-09-b58`.
 - Current index is compacted and should stay under 120 lines when possible.
 - Older milestone details are preserved in `docs/boundary_index_archive_2026_06.md`.
 - Compaction is docs-only and does not change runtime behavior or claim meaning.
@@ -2619,3 +2619,7 @@ Two-Trial History Boundary:
 ## Phase0 Level 0 Obstacle Memory Flip Test Minimal v0
 
 - Phase0 Level 0 Obstacle Memory Flip Test Minimal v0 verifies that memory influence is content-sensitive rather than a one-way caution bias. In the same controlled obstacle state with the same runner and candidate actions, retry-failed memory makes check_before_retry stronger, while retry-succeeded memory makes retry_same_action stronger. This is a runtime tendency flip test only: no action execution, no pathfinding, no danger cell, no lesson application, no memory write, no predictor mutation, and no proof-of-learning claim.
+
+## Phase0 Level 0-1 Milestone Sync Minimal v0
+
+- Phase0 Level 0-1 Milestone Sync Minimal v0 records that Level 0 rejects one-way caution bias through bidirectional obstacle-memory tendency flips, and Level 1 passes a controlled one-step symbolic danger check in sandbox. This makes the Level 1 danger check more credible: it follows a prior test showing memory influence can point both toward caution and toward retry depending on memory content. Pathfinding, goal reaching, multi-step loops, production/runtime action selection, selected_action, final_action, direct commands, object recognition, semantic vision, lesson application, memory/retention writes, predictor mutation, and proof-of-learning claims remain blocked.

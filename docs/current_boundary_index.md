@@ -1,7 +1,7 @@
-Boundary Index Version: 2026-06-09-b57
-Last update log: Sandbox Action Loop Milestone Sync Minimal v0
-Previous Boundary Index Version: 2026-06-09-b56
-Previous Last update log: One-Step Sandbox Action Execution Minimal v0
+Boundary Index Version: 2026-06-09-b58
+Last update log: Phase0 Level 0-1 Milestone Sync Minimal v0
+Previous Boundary Index Version: 2026-06-09-b57
+Previous Last update log: Sandbox Action Loop Milestone Sync Minimal v0
 Clean count at last update log reset: 0/5; current clean count: 0/5
 
 ## Purpose
@@ -38,7 +38,7 @@ Clean count at last update log reset: 0/5; current clean count: 0/5
 - Retained memory can be read-only exact-key queried, shown as dry-run context, and converted into preview-only bounded action-tendency advice.
 - Memory-influenced action tendency previews and dry-run contrasts can show before/after tendency deltas as trace-level evidence only.
 - Runtime tendency memory influence can show same-runner A/B score changes, rollback to baseline, and bounded safety envelope requirements.
-- Sandbox Action Loop v0 can execute check_before_retry once inside a controlled toy sandbox, record before/after state, and connect the result into expected/actual outcome and action-outcome trace evidence.
+- Phase0 Level 0-1 can reject one-way caution bias with bidirectional obstacle-memory tendency flips, then pass a one-step symbolic danger check in sandbox.
 - First memory-influenced behavior boundary exists as design only; real memory-influenced behavior remains blocked.
 
 ## Latest Safe Claims
@@ -49,7 +49,7 @@ Clean count at last update log reset: 0/5; current clean count: 0/5
 - Retained memory can be looked up by exact key, shown as dry-run context, and produce preview-only bounded action tendency advice.
 - Retained memory can be contrasted against baseline tendency in dry-run, e.g. check_before_retry 0.5 -> 0.6.
 - Retained memory can reversibly alter controlled runtime action tendency scores inside a bounded safety envelope: retry_same_action/check_before_retry 0.50/0.50 -> 0.45/0.60 -> 0.50/0.50, with no dirty state or persistent influence and max_absolute_delta <= 0.10.
-- ASHL Core can execute one sandbox-only check action from the reviewed non-executing chain and connect the result into expected/actual outcome evidence and action-outcome trace evidence.
+- ASHL Core can show content-sensitive bidirectional runtime tendency memory influence in a controlled obstacle fixture and can pass a controlled one-step symbolic danger check in sandbox.
 - Memory is a warning sign, not a ban command; past failure is a warning, not a prohibition.
 - Retained records can be appended only through mentor-gated exact `留` approval and read back/listed as retained JSONL records.
 
@@ -89,7 +89,7 @@ Clean count at last update log reset: 0/5; current clean count: 0/5
 - Memory Influence Roadmap milestone: retained exact-key lookup, retained experience into dry-run, memory influence candidate preview, and first memory-influenced behavior boundary completed. Safe claim: retained memory can be read-only exact-key queried, shown as dry-run context, and produce preview-only bounded action-tendency advice. Core rule: memory is a warning sign, not a ban command; past failure is not prohibition. Forbidden: no real memory-influenced behavior, runtime action selection, final_action, direct action command, behavior change, exploration blocking, curiosity override, mentor override blocking, lesson application, predictor mutation, or proof-of-learning claim.
 - Memory Influence Dry-Run Contrast milestone: Memory-Influenced Action Tendency Preview Minimal v0 and Memory Influence Dry-Run Contrast Minimal v0 completed. Safe claim: retained memory can produce preview-only bounded tendency advice and dry-run contrast evidence, e.g. check_before_retry 0.5 -> 0.6. Forbidden: no real memory-influenced behavior, runtime action selection, final_action, direct action command, behavior change, exploration blocking, curiosity override, mentor override blocking, lesson application, predictor mutation, or proof-of-learning claim.
 - Runtime Tendency Memory Influence Safety milestone: A/B, rollback, and safety envelope completed. Safe claim: retained memory can reversibly alter controlled runtime action tendency scores inside a bounded safety envelope. Evidence: same deterministic runner/state/candidates; memory_off retry_same_action/check_before_retry 0.50/0.50; memory_on 0.45/0.60; memory_off_again returns 0.50/0.50; runtime_tendency_changed=True; no dirty state or persistent influence; max_absolute_delta <= 0.10; mentor override available; exploration allowed; no-final-action/no-execution gates. Forbidden: no production action selection, final_action, execution, direct command, real navigation/UI change, persistent policy, generalized behavior, lesson application, predictor mutation, or proof-of-learning claim.
-- Sandbox Action Loop milestone: one-step sandbox action execution and outcome integration completed. Safe claim: ASHL Core can execute one sandbox-only check action from the reviewed non-executing chain, record sandbox before/after state, compare expected vs actual outcome, and expose action-outcome trace evidence for future lesson review. Evidence: check_before_retry executed once in phase0_toy_sandbox_obstacle_retry_failed; obstacle_detected=True; retry_same_action_executed=False; movement_executed=False; outcome_match=True; sandbox_check_success=True; evidence_available=True; human review required before any lesson. Forbidden: no production/runtime action selection, selected_action, final_action, direct command, real navigation/UI change, persistent policy, generalized behavior, lesson application, memory write, retention write, predictor mutation, or proof-of-learning claim.
+- Phase0 Level 0-1 milestone: Level 0 obstacle memory flip and Level 1 first contact danger completed. Safe claim: ASHL Core can show content-sensitive bidirectional runtime tendency memory influence in a controlled obstacle fixture, then pass a controlled one-step symbolic danger check in sandbox. Level 0 rejects one-way caution bias: retry_failed memory makes check_before_retry 0.60 > retry_same_action 0.45; retry_succeeded memory makes retry_same_action 0.60 > check_before_retry 0.45. Level 1: front_symbol=d; danger_ahead=True; check_before_retry executed once; danger_detected=True; retry_same_action_executed=False; movement_executed=False; outcome_match=True; sandbox_check_success=True; human review required before any lesson. Forbidden: no pathfinding, goal reach, multi-step loop, production/runtime action selection, selected_action, final_action, direct command, object recognition, semantic vision, lesson application, memory/retention write, predictor mutation, or proof-of-learning claim.
 
 ## Archive
 - Older milestone details are archived in `docs/boundary_index_archive_2026_06.md`.

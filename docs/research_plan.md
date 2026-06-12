@@ -5901,3 +5901,22 @@ Forward plan:
 1. Run or keep Phase0 Level 1 First Contact Danger Minimal v0 after this flip check passes.
 2. Keep Level 1 one-step symbolic danger sandbox check only.
 3. Do not add pathfinding, goal reaching, lesson application, memory write, or runtime behavior change in Level 1.
+
+## Phase0 Level 0-1 Milestone Sync Minimal v0
+
+Status: completed / milestone-sync / documentation-only.
+
+Completed:
+- Phase0 Level 0 Obstacle Memory Flip Test Minimal v0.
+- Phase0 Level 1 First Contact Danger Minimal v0.
+
+Combined result:
+- Level 0 confirms memory influence is content-sensitive and bidirectional.
+- Level 1 confirms one-step symbolic danger checking in sandbox.
+- Level 1 should be interpreted after Level 0, not as standalone proof of learning.
+- Do not claim Level 1 proves learning. It prepares a human-review-required lesson-review candidate only.
+
+Next options:
+1. Level 1 Contrast Sample Set Minimal v0.
+2. Sandbox Outcome Human Review Decision Minimal v0.
+3. Phase0 Level 2 Design Boundary Minimal v0.
