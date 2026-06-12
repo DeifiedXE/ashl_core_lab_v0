@@ -1618,7 +1618,7 @@ Two-Trial History Boundary:
 
 - `docs/current_boundary_index.md`
 - Adds a short, versioned, low-token source of global hard boundaries for future work packages.
-- Current version: `Boundary Index Version: 2026-06-09-b60`.
+- Current version: `Boundary Index Version: 2026-06-09-b61`.
 - Current index is compacted and should stay under 130 lines when possible.
 - Older milestone details are preserved in `docs/boundary_index_archive_2026_06.md`.
 - Compaction is docs-only and does not change runtime behavior or claim meaning.
@@ -2663,3 +2663,7 @@ Two-Trial History Boundary:
 ## Level 1 Explicit Lesson Application Approval Minimal v0
 
 - Level 1 Explicit Lesson Application Approval Minimal v0 records explicit human approval for a future Phase0 Level 1 sandbox-only lesson application package. Approval is scoped to the Level 1 sandbox and does not apply the lesson in this package. Memory writes, retention writes, predictor mutation, runtime behavior change, production action selection, final_action, direct commands, and proof-of-learning claims remain blocked.
+
+## Explicit User Approval Source Boundary Correction Minimal v0
+
+- Explicit User Approval Source Boundary Correction Minimal v0 clarifies that Level 1 lesson application approval must come from an explicit user/project-owner statement. Codex or AI may record and validate approval records but cannot grant approval. Demo fixtures, "蝯血?", readiness completion, and passing tests are not application approval. Lesson application remains blocked unless a valid explicit user approval record is present.

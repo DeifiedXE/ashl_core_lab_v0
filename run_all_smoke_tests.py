@@ -6590,6 +6590,36 @@ def smoke_reviewed_lesson_application_boundary_reconciliation() -> dict:
     )
 
 
+def smoke_explicit_user_approval_source_boundary() -> dict:
+    doc_path = Path("docs/explicit_user_approval_source_boundary_v0.md")
+    doc = doc_path.read_text(encoding="utf-8") if doc_path.exists() else ""
+    readme = Path("README.md").read_text(encoding="utf-8")
+    research_plan = Path("docs/research_plan.md").read_text(encoding="utf-8")
+    required_phrases = [
+        "Codex may record approval, but cannot provide approval",
+        "AI may validate approval, but cannot provide approval",
+        "Only the project owner / user can provide explicit application approval",
+        "A test fixture is not real approval",
+        '"蝯血?" is not application approval',
+        "A completed readiness record is not approval",
+        "Passing tests are not approval",
+    ]
+    missing = [phrase for phrase in required_phrases if phrase not in doc]
+    passed = (
+        doc_path.exists()
+        and not missing
+        and "Explicit User Approval Source Boundary Correction Minimal v0" in readme
+        and "Explicit User Approval Source Boundary Correction Minimal v0" in research_plan
+        and "Codex or AI may record and validate approval records but cannot grant approval" in readme
+        and "Explicit user approval must come from the project owner / user, not Codex" in research_plan
+    )
+    return _result(
+        "explicit_user_approval_source_boundary",
+        passed,
+        {"doc": str(doc_path), "missing": missing},
+    )
+
+
 def smoke_action_outcome_contrast_baseline_review() -> dict:
     doc_path = Path("docs/action_outcome_contrast_baseline_review_v0.md")
     doc = doc_path.read_text(encoding="utf-8") if doc_path.exists() else ""
@@ -10428,8 +10458,8 @@ def smoke_current_boundary_index_docs() -> dict:
     readme = readme_path.read_text(encoding="utf-8") if readme_path.exists() else ""
     research_plan = research_plan_path.read_text(encoding="utf-8") if research_plan_path.exists() else ""
     compact_required_terms = [
-        "Boundary Index Version: 2026-06-09-b60",
-        "Last update log: Reviewed Lesson Application Boundary Reconciliation Minimal v0",
+        "Boundary Index Version: 2026-06-09-b61",
+        "Last update log: Explicit User Approval Source Boundary Correction Minimal v0",
         "docs/boundary_index_archive_2026_06.md",
         "Minimal Visual Grounding Trial v0",
         "Visual Prediction Error + Attention Priority Preview Minimal v0",
@@ -10461,6 +10491,11 @@ def smoke_current_boundary_index_docs() -> dict:
         "lesson_effect_evidence_trace is evidence only",
         "none are application approval",
         "explicit human application approval",
+        "Explicit User Approval Source Boundary correction",
+        "explicit_human_application_approval must come from an explicit user/project-owner statement",
+        "Codex/AI may record or validate approval but cannot grant it",
+        '"蝯血?"',
+        "passing tests are not application approval",
         "`current_boundary_index.md` should stay <= 130 lines when possible.",
         "Hard limit: <= 150 lines.",
     ]
@@ -10482,7 +10517,7 @@ def smoke_current_boundary_index_docs() -> dict:
         and all(term in doc for term in compact_required_terms)
         and all(term in archive for term in archive_required_terms)
         and line_count <= 130
-        and "Boundary Index Version: 2026-06-09-b60" in readme
+        and "Boundary Index Version: 2026-06-09-b61" in readme
         and "docs/boundary_index_archive_2026_06.md" in readme
         and "Boundary Index Compaction / Archive v0" in research_plan
         and "Runtime Tendency Memory Influence Safety Sync Minimal v0" in research_plan
@@ -12123,13 +12158,20 @@ def smoke_level1_explicit_lesson_application_approval_minimal() -> dict:
         result.get("command") == "run-level1-explicit-lesson-application-approval-minimal-check"
         and result.get("flow") == "level1_explicit_lesson_application_approval_minimal_v0"
         and result.get("status") == "ok"
-        and summary.get("explicit_approval_result_count") == 51
+        and summary.get("explicit_approval_result_count") == 63
         and summary.get("valid_explicit_approval_result_count") == 3
-        and summary.get("invalid_explicit_approval_result_count") == 48
+        and summary.get("invalid_explicit_approval_result_count") == 60
         and summary.get("approved_for_future_package_count") == 1
         and summary.get("rejected_for_application_count") == 1
         and summary.get("needs_more_evidence_before_application_count") == 1
         and summary.get("explicit_human_application_approval_present_count") == 1
+        and summary.get("explicit_user_statement_present_count") == 1
+        and summary.get("approval_source_valid_count") == 1
+        and summary.get("approval_actor_valid_count") == 1
+        and summary.get("demo_fixture_rejected_as_real_approval_count") == 3
+        and summary.get("codex_self_approval_rejected_count") == 3
+        and summary.get("ai_self_approval_rejected_count") == 3
+        and summary.get("implicit_approval_rejected_count") == 3
         and summary.get("may_enter_level1_sandbox_lesson_application_package_count") == 1
         and summary.get("approval_scope_sandbox_only_count") == 3
         and summary.get("approval_future_package_only_count") == 1
@@ -12150,9 +12192,25 @@ def smoke_level1_explicit_lesson_application_approval_minimal() -> dict:
         and approved_scope.get("retention_write_scope") is False
         and approved_scope.get("predictor_mutation_scope") is False
         and approved_human.get("approval_is_explicit") is True
+        and approved_human.get("approval_source") == "explicit_user_statement"
+        and isinstance(approved_human.get("approval_text"), str)
+        and bool(approved_human.get("approval_text", "").strip())
+        and approved_human.get("approval_actor") == "user"
+        and approved_human.get("approver_role") == "project_owner"
         and approved_human.get("approval_is_for_future_package_only") is True
         and approved_human.get("approval_applies_lesson_now") is False
+        and approved_human.get("codex_self_approval_allowed") is False
+        and approved_human.get("ai_self_approval_allowed") is False
+        and approved_human.get("demo_fixture_is_real_approval") is False
+        and approved_human.get("implicit_approval_allowed") is False
         and approved_result.get("explicit_human_application_approval_present") is True
+        and approved_result.get("explicit_user_statement_present") is True
+        and approved_result.get("approval_source_valid") is True
+        and approved_result.get("approval_actor_valid") is True
+        and approved_result.get("demo_fixture_rejected_as_real_approval") is True
+        and approved_result.get("codex_self_approval_rejected") is True
+        and approved_result.get("ai_self_approval_rejected") is True
+        and approved_result.get("implicit_approval_rejected") is True
         and approved_result.get("lesson_applied") is False
         and approved_result.get("memory_write") is False
         and approved_result.get("retention_write") is False
@@ -14932,6 +14990,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_lesson_application_boundary_review(),
         smoke_minimal_lesson_effect_retention_boundary_review(),
         smoke_reviewed_lesson_application_boundary_reconciliation(),
+        smoke_explicit_user_approval_source_boundary(),
         smoke_action_outcome_contrast_baseline_review(),
         smoke_focus_application_gate_schema(),
         smoke_focus_candidate_from_change_trace(),

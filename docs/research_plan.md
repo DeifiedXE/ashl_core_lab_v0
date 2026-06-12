@@ -6091,3 +6091,20 @@ Forward plan:
 2. Keep it sandbox-only and block memory write, retention write, predictor mutation, runtime/global behavior change, final_action, and production action selection.
 
 Approval is not application.
+
+## Explicit User Approval Source Boundary Correction Minimal v0
+
+Status: completed / approval-source-boundary-correction / no-application.
+
+Progress:
+- Corrects Level 1 application approval so real approval requires approval_source == explicit_user_statement, approval_actor == user, approver_role == project_owner, and non-empty approval_text.
+- Clarifies that Codex or AI may record and validate approval records but cannot grant approval.
+- Blocks Codex self-approval, AI self-approval, demo fixture approval, implicit approval, readiness-derived approval, completed-test-derived approval, and marker-text-derived approval.
+- Clarifies that "蝯血?" is not application approval.
+- Keeps lesson application, memory write, retention write, predictor mutation, runtime behavior change, production action selection, final_action, direct commands, and proof-of-learning claims blocked.
+
+Forward plan:
+1. Re-check Level 1 Sandbox Lesson Application Minimal v0 against b61 approval-source boundary.
+2. Do not use fixture/demo approval as real approval.
+
+Explicit user approval must come from the project owner / user, not Codex.

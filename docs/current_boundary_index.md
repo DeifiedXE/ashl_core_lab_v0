@@ -1,7 +1,7 @@
-Boundary Index Version: 2026-06-09-b60
-Last update log: Reviewed Lesson Application Boundary Reconciliation Minimal v0
-Previous Boundary Index Version: 2026-06-09-b59
-Previous Last update log: Generic Lesson Evidence Pipeline Sync Minimal v0
+Boundary Index Version: 2026-06-09-b61
+Last update log: Explicit User Approval Source Boundary Correction Minimal v0
+Previous Boundary Index Version: 2026-06-09-b60
+Previous Last update log: Reviewed Lesson Application Boundary Reconciliation Minimal v0
 Clean count at last update log reset: 0/5; current clean count: 0/5
 
 ## Purpose
@@ -52,6 +52,7 @@ Clean count at last update log reset: 0/5; current clean count: 0/5
 - ASHL Core can show content-sensitive bidirectional runtime tendency memory influence in a controlled obstacle fixture and can pass a controlled one-step symbolic danger check in sandbox.
 - Generic lesson review decisions can bridge into existing reviewed lesson preview, dry-run correction, trial trace preview, before/after contrast, and lesson effect evidence trace without source-specific evidence channels.
 - Generic lesson evidence can approach the reviewed lesson application boundary, but lesson_effect_evidence_trace remains evidence only and is not application approval.
+- Explicit human application approval must come from an explicit user/project-owner statement; Codex/AI may record or validate it but cannot grant it.
 - Memory is a warning sign, not a ban command; past failure is a warning, not a prohibition.
 - Retained records can be appended only through mentor-gated exact `留` approval and read back/listed as retained JSONL records.
 
@@ -94,6 +95,7 @@ Clean count at last update log reset: 0/5; current clean count: 0/5
 - Phase0 Level 0-1 milestone: Level 0 obstacle memory flip and Level 1 first contact danger completed. Safe claim: ASHL Core can show content-sensitive bidirectional runtime tendency memory influence in a controlled obstacle fixture, then pass a controlled one-step symbolic danger check in sandbox. Level 0 rejects one-way caution bias: retry_failed memory makes check_before_retry 0.60 > retry_same_action 0.45; retry_succeeded memory makes retry_same_action 0.60 > check_before_retry 0.45. Level 1: front_symbol=d; danger_ahead=True; check_before_retry executed once; danger_detected=True; retry_same_action_executed=False; movement_executed=False; outcome_match=True; sandbox_check_success=True; human review required before any lesson. Forbidden: no pathfinding, goal reach, multi-step loop, production/runtime action selection, selected_action, final_action, direct command, object recognition, semantic vision, lesson application, memory/retention write, predictor mutation, or proof-of-learning claim.
 - Generic Lesson Evidence Pipeline milestone: generic lesson decisions now bridge into existing reviewed_lesson_trace_preview, reviewed_lesson_dry_run_correction_minimal, dry_run_correction_into_trial_trace, before_after_trial_contrast, and lesson_effect_evidence_trace_minimal. Accepted decisions produce preview/dry-run/trial-trace/contrast/evidence trace; rejected and needs_more_evidence are blocked. Level 0 remains supporting anti-bias evidence; Level 1 contrast remains candidate source. Forbidden: no lesson application, memory/retention write, predictor mutation, runtime behavior change, final trial trace mutation, production/runtime action selection, selected_action, final_action, direct command, or proof-of-learning claim.
 - Reviewed Lesson Application Boundary reconciliation: Generic lesson evidence pipeline now reaches existing reviewed lesson preview, dry-run correction, trial trace, before/after contrast, and lesson effect evidence trace. Boundary clarified: reviewed_lesson_preview is preview only; dry_run_correction is dry-run only; before_after_trial_contrast is contrast only; lesson_effect_evidence_trace is evidence only; none are application approval. Future application requires explicit human application approval, scoped application target, rollback path, audit trace, mentor override, and separate checks for memory write, retention write, predictor mutation, and runtime behavior change. Forbidden: no lesson application, memory/retention write, predictor mutation, runtime behavior change, production/runtime action selection, selected_action, final_action, direct command, or proof-of-learning claim.
+- Explicit User Approval Source Boundary correction: Level 1 application approval boundary corrected. Safe rule: explicit_human_application_approval must come from an explicit user/project-owner statement. Codex/AI may record or validate approval but cannot grant it. Demo fixtures, "蝯血?", readiness completion, and passing tests are not application approval. Future Level 1 sandbox lesson application may proceed only if approval_source=explicit_user_statement, approval_actor=user, approver_role=project_owner, approval_text is non-empty, and self/implicit/demo approval are blocked. Forbidden: no lesson application, memory/retention write, predictor mutation, runtime behavior change, production/runtime action selection, selected_action, final_action, direct command, or proof-of-learning claim.
 
 ## Archive
 - Older milestone details are archived in `docs/boundary_index_archive_2026_06.md`.

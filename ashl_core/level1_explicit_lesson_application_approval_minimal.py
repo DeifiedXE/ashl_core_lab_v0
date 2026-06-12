@@ -89,7 +89,9 @@ NEXT_LAYER_FIELDS = {
 
 def build_level1_explicit_lesson_application_approval(
     readiness_record: dict[str, Any] | None = None,
-    approval_decision: str = APPROVED,
+    approval_decision: str = NEEDS_MORE,
+    approval_text: str | None = None,
+    approval_source: str = "none",
 ) -> dict[str, Any]:
     if readiness_record is None:
         readiness_record = build_reviewed_lesson_sandbox_application_readiness()
@@ -99,7 +101,13 @@ def build_level1_explicit_lesson_application_approval(
     readiness_scope = readiness_record.get("application_scope", {})
     source_evidence = readiness_record.get("source_evidence", {})
 
-    approved = approval_decision == APPROVED
+    explicit_user_statement_present = (
+        approval_decision == APPROVED
+        and approval_source == "explicit_user_statement"
+        and isinstance(approval_text, str)
+        and bool(approval_text.strip())
+    )
+    approved = approval_decision == APPROVED and explicit_user_statement_present
     rejected = approval_decision == REJECTED
     needs_more = approval_decision == NEEDS_MORE
     valid_readiness = readiness_validation.get("valid") is True
@@ -140,13 +148,32 @@ def build_level1_explicit_lesson_application_approval(
         "human_application_approval": {
             "approval_decision": approval_decision,
             "approver": "human_mentor",
+            "approval_source": approval_source,
+            "approval_text": approval_text or "",
+            "approver_role": "project_owner" if explicit_user_statement_present else "none",
+            "approval_actor": "user" if explicit_user_statement_present else "none",
             "approval_reason": _approval_reason(approval_decision),
             "approval_is_explicit": approved,
             "approval_is_for_future_package_only": approved,
             "approval_applies_lesson_now": False,
+            "codex_self_approval_allowed": False,
+            "ai_self_approval_allowed": False,
+            "demo_fixture_is_real_approval": False,
+            "implicit_approval_allowed": False,
+            "approval_inferred_from_completed_tests": False,
+            "approval_inferred_from_readiness": False,
+            "approval_inferred_from_marker_text": False,
+            "test_user_statement_fixture": explicit_user_statement_present,
         },
         "approval_result": {
             "explicit_human_application_approval_present": approved,
+            "explicit_user_statement_present": explicit_user_statement_present,
+            "approval_source_valid": explicit_user_statement_present,
+            "approval_actor_valid": explicit_user_statement_present,
+            "demo_fixture_rejected_as_real_approval": True,
+            "codex_self_approval_rejected": True,
+            "ai_self_approval_rejected": True,
+            "implicit_approval_rejected": True,
             "approved_for_future_level1_sandbox_application_package": approved,
             "rejected_for_application": rejected,
             "needs_more_evidence_before_application": needs_more,
@@ -217,11 +244,30 @@ def validate_level1_explicit_lesson_application_approval(record: dict[str, Any])
         errors.append("approval_is_explicit_mismatch")
     if decision == APPROVED:
         _require_true(approval, "approval_is_for_future_package_only", errors)
+        if approval.get("approval_source") != "explicit_user_statement":
+            errors.append("approval_source_not_explicit_user_statement")
+        _require_non_empty(approval, "approval_text", errors)
+        if approval.get("approval_actor") != "user":
+            errors.append("approval_actor_not_user")
+        if approval.get("approver_role") != "project_owner":
+            errors.append("approver_role_not_project_owner")
     _require_false(approval, "approval_applies_lesson_now", errors)
+    for field in (
+        "codex_self_approval_allowed",
+        "ai_self_approval_allowed",
+        "demo_fixture_is_real_approval",
+        "implicit_approval_allowed",
+        "approval_inferred_from_completed_tests",
+        "approval_inferred_from_readiness",
+        "approval_inferred_from_marker_text",
+    ):
+        _require_false(approval, field, errors)
+    if approval.get("approval_text") == "蝯血?":
+        errors.append("marker_text_is_not_application_approval")
 
     result = _section(record, "approval_result", errors)
     next_layer = _section(record, "allowed_next_layer", errors)
-    _validate_decision_result(decision, result, next_layer, errors)
+    _validate_decision_result(decision, approval, result, next_layer, errors)
 
     human_summary = _section(record, "human_summary", errors)
     for field in sorted(REQUIRED_HUMAN_SUMMARY):
@@ -252,6 +298,15 @@ def validate_level1_explicit_lesson_application_approval(record: dict[str, Any])
         "approval_future_package_only": (
             approval.get("approval_is_for_future_package_only") is True
         ),
+        "explicit_user_statement_present": result.get("explicit_user_statement_present") is True,
+        "approval_source_valid": result.get("approval_source_valid") is True,
+        "approval_actor_valid": result.get("approval_actor_valid") is True,
+        "demo_fixture_rejected_as_real_approval": (
+            result.get("demo_fixture_rejected_as_real_approval") is True
+        ),
+        "codex_self_approval_rejected": result.get("codex_self_approval_rejected") is True,
+        "ai_self_approval_rejected": result.get("ai_self_approval_rejected") is True,
+        "implicit_approval_rejected": result.get("implicit_approval_rejected") is True,
         "lesson_application_blocked": result.get("lesson_applied") is False,
         "sandbox_lesson_application_blocked": result.get("sandbox_lesson_applied") is False,
         "runtime_lesson_application_blocked": result.get("runtime_lesson_applied") is False,
@@ -268,7 +323,14 @@ def validate_level1_explicit_lesson_application_approval(record: dict[str, Any])
 
 def run_level1_explicit_lesson_application_approval_minimal_check() -> dict[str, Any]:
     valid_records = [
-        build_level1_explicit_lesson_application_approval(approval_decision=APPROVED),
+        build_level1_explicit_lesson_application_approval(
+            approval_decision=APPROVED,
+            approval_source="explicit_user_statement",
+            approval_text=(
+                "I explicitly approve a future Phase0 Level 1 sandbox-only lesson "
+                "application package."
+            ),
+        ),
         build_level1_explicit_lesson_application_approval(approval_decision=REJECTED),
         build_level1_explicit_lesson_application_approval(approval_decision=NEEDS_MORE),
     ]
@@ -307,15 +369,39 @@ def run_level1_explicit_lesson_application_approval_minimal_check() -> dict[str,
 
 def _validate_decision_result(
     decision: str | None,
+    approval: dict[str, Any],
     result: dict[str, Any],
     next_layer: dict[str, Any],
     errors: list[str],
 ) -> None:
-    approved = decision == APPROVED
+    explicit_user_statement_present = (
+        decision == APPROVED
+        and approval.get("approval_source") == "explicit_user_statement"
+        and isinstance(approval.get("approval_text"), str)
+        and bool(approval.get("approval_text", "").strip())
+        and approval.get("approval_actor") == "user"
+        and approval.get("approver_role") == "project_owner"
+        and approval.get("codex_self_approval_allowed") is False
+        and approval.get("ai_self_approval_allowed") is False
+        and approval.get("demo_fixture_is_real_approval") is False
+        and approval.get("implicit_approval_allowed") is False
+        and approval.get("approval_inferred_from_completed_tests") is False
+        and approval.get("approval_inferred_from_readiness") is False
+        and approval.get("approval_inferred_from_marker_text") is False
+        and approval.get("approval_text") != "蝯血?"
+    )
+    approved = decision == APPROVED and explicit_user_statement_present
     rejected = decision == REJECTED
     needs_more = decision == NEEDS_MORE
     expected_result = {
         "explicit_human_application_approval_present": approved,
+        "explicit_user_statement_present": explicit_user_statement_present,
+        "approval_source_valid": explicit_user_statement_present,
+        "approval_actor_valid": explicit_user_statement_present,
+        "demo_fixture_rejected_as_real_approval": True,
+        "codex_self_approval_rejected": True,
+        "ai_self_approval_rejected": True,
+        "implicit_approval_rejected": True,
         "approved_for_future_level1_sandbox_application_package": approved,
         "rejected_for_application": rejected,
         "needs_more_evidence_before_application": needs_more,
@@ -356,9 +442,21 @@ def _build_invalid_records(
     for field in sorted(SCOPE_FALSE_FIELDS):
         invalid.append(_mutated(approved_record, ["approval_scope", field], True))
     invalid.append(_mutated(approved_record, ["human_application_approval", "approval_decision"], "apply_now"))
+    invalid.append(_mutated(approved_record, ["human_application_approval", "approval_source"], "test_fixture"))
+    invalid.append(_mutated(approved_record, ["human_application_approval", "approval_text"], ""))
+    invalid.append(_mutated(approved_record, ["human_application_approval", "approval_actor"], "codex"))
+    invalid.append(_mutated(approved_record, ["human_application_approval", "approver_role"], "assistant"))
     invalid.append(_mutated(approved_record, ["human_application_approval", "approval_is_explicit"], False))
     invalid.append(_mutated(approved_record, ["human_application_approval", "approval_is_for_future_package_only"], False))
     invalid.append(_mutated(approved_record, ["human_application_approval", "approval_applies_lesson_now"], True))
+    invalid.append(_mutated(approved_record, ["human_application_approval", "codex_self_approval_allowed"], True))
+    invalid.append(_mutated(approved_record, ["human_application_approval", "ai_self_approval_allowed"], True))
+    invalid.append(_mutated(approved_record, ["human_application_approval", "demo_fixture_is_real_approval"], True))
+    invalid.append(_mutated(approved_record, ["human_application_approval", "implicit_approval_allowed"], True))
+    invalid.append(_mutated(approved_record, ["human_application_approval", "approval_inferred_from_completed_tests"], True))
+    invalid.append(_mutated(approved_record, ["human_application_approval", "approval_inferred_from_readiness"], True))
+    invalid.append(_mutated(approved_record, ["human_application_approval", "approval_inferred_from_marker_text"], True))
+    invalid.append(_mutated(approved_record, ["human_application_approval", "approval_text"], "蝯血?"))
     invalid.append(
         _mutated(
             approved_record,
@@ -409,6 +507,13 @@ def _build_summary(validation_results: list[dict[str, Any]]) -> dict[str, Any]:
         "rejected_for_application",
         "needs_more_evidence_before_application",
         "explicit_human_application_approval_present",
+        "explicit_user_statement_present",
+        "approval_source_valid",
+        "approval_actor_valid",
+        "demo_fixture_rejected_as_real_approval",
+        "codex_self_approval_rejected",
+        "ai_self_approval_rejected",
+        "implicit_approval_rejected",
         "may_enter_level1_sandbox_lesson_application_package",
         "approval_scope_sandbox_only",
         "approval_future_package_only",
@@ -431,6 +536,13 @@ def _build_summary(validation_results: list[dict[str, Any]]) -> dict[str, Any]:
         and summary["rejected_for_application_count"] == 1
         and summary["needs_more_evidence_before_application_count"] == 1
         and summary["explicit_human_application_approval_present_count"] == 1
+        and summary["explicit_user_statement_present_count"] == 1
+        and summary["approval_source_valid_count"] == 1
+        and summary["approval_actor_valid_count"] == 1
+        and summary["demo_fixture_rejected_as_real_approval_count"] == 3
+        and summary["codex_self_approval_rejected_count"] == 3
+        and summary["ai_self_approval_rejected_count"] == 3
+        and summary["implicit_approval_rejected_count"] == 3
         and summary["may_enter_level1_sandbox_lesson_application_package_count"] == 1
         and summary["lesson_application_blocked_count"] == 3
         and summary["memory_write_blocked_count"] == 3
