@@ -5822,3 +5822,18 @@ Progress:
 Forward plan:
 1. Review sandbox execution evidence before adding any additional sandbox actions.
 2. Keep production behavior, UI control, real navigation, generalized action systems, memory writes, and proof-of-learning claims blocked.
+
+## Sandbox Execution Outcome Integration Minimal v0
+
+Status: completed / outcome-evidence-integration / no-new-execution.
+
+Progress:
+- Connects the one-step sandbox action execution result into expected/actual outcome evidence.
+- Builds a sandbox action-outcome trace for check_before_retry.
+- Confirms the sandbox check outcome matched expectation: checked_before_retry, obstacle_detected, no retry_same_action execution, no movement, no real-world effect, and no production effect.
+- The trace can feed lesson-review evidence only after human review.
+- Lesson application, memory writes, retention writes, predictor mutation, action selection, final_action, direct commands, production behavior, and proof-of-learning claims remain blocked.
+
+Forward plan:
+1. Review outcome evidence before adding more sandbox actions or lesson-review surfaces.
+2. Keep evidence separate from learning, memory, and behavior change.

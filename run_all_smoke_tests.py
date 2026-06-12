@@ -116,6 +116,9 @@ from ashl_core.one_step_sandbox_action_intent_minimal import (
 from ashl_core.one_step_sandbox_action_execution_minimal import (
     run_one_step_sandbox_action_execution_minimal_check,
 )
+from ashl_core.sandbox_execution_outcome_integration_minimal import (
+    run_sandbox_execution_outcome_integration_minimal_check,
+)
 from ashl_core.minimal_visual_grounding_trial import run_minimal_visual_grounding_trial_check
 from ashl_core.visual_prediction_error_attention_priority_preview_minimal import (
     run_visual_prediction_error_attention_priority_preview_minimal_check,
@@ -11110,6 +11113,78 @@ def smoke_one_step_sandbox_action_execution_minimal() -> dict:
     )
 
 
+def smoke_sandbox_execution_outcome_integration_minimal() -> dict:
+    result = run_sandbox_execution_outcome_integration_minimal_check()
+    summary = result.get("summary", {})
+    boundary = result.get("boundary_check", {})
+    pairs = result.get("sandbox_execution_outcome_pairs", [])
+    traces = result.get("sandbox_action_outcome_traces", [])
+    pair = pairs[0] if pairs else {}
+    trace = traces[0] if traces else {}
+    comparison = pair.get("comparison_result", {})
+    actual = pair.get("actual_outcome", {})
+    trace_result = trace.get("trace_result", {})
+    lesson_source = trace.get("lesson_evidence_candidate_source", {})
+    passed = (
+        result.get("command") == "run-sandbox-execution-outcome-integration-minimal-check"
+        and result.get("flow") == "sandbox_execution_outcome_integration_minimal_v0"
+        and result.get("status") == "ok"
+        and summary.get("sandbox_outcome_integration_result_count") == 61
+        and summary.get("valid_outcome_pair_count") == 1
+        and summary.get("valid_action_outcome_trace_count") == 1
+        and summary.get("invalid_outcome_pair_count") == 32
+        and summary.get("invalid_action_outcome_trace_count") == 27
+        and summary.get("outcome_match_count") == 1
+        and summary.get("sandbox_check_success_count") == 1
+        and summary.get("evidence_available_count") == 1
+        and summary.get("can_feed_lesson_evidence_candidate_count") == 1
+        and summary.get("requires_human_review_before_lesson_count") == 1
+        and summary.get("lesson_applied_blocked_count") == 3
+        and summary.get("memory_write_blocked_count") == 3
+        and summary.get("retention_write_blocked_count") == 1
+        and summary.get("production_action_selection_blocked_count") == 2
+        and summary.get("runtime_action_selection_blocked_count") == 2
+        and summary.get("selected_action_created_blocked_count") == 2
+        and summary.get("final_action_created_blocked_count") == 2
+        and summary.get("direct_action_command_blocked_count") == 2
+        and summary.get("persistent_policy_written_blocked_count") == 2
+        and summary.get("predictor_modified_blocked_count") == 2
+        and summary.get("proof_of_learning_claim_blocked_count") == 2
+        and actual.get("checked_before_retry") is True
+        and actual.get("obstacle_detected") is True
+        and actual.get("retry_same_action_executed") is False
+        and actual.get("movement_executed") is False
+        and actual.get("real_world_effect") is False
+        and actual.get("production_effect") is False
+        and comparison.get("outcome_match") is True
+        and comparison.get("failure_detected") is False
+        and comparison.get("sandbox_check_success") is True
+        and comparison.get("mismatch_keys") == []
+        and trace.get("trace_mode") == "sandbox_execution_outcome_trace_only"
+        and trace_result.get("action_observed") == "check_before_retry"
+        and trace_result.get("evidence_available") is True
+        and lesson_source.get("can_feed_lesson_evidence_candidate") is True
+        and lesson_source.get("requires_human_review_before_lesson") is True
+        and lesson_source.get("lesson_applied") is False
+        and lesson_source.get("memory_write") is False
+        and lesson_source.get("retention_write") is False
+        and boundary.get("new_sandbox_execution_added") is False
+        and boundary.get("lesson_application_added") is False
+        and boundary.get("memory_write_added") is False
+        and boundary.get("retention_write_added") is False
+        and boundary.get("proof_of_learning_claimed") is False
+    )
+    return _result(
+        "sandbox_execution_outcome_integration_minimal",
+        passed,
+        {
+            "summary": summary,
+            "validation_results": result.get("validation_results", {}),
+            "boundary_check": boundary,
+        },
+    )
+
+
 def smoke_phase0_current_capability_snapshot() -> dict:
     doc_path = Path("docs/phase0_current_capability_snapshot_2026-06-10.md")
     doc = doc_path.read_text(encoding="utf-8") if doc_path.exists() else ""
@@ -13795,6 +13870,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_non_executing_action_choice_candidate_minimal(),
         smoke_one_step_sandbox_action_intent_minimal(),
         smoke_one_step_sandbox_action_execution_minimal(),
+        smoke_sandbox_execution_outcome_integration_minimal(),
         smoke_phase0_current_capability_snapshot(),
         smoke_memory_influence_behavior_gate_design(),
         smoke_first_memory_influenced_behavior_boundary(),

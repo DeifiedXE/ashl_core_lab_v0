@@ -2599,3 +2599,7 @@ Two-Trial History Boundary:
 ## One-Step Sandbox Action Execution Minimal v0
 
 - One-Step Sandbox Action Execution Minimal v0 executes one controlled sandbox-only action, check_before_retry, and records the sandbox outcome, audit trace, and rollback record. This is the first toy sandbox action execution, but it is not production action selection, not final_action, not a direct command, not real navigation/UI behavior, not persistent policy, not generalized behavior, not lesson application, not predictor mutation, and not proof of learning.
+
+## Sandbox Execution Outcome Integration Minimal v0
+
+- Sandbox Execution Outcome Integration Minimal v0 connects the one-step sandbox action execution back into expected/actual outcome and action-outcome trace evidence. The sandbox check outcome can feed lesson-review evidence after human review, but it does not apply lessons, write memory, create retention, mutate predictors, select actions, create final_action, or prove learning.
