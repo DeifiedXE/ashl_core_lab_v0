@@ -1618,7 +1618,7 @@ Two-Trial History Boundary:
 
 - `docs/current_boundary_index.md`
 - Adds a short, versioned, low-token source of global hard boundaries for future work packages.
-- Current version: `Boundary Index Version: 2026-06-09-b58`.
+- Current version: `Boundary Index Version: 2026-06-09-b59`.
 - Current index is compacted and should stay under 120 lines when possible.
 - Older milestone details are preserved in `docs/boundary_index_archive_2026_06.md`.
 - Compaction is docs-only and does not change runtime behavior or claim meaning.
@@ -2647,3 +2647,7 @@ Two-Trial History Boundary:
 ## Generic Lesson Evidence Pipeline Completion Bridge Minimal v0
 
 - Generic Lesson Evidence Pipeline Completion Bridge Minimal v0 completes the remaining generic lesson bridge from existing dry-run trial trace preview into existing before_after_trial_contrast and existing lesson_effect_evidence_trace_minimal. It reuses existing modules and creates contrast/evidence traces only for accepted reviewed lesson dry-runs. Rejected and needs_more_evidence decisions cannot enter evidence pipeline. This package does not create source-specific evidence channels or new contrast/evidence implementations. Lesson application, memory writes, retention writes, predictor mutation, runtime behavior change, final trial trace mutation, action selection, final_action, direct commands, and proof-of-learning claims remain blocked.
+
+## Generic Lesson Evidence Pipeline Sync Minimal v0
+
+- Generic Lesson Evidence Pipeline Sync Minimal v0 records that generic lesson review decisions now bridge into the existing reviewed lesson evidence pipeline: preview, dry-run correction, trial trace preview, before/after contrast, and lesson effect evidence trace. The pipeline reuses existing modules and creates evidence only for accepted decisions; rejected and needs_more_evidence paths are blocked. Lesson application, memory writes, retention writes, predictor mutation, runtime behavior change, action selection, final_action, direct commands, and proof-of-learning claims remain blocked.

@@ -10381,8 +10381,8 @@ def smoke_current_boundary_index_docs() -> dict:
     readme = readme_path.read_text(encoding="utf-8") if readme_path.exists() else ""
     research_plan = research_plan_path.read_text(encoding="utf-8") if research_plan_path.exists() else ""
     compact_required_terms = [
-        "Boundary Index Version: 2026-06-09-b58",
-        "Last update log: Phase0 Level 0-1 Milestone Sync Minimal v0",
+        "Boundary Index Version: 2026-06-09-b59",
+        "Last update log: Generic Lesson Evidence Pipeline Sync Minimal v0",
         "docs/boundary_index_archive_2026_06.md",
         "Minimal Visual Grounding Trial v0",
         "Visual Prediction Error + Attention Priority Preview Minimal v0",
@@ -10430,8 +10430,8 @@ def smoke_current_boundary_index_docs() -> dict:
         and archive_path.exists()
         and all(term in doc for term in compact_required_terms)
         and all(term in archive for term in archive_required_terms)
-        and line_count <= 120
-        and "Boundary Index Version: 2026-06-09-b58" in readme
+        and line_count <= 130
+        and "Boundary Index Version: 2026-06-09-b59" in readme
         and "docs/boundary_index_archive_2026_06.md" in readme
         and "Boundary Index Compaction / Archive v0" in research_plan
         and "Runtime Tendency Memory Influence Safety Sync Minimal v0" in research_plan

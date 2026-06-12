@@ -6019,3 +6019,23 @@ Forward plan:
 1. Generic Lesson Evidence Pipeline Sync Minimal v0.
 2. Reviewed Lesson Application Boundary Reconciliation Minimal v0.
 3. Stop bridge-splitting unless the next step crosses lesson application, memory write, retention write, predictor mutation, runtime behavior change, final_action, or production action selection.
+
+## Generic Lesson Evidence Pipeline Sync Minimal v0
+
+Status: completed / milestone-sync / documentation-only.
+
+Completed:
+- Generic lesson decision to reviewed lesson preview bridge.
+- Generic reviewed lesson dry-run bridge.
+- Generic lesson dry-run to trial trace bridge.
+- Generic lesson evidence pipeline completion bridge.
+
+Current safe claim:
+- Generic lesson review decisions can feed the existing lesson evidence pipeline through reviewed lesson preview, dry-run correction, trial trace preview, before/after contrast, and lesson effect evidence trace.
+
+Next options:
+1. Reviewed Lesson Application Boundary Reconciliation Minimal v0.
+2. Generic Lesson Evidence Pipeline Snapshot Minimal v0.
+3. Pause and review before any lesson application, memory write, retention write, predictor mutation, or runtime behavior change.
+
+Do not apply lessons or mutate runtime behavior from generic evidence traces until the application boundary is reconciled and explicitly remains gated.

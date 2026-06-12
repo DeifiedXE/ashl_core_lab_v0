@@ -1,7 +1,7 @@
-Boundary Index Version: 2026-06-09-b58
-Last update log: Phase0 Level 0-1 Milestone Sync Minimal v0
-Previous Boundary Index Version: 2026-06-09-b57
-Previous Last update log: Sandbox Action Loop Milestone Sync Minimal v0
+Boundary Index Version: 2026-06-09-b59
+Last update log: Generic Lesson Evidence Pipeline Sync Minimal v0
+Previous Boundary Index Version: 2026-06-09-b58
+Previous Last update log: Phase0 Level 0-1 Milestone Sync Minimal v0
 Clean count at last update log reset: 0/5; current clean count: 0/5
 
 ## Purpose
@@ -50,6 +50,7 @@ Clean count at last update log reset: 0/5; current clean count: 0/5
 - Retained memory can be contrasted against baseline tendency in dry-run, e.g. check_before_retry 0.5 -> 0.6.
 - Retained memory can reversibly alter controlled runtime action tendency scores inside a bounded safety envelope: retry_same_action/check_before_retry 0.50/0.50 -> 0.45/0.60 -> 0.50/0.50, with no dirty state or persistent influence and max_absolute_delta <= 0.10.
 - ASHL Core can show content-sensitive bidirectional runtime tendency memory influence in a controlled obstacle fixture and can pass a controlled one-step symbolic danger check in sandbox.
+- Generic lesson review decisions can bridge into existing reviewed lesson preview, dry-run correction, trial trace preview, before/after contrast, and lesson effect evidence trace without source-specific evidence channels.
 - Memory is a warning sign, not a ban command; past failure is a warning, not a prohibition.
 - Retained records can be appended only through mentor-gated exact `留` approval and read back/listed as retained JSONL records.
 
@@ -90,6 +91,7 @@ Clean count at last update log reset: 0/5; current clean count: 0/5
 - Memory Influence Dry-Run Contrast milestone: Memory-Influenced Action Tendency Preview Minimal v0 and Memory Influence Dry-Run Contrast Minimal v0 completed. Safe claim: retained memory can produce preview-only bounded tendency advice and dry-run contrast evidence, e.g. check_before_retry 0.5 -> 0.6. Forbidden: no real memory-influenced behavior, runtime action selection, final_action, direct action command, behavior change, exploration blocking, curiosity override, mentor override blocking, lesson application, predictor mutation, or proof-of-learning claim.
 - Runtime Tendency Memory Influence Safety milestone: A/B, rollback, and safety envelope completed. Safe claim: retained memory can reversibly alter controlled runtime action tendency scores inside a bounded safety envelope. Evidence: same deterministic runner/state/candidates; memory_off retry_same_action/check_before_retry 0.50/0.50; memory_on 0.45/0.60; memory_off_again returns 0.50/0.50; runtime_tendency_changed=True; no dirty state or persistent influence; max_absolute_delta <= 0.10; mentor override available; exploration allowed; no-final-action/no-execution gates. Forbidden: no production action selection, final_action, execution, direct command, real navigation/UI change, persistent policy, generalized behavior, lesson application, predictor mutation, or proof-of-learning claim.
 - Phase0 Level 0-1 milestone: Level 0 obstacle memory flip and Level 1 first contact danger completed. Safe claim: ASHL Core can show content-sensitive bidirectional runtime tendency memory influence in a controlled obstacle fixture, then pass a controlled one-step symbolic danger check in sandbox. Level 0 rejects one-way caution bias: retry_failed memory makes check_before_retry 0.60 > retry_same_action 0.45; retry_succeeded memory makes retry_same_action 0.60 > check_before_retry 0.45. Level 1: front_symbol=d; danger_ahead=True; check_before_retry executed once; danger_detected=True; retry_same_action_executed=False; movement_executed=False; outcome_match=True; sandbox_check_success=True; human review required before any lesson. Forbidden: no pathfinding, goal reach, multi-step loop, production/runtime action selection, selected_action, final_action, direct command, object recognition, semantic vision, lesson application, memory/retention write, predictor mutation, or proof-of-learning claim.
+- Generic Lesson Evidence Pipeline milestone: generic lesson decisions now bridge into existing reviewed_lesson_trace_preview, reviewed_lesson_dry_run_correction_minimal, dry_run_correction_into_trial_trace, before_after_trial_contrast, and lesson_effect_evidence_trace_minimal. Accepted decisions produce preview/dry-run/trial-trace/contrast/evidence trace; rejected and needs_more_evidence are blocked. Level 0 remains supporting anti-bias evidence; Level 1 contrast remains candidate source. Forbidden: no lesson application, memory/retention write, predictor mutation, runtime behavior change, final trial trace mutation, production/runtime action selection, selected_action, final_action, direct command, or proof-of-learning claim.
 
 ## Archive
 - Older milestone details are archived in `docs/boundary_index_archive_2026_06.md`.
