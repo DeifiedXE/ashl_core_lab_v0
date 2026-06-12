@@ -1618,7 +1618,7 @@ Two-Trial History Boundary:
 
 - `docs/current_boundary_index.md`
 - Adds a short, versioned, low-token source of global hard boundaries for future work packages.
-- Current version: `Boundary Index Version: 2026-06-09-b55`.
+- Current version: `Boundary Index Version: 2026-06-09-b56`.
 - Current index is compacted and should stay under 120 lines when possible.
 - Older milestone details are preserved in `docs/boundary_index_archive_2026_06.md`.
 - Compaction is docs-only and does not change runtime behavior or claim meaning.
@@ -2595,3 +2595,7 @@ Two-Trial History Boundary:
 ## One-Step Sandbox Action Intent Minimal v0
 
 - One-Step Sandbox Action Intent Minimal v0 creates a one-step sandbox-only intent from a non-executing action choice candidate. The intent may enter one-step sandbox execution later, but it is not a selected action, not a final action, not execution, not a direct command, not production action selection, and not persistent policy.
+
+## One-Step Sandbox Action Execution Minimal v0
+
+- One-Step Sandbox Action Execution Minimal v0 executes one controlled sandbox-only action, check_before_retry, and records the sandbox outcome, audit trace, and rollback record. This is the first toy sandbox action execution, but it is not production action selection, not final_action, not a direct command, not real navigation/UI behavior, not persistent policy, not generalized behavior, not lesson application, not predictor mutation, and not proof of learning.

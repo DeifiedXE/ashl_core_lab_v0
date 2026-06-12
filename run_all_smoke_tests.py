@@ -113,6 +113,9 @@ from ashl_core.non_executing_action_choice_candidate_minimal import (
 from ashl_core.one_step_sandbox_action_intent_minimal import (
     run_one_step_sandbox_action_intent_minimal_check,
 )
+from ashl_core.one_step_sandbox_action_execution_minimal import (
+    run_one_step_sandbox_action_execution_minimal_check,
+)
 from ashl_core.minimal_visual_grounding_trial import run_minimal_visual_grounding_trial_check
 from ashl_core.visual_prediction_error_attention_priority_preview_minimal import (
     run_visual_prediction_error_attention_priority_preview_minimal_check,
@@ -10400,7 +10403,7 @@ def smoke_current_boundary_index_docs() -> dict:
         and all(term in doc for term in compact_required_terms)
         and all(term in archive for term in archive_required_terms)
         and line_count <= 120
-        and "Boundary Index Version: 2026-06-09-b55" in readme
+        and "Boundary Index Version: 2026-06-09-b56" in readme
         and "docs/boundary_index_archive_2026_06.md" in readme
         and "Boundary Index Compaction / Archive v0" in research_plan
         and "Runtime Tendency Memory Influence Safety Sync Minimal v0" in research_plan
@@ -11013,6 +11016,91 @@ def smoke_one_step_sandbox_action_intent_minimal() -> dict:
     )
     return _result(
         "one_step_sandbox_action_intent_minimal",
+        passed,
+        {
+            "summary": summary,
+            "validation_results": result.get("validation_results", []),
+            "boundary_check": boundary,
+        },
+    )
+
+
+def smoke_one_step_sandbox_action_execution_minimal() -> dict:
+    result = run_one_step_sandbox_action_execution_minimal_check()
+    summary = result.get("summary", {})
+    boundary = result.get("boundary_check", {})
+    records = result.get("one_step_sandbox_action_executions", [])
+    valid_result = records[0] if records else {}
+    before = valid_result.get("sandbox_before", {})
+    after = valid_result.get("sandbox_after", {})
+    outcome = valid_result.get("execution_outcome", {})
+    audit = valid_result.get("audit_trace", {})
+    rollback = valid_result.get("rollback_record", {})
+    passed = (
+        result.get("command") == "run-one-step-sandbox-action-execution-minimal-check"
+        and result.get("flow") == "one_step_sandbox_action_execution_minimal_v0"
+        and result.get("status") == "ok"
+        and summary.get("sandbox_execution_result_count") == 51
+        and summary.get("valid_sandbox_execution_result_count") == 1
+        and summary.get("invalid_sandbox_execution_result_count") == 50
+        and summary.get("sandbox_action_executed_count") == 1
+        and summary.get("executed_once_count") == 1
+        and summary.get("check_before_retry_executed_count") == 1
+        and summary.get("obstacle_detected_count") == 1
+        and summary.get("real_world_effect_blocked_count") == 1
+        and summary.get("production_effect_blocked_count") == 1
+        and summary.get("movement_executed_blocked_count") == 1
+        and summary.get("retry_same_action_executed_blocked_count") == 1
+        and summary.get("audit_trace_recorded_count") == 1
+        and summary.get("rollback_available_count") == 1
+        and summary.get("sandbox_record_only_count") == 1
+        and summary.get("production_action_selection_blocked_count") == 1
+        and summary.get("runtime_action_selection_blocked_count") == 1
+        and summary.get("selected_action_created_blocked_count") == 1
+        and summary.get("final_action_created_blocked_count") == 1
+        and summary.get("direct_action_command_blocked_count") == 1
+        and summary.get("persistent_policy_written_blocked_count") == 1
+        and summary.get("general_behavior_changed_blocked_count") == 1
+        and summary.get("semantic_or_fuzzy_match_used_blocked_count") == 1
+        and summary.get("predictor_modified_blocked_count") == 1
+        and summary.get("proof_of_learning_claim_blocked_count") == 1
+        and valid_result.get("execution_mode") == "one_step_sandbox_execution_only"
+        and valid_result.get("executed_sandbox_action") == "check_before_retry"
+        and before.get("sandbox_id") == "phase0_toy_sandbox_obstacle_retry_failed"
+        and before.get("scenario_id") == "obstacle_retry_failed_same_state"
+        and before.get("exact_key") == "obstacle_retry_failed"
+        and before.get("obstacle_ahead") is True
+        and before.get("previous_action_failed") is True
+        and before.get("previous_failure_reason") == "blocked_by_obstacle"
+        and before.get("production_context") is False
+        and after.get("checked_before_retry") is True
+        and after.get("obstacle_detected") is True
+        and after.get("retry_same_action_executed") is False
+        and after.get("movement_executed") is False
+        and after.get("production_context") is False
+        and outcome.get("sandbox_action_executed") is True
+        and outcome.get("executed_once") is True
+        and outcome.get("outcome_type") == "sandbox_check_result"
+        and outcome.get("real_world_effect") is False
+        and outcome.get("production_effect") is False
+        and outcome.get("state_mutation_scope") == "sandbox_record_only"
+        and audit.get("audit_trace_recorded") is True
+        and audit.get("source_intent_checked") is True
+        and audit.get("execution_boundary_checked") is True
+        and audit.get("blocked_flags_checked") is True
+        and rollback.get("rollback_available") is True
+        and rollback.get("rollback_scope") == "sandbox_record_only"
+        and boundary.get("executed_sandbox_action") == "check_before_retry"
+        and boundary.get("sandbox_action_executed") is True
+        and boundary.get("real_world_effect_added") is False
+        and boundary.get("production_effect_added") is False
+        and boundary.get("runtime_action_selection_added") is False
+        and boundary.get("final_action_creation_added") is False
+        and boundary.get("direct_action_command_added") is False
+        and boundary.get("persistent_policy_write_added") is False
+    )
+    return _result(
+        "one_step_sandbox_action_execution_minimal",
         passed,
         {
             "summary": summary,
@@ -13706,6 +13794,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_action_selection_adjacent_review_minimal(),
         smoke_non_executing_action_choice_candidate_minimal(),
         smoke_one_step_sandbox_action_intent_minimal(),
+        smoke_one_step_sandbox_action_execution_minimal(),
         smoke_phase0_current_capability_snapshot(),
         smoke_memory_influence_behavior_gate_design(),
         smoke_first_memory_influenced_behavior_boundary(),
