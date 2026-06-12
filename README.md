@@ -2655,3 +2655,7 @@ Two-Trial History Boundary:
 ## Reviewed Lesson Application Boundary Reconciliation Minimal v0
 
 - Reviewed Lesson Application Boundary Reconciliation Minimal v0 aligns the completed generic lesson evidence pipeline with the existing application boundary. Generic evidence can reach reviewed lesson preview, dry-run correction, trial trace, before/after contrast, and lesson effect evidence trace, but none of those are application approval. Lesson application, memory write, retention write, predictor mutation, runtime behavior change, production action selection, selected_action, final_action, direct commands, and proof-of-learning claims remain blocked.
+
+## Reviewed Lesson Sandbox Application Readiness Minimal v0
+
+- Reviewed Lesson Sandbox Application Readiness Minimal v0 checks a generic lesson effect evidence trace against the reviewed lesson application boundary for the Phase0 Level 1 sandbox scope. It records which prerequisites are represented and explicitly marks application as not ready because explicit human application approval is missing. It does not apply lessons, write memory, write retention, mutate predictors, change runtime behavior, create final_action, or prove learning.

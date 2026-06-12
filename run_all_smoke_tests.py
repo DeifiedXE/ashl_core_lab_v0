@@ -144,6 +144,9 @@ from ashl_core.generic_lesson_dry_run_to_trial_trace_bridge_minimal import (
 from ashl_core.generic_lesson_evidence_pipeline_completion_bridge_minimal import (
     run_generic_lesson_evidence_pipeline_completion_bridge_minimal_check,
 )
+from ashl_core.reviewed_lesson_sandbox_application_readiness_minimal import (
+    run_reviewed_lesson_sandbox_application_readiness_minimal_check,
+)
 from ashl_core.minimal_visual_grounding_trial import run_minimal_visual_grounding_trial_check
 from ashl_core.visual_prediction_error_attention_priority_preview_minimal import (
     run_visual_prediction_error_attention_priority_preview_minimal_check,
@@ -12003,6 +12006,92 @@ def smoke_generic_lesson_evidence_pipeline_completion_bridge_minimal() -> dict:
     )
 
 
+def smoke_reviewed_lesson_sandbox_application_readiness_minimal() -> dict:
+    result = run_reviewed_lesson_sandbox_application_readiness_minimal_check()
+    summary = result.get("summary", {})
+    boundary = result.get("boundary_check", {})
+    records = [
+        record
+        for record, validation in zip(
+            result.get("sandbox_application_readiness_results", []),
+            result.get("validation_results", []),
+        )
+        if validation.get("valid") is True
+    ]
+    record = records[0] if records else {}
+    source = record.get("source_evidence", {})
+    scope = record.get("application_scope", {})
+    satisfied = record.get("satisfied_requirements", {})
+    missing = record.get("missing_requirements", {})
+    readiness = record.get("readiness_result", {})
+    blocked = record.get("blocked_flags", {})
+    passed = (
+        result.get("command") == "run-reviewed-lesson-sandbox-application-readiness-minimal-check"
+        and result.get("flow") == "reviewed_lesson_sandbox_application_readiness_minimal_v0"
+        and result.get("status") == "ok"
+        and summary.get("sandbox_application_readiness_result_count") == 60
+        and summary.get("valid_sandbox_application_readiness_count") == 1
+        and summary.get("invalid_sandbox_application_readiness_count") == 59
+        and summary.get("evidence_trace_ready_count") == 1
+        and summary.get("application_scope_defined_count") == 1
+        and summary.get("rollback_path_defined_count") == 1
+        and summary.get("audit_trace_required_count") == 1
+        and summary.get("mentor_override_preserved_count") == 1
+        and summary.get("missing_explicit_human_application_approval_count") == 1
+        and summary.get("not_ready_status_count") == 1
+        and summary.get("ready_for_application_blocked_count") == 1
+        and summary.get("sandbox_application_package_ready_blocked_count") == 1
+        and summary.get("lesson_application_blocked_count") == 1
+        and source.get("source_type") == "generic_lesson_effect_evidence_trace"
+        and source.get("source_bridge_id") == "generic_lesson_evidence_pipeline_completion_bridge_demo_001"
+        and source.get("lesson_effect_evidence_trace_created") is True
+        and source.get("evidence_only") is True
+        and source.get("lesson_applied") is False
+        and source.get("memory_write") is False
+        and source.get("retention_write") is False
+        and source.get("predictor_modified") is False
+        and source.get("runtime_behavior_changed") is False
+        and scope.get("target_scope") == "phase0_level1_sandbox_only"
+        and scope.get("target_level_id") == "phase0_level1_first_contact_danger"
+        and scope.get("production_scope") is False
+        and scope.get("runtime_global_scope") is False
+        and scope.get("persistent_policy_scope") is False
+        and all(value is True for value in satisfied.values())
+        and missing.get("explicit_human_application_approval") is True
+        and missing.get("sandbox_application_package_exists") is False
+        and readiness.get("readiness_status") == "not_ready_missing_explicit_human_application_approval"
+        and readiness.get("ready_for_application") is False
+        and readiness.get("ready_for_sandbox_application_package") is False
+        and readiness.get("allowed_to_apply_lesson") is False
+        and readiness.get("allowed_to_write_memory") is False
+        and readiness.get("allowed_to_write_retention") is False
+        and readiness.get("allowed_to_mutate_predictor") is False
+        and readiness.get("allowed_to_change_runtime_behavior") is False
+        and readiness.get("allowed_to_create_final_action") is False
+        and all(value is False for value in blocked.values())
+        and boundary.get("readiness_only") is True
+        and boundary.get("boundary_doc_reused") is True
+        and boundary.get("lesson_application_added") is False
+        and boundary.get("sandbox_lesson_application_added") is False
+        and boundary.get("explicit_application_approval_added") is False
+        and boundary.get("memory_write_added") is False
+        and boundary.get("retention_write_added") is False
+        and boundary.get("predictor_mutation_added") is False
+        and boundary.get("runtime_behavior_change_added") is False
+        and boundary.get("final_action_created") is False
+        and boundary.get("proof_of_learning_claimed") is False
+    )
+    return _result(
+        "reviewed_lesson_sandbox_application_readiness_minimal",
+        passed,
+        {
+            "summary": summary,
+            "validation_results": result.get("validation_results", []),
+            "boundary_check": boundary,
+        },
+    )
+
+
 def smoke_phase0_current_capability_snapshot() -> dict:
     doc_path = Path("docs/phase0_current_capability_snapshot_2026-06-10.md")
     doc = doc_path.read_text(encoding="utf-8") if doc_path.exists() else ""
@@ -14698,6 +14787,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_generic_reviewed_lesson_dry_run_bridge_minimal(),
         smoke_generic_lesson_dry_run_to_trial_trace_bridge_minimal(),
         smoke_generic_lesson_evidence_pipeline_completion_bridge_minimal(),
+        smoke_reviewed_lesson_sandbox_application_readiness_minimal(),
         smoke_phase0_current_capability_snapshot(),
         smoke_memory_influence_behavior_gate_design(),
         smoke_first_memory_influenced_behavior_boundary(),

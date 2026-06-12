@@ -6057,3 +6057,20 @@ Forward plan:
 3. Reviewed Lesson Application Boundary Implementation Review v0.
 
 Do not implement lesson application, memory write, retention write, predictor mutation, or runtime behavior change without a separate boundary package and explicit authorization.
+
+## Reviewed Lesson Sandbox Application Readiness Minimal v0
+
+Status: completed / readiness-record / no-application.
+
+Progress:
+- Checks a generic lesson effect evidence trace against the reviewed lesson application boundary for the Phase0 Level 1 sandbox scope.
+- Records represented prerequisites: evidence path, sandbox scope, rollback path, audit trace, mentor override, memory write boundary, retention write boundary, predictor mutation boundary, and runtime behavior boundary.
+- Records that explicit human application approval is still missing.
+- Marks readiness_status as not_ready_missing_explicit_human_application_approval.
+- Keeps ready_for_application, allowed_to_apply_lesson, memory writes, retention writes, predictor mutation, runtime behavior change, final_action, and proof-of-learning claims blocked.
+
+Forward plan:
+1. Level 1 Explicit Lesson Application Approval Minimal v0, only if explicitly requested.
+2. Level 1 Sandbox Lesson Application Minimal v0, only after explicit application approval.
+
+Readiness is not application.
