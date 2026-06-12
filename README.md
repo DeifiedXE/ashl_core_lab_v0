@@ -1618,8 +1618,8 @@ Two-Trial History Boundary:
 
 - `docs/current_boundary_index.md`
 - Adds a short, versioned, low-token source of global hard boundaries for future work packages.
-- Current version: `Boundary Index Version: 2026-06-09-b59`.
-- Current index is compacted and should stay under 120 lines when possible.
+- Current version: `Boundary Index Version: 2026-06-09-b60`.
+- Current index is compacted and should stay under 130 lines when possible.
 - Older milestone details are preserved in `docs/boundary_index_archive_2026_06.md`.
 - Compaction is docs-only and does not change runtime behavior or claim meaning.
 - Lists current global hard boundaries, latest safe/forbidden claims, archive links, and deferred areas.
@@ -2651,3 +2651,7 @@ Two-Trial History Boundary:
 ## Generic Lesson Evidence Pipeline Sync Minimal v0
 
 - Generic Lesson Evidence Pipeline Sync Minimal v0 records that generic lesson review decisions now bridge into the existing reviewed lesson evidence pipeline: preview, dry-run correction, trial trace preview, before/after contrast, and lesson effect evidence trace. The pipeline reuses existing modules and creates evidence only for accepted decisions; rejected and needs_more_evidence paths are blocked. Lesson application, memory writes, retention writes, predictor mutation, runtime behavior change, action selection, final_action, direct commands, and proof-of-learning claims remain blocked.
+
+## Reviewed Lesson Application Boundary Reconciliation Minimal v0
+
+- Reviewed Lesson Application Boundary Reconciliation Minimal v0 aligns the completed generic lesson evidence pipeline with the existing application boundary. Generic evidence can reach reviewed lesson preview, dry-run correction, trial trace, before/after contrast, and lesson effect evidence trace, but none of those are application approval. Lesson application, memory write, retention write, predictor mutation, runtime behavior change, production action selection, selected_action, final_action, direct commands, and proof-of-learning claims remain blocked.

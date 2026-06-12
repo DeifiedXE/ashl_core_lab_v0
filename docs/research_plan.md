@@ -6039,3 +6039,21 @@ Next options:
 3. Pause and review before any lesson application, memory write, retention write, predictor mutation, or runtime behavior change.
 
 Do not apply lessons or mutate runtime behavior from generic evidence traces until the application boundary is reconciled and explicitly remains gated.
+
+## Reviewed Lesson Application Boundary Reconciliation Minimal v0
+
+Status: completed / boundary-reconciliation / documentation-only.
+
+Progress:
+- Aligns the completed generic lesson evidence pipeline with the existing application boundary.
+- Clarifies that reviewed_lesson_preview is preview only, dry_run_correction is dry-run only, before_after_trial_contrast is contrast only, and lesson_effect_evidence_trace is evidence only.
+- Clarifies that none of those are application approval.
+- Requires explicit human application approval, application scope defined, rollback path defined, audit trace required, mentor override preserved, and memory/retention/predictor/runtime behavior boundary checks before any future lesson application package may exist.
+- Lesson application, memory writes, retention writes, predictor mutation, runtime behavior change, production action selection, selected_action, final_action, direct commands, and proof-of-learning claims remain blocked.
+
+Forward plan:
+1. Reviewed Lesson Application Gate Design Minimal v0.
+2. Reviewed Lesson Sandbox Application Eligibility Preview Minimal v0.
+3. Reviewed Lesson Application Boundary Implementation Review v0.
+
+Do not implement lesson application, memory write, retention write, predictor mutation, or runtime behavior change without a separate boundary package and explicit authorization.

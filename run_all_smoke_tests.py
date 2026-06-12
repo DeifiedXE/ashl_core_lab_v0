@@ -6543,6 +6543,47 @@ def smoke_minimal_lesson_effect_retention_boundary_review() -> dict:
     )
 
 
+def smoke_reviewed_lesson_application_boundary_reconciliation() -> dict:
+    doc_path = Path("docs/reviewed_lesson_application_boundary_reconciliation_v0.md")
+    doc = doc_path.read_text(encoding="utf-8") if doc_path.exists() else ""
+    readme = Path("README.md").read_text(encoding="utf-8")
+    research_plan = Path("docs/research_plan.md").read_text(encoding="utf-8")
+    required_phrases = [
+        "ASHL Core can bridge generic lesson review decisions into the existing reviewed lesson evidence pipeline.",
+        "ASHL Core cannot apply lessons from that evidence yet.",
+        "lesson_effect_evidence_trace is evidence only",
+        "reviewed_lesson_preview is preview only",
+        "dry_run_correction is dry-run only",
+        "before_after_trial_contrast is contrast only",
+        "None of these are application approval",
+        "explicit human application approval",
+        "application scope defined",
+        "rollback path defined",
+        "audit trace required",
+        "mentor override preserved",
+        "allowed_for_runtime_application must remain False",
+        "allowed_for_memory_write must remain False",
+        "allowed_for_retention_write must remain False",
+        "allowed_for_predictor_mutation must remain False",
+        "allowed_for_runtime_behavior_change must remain False",
+        "would claim proof of learning",
+    ]
+    missing = [phrase for phrase in required_phrases if phrase not in doc]
+    passed = (
+        doc_path.exists()
+        and not missing
+        and "Reviewed Lesson Application Boundary Reconciliation Minimal v0" in readme
+        and "Reviewed Lesson Application Boundary Reconciliation Minimal v0" in research_plan
+        and "none of those are application approval" in readme
+        and "explicit human application approval" in research_plan
+    )
+    return _result(
+        "reviewed_lesson_application_boundary_reconciliation",
+        passed,
+        {"doc": str(doc_path), "missing": missing},
+    )
+
+
 def smoke_action_outcome_contrast_baseline_review() -> dict:
     doc_path = Path("docs/action_outcome_contrast_baseline_review_v0.md")
     doc = doc_path.read_text(encoding="utf-8") if doc_path.exists() else ""
@@ -10381,8 +10422,8 @@ def smoke_current_boundary_index_docs() -> dict:
     readme = readme_path.read_text(encoding="utf-8") if readme_path.exists() else ""
     research_plan = research_plan_path.read_text(encoding="utf-8") if research_plan_path.exists() else ""
     compact_required_terms = [
-        "Boundary Index Version: 2026-06-09-b59",
-        "Last update log: Generic Lesson Evidence Pipeline Sync Minimal v0",
+        "Boundary Index Version: 2026-06-09-b60",
+        "Last update log: Reviewed Lesson Application Boundary Reconciliation Minimal v0",
         "docs/boundary_index_archive_2026_06.md",
         "Minimal Visual Grounding Trial v0",
         "Visual Prediction Error + Attention Priority Preview Minimal v0",
@@ -10410,7 +10451,11 @@ def smoke_current_boundary_index_docs() -> dict:
         "No semantic / fuzzy / vector retrieval.",
         "No predictor mutation.",
         "No proof-of-learning claim.",
-        "`current_boundary_index.md` should stay <= 120 lines when possible.",
+        "Reviewed Lesson Application Boundary reconciliation",
+        "lesson_effect_evidence_trace is evidence only",
+        "none are application approval",
+        "explicit human application approval",
+        "`current_boundary_index.md` should stay <= 130 lines when possible.",
         "Hard limit: <= 150 lines.",
     ]
     archive_required_terms = [
@@ -10431,7 +10476,7 @@ def smoke_current_boundary_index_docs() -> dict:
         and all(term in doc for term in compact_required_terms)
         and all(term in archive for term in archive_required_terms)
         and line_count <= 130
-        and "Boundary Index Version: 2026-06-09-b59" in readme
+        and "Boundary Index Version: 2026-06-09-b60" in readme
         and "docs/boundary_index_archive_2026_06.md" in readme
         and "Boundary Index Compaction / Archive v0" in research_plan
         and "Runtime Tendency Memory Influence Safety Sync Minimal v0" in research_plan
@@ -14694,6 +14739,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_phase0_action_lesson_loop_return_planning(),
         smoke_lesson_application_boundary_review(),
         smoke_minimal_lesson_effect_retention_boundary_review(),
+        smoke_reviewed_lesson_application_boundary_reconciliation(),
         smoke_action_outcome_contrast_baseline_review(),
         smoke_focus_application_gate_schema(),
         smoke_focus_candidate_from_change_trace(),
