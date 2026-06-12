@@ -94,6 +94,9 @@ from .one_step_sandbox_action_execution_minimal import (
 from .sandbox_execution_outcome_integration_minimal import (
     run_sandbox_execution_outcome_integration_minimal_check,
 )
+from .sandbox_outcome_lesson_review_candidate_minimal import (
+    run_sandbox_outcome_lesson_review_candidate_minimal_check,
+)
 from .reviewed_lesson_dry_run_correction_minimal import (
     run_reviewed_lesson_dry_run_correction_minimal_check,
 )
@@ -3620,6 +3623,8 @@ def run_command(command: str) -> dict[str, Any] | str:
         return run_one_step_sandbox_action_execution_minimal_check()
     if command == "run-sandbox-execution-outcome-integration-minimal-check":
         return run_sandbox_execution_outcome_integration_minimal_check()
+    if command == "run-sandbox-outcome-lesson-review-candidate-minimal-check":
+        return run_sandbox_outcome_lesson_review_candidate_minimal_check()
     if command == "run-simple-retina-focus-preview-minimal-check":
         return run_simple_retina_focus_preview_minimal_check()
     if command == "run-generalized-prediction-confidence-check":
@@ -3787,6 +3792,7 @@ def main(argv: list[str] | None = None) -> int:
             "run-one-step-sandbox-action-intent-minimal-check",
             "run-one-step-sandbox-action-execution-minimal-check",
             "run-sandbox-execution-outcome-integration-minimal-check",
+            "run-sandbox-outcome-lesson-review-candidate-minimal-check",
             "run-simple-retina-focus-preview-minimal-check",
             "run-generalized-prediction-confidence-check",
             "run-generalized-candidate-from-pattern-check",
@@ -4090,6 +4096,8 @@ def main(argv: list[str] | None = None) -> int:
         result = run_one_step_sandbox_action_execution_minimal_check()
     elif args.command == "run-sandbox-execution-outcome-integration-minimal-check":
         result = run_sandbox_execution_outcome_integration_minimal_check()
+    elif args.command == "run-sandbox-outcome-lesson-review-candidate-minimal-check":
+        result = run_sandbox_outcome_lesson_review_candidate_minimal_check()
     elif args.command == "run-simple-retina-focus-preview-minimal-check":
         result = run_simple_retina_focus_preview_minimal_check()
     elif args.command == "run-generalized-prediction-confidence-check":

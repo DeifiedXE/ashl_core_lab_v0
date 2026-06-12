@@ -119,6 +119,9 @@ from ashl_core.one_step_sandbox_action_execution_minimal import (
 from ashl_core.sandbox_execution_outcome_integration_minimal import (
     run_sandbox_execution_outcome_integration_minimal_check,
 )
+from ashl_core.sandbox_outcome_lesson_review_candidate_minimal import (
+    run_sandbox_outcome_lesson_review_candidate_minimal_check,
+)
 from ashl_core.minimal_visual_grounding_trial import run_minimal_visual_grounding_trial_check
 from ashl_core.visual_prediction_error_attention_priority_preview_minimal import (
     run_visual_prediction_error_attention_priority_preview_minimal_check,
@@ -11185,6 +11188,79 @@ def smoke_sandbox_execution_outcome_integration_minimal() -> dict:
     )
 
 
+def smoke_sandbox_outcome_lesson_review_candidate_minimal() -> dict:
+    result = run_sandbox_outcome_lesson_review_candidate_minimal_check()
+    summary = result.get("summary", {})
+    boundary = result.get("boundary_check", {})
+    candidates = result.get("sandbox_outcome_lesson_review_candidates", [])
+    candidate = candidates[0] if candidates else {}
+    context = candidate.get("candidate_context", {})
+    content = candidate.get("candidate_content", {})
+    requirements = candidate.get("review_requirements", {})
+    blocked = candidate.get("blocked_flags", {})
+    passed = (
+        result.get("command") == "run-sandbox-outcome-lesson-review-candidate-minimal-check"
+        and result.get("flow") == "sandbox_outcome_lesson_review_candidate_minimal_v0"
+        and result.get("status") == "ok"
+        and summary.get("lesson_review_candidate_result_count") == 39
+        and summary.get("valid_lesson_review_candidate_count") == 1
+        and summary.get("invalid_lesson_review_candidate_count") == 38
+        and summary.get("candidate_created_count") == 1
+        and summary.get("requires_human_review_count") == 1
+        and summary.get("approved_for_lesson_application_blocked_count") == 1
+        and summary.get("approved_for_memory_write_blocked_count") == 1
+        and summary.get("approved_for_retention_write_blocked_count") == 1
+        and summary.get("approved_for_predictor_mutation_blocked_count") == 1
+        and summary.get("approved_for_runtime_behavior_change_blocked_count") == 1
+        and summary.get("lesson_applied_blocked_count") == 1
+        and summary.get("memory_write_blocked_count") == 1
+        and summary.get("retention_write_blocked_count") == 1
+        and summary.get("new_retention_written_blocked_count") == 1
+        and summary.get("predictor_modified_blocked_count") == 1
+        and summary.get("runtime_behavior_changed_blocked_count") == 1
+        and summary.get("production_action_selection_blocked_count") == 1
+        and summary.get("runtime_action_selection_blocked_count") == 1
+        and summary.get("selected_action_created_blocked_count") == 1
+        and summary.get("final_action_created_blocked_count") == 1
+        and summary.get("direct_action_command_blocked_count") == 1
+        and summary.get("persistent_policy_written_blocked_count") == 1
+        and summary.get("general_behavior_changed_blocked_count") == 1
+        and summary.get("proof_of_learning_claim_blocked_count") == 1
+        and candidate.get("candidate_mode") == "sandbox_outcome_lesson_review_candidate_only"
+        and context.get("action_observed") == "check_before_retry"
+        and context.get("outcome_match") is True
+        and context.get("sandbox_check_success") is True
+        and context.get("failure_detected") is False
+        and content.get("candidate_type") == "successful_sandbox_check_evidence"
+        and content.get("confidence_scope") == "controlled_sandbox_only"
+        and requirements.get("requires_human_review") is True
+        and requirements.get("approved_for_lesson_application") is False
+        and requirements.get("approved_for_memory_write") is False
+        and requirements.get("approved_for_retention_write") is False
+        and requirements.get("approved_for_predictor_mutation") is False
+        and requirements.get("approved_for_runtime_behavior_change") is False
+        and all(value is False for value in blocked.values())
+        and boundary.get("lesson_application_added") is False
+        and boundary.get("memory_write_added") is False
+        and boundary.get("retention_write_added") is False
+        and boundary.get("predictor_mutation_added") is False
+        and boundary.get("runtime_behavior_change_added") is False
+        and boundary.get("action_selection_added") is False
+        and boundary.get("final_action_added") is False
+        and boundary.get("direct_action_command_added") is False
+        and boundary.get("proof_of_learning_claimed") is False
+    )
+    return _result(
+        "sandbox_outcome_lesson_review_candidate_minimal",
+        passed,
+        {
+            "summary": summary,
+            "validation_results": result.get("validation_results", []),
+            "boundary_check": boundary,
+        },
+    )
+
+
 def smoke_phase0_current_capability_snapshot() -> dict:
     doc_path = Path("docs/phase0_current_capability_snapshot_2026-06-10.md")
     doc = doc_path.read_text(encoding="utf-8") if doc_path.exists() else ""
@@ -13871,6 +13947,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_one_step_sandbox_action_intent_minimal(),
         smoke_one_step_sandbox_action_execution_minimal(),
         smoke_sandbox_execution_outcome_integration_minimal(),
+        smoke_sandbox_outcome_lesson_review_candidate_minimal(),
         smoke_phase0_current_capability_snapshot(),
         smoke_memory_influence_behavior_gate_design(),
         smoke_first_memory_influenced_behavior_boundary(),

@@ -2607,3 +2607,7 @@ Two-Trial History Boundary:
 ## Sandbox Action Loop Milestone Sync Minimal v0
 
 - Sandbox Action Loop Milestone Sync Minimal v0 records the first closed sandbox action loop: memory-influenced runtime tendency led to a reviewed non-executing choice candidate, one-step sandbox intent, sandbox-only check_before_retry execution, and expected/actual outcome trace evidence. This remains sandbox-only and does not create production action selection, selected_action, final_action, direct commands, real navigation/UI behavior, persistent policy, generalized behavior, lesson application, memory writes, retention writes, predictor mutation, or proof-of-learning claims.
+
+## Sandbox Outcome Lesson Review Candidate Minimal v0
+
+- Sandbox Outcome Lesson Review Candidate Minimal v0 converts the sandbox execution outcome trace into a human-review-required lesson-review candidate. It does not apply a lesson, write memory, write retention, mutate predictors, change runtime behavior, select actions, create final_action, create direct commands, or prove learning.

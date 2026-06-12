@@ -5852,3 +5852,19 @@ Next options:
 1. Sandbox Outcome Lesson Review Candidate Minimal v0.
 2. Sandbox Outcome Retention Candidate Boundary Minimal v0.
 3. Pause and snapshot the completed sandbox action loop before expanding action types.
+
+## Sandbox Outcome Lesson Review Candidate Minimal v0
+
+Status: completed / lesson-review-candidate / no-lesson-application.
+
+Progress:
+- Converts the sandbox action outcome trace into a human-review-required lesson-review candidate.
+- Candidate says check_before_retry detected the obstacle before retrying in the controlled sandbox.
+- Requires human review before any lesson, memory write, retention write, predictor mutation, or runtime behavior change.
+- Lesson application, memory writes, retention writes, predictor mutation, runtime behavior change, action selection, final_action, direct commands, and proof-of-learning claims remain blocked.
+
+Forward plan:
+1. Sandbox Outcome Human Review Decision Minimal v0.
+2. Reviewed Sandbox Lesson Dry-Run Minimal v0.
+3. Sandbox Lesson Application Boundary Minimal v0.
+4. Do not create standalone check packages unless lesson application, memory write, retention write, predictor mutation, runtime behavior change, final_action, or production action selection changes.
