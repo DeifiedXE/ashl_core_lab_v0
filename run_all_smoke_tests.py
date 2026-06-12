@@ -141,6 +141,9 @@ from ashl_core.generic_reviewed_lesson_dry_run_bridge_minimal import (
 from ashl_core.generic_lesson_dry_run_to_trial_trace_bridge_minimal import (
     run_generic_lesson_dry_run_to_trial_trace_bridge_minimal_check,
 )
+from ashl_core.generic_lesson_evidence_pipeline_completion_bridge_minimal import (
+    run_generic_lesson_evidence_pipeline_completion_bridge_minimal_check,
+)
 from ashl_core.minimal_visual_grounding_trial import run_minimal_visual_grounding_trial_check
 from ashl_core.visual_prediction_error_attention_priority_preview_minimal import (
     run_visual_prediction_error_attention_priority_preview_minimal_check,
@@ -11851,6 +11854,110 @@ def smoke_generic_lesson_dry_run_to_trial_trace_bridge_minimal() -> dict:
     )
 
 
+def smoke_generic_lesson_evidence_pipeline_completion_bridge_minimal() -> dict:
+    result = run_generic_lesson_evidence_pipeline_completion_bridge_minimal_check()
+    summary = result.get("summary", {})
+    boundary = result.get("boundary_check", {})
+    validation_by_id = {
+        item.get("evidence_pipeline_bridge_id"): item for item in result.get("validation_results", [])
+    }
+    bridges = [
+        record
+        for record in result.get("evidence_pipeline_bridge_results", [])
+        if validation_by_id.get(record.get("evidence_pipeline_bridge_id"), {}).get("valid") is True
+    ]
+    by_decision = {
+        record.get("source_trial_trace_bridge", {}).get("source_decision"): record
+        for record in bridges
+        if record.get("bridge_mode") == "existing_trial_trace_to_existing_evidence_trace_completion_bridge"
+    }
+    accepted = by_decision.get("accepted_for_reviewed_lesson_preview", {})
+    rejected = by_decision.get("rejected", {})
+    needs_more = by_decision.get("needs_more_evidence", {})
+    accepted_source = accepted.get("source_trial_trace_bridge", {})
+    before_after = accepted.get("before_after_bridge_result", {})
+    effect_evidence = accepted.get("lesson_effect_evidence_bridge_result", {})
+    rejected_before_after = rejected.get("before_after_bridge_result", {})
+    rejected_evidence = rejected.get("lesson_effect_evidence_bridge_result", {})
+    needs_more_before_after = needs_more.get("before_after_bridge_result", {})
+    needs_more_evidence = needs_more.get("lesson_effect_evidence_bridge_result", {})
+    evidence = accepted.get("supporting_evidence", {})
+    blocked = accepted.get("blocked_flags", {})
+    passed = (
+        result.get("command") == "run-generic-lesson-evidence-pipeline-completion-bridge-minimal-check"
+        and result.get("flow") == "generic_lesson_evidence_pipeline_completion_bridge_minimal_v0"
+        and result.get("status") == "ok"
+        and summary.get("evidence_pipeline_bridge_result_count") == 63
+        and summary.get("valid_evidence_pipeline_bridge_result_count") == 3
+        and summary.get("invalid_evidence_pipeline_bridge_result_count") == 60
+        and summary.get("accepted_evidence_pipeline_bridge_count") == 1
+        and summary.get("rejected_evidence_pipeline_bridge_count") == 1
+        and summary.get("needs_more_evidence_evidence_pipeline_bridge_count") == 1
+        and summary.get("before_after_contrast_created_count") == 1
+        and summary.get("lesson_effect_evidence_trace_created_count") == 1
+        and summary.get("evidence_pipeline_blocked_count") == 2
+        and summary.get("existing_before_after_module_reused_count") == 1
+        and summary.get("existing_lesson_effect_evidence_module_reused_count") == 1
+        and accepted_source.get("source_decision") == "accepted_for_reviewed_lesson_preview"
+        and accepted_source.get("legacy_status") == "approved_for_preview"
+        and accepted_source.get("dry_run_correction_created") is True
+        and accepted_source.get("trial_trace_preview_created") is True
+        and accepted_source.get("trial_trace_only") is True
+        and accepted_source.get("source_type") == "phase0_level1_contrast_sample_set"
+        and accepted_source.get("source_trace_ref") == "phase0_level1_contrast_sample_set_demo_001"
+        and before_after.get("existing_before_after_module_called") is True
+        and before_after.get("before_after_contrast_created") is True
+        and before_after.get("contrast_only") is True
+        and before_after.get("baseline_trace_available") is True
+        and before_after.get("dry_run_trace_available") is True
+        and before_after.get("final_trial_trace_mutated") is False
+        and before_after.get("runtime_behavior_changed") is False
+        and effect_evidence.get("existing_lesson_effect_evidence_module_called") is True
+        and effect_evidence.get("lesson_effect_evidence_trace_created") is True
+        and effect_evidence.get("evidence_only") is True
+        and effect_evidence.get("lesson_applied") is False
+        and effect_evidence.get("memory_write") is False
+        and effect_evidence.get("retention_write") is False
+        and effect_evidence.get("predictor_modified") is False
+        and effect_evidence.get("runtime_behavior_changed") is False
+        and effect_evidence.get("proof_of_learning_claim") is False
+        and rejected_before_after.get("before_after_contrast_created") is False
+        and rejected_evidence.get("lesson_effect_evidence_trace_created") is False
+        and rejected_evidence.get("blocked_reason") == "rejected_decision_cannot_enter_evidence_pipeline"
+        and needs_more_before_after.get("before_after_contrast_created") is False
+        and needs_more_evidence.get("lesson_effect_evidence_trace_created") is False
+        and needs_more_evidence.get("blocked_reason") == "needs_more_evidence_cannot_enter_evidence_pipeline"
+        and evidence.get("level0_flip_test_used_as_supporting_evidence") is True
+        and evidence.get("bidirectional_flip_passed") is True
+        and evidence.get("one_way_caution_bias_rejected") is True
+        and evidence.get("level1_contrast_sample_set_used_as_candidate_source") is True
+        and evidence.get("success_failure_neutral_contrast_available") is True
+        and all(value is False for value in blocked.values())
+        and boundary.get("schema_bridge_only") is True
+        and boundary.get("existing_before_after_module_reused") is True
+        and boundary.get("existing_lesson_effect_evidence_module_reused") is True
+        and boundary.get("source_specific_evidence_channel_created") is False
+        and boundary.get("new_before_after_implementation_created") is False
+        and boundary.get("new_lesson_effect_evidence_implementation_created") is False
+        and boundary.get("lesson_application_added") is False
+        and boundary.get("memory_write_added") is False
+        and boundary.get("retention_write_added") is False
+        and boundary.get("predictor_mutation_added") is False
+        and boundary.get("runtime_behavior_change_added") is False
+        and boundary.get("final_trial_trace_mutation_added") is False
+        and boundary.get("proof_of_learning_claimed") is False
+    )
+    return _result(
+        "generic_lesson_evidence_pipeline_completion_bridge_minimal",
+        passed,
+        {
+            "summary": summary,
+            "validation_results": result.get("validation_results", []),
+            "boundary_check": boundary,
+        },
+    )
+
+
 def smoke_phase0_current_capability_snapshot() -> dict:
     doc_path = Path("docs/phase0_current_capability_snapshot_2026-06-10.md")
     doc = doc_path.read_text(encoding="utf-8") if doc_path.exists() else ""
@@ -14545,6 +14652,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_generic_lesson_review_decision_preview_bridge_minimal(),
         smoke_generic_reviewed_lesson_dry_run_bridge_minimal(),
         smoke_generic_lesson_dry_run_to_trial_trace_bridge_minimal(),
+        smoke_generic_lesson_evidence_pipeline_completion_bridge_minimal(),
         smoke_phase0_current_capability_snapshot(),
         smoke_memory_influence_behavior_gate_design(),
         smoke_first_memory_influenced_behavior_boundary(),

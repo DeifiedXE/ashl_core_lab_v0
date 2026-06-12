@@ -6002,3 +6002,20 @@ Forward plan:
 1. Generic Lesson Trial Trace To Before/After Contrast Bridge Minimal v0.
 2. Reuse existing before_after_trial_contrast if possible.
 3. Keep blocking lesson application, memory write, retention write, predictor mutation, runtime behavior change, final_action, and production action selection.
+
+## Generic Lesson Evidence Pipeline Completion Bridge Minimal v0
+
+Status: completed / bridge-completion / evidence-only.
+
+Progress:
+- Completes the remaining generic lesson evidence bridge from dry-run trial trace preview into existing before_after_trial_contrast and lesson_effect_evidence_trace_minimal.
+- Creates before/after contrast and lesson effect evidence trace only for accepted reviewed lesson dry-runs.
+- Blocks rejected and needs_more_evidence decisions from the evidence pipeline.
+- Reuses existing before/after and lesson effect evidence modules instead of creating source-specific evidence channels or new implementations.
+- Keeps Level 0 flip evidence as supporting anti-bias evidence and Level 1 contrast evidence as the candidate source.
+- Lesson application, memory writes, retention writes, predictor mutation, runtime behavior change, final trial trace mutation, action selection, final_action, direct commands, and proof-of-learning claims remain blocked.
+
+Forward plan:
+1. Generic Lesson Evidence Pipeline Sync Minimal v0.
+2. Reviewed Lesson Application Boundary Reconciliation Minimal v0.
+3. Stop bridge-splitting unless the next step crosses lesson application, memory write, retention write, predictor mutation, runtime behavior change, final_action, or production action selection.
