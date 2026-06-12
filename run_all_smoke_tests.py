@@ -147,6 +147,9 @@ from ashl_core.generic_lesson_evidence_pipeline_completion_bridge_minimal import
 from ashl_core.reviewed_lesson_sandbox_application_readiness_minimal import (
     run_reviewed_lesson_sandbox_application_readiness_minimal_check,
 )
+from ashl_core.level1_explicit_lesson_application_approval_minimal import (
+    run_level1_explicit_lesson_application_approval_minimal_check,
+)
 from ashl_core.minimal_visual_grounding_trial import run_minimal_visual_grounding_trial_check
 from ashl_core.visual_prediction_error_attention_priority_preview_minimal import (
     run_visual_prediction_error_attention_priority_preview_minimal_check,
@@ -12092,6 +12095,104 @@ def smoke_reviewed_lesson_sandbox_application_readiness_minimal() -> dict:
     )
 
 
+def smoke_level1_explicit_lesson_application_approval_minimal() -> dict:
+    result = run_level1_explicit_lesson_application_approval_minimal_check()
+    summary = result.get("summary", {})
+    boundary = result.get("boundary_check", {})
+    records = [
+        record
+        for record, validation in zip(
+            result.get("explicit_approval_results", []),
+            result.get("validation_results", []),
+        )
+        if validation.get("valid") is True
+    ]
+    by_decision = {
+        record.get("human_application_approval", {}).get("approval_decision"): record
+        for record in records
+    }
+    approved = by_decision.get("approved_for_future_level1_sandbox_application_package", {})
+    rejected = by_decision.get("rejected_for_application", {})
+    needs_more = by_decision.get("needs_more_evidence_before_application", {})
+    approved_scope = approved.get("approval_scope", {})
+    approved_human = approved.get("human_application_approval", {})
+    approved_result = approved.get("approval_result", {})
+    approved_next = approved.get("allowed_next_layer", {})
+    approved_blocked = approved.get("blocked_flags", {})
+    passed = (
+        result.get("command") == "run-level1-explicit-lesson-application-approval-minimal-check"
+        and result.get("flow") == "level1_explicit_lesson_application_approval_minimal_v0"
+        and result.get("status") == "ok"
+        and summary.get("explicit_approval_result_count") == 51
+        and summary.get("valid_explicit_approval_result_count") == 3
+        and summary.get("invalid_explicit_approval_result_count") == 48
+        and summary.get("approved_for_future_package_count") == 1
+        and summary.get("rejected_for_application_count") == 1
+        and summary.get("needs_more_evidence_before_application_count") == 1
+        and summary.get("explicit_human_application_approval_present_count") == 1
+        and summary.get("may_enter_level1_sandbox_lesson_application_package_count") == 1
+        and summary.get("approval_scope_sandbox_only_count") == 3
+        and summary.get("approval_future_package_only_count") == 1
+        and summary.get("lesson_application_blocked_count") == 3
+        and summary.get("sandbox_lesson_application_blocked_count") == 3
+        and summary.get("runtime_lesson_application_blocked_count") == 3
+        and summary.get("memory_write_blocked_count") == 3
+        and summary.get("retention_write_blocked_count") == 3
+        and summary.get("predictor_mutation_blocked_count") == 3
+        and summary.get("runtime_behavior_change_blocked_count") == 3
+        and summary.get("final_action_blocked_count") == 3
+        and summary.get("proof_of_learning_claim_blocked_count") == 3
+        and approved_scope.get("approved_target_scope") == "phase0_level1_sandbox_only"
+        and approved_scope.get("sandbox_only") is True
+        and approved_scope.get("production_scope") is False
+        and approved_scope.get("runtime_global_scope") is False
+        and approved_scope.get("memory_write_scope") is False
+        and approved_scope.get("retention_write_scope") is False
+        and approved_scope.get("predictor_mutation_scope") is False
+        and approved_human.get("approval_is_explicit") is True
+        and approved_human.get("approval_is_for_future_package_only") is True
+        and approved_human.get("approval_applies_lesson_now") is False
+        and approved_result.get("explicit_human_application_approval_present") is True
+        and approved_result.get("lesson_applied") is False
+        and approved_result.get("memory_write") is False
+        and approved_result.get("retention_write") is False
+        and approved_result.get("predictor_modified") is False
+        and approved_result.get("runtime_behavior_changed") is False
+        and approved_next.get("may_enter_level1_sandbox_lesson_application_package") is True
+        and approved_next.get("may_apply_lesson_in_this_package") is False
+        and approved_next.get("may_apply_runtime_lesson") is False
+        and approved_next.get("may_write_memory") is False
+        and approved_next.get("may_write_retention") is False
+        and approved_next.get("may_mutate_predictor") is False
+        and approved_next.get("may_change_runtime_behavior") is False
+        and approved_next.get("may_create_final_action") is False
+        and all(value is False for value in approved_blocked.values())
+        and all(value is False for value in rejected.get("allowed_next_layer", {}).values())
+        and all(value is False for value in needs_more.get("allowed_next_layer", {}).values())
+        and boundary.get("approval_only") is True
+        and boundary.get("readiness_reused") is True
+        and boundary.get("lesson_application_added") is False
+        and boundary.get("sandbox_lesson_application_added") is False
+        and boundary.get("runtime_lesson_application_added") is False
+        and boundary.get("memory_write_added") is False
+        and boundary.get("retention_write_added") is False
+        and boundary.get("predictor_mutation_added") is False
+        and boundary.get("runtime_behavior_change_added") is False
+        and boundary.get("final_action_created") is False
+        and boundary.get("direct_action_command_created") is False
+        and boundary.get("proof_of_learning_claimed") is False
+    )
+    return _result(
+        "level1_explicit_lesson_application_approval_minimal",
+        passed,
+        {
+            "summary": summary,
+            "validation_results": result.get("validation_results", []),
+            "boundary_check": boundary,
+        },
+    )
+
+
 def smoke_phase0_current_capability_snapshot() -> dict:
     doc_path = Path("docs/phase0_current_capability_snapshot_2026-06-10.md")
     doc = doc_path.read_text(encoding="utf-8") if doc_path.exists() else ""
@@ -14788,6 +14889,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_generic_lesson_dry_run_to_trial_trace_bridge_minimal(),
         smoke_generic_lesson_evidence_pipeline_completion_bridge_minimal(),
         smoke_reviewed_lesson_sandbox_application_readiness_minimal(),
+        smoke_level1_explicit_lesson_application_approval_minimal(),
         smoke_phase0_current_capability_snapshot(),
         smoke_memory_influence_behavior_gate_design(),
         smoke_first_memory_influenced_behavior_boundary(),

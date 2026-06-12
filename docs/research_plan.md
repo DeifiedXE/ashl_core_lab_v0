@@ -6074,3 +6074,20 @@ Forward plan:
 2. Level 1 Sandbox Lesson Application Minimal v0, only after explicit application approval.
 
 Readiness is not application.
+
+## Level 1 Explicit Lesson Application Approval Minimal v0
+
+Status: completed / explicit-approval-record / no-application.
+
+Progress:
+- Records explicit human approval for a future Phase0 Level 1 sandbox-only lesson application package.
+- Supports approved_for_future_level1_sandbox_application_package, rejected_for_application, and needs_more_evidence_before_application decisions.
+- Scopes approval to phase0_level1_sandbox_only.
+- Allows only the approved decision to enter a future Level 1 sandbox lesson application package.
+- Keeps lesson application, memory write, retention write, predictor mutation, runtime behavior change, production action selection, final_action, direct commands, and proof-of-learning claims blocked.
+
+Forward plan:
+1. Level 1 Sandbox Lesson Application Minimal v0.
+2. Keep it sandbox-only and block memory write, retention write, predictor mutation, runtime/global behavior change, final_action, and production action selection.
+
+Approval is not application.

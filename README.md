@@ -2659,3 +2659,7 @@ Two-Trial History Boundary:
 ## Reviewed Lesson Sandbox Application Readiness Minimal v0
 
 - Reviewed Lesson Sandbox Application Readiness Minimal v0 checks a generic lesson effect evidence trace against the reviewed lesson application boundary for the Phase0 Level 1 sandbox scope. It records which prerequisites are represented and explicitly marks application as not ready because explicit human application approval is missing. It does not apply lessons, write memory, write retention, mutate predictors, change runtime behavior, create final_action, or prove learning.
+
+## Level 1 Explicit Lesson Application Approval Minimal v0
+
+- Level 1 Explicit Lesson Application Approval Minimal v0 records explicit human approval for a future Phase0 Level 1 sandbox-only lesson application package. Approval is scoped to the Level 1 sandbox and does not apply the lesson in this package. Memory writes, retention writes, predictor mutation, runtime behavior change, production action selection, final_action, direct commands, and proof-of-learning claims remain blocked.
