@@ -6255,6 +6255,23 @@ Next recommended work:
 1. Keep Level 2 sandbox application/execution deferred until a separate future package opens that boundary.
 2. Keep memory readiness deferred until a separate memory boundary package.
 
+## Level 2 Sandbox Scenario Plan Minimal v0
+
+Status: completed / planning-only / no Level 2 execution.
+
+Progress:
+- Adds `ashl_core/level2_sandbox_scenario_plan_minimal.py`.
+- Consumes a valid Level 2 sandbox design envelope.
+- Defines planned inputs, expected outcomes, failure classes, and stop conditions for a future controlled counterfactual retry sandbox scenario.
+- Keeps the plan inside `phase0_level2_sandbox_design_only`.
+
+Boundary:
+- No Level 2 application, Level 2 execution, approval replay/session binding hardening, production/runtime behavior change, memory write, retained JSONL write, retention write, predictor mutation, selected_action, final_action, direct command, production promotion, or proof-of-learning claim.
+
+Next recommended work:
+1. Keep future Level 2 sandbox application/readiness deferred until a separate package opens that boundary.
+2. Keep memory readiness deferred until a separate memory boundary package.
+
 Forbidden claims:
 - No production lesson application.
 - No runtime behavior change.

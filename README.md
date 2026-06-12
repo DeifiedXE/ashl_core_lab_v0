@@ -1618,7 +1618,7 @@ Two-Trial History Boundary:
 
 - `docs/current_boundary_index.md`
 - Adds a short, versioned, low-token source of global hard boundaries for future work packages.
-- Current version: `Boundary Index Version: 2026-06-09-b69`.
+- Current version: `Boundary Index Version: 2026-06-09-b70`.
 - For current Phase0 status, see `docs/phase0_status.md`.
 - For capability status, see `docs/phase0_capability_matrix.md`.
 - For boundary version history, see `docs/current_boundary_index.md`.
@@ -2696,6 +2696,10 @@ Two-Trial History Boundary:
 ## Level 2 Sandbox Design Envelope Minimal v0
 
 - Level 2 Sandbox Design Envelope Minimal v0 defines a design-only envelope for a future Phase0 Level 2 sandbox package. It requires a valid Level 1 review conclusion and Level 2 readiness precheck, allows only future sandbox design capabilities such as multi-step sandbox traces, bounded counterfactual checks, sandbox-only failure reason comparison, and expected/actual outcome comparison, and keeps Level 2 application/execution, runtime behavior change, memory or retained JSONL writes, retention writes, predictor mutation, selected_action/final_action/direct commands, production promotion, and proof-of-learning claims blocked.
+
+## Level 2 Sandbox Scenario Plan Minimal v0
+
+- Level 2 Sandbox Scenario Plan Minimal v0 defines a planning-only scenario for a future Phase0 Level 2 sandbox package within the Level 2 design envelope. It records planned inputs, expected outcomes, failure classes, and stop conditions for a controlled counterfactual retry sandbox plan, while keeping Level 2 execution/application, runtime behavior change, memory or retained JSONL writes, retention writes, predictor mutation, selected_action/final_action/direct commands, production promotion, approval replay/session binding, and proof-of-learning claims blocked.
 
 ## Phase0 Documentation Inventory and Consistency Reconciliation Minimal v0
 
