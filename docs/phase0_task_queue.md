@@ -11,6 +11,7 @@ Current queue source:
 - Active: Codex Task Queue Minimal v0.
 - Completed: Level 1 Sandbox Outcome Evaluation and Human Review Summary Minimal v0.
 - Completed: Level 1 Sandbox Review Conclusion and Level 2 Readiness Precheck Minimal v0.
+- Completed: Level 2 Sandbox Design Envelope Minimal v0.
 - Deferred: Level 2 Sandbox Readiness Minimal v0.
 - Deferred: Memory Readiness Boundary Minimal v0.
 

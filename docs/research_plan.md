@@ -6237,6 +6237,24 @@ Next recommended work:
 1. Keep Level 2 sandbox application/execution deferred until a separate future package.
 2. Keep memory readiness deferred until a separate memory boundary package.
 
+## Level 2 Sandbox Design Envelope Minimal v0
+
+Status: completed / design-only / no Level 2 execution.
+
+Progress:
+- Adds `ashl_core/level2_sandbox_design_envelope_minimal.py`.
+- Consumes the valid Level 1 review conclusion and Level 2 readiness precheck.
+- Defines a design-only envelope for a future Phase0 Level 2 sandbox package.
+- Allows only future sandbox-scoped design capabilities: multi-step sandbox trace, bounded counterfactual check, sandbox-only failure reason comparison, and sandbox-only expected/actual outcome comparison.
+- Confirms task queue completed status, passing tests, and Codex-generated status are not approval.
+
+Boundary:
+- No Level 2 application, Level 2 execution, production/runtime behavior change, memory write, retained JSONL write, retention write, predictor mutation, selected_action, final_action, direct command, production promotion, or proof-of-learning claim.
+
+Next recommended work:
+1. Keep Level 2 sandbox application/execution deferred until a separate future package opens that boundary.
+2. Keep memory readiness deferred until a separate memory boundary package.
+
 Forbidden claims:
 - No production lesson application.
 - No runtime behavior change.

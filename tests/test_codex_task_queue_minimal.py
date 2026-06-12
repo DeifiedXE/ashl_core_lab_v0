@@ -137,7 +137,7 @@ class CodexTaskQueueMinimalTests(unittest.TestCase):
         self.assertEqual(17, summary["task_queue_result_count"])
         self.assertEqual(1, summary["valid_task_queue_count"])
         self.assertEqual(16, summary["invalid_task_queue_count"])
-        self.assertEqual(6, summary["valid_task_entry_count"])
+        self.assertEqual(7, summary["valid_task_entry_count"])
         self.assertGreaterEqual(summary["invalid_task_entry_count"], 9)
         self.assertEqual(1, summary["queue_scope_checked_count"])
         self.assertEqual(1, summary["approval_block_checked_count"])
@@ -164,7 +164,7 @@ class CodexTaskQueueMinimalTests(unittest.TestCase):
             "title": "Test task",
             "task_type": task_type,
             "status": status,
-            "boundary_index_version": "2026-06-09-b68",
+            "boundary_index_version": "2026-06-09-b69",
             "source": "unit_test",
             "creates_capability": False,
             "counts_as_approval": False,
