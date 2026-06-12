@@ -2635,3 +2635,7 @@ Two-Trial History Boundary:
 ## Generic Lesson Review Decision Preview Bridge Minimal v0
 
 - Generic Lesson Review Decision Preview Bridge Minimal v0 connects the generic human lesson-review decision gate to the existing reviewed_lesson_trace_preview pipeline by mapping accepted_for_reviewed_lesson_preview to the legacy approved_for_preview schema. It reuses the existing preview path and does not create source-specific review channels or a new preview implementation. Rejected and needs_more_evidence decisions cannot enter preview. Lesson application, dry-run creation, memory writes, retention writes, predictor mutation, runtime behavior change, action selection, final_action, direct commands, and proof-of-learning claims remain blocked.
+
+## Generic Reviewed Lesson Dry-Run Bridge Minimal v0
+
+- Generic Reviewed Lesson Dry-Run Bridge Minimal v0 connects the generic lesson review decision preview bridge to the existing reviewed_lesson_dry_run_correction_minimal path. It reuses the existing dry-run module and creates dry-run correction only for accepted reviewed lesson previews. Rejected and needs_more_evidence decisions cannot enter dry-run. This package does not create source-specific dry-run channels or a new dry-run implementation. Lesson application, memory writes, retention writes, predictor mutation, runtime behavior change, trial trace mutation, action selection, final_action, direct commands, and proof-of-learning claims remain blocked.
