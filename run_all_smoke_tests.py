@@ -128,6 +128,9 @@ from ashl_core.phase0_level1_first_contact_danger_minimal import (
 from ashl_core.phase0_level0_obstacle_memory_flip_test_minimal import (
     run_phase0_level0_obstacle_memory_flip_test_minimal_check,
 )
+from ashl_core.phase0_level1_contrast_sample_set_minimal import (
+    run_phase0_level1_contrast_sample_set_minimal_check,
+)
 from ashl_core.minimal_visual_grounding_trial import run_minimal_visual_grounding_trial_check
 from ashl_core.visual_prediction_error_attention_priority_preview_minimal import (
     run_visual_prediction_error_attention_priority_preview_minimal_check,
@@ -11419,6 +11422,80 @@ def smoke_phase0_level0_obstacle_memory_flip_test_minimal() -> dict:
     )
 
 
+def smoke_phase0_level1_contrast_sample_set_minimal() -> dict:
+    result = run_phase0_level1_contrast_sample_set_minimal_check()
+    summary = result.get("summary", {})
+    boundary = result.get("boundary_check", {})
+    sets = result.get("contrast_sample_sets", [])
+    sample_set = sets[0] if sets else {}
+    samples = {sample.get("sample_id"): sample for sample in sample_set.get("samples", [])}
+    success = samples.get("level1_success_check_danger", {})
+    failure = samples.get("level1_failure_retry_into_danger", {})
+    neutral = samples.get("level1_neutral_check_empty", {})
+    contrast = sample_set.get("contrast_result", {})
+    readiness = sample_set.get("lesson_review_readiness", {})
+    blocked = sample_set.get("blocked_flags", {})
+    passed = (
+        result.get("command") == "run-phase0-level1-contrast-sample-set-minimal-check"
+        and result.get("flow") == "phase0_level1_contrast_sample_set_minimal_v0"
+        and result.get("status") == "ok"
+        and summary.get("level1_contrast_sample_set_count") == 46
+        and summary.get("valid_level1_contrast_sample_set_count") == 1
+        and summary.get("invalid_level1_contrast_sample_set_count") == 45
+        and summary.get("success_sample_count") == 1
+        and summary.get("failure_sample_count") == 1
+        and summary.get("neutral_sample_count") == 1
+        and summary.get("contrast_ready_count") == 1
+        and summary.get("check_useful_when_danger_count") == 1
+        and summary.get("retry_unsafe_when_danger_count") == 1
+        and summary.get("check_neutral_when_no_danger_count") == 1
+        and summary.get("can_feed_lesson_review_count") == 1
+        and summary.get("requires_human_review_count") == 1
+        and sample_set.get("level_info", {}).get("level_id") == "phase0_level1_first_contact_danger"
+        and sample_set.get("level_info", {}).get("sample_count") == 3
+        and success.get("action") == "check_before_retry"
+        and success.get("front_symbol") == "d"
+        and success.get("actual", {}).get("danger_detected") is True
+        and success.get("movement_executed") is False
+        and failure.get("action") == "retry_same_action"
+        and failure.get("front_symbol") == "d"
+        and failure.get("danger_contacted") is True
+        and failure.get("movement_blocked_or_failed") is True
+        and neutral.get("action") == "check_before_retry"
+        and neutral.get("front_symbol") == "."
+        and neutral.get("danger_detected") is False
+        and contrast.get("contrast_ready") is True
+        and contrast.get("check_before_retry_useful_when_danger") is True
+        and contrast.get("retry_same_action_unsafe_when_danger") is True
+        and contrast.get("check_before_retry_neutral_when_no_danger") is True
+        and contrast.get("proves_learning") is False
+        and readiness.get("can_feed_lesson_review") is True
+        and readiness.get("requires_human_review") is True
+        and readiness.get("approved_for_lesson_application") is False
+        and readiness.get("approved_for_memory_write") is False
+        and readiness.get("approved_for_retention_write") is False
+        and readiness.get("approved_for_predictor_mutation") is False
+        and all(value is False for value in blocked.values())
+        and boundary.get("contrast_evidence_only") is True
+        and boundary.get("lesson_application_added") is False
+        and boundary.get("memory_write_added") is False
+        and boundary.get("retention_write_added") is False
+        and boundary.get("predictor_mutation_added") is False
+        and boundary.get("action_selection_added") is False
+        and boundary.get("production_behavior_added") is False
+        and boundary.get("proof_of_learning_claimed") is False
+    )
+    return _result(
+        "phase0_level1_contrast_sample_set_minimal",
+        passed,
+        {
+            "summary": summary,
+            "validation_results": result.get("validation_results", []),
+            "boundary_check": boundary,
+        },
+    )
+
+
 def smoke_phase0_current_capability_snapshot() -> dict:
     doc_path = Path("docs/phase0_current_capability_snapshot_2026-06-10.md")
     doc = doc_path.read_text(encoding="utf-8") if doc_path.exists() else ""
@@ -14108,6 +14185,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_sandbox_outcome_lesson_review_candidate_minimal(),
         smoke_phase0_level0_obstacle_memory_flip_test_minimal(),
         smoke_phase0_level1_first_contact_danger_minimal(),
+        smoke_phase0_level1_contrast_sample_set_minimal(),
         smoke_phase0_current_capability_snapshot(),
         smoke_memory_influence_behavior_gate_design(),
         smoke_first_memory_influenced_behavior_boundary(),

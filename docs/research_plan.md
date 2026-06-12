@@ -5920,3 +5920,18 @@ Next options:
 1. Level 1 Contrast Sample Set Minimal v0.
 2. Sandbox Outcome Human Review Decision Minimal v0.
 3. Phase0 Level 2 Design Boundary Minimal v0.
+
+## Level 1 Contrast Sample Set Minimal v0
+
+Status: completed / contrast-evidence-only / no-lesson-application.
+
+Progress:
+- Adds success, failure, and neutral controlled samples for Phase0 Level 1 danger checking.
+- Shows check_before_retry is useful when danger is present.
+- Shows retry_same_action is unsafe when danger is present.
+- Shows check_before_retry can be neutral/unnecessary when no danger is present.
+- Supports human lesson review only; learning proof, lesson application, memory writes, retention writes, predictor mutation, action selection, final_action, direct commands, and production behavior remain blocked.
+
+Forward plan:
+1. Sandbox Outcome Human Review Decision Minimal v0.
+2. Keep blocking lesson application, memory write, retention write, predictor mutation, runtime behavior change, final_action, and production action selection.

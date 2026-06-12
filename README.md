@@ -2623,3 +2623,7 @@ Two-Trial History Boundary:
 ## Phase0 Level 0-1 Milestone Sync Minimal v0
 
 - Phase0 Level 0-1 Milestone Sync Minimal v0 records that Level 0 rejects one-way caution bias through bidirectional obstacle-memory tendency flips, and Level 1 passes a controlled one-step symbolic danger check in sandbox. This makes the Level 1 danger check more credible: it follows a prior test showing memory influence can point both toward caution and toward retry depending on memory content. Pathfinding, goal reaching, multi-step loops, production/runtime action selection, selected_action, final_action, direct commands, object recognition, semantic vision, lesson application, memory/retention writes, predictor mutation, and proof-of-learning claims remain blocked.
+
+## Level 1 Contrast Sample Set Minimal v0
+
+- Level 1 Contrast Sample Set Minimal v0 adds success, failure, and neutral controlled samples for the Phase0 Level 1 danger check. The set shows check_before_retry is useful when danger is present, retry_same_action is unsafe when danger is present, and check_before_retry can be neutral/unnecessary when no danger is present. This supports human lesson review only and does not prove learning, apply lessons, write memory, write retention, mutate predictors, select actions, or execute production behavior.
