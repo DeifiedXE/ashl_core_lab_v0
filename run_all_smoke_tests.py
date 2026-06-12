@@ -153,6 +153,9 @@ from ashl_core.level1_explicit_lesson_application_approval_minimal import (
 from ashl_core.level1_sandbox_lesson_application_minimal import (
     run_level1_sandbox_lesson_application_minimal_check,
 )
+from ashl_core.level1_sandbox_lesson_application_outcome_observation_minimal import (
+    run_level1_sandbox_lesson_application_outcome_observation_minimal_check,
+)
 from ashl_core.minimal_visual_grounding_trial import run_minimal_visual_grounding_trial_check
 from ashl_core.visual_prediction_error_attention_priority_preview_minimal import (
     run_visual_prediction_error_attention_priority_preview_minimal_check,
@@ -10461,8 +10464,8 @@ def smoke_current_boundary_index_docs() -> dict:
     readme = readme_path.read_text(encoding="utf-8") if readme_path.exists() else ""
     research_plan = research_plan_path.read_text(encoding="utf-8") if research_plan_path.exists() else ""
     compact_required_terms = [
-        "Boundary Index Version: 2026-06-09-b62",
-        "Last update log: Level 1 Sandbox Lesson Application Minimal v0",
+        "Boundary Index Version: 2026-06-09-b63",
+        "Last update log: Level 1 Sandbox Lesson Application Outcome Observation Minimal v0",
         "docs/boundary_index_archive_2026_06.md",
         "Minimal Visual Grounding Trial v0",
         "Visual Prediction Error + Attention Priority Preview Minimal v0",
@@ -10503,6 +10506,8 @@ def smoke_current_boundary_index_docs() -> dict:
         "front_symbol=d",
         "preferred_sandbox_action=check_before_retry",
         "blocks_retry_same_action_until_check=True",
+        "Level 1 Sandbox Lesson Application Outcome Observation milestone",
+        "observe the outcome of one reviewed lesson application inside the Phase0 Level 1 toy sandbox scope only",
         "`current_boundary_index.md` should stay <= 130 lines when possible.",
         "Hard limit: <= 150 lines.",
     ]
@@ -10524,7 +10529,7 @@ def smoke_current_boundary_index_docs() -> dict:
         and all(term in doc for term in compact_required_terms)
         and all(term in archive for term in archive_required_terms)
         and line_count <= 130
-        and "Boundary Index Version: 2026-06-09-b62" in readme
+        and "Boundary Index Version: 2026-06-09-b63" in readme
         and "docs/boundary_index_archive_2026_06.md" in readme
         and "Boundary Index Compaction / Archive v0" in research_plan
         and "Runtime Tendency Memory Influence Safety Sync Minimal v0" in research_plan
@@ -12325,6 +12330,84 @@ def smoke_level1_sandbox_lesson_application_minimal() -> dict:
     )
     return _result(
         "level1_sandbox_lesson_application_minimal",
+        passed,
+        {
+            "summary": summary,
+            "validation_results": result.get("validation_results", []),
+            "boundary_check": boundary,
+        },
+    )
+
+
+def smoke_level1_sandbox_lesson_application_outcome_observation_minimal() -> dict:
+    result = run_level1_sandbox_lesson_application_outcome_observation_minimal_check()
+    summary = result.get("summary", {})
+    boundary = result.get("boundary_check", {})
+    records = [
+        record
+        for record, validation in zip(
+            result.get("observation_results", []),
+            result.get("validation_results", []),
+        )
+        if validation.get("valid") is True
+    ]
+    record = records[0] if records else {}
+    forbidden_flags = (
+        "production_behavior_changed",
+        "runtime_behavior_changed",
+        "memory_written",
+        "retention_written",
+        "predictor_modified",
+        "selected_action_created",
+        "final_action_created",
+        "direct_command_created",
+        "generalized_behavior_changed",
+        "proof_of_learning_claimed",
+    )
+    safe_claim = record.get("safe_capability_claim", "")
+    passed = (
+        result.get("command") == "run-level1-sandbox-lesson-application-outcome-observation-minimal-check"
+        and result.get("flow") == "level1_sandbox_lesson_application_outcome_observation_minimal_v0"
+        and result.get("status") == "ok"
+        and summary.get("level1_sandbox_outcome_observation_result_count") == 25
+        and summary.get("valid_level1_sandbox_outcome_observation_count") == 1
+        and summary.get("invalid_level1_sandbox_outcome_observation_count") == 24
+        and summary.get("source_application_checked_count") == 1
+        and summary.get("sandbox_effect_observed_count") == 1
+        and summary.get("audit_record_confirmed_count") == 1
+        and summary.get("rollback_record_confirmed_count") == 1
+        and summary.get("blocked_boundary_confirmed_count") == 1
+        and record.get("record_type") == "level1_sandbox_lesson_application_outcome_observation"
+        and record.get("schema_version") == "level1_sandbox_lesson_application_outcome_observation_minimal_v0"
+        and record.get("target_scope") == "phase0_level1_sandbox_only"
+        and record.get("source_application_record_type") == "level1_sandbox_lesson_application"
+        and record.get("source_application_valid") is True
+        and record.get("outcome_observed") is True
+        and record.get("observed_front_symbol") == "d"
+        and record.get("observed_sandbox_action") == "check_before_retry"
+        and record.get("observed_blocks_retry_same_action_until_check") is True
+        and record.get("sandbox_effect_visible") is True
+        and record.get("audit_record_present") is True
+        and record.get("rollback_record_present") is True
+        and all(record.get(flag) is False for flag in forbidden_flags)
+        and "toy sandbox scope only" in safe_claim
+        and "remain blocked" in safe_claim
+        and "implicit chat command is not application approval" == record.get("approval_wording_boundary")
+        and boundary.get("outcome_observation_only") is True
+        and boundary.get("sandbox_only_scope") is True
+        and boundary.get("production_behavior_changed") is False
+        and boundary.get("runtime_behavior_changed") is False
+        and boundary.get("memory_write") is False
+        and boundary.get("retention_write") is False
+        and boundary.get("predictor_mutation") is False
+        and boundary.get("selected_action_created") is False
+        and boundary.get("final_action_created") is False
+        and boundary.get("direct_command_created") is False
+        and boundary.get("generalized_behavior_changed") is False
+        and boundary.get("proof_of_learning_claimed") is False
+    )
+    return _result(
+        "level1_sandbox_lesson_application_outcome_observation_minimal",
         passed,
         {
             "summary": summary,
@@ -15032,6 +15115,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_reviewed_lesson_sandbox_application_readiness_minimal(),
         smoke_level1_explicit_lesson_application_approval_minimal(),
         smoke_level1_sandbox_lesson_application_minimal(),
+        smoke_level1_sandbox_lesson_application_outcome_observation_minimal(),
         smoke_phase0_current_capability_snapshot(),
         smoke_memory_influence_behavior_gate_design(),
         smoke_first_memory_influenced_behavior_boundary(),

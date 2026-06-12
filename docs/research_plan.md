@@ -6125,3 +6125,19 @@ Forward plan:
 2. Do not move this effect into runtime behavior without a separate explicit boundary package.
 
 Sandbox-only application is not production behavior change.
+
+## Level 1 Sandbox Lesson Application Outcome Observation Minimal v0
+
+Status: completed / sandbox-only outcome observation.
+
+Progress:
+- Observes the outcome of a valid Phase0 Level 1 sandbox-only lesson application record.
+- Confirms observed front_symbol=d, observed_sandbox_action=check_before_retry, and observed_blocks_retry_same_action_until_check=True.
+- Confirms the sandbox effect is visible while audit and rollback remain present.
+- Keeps production behavior change, runtime behavior change, memory write, retention write, predictor mutation, selected_action, final_action, direct commands, generalized behavior change, and proof-of-learning claims blocked.
+
+Forward plan:
+1. Audit the sandbox observation record before any later sandbox-only expansion.
+2. Do not promote sandbox observations into runtime or production behavior without a separate boundary package.
+
+Sandbox outcome observation is not learning proof.

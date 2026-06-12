@@ -1618,7 +1618,7 @@ Two-Trial History Boundary:
 
 - `docs/current_boundary_index.md`
 - Adds a short, versioned, low-token source of global hard boundaries for future work packages.
-- Current version: `Boundary Index Version: 2026-06-09-b62`.
+- Current version: `Boundary Index Version: 2026-06-09-b63`.
 - Current index is compacted and should stay under 130 lines when possible.
 - Older milestone details are preserved in `docs/boundary_index_archive_2026_06.md`.
 - Compaction is docs-only and does not change runtime behavior or claim meaning.
@@ -2671,3 +2671,7 @@ Two-Trial History Boundary:
 ## Level 1 Sandbox Lesson Application Minimal v0
 
 - Level 1 Sandbox Lesson Application Minimal v0 applies one reviewed lesson inside the Phase0 Level 1 toy sandbox scope only, after valid readiness and explicit user approval. The sandbox-only effect records `front_symbol=d`, `preferred_sandbox_action=check_before_retry`, and `blocks_retry_same_action_until_check=True`, with audit and rollback. It does not apply to production, change runtime behavior, write memory or retention, mutate predictors, create selected_action/final_action/direct commands, generalize behavior, or prove learning.
+
+## Level 1 Sandbox Lesson Application Outcome Observation Minimal v0
+
+- Level 1 Sandbox Lesson Application Outcome Observation Minimal v0 observes the outcome of one reviewed lesson application inside the Phase0 Level 1 toy sandbox scope only. It confirms the sandbox effect is visible in the observation record, including `front_symbol=d`, `check_before_retry`, retry-same-action blocking, audit, and rollback. Production/runtime behavior, memory writes, retention writes, predictor mutation, action selection, final_action, direct commands, generalized behavior, and proof-of-learning claims remain blocked.

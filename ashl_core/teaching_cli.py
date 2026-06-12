@@ -130,6 +130,9 @@ from .level1_explicit_lesson_application_approval_minimal import (
 from .level1_sandbox_lesson_application_minimal import (
     run_level1_sandbox_lesson_application_minimal_check,
 )
+from .level1_sandbox_lesson_application_outcome_observation_minimal import (
+    run_level1_sandbox_lesson_application_outcome_observation_minimal_check,
+)
 from .reviewed_lesson_dry_run_correction_minimal import (
     run_reviewed_lesson_dry_run_correction_minimal_check,
 )
@@ -3680,6 +3683,8 @@ def run_command(command: str) -> dict[str, Any] | str:
         return run_level1_explicit_lesson_application_approval_minimal_check()
     if command == "run-level1-sandbox-lesson-application-minimal-check":
         return run_level1_sandbox_lesson_application_minimal_check()
+    if command == "run-level1-sandbox-lesson-application-outcome-observation-minimal-check":
+        return run_level1_sandbox_lesson_application_outcome_observation_minimal_check()
     if command == "run-simple-retina-focus-preview-minimal-check":
         return run_simple_retina_focus_preview_minimal_check()
     if command == "run-generalized-prediction-confidence-check":
@@ -3859,6 +3864,7 @@ def main(argv: list[str] | None = None) -> int:
             "run-reviewed-lesson-sandbox-application-readiness-minimal-check",
             "run-level1-explicit-lesson-application-approval-minimal-check",
             "run-level1-sandbox-lesson-application-minimal-check",
+            "run-level1-sandbox-lesson-application-outcome-observation-minimal-check",
             "run-simple-retina-focus-preview-minimal-check",
             "run-generalized-prediction-confidence-check",
             "run-generalized-candidate-from-pattern-check",
@@ -4186,6 +4192,8 @@ def main(argv: list[str] | None = None) -> int:
         result = run_level1_explicit_lesson_application_approval_minimal_check()
     elif args.command == "run-level1-sandbox-lesson-application-minimal-check":
         result = run_level1_sandbox_lesson_application_minimal_check()
+    elif args.command == "run-level1-sandbox-lesson-application-outcome-observation-minimal-check":
+        result = run_level1_sandbox_lesson_application_outcome_observation_minimal_check()
     elif args.command == "run-simple-retina-focus-preview-minimal-check":
         result = run_simple_retina_focus_preview_minimal_check()
     elif args.command == "run-generalized-prediction-confidence-check":
