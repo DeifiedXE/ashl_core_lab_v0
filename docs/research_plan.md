@@ -5935,3 +5935,19 @@ Progress:
 Forward plan:
 1. Sandbox Outcome Human Review Decision Minimal v0.
 2. Keep blocking lesson application, memory write, retention write, predictor mutation, runtime behavior change, final_action, and production action selection.
+
+## Generic Lesson Review Decision Minimal v0
+
+Status: completed / generic-human-review-decision / no-lesson-application.
+
+Progress:
+- Adds one shared lesson-review decision schema for multiple evidence source types.
+- Uses the Phase0 Level 1 contrast sample set as the first fixture source.
+- Supports accepted_for_reviewed_lesson_preview, rejected, and needs_more_evidence decisions.
+- Accepted candidates may enter reviewed lesson preview or dry-run only.
+- Rejected and needs_more_evidence decisions allow no next layer.
+- Lesson application, memory writes, retention writes, predictor mutation, runtime behavior change, action selection, final_action, direct commands, and proof-of-learning claims remain blocked.
+
+Forward plan:
+1. Generic Reviewed Lesson Preview Minimal v0.
+2. Keep the preview generic unless a future evidence source adds truly unique fields.

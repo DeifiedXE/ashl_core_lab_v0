@@ -131,6 +131,7 @@ from ashl_core.phase0_level0_obstacle_memory_flip_test_minimal import (
 from ashl_core.phase0_level1_contrast_sample_set_minimal import (
     run_phase0_level1_contrast_sample_set_minimal_check,
 )
+from ashl_core.generic_lesson_review_decision_minimal import run_generic_lesson_review_decision_minimal_check
 from ashl_core.minimal_visual_grounding_trial import run_minimal_visual_grounding_trial_check
 from ashl_core.visual_prediction_error_attention_priority_preview_minimal import (
     run_visual_prediction_error_attention_priority_preview_minimal_check,
@@ -11496,6 +11497,83 @@ def smoke_phase0_level1_contrast_sample_set_minimal() -> dict:
     )
 
 
+def smoke_generic_lesson_review_decision_minimal() -> dict:
+    result = run_generic_lesson_review_decision_minimal_check()
+    summary = result.get("summary", {})
+    boundary = result.get("boundary_check", {})
+    validation_by_id = {
+        item.get("lesson_review_decision_id"): item for item in result.get("validation_results", [])
+    }
+    decisions = [
+        record
+        for record in result.get("lesson_review_decisions", [])
+        if validation_by_id.get(record.get("lesson_review_decision_id"), {}).get("valid") is True
+    ]
+    by_decision = {
+        record.get("human_review_decision", {}).get("decision"): record
+        for record in decisions
+        if record.get("decision_mode") == "generic_human_lesson_review_decision"
+    }
+    accepted = by_decision.get("accepted_for_reviewed_lesson_preview", {})
+    rejected = by_decision.get("rejected", {})
+    needs_more = by_decision.get("needs_more_evidence", {})
+    accepted_allowed = accepted.get("allowed_next_layer", {})
+    rejected_allowed = rejected.get("allowed_next_layer", {})
+    needs_more_allowed = needs_more.get("allowed_next_layer", {})
+    accepted_result = accepted.get("decision_result", {})
+    blocked = accepted.get("blocked_flags", {})
+    passed = (
+        result.get("command") == "run-generic-lesson-review-decision-minimal-check"
+        and result.get("flow") == "generic_lesson_review_decision_minimal_v0"
+        and result.get("status") == "ok"
+        and summary.get("lesson_review_decision_result_count") == 42
+        and summary.get("valid_lesson_review_decision_count") == 3
+        and summary.get("invalid_lesson_review_decision_count") == 39
+        and summary.get("accepted_for_preview_count") == 1
+        and summary.get("rejected_count") == 1
+        and summary.get("needs_more_evidence_count") == 1
+        and summary.get("may_enter_reviewed_lesson_preview_count") == 1
+        and summary.get("may_enter_lesson_dry_run_count") == 1
+        and accepted.get("source", {}).get("source_type") == "phase0_level1_contrast_sample_set"
+        and accepted.get("source", {}).get("source_id") == "phase0_level1_first_contact_danger"
+        and accepted_result.get("accepted_for_reviewed_lesson_preview") is True
+        and accepted_result.get("lesson_applied") is False
+        and accepted_result.get("memory_write") is False
+        and accepted_result.get("retention_write") is False
+        and accepted_result.get("predictor_modified") is False
+        and accepted_result.get("runtime_behavior_changed") is False
+        and accepted_allowed.get("may_enter_reviewed_lesson_preview") is True
+        and accepted_allowed.get("may_enter_lesson_dry_run") is True
+        and accepted_allowed.get("may_apply_lesson") is False
+        and accepted_allowed.get("may_write_memory") is False
+        and accepted_allowed.get("may_write_retention") is False
+        and accepted_allowed.get("may_mutate_predictor") is False
+        and accepted_allowed.get("may_change_runtime_behavior") is False
+        and rejected.get("decision_result", {}).get("rejected") is True
+        and all(value is False for value in rejected_allowed.values())
+        and needs_more.get("decision_result", {}).get("needs_more_evidence") is True
+        and all(value is False for value in needs_more_allowed.values())
+        and all(value is False for value in blocked.values())
+        and boundary.get("generic_decision_gate_only") is True
+        and boundary.get("source_specific_sandbox_channel_created") is False
+        and boundary.get("lesson_application_added") is False
+        and boundary.get("memory_write_added") is False
+        and boundary.get("retention_write_added") is False
+        and boundary.get("predictor_mutation_added") is False
+        and boundary.get("runtime_behavior_change_added") is False
+        and boundary.get("proof_of_learning_claimed") is False
+    )
+    return _result(
+        "generic_lesson_review_decision_minimal",
+        passed,
+        {
+            "summary": summary,
+            "validation_results": result.get("validation_results", []),
+            "boundary_check": boundary,
+        },
+    )
+
+
 def smoke_phase0_current_capability_snapshot() -> dict:
     doc_path = Path("docs/phase0_current_capability_snapshot_2026-06-10.md")
     doc = doc_path.read_text(encoding="utf-8") if doc_path.exists() else ""
@@ -14186,6 +14264,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_phase0_level0_obstacle_memory_flip_test_minimal(),
         smoke_phase0_level1_first_contact_danger_minimal(),
         smoke_phase0_level1_contrast_sample_set_minimal(),
+        smoke_generic_lesson_review_decision_minimal(),
         smoke_phase0_current_capability_snapshot(),
         smoke_memory_influence_behavior_gate_design(),
         smoke_first_memory_influenced_behavior_boundary(),

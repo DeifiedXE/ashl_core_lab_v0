@@ -2627,3 +2627,7 @@ Two-Trial History Boundary:
 ## Level 1 Contrast Sample Set Minimal v0
 
 - Level 1 Contrast Sample Set Minimal v0 adds success, failure, and neutral controlled samples for the Phase0 Level 1 danger check. The set shows check_before_retry is useful when danger is present, retry_same_action is unsafe when danger is present, and check_before_retry can be neutral/unnecessary when no danger is present. This supports human lesson review only and does not prove learning, apply lessons, write memory, write retention, mutate predictors, select actions, or execute production behavior.
+
+## Generic Lesson Review Decision Minimal v0
+
+- Generic Lesson Review Decision Minimal v0 adds a shared human review decision gate for lesson-review candidates from different evidence sources. The first fixture uses the Phase0 Level 1 contrast sample set, but future visual/action/path/failure traces should reuse the same generic decision schema. Accepted candidates may enter reviewed lesson preview or dry-run only; lesson application, memory writes, retention writes, predictor mutation, runtime behavior change, action selection, final_action, and proof-of-learning claims remain blocked.

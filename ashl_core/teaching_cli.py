@@ -106,6 +106,9 @@ from .phase0_level0_obstacle_memory_flip_test_minimal import (
 from .phase0_level1_contrast_sample_set_minimal import (
     run_phase0_level1_contrast_sample_set_minimal_check,
 )
+from .generic_lesson_review_decision_minimal import (
+    run_generic_lesson_review_decision_minimal_check,
+)
 from .reviewed_lesson_dry_run_correction_minimal import (
     run_reviewed_lesson_dry_run_correction_minimal_check,
 )
@@ -3640,6 +3643,8 @@ def run_command(command: str) -> dict[str, Any] | str:
         return run_phase0_level1_first_contact_danger_minimal_check()
     if command == "run-phase0-level1-contrast-sample-set-minimal-check":
         return run_phase0_level1_contrast_sample_set_minimal_check()
+    if command == "run-generic-lesson-review-decision-minimal-check":
+        return run_generic_lesson_review_decision_minimal_check()
     if command == "run-simple-retina-focus-preview-minimal-check":
         return run_simple_retina_focus_preview_minimal_check()
     if command == "run-generalized-prediction-confidence-check":
@@ -3811,6 +3816,7 @@ def main(argv: list[str] | None = None) -> int:
             "run-phase0-level0-obstacle-memory-flip-test-minimal-check",
             "run-phase0-level1-first-contact-danger-minimal-check",
             "run-phase0-level1-contrast-sample-set-minimal-check",
+            "run-generic-lesson-review-decision-minimal-check",
             "run-simple-retina-focus-preview-minimal-check",
             "run-generalized-prediction-confidence-check",
             "run-generalized-candidate-from-pattern-check",
@@ -4122,6 +4128,8 @@ def main(argv: list[str] | None = None) -> int:
         result = run_phase0_level1_first_contact_danger_minimal_check()
     elif args.command == "run-phase0-level1-contrast-sample-set-minimal-check":
         result = run_phase0_level1_contrast_sample_set_minimal_check()
+    elif args.command == "run-generic-lesson-review-decision-minimal-check":
+        result = run_generic_lesson_review_decision_minimal_check()
     elif args.command == "run-simple-retina-focus-preview-minimal-check":
         result = run_simple_retina_focus_preview_minimal_check()
     elif args.command == "run-generalized-prediction-confidence-check":
