@@ -110,6 +110,9 @@ from ashl_core.action_selection_adjacent_review_minimal import (
 from ashl_core.non_executing_action_choice_candidate_minimal import (
     run_non_executing_action_choice_candidate_minimal_check,
 )
+from ashl_core.one_step_sandbox_action_intent_minimal import (
+    run_one_step_sandbox_action_intent_minimal_check,
+)
 from ashl_core.minimal_visual_grounding_trial import run_minimal_visual_grounding_trial_check
 from ashl_core.visual_prediction_error_attention_priority_preview_minimal import (
     run_visual_prediction_error_attention_priority_preview_minimal_check,
@@ -10911,6 +10914,114 @@ def smoke_non_executing_action_choice_candidate_minimal() -> dict:
     )
 
 
+def smoke_one_step_sandbox_action_intent_minimal() -> dict:
+    result = run_one_step_sandbox_action_intent_minimal_check()
+    summary = result.get("summary", {})
+    boundary = result.get("boundary_check", {})
+    records = result.get("one_step_sandbox_action_intents", [])
+    valid_result = records[0] if records else {}
+    constraints = valid_result.get("intent_constraints", {})
+    context = valid_result.get("sandbox_context", {})
+    allowed_next = valid_result.get("allowed_next_layer", {})
+    passed = (
+        result.get("command") == "run-one-step-sandbox-action-intent-minimal-check"
+        and result.get("flow") == "one_step_sandbox_action_intent_minimal_v0"
+        and result.get("status") == "ok"
+        and summary.get("sandbox_action_intent_result_count") == 51
+        and summary.get("valid_sandbox_action_intent_result_count") == 1
+        and summary.get("invalid_sandbox_action_intent_result_count") == 50
+        and summary.get("intent_action_count") == 1
+        and summary.get("intent_only_count") == 1
+        and summary.get("sandbox_only_count") == 1
+        and summary.get("one_step_only_count") == 1
+        and summary.get("non_executing_count") == 1
+        and summary.get("not_selected_action_count") == 1
+        and summary.get("not_final_action_count") == 1
+        and summary.get("not_action_execution_count") == 1
+        and summary.get("not_direct_command_count") == 1
+        and summary.get("not_runtime_action_selection_count") == 1
+        and summary.get("rollback_required_count") == 1
+        and summary.get("audit_trace_required_count") == 1
+        and summary.get("mentor_override_available_count") == 1
+        and summary.get("may_enter_one_step_sandbox_action_execution_count") == 1
+        and summary.get("bad_intent_mode_blocked_count") == 1
+        and summary.get("wrong_intended_sandbox_action_blocked_count") == 1
+        and summary.get("wrong_sandbox_context_blocked_count") == 3
+        and summary.get("production_context_blocked_count") == 1
+        and summary.get("selected_action_blocked_count") == 1
+        and summary.get("final_action_blocked_count") == 1
+        and summary.get("action_execution_blocked_count") == 1
+        and summary.get("direct_command_blocked_count") == 1
+        and summary.get("runtime_action_selection_blocked_count") == 1
+        and summary.get("persistent_policy_blocked_count") == 1
+        and summary.get("missing_rollback_audit_mentor_blocked_count") == 3
+        and summary.get("may_enter_execution_false_blocked_count") == 1
+        and summary.get("may_enter_production_action_selection_blocked_count") == 1
+        and summary.get("may_create_final_action_blocked_count") == 1
+        and summary.get("may_execute_real_action_blocked_count") == 1
+        and summary.get("may_create_direct_command_blocked_count") == 1
+        and summary.get("may_write_persistent_policy_blocked_count") == 1
+        and summary.get("production_action_selection_blocked_count") == 1
+        and summary.get("runtime_action_selection_flag_blocked_count") == 1
+        and summary.get("selected_action_created_blocked_count") == 1
+        and summary.get("final_action_created_blocked_count") == 1
+        and summary.get("action_executed_blocked_count") == 1
+        and summary.get("direct_action_command_blocked_count") == 1
+        and summary.get("persistent_policy_written_blocked_count") == 1
+        and summary.get("general_behavior_changed_blocked_count") == 1
+        and summary.get("semantic_or_fuzzy_match_used_blocked_count") == 1
+        and summary.get("predictor_modified_blocked_count") == 1
+        and summary.get("proof_of_learning_claim_blocked_count") == 1
+        and valid_result.get("intent_mode") == "one_step_sandbox_intent_only"
+        and valid_result.get("intended_sandbox_action") == "check_before_retry"
+        and context.get("sandbox_id") == "phase0_toy_sandbox_obstacle_retry_failed"
+        and context.get("scenario_id") == "obstacle_retry_failed_same_state"
+        and context.get("exact_key") == "obstacle_retry_failed"
+        and context.get("one_step_only") is True
+        and context.get("production_context") is False
+        and constraints.get("intent_only") is True
+        and constraints.get("sandbox_only") is True
+        and constraints.get("one_step_only") is True
+        and constraints.get("non_executing") is True
+        and constraints.get("selected_action") is False
+        and constraints.get("final_action") is False
+        and constraints.get("action_execution") is False
+        and constraints.get("direct_command") is False
+        and constraints.get("runtime_action_selection") is False
+        and constraints.get("persistent_policy") is False
+        and constraints.get("rollback_required_before_execution") is True
+        and constraints.get("audit_trace_required") is True
+        and constraints.get("mentor_override_available") is True
+        and allowed_next.get("may_enter_one_step_sandbox_action_execution") is True
+        and allowed_next.get("may_enter_production_action_selection") is False
+        and allowed_next.get("may_create_final_action") is False
+        and allowed_next.get("may_execute_real_action") is False
+        and allowed_next.get("may_create_direct_command") is False
+        and allowed_next.get("may_write_persistent_policy") is False
+        and boundary.get("intended_sandbox_action") == "check_before_retry"
+        and boundary.get("sandbox_id") == "phase0_toy_sandbox_obstacle_retry_failed"
+        and boundary.get("intent_only") is True
+        and boundary.get("sandbox_only") is True
+        and boundary.get("one_step_only") is True
+        and boundary.get("non_executing") is True
+        and boundary.get("selected_action_added") is False
+        and boundary.get("runtime_action_selection_added") is False
+        and boundary.get("final_action_creation_added") is False
+        and boundary.get("action_execution_added") is False
+        and boundary.get("direct_action_command_added") is False
+        and boundary.get("persistent_policy_write_added") is False
+    )
+    return _result(
+        "one_step_sandbox_action_intent_minimal",
+        passed,
+        {
+            "summary": summary,
+            "validation_results": result.get("validation_results", []),
+            "boundary_check": boundary,
+        },
+    )
+
+
 def smoke_phase0_current_capability_snapshot() -> dict:
     doc_path = Path("docs/phase0_current_capability_snapshot_2026-06-10.md")
     doc = doc_path.read_text(encoding="utf-8") if doc_path.exists() else ""
@@ -13594,6 +13705,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_pre_action_consideration_gate_check_minimal(),
         smoke_action_selection_adjacent_review_minimal(),
         smoke_non_executing_action_choice_candidate_minimal(),
+        smoke_one_step_sandbox_action_intent_minimal(),
         smoke_phase0_current_capability_snapshot(),
         smoke_memory_influence_behavior_gate_design(),
         smoke_first_memory_influenced_behavior_boundary(),

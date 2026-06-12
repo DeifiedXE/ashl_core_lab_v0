@@ -2591,3 +2591,7 @@ Two-Trial History Boundary:
 ## Non-Executing Action Choice Candidate Minimal v0
 
 - Non-Executing Action Choice Candidate Minimal v0 names one reviewed action as a non-executing choice candidate. The candidate is allowed to enter one-step sandbox intent preparation, but it is not a selected action, not a final action, not execution, not a direct command, and not production action selection.
+
+## One-Step Sandbox Action Intent Minimal v0
+
+- One-Step Sandbox Action Intent Minimal v0 creates a one-step sandbox-only intent from a non-executing action choice candidate. The intent may enter one-step sandbox execution later, but it is not a selected action, not a final action, not execution, not a direct command, not production action selection, and not persistent policy.

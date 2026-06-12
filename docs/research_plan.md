@@ -5794,3 +5794,17 @@ Forward plan:
 1. One-Step Sandbox Action Intent Minimal v0.
 2. One-Step Sandbox Action Execution Minimal v0.
 3. Do not create standalone check packages unless final_action, execution, persistent policy, real navigation/UI, memory write, predictor mutation, semantic/fuzzy retrieval, or generalized behavior changes.
+
+## One-Step Sandbox Action Intent Minimal v0
+
+Status: completed / sandbox-intent-only / no-execution.
+
+Progress:
+- Creates a one-step sandbox-only intent for check_before_retry from the non-executing action choice candidate.
+- The intent may enter one-step sandbox action execution later.
+- The intent is not a selected action, final action, execution, direct command, runtime action selection, production action selection, or persistent policy.
+- Rollback, audit trace, and mentor override are required before any execution package.
+
+Forward plan:
+1. One-Step Sandbox Action Execution Minimal v0.
+2. Continue blocking production behavior, UI control, real navigation, generalized action systems, and proof-of-learning claims.
