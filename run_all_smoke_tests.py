@@ -125,6 +125,9 @@ from ashl_core.sandbox_outcome_lesson_review_candidate_minimal import (
 from ashl_core.phase0_level1_first_contact_danger_minimal import (
     run_phase0_level1_first_contact_danger_minimal_check,
 )
+from ashl_core.phase0_level0_obstacle_memory_flip_test_minimal import (
+    run_phase0_level0_obstacle_memory_flip_test_minimal_check,
+)
 from ashl_core.minimal_visual_grounding_trial import run_minimal_visual_grounding_trial_check
 from ashl_core.visual_prediction_error_attention_priority_preview_minimal import (
     run_visual_prediction_error_attention_priority_preview_minimal_check,
@@ -11341,6 +11344,81 @@ def smoke_phase0_level1_first_contact_danger_minimal() -> dict:
     )
 
 
+def smoke_phase0_level0_obstacle_memory_flip_test_minimal() -> dict:
+    result = run_phase0_level0_obstacle_memory_flip_test_minimal_check()
+    summary = result.get("summary", {})
+    boundary = result.get("boundary_check", {})
+    level_results = result.get("level0_results", [])
+    level = level_results[0] if level_results else {}
+    info = level.get("level_info", {})
+    state = level.get("shared_state", {})
+    baseline = level.get("baseline_result", {}).get("scores", {})
+    cases = {item.get("memory_case"): item for item in level.get("memory_case_results", [])}
+    failed = cases.get("retry_failed", {})
+    succeeded = cases.get("retry_succeeded", {})
+    flip = level.get("flip_check", {})
+    blocked = level.get("blocked_flags", {})
+    passed = (
+        result.get("command") == "run-phase0-level0-obstacle-memory-flip-test-minimal-check"
+        and result.get("flow") == "phase0_level0_obstacle_memory_flip_test_minimal_v0"
+        and result.get("status") == "ok"
+        and summary.get("level0_flip_result_count") == 49
+        and summary.get("valid_level0_flip_result_count") == 1
+        and summary.get("invalid_level0_flip_result_count") == 48
+        and summary.get("retry_failed_case_count") == 1
+        and summary.get("retry_succeeded_case_count") == 1
+        and summary.get("failed_memory_prefers_check_count") == 1
+        and summary.get("success_memory_prefers_retry_count") == 1
+        and summary.get("bidirectional_flip_passed_count") == 1
+        and summary.get("one_way_caution_bias_rejected_count") == 1
+        and summary.get("safe_to_continue_to_level1_danger_count") == 1
+        and summary.get("same_runner_used_count") == 1
+        and summary.get("same_state_used_count") == 1
+        and summary.get("same_candidate_actions_used_count") == 1
+        and summary.get("only_memory_content_changed_count") == 1
+        and info.get("level_id") == "phase0_level0_obstacle_memory_flip_test"
+        and info.get("level_mode") == "controlled_runtime_tendency_flip_test"
+        and info.get("execution_required") is False
+        and info.get("pathfinding_required") is False
+        and info.get("danger_cell_used") is False
+        and state.get("scenario_id") == "obstacle_memory_flip_same_state"
+        and state.get("front_symbol") == "w"
+        and state.get("same_state_for_all_cases") is True
+        and baseline.get("retry_same_action") == 0.50
+        and baseline.get("check_before_retry") == 0.50
+        and failed.get("scores", {}).get("check_before_retry") == 0.60
+        and failed.get("scores", {}).get("retry_same_action") == 0.45
+        and failed.get("scores", {}).get("check_before_retry") > failed.get("scores", {}).get("retry_same_action")
+        and succeeded.get("scores", {}).get("retry_same_action") == 0.60
+        and succeeded.get("scores", {}).get("check_before_retry") == 0.45
+        and succeeded.get("scores", {}).get("retry_same_action") > succeeded.get("scores", {}).get("check_before_retry")
+        and flip.get("same_runner_used") is True
+        and flip.get("same_state_used") is True
+        and flip.get("same_candidate_actions_used") is True
+        and flip.get("only_memory_content_changed") is True
+        and flip.get("bidirectional_flip_passed") is True
+        and flip.get("one_way_caution_bias_rejected") is True
+        and flip.get("safe_to_continue_to_level1_danger") is True
+        and all(value is False for value in blocked.values())
+        and boundary.get("danger_cell_used") is False
+        and boundary.get("action_execution_added") is False
+        and boundary.get("pathfinding_added") is False
+        and boundary.get("lesson_application_added") is False
+        and boundary.get("memory_write_added") is False
+        and boundary.get("predictor_mutation_added") is False
+        and boundary.get("proof_of_learning_claimed") is False
+    )
+    return _result(
+        "phase0_level0_obstacle_memory_flip_test_minimal",
+        passed,
+        {
+            "summary": summary,
+            "validation_results": result.get("validation_results", []),
+            "boundary_check": boundary,
+        },
+    )
+
+
 def smoke_phase0_current_capability_snapshot() -> dict:
     doc_path = Path("docs/phase0_current_capability_snapshot_2026-06-10.md")
     doc = doc_path.read_text(encoding="utf-8") if doc_path.exists() else ""
@@ -14028,6 +14106,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_one_step_sandbox_action_execution_minimal(),
         smoke_sandbox_execution_outcome_integration_minimal(),
         smoke_sandbox_outcome_lesson_review_candidate_minimal(),
+        smoke_phase0_level0_obstacle_memory_flip_test_minimal(),
         smoke_phase0_level1_first_contact_danger_minimal(),
         smoke_phase0_current_capability_snapshot(),
         smoke_memory_influence_behavior_gate_design(),

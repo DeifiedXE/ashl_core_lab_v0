@@ -5885,3 +5885,19 @@ Next options:
 2. Sandbox Outcome Human Review Decision Minimal v0.
 3. Level 2 Design Boundary Minimal v0.
 4. Recommended next: add a tiny Level 1 contrast set before claiming any lesson.
+
+## Phase0 Level 0 Obstacle Memory Flip Test Minimal v0
+
+Status: completed / runtime-tendency-flip-test / no-execution.
+
+Progress:
+- Verifies memory influence is content-sensitive rather than a one-way caution bias.
+- Uses the same controlled obstacle state, same deterministic runner, and same candidate actions for retry-failed and retry-succeeded memories.
+- retry_failed memory makes check_before_retry stronger than retry_same_action.
+- retry_succeeded memory makes retry_same_action stronger than check_before_retry.
+- This is runtime tendency only: no danger cell, action execution, pathfinding, lesson application, memory write, retention write, predictor mutation, or proof-of-learning claim.
+
+Forward plan:
+1. Run or keep Phase0 Level 1 First Contact Danger Minimal v0 after this flip check passes.
+2. Keep Level 1 one-step symbolic danger sandbox check only.
+3. Do not add pathfinding, goal reaching, lesson application, memory write, or runtime behavior change in Level 1.

@@ -2615,3 +2615,7 @@ Two-Trial History Boundary:
 ## Phase0 Level 1 First Contact Danger Minimal v0
 
 - Phase0 Level 1 First Contact Danger Minimal v0 formalizes the first controlled level: a 5x5 symbolic fixture where only the front danger symbol `d` is tested. The system detects danger in a symbolic fixture, executes one sandbox-only check_before_retry action, records expected/actual outcome success, and prepares a human-review-required lesson-review candidate. This is not pathfinding, not goal reaching, not object recognition, not semantic vision, not lesson application, not memory write, not predictor mutation, and not proof of learning.
+
+## Phase0 Level 0 Obstacle Memory Flip Test Minimal v0
+
+- Phase0 Level 0 Obstacle Memory Flip Test Minimal v0 verifies that memory influence is content-sensitive rather than a one-way caution bias. In the same controlled obstacle state with the same runner and candidate actions, retry-failed memory makes check_before_retry stronger, while retry-succeeded memory makes retry_same_action stronger. This is a runtime tendency flip test only: no action execution, no pathfinding, no danger cell, no lesson application, no memory write, no predictor mutation, and no proof-of-learning claim.
