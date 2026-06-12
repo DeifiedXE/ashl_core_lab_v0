@@ -1,7 +1,7 @@
-Boundary Index Version: 2026-06-09-b63
-Last update log: Level 1 Sandbox Lesson Application Outcome Observation Minimal v0
-Previous Boundary Index Version: 2026-06-09-b62
-Previous Last update log: Level 1 Sandbox Lesson Application Minimal v0
+Boundary Index Version: 2026-06-09-b64
+Last update log: Phase0 Documentation Consolidation Minimal v0
+Previous Boundary Index Version: 2026-06-09-b63
+Previous Last update log: Level 1 Sandbox Lesson Application Outcome Observation Minimal v0
 Clean count at last update log reset: 0/5; current clean count: 0/5
 
 ## Purpose
@@ -98,6 +98,7 @@ Clean count at last update log reset: 0/5; current clean count: 0/5
 - Explicit User Approval Source Boundary correction: Level 1 application approval boundary corrected. Safe rule: explicit_human_application_approval must come from an explicit user/project-owner statement. Codex/AI may record or validate approval but cannot grant it. Demo fixtures, implicit chat commands, readiness completion, and passing tests are not application approval. Future Level 1 sandbox lesson application may proceed only if approval_source=explicit_user_statement, approval_actor=user, approver_role=project_owner, approval_text is non-empty, and self/implicit/demo approval are blocked. Forbidden: no lesson application, memory/retention write, predictor mutation, runtime behavior change, production/runtime action selection, selected_action, final_action, direct command, or proof-of-learning claim.
 - Level 1 Sandbox Lesson Application milestone: ASHL Core can apply one reviewed lesson inside the Phase0 Level 1 toy sandbox scope only, with explicit user approval, audit, and rollback. Applied sandbox effect: front_symbol=d; preferred_sandbox_action=check_before_retry; blocks_retry_same_action_until_check=True. Forbidden: no production/runtime behavior change, memory/retention write, predictor mutation, production/runtime action selection, selected_action, final_action, direct command, generalized behavior, or proof-of-learning claim.
 - Level 1 Sandbox Lesson Application Outcome Observation milestone: ASHL Core can observe the outcome of one reviewed lesson application inside the Phase0 Level 1 toy sandbox scope only, while production/runtime behavior, memory, retention, predictor mutation, action selection, and proof of learning remain blocked.
+- Phase0 Documentation Consolidation milestone: Documentation consolidation only; no new ASHL Core runtime, sandbox, memory, retention, predictor, action-selection, production, or proof-of-learning capability added. New entry points: docs/phase0_status.md, docs/phase0_capability_matrix.md, and docs/phase0_doc_index.md.
 
 ## Archive
 - Older milestone details are archived in `docs/boundary_index_archive_2026_06.md`.

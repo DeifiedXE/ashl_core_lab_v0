@@ -1618,7 +1618,11 @@ Two-Trial History Boundary:
 
 - `docs/current_boundary_index.md`
 - Adds a short, versioned, low-token source of global hard boundaries for future work packages.
-- Current version: `Boundary Index Version: 2026-06-09-b63`.
+- Current version: `Boundary Index Version: 2026-06-09-b64`.
+- For current Phase0 status, see `docs/phase0_status.md`.
+- For capability status, see `docs/phase0_capability_matrix.md`.
+- For boundary version history, see `docs/current_boundary_index.md`.
+- For the documentation entry path, see `docs/phase0_doc_index.md`.
 - Current index is compacted and should stay under 130 lines when possible.
 - Older milestone details are preserved in `docs/boundary_index_archive_2026_06.md`.
 - Compaction is docs-only and does not change runtime behavior or claim meaning.

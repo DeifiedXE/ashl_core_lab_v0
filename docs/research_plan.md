@@ -6141,3 +6141,29 @@ Forward plan:
 2. Do not promote sandbox observations into runtime or production behavior without a separate boundary package.
 
 Sandbox outcome observation is not learning proof.
+
+## Phase0 Documentation Consolidation Minimal v0
+
+Status: completed / documentation-only.
+
+Current direction:
+- Use `docs/phase0_status.md` as the current human-readable Phase0 status map.
+- Use `docs/phase0_capability_matrix.md` as the capability status table.
+- Use `docs/current_boundary_index.md` as the compact boundary version and boundary change index.
+- Use `docs/phase0_doc_index.md` as the documentation navigation entry point.
+
+Next planned work:
+1. Level 1 Sandbox Lesson Application Outcome Evaluation Minimal v0.
+2. Human review summary after outcome evaluation.
+
+Known blocked areas:
+- No production lesson application.
+- No runtime behavior change.
+- No memory or retained JSONL write.
+- No retention write.
+- No predictor mutation.
+- No selected_action, final_action, or direct command.
+- No generalized behavior change.
+- No proof-of-learning claim.
+
+This consolidation does not complete outcome evaluation.

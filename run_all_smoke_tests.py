@@ -10464,8 +10464,8 @@ def smoke_current_boundary_index_docs() -> dict:
     readme = readme_path.read_text(encoding="utf-8") if readme_path.exists() else ""
     research_plan = research_plan_path.read_text(encoding="utf-8") if research_plan_path.exists() else ""
     compact_required_terms = [
-        "Boundary Index Version: 2026-06-09-b63",
-        "Last update log: Level 1 Sandbox Lesson Application Outcome Observation Minimal v0",
+        "Boundary Index Version: 2026-06-09-b64",
+        "Last update log: Phase0 Documentation Consolidation Minimal v0",
         "docs/boundary_index_archive_2026_06.md",
         "Minimal Visual Grounding Trial v0",
         "Visual Prediction Error + Attention Priority Preview Minimal v0",
@@ -10508,6 +10508,11 @@ def smoke_current_boundary_index_docs() -> dict:
         "blocks_retry_same_action_until_check=True",
         "Level 1 Sandbox Lesson Application Outcome Observation milestone",
         "observe the outcome of one reviewed lesson application inside the Phase0 Level 1 toy sandbox scope only",
+        "Phase0 Documentation Consolidation milestone",
+        "Documentation consolidation only",
+        "docs/phase0_status.md",
+        "docs/phase0_capability_matrix.md",
+        "docs/phase0_doc_index.md",
         "`current_boundary_index.md` should stay <= 130 lines when possible.",
         "Hard limit: <= 150 lines.",
     ]
@@ -10529,7 +10534,7 @@ def smoke_current_boundary_index_docs() -> dict:
         and all(term in doc for term in compact_required_terms)
         and all(term in archive for term in archive_required_terms)
         and line_count <= 130
-        and "Boundary Index Version: 2026-06-09-b63" in readme
+        and "Boundary Index Version: 2026-06-09-b64" in readme
         and "docs/boundary_index_archive_2026_06.md" in readme
         and "Boundary Index Compaction / Archive v0" in research_plan
         and "Runtime Tendency Memory Influence Safety Sync Minimal v0" in research_plan
@@ -10538,6 +10543,64 @@ def smoke_current_boundary_index_docs() -> dict:
         "boundary_index_compaction_archive",
         compact_passed,
         {"doc": str(doc_path), "archive": str(archive_path), "line_count": line_count},
+    )
+
+
+def smoke_phase0_documentation_consolidation_minimal() -> dict:
+    status_path = Path("docs/phase0_status.md")
+    matrix_path = Path("docs/phase0_capability_matrix.md")
+    index_path = Path("docs/phase0_doc_index.md")
+    readme_path = Path("README.md")
+    research_plan_path = Path("docs/research_plan.md")
+    status = status_path.read_text(encoding="utf-8") if status_path.exists() else ""
+    matrix = matrix_path.read_text(encoding="utf-8") if matrix_path.exists() else ""
+    index = index_path.read_text(encoding="utf-8") if index_path.exists() else ""
+    readme = readme_path.read_text(encoding="utf-8") if readme_path.exists() else ""
+    research_plan = research_plan_path.read_text(encoding="utf-8") if research_plan_path.exists() else ""
+    combined = "\n".join([status, matrix, index]).lower()
+    forbidden_claims = [
+        "proof of learning complete",
+        "runtime behavior changed",
+        "memory write complete",
+        "retention write complete",
+        "predictor mutation complete",
+        "production lesson application complete",
+        "selected_action enabled",
+        "final_action enabled",
+        "outcome evaluation complete",
+    ]
+    passed = (
+        status_path.exists()
+        and matrix_path.exists()
+        and index_path.exists()
+        and "Boundary Index Version: 2026-06-09-b64" in status
+        and "Current Safe Capability" in status
+        and "proof of learning remain blocked" in status
+        and "Outcome evaluation is planned next and is not marked complete." in status
+        and "| Level 1 sandbox outcome observation | complete |" in matrix
+        and "| Level 1 sandbox outcome evaluation | planned_next |" in matrix
+        and "| retention write | blocked |" in matrix
+        and "| predictor mutation | blocked |" in matrix
+        and "| runtime behavior change | blocked |" in matrix
+        and "| production lesson application | blocked |" in matrix
+        and "| proof of learning | blocked |" in matrix
+        and "docs/current_boundary_index.md" in index
+        and "docs/phase0_status.md" in index
+        and "docs/phase0_capability_matrix.md" in index
+        and "docs/phase0_status.md" in readme
+        and "docs/phase0_capability_matrix.md" in readme
+        and "docs/current_boundary_index.md" in readme
+        and "docs/phase0_status.md" in research_plan
+        and "docs/phase0_capability_matrix.md" in research_plan
+        and "docs/current_boundary_index.md" in research_plan
+        and all(claim not in combined for claim in forbidden_claims)
+        and ("?" + chr(0x822A) + "??") not in (status + matrix + index)
+        and "implicit chat command is not application approval" in (status + matrix + index)
+    )
+    return _result(
+        "phase0_documentation_consolidation_minimal",
+        passed,
+        {"status": str(status_path), "matrix": str(matrix_path), "index": str(index_path)},
     )
 
 
@@ -15254,6 +15317,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_formal_lesson_candidate_creation_contract_docs(),
         smoke_formal_lesson_candidate_creation_boundary_audit_docs(),
         smoke_current_boundary_index_docs(),
+        smoke_phase0_documentation_consolidation_minimal(),
         smoke_soft_hard_consolidation_assumption_docs(),
         smoke_memory_compression_strategy_assumption_docs(),
         smoke_pathological_risk_role_protection_assumption_docs(),

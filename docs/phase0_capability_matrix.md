@@ -1,0 +1,20 @@
+# ASHL Core Phase0 Capability Matrix
+
+| Capability | Status | Scope | Allowed Claim | Blocked Claims | Primary Files / CLIs |
+| --- | --- | --- | --- | --- | --- |
+| generic reviewed lesson evidence trace | complete | evidence only | Generic lesson review can reach existing lesson effect evidence trace. | Lesson application, memory write, predictor mutation, runtime behavior change, proof of learning. | `ashl_core/generic_lesson_evidence_pipeline_completion_bridge_minimal.py`; `run-generic-lesson-evidence-pipeline-completion-bridge-minimal-check` |
+| sandbox application readiness | complete | Phase0 Level 1 sandbox readiness record | Evidence can be checked against sandbox application prerequisites. | Application without explicit approval, memory write, retention write, predictor mutation, runtime behavior change. | `ashl_core/reviewed_lesson_sandbox_application_readiness_minimal.py`; `run-reviewed-lesson-sandbox-application-readiness-minimal-check` |
+| explicit user approval source validation | complete | Phase0 Level 1 sandbox approval record | Explicit user/project-owner approval can be validated as a source. | Implicit chat command approval, Codex/AI self-approval, test fixture approval, completed-readiness approval. | `ashl_core/level1_explicit_lesson_application_approval_minimal.py`; `run-level1-explicit-lesson-application-approval-minimal-check` |
+| Level 1 sandbox lesson application | complete | Phase0 Level 1 toy sandbox only | One reviewed lesson can be applied inside the toy sandbox record with audit and rollback. | Production application, runtime behavior change, memory write, retention write, predictor mutation, selected_action, final_action, direct command, proof of learning. | `ashl_core/level1_sandbox_lesson_application_minimal.py`; `run-level1-sandbox-lesson-application-minimal-check` |
+| Level 1 sandbox outcome observation | complete | Phase0 Level 1 toy sandbox observation only | The sandbox-only application outcome can be observed as visible in the toy sandbox observation record. | Outcome evaluation remains future work; learning proof, production behavior change, runtime behavior update, memory write, and predictor mutation remain blocked. | `ashl_core/level1_sandbox_lesson_application_outcome_observation_minimal.py`; `run-level1-sandbox-lesson-application-outcome-observation-minimal-check` |
+| Level 1 sandbox outcome evaluation | planned_next | future sandbox evidence evaluation | Planned next step only. | `passed_expected_sandbox_outcome`, `failed_expected_sandbox_outcome`, and `inconclusive_missing_observation` are not complete. | Not started |
+| human review summary | planned_next | future review summary | Planned after outcome evaluation. | Lesson application, memory write, retention write, predictor mutation, runtime behavior change. | Not started |
+| Level 2 sandbox readiness | not_started | future Phase0 level design | No Level 2 readiness claim. | Pathfinding, multi-step loop, production action selection, final_action. | Not started |
+| memory readiness | not_started | future memory boundary | No memory readiness claim. | Memory write, retained JSONL write, semantic/fuzzy/vector retrieval. | Not started |
+| retention write | blocked | retention boundary | No retention write allowed. | Retained JSONL persistence and retention writes remain blocked. | Boundary docs only |
+| predictor mutation | blocked | predictor boundary | No predictor mutation allowed. | Predictor updates and predictor-improvement claims remain blocked. | Boundary docs only |
+| runtime behavior change | blocked | runtime boundary | No runtime behavior change allowed. | Persistent runtime behavior updates remain blocked. | Boundary docs only |
+| production lesson application | blocked | production boundary | No production application allowed. | Production promotion remains blocked. | Boundary docs only |
+| proof of learning | blocked | claim boundary | No proof-of-learning claim allowed. | Learning-proof and lesson-learned claims remain blocked. | Boundary docs only |
+
+Boundary hygiene: implicit chat command is not application approval.
