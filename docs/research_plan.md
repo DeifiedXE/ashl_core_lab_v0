@@ -5951,3 +5951,20 @@ Progress:
 Forward plan:
 1. Generic Reviewed Lesson Preview Minimal v0.
 2. Keep the preview generic unless a future evidence source adds truly unique fields.
+
+## Generic Lesson Review Decision Preview Bridge Minimal v0
+
+Status: completed / schema-bridge / no-lesson-application.
+
+Progress:
+- Bridges the generic human lesson-review decision gate into the existing reviewed_lesson_trace_preview path.
+- Maps accepted_for_reviewed_lesson_preview to legacy approved_for_preview.
+- Maps rejected to legacy rejected and needs_more_evidence to legacy needs_revision.
+- Reuses the existing reviewed lesson preview implementation instead of creating a source-specific review channel or new preview implementation.
+- Keeps Level 0 flip evidence as supporting anti-bias evidence and Level 1 contrast evidence as the candidate source.
+- Lesson application, dry-run creation, memory writes, retention writes, predictor mutation, runtime behavior change, action selection, final_action, direct commands, and proof-of-learning claims remain blocked.
+
+Forward plan:
+1. Generic Reviewed Lesson Dry-Run Bridge Minimal v0.
+2. Reuse existing reviewed_lesson_dry_run_correction_minimal if possible.
+3. Keep blocking lesson application, memory write, retention write, predictor mutation, runtime behavior change, final_action, and production action selection.

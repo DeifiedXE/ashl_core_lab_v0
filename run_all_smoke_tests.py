@@ -132,6 +132,9 @@ from ashl_core.phase0_level1_contrast_sample_set_minimal import (
     run_phase0_level1_contrast_sample_set_minimal_check,
 )
 from ashl_core.generic_lesson_review_decision_minimal import run_generic_lesson_review_decision_minimal_check
+from ashl_core.generic_lesson_review_decision_preview_bridge_minimal import (
+    run_generic_lesson_review_decision_preview_bridge_minimal_check,
+)
 from ashl_core.minimal_visual_grounding_trial import run_minimal_visual_grounding_trial_check
 from ashl_core.visual_prediction_error_attention_priority_preview_minimal import (
     run_visual_prediction_error_attention_priority_preview_minimal_check,
@@ -11574,6 +11577,96 @@ def smoke_generic_lesson_review_decision_minimal() -> dict:
     )
 
 
+def smoke_generic_lesson_review_decision_preview_bridge_minimal() -> dict:
+    result = run_generic_lesson_review_decision_preview_bridge_minimal_check()
+    summary = result.get("summary", {})
+    boundary = result.get("boundary_check", {})
+    validation_by_id = {
+        item.get("bridge_result_id"): item for item in result.get("validation_results", [])
+    }
+    bridges = [
+        record
+        for record in result.get("preview_bridge_results", [])
+        if validation_by_id.get(record.get("bridge_result_id"), {}).get("valid") is True
+    ]
+    by_decision = {
+        record.get("source_generic_decision", {}).get("decision"): record
+        for record in bridges
+        if record.get("bridge_mode") == "generic_decision_to_existing_reviewed_lesson_preview_bridge"
+    }
+    accepted = by_decision.get("accepted_for_reviewed_lesson_preview", {})
+    rejected = by_decision.get("rejected", {})
+    needs_more = by_decision.get("needs_more_evidence", {})
+    accepted_source = accepted.get("source_generic_decision", {})
+    accepted_legacy = accepted.get("legacy_adapter", {})
+    accepted_preview = accepted.get("preview_bridge_result", {})
+    rejected_preview = rejected.get("preview_bridge_result", {})
+    needs_more_preview = needs_more.get("preview_bridge_result", {})
+    evidence = accepted.get("supporting_evidence", {})
+    blocked = accepted.get("blocked_flags", {})
+    passed = (
+        result.get("command") == "run-generic-lesson-review-decision-preview-bridge-minimal-check"
+        and result.get("flow") == "generic_lesson_review_decision_preview_bridge_minimal_v0"
+        and result.get("status") == "ok"
+        and summary.get("preview_bridge_result_count") == 50
+        and summary.get("valid_preview_bridge_result_count") == 3
+        and summary.get("invalid_preview_bridge_result_count") == 47
+        and summary.get("accepted_bridge_count") == 1
+        and summary.get("rejected_bridge_count") == 1
+        and summary.get("needs_more_evidence_bridge_count") == 1
+        and summary.get("reviewed_lesson_trace_preview_created_count") == 1
+        and summary.get("preview_blocked_count") == 2
+        and summary.get("legacy_approved_for_preview_mapping_count") == 1
+        and summary.get("legacy_rejected_mapping_count") == 1
+        and summary.get("legacy_needs_revision_mapping_count") == 1
+        and summary.get("existing_preview_reused_count") == 1
+        and accepted_source.get("source_type") == "phase0_level1_contrast_sample_set"
+        and accepted_source.get("source_trace_ref") == "phase0_level1_contrast_sample_set_demo_001"
+        and accepted_source.get("may_enter_reviewed_lesson_preview") is True
+        and accepted_source.get("may_enter_lesson_dry_run") is True
+        and accepted_source.get("may_apply_lesson") is False
+        and accepted_legacy.get("legacy_status") == "approved_for_preview"
+        and accepted_legacy.get("legacy_validator_passed") is True
+        and accepted_preview.get("existing_reviewed_lesson_preview_called") is True
+        and accepted_preview.get("reviewed_lesson_trace_preview_created") is True
+        and accepted_preview.get("preview_only") is True
+        and accepted_preview.get("lesson_applied") is False
+        and accepted_preview.get("dry_run_created") is False
+        and accepted_preview.get("runtime_behavior_changed") is False
+        and rejected.get("legacy_adapter", {}).get("legacy_status") == "rejected"
+        and rejected_preview.get("reviewed_lesson_trace_preview_created") is False
+        and rejected_preview.get("blocked_reason") == "rejected_decision_cannot_enter_preview"
+        and needs_more.get("legacy_adapter", {}).get("legacy_status") == "needs_revision"
+        and needs_more_preview.get("reviewed_lesson_trace_preview_created") is False
+        and needs_more_preview.get("blocked_reason") == "needs_more_evidence_cannot_enter_preview"
+        and evidence.get("level0_flip_test_used_as_supporting_evidence") is True
+        and evidence.get("bidirectional_flip_passed") is True
+        and evidence.get("one_way_caution_bias_rejected") is True
+        and evidence.get("level1_contrast_sample_set_used_as_candidate_source") is True
+        and all(value is False for value in blocked.values())
+        and boundary.get("schema_bridge_only") is True
+        and boundary.get("existing_reviewed_lesson_preview_reused") is True
+        and boundary.get("source_specific_review_channel_created") is False
+        and boundary.get("new_reviewed_lesson_preview_implementation") is False
+        and boundary.get("lesson_application_added") is False
+        and boundary.get("dry_run_created") is False
+        and boundary.get("memory_write_added") is False
+        and boundary.get("retention_write_added") is False
+        and boundary.get("predictor_mutation_added") is False
+        and boundary.get("runtime_behavior_change_added") is False
+        and boundary.get("proof_of_learning_claimed") is False
+    )
+    return _result(
+        "generic_lesson_review_decision_preview_bridge_minimal",
+        passed,
+        {
+            "summary": summary,
+            "validation_results": result.get("validation_results", []),
+            "boundary_check": boundary,
+        },
+    )
+
+
 def smoke_phase0_current_capability_snapshot() -> dict:
     doc_path = Path("docs/phase0_current_capability_snapshot_2026-06-10.md")
     doc = doc_path.read_text(encoding="utf-8") if doc_path.exists() else ""
@@ -14265,6 +14358,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_phase0_level1_first_contact_danger_minimal(),
         smoke_phase0_level1_contrast_sample_set_minimal(),
         smoke_generic_lesson_review_decision_minimal(),
+        smoke_generic_lesson_review_decision_preview_bridge_minimal(),
         smoke_phase0_current_capability_snapshot(),
         smoke_memory_influence_behavior_gate_design(),
         smoke_first_memory_influenced_behavior_boundary(),

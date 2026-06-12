@@ -2631,3 +2631,7 @@ Two-Trial History Boundary:
 ## Generic Lesson Review Decision Minimal v0
 
 - Generic Lesson Review Decision Minimal v0 adds a shared human review decision gate for lesson-review candidates from different evidence sources. The first fixture uses the Phase0 Level 1 contrast sample set, but future visual/action/path/failure traces should reuse the same generic decision schema. Accepted candidates may enter reviewed lesson preview or dry-run only; lesson application, memory writes, retention writes, predictor mutation, runtime behavior change, action selection, final_action, and proof-of-learning claims remain blocked.
+
+## Generic Lesson Review Decision Preview Bridge Minimal v0
+
+- Generic Lesson Review Decision Preview Bridge Minimal v0 connects the generic human lesson-review decision gate to the existing reviewed_lesson_trace_preview pipeline by mapping accepted_for_reviewed_lesson_preview to the legacy approved_for_preview schema. It reuses the existing preview path and does not create source-specific review channels or a new preview implementation. Rejected and needs_more_evidence decisions cannot enter preview. Lesson application, dry-run creation, memory writes, retention writes, predictor mutation, runtime behavior change, action selection, final_action, direct commands, and proof-of-learning claims remain blocked.
