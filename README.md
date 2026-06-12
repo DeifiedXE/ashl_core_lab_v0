@@ -1618,7 +1618,7 @@ Two-Trial History Boundary:
 
 - `docs/current_boundary_index.md`
 - Adds a short, versioned, low-token source of global hard boundaries for future work packages.
-- Current version: `Boundary Index Version: 2026-06-09-b56`.
+- Current version: `Boundary Index Version: 2026-06-09-b57`.
 - Current index is compacted and should stay under 120 lines when possible.
 - Older milestone details are preserved in `docs/boundary_index_archive_2026_06.md`.
 - Compaction is docs-only and does not change runtime behavior or claim meaning.
@@ -2603,3 +2603,7 @@ Two-Trial History Boundary:
 ## Sandbox Execution Outcome Integration Minimal v0
 
 - Sandbox Execution Outcome Integration Minimal v0 connects the one-step sandbox action execution back into expected/actual outcome and action-outcome trace evidence. The sandbox check outcome can feed lesson-review evidence after human review, but it does not apply lessons, write memory, create retention, mutate predictors, select actions, create final_action, or prove learning.
+
+## Sandbox Action Loop Milestone Sync Minimal v0
+
+- Sandbox Action Loop Milestone Sync Minimal v0 records the first closed sandbox action loop: memory-influenced runtime tendency led to a reviewed non-executing choice candidate, one-step sandbox intent, sandbox-only check_before_retry execution, and expected/actual outcome trace evidence. This remains sandbox-only and does not create production action selection, selected_action, final_action, direct commands, real navigation/UI behavior, persistent policy, generalized behavior, lesson application, memory writes, retention writes, predictor mutation, or proof-of-learning claims.

@@ -5837,3 +5837,18 @@ Progress:
 Forward plan:
 1. Review outcome evidence before adding more sandbox actions or lesson-review surfaces.
 2. Keep evidence separate from learning, memory, and behavior change.
+
+## Sandbox Action Loop Milestone Sync Minimal v0
+
+Status: completed / milestone-sync / sandbox-only-loop-recorded.
+
+Progress:
+- Completed the first sandbox-only action loop from memory-influenced runtime tendency to sandbox execution and outcome evidence trace.
+- Recorded the path through pre-action candidates, pre-action gate, action-selection-adjacent review, non-executing choice candidate, one-step sandbox intent, one-step sandbox execution, expected/actual outcome pair, and sandbox action outcome trace.
+- Strongest safe claim: ASHL Core can execute one sandbox-only check action from the reviewed non-executing chain and connect the result into expected/actual outcome evidence and action-outcome trace evidence.
+- Do not generalize sandbox action execution until at least one reviewed lesson/evidence path is connected and still blocks lesson application, memory write, predictor mutation, final_action, and production action selection.
+
+Next options:
+1. Sandbox Outcome Lesson Review Candidate Minimal v0.
+2. Sandbox Outcome Retention Candidate Boundary Minimal v0.
+3. Pause and snapshot the completed sandbox action loop before expanding action types.
