@@ -2587,3 +2587,7 @@ Two-Trial History Boundary:
 ## Action-Selection-Adjacent Review Minimal v0
 
 - Action-Selection-Adjacent Review Minimal v0 organizes gated pre-action consideration candidates into a review layer and highlights the most review-worthy candidate. This is not action selection: runtime action selection, selected actions, final actions, execution, direct commands, persistent policy, generalized behavior, lesson application, predictor mutation, and proof-of-learning claims remain blocked.
+
+## Non-Executing Action Choice Candidate Minimal v0
+
+- Non-Executing Action Choice Candidate Minimal v0 names one reviewed action as a non-executing choice candidate. The candidate is allowed to enter one-step sandbox intent preparation, but it is not a selected action, not a final action, not execution, not a direct command, and not production action selection.

@@ -5779,3 +5779,18 @@ Forward plan:
 2. One-Step Sandbox Action Intent Minimal v0.
 3. One-Step Sandbox Action Execution Minimal v0.
 4. Do not create standalone check packages unless final_action, execution, persistent policy, real navigation/UI, memory write, predictor mutation, semantic/fuzzy retrieval, or generalized behavior changes.
+
+## Non-Executing Action Choice Candidate Minimal v0
+
+Status: completed / non-executing-choice-candidate / no-action-selection.
+
+Progress:
+- Names check_before_retry as one reviewed non-executing action choice candidate.
+- The candidate may enter one-step sandbox action intent preparation.
+- The candidate is not a selected action, final action, execution, direct command, runtime action selection, or production action selection.
+- Persistent policy, generalized behavior, semantic/fuzzy matching, lesson application, predictor mutation, and proof-of-learning claims remain blocked.
+
+Forward plan:
+1. One-Step Sandbox Action Intent Minimal v0.
+2. One-Step Sandbox Action Execution Minimal v0.
+3. Do not create standalone check packages unless final_action, execution, persistent policy, real navigation/UI, memory write, predictor mutation, semantic/fuzzy retrieval, or generalized behavior changes.
