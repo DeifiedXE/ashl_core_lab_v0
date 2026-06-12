@@ -17,6 +17,7 @@ FLOW = "reviewed_lesson_sandbox_application_readiness_minimal_v0"
 READINESS_ID = "reviewed_lesson_sandbox_application_readiness_demo_001"
 READINESS_MODE = "sandbox_application_readiness_only"
 READINESS_STATUS = "not_ready_missing_explicit_human_application_approval"
+READY_AFTER_APPROVAL_STATUS = "ready_for_level1_sandbox_application_after_explicit_user_approval"
 BOUNDARY_DOC = Path("docs/reviewed_lesson_application_boundary_reconciliation_v0.md")
 
 REQUIRED_TOP_LEVEL = {
@@ -187,16 +188,30 @@ def validate_reviewed_lesson_sandbox_application_readiness(record: dict[str, Any
         _require_true(satisfied, field, errors)
 
     missing = _section(record, "missing_requirements", errors)
-    _require_true(missing, "explicit_human_application_approval", errors)
-    _require_false(missing, "sandbox_application_package_exists", errors)
-
     result = _section(record, "readiness_result", errors)
-    if result.get("readiness_status") != READINESS_STATUS:
-        errors.append("readiness_status_not_missing_explicit_human_application_approval")
+    status = result.get("readiness_status")
+    if status == READINESS_STATUS:
+        _require_true(missing, "explicit_human_application_approval", errors)
+        _require_false(missing, "sandbox_application_package_exists", errors)
+        for field in (
+            "ready_for_application",
+            "ready_for_sandbox_application_package",
+            "allowed_to_apply_lesson",
+        ):
+            _require_false(result, field, errors)
+    elif status == READY_AFTER_APPROVAL_STATUS:
+        _require_false(missing, "explicit_human_application_approval", errors)
+        _require_true(missing, "sandbox_application_package_exists", errors)
+        for field in (
+            "ready_for_application",
+            "ready_for_sandbox_application_package",
+            "allowed_to_apply_lesson",
+        ):
+            _require_true(result, field, errors)
+    else:
+        errors.append("readiness_status_not_recognized")
+
     for field in (
-        "ready_for_application",
-        "ready_for_sandbox_application_package",
-        "allowed_to_apply_lesson",
         "allowed_to_write_memory",
         "allowed_to_write_retention",
         "allowed_to_mutate_predictor",

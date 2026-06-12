@@ -1618,7 +1618,7 @@ Two-Trial History Boundary:
 
 - `docs/current_boundary_index.md`
 - Adds a short, versioned, low-token source of global hard boundaries for future work packages.
-- Current version: `Boundary Index Version: 2026-06-09-b61`.
+- Current version: `Boundary Index Version: 2026-06-09-b62`.
 - Current index is compacted and should stay under 130 lines when possible.
 - Older milestone details are preserved in `docs/boundary_index_archive_2026_06.md`.
 - Compaction is docs-only and does not change runtime behavior or claim meaning.
@@ -2666,4 +2666,8 @@ Two-Trial History Boundary:
 
 ## Explicit User Approval Source Boundary Correction Minimal v0
 
-- Explicit User Approval Source Boundary Correction Minimal v0 clarifies that Level 1 lesson application approval must come from an explicit user/project-owner statement. Codex or AI may record and validate approval records but cannot grant approval. Demo fixtures, "蝯血?", readiness completion, and passing tests are not application approval. Lesson application remains blocked unless a valid explicit user approval record is present.
+- Explicit User Approval Source Boundary Correction Minimal v0 clarifies that Level 1 lesson application approval must come from an explicit user/project-owner statement. Codex or AI may record and validate approval records but cannot grant approval. Demo fixtures, implicit chat commands, readiness completion, and passing tests are not application approval. Lesson application remains blocked unless a valid explicit user approval record is present.
+
+## Level 1 Sandbox Lesson Application Minimal v0
+
+- Level 1 Sandbox Lesson Application Minimal v0 applies one reviewed lesson inside the Phase0 Level 1 toy sandbox scope only, after valid readiness and explicit user approval. The sandbox-only effect records `front_symbol=d`, `preferred_sandbox_action=check_before_retry`, and `blocks_retry_same_action_until_check=True`, with audit and rollback. It does not apply to production, change runtime behavior, write memory or retention, mutate predictors, create selected_action/final_action/direct commands, generalize behavior, or prove learning.

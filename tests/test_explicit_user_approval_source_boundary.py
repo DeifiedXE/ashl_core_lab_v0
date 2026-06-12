@@ -13,7 +13,7 @@ class ExplicitUserApprovalSourceBoundaryTests(unittest.TestCase):
             "Codex may record approval, but cannot provide approval",
             "Only the project owner / user can provide explicit application approval",
             "A test fixture is not real approval",
-            '"蝯血?" is not application approval',
+            "implicit chat command is not application approval",
             "Passing tests are not approval",
         ]
 

@@ -6100,7 +6100,7 @@ Progress:
 - Corrects Level 1 application approval so real approval requires approval_source == explicit_user_statement, approval_actor == user, approver_role == project_owner, and non-empty approval_text.
 - Clarifies that Codex or AI may record and validate approval records but cannot grant approval.
 - Blocks Codex self-approval, AI self-approval, demo fixture approval, implicit approval, readiness-derived approval, completed-test-derived approval, and marker-text-derived approval.
-- Clarifies that "蝯血?" is not application approval.
+- Clarifies that implicit chat command is not application approval.
 - Keeps lesson application, memory write, retention write, predictor mutation, runtime behavior change, production action selection, final_action, direct commands, and proof-of-learning claims blocked.
 
 Forward plan:
@@ -6108,3 +6108,20 @@ Forward plan:
 2. Do not use fixture/demo approval as real approval.
 
 Explicit user approval must come from the project owner / user, not Codex.
+
+## Level 1 Sandbox Lesson Application Minimal v0
+
+Status: completed / sandbox-only application record.
+
+Progress:
+- Applies one reviewed lesson inside the Phase0 Level 1 toy sandbox scope only.
+- Requires a ready sandbox application record and explicit user approval with approval_source == explicit_user_statement, approval_actor == user, approver_role == project_owner, and non-empty approval_text.
+- Records the sandbox-only effect: front_symbol=d, preferred_sandbox_action=check_before_retry, and blocks_retry_same_action_until_check=True.
+- Records audit and rollback for the sandbox application record.
+- Production/runtime lesson application, memory writes, retention writes, predictor mutation, runtime behavior change, selected_action, final_action, direct commands, generalized behavior, and proof-of-learning claims remain blocked.
+
+Forward plan:
+1. Level 1 sandbox application audit / rollback review.
+2. Do not move this effect into runtime behavior without a separate explicit boundary package.
+
+Sandbox-only application is not production behavior change.

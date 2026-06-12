@@ -150,6 +150,9 @@ from ashl_core.reviewed_lesson_sandbox_application_readiness_minimal import (
 from ashl_core.level1_explicit_lesson_application_approval_minimal import (
     run_level1_explicit_lesson_application_approval_minimal_check,
 )
+from ashl_core.level1_sandbox_lesson_application_minimal import (
+    run_level1_sandbox_lesson_application_minimal_check,
+)
 from ashl_core.minimal_visual_grounding_trial import run_minimal_visual_grounding_trial_check
 from ashl_core.visual_prediction_error_attention_priority_preview_minimal import (
     run_visual_prediction_error_attention_priority_preview_minimal_check,
@@ -6600,7 +6603,7 @@ def smoke_explicit_user_approval_source_boundary() -> dict:
         "AI may validate approval, but cannot provide approval",
         "Only the project owner / user can provide explicit application approval",
         "A test fixture is not real approval",
-        '"蝯血?" is not application approval',
+        "implicit chat command is not application approval",
         "A completed readiness record is not approval",
         "Passing tests are not approval",
     ]
@@ -10458,8 +10461,8 @@ def smoke_current_boundary_index_docs() -> dict:
     readme = readme_path.read_text(encoding="utf-8") if readme_path.exists() else ""
     research_plan = research_plan_path.read_text(encoding="utf-8") if research_plan_path.exists() else ""
     compact_required_terms = [
-        "Boundary Index Version: 2026-06-09-b61",
-        "Last update log: Explicit User Approval Source Boundary Correction Minimal v0",
+        "Boundary Index Version: 2026-06-09-b62",
+        "Last update log: Level 1 Sandbox Lesson Application Minimal v0",
         "docs/boundary_index_archive_2026_06.md",
         "Minimal Visual Grounding Trial v0",
         "Visual Prediction Error + Attention Priority Preview Minimal v0",
@@ -10494,8 +10497,12 @@ def smoke_current_boundary_index_docs() -> dict:
         "Explicit User Approval Source Boundary correction",
         "explicit_human_application_approval must come from an explicit user/project-owner statement",
         "Codex/AI may record or validate approval but cannot grant it",
-        '"蝯血?"',
+        "implicit chat commands",
         "passing tests are not application approval",
+        "Level 1 Sandbox Lesson Application milestone",
+        "front_symbol=d",
+        "preferred_sandbox_action=check_before_retry",
+        "blocks_retry_same_action_until_check=True",
         "`current_boundary_index.md` should stay <= 130 lines when possible.",
         "Hard limit: <= 150 lines.",
     ]
@@ -10517,7 +10524,7 @@ def smoke_current_boundary_index_docs() -> dict:
         and all(term in doc for term in compact_required_terms)
         and all(term in archive for term in archive_required_terms)
         and line_count <= 130
-        and "Boundary Index Version: 2026-06-09-b61" in readme
+        and "Boundary Index Version: 2026-06-09-b62" in readme
         and "docs/boundary_index_archive_2026_06.md" in readme
         and "Boundary Index Compaction / Archive v0" in research_plan
         and "Runtime Tendency Memory Influence Safety Sync Minimal v0" in research_plan
@@ -12158,9 +12165,9 @@ def smoke_level1_explicit_lesson_application_approval_minimal() -> dict:
         result.get("command") == "run-level1-explicit-lesson-application-approval-minimal-check"
         and result.get("flow") == "level1_explicit_lesson_application_approval_minimal_v0"
         and result.get("status") == "ok"
-        and summary.get("explicit_approval_result_count") == 63
+        and summary.get("explicit_approval_result_count") == 62
         and summary.get("valid_explicit_approval_result_count") == 3
-        and summary.get("invalid_explicit_approval_result_count") == 60
+        and summary.get("invalid_explicit_approval_result_count") == 59
         and summary.get("approved_for_future_package_count") == 1
         and summary.get("rejected_for_application_count") == 1
         and summary.get("needs_more_evidence_before_application_count") == 1
@@ -12242,6 +12249,82 @@ def smoke_level1_explicit_lesson_application_approval_minimal() -> dict:
     )
     return _result(
         "level1_explicit_lesson_application_approval_minimal",
+        passed,
+        {
+            "summary": summary,
+            "validation_results": result.get("validation_results", []),
+            "boundary_check": boundary,
+        },
+    )
+
+
+def smoke_level1_sandbox_lesson_application_minimal() -> dict:
+    result = run_level1_sandbox_lesson_application_minimal_check()
+    summary = result.get("summary", {})
+    boundary = result.get("boundary_check", {})
+    records = [
+        record
+        for record, validation in zip(
+            result.get("application_results", []),
+            result.get("validation_results", []),
+        )
+        if validation.get("valid") is True
+    ]
+    record = records[0] if records else {}
+    readiness = record.get("readiness_record", {}).get("readiness_result", {})
+    approval = record.get("approval_record", {}).get("human_application_approval", {})
+    audit = record.get("audit", {})
+    rollback = record.get("rollback", {})
+    blocked = record.get("blocked_boundaries", {})
+    passed = (
+        result.get("command") == "run-level1-sandbox-lesson-application-minimal-check"
+        and result.get("flow") == "level1_sandbox_lesson_application_minimal_v0"
+        and result.get("status") == "ok"
+        and summary.get("level1_sandbox_application_result_count") == 54
+        and summary.get("valid_level1_sandbox_application_count") == 1
+        and summary.get("invalid_level1_sandbox_application_count") == 53
+        and summary.get("sandbox_effect_applied_count") == 1
+        and summary.get("readiness_checked_count") == 1
+        and summary.get("approval_checked_count") == 1
+        and summary.get("audit_recorded_count") == 1
+        and summary.get("rollback_available_count") == 1
+        and record.get("record_type") == "level1_sandbox_lesson_application"
+        and record.get("version") == "level1_sandbox_lesson_application_minimal_v0"
+        and record.get("target_scope") == "phase0_level1_sandbox_only"
+        and record.get("application_status") == "applied_in_phase0_level1_sandbox_only"
+        and readiness.get("ready_for_application") is True
+        and readiness.get("allowed_to_apply_lesson") is True
+        and approval.get("approval_decision") == "approved_for_future_level1_sandbox_application_package"
+        and approval.get("approval_source") == "explicit_user_statement"
+        and approval.get("approval_actor") == "user"
+        and approval.get("approver_role") == "project_owner"
+        and isinstance(approval.get("approval_text"), str)
+        and bool(approval.get("approval_text", "").strip())
+        and record.get("front_symbol") == "d"
+        and record.get("preferred_sandbox_action") == "check_before_retry"
+        and record.get("blocks_retry_same_action_until_check") is True
+        and all(value is True for value in audit.values())
+        and rollback.get("rollback_available") is True
+        and rollback.get("rollback_scope") == "phase0_level1_sandbox_application_record_only"
+        and rollback.get("rollback_does_not_touch_memory") is True
+        and rollback.get("rollback_does_not_touch_retention") is True
+        and rollback.get("rollback_does_not_touch_predictor") is True
+        and rollback.get("rollback_does_not_touch_runtime_behavior") is True
+        and all(value is False for value in blocked.values())
+        and boundary.get("sandbox_only_application") is True
+        and boundary.get("production_lesson_application") is False
+        and boundary.get("runtime_lesson_application") is False
+        and boundary.get("memory_write") is False
+        and boundary.get("retention_write") is False
+        and boundary.get("predictor_mutation") is False
+        and boundary.get("runtime_behavior_change") is False
+        and boundary.get("selected_action_created") is False
+        and boundary.get("final_action_created") is False
+        and boundary.get("direct_action_command_created") is False
+        and boundary.get("proof_of_learning_claimed") is False
+    )
+    return _result(
+        "level1_sandbox_lesson_application_minimal",
         passed,
         {
             "summary": summary,
@@ -14948,6 +15031,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_generic_lesson_evidence_pipeline_completion_bridge_minimal(),
         smoke_reviewed_lesson_sandbox_application_readiness_minimal(),
         smoke_level1_explicit_lesson_application_approval_minimal(),
+        smoke_level1_sandbox_lesson_application_minimal(),
         smoke_phase0_current_capability_snapshot(),
         smoke_memory_influence_behavior_gate_design(),
         smoke_first_memory_influenced_behavior_boundary(),

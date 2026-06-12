@@ -33,12 +33,12 @@ Codex / AI must not infer approval from:
 - repository state
 - demo fixtures
 - implicit user intent
-- marker text
+- implicit chat command text
 
 ## Not Approval
 
 A test fixture is not real approval.
-"蝯血?" is not application approval.
+implicit chat command is not application approval.
 A completed readiness record is not approval.
 Passing tests are not approval.
 

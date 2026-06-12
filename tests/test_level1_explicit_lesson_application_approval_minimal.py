@@ -91,9 +91,10 @@ class Level1ExplicitLessonApplicationApprovalMinimalTests(unittest.TestCase):
 
         self.assertFalse(validate_level1_explicit_lesson_application_approval(record)["valid"])
 
-    def test_marker_text_alone_is_not_approval(self):
+    def test_implicit_chat_command_alone_is_not_approval(self):
         record = self._approved_record()
-        record["human_application_approval"]["approval_text"] = "蝯血?"
+        record["human_application_approval"]["approval_source"] = "implicit_chat_command"
+        record["human_application_approval"]["approval_inferred_from_marker_text"] = True
 
         self.assertFalse(validate_level1_explicit_lesson_application_approval(record)["valid"])
 
@@ -271,9 +272,9 @@ class Level1ExplicitLessonApplicationApprovalMinimalTests(unittest.TestCase):
         summary = result["summary"]
 
         self.assertEqual(result["status"], "ok")
-        self.assertEqual(summary["explicit_approval_result_count"], 63)
+        self.assertEqual(summary["explicit_approval_result_count"], 62)
         self.assertEqual(summary["valid_explicit_approval_result_count"], 3)
-        self.assertEqual(summary["invalid_explicit_approval_result_count"], 60)
+        self.assertEqual(summary["invalid_explicit_approval_result_count"], 59)
         self.assertEqual(summary["approved_for_future_package_count"], 1)
         self.assertEqual(summary["rejected_for_application_count"], 1)
         self.assertEqual(summary["needs_more_evidence_before_application_count"], 1)

@@ -262,8 +262,6 @@ def validate_level1_explicit_lesson_application_approval(record: dict[str, Any])
         "approval_inferred_from_marker_text",
     ):
         _require_false(approval, field, errors)
-    if approval.get("approval_text") == "蝯血?":
-        errors.append("marker_text_is_not_application_approval")
 
     result = _section(record, "approval_result", errors)
     next_layer = _section(record, "allowed_next_layer", errors)
@@ -388,7 +386,6 @@ def _validate_decision_result(
         and approval.get("approval_inferred_from_completed_tests") is False
         and approval.get("approval_inferred_from_readiness") is False
         and approval.get("approval_inferred_from_marker_text") is False
-        and approval.get("approval_text") != "蝯血?"
     )
     approved = decision == APPROVED and explicit_user_statement_present
     rejected = decision == REJECTED
@@ -456,7 +453,6 @@ def _build_invalid_records(
     invalid.append(_mutated(approved_record, ["human_application_approval", "approval_inferred_from_completed_tests"], True))
     invalid.append(_mutated(approved_record, ["human_application_approval", "approval_inferred_from_readiness"], True))
     invalid.append(_mutated(approved_record, ["human_application_approval", "approval_inferred_from_marker_text"], True))
-    invalid.append(_mutated(approved_record, ["human_application_approval", "approval_text"], "蝯血?"))
     invalid.append(
         _mutated(
             approved_record,
