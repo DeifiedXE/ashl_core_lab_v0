@@ -116,7 +116,7 @@ blocked_flags
 
 ## Not Implemented
 
-- No real memory-influenced behavior.
+- No production/runtime memory-influenced behavior is allowed. Phase0 Level 1 sandbox-only lesson application and observation records are allowed only within their validated sandbox scope and do not constitute production/runtime memory-influenced behavior.
 - No runtime action selection.
 - No final_action creation.
 - No direct action command.

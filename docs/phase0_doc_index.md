@@ -1,24 +1,77 @@
 # ASHL Core Phase0 Documentation Index
 
-Use these files as the canonical entry path for current Phase0 review:
+## Current Status Anchors
 
-- `README.md`: project entry point and short signpost to current docs.
-- `docs/current_boundary_index.md`: current boundary version and compact boundary change index.
-- `docs/phase0_status.md`: current human-readable Phase0 status map.
-- `docs/phase0_capability_matrix.md`: compact capability status table.
-- `docs/research_plan.md`: current research direction, next work, and known blocked areas.
+- `README.md`
+- `docs/phase0_status.md`
+- `docs/current_boundary_index.md`
 
-Supporting references:
+## Boundary Anchors
 
-- `docs/boundary_index_archive_2026_06.md`: older boundary milestones preserved as archive-only history.
-- `docs/reviewed_lesson_application_boundary_reconciliation_v0.md`: application boundary reconciliation.
-- `docs/explicit_user_approval_source_boundary_v0.md`: explicit user approval source boundary.
+- `docs/current_boundary_index.md`
+- `docs/reviewed_lesson_application_boundary_reconciliation_v0.md`
+- `docs/explicit_user_approval_source_boundary_v0.md`
+- `docs/five_layer_memory_framework_boundary_v0.md`
+- Boundary/contract/audit files listed in `docs/phase0_doc_inventory.md`.
 
-This index does not replace older detailed docs and does not delete history. It only gives a cleaner starting point.
+## Capability / Status Matrix
 
-Current boundary hygiene:
+- `docs/phase0_capability_matrix.md`
 
-- implicit chat command is not application approval.
-- Passing tests are not application approval.
-- Readiness records are not application approval.
-- Sandbox observations are not proof of learning.
+## Inventory / Audit Docs
+
+- `docs/phase0_doc_inventory.md`
+- `docs/phase0_doc_consistency_audit.md`
+
+## Open-Gap / Risk Docs
+
+- `docs/phase0_open_risk_ledger.md`
+- `docs/phase0_unresolved_doc_issues.md`
+
+## Design Assumptions
+
+Design assumption files describe future or conceptual architecture. They do not grant current capability unless a newer boundary/current-status document says so.
+
+Examples:
+
+- `docs/five_layer_memory_design_assumption_v0_1.md`
+- `docs/memory_influence_behavior_gate_design_v0.md`
+- `docs/voice_instinct_assumption_v0_1.md`
+
+## Historical / Superseded Assumptions
+
+Historical logs and archives preserve context only. They do not override current boundary docs.
+
+Examples:
+
+- `docs/boundary_index_archive_2026_06.md`
+- `docs/milestone_logs/*.md`
+- `docs/*progress_log*.md`
+
+## Implementation-Specific Docs
+
+Implementation notes describe local modules, prototypes, or support concepts. Newer boundary/current-status docs control current claims.
+
+Examples:
+
+- `docs/core_seed.md`
+- `docs/core_senses.md`
+- `docs/memory_layers.md`
+- `docs/state_persistence.md`
+
+## Planning Docs
+
+- `docs/research_plan.md`
+- `docs/experiment_order.md`
+
+Planning docs guide next work. They are not standalone proof that a capability exists.
+
+## Test-Support Docs
+
+Docs whose main function is smoke/test support remain useful for regression but are not current capability anchors unless listed above as anchors.
+
+## Conflict Resolution Rule
+
+When an older design assumption conflicts with a newer boundary document, current status document, capability matrix, or Boundary Index entry, the newer boundary/current-status document controls the current capability claim. Older design assumptions remain historical context and do not grant current capability.
+
+This index does not claim every old doc is fully reconciled. Files classified as `unknown_needs_review` or `needs_review` in `docs/phase0_doc_inventory.md` require future human review.

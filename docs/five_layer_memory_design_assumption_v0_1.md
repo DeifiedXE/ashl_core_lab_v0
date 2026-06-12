@@ -12,6 +12,8 @@ It is design-only. It does not implement Archive Memory, Anchor Layer, four-laye
 - Status: design assumption only
 - Current Boundary Index remains unchanged by this document.
 
+Version-priority note: Where this design assumption differs from `docs/five_layer_memory_framework_boundary_v0.md`, `docs/current_boundary_index.md`, `docs/phase0_status.md`, or `docs/phase0_capability_matrix.md`, the newer boundary/current-status document controls current capability claims. This older design assumption remains historical design context and does not grant current Long-term Memory capability.
+
 ## Five-Layer Architecture
 
 The future memory architecture has five layers:

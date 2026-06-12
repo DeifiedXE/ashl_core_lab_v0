@@ -1618,11 +1618,15 @@ Two-Trial History Boundary:
 
 - `docs/current_boundary_index.md`
 - Adds a short, versioned, low-token source of global hard boundaries for future work packages.
-- Current version: `Boundary Index Version: 2026-06-09-b64`.
+- Current version: `Boundary Index Version: 2026-06-09-b65`.
 - For current Phase0 status, see `docs/phase0_status.md`.
 - For capability status, see `docs/phase0_capability_matrix.md`.
 - For boundary version history, see `docs/current_boundary_index.md`.
 - For the documentation entry path, see `docs/phase0_doc_index.md`.
+- For the documentation inventory, see `docs/phase0_doc_inventory.md`.
+- For consistency audit findings, see `docs/phase0_doc_consistency_audit.md`.
+- For open risks/gaps, see `docs/phase0_open_risk_ledger.md`.
+- For unresolved documentation issues, see `docs/phase0_unresolved_doc_issues.md`.
 - Current index is compacted and should stay under 130 lines when possible.
 - Older milestone details are preserved in `docs/boundary_index_archive_2026_06.md`.
 - Compaction is docs-only and does not change runtime behavior or claim meaning.
@@ -2679,3 +2683,7 @@ Two-Trial History Boundary:
 ## Level 1 Sandbox Lesson Application Outcome Observation Minimal v0
 
 - Level 1 Sandbox Lesson Application Outcome Observation Minimal v0 observes the outcome of one reviewed lesson application inside the Phase0 Level 1 toy sandbox scope only. It confirms the sandbox effect is visible in the observation record, including `front_symbol=d`, `check_before_retry`, retry-same-action blocking, audit, and rollback. Production/runtime behavior, memory writes, retention writes, predictor mutation, action selection, final_action, direct commands, generalized behavior, and proof-of-learning claims remain blocked.
+
+## Phase0 Documentation Inventory and Consistency Reconciliation Minimal v0
+
+- Phase0 Documentation Inventory and Consistency Reconciliation Minimal v0 inventories the markdown documentation surface, defines authority/index rules, records consistency audit findings, and moves unresolved documentation/design risks into explicit ledgers. This is documentation-only and adds no runtime, memory, retention, predictor, sandbox, approval, action-selection, or learning capability.

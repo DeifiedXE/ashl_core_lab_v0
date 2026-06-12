@@ -56,7 +56,7 @@ class Phase0DocumentationConsolidationTests(unittest.TestCase):
         matrix = self._read(Path("docs/phase0_capability_matrix.md"))
         status = self._read(Path("docs/phase0_status.md"))
 
-        self.assertIn("| Level 1 sandbox outcome evaluation | planned_next |", matrix)
+        self.assertIn("| outcome evaluation | not_implemented |", matrix)
         self.assertIn("Outcome evaluation is planned next and is not marked complete.", status)
         self.assertNotIn("outcome evaluation complete", (matrix + status).lower())
 

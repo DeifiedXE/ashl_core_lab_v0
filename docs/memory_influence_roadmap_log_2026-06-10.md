@@ -40,7 +40,7 @@ mentor-gated retained JSONL
 
 ## Forbidden Claims
 
-- No real memory-influenced behavior.
+- No production/runtime memory-influenced behavior. Conceptually, memory is treated as a warning signal rather than an unconditional philosophical ban. In current Phase0 implementation, however, memory-influenced behavior remains practically blocked until all required gates and checks are satisfied.
 - No runtime action selection.
 - No final_action creation.
 - No direct action command.

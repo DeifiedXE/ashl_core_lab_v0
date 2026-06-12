@@ -27,7 +27,8 @@ class MemoryInfluenceBehaviorGateDesignTests(unittest.TestCase):
 
     def test_runtime_behavior_remains_not_implemented(self):
         forbidden_runtime_phrases = [
-            "No real memory-influenced behavior.",
+            "No production/runtime memory-influenced behavior is allowed.",
+            "sandbox-only lesson application and observation records",
             "No runtime action selection.",
             "No final_action creation.",
             "No direct action command.",

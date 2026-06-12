@@ -4690,7 +4690,8 @@ def smoke_memory_influence_behavior_gate_design() -> dict:
         "Mentor override must remain available",
         "Rollback must disable the admitted influence without deleting retained memory",
         "Retained memory, dry-run contrast, gate result, and future applied influence are separate records",
-        "No real memory-influenced behavior.",
+        "No production/runtime memory-influenced behavior is allowed.",
+        "sandbox-only lesson application and observation records",
         "No runtime action selection.",
         "No final_action creation.",
         "No direct action command.",
@@ -4733,7 +4734,8 @@ def smoke_first_memory_influenced_behavior_boundary() -> dict:
         "rollback path defined",
         "runtime_action_selection_allowed must remain False",
         "Retained memory and applied influence are separate",
-        "No real memory-influenced behavior.",
+        "No production/runtime memory-influenced behavior is allowed.",
+        "sandbox-only lesson application and observation records",
         "No runtime action selection.",
         "No final_action creation.",
         "No direct action command.",
@@ -10464,8 +10466,8 @@ def smoke_current_boundary_index_docs() -> dict:
     readme = readme_path.read_text(encoding="utf-8") if readme_path.exists() else ""
     research_plan = research_plan_path.read_text(encoding="utf-8") if research_plan_path.exists() else ""
     compact_required_terms = [
-        "Boundary Index Version: 2026-06-09-b64",
-        "Last update log: Phase0 Documentation Consolidation Minimal v0",
+        "Boundary Index Version: 2026-06-09-b65",
+        "Last update log: Phase0 Documentation Inventory and Consistency Reconciliation Minimal v0",
         "docs/boundary_index_archive_2026_06.md",
         "Minimal Visual Grounding Trial v0",
         "Visual Prediction Error + Attention Priority Preview Minimal v0",
@@ -10510,6 +10512,9 @@ def smoke_current_boundary_index_docs() -> dict:
         "observe the outcome of one reviewed lesson application inside the Phase0 Level 1 toy sandbox scope only",
         "Phase0 Documentation Consolidation milestone",
         "Documentation consolidation only",
+        "Phase0 Documentation Inventory and Consistency Reconciliation milestone",
+        "documentation inventory",
+        "known open risk/gap ledger",
         "docs/phase0_status.md",
         "docs/phase0_capability_matrix.md",
         "docs/phase0_doc_index.md",
@@ -10534,7 +10539,7 @@ def smoke_current_boundary_index_docs() -> dict:
         and all(term in doc for term in compact_required_terms)
         and all(term in archive for term in archive_required_terms)
         and line_count <= 130
-        and "Boundary Index Version: 2026-06-09-b64" in readme
+        and "Boundary Index Version: 2026-06-09-b65" in readme
         and "docs/boundary_index_archive_2026_06.md" in readme
         and "Boundary Index Compaction / Archive v0" in research_plan
         and "Runtime Tendency Memory Influence Safety Sync Minimal v0" in research_plan
@@ -10573,12 +10578,12 @@ def smoke_phase0_documentation_consolidation_minimal() -> dict:
         status_path.exists()
         and matrix_path.exists()
         and index_path.exists()
-        and "Boundary Index Version: 2026-06-09-b64" in status
+        and "Boundary Index Version: 2026-06-09-b65" in status
         and "Current Safe Capability" in status
-        and "proof of learning remain blocked" in status
-        and "Outcome evaluation is planned next and is not marked complete." in status
-        and "| Level 1 sandbox outcome observation | complete |" in matrix
-        and "| Level 1 sandbox outcome evaluation | planned_next |" in matrix
+        and "No proof-of-learning claim" in status
+        and "Outcome Evaluation Minimal v0" in status
+        and "| Level 1 sandbox outcome observation | implemented_sandbox_only |" in matrix
+        and "| outcome evaluation | not_implemented |" in matrix
         and "| retention write | blocked |" in matrix
         and "| predictor mutation | blocked |" in matrix
         and "| runtime behavior change | blocked |" in matrix
@@ -10601,6 +10606,62 @@ def smoke_phase0_documentation_consolidation_minimal() -> dict:
         "phase0_documentation_consolidation_minimal",
         passed,
         {"status": str(status_path), "matrix": str(matrix_path), "index": str(index_path)},
+    )
+
+
+def smoke_phase0_documentation_inventory_and_consistency_reconciliation() -> dict:
+    required_paths = [
+        Path("docs/phase0_status.md"),
+        Path("docs/phase0_capability_matrix.md"),
+        Path("docs/phase0_doc_inventory.md"),
+        Path("docs/phase0_doc_index.md"),
+        Path("docs/phase0_doc_consistency_audit.md"),
+        Path("docs/phase0_open_risk_ledger.md"),
+        Path("docs/phase0_unresolved_doc_issues.md"),
+    ]
+    texts = {path: path.read_text(encoding="utf-8") if path.exists() else "" for path in required_paths}
+    combined = "\n".join(texts.values()).lower()
+    forbidden = [
+        "outcome evaluation complete",
+        "memory write complete",
+        "retention write complete",
+        "predictor mutation complete",
+        "production lesson application complete",
+        "selected_action enabled",
+        "final_action enabled",
+        "anti-replay implemented",
+        "session-bound approval",
+        "sandbox isolation proven",
+        "proof of learning complete",
+    ]
+    boundary = Path("docs/current_boundary_index.md").read_text(encoding="utf-8")
+    passed = (
+        all(path.exists() for path in required_paths)
+        and "Boundary Index Version: 2026-06-09-b65" in texts[Path("docs/phase0_status.md")]
+        and "Inventory count:" in texts[Path("docs/phase0_doc_inventory.md")]
+        and "unknown_needs_review" in texts[Path("docs/phase0_doc_inventory.md")]
+        and "Conflict Resolution Rule" in texts[Path("docs/phase0_doc_index.md")]
+        and "newer boundary/current-status document controls" in texts[Path("docs/phase0_doc_index.md")]
+        and "This audit does not prove that no documentation inconsistencies remain." in texts[
+            Path("docs/phase0_doc_consistency_audit.md")
+        ]
+        and "Retained JSONL records must not automatically rebuild memory influence" in texts[
+            Path("docs/phase0_open_risk_ledger.md")
+        ]
+        and "influence_strength <= 0.3" in texts[Path("docs/phase0_open_risk_ledger.md")]
+        and "record-level and validation-level only" in texts[Path("docs/phase0_open_risk_ledger.md")]
+        and "Approval replay protection is an open design gap" in texts[Path("docs/phase0_open_risk_ledger.md")]
+        and "not assumed to be exhaustive" in texts[Path("docs/phase0_unresolved_doc_issues.md")]
+        and "No production/runtime memory-influenced behavior is allowed." in boundary
+        and "sandbox-only lesson application and observation records" in boundary
+        and all(term not in combined for term in forbidden)
+        and ("?" + chr(0x822A) + "??") not in "\n".join(texts.values())
+        and (chr(0x876F) + chr(0x8840) + "?") not in "\n".join(texts.values())
+    )
+    return _result(
+        "phase0_documentation_inventory_and_consistency_reconciliation",
+        passed,
+        {"docs": [str(path) for path in required_paths]},
     )
 
 
@@ -15318,6 +15379,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_formal_lesson_candidate_creation_boundary_audit_docs(),
         smoke_current_boundary_index_docs(),
         smoke_phase0_documentation_consolidation_minimal(),
+        smoke_phase0_documentation_inventory_and_consistency_reconciliation(),
         smoke_soft_hard_consolidation_assumption_docs(),
         smoke_memory_compression_strategy_assumption_docs(),
         smoke_pathological_risk_role_protection_assumption_docs(),

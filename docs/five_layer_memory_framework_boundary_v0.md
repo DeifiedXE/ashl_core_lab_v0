@@ -6,6 +6,8 @@ This document turns the five-layer memory design assumption into an explicit imp
 
 This is boundary/design only. It does not implement Archive Memory, Anchor Layer, five-layer memory runtime, autonomous memory routing, anchor lookup, endocrine-driven memory lookup, semantic/fuzzy/vector retrieval, action influence, behavior change, predictor mutation, or proof-of-learning claims.
 
+Version-priority note: Where this boundary differs from older design assumptions, newer Boundary Index, Phase0 status, and capability matrix documents control current capability claims. The older design assumption remains historical design context and does not grant current Long-term Memory capability.
+
 ## Five-Layer Map
 
 Core Memory:

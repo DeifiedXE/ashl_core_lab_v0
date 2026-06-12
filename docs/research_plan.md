@@ -6167,3 +6167,37 @@ Known blocked areas:
 - No proof-of-learning claim.
 
 This consolidation does not complete outcome evaluation.
+
+## Phase0 Documentation Inventory and Consistency Reconciliation Minimal v0
+
+Status: completed / documentation-only / authority reconciliation.
+
+Completed Phase0 capabilities remain summarized in:
+- `docs/phase0_status.md`
+- `docs/phase0_capability_matrix.md`
+- `docs/current_boundary_index.md`
+
+Current open gaps are tracked in:
+- `docs/phase0_open_risk_ledger.md`
+- `docs/phase0_unresolved_doc_issues.md`
+- `docs/phase0_doc_consistency_audit.md`
+- `docs/phase0_doc_inventory.md`
+- `docs/phase0_doc_index.md`
+
+Next proposed work:
+1. Level 1 Sandbox Lesson Application Outcome Evaluation Minimal v0.
+2. Human review summary after outcome evaluation.
+3. Separate boundary package for any runtime behavior, memory write, retained JSONL rebuild, retention write, predictor mutation, selected_action, final_action, direct command, production lesson application, stronger sandbox isolation, or approval anti-replay/session binding.
+
+Forbidden claims:
+- No production lesson application.
+- No runtime behavior change.
+- No memory or retained JSONL write.
+- No retained JSONL cross-session influence rebuild.
+- No retention write.
+- No predictor mutation.
+- No selected_action, final_action, or direct command.
+- No generalized behavior change.
+- No proof-of-learning claim.
+
+This documentation reconciliation does not complete outcome evaluation and does not claim every documentation inconsistency has been found.
