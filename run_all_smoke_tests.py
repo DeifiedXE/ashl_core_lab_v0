@@ -144,6 +144,7 @@ from ashl_core.generic_lesson_dry_run_to_trial_trace_bridge_minimal import (
 from ashl_core.generic_lesson_evidence_pipeline_completion_bridge_minimal import (
     run_generic_lesson_evidence_pipeline_completion_bridge_minimal_check,
 )
+from ashl_core.codex_task_queue_minimal import run_codex_task_queue_minimal_check
 from ashl_core.reviewed_lesson_sandbox_application_readiness_minimal import (
     run_reviewed_lesson_sandbox_application_readiness_minimal_check,
 )
@@ -10466,8 +10467,8 @@ def smoke_current_boundary_index_docs() -> dict:
     readme = readme_path.read_text(encoding="utf-8") if readme_path.exists() else ""
     research_plan = research_plan_path.read_text(encoding="utf-8") if research_plan_path.exists() else ""
     compact_required_terms = [
-        "Boundary Index Version: 2026-06-09-b65",
-        "Last update log: Phase0 Documentation Inventory and Consistency Reconciliation Minimal v0",
+        "Boundary Index Version: 2026-06-09-b66",
+        "Last update log: Codex Task Queue Minimal v0",
         "docs/boundary_index_archive_2026_06.md",
         "Minimal Visual Grounding Trial v0",
         "Visual Prediction Error + Attention Priority Preview Minimal v0",
@@ -10512,8 +10513,9 @@ def smoke_current_boundary_index_docs() -> dict:
         "observe the outcome of one reviewed lesson application inside the Phase0 Level 1 toy sandbox scope only",
         "Phase0 Documentation Consolidation milestone",
         "Documentation consolidation only",
-        "Phase0 Documentation Inventory and Consistency Reconciliation milestone",
+        "Phase0 Documentation Inventory / Codex Task Queue milestone",
         "documentation inventory",
+        "minimal Codex task queue",
         "known open risk/gap ledger",
         "docs/phase0_status.md",
         "docs/phase0_capability_matrix.md",
@@ -10539,7 +10541,7 @@ def smoke_current_boundary_index_docs() -> dict:
         and all(term in doc for term in compact_required_terms)
         and all(term in archive for term in archive_required_terms)
         and line_count <= 130
-        and "Boundary Index Version: 2026-06-09-b65" in readme
+        and "Boundary Index Version: 2026-06-09-b66" in readme
         and "docs/boundary_index_archive_2026_06.md" in readme
         and "Boundary Index Compaction / Archive v0" in research_plan
         and "Runtime Tendency Memory Influence Safety Sync Minimal v0" in research_plan
@@ -10578,7 +10580,7 @@ def smoke_phase0_documentation_consolidation_minimal() -> dict:
         status_path.exists()
         and matrix_path.exists()
         and index_path.exists()
-        and "Boundary Index Version: 2026-06-09-b65" in status
+        and "Boundary Index Version: 2026-06-09-b66" in status
         and "Current Safe Capability" in status
         and "No proof-of-learning claim" in status
         and "Outcome Evaluation Minimal v0" in status
@@ -10637,7 +10639,7 @@ def smoke_phase0_documentation_inventory_and_consistency_reconciliation() -> dic
     boundary = Path("docs/current_boundary_index.md").read_text(encoding="utf-8")
     passed = (
         all(path.exists() for path in required_paths)
-        and "Boundary Index Version: 2026-06-09-b65" in texts[Path("docs/phase0_status.md")]
+        and "Boundary Index Version: 2026-06-09-b66" in texts[Path("docs/phase0_status.md")]
         and "Inventory count:" in texts[Path("docs/phase0_doc_inventory.md")]
         and "unknown_needs_review" in texts[Path("docs/phase0_doc_inventory.md")]
         and "Conflict Resolution Rule" in texts[Path("docs/phase0_doc_index.md")]
@@ -12171,6 +12173,66 @@ def smoke_generic_lesson_evidence_pipeline_completion_bridge_minimal() -> dict:
     )
     return _result(
         "generic_lesson_evidence_pipeline_completion_bridge_minimal",
+        passed,
+        {
+            "summary": summary,
+            "validation_results": result.get("validation_results", []),
+            "boundary_check": boundary,
+        },
+    )
+
+
+def smoke_codex_task_queue_minimal() -> dict:
+    result = run_codex_task_queue_minimal_check()
+    summary = result.get("summary", {})
+    boundary = result.get("boundary_check", {})
+    valid_queue = result.get("task_queues", [{}])[0]
+    task_entries = valid_queue.get("task_entries", [])
+    statuses = {task.get("status") for task in task_entries}
+    task_types = {task.get("task_type") for task in task_entries}
+    passed = (
+        result.get("command") == "run-codex-task-queue-minimal-check"
+        and result.get("flow") == "codex_task_queue_minimal_v0"
+        and result.get("status") == "ok"
+        and valid_queue.get("queue_scope") == "phase0_workflow_coordination_only"
+        and valid_queue.get("record_type") == "codex_task_queue_minimal_v0"
+        and summary.get("valid_task_queue_count") == 1
+        and summary.get("invalid_task_queue_count") == 16
+        and summary.get("valid_task_entry_count") == 5
+        and summary.get("invalid_task_entry_count", 0) >= 9
+        and summary.get("queue_scope_checked_count") == 1
+        and summary.get("approval_block_checked_count") == 1
+        and summary.get("runtime_block_checked_count") == 1
+        and summary.get("memory_block_checked_count") == 1
+        and summary.get("predictor_block_checked_count") == 1
+        and summary.get("proof_of_learning_block_checked_count") == 1
+        and {"pending", "active", "completed", "deferred"}.issubset(statuses)
+        and {"documentation_only", "workflow_only", "capability_boundary", "sandbox_only"}.issubset(task_types)
+        and valid_queue.get("queue_counts_as_approval") is False
+        and valid_queue.get("queue_counts_as_application") is False
+        and valid_queue.get("queue_counts_as_runtime_behavior") is False
+        and valid_queue.get("queue_counts_as_memory_write") is False
+        and valid_queue.get("queue_counts_as_retained_jsonl_write") is False
+        and valid_queue.get("queue_counts_as_predictor_mutation") is False
+        and valid_queue.get("queue_counts_as_selected_action") is False
+        and valid_queue.get("queue_counts_as_final_action") is False
+        and valid_queue.get("queue_counts_as_proof_of_learning") is False
+        and boundary.get("workflow_coordination_only") is True
+        and boundary.get("approval_created") is False
+        and boundary.get("lesson_application_added") is False
+        and boundary.get("sandbox_outcome_evaluation_added") is False
+        and boundary.get("runtime_behavior_change_added") is False
+        and boundary.get("memory_write_added") is False
+        and boundary.get("retained_jsonl_write_added") is False
+        and boundary.get("retention_write_added") is False
+        and boundary.get("predictor_mutation_added") is False
+        and boundary.get("selected_action_created") is False
+        and boundary.get("final_action_created") is False
+        and boundary.get("direct_command_created") is False
+        and boundary.get("proof_of_learning_claimed") is False
+    )
+    return _result(
+        "codex_task_queue_minimal",
         passed,
         {
             "summary": summary,
@@ -15236,6 +15298,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_generic_reviewed_lesson_dry_run_bridge_minimal(),
         smoke_generic_lesson_dry_run_to_trial_trace_bridge_minimal(),
         smoke_generic_lesson_evidence_pipeline_completion_bridge_minimal(),
+        smoke_codex_task_queue_minimal(),
         smoke_reviewed_lesson_sandbox_application_readiness_minimal(),
         smoke_level1_explicit_lesson_application_approval_minimal(),
         smoke_level1_sandbox_lesson_application_minimal(),

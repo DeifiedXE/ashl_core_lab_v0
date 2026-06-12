@@ -2,14 +2,14 @@
 
 ## Current Boundary Index
 
-- Current version: `Boundary Index Version: 2026-06-09-b65`
-- Current update log: Phase0 Documentation Inventory and Consistency Reconciliation Minimal v0
-- This package is documentation-only and supersedes the simpler Phase0 Documentation Consolidation Minimal v0 as the current documentation map.
+- Current version: `Boundary Index Version: 2026-06-09-b66`
+- Current update log: Codex Task Queue Minimal v0
+- The task queue is workflow coordination only and does not add ASHL Core runtime capability.
 
 ## Latest Completed Package
 
 - Latest completed capability package: Level 1 Sandbox Lesson Application Outcome Observation Minimal v0.
-- Latest documentation package: Phase0 Documentation Inventory and Consistency Reconciliation Minimal v0.
+- Latest documentation/workflow package: Codex Task Queue Minimal v0.
 
 ## Current Safe Capability Claim
 
@@ -41,6 +41,7 @@ Runtime behavior, memory write, retention write, predictor mutation, production 
 - Technical sandbox isolation beyond record-level / validation-level checks is not implemented.
 - Retained JSONL deletion/invalidation after rollback is not defined.
 - Mentor override must not be overclaimed beyond existing checkers.
+- The Codex task queue is coordination only; no task entry or completed status counts as explicit human application approval.
 
 ## Current Authoritative Docs
 
@@ -50,6 +51,7 @@ Runtime behavior, memory write, retention write, predictor mutation, production 
 - `docs/phase0_doc_index.md`: document authority and conflict-resolution rules.
 - `docs/phase0_open_risk_ledger.md`: open risk/gap ledger.
 - `docs/phase0_unresolved_doc_issues.md`: unresolved documentation issues.
+- `docs/phase0_task_queue.md`: workflow-only Phase0 task queue pointer.
 
 ## Older Design Assumptions
 

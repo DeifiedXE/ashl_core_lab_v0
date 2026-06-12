@@ -121,6 +121,7 @@ from .generic_lesson_dry_run_to_trial_trace_bridge_minimal import (
 from .generic_lesson_evidence_pipeline_completion_bridge_minimal import (
     run_generic_lesson_evidence_pipeline_completion_bridge_minimal_check,
 )
+from .codex_task_queue_minimal import run_codex_task_queue_minimal_check
 from .reviewed_lesson_sandbox_application_readiness_minimal import (
     run_reviewed_lesson_sandbox_application_readiness_minimal_check,
 )
@@ -3677,6 +3678,8 @@ def run_command(command: str) -> dict[str, Any] | str:
         return run_generic_lesson_dry_run_to_trial_trace_bridge_minimal_check()
     if command == "run-generic-lesson-evidence-pipeline-completion-bridge-minimal-check":
         return run_generic_lesson_evidence_pipeline_completion_bridge_minimal_check()
+    if command == "run-codex-task-queue-minimal-check":
+        return run_codex_task_queue_minimal_check()
     if command == "run-reviewed-lesson-sandbox-application-readiness-minimal-check":
         return run_reviewed_lesson_sandbox_application_readiness_minimal_check()
     if command == "run-level1-explicit-lesson-application-approval-minimal-check":
@@ -3861,6 +3864,7 @@ def main(argv: list[str] | None = None) -> int:
             "run-generic-reviewed-lesson-dry-run-bridge-minimal-check",
             "run-generic-lesson-dry-run-to-trial-trace-bridge-minimal-check",
             "run-generic-lesson-evidence-pipeline-completion-bridge-minimal-check",
+            "run-codex-task-queue-minimal-check",
             "run-reviewed-lesson-sandbox-application-readiness-minimal-check",
             "run-level1-explicit-lesson-application-approval-minimal-check",
             "run-level1-sandbox-lesson-application-minimal-check",
@@ -4186,6 +4190,8 @@ def main(argv: list[str] | None = None) -> int:
         result = run_generic_lesson_dry_run_to_trial_trace_bridge_minimal_check()
     elif args.command == "run-generic-lesson-evidence-pipeline-completion-bridge-minimal-check":
         result = run_generic_lesson_evidence_pipeline_completion_bridge_minimal_check()
+    elif args.command == "run-codex-task-queue-minimal-check":
+        result = run_codex_task_queue_minimal_check()
     elif args.command == "run-reviewed-lesson-sandbox-application-readiness-minimal-check":
         result = run_reviewed_lesson_sandbox_application_readiness_minimal_check()
     elif args.command == "run-level1-explicit-lesson-application-approval-minimal-check":

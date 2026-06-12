@@ -1618,7 +1618,7 @@ Two-Trial History Boundary:
 
 - `docs/current_boundary_index.md`
 - Adds a short, versioned, low-token source of global hard boundaries for future work packages.
-- Current version: `Boundary Index Version: 2026-06-09-b65`.
+- Current version: `Boundary Index Version: 2026-06-09-b66`.
 - For current Phase0 status, see `docs/phase0_status.md`.
 - For capability status, see `docs/phase0_capability_matrix.md`.
 - For boundary version history, see `docs/current_boundary_index.md`.
@@ -1627,6 +1627,7 @@ Two-Trial History Boundary:
 - For consistency audit findings, see `docs/phase0_doc_consistency_audit.md`.
 - For open risks/gaps, see `docs/phase0_open_risk_ledger.md`.
 - For unresolved documentation issues, see `docs/phase0_unresolved_doc_issues.md`.
+- For workflow-only package coordination, see `docs/phase0_task_queue.md`.
 - Current index is compacted and should stay under 130 lines when possible.
 - Older milestone details are preserved in `docs/boundary_index_archive_2026_06.md`.
 - Compaction is docs-only and does not change runtime behavior or claim meaning.
@@ -2687,3 +2688,7 @@ Two-Trial History Boundary:
 ## Phase0 Documentation Inventory and Consistency Reconciliation Minimal v0
 
 - Phase0 Documentation Inventory and Consistency Reconciliation Minimal v0 inventories the markdown documentation surface, defines authority/index rules, records consistency audit findings, and moves unresolved documentation/design risks into explicit ledgers. This is documentation-only and adds no runtime, memory, retention, predictor, sandbox, approval, action-selection, or learning capability.
+
+## Codex Task Queue Minimal v0
+
+- Codex Task Queue Minimal v0 adds a workflow-only Phase0 task queue for Codex work package coordination. See `docs/phase0_task_queue.md`. No task queue entry, completed task, passing test, Codex-generated status, workflow record, or queue ordering counts as explicit human application approval, and the queue does not add runtime, memory, retention, predictor, sandbox, selected_action, final_action, production, or proof-of-learning capability.

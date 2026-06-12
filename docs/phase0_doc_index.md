@@ -63,6 +63,8 @@ Examples:
 
 - `docs/research_plan.md`
 - `docs/experiment_order.md`
+- `docs/phase0_task_queue.md`
+- `docs/codex_task_queue_minimal_v0.md`
 
 Planning docs guide next work. They are not standalone proof that a capability exists.
 

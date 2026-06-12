@@ -1,7 +1,7 @@
-Boundary Index Version: 2026-06-09-b65
-Last update log: Phase0 Documentation Inventory and Consistency Reconciliation Minimal v0
-Previous Boundary Index Version: 2026-06-09-b64
-Previous Last update log: Phase0 Documentation Consolidation Minimal v0
+Boundary Index Version: 2026-06-09-b66
+Last update log: Codex Task Queue Minimal v0
+Previous Boundary Index Version: 2026-06-09-b65
+Previous Last update log: Phase0 Documentation Inventory and Consistency Reconciliation Minimal v0
 Clean count at last update log reset: 0/5; current clean count: 0/5
 
 ## Purpose
@@ -52,7 +52,7 @@ Clean count at last update log reset: 0/5; current clean count: 0/5
 - ASHL Core can show content-sensitive bidirectional runtime tendency memory influence in a controlled obstacle fixture and can pass a controlled one-step symbolic danger check in sandbox.
 - Generic lesson review decisions can bridge into existing reviewed lesson preview, dry-run correction, trial trace preview, before/after contrast, and lesson effect evidence trace without source-specific evidence channels.
 - Generic lesson evidence can approach the reviewed lesson application boundary, but lesson_effect_evidence_trace remains evidence only and is not application approval.
-- Explicit human application approval must come from an explicit user/project-owner statement; Codex/AI may record or validate it but cannot grant it.
+- Explicit human application approval must come from an explicit user/project-owner statement; Codex/AI may record or validate it but cannot grant it. Codex task queue records coordinate work packages only; no task status, completed task, passing test, workflow record, or queue ordering counts as explicit human application approval.
 - Memory is a warning sign, not a ban command; past failure is a warning, not a prohibition. In current Phase0, memory-influenced behavior remains practically blocked until all required gates and checks are satisfied.
 - Retained records can be appended only through mentor-gated exact `留` approval and read back/listed as retained JSONL records.
 
@@ -99,7 +99,7 @@ Clean count at last update log reset: 0/5; current clean count: 0/5
 - Level 1 Sandbox Lesson Application milestone: ASHL Core can apply one reviewed lesson inside the Phase0 Level 1 toy sandbox scope only, with explicit user approval, audit, and rollback. Applied sandbox effect: front_symbol=d; preferred_sandbox_action=check_before_retry; blocks_retry_same_action_until_check=True. Forbidden: no production/runtime behavior change, memory/retention write, predictor mutation, production/runtime action selection, selected_action, final_action, direct command, generalized behavior, or proof-of-learning claim.
 - Level 1 Sandbox Lesson Application Outcome Observation milestone: ASHL Core can observe the outcome of one reviewed lesson application inside the Phase0 Level 1 toy sandbox scope only, while production/runtime behavior, memory, retention, predictor mutation, action selection, and proof of learning remain blocked.
 - Phase0 Documentation Consolidation milestone: Documentation consolidation only; no new ASHL Core runtime, sandbox, memory, retention, predictor, action-selection, production, or proof-of-learning capability added. New entry points: docs/phase0_status.md, docs/phase0_capability_matrix.md, and docs/phase0_doc_index.md.
-- Phase0 Documentation Inventory and Consistency Reconciliation milestone: Phase0 documentation now includes a documentation inventory, current status summary, capability matrix, document authority/index rules, consistency audit, and known open risk/gap ledger without adding runtime, memory, retention, predictor, sandbox, approval, action-selection, or learning capability.
+- Phase0 Documentation Inventory / Codex Task Queue milestone: Phase0 docs include documentation inventory, status, capability matrix, authority/index rules, audit, known open risk/gap ledger, and a minimal Codex task queue for work package coordination. The queue may track pending/active/blocked/completed/superseded/deferred tasks only. Forbidden: no approval, runtime, memory, retention, predictor, sandbox, action-selection, final-action, production, or proof-of-learning capability.
 
 ## Archive
 - Older milestone details are archived in `docs/boundary_index_archive_2026_06.md`.

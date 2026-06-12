@@ -20,5 +20,6 @@
 | technical sandbox isolation | record_level_only | sandbox record validation | Sandbox scope is represented and validated as record-level / validation-level isolation. | OS/process/container isolation proof. | `docs/phase0_open_risk_ledger.md` | `sandbox_id` alone is not technical isolation proof. |
 | selected_action / final_action | blocked | action-selection boundary | No selected_action or final_action is created by the lesson application path. | selected_action creation, final_action creation, direct command. | `docs/current_boundary_index.md` | Future action-selection boundary required. |
 | proof of learning | blocked | claim boundary | No proof-of-learning claim allowed. | Learning proof or lesson-learned claim. | `docs/current_boundary_index.md` | Evidence/observation are not proof. |
+| Codex task queue | workflow_only | work package coordination | Pending, active, blocked, completed, superseded, and deferred work packages can be tracked. | Approval, lesson application, runtime behavior, memory write, retained JSONL write, retention write, predictor mutation, selected_action, final_action, direct command, production promotion, proof claim. | `ashl_core/codex_task_queue_minimal.py`; `docs/phase0_task_queue.md` | Queue status is not approval or capability. |
 
 Boundary hygiene: implicit chat command is not application approval.

@@ -6189,6 +6189,20 @@ Next proposed work:
 2. Human review summary after outcome evaluation.
 3. Separate boundary package for any runtime behavior, memory write, retained JSONL rebuild, retention write, predictor mutation, selected_action, final_action, direct command, production lesson application, stronger sandbox isolation, or approval anti-replay/session binding.
 
+## Codex Task Queue Minimal v0
+
+Status: completed / workflow-only / no-runtime-capability.
+
+Progress:
+- Adds a minimal Codex task queue for Phase0 work package coordination.
+- Tracks pending, active, blocked, completed, superseded, and deferred package records.
+- Keeps task status separate from explicit human application approval.
+- The queue does not approve, apply, observe, evaluate, promote, remember, retain, predict, select, finalize, command, or prove learning.
+
+Next use:
+1. Keep Level 1 Sandbox Lesson Application Outcome Evaluation Minimal v0 as the next pending work item.
+2. Keep Level 2 and Memory Readiness boundary items deferred until separate packages open those boundaries.
+
 Forbidden claims:
 - No production lesson application.
 - No runtime behavior change.
