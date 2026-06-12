@@ -6152,9 +6152,8 @@ Current direction:
 - Use `docs/current_boundary_index.md` as the compact boundary version and boundary change index.
 - Use `docs/phase0_doc_index.md` as the documentation navigation entry point.
 
-Next planned work:
-1. Level 1 Sandbox Lesson Application Outcome Evaluation Minimal v0.
-2. Human review summary after outcome evaluation.
+Historical next work at that point:
+1. Level 1 Sandbox Outcome Evaluation and Human Review Summary Minimal v0, later completed below.
 
 Known blocked areas:
 - No production lesson application.
@@ -6166,7 +6165,7 @@ Known blocked areas:
 - No generalized behavior change.
 - No proof-of-learning claim.
 
-This consolidation does not complete outcome evaluation.
+This consolidation did not complete outcome evaluation; the later Level 1 Sandbox Outcome Evaluation and Human Review Summary Minimal v0 package completed the sandbox-only evaluation layer.
 
 ## Phase0 Documentation Inventory and Consistency Reconciliation Minimal v0
 
@@ -6184,10 +6183,9 @@ Current open gaps are tracked in:
 - `docs/phase0_doc_inventory.md`
 - `docs/phase0_doc_index.md`
 
-Next proposed work:
-1. Level 1 Sandbox Lesson Application Outcome Evaluation Minimal v0.
-2. Human review summary after outcome evaluation.
-3. Separate boundary package for any runtime behavior, memory write, retained JSONL rebuild, retention write, predictor mutation, selected_action, final_action, direct command, production lesson application, stronger sandbox isolation, or approval anti-replay/session binding.
+Historical next proposed work:
+1. Level 1 Sandbox Outcome Evaluation and Human Review Summary Minimal v0, later completed below.
+2. Separate boundary package for any runtime behavior, memory write, retained JSONL rebuild, retention write, predictor mutation, selected_action, final_action, direct command, production lesson application, stronger sandbox isolation, or approval anti-replay/session binding.
 
 ## Codex Task Queue Minimal v0
 
@@ -6200,8 +6198,25 @@ Progress:
 - The queue does not approve, apply, observe, evaluate, promote, remember, retain, predict, select, finalize, command, or prove learning.
 
 Next use:
-1. Keep Level 1 Sandbox Lesson Application Outcome Evaluation Minimal v0 as the next pending work item.
+1. Keep Level 1 Sandbox Outcome Evaluation and Human Review Summary Minimal v0 recorded as completed after this queue.
 2. Keep Level 2 and Memory Readiness boundary items deferred until separate packages open those boundaries.
+
+## Level 1 Sandbox Outcome Evaluation and Human Review Summary Minimal v0
+
+Status: completed / sandbox-only evaluation / human review summary.
+
+Progress:
+- Adds `ashl_core/level1_sandbox_outcome_evaluation_and_human_review_summary_minimal.py`.
+- Evaluates the existing Phase0 Level 1 sandbox outcome observation into `passed_expected_sandbox_outcome`, `failed_expected_sandbox_outcome`, or `inconclusive_missing_or_invalid_observation`.
+- Produces a conservative human-readable review summary.
+- Confirms task queue entries, completed task status, passing tests, and Codex-generated status are not explicit human application approval.
+
+Boundary:
+- No lesson application, runtime behavior change, memory write, retained JSONL write, retention write, predictor mutation, selected_action, final_action, direct command, production promotion, approval replay/session binding, or proof-of-learning claim.
+
+Next recommended work:
+1. Keep Level 2 Sandbox Readiness Minimal v0 deferred until a separate boundary package.
+2. Keep memory readiness deferred until a separate memory boundary package.
 
 Forbidden claims:
 - No production lesson application.
@@ -6214,4 +6229,4 @@ Forbidden claims:
 - No generalized behavior change.
 - No proof-of-learning claim.
 
-This documentation reconciliation does not complete outcome evaluation and does not claim every documentation inconsistency has been found.
+This documentation reconciliation did not complete outcome evaluation at that time and did not claim every documentation inconsistency had been found. Current outcome evaluation status is controlled by the later Level 1 Sandbox Outcome Evaluation and Human Review Summary Minimal v0 section above.

@@ -2,20 +2,20 @@
 
 ## Current Boundary Index
 
-- Current version: `Boundary Index Version: 2026-06-09-b66`
-- Current update log: Codex Task Queue Minimal v0
-- The task queue is workflow coordination only and does not add ASHL Core runtime capability.
+- Current version: `Boundary Index Version: 2026-06-09-b67`
+- Current update log: Level 1 Sandbox Outcome Evaluation and Human Review Summary Minimal v0
+- The task queue is workflow coordination only and does not add ASHL Core runtime capability or approval.
 
 ## Latest Completed Package
 
-- Latest completed capability package: Level 1 Sandbox Lesson Application Outcome Observation Minimal v0.
+- Latest completed capability package: Level 1 Sandbox Outcome Evaluation and Human Review Summary Minimal v0.
 - Latest documentation/workflow package: Codex Task Queue Minimal v0.
 
 ## Current Safe Capability Claim
 
-ASHL Core can validate explicit user approval, apply one reviewed lesson inside the Phase0 Level 1 toy sandbox only, and observe the sandbox application outcome while preserving audit and rollback.
+ASHL Core can validate explicit user approval, apply one reviewed lesson inside the Phase0 Level 1 toy sandbox only, observe the sandbox application outcome, and evaluate that observation into passed/failed/inconclusive status with a human-readable review summary while preserving audit and rollback.
 
-Phase0 Level 1 sandbox records may contain sandbox-only lesson application and sandbox-only observation records. These are not production/runtime memory-influenced behavior.
+Phase0 Level 1 sandbox records may contain sandbox-only lesson application, observation, and evaluation records. These are not production/runtime memory-influenced behavior.
 
 ## Current Forbidden Claims
 
@@ -34,9 +34,8 @@ Runtime behavior, memory write, retention write, predictor mutation, production 
 
 ## Current Known Open Gaps
 
-- Outcome evaluation is planned but not implemented.
-- Outcome evaluation is planned next and is not marked complete.
-- Human review summary is planned but not implemented.
+- Outcome evaluation is implemented only for the Phase0 Level 1 sandbox observation fixture.
+- Human review summary is implemented only as conservative report text.
 - Approval anti-replay/session binding is not implemented.
 - Technical sandbox isolation beyond record-level / validation-level checks is not implemented.
 - Retained JSONL deletion/invalidation after rollback is not defined.
@@ -59,6 +58,6 @@ Older design assumptions remain historical or planning context. When an older de
 
 ## Next Recommended Work
 
-1. Level 1 Sandbox Lesson Application Outcome Evaluation Minimal v0.
-2. Human review summary after outcome evaluation.
+1. Keep Level 2 Sandbox Readiness Minimal v0 deferred until a separate package opens that boundary.
+2. Keep memory readiness deferred until a separate package opens memory / retained JSONL behavior.
 3. Future boundary package for any runtime behavior, memory, retention, predictor, selected_action, final_action, production, or proof claim.

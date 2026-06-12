@@ -1618,7 +1618,7 @@ Two-Trial History Boundary:
 
 - `docs/current_boundary_index.md`
 - Adds a short, versioned, low-token source of global hard boundaries for future work packages.
-- Current version: `Boundary Index Version: 2026-06-09-b66`.
+- Current version: `Boundary Index Version: 2026-06-09-b67`.
 - For current Phase0 status, see `docs/phase0_status.md`.
 - For capability status, see `docs/phase0_capability_matrix.md`.
 - For boundary version history, see `docs/current_boundary_index.md`.
@@ -2684,6 +2684,10 @@ Two-Trial History Boundary:
 ## Level 1 Sandbox Lesson Application Outcome Observation Minimal v0
 
 - Level 1 Sandbox Lesson Application Outcome Observation Minimal v0 observes the outcome of one reviewed lesson application inside the Phase0 Level 1 toy sandbox scope only. It confirms the sandbox effect is visible in the observation record, including `front_symbol=d`, `check_before_retry`, retry-same-action blocking, audit, and rollback. Production/runtime behavior, memory writes, retention writes, predictor mutation, action selection, final_action, direct commands, generalized behavior, and proof-of-learning claims remain blocked.
+
+## Level 1 Sandbox Outcome Evaluation and Human Review Summary Minimal v0
+
+- Level 1 Sandbox Outcome Evaluation and Human Review Summary Minimal v0 evaluates an already-observed Phase0 Level 1 sandbox-only lesson application outcome and produces a conservative human-readable review summary. It can report `passed_expected_sandbox_outcome`, `failed_expected_sandbox_outcome`, or `inconclusive_missing_or_invalid_observation`, while task queue status and passing tests remain non-approval. It does not apply lessons, write memory or retained JSONL, write retention, mutate predictors, change runtime behavior, create selected_action/final_action/direct commands, promote to production, or claim proof of learning.
 
 ## Phase0 Documentation Inventory and Consistency Reconciliation Minimal v0
 

@@ -8,7 +8,7 @@ from typing import Any
 
 COMMAND = "run-codex-task-queue-minimal-check"
 FLOW = "codex_task_queue_minimal_v0"
-BOUNDARY_INDEX_VERSION = "2026-06-09-b66"
+BOUNDARY_INDEX_VERSION = "2026-06-09-b67"
 QUEUE_NAME = "ashl_core_phase0_codex_task_queue"
 BOUNDARY_PRINCIPLE = (
     "No task queue entry, completed task, passing test, Codex-generated status, workflow record, "
@@ -114,18 +114,18 @@ def build_codex_task_queue_minimal() -> dict[str, Any]:
                 "active",
                 "codex_work_package",
                 ["task.documentation_inventory.completed"],
-                ["task.level1_outcome_evaluation.pending"],
+                ["task.level1_outcome_evaluation.completed"],
                 "Workflow coordination only; does not approve or execute future packages.",
             ),
             _task(
-                "task.level1_outcome_evaluation.pending",
+                "task.level1_outcome_evaluation.completed",
                 "Level 1 Sandbox Outcome Evaluation and Human Review Summary Minimal v0",
                 "sandbox_only",
-                "pending",
-                "phase0_next_work",
+                "completed",
+                "codex_completed_report",
                 ["task.codex_task_queue.active"],
                 [],
-                "Pending future package; no evaluation exists in this queue.",
+                "Completed sandbox-only outcome evaluation and human review summary; task status is not approval.",
             ),
             _task(
                 "task.level2_sandbox_readiness.deferred",
@@ -133,10 +133,10 @@ def build_codex_task_queue_minimal() -> dict[str, Any]:
                 "capability_boundary",
                 "deferred",
                 "phase0_future_work",
-                ["task.level1_outcome_evaluation.pending"],
+                ["task.level1_outcome_evaluation.completed"],
                 [],
                 "Deferred future boundary; not implemented and not approved.",
-                deferral_reason="Level 1 outcome evaluation and human review summary are not complete.",
+                deferral_reason="Level 2 readiness requires a separate future boundary package.",
             ),
             _task(
                 "task.memory_readiness_boundary.deferred",
@@ -144,7 +144,7 @@ def build_codex_task_queue_minimal() -> dict[str, Any]:
                 "capability_boundary",
                 "deferred",
                 "phase0_future_work",
-                ["task.level1_outcome_evaluation.pending"],
+                ["task.level1_outcome_evaluation.completed"],
                 [],
                 "Deferred future memory boundary; no memory write or retained JSONL behavior is approved.",
                 deferral_reason="Memory readiness remains blocked until a future explicit boundary package.",

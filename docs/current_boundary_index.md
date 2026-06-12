@@ -1,7 +1,7 @@
-Boundary Index Version: 2026-06-09-b66
-Last update log: Codex Task Queue Minimal v0
-Previous Boundary Index Version: 2026-06-09-b65
-Previous Last update log: Phase0 Documentation Inventory and Consistency Reconciliation Minimal v0
+Boundary Index Version: 2026-06-09-b67
+Last update log: Level 1 Sandbox Outcome Evaluation and Human Review Summary Minimal v0
+Previous Boundary Index Version: 2026-06-09-b66
+Previous Last update log: Codex Task Queue Minimal v0
 Clean count at last update log reset: 0/5; current clean count: 0/5
 
 ## Purpose
@@ -64,7 +64,7 @@ Clean count at last update log reset: 0/5; current clean count: 0/5
 - No lesson application.
 - No runtime action selection influence.
 - No production action selection.
-- No production/runtime memory-influenced behavior is allowed. Phase0 Level 1 sandbox-only lesson application and observation records are allowed only within their validated sandbox scope and do not constitute production/runtime memory-influenced behavior.
+- No production/runtime memory-influenced behavior is allowed. Phase0 Level 1 sandbox-only lesson application, observation, and evaluation records are allowed only within their validated sandbox scope and do not constitute production/runtime memory-influenced behavior.
 - No final_action creation or direct action command.
 - No production action execution, real navigation, UI behavior change, or generalized behavior claim.
 - No action behavior change.
@@ -97,9 +97,9 @@ Clean count at last update log reset: 0/5; current clean count: 0/5
 - Reviewed Lesson Application Boundary reconciliation: Generic lesson evidence pipeline now reaches existing reviewed lesson preview, dry-run correction, trial trace, before/after contrast, and lesson effect evidence trace. Boundary clarified: reviewed_lesson_preview is preview only; dry_run_correction is dry-run only; before_after_trial_contrast is contrast only; lesson_effect_evidence_trace is evidence only; none are application approval. Future application requires explicit human application approval, scoped application target, rollback path, audit trace, mentor override, and separate checks for memory write, retention write, predictor mutation, and runtime behavior change. Forbidden: no lesson application, memory/retention write, predictor mutation, runtime behavior change, production/runtime action selection, selected_action, final_action, direct command, or proof-of-learning claim.
 - Explicit User Approval Source Boundary correction: Level 1 application approval boundary corrected. Safe rule: explicit_human_application_approval must come from an explicit user/project-owner statement. Codex/AI may record or validate approval but cannot grant it. Demo fixtures, implicit chat commands, readiness completion, and passing tests are not application approval. Future Level 1 sandbox lesson application may proceed only if approval_source=explicit_user_statement, approval_actor=user, approver_role=project_owner, approval_text is non-empty, and self/implicit/demo approval are blocked. Forbidden: no lesson application, memory/retention write, predictor mutation, runtime behavior change, production/runtime action selection, selected_action, final_action, direct command, or proof-of-learning claim.
 - Level 1 Sandbox Lesson Application milestone: ASHL Core can apply one reviewed lesson inside the Phase0 Level 1 toy sandbox scope only, with explicit user approval, audit, and rollback. Applied sandbox effect: front_symbol=d; preferred_sandbox_action=check_before_retry; blocks_retry_same_action_until_check=True. Forbidden: no production/runtime behavior change, memory/retention write, predictor mutation, production/runtime action selection, selected_action, final_action, direct command, generalized behavior, or proof-of-learning claim.
-- Level 1 Sandbox Lesson Application Outcome Observation milestone: ASHL Core can observe the outcome of one reviewed lesson application inside the Phase0 Level 1 toy sandbox scope only, while production/runtime behavior, memory, retention, predictor mutation, action selection, and proof of learning remain blocked.
+- Level 1 Sandbox Lesson Application Outcome Observation/Evaluation milestone: ASHL Core can observe and evaluate the outcome of one reviewed lesson application inside the Phase0 Level 1 toy sandbox scope only. Evaluation statuses are passed_expected_sandbox_outcome, failed_expected_sandbox_outcome, and inconclusive_missing_or_invalid_observation; the valid fixture passes and produces conservative human review summary text. Forbidden: no runtime behavior change, memory/retention/retained JSONL write, predictor mutation, selected_action, final_action, direct command, production promotion, approval from queue/tests/Codex status, or proof-of-learning claim.
 - Phase0 Documentation Consolidation milestone: Documentation consolidation only; no new ASHL Core runtime, sandbox, memory, retention, predictor, action-selection, production, or proof-of-learning capability added. New entry points: docs/phase0_status.md, docs/phase0_capability_matrix.md, and docs/phase0_doc_index.md.
-- Phase0 Documentation Inventory / Codex Task Queue milestone: Phase0 docs include documentation inventory, status, capability matrix, authority/index rules, audit, known open risk/gap ledger, and a minimal Codex task queue for work package coordination. The queue may track pending/active/blocked/completed/superseded/deferred tasks only. Forbidden: no approval, runtime, memory, retention, predictor, sandbox, action-selection, final-action, production, or proof-of-learning capability.
+- Phase0 Documentation Inventory / Codex Task Queue milestone: Phase0 docs include documentation inventory, status, capability matrix, authority/index rules, audit, known open risk/gap ledger, and a minimal Codex task queue for work package coordination. The queue may track pending/active/blocked/completed/superseded/deferred tasks only and now records the Level 1 sandbox outcome evaluation package as completed. Forbidden: no approval, runtime, memory, retention, predictor, sandbox execution, action-selection, final-action, production, or proof-of-learning capability from queue state.
 
 ## Archive
 - Older milestone details are archived in `docs/boundary_index_archive_2026_06.md`.

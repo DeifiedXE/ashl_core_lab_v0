@@ -164,7 +164,7 @@ class CodexTaskQueueMinimalTests(unittest.TestCase):
             "title": "Test task",
             "task_type": task_type,
             "status": status,
-            "boundary_index_version": "2026-06-09-b66",
+            "boundary_index_version": "2026-06-09-b67",
             "source": "unit_test",
             "creates_capability": False,
             "counts_as_approval": False,

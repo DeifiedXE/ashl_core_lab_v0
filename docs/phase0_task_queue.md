@@ -9,7 +9,7 @@ Current queue source:
 
 - Completed: Phase0 Documentation Inventory and Consistency Reconciliation Minimal v0.
 - Active: Codex Task Queue Minimal v0.
-- Pending: Level 1 Sandbox Outcome Evaluation and Human Review Summary Minimal v0.
+- Completed: Level 1 Sandbox Outcome Evaluation and Human Review Summary Minimal v0.
 - Deferred: Level 2 Sandbox Readiness Minimal v0.
 - Deferred: Memory Readiness Boundary Minimal v0.
 

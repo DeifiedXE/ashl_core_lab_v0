@@ -157,6 +157,9 @@ from ashl_core.level1_sandbox_lesson_application_minimal import (
 from ashl_core.level1_sandbox_lesson_application_outcome_observation_minimal import (
     run_level1_sandbox_lesson_application_outcome_observation_minimal_check,
 )
+from ashl_core.level1_sandbox_outcome_evaluation_and_human_review_summary_minimal import (
+    run_level1_sandbox_outcome_evaluation_and_human_review_summary_minimal_check,
+)
 from ashl_core.minimal_visual_grounding_trial import run_minimal_visual_grounding_trial_check
 from ashl_core.visual_prediction_error_attention_priority_preview_minimal import (
     run_visual_prediction_error_attention_priority_preview_minimal_check,
@@ -10467,8 +10470,8 @@ def smoke_current_boundary_index_docs() -> dict:
     readme = readme_path.read_text(encoding="utf-8") if readme_path.exists() else ""
     research_plan = research_plan_path.read_text(encoding="utf-8") if research_plan_path.exists() else ""
     compact_required_terms = [
-        "Boundary Index Version: 2026-06-09-b66",
-        "Last update log: Codex Task Queue Minimal v0",
+        "Boundary Index Version: 2026-06-09-b67",
+        "Last update log: Level 1 Sandbox Outcome Evaluation and Human Review Summary Minimal v0",
         "docs/boundary_index_archive_2026_06.md",
         "Minimal Visual Grounding Trial v0",
         "Visual Prediction Error + Attention Priority Preview Minimal v0",
@@ -10509,8 +10512,10 @@ def smoke_current_boundary_index_docs() -> dict:
         "front_symbol=d",
         "preferred_sandbox_action=check_before_retry",
         "blocks_retry_same_action_until_check=True",
-        "Level 1 Sandbox Lesson Application Outcome Observation milestone",
-        "observe the outcome of one reviewed lesson application inside the Phase0 Level 1 toy sandbox scope only",
+        "Level 1 Sandbox Lesson Application Outcome Observation/Evaluation milestone",
+        "observe and evaluate the outcome of one reviewed lesson application inside the Phase0 Level 1 toy sandbox scope only",
+        "passed_expected_sandbox_outcome",
+        "human review summary text",
         "Phase0 Documentation Consolidation milestone",
         "Documentation consolidation only",
         "Phase0 Documentation Inventory / Codex Task Queue milestone",
@@ -10541,7 +10546,7 @@ def smoke_current_boundary_index_docs() -> dict:
         and all(term in doc for term in compact_required_terms)
         and all(term in archive for term in archive_required_terms)
         and line_count <= 130
-        and "Boundary Index Version: 2026-06-09-b66" in readme
+        and "Boundary Index Version: 2026-06-09-b67" in readme
         and "docs/boundary_index_archive_2026_06.md" in readme
         and "Boundary Index Compaction / Archive v0" in research_plan
         and "Runtime Tendency Memory Influence Safety Sync Minimal v0" in research_plan
@@ -10574,18 +10579,18 @@ def smoke_phase0_documentation_consolidation_minimal() -> dict:
         "production lesson application complete",
         "selected_action enabled",
         "final_action enabled",
-        "outcome evaluation complete",
     ]
     passed = (
         status_path.exists()
         and matrix_path.exists()
         and index_path.exists()
-        and "Boundary Index Version: 2026-06-09-b66" in status
+        and "Boundary Index Version: 2026-06-09-b67" in status
         and "Current Safe Capability" in status
         and "No proof-of-learning claim" in status
-        and "Outcome Evaluation Minimal v0" in status
+        and "Level 1 Sandbox Outcome Evaluation and Human Review Summary Minimal v0" in status
         and "| Level 1 sandbox outcome observation | implemented_sandbox_only |" in matrix
-        and "| outcome evaluation | not_implemented |" in matrix
+        and "| outcome evaluation | implemented_sandbox_only |" in matrix
+        and "| human review summary | implemented_report_only |" in matrix
         and "| retention write | blocked |" in matrix
         and "| predictor mutation | blocked |" in matrix
         and "| runtime behavior change | blocked |" in matrix
@@ -10624,7 +10629,6 @@ def smoke_phase0_documentation_inventory_and_consistency_reconciliation() -> dic
     texts = {path: path.read_text(encoding="utf-8") if path.exists() else "" for path in required_paths}
     combined = "\n".join(texts.values()).lower()
     forbidden = [
-        "outcome evaluation complete",
         "memory write complete",
         "retention write complete",
         "predictor mutation complete",
@@ -10639,7 +10643,7 @@ def smoke_phase0_documentation_inventory_and_consistency_reconciliation() -> dic
     boundary = Path("docs/current_boundary_index.md").read_text(encoding="utf-8")
     passed = (
         all(path.exists() for path in required_paths)
-        and "Boundary Index Version: 2026-06-09-b66" in texts[Path("docs/phase0_status.md")]
+        and "Boundary Index Version: 2026-06-09-b67" in texts[Path("docs/phase0_status.md")]
         and "Inventory count:" in texts[Path("docs/phase0_doc_inventory.md")]
         and "unknown_needs_review" in texts[Path("docs/phase0_doc_inventory.md")]
         and "Conflict Resolution Rule" in texts[Path("docs/phase0_doc_index.md")]
@@ -10655,7 +10659,7 @@ def smoke_phase0_documentation_inventory_and_consistency_reconciliation() -> dic
         and "Approval replay protection is an open design gap" in texts[Path("docs/phase0_open_risk_ledger.md")]
         and "not assumed to be exhaustive" in texts[Path("docs/phase0_unresolved_doc_issues.md")]
         and "No production/runtime memory-influenced behavior is allowed." in boundary
-        and "sandbox-only lesson application and observation records" in boundary
+        and "sandbox-only lesson application, observation, and evaluation records" in boundary
         and all(term not in combined for term in forbidden)
         and ("?" + chr(0x822A) + "??") not in "\n".join(texts.values())
         and (chr(0x876F) + chr(0x8840) + "?") not in "\n".join(texts.values())
@@ -12206,7 +12210,7 @@ def smoke_codex_task_queue_minimal() -> dict:
         and summary.get("memory_block_checked_count") == 1
         and summary.get("predictor_block_checked_count") == 1
         and summary.get("proof_of_learning_block_checked_count") == 1
-        and {"pending", "active", "completed", "deferred"}.issubset(statuses)
+        and {"active", "completed", "deferred"}.issubset(statuses)
         and {"documentation_only", "workflow_only", "capability_boundary", "sandbox_only"}.issubset(task_types)
         and valid_queue.get("queue_counts_as_approval") is False
         and valid_queue.get("queue_counts_as_application") is False
@@ -12594,6 +12598,105 @@ def smoke_level1_sandbox_lesson_application_outcome_observation_minimal() -> dic
     )
     return _result(
         "level1_sandbox_lesson_application_outcome_observation_minimal",
+        passed,
+        {
+            "summary": summary,
+            "validation_results": result.get("validation_results", []),
+            "boundary_check": boundary,
+        },
+    )
+
+
+def smoke_level1_sandbox_outcome_evaluation_and_human_review_summary_minimal() -> dict:
+    result = run_level1_sandbox_outcome_evaluation_and_human_review_summary_minimal_check()
+    summary = result.get("summary", {})
+    boundary = result.get("boundary_check", {})
+    records = [
+        record
+        for record, validation in zip(
+            result.get("evaluation_records", []),
+            result.get("validation_results", []),
+        )
+        if validation.get("valid") is True
+    ]
+    passed_record = next(
+        (record for record in records if record.get("evaluation_status") == "passed_expected_sandbox_outcome"),
+        {},
+    )
+    human_summary = passed_record.get("human_review_summary", {})
+    forbidden_effects = passed_record.get("forbidden_effects", {})
+    task_queue_note = passed_record.get("task_queue_note", {})
+    forbidden_summary_terms = (
+        "ASHL Core learned the lesson.",
+        "The model learned.",
+        "Runtime behavior changed.",
+        "Memory was updated.",
+        "The predictor was improved.",
+        "The lesson is ready for production.",
+        "The system can now choose actions from this lesson.",
+    )
+    passed = (
+        result.get("command") == "run-level1-sandbox-outcome-evaluation-and-human-review-summary-minimal-check"
+        and result.get("flow") == "level1_sandbox_outcome_evaluation_and_human_review_summary_minimal_v0"
+        and result.get("status") == "ok"
+        and summary.get("valid_evaluation_count") == 4
+        and summary.get("invalid_evaluation_count") >= 1
+        and summary.get("passed_expected_sandbox_outcome_count") == 1
+        and summary.get("failed_expected_sandbox_outcome_count") == 2
+        and summary.get("inconclusive_missing_or_invalid_observation_count") == 1
+        and summary.get("human_review_summary_count") == 4
+        and summary.get("forbidden_effects_blocked_count") == 4
+        and summary.get("task_queue_not_approval_count") == 4
+        and passed_record.get("record_type") == "level1_sandbox_outcome_evaluation_and_human_review_summary"
+        and passed_record.get("target_scope") == "phase0_level1_sandbox_only"
+        and passed_record.get("source_observation_record_type")
+        == "level1_sandbox_lesson_application_outcome_observation"
+        and passed_record.get("observation_valid") is True
+        and passed_record.get("expected_front_symbol") == "d"
+        and passed_record.get("observed_front_symbol") == "d"
+        and passed_record.get("expected_sandbox_action") == "check_before_retry"
+        and passed_record.get("observed_sandbox_action") == "check_before_retry"
+        and passed_record.get("expected_blocks_retry_same_action_until_check") is True
+        and passed_record.get("observed_blocks_retry_same_action_until_check") is True
+        and passed_record.get("audit_record_present") is True
+        and passed_record.get("rollback_record_present") is True
+        and human_summary.get("summary_type") == "phase0_level1_sandbox_outcome_review"
+        and human_summary.get("plain_language_result")
+        == "The Phase0 Level 1 sandbox-only outcome matched the expected sandbox behavior."
+        and human_summary.get("safe_claim")
+        == (
+            "ASHL Core can evaluate a Phase0 Level 1 sandbox-only lesson application outcome "
+            "and summarize the result for human review."
+        )
+        and human_summary.get("not_proof_of_learning") is True
+        and human_summary.get("not_runtime_behavior_change") is True
+        and human_summary.get("not_memory_write") is True
+        and human_summary.get("not_predictor_mutation") is True
+        and human_summary.get("not_production_promotion") is True
+        and all(value is False for value in forbidden_effects.values())
+        and task_queue_note.get("task_queue_entry_is_approval") is False
+        and task_queue_note.get("completed_task_is_approval") is False
+        and task_queue_note.get("passing_tests_are_approval") is False
+        and task_queue_note.get("codex_generated_status_is_approval") is False
+        and all(term not in repr(human_summary) for term in forbidden_summary_terms)
+        and boundary.get("evaluation_only") is True
+        and boundary.get("human_review_summary_only") is True
+        and boundary.get("task_queue_counts_as_approval") is False
+        and boundary.get("passing_tests_count_as_approval") is False
+        and boundary.get("codex_generated_status_counts_as_approval") is False
+        and boundary.get("lesson_applied") is False
+        and boundary.get("runtime_behavior_changed") is False
+        and boundary.get("memory_write") is False
+        and boundary.get("retention_write") is False
+        and boundary.get("retained_jsonl_write") is False
+        and boundary.get("predictor_mutation") is False
+        and boundary.get("selected_action_created") is False
+        and boundary.get("final_action_created") is False
+        and boundary.get("direct_command_created") is False
+        and boundary.get("proof_of_learning_claimed") is False
+    )
+    return _result(
+        "level1_sandbox_outcome_evaluation_and_human_review_summary_minimal",
         passed,
         {
             "summary": summary,
@@ -15303,6 +15406,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_level1_explicit_lesson_application_approval_minimal(),
         smoke_level1_sandbox_lesson_application_minimal(),
         smoke_level1_sandbox_lesson_application_outcome_observation_minimal(),
+        smoke_level1_sandbox_outcome_evaluation_and_human_review_summary_minimal(),
         smoke_phase0_current_capability_snapshot(),
         smoke_memory_influence_behavior_gate_design(),
         smoke_first_memory_influenced_behavior_boundary(),
