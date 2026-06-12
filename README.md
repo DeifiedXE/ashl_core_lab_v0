@@ -2639,3 +2639,7 @@ Two-Trial History Boundary:
 ## Generic Reviewed Lesson Dry-Run Bridge Minimal v0
 
 - Generic Reviewed Lesson Dry-Run Bridge Minimal v0 connects the generic lesson review decision preview bridge to the existing reviewed_lesson_dry_run_correction_minimal path. It reuses the existing dry-run module and creates dry-run correction only for accepted reviewed lesson previews. Rejected and needs_more_evidence decisions cannot enter dry-run. This package does not create source-specific dry-run channels or a new dry-run implementation. Lesson application, memory writes, retention writes, predictor mutation, runtime behavior change, trial trace mutation, action selection, final_action, direct commands, and proof-of-learning claims remain blocked.
+
+## Generic Lesson Dry-Run To Trial Trace Bridge Minimal v0
+
+- Generic Lesson Dry-Run To Trial Trace Bridge Minimal v0 connects the generic reviewed lesson dry-run bridge to the existing dry_run_correction_into_trial_trace path. It reuses the existing trial trace bridge and creates a dry-run trial trace preview only for accepted dry-run corrections. Rejected and needs_more_evidence decisions cannot enter trial trace. This package does not create source-specific trial trace channels or a new trial trace implementation. Lesson application, memory writes, retention writes, predictor mutation, runtime behavior change, final trial trace mutation, action selection, final_action, direct commands, and proof-of-learning claims remain blocked.

@@ -115,6 +115,9 @@ from .generic_lesson_review_decision_preview_bridge_minimal import (
 from .generic_reviewed_lesson_dry_run_bridge_minimal import (
     run_generic_reviewed_lesson_dry_run_bridge_minimal_check,
 )
+from .generic_lesson_dry_run_to_trial_trace_bridge_minimal import (
+    run_generic_lesson_dry_run_to_trial_trace_bridge_minimal_check,
+)
 from .reviewed_lesson_dry_run_correction_minimal import (
     run_reviewed_lesson_dry_run_correction_minimal_check,
 )
@@ -3655,6 +3658,8 @@ def run_command(command: str) -> dict[str, Any] | str:
         return run_generic_lesson_review_decision_preview_bridge_minimal_check()
     if command == "run-generic-reviewed-lesson-dry-run-bridge-minimal-check":
         return run_generic_reviewed_lesson_dry_run_bridge_minimal_check()
+    if command == "run-generic-lesson-dry-run-to-trial-trace-bridge-minimal-check":
+        return run_generic_lesson_dry_run_to_trial_trace_bridge_minimal_check()
     if command == "run-simple-retina-focus-preview-minimal-check":
         return run_simple_retina_focus_preview_minimal_check()
     if command == "run-generalized-prediction-confidence-check":
@@ -3829,6 +3834,7 @@ def main(argv: list[str] | None = None) -> int:
             "run-generic-lesson-review-decision-minimal-check",
             "run-generic-lesson-review-decision-preview-bridge-minimal-check",
             "run-generic-reviewed-lesson-dry-run-bridge-minimal-check",
+            "run-generic-lesson-dry-run-to-trial-trace-bridge-minimal-check",
             "run-simple-retina-focus-preview-minimal-check",
             "run-generalized-prediction-confidence-check",
             "run-generalized-candidate-from-pattern-check",
@@ -4146,6 +4152,8 @@ def main(argv: list[str] | None = None) -> int:
         result = run_generic_lesson_review_decision_preview_bridge_minimal_check()
     elif args.command == "run-generic-reviewed-lesson-dry-run-bridge-minimal-check":
         result = run_generic_reviewed_lesson_dry_run_bridge_minimal_check()
+    elif args.command == "run-generic-lesson-dry-run-to-trial-trace-bridge-minimal-check":
+        result = run_generic_lesson_dry_run_to_trial_trace_bridge_minimal_check()
     elif args.command == "run-simple-retina-focus-preview-minimal-check":
         result = run_simple_retina_focus_preview_minimal_check()
     elif args.command == "run-generalized-prediction-confidence-check":

@@ -5985,3 +5985,20 @@ Forward plan:
 1. Generic Lesson Dry-Run To Trial Trace Bridge Minimal v0.
 2. Reuse existing dry_run_correction_into_trial_trace if possible.
 3. Keep blocking lesson application, memory write, retention write, predictor mutation, runtime behavior change, final_action, and production action selection.
+
+## Generic Lesson Dry-Run To Trial Trace Bridge Minimal v0
+
+Status: completed / schema-bridge / trial-trace-preview-only.
+
+Progress:
+- Bridges accepted generic reviewed lesson dry-run corrections into the existing dry_run_correction_into_trial_trace path.
+- Creates dry-run trial trace preview only for accepted dry-run correction.
+- Blocks rejected and needs_more_evidence decisions from trial trace preview.
+- Reuses the existing trial trace module instead of creating a source-specific trial trace channel or new trial trace implementation.
+- Keeps Level 0 flip evidence as supporting anti-bias evidence and Level 1 contrast evidence as the candidate source.
+- Lesson application, memory writes, retention writes, predictor mutation, runtime behavior change, final trial trace mutation, action selection, final_action, direct commands, and proof-of-learning claims remain blocked.
+
+Forward plan:
+1. Generic Lesson Trial Trace To Before/After Contrast Bridge Minimal v0.
+2. Reuse existing before_after_trial_contrast if possible.
+3. Keep blocking lesson application, memory write, retention write, predictor mutation, runtime behavior change, final_action, and production action selection.
