@@ -5868,3 +5868,20 @@ Forward plan:
 2. Reviewed Sandbox Lesson Dry-Run Minimal v0.
 3. Sandbox Lesson Application Boundary Minimal v0.
 4. Do not create standalone check packages unless lesson application, memory write, retention write, predictor mutation, runtime behavior change, final_action, or production action selection changes.
+
+## Phase0 Level 1 First Contact Danger Minimal v0
+
+Status: completed / one-step-symbolic-sandbox-level / no-pathfinding.
+
+Progress:
+- Formalizes 小關 1：第一次接觸，認識危險 as a 5x5 symbolic fixture where only the front symbol `d` is tested.
+- Detects `front_symbol == "d"` as controlled symbolic danger fixture evidence.
+- Reuses the existing one-step sandbox action/outcome path to execute `check_before_retry` once.
+- Records danger detection, expected/actual outcome success, and a human-review-required lesson-review candidate status.
+- Pathfinding, goal reaching, object recognition, semantic vision, lesson application, memory writes, retention writes, predictor mutation, runtime behavior change, and proof-of-learning claims remain blocked.
+
+Next options:
+1. Level 1 Contrast Sample Set Minimal v0.
+2. Sandbox Outcome Human Review Decision Minimal v0.
+3. Level 2 Design Boundary Minimal v0.
+4. Recommended next: add a tiny Level 1 contrast set before claiming any lesson.

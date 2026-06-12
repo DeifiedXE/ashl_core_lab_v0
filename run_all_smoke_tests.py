@@ -122,6 +122,9 @@ from ashl_core.sandbox_execution_outcome_integration_minimal import (
 from ashl_core.sandbox_outcome_lesson_review_candidate_minimal import (
     run_sandbox_outcome_lesson_review_candidate_minimal_check,
 )
+from ashl_core.phase0_level1_first_contact_danger_minimal import (
+    run_phase0_level1_first_contact_danger_minimal_check,
+)
 from ashl_core.minimal_visual_grounding_trial import run_minimal_visual_grounding_trial_check
 from ashl_core.visual_prediction_error_attention_priority_preview_minimal import (
     run_visual_prediction_error_attention_priority_preview_minimal_check,
@@ -11261,6 +11264,83 @@ def smoke_sandbox_outcome_lesson_review_candidate_minimal() -> dict:
     )
 
 
+def smoke_phase0_level1_first_contact_danger_minimal() -> dict:
+    result = run_phase0_level1_first_contact_danger_minimal_check()
+    summary = result.get("summary", {})
+    boundary = result.get("boundary_check", {})
+    level_results = result.get("level_results", [])
+    level = level_results[0] if level_results else {}
+    info = level.get("level_info", {})
+    fixture = level.get("map_fixture", {})
+    detection = level.get("symbol_detection", {})
+    action_path = level.get("action_path", {})
+    outcome = level.get("sandbox_outcome", {})
+    lesson_status = level.get("lesson_review_status", {})
+    blocked = level.get("blocked_flags", {})
+    passed = (
+        result.get("command") == "run-phase0-level1-first-contact-danger-minimal-check"
+        and result.get("flow") == "phase0_level1_first_contact_danger_minimal_v0"
+        and result.get("status") == "ok"
+        and summary.get("level1_result_count") == 63
+        and summary.get("valid_level1_result_count") == 1
+        and summary.get("invalid_level1_result_count") == 62
+        and summary.get("danger_symbol_detected_count") == 1
+        and summary.get("sandbox_action_executed_count") == 1
+        and summary.get("check_before_retry_executed_count") == 1
+        and summary.get("danger_detected_count") == 1
+        and summary.get("movement_blocked_count") == 1
+        and summary.get("outcome_match_count") == 1
+        and summary.get("sandbox_check_success_count") == 1
+        and summary.get("lesson_review_candidate_ready_count") == 1
+        and summary.get("requires_human_review_count") == 1
+        and info.get("level_id") == "phase0_level1_first_contact_danger"
+        and info.get("level_mode") == "one_step_symbolic_sandbox_level"
+        and info.get("pathfinding_required") is False
+        and info.get("goal_reach_required") is False
+        and fixture.get("map_size") == [5, 5]
+        and fixture.get("front_symbol") == "d"
+        and fixture.get("goal_used_in_v0") is False
+        and detection.get("danger_ahead") is True
+        and detection.get("symbol_fixture_only") is True
+        and detection.get("object_recognition") is False
+        and detection.get("semantic_vision") is False
+        and action_path.get("candidate_action") == "check_before_retry"
+        and action_path.get("sandbox_action_executed") is True
+        and action_path.get("executed_sandbox_action") == "check_before_retry"
+        and outcome.get("checked_before_retry") is True
+        and outcome.get("danger_detected") is True
+        and outcome.get("retry_same_action_executed") is False
+        and outcome.get("movement_executed") is False
+        and outcome.get("outcome_match") is True
+        and outcome.get("sandbox_check_success") is True
+        and lesson_status.get("lesson_review_candidate_ready") is True
+        and lesson_status.get("requires_human_review") is True
+        and lesson_status.get("lesson_applied") is False
+        and lesson_status.get("memory_write") is False
+        and lesson_status.get("retention_write") is False
+        and lesson_status.get("predictor_modified") is False
+        and all(value is False for value in blocked.values())
+        and boundary.get("pathfinding_added") is False
+        and boundary.get("goal_reach_claim_added") is False
+        and boundary.get("object_recognition_added") is False
+        and boundary.get("semantic_vision_added") is False
+        and boundary.get("lesson_application_added") is False
+        and boundary.get("memory_write_added") is False
+        and boundary.get("retention_write_added") is False
+        and boundary.get("predictor_mutation_added") is False
+        and boundary.get("proof_of_learning_claimed") is False
+    )
+    return _result(
+        "phase0_level1_first_contact_danger_minimal",
+        passed,
+        {
+            "summary": summary,
+            "validation_results": result.get("validation_results", []),
+            "boundary_check": boundary,
+        },
+    )
+
+
 def smoke_phase0_current_capability_snapshot() -> dict:
     doc_path = Path("docs/phase0_current_capability_snapshot_2026-06-10.md")
     doc = doc_path.read_text(encoding="utf-8") if doc_path.exists() else ""
@@ -13948,6 +14028,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_one_step_sandbox_action_execution_minimal(),
         smoke_sandbox_execution_outcome_integration_minimal(),
         smoke_sandbox_outcome_lesson_review_candidate_minimal(),
+        smoke_phase0_level1_first_contact_danger_minimal(),
         smoke_phase0_current_capability_snapshot(),
         smoke_memory_influence_behavior_gate_design(),
         smoke_first_memory_influenced_behavior_boundary(),

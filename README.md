@@ -2611,3 +2611,7 @@ Two-Trial History Boundary:
 ## Sandbox Outcome Lesson Review Candidate Minimal v0
 
 - Sandbox Outcome Lesson Review Candidate Minimal v0 converts the sandbox execution outcome trace into a human-review-required lesson-review candidate. It does not apply a lesson, write memory, write retention, mutate predictors, change runtime behavior, select actions, create final_action, create direct commands, or prove learning.
+
+## Phase0 Level 1 First Contact Danger Minimal v0
+
+- Phase0 Level 1 First Contact Danger Minimal v0 formalizes the first controlled level: a 5x5 symbolic fixture where only the front danger symbol `d` is tested. The system detects danger in a symbolic fixture, executes one sandbox-only check_before_retry action, records expected/actual outcome success, and prepares a human-review-required lesson-review candidate. This is not pathfinding, not goal reaching, not object recognition, not semantic vision, not lesson application, not memory write, not predictor mutation, and not proof of learning.
