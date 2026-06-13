@@ -8,7 +8,7 @@ from typing import Any
 
 COMMAND = "run-codex-task-queue-minimal-check"
 FLOW = "codex_task_queue_minimal_v0"
-BOUNDARY_INDEX_VERSION = "2026-06-09-b70"
+BOUNDARY_INDEX_VERSION = "2026-06-09-b71"
 QUEUE_NAME = "ashl_core_phase0_codex_task_queue"
 BOUNDARY_PRINCIPLE = (
     "No task queue entry, completed task, passing test, Codex-generated status, workflow record, "
@@ -114,7 +114,7 @@ def build_codex_task_queue_minimal() -> dict[str, Any]:
                 "active",
                 "codex_work_package",
                 ["task.documentation_inventory.completed"],
-                ["task.level2_sandbox_scenario_plan.completed"],
+                ["task.level2_sandbox_dry_run_summary.completed"],
                 "Workflow coordination only; does not approve or execute future packages.",
             ),
             _task(
@@ -158,15 +158,25 @@ def build_codex_task_queue_minimal() -> dict[str, Any]:
                 "Completed planning-only Level 2 sandbox scenario plan; task status is not approval or execution.",
             ),
             _task(
+                "task.level2_sandbox_dry_run_summary.completed",
+                "Level 2 Sandbox Dry Run, Observation, Evaluation, and Human Review Summary Minimal v0",
+                "sandbox_only",
+                "completed",
+                "codex_completed_report",
+                ["task.level2_sandbox_scenario_plan.completed"],
+                [],
+                "Completed Level 2 sandbox dry-run-only observation/evaluation/summary; task status is not approval or execution.",
+            ),
+            _task(
                 "task.level2_sandbox_readiness.deferred",
                 "Level 2 Sandbox Readiness Minimal v0",
                 "capability_boundary",
                 "deferred",
                 "phase0_future_work",
-                ["task.level2_sandbox_scenario_plan.completed"],
+                ["task.level2_sandbox_dry_run_summary.completed"],
                 [],
                 "Deferred future boundary; not implemented and not approved.",
-                deferral_reason="Level 2 application/execution requires a separate future package after scenario planning.",
+                deferral_reason="Level 2 application/execution requires a separate future package after dry-run evaluation.",
             ),
             _task(
                 "task.memory_readiness_boundary.deferred",
@@ -174,7 +184,7 @@ def build_codex_task_queue_minimal() -> dict[str, Any]:
                 "capability_boundary",
                 "deferred",
                 "phase0_future_work",
-                ["task.level2_sandbox_scenario_plan.completed"],
+                ["task.level2_sandbox_dry_run_summary.completed"],
                 [],
                 "Deferred future memory boundary; no memory write or retained JSONL behavior is approved.",
                 deferral_reason="Memory readiness remains blocked until a future explicit boundary package.",
@@ -392,7 +402,7 @@ def _invalid_queues(valid_queue: dict[str, Any]) -> list[dict[str, Any]]:
     )
     queues.append(blocked)
     deferred = deepcopy(valid_queue)
-    deferred["task_entries"][6].pop("deferral_reason", None)
+    deferred["task_entries"][7].pop("deferral_reason", None)
     queues.append(deferred)
     superseded = deepcopy(valid_queue)
     superseded["task_entries"].append(
@@ -463,7 +473,7 @@ def _summary(
         summary["task_queue_result_count"] == 17
         and summary["valid_task_queue_count"] == 1
         and summary["invalid_task_queue_count"] == 16
-        and summary["valid_task_entry_count"] == 8
+        and summary["valid_task_entry_count"] == 9
         and summary["invalid_task_entry_count"] >= 9
         and summary["queue_scope_checked_count"] == 1
         and summary["approval_block_checked_count"] == 1

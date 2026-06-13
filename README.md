@@ -1618,7 +1618,7 @@ Two-Trial History Boundary:
 
 - `docs/current_boundary_index.md`
 - Adds a short, versioned, low-token source of global hard boundaries for future work packages.
-- Current version: `Boundary Index Version: 2026-06-09-b70`.
+- Current version: `Boundary Index Version: 2026-06-09-b71`.
 - For current Phase0 status, see `docs/phase0_status.md`.
 - For capability status, see `docs/phase0_capability_matrix.md`.
 - For boundary version history, see `docs/current_boundary_index.md`.
@@ -2700,6 +2700,10 @@ Two-Trial History Boundary:
 ## Level 2 Sandbox Scenario Plan Minimal v0
 
 - Level 2 Sandbox Scenario Plan Minimal v0 defines a planning-only scenario for a future Phase0 Level 2 sandbox package within the Level 2 design envelope. It records planned inputs, expected outcomes, failure classes, and stop conditions for a controlled counterfactual retry sandbox plan, while keeping Level 2 execution/application, runtime behavior change, memory or retained JSONL writes, retention writes, predictor mutation, selected_action/final_action/direct commands, production promotion, approval replay/session binding, and proof-of-learning claims blocked.
+
+## Level 2 Sandbox Dry Run, Observation, Evaluation, and Human Review Summary Minimal v0
+
+- Level 2 Sandbox Dry Run, Observation, Evaluation, and Human Review Summary Minimal v0 walks through the planned Level 2 sandbox scenario as a dry run, observes the dry-run record, evaluates it, and produces a conservative human review summary. This is Level 2 dry-run-only: no Level 2 application or execution occurs, and a passed dry-run evaluation is not proof of learning or permission for runtime behavior, memory/retained JSONL, retention, predictor, selected_action/final_action/direct command, or production changes.
 
 ## Phase0 Documentation Inventory and Consistency Reconciliation Minimal v0
 

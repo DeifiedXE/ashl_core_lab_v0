@@ -6272,6 +6272,23 @@ Next recommended work:
 1. Keep future Level 2 sandbox application/readiness deferred until a separate package opens that boundary.
 2. Keep memory readiness deferred until a separate memory boundary package.
 
+## Level 2 Sandbox Dry Run, Observation, Evaluation, and Human Review Summary Minimal v0
+
+Status: completed / dry-run-only / no Level 2 application or execution.
+
+Progress:
+- Adds `ashl_core/level2_sandbox_dry_run_observation_evaluation_summary_minimal.py`.
+- Builds a Level 2 sandbox dry-run record from the valid design envelope and scenario plan.
+- Observes the dry-run record, evaluates it, and produces a conservative human review summary.
+- Confirms a passed dry-run evaluation does not authorize Level 2 application, runtime behavior change, memory/retention writes, predictor mutation, selected_action, final_action, direct command, production promotion, or proof-of-learning claims.
+
+Boundary:
+- No Level 2 application, Level 2 execution, approval replay/session binding, production/runtime behavior change, memory write, retained JSONL write, retention write, predictor mutation, selected_action, final_action, direct command, production promotion, or proof-of-learning claim.
+
+Next recommended work:
+1. Keep Level 2 application/readiness blocked until a separate explicit package opens that boundary.
+2. Keep memory readiness deferred until a separate memory boundary package.
+
 Forbidden claims:
 - No production lesson application.
 - No runtime behavior change.

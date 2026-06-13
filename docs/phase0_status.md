@@ -2,20 +2,20 @@
 
 ## Current Boundary Index
 
-- Current version: `Boundary Index Version: 2026-06-09-b70`
-- Current update log: Level 2 Sandbox Scenario Plan Minimal v0
+- Current version: `Boundary Index Version: 2026-06-09-b71`
+- Current update log: Level 2 Sandbox Dry Run, Observation, Evaluation, and Human Review Summary Minimal v0
 - The task queue is workflow coordination only and does not add ASHL Core runtime capability or approval.
 
 ## Latest Completed Package
 
-- Latest completed capability package: Level 2 Sandbox Scenario Plan Minimal v0.
+- Latest completed capability package: Level 2 Sandbox Dry Run, Observation, Evaluation, and Human Review Summary Minimal v0.
 - Latest documentation/workflow package: Codex Task Queue Minimal v0.
 
 ## Current Safe Capability Claim
 
-ASHL Core can validate explicit user approval, apply one reviewed lesson inside the Phase0 Level 1 toy sandbox only, observe and evaluate the sandbox application outcome, close the Level 1 sandbox-only review loop with a conservative conclusion, produce a Level 2 readiness precheck, define a design-only envelope, and define a design-only scenario plan for a future Phase0 Level 2 sandbox package.
+ASHL Core can validate explicit user approval, apply one reviewed lesson inside the Phase0 Level 1 toy sandbox only, observe and evaluate the sandbox application outcome, close the Level 1 sandbox-only review loop with a conservative conclusion, produce a Level 2 readiness precheck, define a Level 2 design envelope and scenario plan, and complete/observe/evaluate/summarize a Phase0 Level 2 sandbox dry run within that envelope.
 
-Phase0 records may contain sandbox-only Level 1 application, observation, evaluation, review conclusion, Level 2 readiness precheck, Level 2 design envelope, and Level 2 scenario plan records. These are not Level 2 application/execution and not production/runtime memory-influenced behavior.
+Phase0 records may contain sandbox-only Level 1 application, observation, evaluation, review conclusion, Level 2 readiness precheck, Level 2 design envelope, Level 2 scenario plan, and Level 2 dry-run observation/evaluation/summary records. These are not Level 2 application/execution and not production/runtime memory-influenced behavior.
 
 ## Current Forbidden Claims
 
@@ -38,7 +38,7 @@ Runtime behavior, memory write, retention write, predictor mutation, production 
 - Outcome evaluation is implemented only for the Phase0 Level 1 sandbox observation fixture.
 - Human review summary is implemented only as conservative report text.
 - Level 1 Sandbox Outcome Evaluation and Human Review Summary Minimal v0 remains the completed evaluation layer before the current review conclusion.
-- Level 2 readiness precheck, design envelope, and scenario plan are implemented only for future-package scoping; they are not Level 2 application or execution approval.
+- Level 2 readiness precheck, design envelope, scenario plan, and dry-run evaluation are implemented only for future-package scoping/evidence; they are not Level 2 application or execution approval.
 - Approval anti-replay/session binding is not implemented.
 - Technical sandbox isolation beyond record-level / validation-level checks is not implemented.
 - Retained JSONL deletion/invalidation after rollback is not defined.
