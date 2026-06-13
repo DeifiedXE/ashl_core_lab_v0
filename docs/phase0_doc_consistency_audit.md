@@ -25,6 +25,7 @@ The full inventory is recorded in `docs/phase0_doc_inventory.md`.
 - Long-term Memory scope conflict is resolved by version-priority wording in the five-layer design assumption and framework boundary docs.
 - The memory warning-sign phrase is paired with practical Phase0 gate wording.
 - README and research_plan now point to consolidated current status, capability matrix, inventory, index, audit, risk ledger, unresolved issue list, and Boundary Index.
+- Package IDs are now separated from Boundary Index versions; completed work packages, tests, CLI commands, docs, task queue status, scenario plans, and dry-run records do not automatically increment Boundary Index.
 
 ## Known Issues Documented As Open Gaps
 

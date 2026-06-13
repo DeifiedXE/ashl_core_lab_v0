@@ -13,6 +13,7 @@
 - `docs/reviewed_lesson_application_boundary_reconciliation_v0.md`
 - `docs/explicit_user_approval_source_boundary_v0.md`
 - `docs/five_layer_memory_framework_boundary_v0.md`
+- `docs/phase0_versioning_policy.md`
 - Boundary/contract/audit files listed in `docs/phase0_doc_inventory.md`.
 
 ## Capability / Status Matrix

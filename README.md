@@ -1618,7 +1618,7 @@ Two-Trial History Boundary:
 
 - `docs/current_boundary_index.md`
 - Adds a short, versioned, low-token source of global hard boundaries for future work packages.
-- Current version: `Boundary Index Version: 2026-06-09-b71`.
+- Current version: `Boundary Index Version: 2026-06-09-b72`.
 - For current Phase0 status, see `docs/phase0_status.md`.
 - For capability status, see `docs/phase0_capability_matrix.md`.
 - For boundary version history, see `docs/current_boundary_index.md`.
@@ -2704,6 +2704,10 @@ Two-Trial History Boundary:
 ## Level 2 Sandbox Dry Run, Observation, Evaluation, and Human Review Summary Minimal v0
 
 - Level 2 Sandbox Dry Run, Observation, Evaluation, and Human Review Summary Minimal v0 walks through the planned Level 2 sandbox scenario as a dry run, observes the dry-run record, evaluates it, and produces a conservative human review summary. This is Level 2 dry-run-only: no Level 2 application or execution occurs, and a passed dry-run evaluation is not proof of learning or permission for runtime behavior, memory/retained JSONL, retention, predictor, selected_action/final_action/direct command, or production changes.
+
+## Phase0 Package ID and Boundary Index Version Separation Minimal v0
+
+- Phase0 Package ID and Boundary Index Version Separation Minimal v0 separates Codex Package IDs from Boundary Index versions. Package IDs track work packages; Boundary Index versions track boundary and validation-boundary changes only. Completed tasks, CLI commands, smoke tests, unittests, documentation updates, queue status changes, scenario plans, and dry-run records do not automatically increment Boundary Index. This is workflow/versioning governance only and does not add runtime behavior, memory writes, retention writes, predictor mutation, sandbox execution/application, action selection, final_action, direct commands, or proof-of-learning claims.
 
 ## Phase0 Documentation Inventory and Consistency Reconciliation Minimal v0
 

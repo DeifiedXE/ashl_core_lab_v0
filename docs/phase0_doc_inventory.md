@@ -6,7 +6,7 @@ Minimum inventory rule: every relevant markdown/documentation file found in this
 
 Allowed role/status/authority values follow the work package: `current_status_anchor`, `boundary_anchor`, `capability_matrix`, `risk_ledger`, `design_assumption`, `historical_context`, `implementation_note`, `planning`, `smoke_or_test_support`, `unknown_needs_review`; `current`, `current_with_caveats`, `historical`, `superseded`, `planning_only`, `test_support_only`, `needs_review`; `current_status_controls`, `boundary_controls`, `newer_boundary_controls`, `historical_context_only`, `planning_only`, `not_authoritative`, `needs_review`.
 
-- Inventory count: 126 markdown/documentation files.
+- Inventory count: 127 markdown/documentation files.
 
 | path | role | current_status | authority_level | contains_current_capability_claims | superseded_by | notes |
 | --- | --- | --- | --- | --- | --- | --- |
@@ -101,6 +101,7 @@ Allowed role/status/authority values follow the work package: `current_status_an
 | docs/phase0_task_queue.md | planning | current | current_status_controls | no | none | Workflow-only task queue pointer; not a current ASHL capability grant. |
 | docs/phase0_trust_curiosity_personality_boundary_v0_1.md | boundary_anchor | current_with_caveats | newer_boundary_controls | maybe | docs/current_boundary_index.md | Boundary/contract/audit doc; newer status docs control current capability claims. |
 | docs/phase0_unresolved_doc_issues.md | risk_ledger | current | current_status_controls | no | none | Open risk / unresolved documentation ledger. |
+| docs/phase0_versioning_policy.md | boundary_anchor | current | boundary_controls | yes | none | Package ID / Boundary Index version separation policy; workflow governance only. |
 | docs/project_state_audit_pause_point_2026-06-09.md | boundary_anchor | current_with_caveats | newer_boundary_controls | maybe | docs/current_boundary_index.md | Boundary/contract/audit doc; newer status docs control current capability claims. |
 | docs/qingyin_first_output_contract_v0_1.md | boundary_anchor | current_with_caveats | newer_boundary_controls | maybe | docs/current_boundary_index.md | Boundary/contract/audit doc; newer status docs control current capability claims. |
 | docs/qingyin_first_output_runtime_minimal_spec_v0_1.md | unknown_needs_review | needs_review | needs_review | maybe | docs/phase0_unresolved_doc_issues.md | Needs future human review for exact authority. |

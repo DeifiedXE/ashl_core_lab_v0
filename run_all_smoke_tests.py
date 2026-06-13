@@ -145,6 +145,9 @@ from ashl_core.generic_lesson_evidence_pipeline_completion_bridge_minimal import
     run_generic_lesson_evidence_pipeline_completion_bridge_minimal_check,
 )
 from ashl_core.codex_task_queue_minimal import run_codex_task_queue_minimal_check
+from ashl_core.phase0_package_boundary_versioning_policy_minimal import (
+    run_phase0_package_boundary_versioning_policy_minimal_check,
+)
 from ashl_core.reviewed_lesson_sandbox_application_readiness_minimal import (
     run_reviewed_lesson_sandbox_application_readiness_minimal_check,
 )
@@ -10482,8 +10485,8 @@ def smoke_current_boundary_index_docs() -> dict:
     readme = readme_path.read_text(encoding="utf-8") if readme_path.exists() else ""
     research_plan = research_plan_path.read_text(encoding="utf-8") if research_plan_path.exists() else ""
     compact_required_terms = [
-        "Boundary Index Version: 2026-06-09-b71",
-        "Last update log: Level 2 Sandbox Dry Run, Observation, Evaluation, and Human Review Summary Minimal v0",
+        "Boundary Index Version: 2026-06-09-b72",
+        "Last update log: Phase0 Package ID and Boundary Index Version Separation Minimal v0",
         "docs/boundary_index_archive_2026_06.md",
         "Minimal Visual Grounding Trial v0",
         "Visual Prediction Error + Attention Priority Preview Minimal v0",
@@ -10524,10 +10527,10 @@ def smoke_current_boundary_index_docs() -> dict:
         "front_symbol=d",
         "preferred_sandbox_action=check_before_retry",
         "blocks_retry_same_action_until_check=True",
-        "Level 2 Sandbox Dry Run milestone",
-        "dry_run_status=completed_dry_run_without_execution",
-        "evaluation_status=passed_expected_level2_dry_run",
-        "conservative_human_review summary present",
+        "Package ID / Boundary Index Version separation milestone",
+        "Boundary Index changed because versioning governance now constrains when Boundary Index may change",
+        "Package IDs track Codex work packages",
+        "Task completion, CLI/smoke/unittest/doc updates, queue status, scenario plans, and dry-run records do not automatically increment Boundary Index",
         "Phase0 Documentation Consolidation milestone",
         "Documentation consolidation only",
         "Phase0 Documentation Inventory / Codex Task Queue milestone",
@@ -10558,7 +10561,7 @@ def smoke_current_boundary_index_docs() -> dict:
         and all(term in doc for term in compact_required_terms)
         and all(term in archive for term in archive_required_terms)
         and line_count <= 130
-        and "Boundary Index Version: 2026-06-09-b71" in readme
+        and "Boundary Index Version: 2026-06-09-b72" in readme
         and "docs/boundary_index_archive_2026_06.md" in readme
         and "Boundary Index Compaction / Archive v0" in research_plan
         and "Runtime Tendency Memory Influence Safety Sync Minimal v0" in research_plan
@@ -10596,11 +10599,12 @@ def smoke_phase0_documentation_consolidation_minimal() -> dict:
         status_path.exists()
         and matrix_path.exists()
         and index_path.exists()
-        and "Boundary Index Version: 2026-06-09-b71" in status
+        and "Boundary Index Version: 2026-06-09-b72" in status
         and "Current Safe Capability" in status
         and "No proof-of-learning claim" in status
         and "Level 1 Sandbox Outcome Evaluation and Human Review Summary Minimal v0" in status
         and "Level 2 Sandbox Dry Run, Observation, Evaluation, and Human Review Summary Minimal v0" in status
+        and "Phase0 Package ID and Boundary Index Version Separation Minimal v0" in status
         and "| Level 1 sandbox outcome observation | implemented_sandbox_only |" in matrix
         and "| outcome evaluation | implemented_sandbox_only |" in matrix
         and "| human review summary | implemented_report_only |" in matrix
@@ -10608,6 +10612,7 @@ def smoke_phase0_documentation_consolidation_minimal() -> dict:
         and "| Level 2 sandbox design envelope | implemented_design_only |" in matrix
         and "| Level 2 sandbox scenario plan | implemented_planning_only |" in matrix
         and "| Level 2 sandbox dry run | implemented_dry_run_only |" in matrix
+        and "| Package ID / Boundary Index version separation | implemented_workflow_governance |" in matrix
         and "| retention write | blocked |" in matrix
         and "| predictor mutation | blocked |" in matrix
         and "| runtime behavior change | blocked |" in matrix
@@ -10616,6 +10621,7 @@ def smoke_phase0_documentation_consolidation_minimal() -> dict:
         and "docs/current_boundary_index.md" in index
         and "docs/phase0_status.md" in index
         and "docs/phase0_capability_matrix.md" in index
+        and "docs/phase0_versioning_policy.md" in index
         and "docs/phase0_status.md" in readme
         and "docs/phase0_capability_matrix.md" in readme
         and "docs/current_boundary_index.md" in readme
@@ -10642,6 +10648,7 @@ def smoke_phase0_documentation_inventory_and_consistency_reconciliation() -> dic
         Path("docs/phase0_doc_consistency_audit.md"),
         Path("docs/phase0_open_risk_ledger.md"),
         Path("docs/phase0_unresolved_doc_issues.md"),
+        Path("docs/phase0_versioning_policy.md"),
     ]
     texts = {path: path.read_text(encoding="utf-8") if path.exists() else "" for path in required_paths}
     combined = "\n".join(texts.values()).lower()
@@ -10660,8 +10667,9 @@ def smoke_phase0_documentation_inventory_and_consistency_reconciliation() -> dic
     boundary = Path("docs/current_boundary_index.md").read_text(encoding="utf-8")
     passed = (
         all(path.exists() for path in required_paths)
-        and "Boundary Index Version: 2026-06-09-b71" in texts[Path("docs/phase0_status.md")]
+        and "Boundary Index Version: 2026-06-09-b72" in texts[Path("docs/phase0_status.md")]
         and "Inventory count:" in texts[Path("docs/phase0_doc_inventory.md")]
+        and "docs/phase0_versioning_policy.md" in texts[Path("docs/phase0_doc_inventory.md")]
         and "unknown_needs_review" in texts[Path("docs/phase0_doc_inventory.md")]
         and "Conflict Resolution Rule" in texts[Path("docs/phase0_doc_index.md")]
         and "newer boundary/current-status document controls" in texts[Path("docs/phase0_doc_index.md")]
@@ -12211,6 +12219,10 @@ def smoke_codex_task_queue_minimal() -> dict:
     task_entries = valid_queue.get("task_entries", [])
     statuses = {task.get("status") for task in task_entries}
     task_types = {task.get("task_type") for task in task_entries}
+    versioning_task = next(
+        (task for task in task_entries if task.get("package_id") == "PKG-Phase0-Versioning-001"),
+        {},
+    )
     passed = (
         result.get("command") == "run-codex-task-queue-minimal-check"
         and result.get("flow") == "codex_task_queue_minimal_v0"
@@ -12218,8 +12230,8 @@ def smoke_codex_task_queue_minimal() -> dict:
         and valid_queue.get("queue_scope") == "phase0_workflow_coordination_only"
         and valid_queue.get("record_type") == "codex_task_queue_minimal_v0"
         and summary.get("valid_task_queue_count") == 1
-        and summary.get("invalid_task_queue_count") == 16
-        and summary.get("valid_task_entry_count") == 9
+        and summary.get("invalid_task_queue_count") == 21
+        and summary.get("valid_task_entry_count") == 10
         and summary.get("invalid_task_entry_count", 0) >= 9
         and summary.get("queue_scope_checked_count") == 1
         and summary.get("approval_block_checked_count") == 1
@@ -12229,6 +12241,12 @@ def smoke_codex_task_queue_minimal() -> dict:
         and summary.get("proof_of_learning_block_checked_count") == 1
         and {"active", "completed", "deferred"}.issubset(statuses)
         and {"documentation_only", "workflow_only", "capability_boundary", "sandbox_only"}.issubset(task_types)
+        and all(task.get("package_id") for task in task_entries)
+        and all(task.get("task_status") == task.get("status") for task in task_entries)
+        and versioning_task.get("boundary_change_required") is True
+        and versioning_task.get("boundary_index_version_before") == "2026-06-09-b71"
+        and versioning_task.get("boundary_index_version_after") == "2026-06-09-b72"
+        and "versioning governance" in versioning_task.get("boundary_change_rationale", "")
         and valid_queue.get("queue_counts_as_approval") is False
         and valid_queue.get("queue_counts_as_application") is False
         and valid_queue.get("queue_counts_as_runtime_behavior") is False
@@ -12258,6 +12276,49 @@ def smoke_codex_task_queue_minimal() -> dict:
         {
             "summary": summary,
             "validation_results": result.get("validation_results", []),
+            "boundary_check": boundary,
+        },
+    )
+
+
+def smoke_phase0_package_boundary_versioning_policy_minimal() -> dict:
+    result = run_phase0_package_boundary_versioning_policy_minimal_check()
+    summary = result.get("summary", {})
+    boundary = result.get("boundary_check", {})
+    records = result.get("policy_records", [])
+    record = records[0] if records else {}
+    passed = (
+        result.get("command") == "run-phase0-package-boundary-versioning-policy-minimal-check"
+        and result.get("flow") == "phase0_package_boundary_versioning_policy_minimal_v0"
+        and result.get("status") == "ok"
+        and summary.get("valid_versioning_policy_count") == 1
+        and summary.get("invalid_versioning_policy_count", 0) >= 1
+        and summary.get("package_id_required") is True
+        and summary.get("boundary_index_is_not_package_counter") is True
+        and summary.get("codex_completion_auto_increment_blocked") is True
+        and summary.get("boundary_change_rationale_required") is True
+        and record.get("package_id") == "PKG-Phase0-Versioning-001"
+        and record.get("boundary_index_is_not_package_counter") is True
+        and record.get("codex_task_completion_auto_increments_boundary_index") is False
+        and record.get("non_boundary_package_changes_do_not_increment_boundary_index") is True
+        and boundary.get("workflow_governance_only") is True
+        and boundary.get("boundary_index_is_package_counter") is False
+        and boundary.get("runtime_behavior_change_added") is False
+        and boundary.get("memory_write_added") is False
+        and boundary.get("retained_jsonl_write_added") is False
+        and boundary.get("retention_write_added") is False
+        and boundary.get("predictor_mutation_added") is False
+        and boundary.get("selected_action_created") is False
+        and boundary.get("final_action_created") is False
+        and boundary.get("direct_command_created") is False
+        and boundary.get("production_promotion_added") is False
+        and boundary.get("proof_of_learning_claimed") is False
+    )
+    return _result(
+        "phase0_package_boundary_versioning_policy_minimal",
+        passed,
+        {
+            "summary": summary,
             "boundary_check": boundary,
         },
     )
@@ -15720,6 +15781,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_generic_lesson_dry_run_to_trial_trace_bridge_minimal(),
         smoke_generic_lesson_evidence_pipeline_completion_bridge_minimal(),
         smoke_codex_task_queue_minimal(),
+        smoke_phase0_package_boundary_versioning_policy_minimal(),
         smoke_reviewed_lesson_sandbox_application_readiness_minimal(),
         smoke_level1_explicit_lesson_application_approval_minimal(),
         smoke_level1_sandbox_lesson_application_minimal(),

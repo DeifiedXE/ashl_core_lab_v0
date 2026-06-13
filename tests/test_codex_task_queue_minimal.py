@@ -134,10 +134,10 @@ class CodexTaskQueueMinimalTests(unittest.TestCase):
     def test_demo_summary_counts_are_deterministic(self):
         summary = run_codex_task_queue_minimal_check()["summary"]
 
-        self.assertEqual(17, summary["task_queue_result_count"])
+        self.assertEqual(22, summary["task_queue_result_count"])
         self.assertEqual(1, summary["valid_task_queue_count"])
-        self.assertEqual(16, summary["invalid_task_queue_count"])
-        self.assertEqual(9, summary["valid_task_entry_count"])
+        self.assertEqual(21, summary["invalid_task_queue_count"])
+        self.assertEqual(10, summary["valid_task_entry_count"])
         self.assertGreaterEqual(summary["invalid_task_entry_count"], 9)
         self.assertEqual(1, summary["queue_scope_checked_count"])
         self.assertEqual(1, summary["approval_block_checked_count"])
@@ -158,13 +158,57 @@ class CodexTaskQueueMinimalTests(unittest.TestCase):
 
         self.assertIn(f"{field}_not_false", validate_codex_task_entry_minimal(task, {"task.test"})["error_codes"])
 
+    def test_package_id_is_required(self):
+        task = self._task()
+        task["package_id"] = ""
+
+        self.assertIn("package_id_missing", validate_codex_task_entry_minimal(task, {"task.test"})["error_codes"])
+
+    def test_boundary_change_required_false_blocks_version_change(self):
+        task = self._task()
+        task["boundary_index_version_after"] = "2026-06-09-b99"
+
+        self.assertIn(
+            "boundary_index_changed_without_boundary_change_required",
+            validate_codex_task_entry_minimal(task, {"task.test"})["error_codes"],
+        )
+
+    def test_boundary_increment_requires_explicit_rationale(self):
+        task = self._task()
+        task["boundary_change_required"] = True
+        task["boundary_index_version_after"] = "2026-06-09-b99"
+        task["boundary_change_rationale"] = ""
+
+        self.assertIn(
+            "boundary_index_changed_without_rationale",
+            validate_codex_task_entry_minimal(task, {"task.test"})["error_codes"],
+        )
+
+    def test_task_completion_is_not_boundary_change_rationale(self):
+        task = self._task(status="completed")
+        task["boundary_change_required"] = True
+        task["boundary_index_version_after"] = "2026-06-09-b99"
+        task["boundary_change_rationale"] = "Completed task increments version."
+
+        self.assertIn(
+            "task_completion_treated_as_boundary_change",
+            validate_codex_task_entry_minimal(task, {"task.test"})["error_codes"],
+        )
+
     def _task(self, status="pending", task_type="workflow_only", notes="Test task."):
         task = {
             "task_id": "task.test",
+            "package_id": "PKG-Test-001",
+            "package_title": "Test task",
             "title": "Test task",
+            "task_status": status,
             "task_type": task_type,
             "status": status,
-            "boundary_index_version": "2026-06-09-b71",
+            "boundary_index_version": "2026-06-09-b72",
+            "boundary_change_required": False,
+            "boundary_index_version_before": "2026-06-09-b72",
+            "boundary_index_version_after": "2026-06-09-b72",
+            "boundary_change_rationale": "",
             "source": "unit_test",
             "creates_capability": False,
             "counts_as_approval": False,

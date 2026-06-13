@@ -6289,6 +6289,25 @@ Next recommended work:
 1. Keep Level 2 application/readiness blocked until a separate explicit package opens that boundary.
 2. Keep memory readiness deferred until a separate memory boundary package.
 
+## Phase0 Package ID and Boundary Index Version Separation Minimal v0
+
+Status: completed / workflow-governance / validation-boundary update.
+
+Progress:
+- Adds `docs/phase0_versioning_policy.md`.
+- Adds `ashl_core/phase0_package_boundary_versioning_policy_minimal.py`.
+- Updates the Codex task queue schema with Package ID and boundary-change metadata.
+- Separates Codex work package tracking from Boundary Index versioning.
+- Clarifies that completed tasks, CLI commands, smoke tests, unittests, documentation updates, queue status changes, scenario plans, and dry-run records do not automatically increment Boundary Index.
+
+Boundary:
+- Boundary Index changed from `2026-06-09-b71` to `2026-06-09-b72` because versioning governance now constrains when Boundary Index may change.
+- No runtime behavior, memory write, retained JSONL write, retention write, predictor mutation, sandbox execution/application, selected_action, final_action, direct command, production promotion, approval replay/session binding, or proof-of-learning claim is added.
+
+Next use:
+1. Use Package IDs to track Codex work packages.
+2. Change Boundary Index only when a real boundary or validation-boundary change occurs.
+
 Forbidden claims:
 - No production lesson application.
 - No runtime behavior change.

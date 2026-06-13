@@ -4,6 +4,7 @@ Current queue source:
 
 - `ashl_core/codex_task_queue_minimal.py`
 - CLI: `run-codex-task-queue-minimal-check`
+- Versioning policy: `docs/phase0_versioning_policy.md`
 
 ## Current Entries
 
@@ -14,6 +15,7 @@ Current queue source:
 - Completed: Level 2 Sandbox Design Envelope Minimal v0.
 - Completed: Level 2 Sandbox Scenario Plan Minimal v0.
 - Completed: Level 2 Sandbox Dry Run, Observation, Evaluation, and Human Review Summary Minimal v0.
+- Completed: Phase0 Package ID and Boundary Index Version Separation Minimal v0.
 - Deferred: Level 2 Sandbox Readiness Minimal v0.
 - Deferred: Memory Readiness Boundary Minimal v0.
 
@@ -22,6 +24,8 @@ Current queue source:
 No task queue entry, completed task, passing test, Codex-generated status, workflow record, or queue ordering counts as explicit human application approval.
 
 No Codex-generated review conclusion or Level 2 readiness precheck counts as explicit human application approval.
+
+Package IDs track Codex work packages. Boundary Index Version tracks safety, permission, persistence, runtime, retention, predictor, sandbox execution, production, action-selection, approval-validation, or validation-boundary state. A completed task, CLI, smoke test, unittest, documentation update, or queue status update does not automatically increment Boundary Index.
 
 The Codex task queue coordinates work packages only. It does not approve, apply, observe, evaluate, promote, remember, retain, predict, select, finalize, command, or prove learning.
 

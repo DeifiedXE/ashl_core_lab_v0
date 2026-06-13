@@ -8,7 +8,8 @@ from typing import Any
 
 COMMAND = "run-codex-task-queue-minimal-check"
 FLOW = "codex_task_queue_minimal_v0"
-BOUNDARY_INDEX_VERSION = "2026-06-09-b71"
+BOUNDARY_INDEX_VERSION = "2026-06-09-b72"
+PREVIOUS_BOUNDARY_INDEX_VERSION = "2026-06-09-b71"
 QUEUE_NAME = "ashl_core_phase0_codex_task_queue"
 BOUNDARY_PRINCIPLE = (
     "No task queue entry, completed task, passing test, Codex-generated status, workflow record, "
@@ -46,11 +47,17 @@ REQUIRED_QUEUE_FIELDS = {
     "principles",
 }
 REQUIRED_TASK_FIELDS = {
+    "package_id",
+    "package_title",
     "task_id",
     "title",
+    "task_status",
     "task_type",
     "status",
     "boundary_index_version",
+    "boundary_change_required",
+    "boundary_index_version_before",
+    "boundary_index_version_after",
     "source",
     "creates_capability",
     "counts_as_approval",
@@ -99,6 +106,7 @@ def build_codex_task_queue_minimal() -> dict[str, Any]:
         "task_entries": [
             _task(
                 "task.documentation_inventory.completed",
+                "PKG-Phase0-Docs-Inventory-001",
                 "Phase0 Documentation Inventory and Consistency Reconciliation Minimal v0",
                 "documentation_only",
                 "completed",
@@ -109,16 +117,18 @@ def build_codex_task_queue_minimal() -> dict[str, Any]:
             ),
             _task(
                 "task.codex_task_queue.active",
+                "PKG-Phase0-Workflow-Queue-001",
                 "Codex Task Queue Minimal v0",
                 "workflow_only",
                 "active",
                 "codex_work_package",
                 ["task.documentation_inventory.completed"],
-                ["task.level2_sandbox_dry_run_summary.completed"],
+                ["task.phase0_versioning_policy.completed"],
                 "Workflow coordination only; does not approve or execute future packages.",
             ),
             _task(
                 "task.level1_outcome_evaluation.completed",
+                "PKG-Phase0-Level1-Eval-001",
                 "Level 1 Sandbox Outcome Evaluation and Human Review Summary Minimal v0",
                 "sandbox_only",
                 "completed",
@@ -129,6 +139,7 @@ def build_codex_task_queue_minimal() -> dict[str, Any]:
             ),
             _task(
                 "task.level1_review_conclusion.completed",
+                "PKG-Phase0-Level1-Review-001",
                 "Level 1 Sandbox Review Conclusion and Level 2 Readiness Precheck Minimal v0",
                 "capability_boundary",
                 "completed",
@@ -139,6 +150,7 @@ def build_codex_task_queue_minimal() -> dict[str, Any]:
             ),
             _task(
                 "task.level2_sandbox_design_envelope.completed",
+                "PKG-Phase0-Level2-Design-001",
                 "Level 2 Sandbox Design Envelope Minimal v0",
                 "capability_boundary",
                 "completed",
@@ -149,6 +161,7 @@ def build_codex_task_queue_minimal() -> dict[str, Any]:
             ),
             _task(
                 "task.level2_sandbox_scenario_plan.completed",
+                "PKG-Phase0-Level2-Scenario-001",
                 "Level 2 Sandbox Scenario Plan Minimal v0",
                 "capability_boundary",
                 "completed",
@@ -158,7 +171,25 @@ def build_codex_task_queue_minimal() -> dict[str, Any]:
                 "Completed planning-only Level 2 sandbox scenario plan; task status is not approval or execution.",
             ),
             _task(
+                "task.phase0_versioning_policy.completed",
+                "PKG-Phase0-Versioning-001",
+                "Phase0 Package ID and Boundary Index Version Separation Minimal v0",
+                "workflow_only",
+                "completed",
+                "codex_completed_report",
+                ["task.level2_sandbox_dry_run_summary.completed"],
+                [],
+                "Completed package ID and Boundary Index version separation; task status is not approval.",
+                boundary_change_required=True,
+                boundary_index_version_before=PREVIOUS_BOUNDARY_INDEX_VERSION,
+                boundary_index_version_after=BOUNDARY_INDEX_VERSION,
+                boundary_change_rationale=(
+                    "Boundary Index changed because versioning governance now constrains when Boundary Index may change."
+                ),
+            ),
+            _task(
                 "task.level2_sandbox_dry_run_summary.completed",
+                "PKG-Phase0-Level2-DryRun-001",
                 "Level 2 Sandbox Dry Run, Observation, Evaluation, and Human Review Summary Minimal v0",
                 "sandbox_only",
                 "completed",
@@ -169,22 +200,24 @@ def build_codex_task_queue_minimal() -> dict[str, Any]:
             ),
             _task(
                 "task.level2_sandbox_readiness.deferred",
+                "PKG-Phase0-Level2-Readiness-Future",
                 "Level 2 Sandbox Readiness Minimal v0",
                 "capability_boundary",
                 "deferred",
                 "phase0_future_work",
-                ["task.level2_sandbox_dry_run_summary.completed"],
+                ["task.phase0_versioning_policy.completed"],
                 [],
                 "Deferred future boundary; not implemented and not approved.",
                 deferral_reason="Level 2 application/execution requires a separate future package after dry-run evaluation.",
             ),
             _task(
                 "task.memory_readiness_boundary.deferred",
+                "PKG-Phase0-Memory-Readiness-Future",
                 "Memory Readiness Boundary Minimal v0",
                 "capability_boundary",
                 "deferred",
                 "phase0_future_work",
-                ["task.level2_sandbox_dry_run_summary.completed"],
+                ["task.phase0_versioning_policy.completed"],
                 [],
                 "Deferred future memory boundary; no memory write or retained JSONL behavior is approved.",
                 deferral_reason="Memory readiness remains blocked until a future explicit boundary package.",
@@ -267,8 +300,36 @@ def validate_codex_task_entry_minimal(task: dict[str, Any], known_task_ids: set[
             errors.append(f"missing_task_field:{field}")
     if task.get("status") not in ALLOWED_STATUSES:
         errors.append("unknown_task_status")
+    if task.get("task_status") != task.get("status"):
+        errors.append("task_status_mismatch")
     if task.get("task_type") not in ALLOWED_TASK_TYPES:
         errors.append("unknown_task_type")
+    if not isinstance(task.get("package_id"), str) or not task.get("package_id", "").strip():
+        errors.append("package_id_missing")
+    if task.get("package_title") != task.get("title"):
+        errors.append("package_title_mismatch")
+    before = task.get("boundary_index_version_before")
+    after = task.get("boundary_index_version_after")
+    rationale = task.get("boundary_change_rationale", "")
+    boundary_change_required = task.get("boundary_change_required")
+    if boundary_change_required is not False and boundary_change_required is not True:
+        errors.append("boundary_change_required_not_bool")
+    if boundary_change_required is False and after != before:
+        errors.append("boundary_index_changed_without_boundary_change_required")
+    if after != before and boundary_change_required is not True:
+        errors.append("boundary_index_changed_but_boundary_change_required_not_true")
+    if after != before and not (isinstance(rationale, str) and rationale.strip()):
+        errors.append("boundary_index_changed_without_rationale")
+    if boundary_change_required is True and not (isinstance(rationale, str) and rationale.strip()):
+        errors.append("boundary_change_required_without_rationale")
+    if (
+        boundary_change_required is True
+        and task.get("status") == "completed"
+        and isinstance(rationale, str)
+        and "completed" in rationale.lower()
+        and "boundary" not in rationale.lower()
+    ):
+        errors.append("task_completion_treated_as_boundary_change")
     for field in sorted(TASK_FALSE_FIELDS):
         if task.get(field) is not False:
             errors.append(f"{field}_not_false")
@@ -334,6 +395,7 @@ def run_codex_task_queue_minimal_check() -> dict[str, Any]:
 
 def _task(
     task_id: str,
+    package_id: str,
     title: str,
     task_type: str,
     status: str,
@@ -344,11 +406,17 @@ def _task(
     **extra: Any,
 ) -> dict[str, Any]:
     task = {
+        "package_id": package_id,
+        "package_title": title,
         "task_id": task_id,
         "title": title,
+        "task_status": status,
         "task_type": task_type,
         "status": status,
         "boundary_index_version": BOUNDARY_INDEX_VERSION,
+        "boundary_change_required": False,
+        "boundary_index_version_before": BOUNDARY_INDEX_VERSION,
+        "boundary_index_version_after": BOUNDARY_INDEX_VERSION,
         "source": source,
         "creates_capability": False,
         "counts_as_approval": False,
@@ -362,6 +430,7 @@ def _task(
         "depends_on": depends_on,
         "blocks": blocks,
         "notes": notes,
+        "boundary_change_rationale": "",
     }
     task.update(extra)
     return task
@@ -387,10 +456,22 @@ def _invalid_queues(valid_queue: dict[str, Any]) -> list[dict[str, Any]]:
     ):
         queues.append(_mutate_queue(valid_queue, [field], True))
     queues.append(_mutate_task(valid_queue, 1, ["depends_on"], ["task.unknown"]))
+    queues.append(_mutate_task(valid_queue, 0, ["package_id"], ""))
+    queues.append(_mutate_task(valid_queue, 0, ["boundary_index_version_after"], "2026-06-09-b99"))
+    queues.append(_mutate_task(valid_queue, 0, ["boundary_change_required"], True))
+    no_rationale = _mutate_task(valid_queue, 0, ["boundary_index_version_after"], "2026-06-09-b99")
+    no_rationale["task_entries"][0]["boundary_change_required"] = True
+    no_rationale["task_entries"][0]["boundary_change_rationale"] = ""
+    queues.append(no_rationale)
+    completion_rationale = _mutate_task(valid_queue, 0, ["boundary_change_required"], True)
+    completion_rationale["task_entries"][0]["boundary_index_version_after"] = "2026-06-09-b99"
+    completion_rationale["task_entries"][0]["boundary_change_rationale"] = "Completed task increments version."
+    queues.append(completion_rationale)
     blocked = deepcopy(valid_queue)
     blocked["task_entries"].append(
         _task(
             "task.blocked_without_reason",
+            "PKG-Negative-Blocked",
             "Blocked missing reason",
             "cleanup",
             "blocked",
@@ -402,12 +483,13 @@ def _invalid_queues(valid_queue: dict[str, Any]) -> list[dict[str, Any]]:
     )
     queues.append(blocked)
     deferred = deepcopy(valid_queue)
-    deferred["task_entries"][7].pop("deferral_reason", None)
+    deferred["task_entries"][8].pop("deferral_reason", None)
     queues.append(deferred)
     superseded = deepcopy(valid_queue)
     superseded["task_entries"].append(
         _task(
             "task.superseded_without_note",
+            "PKG-Negative-Superseded",
             "Superseded missing note",
             "cleanup",
             "superseded",
@@ -470,10 +552,10 @@ def _summary(
         ),
     }
     summary["all_codex_task_queue_minimal_checks_passed"] = (
-        summary["task_queue_result_count"] == 17
+        summary["task_queue_result_count"] == 22
         and summary["valid_task_queue_count"] == 1
-        and summary["invalid_task_queue_count"] == 16
-        and summary["valid_task_entry_count"] == 9
+        and summary["invalid_task_queue_count"] == 21
+        and summary["valid_task_entry_count"] == 10
         and summary["invalid_task_entry_count"] >= 9
         and summary["queue_scope_checked_count"] == 1
         and summary["approval_block_checked_count"] == 1

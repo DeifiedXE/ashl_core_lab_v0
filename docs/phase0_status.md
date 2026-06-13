@@ -2,20 +2,23 @@
 
 ## Current Boundary Index
 
-- Current version: `Boundary Index Version: 2026-06-09-b71`
-- Current update log: Level 2 Sandbox Dry Run, Observation, Evaluation, and Human Review Summary Minimal v0
+- Current version: `Boundary Index Version: 2026-06-09-b72`
+- Current update log: Phase0 Package ID and Boundary Index Version Separation Minimal v0
 - The task queue is workflow coordination only and does not add ASHL Core runtime capability or approval.
+- Package IDs track Codex work packages; Boundary Index versions track boundary and validation-boundary changes only.
 
 ## Latest Completed Package
 
 - Latest completed capability package: Level 2 Sandbox Dry Run, Observation, Evaluation, and Human Review Summary Minimal v0.
-- Latest documentation/workflow package: Codex Task Queue Minimal v0.
+- Latest documentation/workflow package: Phase0 Package ID and Boundary Index Version Separation Minimal v0.
 
 ## Current Safe Capability Claim
 
 ASHL Core can validate explicit user approval, apply one reviewed lesson inside the Phase0 Level 1 toy sandbox only, observe and evaluate the sandbox application outcome, close the Level 1 sandbox-only review loop with a conservative conclusion, produce a Level 2 readiness precheck, define a Level 2 design envelope and scenario plan, and complete/observe/evaluate/summarize a Phase0 Level 2 sandbox dry run within that envelope.
 
 Phase0 records may contain sandbox-only Level 1 application, observation, evaluation, review conclusion, Level 2 readiness precheck, Level 2 design envelope, Level 2 scenario plan, and Level 2 dry-run observation/evaluation/summary records. These are not Level 2 application/execution and not production/runtime memory-influenced behavior.
+
+Phase0 package/version governance can validate that Codex Package IDs are not Boundary Index versions, that completed work packages do not automatically increment Boundary Index, and that any Boundary Index version change requires an explicit boundary-change rationale.
 
 ## Current Forbidden Claims
 
@@ -44,6 +47,7 @@ Runtime behavior, memory write, retention write, predictor mutation, production 
 - Retained JSONL deletion/invalidation after rollback is not defined.
 - Mentor override must not be overclaimed beyond existing checkers.
 - The Codex task queue is coordination only; no task entry or completed status counts as explicit human application approval.
+- A completed Codex work package, CLI, smoke test, unittest, documentation update, task queue status change, scenario plan, or dry-run record does not automatically count as a Boundary Index change.
 
 ## Current Authoritative Docs
 
@@ -54,6 +58,7 @@ Runtime behavior, memory write, retention write, predictor mutation, production 
 - `docs/phase0_open_risk_ledger.md`: open risk/gap ledger.
 - `docs/phase0_unresolved_doc_issues.md`: unresolved documentation issues.
 - `docs/phase0_task_queue.md`: workflow-only Phase0 task queue pointer.
+- `docs/phase0_versioning_policy.md`: package ID / Boundary Index version separation policy.
 
 ## Older Design Assumptions
 
