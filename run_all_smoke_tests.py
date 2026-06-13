@@ -178,6 +178,9 @@ from ashl_core.level2_sandbox_dry_run_observation_evaluation_summary_minimal imp
 from ashl_core.level2_sandbox_application_observation_evaluation_summary_minimal import (
     run_level2_sandbox_application_observation_evaluation_summary_minimal_check,
 )
+from ashl_core.level2_sandbox_review_conclusion_and_promotion_readiness_minimal import (
+    run_level2_sandbox_review_conclusion_and_promotion_readiness_minimal_check,
+)
 from ashl_core.minimal_visual_grounding_trial import run_minimal_visual_grounding_trial_check
 from ashl_core.visual_prediction_error_attention_priority_preview_minimal import (
     run_visual_prediction_error_attention_priority_preview_minimal_check,
@@ -12240,7 +12243,7 @@ def smoke_codex_task_queue_minimal() -> dict:
         and valid_queue.get("record_type") == "codex_task_queue_minimal_v0"
         and summary.get("valid_task_queue_count") == 1
         and summary.get("invalid_task_queue_count") == 21
-        and summary.get("valid_task_entry_count") == 11
+        and summary.get("valid_task_entry_count") == 12
         and summary.get("invalid_task_entry_count", 0) >= 9
         and summary.get("queue_scope_checked_count") == 1
         and summary.get("approval_block_checked_count") == 1
@@ -13161,6 +13164,86 @@ def smoke_level2_sandbox_application_observation_evaluation_summary_minimal() ->
     )
     return _result(
         "level2_sandbox_application_observation_evaluation_summary_minimal",
+        passed,
+        {"summary": summary, "boundary": boundary, "boundary_check": boundary_check},
+    )
+
+
+def smoke_level2_sandbox_review_conclusion_and_promotion_readiness_minimal() -> dict:
+    result = run_level2_sandbox_review_conclusion_and_promotion_readiness_minimal_check()
+    summary = result.get("summary", {})
+    boundary = result.get("boundary", {})
+    boundary_check = result.get("boundary_check", {})
+    conclusion = result.get("review_conclusion_records", [{}])[0]
+    readiness = result.get("promotion_readiness_records", [{}])[0]
+    passed = (
+        result.get("command") == "run-level2-sandbox-review-conclusion-and-promotion-readiness-minimal-check"
+        and result.get("flow") == "level2_sandbox_review_conclusion_and_promotion_readiness_minimal_v0"
+        and result.get("status") == "ok"
+        and summary.get("valid_level2_sandbox_review_conclusion_count") == 1
+        and summary.get("invalid_level2_sandbox_review_conclusion_count", 0) >= 1
+        and summary.get("valid_promotion_readiness_count") == 1
+        and summary.get("invalid_promotion_readiness_count", 0) >= 1
+        and summary.get("ready_for_future_design_package_only_count") == 1
+        and summary.get("runtime_behavior_changed_count") == 0
+        and summary.get("memory_written_count") == 0
+        and summary.get("retained_jsonl_written_count") == 0
+        and summary.get("predictor_mutated_count") == 0
+        and summary.get("selected_action_created_count") == 0
+        and summary.get("final_action_created_count") == 0
+        and summary.get("production_promotion_claimed_count") == 0
+        and summary.get("proof_of_learning_claimed_count") == 0
+        and boundary.get("boundary_change_required") is False
+        and boundary.get("boundary_index_update_required") is False
+        and boundary.get("boundary_index_version_before") == "2026-06-09-b73"
+        and boundary.get("boundary_index_version_after") == "2026-06-09-b73"
+        and conclusion.get("record_type") == "level2_sandbox_review_conclusion"
+        and conclusion.get("target_scope") == "phase0_level2_sandbox_only"
+        and conclusion.get("review_conclusion_status") == "concluded_level2_sandbox_review_passed"
+        and conclusion.get("level2_evaluation_status") == "passed_expected_level2_sandbox_outcome"
+        and conclusion.get("human_review_summary_present") is True
+        and conclusion.get("audit_present") is True
+        and conclusion.get("rollback_present") is True
+        and conclusion.get("runtime_behavior_changed") is False
+        and conclusion.get("memory_written") is False
+        and conclusion.get("retained_jsonl_written") is False
+        and conclusion.get("retention_written") is False
+        and conclusion.get("predictor_mutated") is False
+        and conclusion.get("selected_action_created") is False
+        and conclusion.get("final_action_created") is False
+        and conclusion.get("production_promotion_claimed") is False
+        and conclusion.get("proof_of_learning_claimed") is False
+        and readiness.get("record_type") == "phase0_future_promotion_readiness"
+        and readiness.get("readiness_scope") == "future_design_package_only"
+        and readiness.get("readiness_status") == "ready_for_future_higher_level_design_package_only"
+        and readiness.get("ready_for_future_higher_level_design_package") is True
+        and readiness.get("next_allowed_package_kind") == "future_design_package_only"
+        and readiness.get("ready_for_runtime_behavior_change") is False
+        and readiness.get("ready_for_memory_write") is False
+        and readiness.get("ready_for_retained_jsonl_write") is False
+        and readiness.get("ready_for_predictor_mutation") is False
+        and readiness.get("ready_for_production_promotion") is False
+        and readiness.get("ready_for_selected_action") is False
+        and readiness.get("ready_for_final_action") is False
+        and readiness.get("promotion_performed") is False
+        and readiness.get("proof_of_learning_claimed") is False
+        and boundary_check.get("conclusion_and_readiness_only") is True
+        and boundary_check.get("future_design_package_only") is True
+        and boundary_check.get("level3_sandbox_application_added") is False
+        and boundary_check.get("level2_runtime_execution_added") is False
+        and boundary_check.get("production_promotion_added") is False
+        and boundary_check.get("runtime_behavior_change_added") is False
+        and boundary_check.get("memory_write_added") is False
+        and boundary_check.get("retained_jsonl_write_added") is False
+        and boundary_check.get("retention_write_added") is False
+        and boundary_check.get("predictor_mutation_added") is False
+        and boundary_check.get("selected_action_created") is False
+        and boundary_check.get("final_action_created") is False
+        and boundary_check.get("direct_command_created") is False
+        and boundary_check.get("proof_of_learning_claimed") is False
+    )
+    return _result(
+        "level2_sandbox_review_conclusion_and_promotion_readiness_minimal",
         passed,
         {"summary": summary, "boundary": boundary, "boundary_check": boundary_check},
     )
@@ -15873,6 +15956,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_level2_sandbox_scenario_plan_minimal(),
         smoke_level2_sandbox_dry_run_observation_evaluation_summary_minimal(),
         smoke_level2_sandbox_application_observation_evaluation_summary_minimal(),
+        smoke_level2_sandbox_review_conclusion_and_promotion_readiness_minimal(),
         smoke_phase0_current_capability_snapshot(),
         smoke_memory_influence_behavior_gate_design(),
         smoke_first_memory_influenced_behavior_boundary(),
