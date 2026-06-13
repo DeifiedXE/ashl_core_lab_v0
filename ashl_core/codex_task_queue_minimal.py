@@ -8,8 +8,10 @@ from typing import Any
 
 COMMAND = "run-codex-task-queue-minimal-check"
 FLOW = "codex_task_queue_minimal_v0"
-BOUNDARY_INDEX_VERSION = "2026-06-09-b72"
-PREVIOUS_BOUNDARY_INDEX_VERSION = "2026-06-09-b71"
+BOUNDARY_INDEX_VERSION = "2026-06-09-b73"
+PREVIOUS_BOUNDARY_INDEX_VERSION = "2026-06-09-b72"
+VERSIONING_POLICY_BOUNDARY_BEFORE = "2026-06-09-b71"
+VERSIONING_POLICY_BOUNDARY_AFTER = "2026-06-09-b72"
 QUEUE_NAME = "ashl_core_phase0_codex_task_queue"
 BOUNDARY_PRINCIPLE = (
     "No task queue entry, completed task, passing test, Codex-generated status, workflow record, "
@@ -123,7 +125,7 @@ def build_codex_task_queue_minimal() -> dict[str, Any]:
                 "active",
                 "codex_work_package",
                 ["task.documentation_inventory.completed"],
-                ["task.phase0_versioning_policy.completed"],
+                ["task.level2_sandbox_application_observation_evaluation_summary.completed"],
                 "Workflow coordination only; does not approve or execute future packages.",
             ),
             _task(
@@ -181,8 +183,8 @@ def build_codex_task_queue_minimal() -> dict[str, Any]:
                 [],
                 "Completed package ID and Boundary Index version separation; task status is not approval.",
                 boundary_change_required=True,
-                boundary_index_version_before=PREVIOUS_BOUNDARY_INDEX_VERSION,
-                boundary_index_version_after=BOUNDARY_INDEX_VERSION,
+                boundary_index_version_before=VERSIONING_POLICY_BOUNDARY_BEFORE,
+                boundary_index_version_after=VERSIONING_POLICY_BOUNDARY_AFTER,
                 boundary_change_rationale=(
                     "Boundary Index changed because versioning governance now constrains when Boundary Index may change."
                 ),
@@ -199,13 +201,34 @@ def build_codex_task_queue_minimal() -> dict[str, Any]:
                 "Completed Level 2 sandbox dry-run-only observation/evaluation/summary; task status is not approval or execution.",
             ),
             _task(
+                "task.level2_sandbox_application_observation_evaluation_summary.completed",
+                "PKG-Phase0-Level2-Sandbox-App-001",
+                "Level 2 Sandbox Application, Observation, Evaluation, and Human Review Summary Minimal v0",
+                "sandbox_only",
+                "completed",
+                "codex_completed_report",
+                ["task.phase0_versioning_policy.completed", "task.level2_sandbox_dry_run_summary.completed"],
+                [],
+                (
+                    "Completed Level 2 sandbox-only application/observation/evaluation/summary; task status "
+                    "is not approval, runtime execution, or production behavior."
+                ),
+                boundary_change_required=True,
+                boundary_index_version_before=PREVIOUS_BOUNDARY_INDEX_VERSION,
+                boundary_index_version_after=BOUNDARY_INDEX_VERSION,
+                boundary_change_rationale=(
+                    "Level 2 moves from dry-run-only into sandbox-only application, changing the sandbox "
+                    "application permission boundary."
+                ),
+            ),
+            _task(
                 "task.level2_sandbox_readiness.deferred",
                 "PKG-Phase0-Level2-Readiness-Future",
                 "Level 2 Sandbox Readiness Minimal v0",
                 "capability_boundary",
                 "deferred",
                 "phase0_future_work",
-                ["task.phase0_versioning_policy.completed"],
+                ["task.level2_sandbox_application_observation_evaluation_summary.completed"],
                 [],
                 "Deferred future boundary; not implemented and not approved.",
                 deferral_reason="Level 2 application/execution requires a separate future package after dry-run evaluation.",
@@ -217,7 +240,7 @@ def build_codex_task_queue_minimal() -> dict[str, Any]:
                 "capability_boundary",
                 "deferred",
                 "phase0_future_work",
-                ["task.phase0_versioning_policy.completed"],
+                ["task.level2_sandbox_application_observation_evaluation_summary.completed"],
                 [],
                 "Deferred future memory boundary; no memory write or retained JSONL behavior is approved.",
                 deferral_reason="Memory readiness remains blocked until a future explicit boundary package.",
@@ -483,7 +506,7 @@ def _invalid_queues(valid_queue: dict[str, Any]) -> list[dict[str, Any]]:
     )
     queues.append(blocked)
     deferred = deepcopy(valid_queue)
-    deferred["task_entries"][8].pop("deferral_reason", None)
+    deferred["task_entries"][9].pop("deferral_reason", None)
     queues.append(deferred)
     superseded = deepcopy(valid_queue)
     superseded["task_entries"].append(
@@ -555,7 +578,7 @@ def _summary(
         summary["task_queue_result_count"] == 22
         and summary["valid_task_queue_count"] == 1
         and summary["invalid_task_queue_count"] == 21
-        and summary["valid_task_entry_count"] == 10
+        and summary["valid_task_entry_count"] == 11
         and summary["invalid_task_entry_count"] >= 9
         and summary["queue_scope_checked_count"] == 1
         and summary["approval_block_checked_count"] == 1

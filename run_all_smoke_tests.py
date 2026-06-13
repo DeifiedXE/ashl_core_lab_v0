@@ -175,6 +175,9 @@ from ashl_core.level2_sandbox_scenario_plan_minimal import (
 from ashl_core.level2_sandbox_dry_run_observation_evaluation_summary_minimal import (
     run_level2_sandbox_dry_run_observation_evaluation_summary_minimal_check,
 )
+from ashl_core.level2_sandbox_application_observation_evaluation_summary_minimal import (
+    run_level2_sandbox_application_observation_evaluation_summary_minimal_check,
+)
 from ashl_core.minimal_visual_grounding_trial import run_minimal_visual_grounding_trial_check
 from ashl_core.visual_prediction_error_attention_priority_preview_minimal import (
     run_visual_prediction_error_attention_priority_preview_minimal_check,
@@ -10485,8 +10488,8 @@ def smoke_current_boundary_index_docs() -> dict:
     readme = readme_path.read_text(encoding="utf-8") if readme_path.exists() else ""
     research_plan = research_plan_path.read_text(encoding="utf-8") if research_plan_path.exists() else ""
     compact_required_terms = [
-        "Boundary Index Version: 2026-06-09-b72",
-        "Last update log: Phase0 Package ID and Boundary Index Version Separation Minimal v0",
+        "Boundary Index Version: 2026-06-09-b73",
+        "Last update log: Level 2 Sandbox Application, Observation, Evaluation, and Human Review Summary Minimal v0",
         "docs/boundary_index_archive_2026_06.md",
         "Minimal Visual Grounding Trial v0",
         "Visual Prediction Error + Attention Priority Preview Minimal v0",
@@ -10527,10 +10530,10 @@ def smoke_current_boundary_index_docs() -> dict:
         "front_symbol=d",
         "preferred_sandbox_action=check_before_retry",
         "blocks_retry_same_action_until_check=True",
-        "Package ID / Boundary Index Version separation milestone",
-        "Boundary Index changed because versioning governance now constrains when Boundary Index may change",
-        "Package IDs track Codex work packages",
-        "Task completion, CLI/smoke/unittest/doc updates, queue status, scenario plans, and dry-run records do not automatically increment Boundary Index",
+        "Level 2 Sandbox Application milestone",
+        "Level 2 moved from dry-run-only into sandbox-only application",
+        "target_scope=phase0_level2_sandbox_only",
+        "application_status=applied_to_level2_sandbox_only",
         "Phase0 Documentation Consolidation milestone",
         "Documentation consolidation only",
         "Phase0 Documentation Inventory / Codex Task Queue milestone",
@@ -10561,7 +10564,7 @@ def smoke_current_boundary_index_docs() -> dict:
         and all(term in doc for term in compact_required_terms)
         and all(term in archive for term in archive_required_terms)
         and line_count <= 130
-        and "Boundary Index Version: 2026-06-09-b72" in readme
+        and "Boundary Index Version: 2026-06-09-b73" in readme
         and "docs/boundary_index_archive_2026_06.md" in readme
         and "Boundary Index Compaction / Archive v0" in research_plan
         and "Runtime Tendency Memory Influence Safety Sync Minimal v0" in research_plan
@@ -10599,11 +10602,12 @@ def smoke_phase0_documentation_consolidation_minimal() -> dict:
         status_path.exists()
         and matrix_path.exists()
         and index_path.exists()
-        and "Boundary Index Version: 2026-06-09-b72" in status
+        and "Boundary Index Version: 2026-06-09-b73" in status
         and "Current Safe Capability" in status
         and "No proof-of-learning claim" in status
         and "Level 1 Sandbox Outcome Evaluation and Human Review Summary Minimal v0" in status
         and "Level 2 Sandbox Dry Run, Observation, Evaluation, and Human Review Summary Minimal v0" in status
+        and "Level 2 Sandbox Application, Observation, Evaluation, and Human Review Summary Minimal v0" in status
         and "Phase0 Package ID and Boundary Index Version Separation Minimal v0" in status
         and "| Level 1 sandbox outcome observation | implemented_sandbox_only |" in matrix
         and "| outcome evaluation | implemented_sandbox_only |" in matrix
@@ -10612,6 +10616,7 @@ def smoke_phase0_documentation_consolidation_minimal() -> dict:
         and "| Level 2 sandbox design envelope | implemented_design_only |" in matrix
         and "| Level 2 sandbox scenario plan | implemented_planning_only |" in matrix
         and "| Level 2 sandbox dry run | implemented_dry_run_only |" in matrix
+        and "| Level 2 sandbox application closed loop | implemented_sandbox_only |" in matrix
         and "| Package ID / Boundary Index version separation | implemented_workflow_governance |" in matrix
         and "| retention write | blocked |" in matrix
         and "| predictor mutation | blocked |" in matrix
@@ -10667,7 +10672,7 @@ def smoke_phase0_documentation_inventory_and_consistency_reconciliation() -> dic
     boundary = Path("docs/current_boundary_index.md").read_text(encoding="utf-8")
     passed = (
         all(path.exists() for path in required_paths)
-        and "Boundary Index Version: 2026-06-09-b72" in texts[Path("docs/phase0_status.md")]
+        and "Boundary Index Version: 2026-06-09-b73" in texts[Path("docs/phase0_status.md")]
         and "Inventory count:" in texts[Path("docs/phase0_doc_inventory.md")]
         and "docs/phase0_versioning_policy.md" in texts[Path("docs/phase0_doc_inventory.md")]
         and "unknown_needs_review" in texts[Path("docs/phase0_doc_inventory.md")]
@@ -12223,6 +12228,10 @@ def smoke_codex_task_queue_minimal() -> dict:
         (task for task in task_entries if task.get("package_id") == "PKG-Phase0-Versioning-001"),
         {},
     )
+    level2_application_task = next(
+        (task for task in task_entries if task.get("package_id") == "PKG-Phase0-Level2-Sandbox-App-001"),
+        {},
+    )
     passed = (
         result.get("command") == "run-codex-task-queue-minimal-check"
         and result.get("flow") == "codex_task_queue_minimal_v0"
@@ -12231,7 +12240,7 @@ def smoke_codex_task_queue_minimal() -> dict:
         and valid_queue.get("record_type") == "codex_task_queue_minimal_v0"
         and summary.get("valid_task_queue_count") == 1
         and summary.get("invalid_task_queue_count") == 21
-        and summary.get("valid_task_entry_count") == 10
+        and summary.get("valid_task_entry_count") == 11
         and summary.get("invalid_task_entry_count", 0) >= 9
         and summary.get("queue_scope_checked_count") == 1
         and summary.get("approval_block_checked_count") == 1
@@ -12247,6 +12256,10 @@ def smoke_codex_task_queue_minimal() -> dict:
         and versioning_task.get("boundary_index_version_before") == "2026-06-09-b71"
         and versioning_task.get("boundary_index_version_after") == "2026-06-09-b72"
         and "versioning governance" in versioning_task.get("boundary_change_rationale", "")
+        and level2_application_task.get("boundary_change_required") is True
+        and level2_application_task.get("boundary_index_version_before") == "2026-06-09-b72"
+        and level2_application_task.get("boundary_index_version_after") == "2026-06-09-b73"
+        and "sandbox application permission boundary" in level2_application_task.get("boundary_change_rationale", "")
         and valid_queue.get("queue_counts_as_approval") is False
         and valid_queue.get("queue_counts_as_application") is False
         and valid_queue.get("queue_counts_as_runtime_behavior") is False
@@ -13082,6 +13095,74 @@ def smoke_level2_sandbox_dry_run_observation_evaluation_summary_minimal() -> dic
             "summary": summary,
             "boundary_check": boundary,
         },
+    )
+
+
+def smoke_level2_sandbox_application_observation_evaluation_summary_minimal() -> dict:
+    result = run_level2_sandbox_application_observation_evaluation_summary_minimal_check()
+    summary = result.get("summary", {})
+    boundary = result.get("boundary", {})
+    boundary_check = result.get("boundary_check", {})
+    application = result.get("application_records", [{}])[0]
+    observation = result.get("observation_records", [{}])[0]
+    evaluation = result.get("evaluation_records", [{}])[0]
+    human_review = result.get("human_review_summary_records", [{}])[0]
+    passed = (
+        result.get("command") == "run-level2-sandbox-application-observation-evaluation-summary-minimal-check"
+        and result.get("flow") == "level2_sandbox_application_observation_evaluation_summary_minimal_v0"
+        and result.get("status") == "ok"
+        and summary.get("valid_level2_sandbox_application_count") == 1
+        and summary.get("valid_level2_observation_count") == 1
+        and summary.get("valid_level2_evaluation_count") == 1
+        and summary.get("valid_level2_human_review_summary_count") == 1
+        and summary.get("invalid_level2_records_blocked_count", 0) >= 1
+        and summary.get("forbidden_capability_detected_count") == 0
+        and summary.get("proof_of_learning_claim_detected_count") == 0
+        and boundary.get("boundary_change_required") is True
+        and boundary.get("boundary_index_update_required") is True
+        and boundary.get("boundary_index_version_before") == "2026-06-09-b72"
+        and boundary.get("boundary_index_version_after") == "2026-06-09-b73"
+        and "sandbox application permission boundary" in boundary.get("boundary_change_rationale", "")
+        and application.get("record_type") == "level2_sandbox_application"
+        and application.get("target_scope") == "phase0_level2_sandbox_only"
+        and application.get("application_status") == "applied_to_level2_sandbox_only"
+        and application.get("approval_source") == "explicit_user_statement"
+        and application.get("approval_actor") == "user"
+        and application.get("approver_role") == "project_owner"
+        and application.get("approval_text_present") is True
+        and application.get("runtime_behavior_changed") is False
+        and application.get("production_behavior_changed") is False
+        and application.get("memory_written") is False
+        and application.get("retained_jsonl_written") is False
+        and application.get("retention_written") is False
+        and application.get("predictor_mutated") is False
+        and application.get("selected_action_created") is False
+        and application.get("final_action_created") is False
+        and application.get("direct_command_created") is False
+        and application.get("proof_of_learning_claimed") is False
+        and application.get("audit_recorded") is True
+        and application.get("rollback_available") is True
+        and observation.get("record_type") == "level2_sandbox_application_observation"
+        and observation.get("observation_status") == "observed_level2_sandbox_application"
+        and evaluation.get("record_type") == "level2_sandbox_application_evaluation"
+        and evaluation.get("evaluation_status") == "passed_expected_level2_sandbox_outcome"
+        and human_review.get("record_type") == "level2_sandbox_application_human_review_summary"
+        and human_review.get("summary_status") == "conservative_level2_sandbox_application_review_summary"
+        and boundary_check.get("level2_sandbox_only_application") is True
+        and boundary_check.get("level2_runtime_execution") is False
+        and boundary_check.get("memory_write_added") is False
+        and boundary_check.get("retained_jsonl_write_added") is False
+        and boundary_check.get("retention_write_added") is False
+        and boundary_check.get("predictor_mutation_added") is False
+        and boundary_check.get("selected_action_created") is False
+        and boundary_check.get("final_action_created") is False
+        and boundary_check.get("direct_command_created") is False
+        and boundary_check.get("proof_of_learning_claimed") is False
+    )
+    return _result(
+        "level2_sandbox_application_observation_evaluation_summary_minimal",
+        passed,
+        {"summary": summary, "boundary": boundary, "boundary_check": boundary_check},
     )
 
 
@@ -15791,6 +15872,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_level2_sandbox_design_envelope_minimal(),
         smoke_level2_sandbox_scenario_plan_minimal(),
         smoke_level2_sandbox_dry_run_observation_evaluation_summary_minimal(),
+        smoke_level2_sandbox_application_observation_evaluation_summary_minimal(),
         smoke_phase0_current_capability_snapshot(),
         smoke_memory_influence_behavior_gate_design(),
         smoke_first_memory_influenced_behavior_boundary(),

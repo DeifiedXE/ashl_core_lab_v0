@@ -6308,6 +6308,26 @@ Next use:
 1. Use Package IDs to track Codex work packages.
 2. Change Boundary Index only when a real boundary or validation-boundary change occurs.
 
+## Level 2 Sandbox Application, Observation, Evaluation, and Human Review Summary Minimal v0
+
+Status: completed / sandbox-only application closed loop.
+
+Progress:
+- Adds `ashl_core/level2_sandbox_application_observation_evaluation_summary_minimal.py`.
+- Consumes valid Level 2 scenario plan, valid Level 2 dry-run evaluation/human review summary, and explicit user approval.
+- Creates a Level 2 sandbox-only application record.
+- Observes the application record, evaluates expected Level 2 sandbox outcome, and produces a conservative human review summary.
+- Requires audit and rollback.
+- Blocks Level 2 runtime execution, production behavior change, memory write, retained JSONL write, retention write, predictor mutation, selected_action, final_action, direct command, approval replay/session binding, and proof-of-learning claims.
+
+Boundary:
+- Boundary Index changed from `2026-06-09-b72` to `2026-06-09-b73`.
+- Rationale: Level 2 moved from dry-run-only into sandbox-only application, changing the sandbox application permission boundary.
+
+Next recommended work:
+1. Keep Level 2 runtime execution and production behavior blocked.
+2. Do not add memory, retention, predictor, selected_action, final_action, direct command, or proof claims without a separate future boundary package.
+
 Forbidden claims:
 - No production lesson application.
 - No runtime behavior change.
