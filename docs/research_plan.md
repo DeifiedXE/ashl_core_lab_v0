@@ -6367,6 +6367,25 @@ Next recommended work:
 1. Keep Level 3 runtime execution and production promotion blocked.
 2. Do not add memory, retention, predictor, selected_action, final_action, direct command, or proof claims without a separate future boundary package.
 
+## Level 3 Toy Minefield Variant Suite, Stability Evaluation, and Review Conclusion Minimal v0
+
+Status: completed / Level 3 deterministic variant-suite stability review / no new boundary.
+
+Progress:
+- Adds `ashl_core/level3_toy_minefield_variant_suite_stability_minimal.py`.
+- Extends the existing Level 3 toy minefield sandbox-only trace into deterministic variants: safe path, risky repeat trap, and blocked path fallback.
+- Evaluates whether check-before-retry behavior remains stable across variants.
+- Records a suite-level stability summary and conservative Level 3 toy minefield review conclusion.
+
+Boundary:
+- Boundary Index remains `2026-06-09-b74`.
+- Rationale: the variant suite operates inside the already-authorized Phase0 Level 3 toy minefield sandbox-only multi-step trace boundary.
+- No runtime behavior, memory write, retained JSONL write, retention write, predictor mutation, selected_action, final_action, direct command, production promotion, random mine generation, real Minesweeper engine, approval replay/session binding hardening, or proof-of-learning claim is added.
+
+Next recommended work:
+1. Keep Level 3 runtime execution and production promotion blocked.
+2. Use a separate future boundary package for any runtime behavior, memory/retained JSONL, retention, predictor, action-selection, production, or proof claim.
+
 Forbidden claims:
 - No production lesson application.
 - No runtime behavior change.

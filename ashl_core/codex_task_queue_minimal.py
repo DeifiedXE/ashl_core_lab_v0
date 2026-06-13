@@ -129,7 +129,7 @@ def build_codex_task_queue_minimal() -> dict[str, Any]:
                 "active",
                 "codex_work_package",
                 ["task.documentation_inventory.completed"],
-                ["task.level3_toy_minefield_multistep_sandbox.completed"],
+                ["task.level3_toy_minefield_variant_suite_stability.completed"],
                 "Workflow coordination only; does not approve or execute future packages.",
             ),
             _task(
@@ -263,13 +263,28 @@ def build_codex_task_queue_minimal() -> dict[str, Any]:
                 ),
             ),
             _task(
+                "task.level3_toy_minefield_variant_suite_stability.completed",
+                "PKG-PHASE0-L3-MINEFIELD-VARIANT-STABILITY-REVIEW-001",
+                "Level 3 Toy Minefield Variant Suite, Stability Evaluation, and Review Conclusion Minimal v0",
+                "sandbox_only",
+                "completed",
+                "codex_completed_report",
+                ["task.level3_toy_minefield_multistep_sandbox.completed"],
+                [],
+                (
+                    "Completed deterministic Level 3 toy minefield variant suite stability evaluation and "
+                    "review conclusion inside the existing Level 3 sandbox boundary; task status is not "
+                    "runtime execution, production promotion, memory write, predictor mutation, or proof of learning."
+                ),
+            ),
+            _task(
                 "task.level2_sandbox_readiness.deferred",
                 "PKG-Phase0-Level2-Readiness-Future",
                 "Level 2 Sandbox Readiness Minimal v0",
                 "capability_boundary",
                 "deferred",
                 "phase0_future_work",
-                ["task.level3_toy_minefield_multistep_sandbox.completed"],
+                ["task.level3_toy_minefield_variant_suite_stability.completed"],
                 [],
                 "Deferred future boundary; not implemented and not approved.",
                 deferral_reason="Level 2 application/execution requires a separate future package after dry-run evaluation.",
@@ -281,7 +296,7 @@ def build_codex_task_queue_minimal() -> dict[str, Any]:
                 "capability_boundary",
                 "deferred",
                 "phase0_future_work",
-                ["task.level3_toy_minefield_multistep_sandbox.completed"],
+                ["task.level3_toy_minefield_variant_suite_stability.completed"],
                 [],
                 "Deferred future memory boundary; no memory write or retained JSONL behavior is approved.",
                 deferral_reason="Memory readiness remains blocked until a future explicit boundary package.",
@@ -547,7 +562,7 @@ def _invalid_queues(valid_queue: dict[str, Any]) -> list[dict[str, Any]]:
     )
     queues.append(blocked)
     deferred = deepcopy(valid_queue)
-    deferred["task_entries"][11].pop("deferral_reason", None)
+    deferred["task_entries"][12].pop("deferral_reason", None)
     queues.append(deferred)
     superseded = deepcopy(valid_queue)
     superseded["task_entries"].append(
@@ -619,7 +634,7 @@ def _summary(
         summary["task_queue_result_count"] == 22
         and summary["valid_task_queue_count"] == 1
         and summary["invalid_task_queue_count"] == 21
-        and summary["valid_task_entry_count"] == 13
+        and summary["valid_task_entry_count"] == 14
         and summary["invalid_task_entry_count"] >= 9
         and summary["queue_scope_checked_count"] == 1
         and summary["approval_block_checked_count"] == 1
