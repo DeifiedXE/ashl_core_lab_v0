@@ -51,11 +51,12 @@ class Phase0DocumentationInventoryConsistencyReconciliationTests(unittest.TestCa
     def test_current_boundary_index_has_sandbox_production_distinction(self):
         boundary = self._read("docs/current_boundary_index.md")
 
-        self.assertIn("Boundary Index Version: 2026-06-09-b73", boundary)
+        self.assertIn("Boundary Index Version: 2026-06-09-b74", boundary)
         self.assertIn("No production/runtime memory-influenced behavior is allowed.", boundary)
         self.assertIn("sandbox-only lesson application, observation, and evaluation records", boundary)
         self.assertIn("do not constitute production/runtime memory-influenced behavior", boundary)
         self.assertIn("Level 2 Sandbox Application milestone", boundary)
+        self.assertIn("Level 3 Toy Minefield Multi-Step Sandbox milestone", boundary)
 
     def test_long_term_memory_priority_note_exists(self):
         design = self._read("docs/five_layer_memory_design_assumption_v0_1.md")

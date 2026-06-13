@@ -1618,7 +1618,7 @@ Two-Trial History Boundary:
 
 - `docs/current_boundary_index.md`
 - Adds a short, versioned, low-token source of global hard boundaries for future work packages.
-- Current version: `Boundary Index Version: 2026-06-09-b73`.
+- Current version: `Boundary Index Version: 2026-06-09-b74`.
 - For current Phase0 status, see `docs/phase0_status.md`.
 - For capability status, see `docs/phase0_capability_matrix.md`.
 - For boundary version history, see `docs/current_boundary_index.md`.
@@ -2712,6 +2712,10 @@ Two-Trial History Boundary:
 ## Level 2 Sandbox Review Conclusion and Promotion Readiness Minimal v0
 
 - Level 2 Sandbox Review Conclusion and Promotion Readiness Minimal v0 consumes the completed Phase0 Level 2 sandbox-only application closed loop, records a passed sandbox review conclusion when the application, observation, evaluation, conservative human review summary, audit, and rollback are valid, and records conservative readiness for a future higher-level design package only. Boundary Index remains `2026-06-09-b73` because this adds conclusion/readiness records without changing permission scope. It does not add Level 3 application, Level 2 runtime execution, production promotion, memory or retained JSONL writes, retention writes, predictor mutation, selected_action/final_action/direct command, or proof-of-learning claims.
+
+## Level 3 Toy Minefield Multi-Step Sandbox Minimal v0
+
+- Level 3 Toy Minefield Multi-Step Sandbox Minimal v0 adds a deterministic toy minefield sandbox-only multi-step closed loop. It consumes a valid Level 2 sandbox review conclusion, future-design readiness, and explicit user approval fixture, then records a scenario definition, sandbox application trace, observation, evaluation, and conservative human review summary. Boundary Index changes from `2026-06-09-b73` to `2026-06-09-b74` because Level 3 introduces a new sandbox-only multi-step application trace scope. It does not add Level 3 runtime execution, real Minesweeper logic, random mine generation, production promotion, memory or retained JSONL writes, retention writes, predictor mutation, selected_action/final_action/direct command, approval replay/session binding, or proof-of-learning claims.
 
 ## Phase0 Package ID and Boundary Index Version Separation Minimal v0
 

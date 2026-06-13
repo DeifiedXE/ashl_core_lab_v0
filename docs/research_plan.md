@@ -6347,6 +6347,26 @@ Next recommended work:
 1. Keep Level 2 runtime execution and production promotion blocked.
 2. Use a separate future boundary package for any runtime behavior, memory/retained JSONL, retention, predictor, action-selection, final_action, direct command, production, or proof claim.
 
+## Level 3 Toy Minefield Multi-Step Sandbox Minimal v0
+
+Status: completed / Level 3 sandbox-only multi-step closed loop.
+
+Progress:
+- Adds `ashl_core/level3_toy_minefield_multistep_sandbox_minimal.py`.
+- Consumes a valid Level 2 sandbox review conclusion, future higher-level design readiness, and explicit user approval fixture.
+- Defines a deterministic toy minefield scenario and bounded multi-step sandbox trace.
+- Enforces check-before-retry behavior by rejecting repeated reveal of the same risky cell without an intervening check or safe-cell choice.
+- Observes the multi-step trace, evaluates the expected Level 3 sandbox outcome, and produces a conservative human review summary.
+
+Boundary:
+- Boundary Index changed from `2026-06-09-b73` to `2026-06-09-b74`.
+- Rationale: Level 3 introduces a new sandbox-only multi-step application trace scope, changing the sandbox application permission boundary.
+- No Level 3 runtime execution, production promotion, memory write, retained JSONL write, retention write, predictor mutation, selected_action, final_action, direct command, approval replay/session binding, or proof-of-learning claim is added.
+
+Next recommended work:
+1. Keep Level 3 runtime execution and production promotion blocked.
+2. Do not add memory, retention, predictor, selected_action, final_action, direct command, or proof claims without a separate future boundary package.
+
 Forbidden claims:
 - No production lesson application.
 - No runtime behavior change.

@@ -8,8 +8,12 @@ from typing import Any
 
 COMMAND = "run-codex-task-queue-minimal-check"
 FLOW = "codex_task_queue_minimal_v0"
-BOUNDARY_INDEX_VERSION = "2026-06-09-b73"
-PREVIOUS_BOUNDARY_INDEX_VERSION = "2026-06-09-b72"
+BOUNDARY_INDEX_VERSION = "2026-06-09-b74"
+PREVIOUS_BOUNDARY_INDEX_VERSION = "2026-06-09-b73"
+LEVEL2_APPLICATION_BOUNDARY_BEFORE = "2026-06-09-b72"
+LEVEL2_APPLICATION_BOUNDARY_AFTER = "2026-06-09-b73"
+LEVEL3_TOY_MINEFIELD_BOUNDARY_BEFORE = "2026-06-09-b73"
+LEVEL3_TOY_MINEFIELD_BOUNDARY_AFTER = "2026-06-09-b74"
 VERSIONING_POLICY_BOUNDARY_BEFORE = "2026-06-09-b71"
 VERSIONING_POLICY_BOUNDARY_AFTER = "2026-06-09-b72"
 QUEUE_NAME = "ashl_core_phase0_codex_task_queue"
@@ -125,7 +129,7 @@ def build_codex_task_queue_minimal() -> dict[str, Any]:
                 "active",
                 "codex_work_package",
                 ["task.documentation_inventory.completed"],
-                ["task.level2_sandbox_review_conclusion_promotion_readiness.completed"],
+                ["task.level3_toy_minefield_multistep_sandbox.completed"],
                 "Workflow coordination only; does not approve or execute future packages.",
             ),
             _task(
@@ -214,8 +218,8 @@ def build_codex_task_queue_minimal() -> dict[str, Any]:
                     "is not approval, runtime execution, or production behavior."
                 ),
                 boundary_change_required=True,
-                boundary_index_version_before=PREVIOUS_BOUNDARY_INDEX_VERSION,
-                boundary_index_version_after=BOUNDARY_INDEX_VERSION,
+                boundary_index_version_before=LEVEL2_APPLICATION_BOUNDARY_BEFORE,
+                boundary_index_version_after=LEVEL2_APPLICATION_BOUNDARY_AFTER,
                 boundary_change_rationale=(
                     "Level 2 moves from dry-run-only into sandbox-only application, changing the sandbox "
                     "application permission boundary."
@@ -234,6 +238,29 @@ def build_codex_task_queue_minimal() -> dict[str, Any]:
                     "Completed Level 2 sandbox review conclusion and future-design-only promotion readiness; "
                     "task status is not approval, runtime execution, production promotion, or memory write."
                 ),
+                boundary_index_version_before=LEVEL2_APPLICATION_BOUNDARY_AFTER,
+                boundary_index_version_after=LEVEL2_APPLICATION_BOUNDARY_AFTER,
+            ),
+            _task(
+                "task.level3_toy_minefield_multistep_sandbox.completed",
+                "PKG-Phase0-Level3-ToyMinefield-Multistep-Sandbox-Minimal-v0",
+                "Level 3 Toy Minefield Multi-Step Sandbox Minimal v0",
+                "sandbox_only",
+                "completed",
+                "codex_completed_report",
+                ["task.level2_sandbox_review_conclusion_promotion_readiness.completed"],
+                [],
+                (
+                    "Completed Level 3 toy minefield sandbox-only multi-step application trace, observation, "
+                    "evaluation, and summary; task status is not runtime execution, production promotion, or memory write."
+                ),
+                boundary_change_required=True,
+                boundary_index_version_before=LEVEL3_TOY_MINEFIELD_BOUNDARY_BEFORE,
+                boundary_index_version_after=LEVEL3_TOY_MINEFIELD_BOUNDARY_AFTER,
+                boundary_change_rationale=(
+                    "Level 3 introduces a new sandbox-only multi-step application trace scope, changing the "
+                    "sandbox application permission boundary."
+                ),
             ),
             _task(
                 "task.level2_sandbox_readiness.deferred",
@@ -242,7 +269,7 @@ def build_codex_task_queue_minimal() -> dict[str, Any]:
                 "capability_boundary",
                 "deferred",
                 "phase0_future_work",
-                ["task.level2_sandbox_review_conclusion_promotion_readiness.completed"],
+                ["task.level3_toy_minefield_multistep_sandbox.completed"],
                 [],
                 "Deferred future boundary; not implemented and not approved.",
                 deferral_reason="Level 2 application/execution requires a separate future package after dry-run evaluation.",
@@ -254,7 +281,7 @@ def build_codex_task_queue_minimal() -> dict[str, Any]:
                 "capability_boundary",
                 "deferred",
                 "phase0_future_work",
-                ["task.level2_sandbox_review_conclusion_promotion_readiness.completed"],
+                ["task.level3_toy_minefield_multistep_sandbox.completed"],
                 [],
                 "Deferred future memory boundary; no memory write or retained JSONL behavior is approved.",
                 deferral_reason="Memory readiness remains blocked until a future explicit boundary package.",
@@ -520,7 +547,7 @@ def _invalid_queues(valid_queue: dict[str, Any]) -> list[dict[str, Any]]:
     )
     queues.append(blocked)
     deferred = deepcopy(valid_queue)
-    deferred["task_entries"][10].pop("deferral_reason", None)
+    deferred["task_entries"][11].pop("deferral_reason", None)
     queues.append(deferred)
     superseded = deepcopy(valid_queue)
     superseded["task_entries"].append(
@@ -592,7 +619,7 @@ def _summary(
         summary["task_queue_result_count"] == 22
         and summary["valid_task_queue_count"] == 1
         and summary["invalid_task_queue_count"] == 21
-        and summary["valid_task_entry_count"] == 12
+        and summary["valid_task_entry_count"] == 13
         and summary["invalid_task_entry_count"] >= 9
         and summary["queue_scope_checked_count"] == 1
         and summary["approval_block_checked_count"] == 1

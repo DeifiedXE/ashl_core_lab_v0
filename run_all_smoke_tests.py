@@ -181,6 +181,9 @@ from ashl_core.level2_sandbox_application_observation_evaluation_summary_minimal
 from ashl_core.level2_sandbox_review_conclusion_and_promotion_readiness_minimal import (
     run_level2_sandbox_review_conclusion_and_promotion_readiness_minimal_check,
 )
+from ashl_core.level3_toy_minefield_multistep_sandbox_minimal import (
+    run_level3_toy_minefield_multistep_sandbox_minimal_check,
+)
 from ashl_core.minimal_visual_grounding_trial import run_minimal_visual_grounding_trial_check
 from ashl_core.visual_prediction_error_attention_priority_preview_minimal import (
     run_visual_prediction_error_attention_priority_preview_minimal_check,
@@ -10491,8 +10494,8 @@ def smoke_current_boundary_index_docs() -> dict:
     readme = readme_path.read_text(encoding="utf-8") if readme_path.exists() else ""
     research_plan = research_plan_path.read_text(encoding="utf-8") if research_plan_path.exists() else ""
     compact_required_terms = [
-        "Boundary Index Version: 2026-06-09-b73",
-        "Last update log: Level 2 Sandbox Application, Observation, Evaluation, and Human Review Summary Minimal v0",
+        "Boundary Index Version: 2026-06-09-b74",
+        "Last update log: Level 3 Toy Minefield Multi-Step Sandbox Minimal v0",
         "docs/boundary_index_archive_2026_06.md",
         "Minimal Visual Grounding Trial v0",
         "Visual Prediction Error + Attention Priority Preview Minimal v0",
@@ -10537,6 +10540,10 @@ def smoke_current_boundary_index_docs() -> dict:
         "Level 2 moved from dry-run-only into sandbox-only application",
         "target_scope=phase0_level2_sandbox_only",
         "application_status=applied_to_level2_sandbox_only",
+        "Level 3 Toy Minefield Multi-Step Sandbox milestone",
+        "target_scope=phase0_level3_toy_minefield_sandbox_only",
+        "check_before_retry_enforced=True",
+        "retry_same_risky_cell_without_check_blocked=True",
         "Phase0 Documentation Consolidation milestone",
         "Documentation consolidation only",
         "Phase0 Documentation Inventory / Codex Task Queue milestone",
@@ -10567,7 +10574,7 @@ def smoke_current_boundary_index_docs() -> dict:
         and all(term in doc for term in compact_required_terms)
         and all(term in archive for term in archive_required_terms)
         and line_count <= 130
-        and "Boundary Index Version: 2026-06-09-b73" in readme
+        and "Boundary Index Version: 2026-06-09-b74" in readme
         and "docs/boundary_index_archive_2026_06.md" in readme
         and "Boundary Index Compaction / Archive v0" in research_plan
         and "Runtime Tendency Memory Influence Safety Sync Minimal v0" in research_plan
@@ -10605,12 +10612,13 @@ def smoke_phase0_documentation_consolidation_minimal() -> dict:
         status_path.exists()
         and matrix_path.exists()
         and index_path.exists()
-        and "Boundary Index Version: 2026-06-09-b73" in status
+        and "Boundary Index Version: 2026-06-09-b74" in status
         and "Current Safe Capability" in status
         and "No proof-of-learning claim" in status
         and "Level 1 Sandbox Outcome Evaluation and Human Review Summary Minimal v0" in status
         and "Level 2 Sandbox Dry Run, Observation, Evaluation, and Human Review Summary Minimal v0" in status
         and "Level 2 Sandbox Application, Observation, Evaluation, and Human Review Summary Minimal v0" in status
+        and "Level 3 Toy Minefield Multi-Step Sandbox Minimal v0" in status
         and "Phase0 Package ID and Boundary Index Version Separation Minimal v0" in status
         and "| Level 1 sandbox outcome observation | implemented_sandbox_only |" in matrix
         and "| outcome evaluation | implemented_sandbox_only |" in matrix
@@ -10675,7 +10683,7 @@ def smoke_phase0_documentation_inventory_and_consistency_reconciliation() -> dic
     boundary = Path("docs/current_boundary_index.md").read_text(encoding="utf-8")
     passed = (
         all(path.exists() for path in required_paths)
-        and "Boundary Index Version: 2026-06-09-b73" in texts[Path("docs/phase0_status.md")]
+        and "Boundary Index Version: 2026-06-09-b74" in texts[Path("docs/phase0_status.md")]
         and "Inventory count:" in texts[Path("docs/phase0_doc_inventory.md")]
         and "docs/phase0_versioning_policy.md" in texts[Path("docs/phase0_doc_inventory.md")]
         and "unknown_needs_review" in texts[Path("docs/phase0_doc_inventory.md")]
@@ -12235,6 +12243,14 @@ def smoke_codex_task_queue_minimal() -> dict:
         (task for task in task_entries if task.get("package_id") == "PKG-Phase0-Level2-Sandbox-App-001"),
         {},
     )
+    level3_toy_minefield_task = next(
+        (
+            task
+            for task in task_entries
+            if task.get("package_id") == "PKG-Phase0-Level3-ToyMinefield-Multistep-Sandbox-Minimal-v0"
+        ),
+        {},
+    )
     passed = (
         result.get("command") == "run-codex-task-queue-minimal-check"
         and result.get("flow") == "codex_task_queue_minimal_v0"
@@ -12243,7 +12259,7 @@ def smoke_codex_task_queue_minimal() -> dict:
         and valid_queue.get("record_type") == "codex_task_queue_minimal_v0"
         and summary.get("valid_task_queue_count") == 1
         and summary.get("invalid_task_queue_count") == 21
-        and summary.get("valid_task_entry_count") == 12
+        and summary.get("valid_task_entry_count") == 13
         and summary.get("invalid_task_entry_count", 0) >= 9
         and summary.get("queue_scope_checked_count") == 1
         and summary.get("approval_block_checked_count") == 1
@@ -12263,6 +12279,10 @@ def smoke_codex_task_queue_minimal() -> dict:
         and level2_application_task.get("boundary_index_version_before") == "2026-06-09-b72"
         and level2_application_task.get("boundary_index_version_after") == "2026-06-09-b73"
         and "sandbox application permission boundary" in level2_application_task.get("boundary_change_rationale", "")
+        and level3_toy_minefield_task.get("boundary_change_required") is True
+        and level3_toy_minefield_task.get("boundary_index_version_before") == "2026-06-09-b73"
+        and level3_toy_minefield_task.get("boundary_index_version_after") == "2026-06-09-b74"
+        and "multi-step application trace scope" in level3_toy_minefield_task.get("boundary_change_rationale", "")
         and valid_queue.get("queue_counts_as_approval") is False
         and valid_queue.get("queue_counts_as_application") is False
         and valid_queue.get("queue_counts_as_runtime_behavior") is False
@@ -13244,6 +13264,87 @@ def smoke_level2_sandbox_review_conclusion_and_promotion_readiness_minimal() -> 
     )
     return _result(
         "level2_sandbox_review_conclusion_and_promotion_readiness_minimal",
+        passed,
+        {"summary": summary, "boundary": boundary, "boundary_check": boundary_check},
+    )
+
+
+def smoke_level3_toy_minefield_multistep_sandbox_minimal() -> dict:
+    result = run_level3_toy_minefield_multistep_sandbox_minimal_check()
+    summary = result.get("summary", {})
+    boundary = result.get("boundary", {})
+    boundary_check = result.get("boundary_check", {})
+    valid_result = result.get("valid_result", {})
+    scenario = valid_result.get("scenario_definition", {})
+    application = valid_result.get("application_trace", {})
+    observation = valid_result.get("observation", {})
+    evaluation = valid_result.get("evaluation", {})
+    human_review = valid_result.get("human_review_summary", {})
+    passed = (
+        result.get("command") == "run-level3-toy-minefield-multistep-sandbox-minimal-check"
+        and result.get("flow") == "level3_toy_minefield_multistep_sandbox_minimal_v0"
+        and result.get("status") == "ok"
+        and summary.get("valid_level3_toy_minefield_count") == 1
+        and summary.get("invalid_level3_toy_minefield_count", 0) >= 1
+        and summary.get("scenario_checked_count") == 1
+        and summary.get("application_trace_checked_count") == 1
+        and summary.get("observation_checked_count") == 1
+        and summary.get("evaluation_checked_count") == 1
+        and summary.get("human_review_summary_checked_count") == 1
+        and summary.get("audit_recorded_count") == 1
+        and summary.get("rollback_available_count") == 1
+        and summary.get("proof_of_learning_claim_count") == 0
+        and boundary.get("boundary_change_required") is True
+        and boundary.get("boundary_index_update_required") is True
+        and boundary.get("boundary_index_version_before") == "2026-06-09-b73"
+        and boundary.get("boundary_index_version_after") == "2026-06-09-b74"
+        and "Level 3" in boundary.get("boundary_change_rationale", "")
+        and scenario.get("record_type") == "level3_toy_minefield_scenario_definition"
+        and scenario.get("target_scope") == "phase0_level3_toy_minefield_sandbox_only"
+        and scenario.get("minefield_mode") == "deterministic_fixture"
+        and scenario.get("temporary_sandbox_state_only") is True
+        and scenario.get("runtime_execution_allowed") is False
+        and scenario.get("memory_write_allowed") is False
+        and application.get("record_type") == "level3_toy_minefield_sandbox_application_trace"
+        and application.get("target_scope") == "phase0_level3_toy_minefield_sandbox_only"
+        and len(application.get("sandbox_trace_steps", [])) >= 2
+        and application.get("check_before_retry_enforced") is True
+        and application.get("retry_same_risky_cell_without_check_blocked") is True
+        and application.get("audit_recorded") is True
+        and application.get("rollback_available") is True
+        and application.get("runtime_behavior_changed") is False
+        and application.get("memory_written") is False
+        and application.get("retained_jsonl_written") is False
+        and application.get("retention_written") is False
+        and application.get("predictor_modified") is False
+        and application.get("selected_action_created") is False
+        and application.get("final_action_created") is False
+        and application.get("production_promoted") is False
+        and application.get("proof_of_learning_claimed") is False
+        and observation.get("record_type") == "level3_toy_minefield_observation"
+        and observation.get("observed_multistep_trace") is True
+        and observation.get("observed_check_before_retry") is True
+        and observation.get("observed_retry_block") is True
+        and evaluation.get("record_type") == "level3_toy_minefield_evaluation"
+        and evaluation.get("evaluation_status") == "passed_expected_level3_sandbox_outcome"
+        and human_review.get("record_type") == "level3_toy_minefield_human_review_summary"
+        and human_review.get("summary_status") == "conservative_level3_sandbox_summary_ready"
+        and boundary_check.get("level3_toy_minefield_sandbox_only") is True
+        and boundary_check.get("multistep_sandbox_trace_added") is True
+        and boundary_check.get("temporary_sandbox_state_only") is True
+        and boundary_check.get("level3_runtime_execution_added") is False
+        and boundary_check.get("production_promotion_added") is False
+        and boundary_check.get("memory_write_added") is False
+        and boundary_check.get("retained_jsonl_write_added") is False
+        and boundary_check.get("retention_write_added") is False
+        and boundary_check.get("predictor_mutation_added") is False
+        and boundary_check.get("selected_action_created") is False
+        and boundary_check.get("final_action_created") is False
+        and boundary_check.get("direct_command_created") is False
+        and boundary_check.get("proof_of_learning_claimed") is False
+    )
+    return _result(
+        "level3_toy_minefield_multistep_sandbox_minimal",
         passed,
         {"summary": summary, "boundary": boundary, "boundary_check": boundary_check},
     )
@@ -15957,6 +16058,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_level2_sandbox_dry_run_observation_evaluation_summary_minimal(),
         smoke_level2_sandbox_application_observation_evaluation_summary_minimal(),
         smoke_level2_sandbox_review_conclusion_and_promotion_readiness_minimal(),
+        smoke_level3_toy_minefield_multistep_sandbox_minimal(),
         smoke_phase0_current_capability_snapshot(),
         smoke_memory_influence_behavior_gate_design(),
         smoke_first_memory_influenced_behavior_boundary(),

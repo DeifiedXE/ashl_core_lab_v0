@@ -158,6 +158,9 @@ from .level2_sandbox_application_observation_evaluation_summary_minimal import (
 from .level2_sandbox_review_conclusion_and_promotion_readiness_minimal import (
     run_level2_sandbox_review_conclusion_and_promotion_readiness_minimal_check,
 )
+from .level3_toy_minefield_multistep_sandbox_minimal import (
+    run_level3_toy_minefield_multistep_sandbox_minimal_check,
+)
 from .reviewed_lesson_dry_run_correction_minimal import (
     run_reviewed_lesson_dry_run_correction_minimal_check,
 )
@@ -3728,6 +3731,8 @@ def run_command(command: str) -> dict[str, Any] | str:
         return run_level2_sandbox_application_observation_evaluation_summary_minimal_check()
     if command == "run-level2-sandbox-review-conclusion-and-promotion-readiness-minimal-check":
         return run_level2_sandbox_review_conclusion_and_promotion_readiness_minimal_check()
+    if command == "run-level3-toy-minefield-multistep-sandbox-minimal-check":
+        return run_level3_toy_minefield_multistep_sandbox_minimal_check()
     if command == "run-simple-retina-focus-preview-minimal-check":
         return run_simple_retina_focus_preview_minimal_check()
     if command == "run-generalized-prediction-confidence-check":
@@ -3917,6 +3922,7 @@ def main(argv: list[str] | None = None) -> int:
             "run-level2-sandbox-dry-run-observation-evaluation-summary-minimal-check",
             "run-level2-sandbox-application-observation-evaluation-summary-minimal-check",
             "run-level2-sandbox-review-conclusion-and-promotion-readiness-minimal-check",
+            "run-level3-toy-minefield-multistep-sandbox-minimal-check",
             "run-simple-retina-focus-preview-minimal-check",
             "run-generalized-prediction-confidence-check",
             "run-generalized-candidate-from-pattern-check",
@@ -4264,6 +4270,8 @@ def main(argv: list[str] | None = None) -> int:
         result = run_level2_sandbox_application_observation_evaluation_summary_minimal_check()
     elif args.command == "run-level2-sandbox-review-conclusion-and-promotion-readiness-minimal-check":
         result = run_level2_sandbox_review_conclusion_and_promotion_readiness_minimal_check()
+    elif args.command == "run-level3-toy-minefield-multistep-sandbox-minimal-check":
+        result = run_level3_toy_minefield_multistep_sandbox_minimal_check()
     elif args.command == "run-simple-retina-focus-preview-minimal-check":
         result = run_simple_retina_focus_preview_minimal_check()
     elif args.command == "run-generalized-prediction-confidence-check":
