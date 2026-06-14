@@ -25,6 +25,7 @@ Current queue source:
 - Completed: ASHL Core / Qingyin Repo Audit Minimal v0.
 - Completed: Bucket Signal Human Interpretation Review + Audit Reconciliation Minimal v0.
 - Completed: Memory Readiness Design for Approved Bucket-Derived Lesson Minimal v0.
+- Completed: Memory Admission Package Design Minimal v0.
 - Deferred: Level 2 Sandbox Readiness Minimal v0.
 - Deferred: Memory Readiness Boundary Minimal v0.
 
@@ -49,6 +50,8 @@ The bucket-derived lesson candidate signal package does not change Boundary Inde
 The bucket signal human interpretation review package does not change Boundary Index because it records human or human/GPT-assisted interpretation and human review for future memory readiness design only. It does not make Qingyin the author of natural-language lesson text, write memory, create retained JSONL, influence runtime behavior, mutate predictors, select actions, promote production behavior, or claim proof of learning.
 
 The memory readiness design package does not change Boundary Index because it records design-only constraints required before any future memory write. It does not admit memory, write memory, create retained JSONL, write retention, influence runtime behavior, mutate predictors, select actions, promote production behavior, or claim proof of learning.
+
+The memory admission package design does not change Boundary Index because it records a design-only future package contract. It does not admit memory, write memory, create retained JSONL, write retention, choose Long-term/Core Memory now, allow cross-session influence rebuild, influence runtime behavior, mutate predictors, select actions, promote production behavior, or claim proof of learning.
 
 The Codex task queue coordinates work packages only. It does not approve, apply, observe, evaluate, promote, remember, retain, predict, select, finalize, command, or prove learning.
 

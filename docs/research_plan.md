@@ -6443,6 +6443,24 @@ Next recommended work:
 1. A future memory admission boundary package would be required before any memory write.
 2. Keep memory write, retained JSONL write, runtime influence, predictor mutation, selected_action, final_action, production promotion, and proof claims blocked.
 
+## Memory Admission Package Design Minimal v0
+
+Status: completed / design-only future package contract / no memory admission.
+
+Progress:
+- Adds `ashl_core/memory_admission_package_design_minimal.py`.
+- Requires the memory readiness design source from the approved human-interpreted bucket-derived lesson path.
+- Records required future inputs, explicit future human memory admission approval, target layer selection, retention/rollback rules, cross-session rebuild rules, runtime and predictor boundary records, and audit/revocation paths.
+- Keeps Long-term Memory, Core Memory, Archive Memory, runtime policy, predictor parameter, and production rule disallowed as current target layers.
+
+Boundary:
+- Boundary Index remains `2026-06-09-b74`.
+- Rationale: this package records design-only package constraints without changing memory admission permission, memory write permission, retained JSONL behavior, runtime influence, predictor influence, retention, or action-selection boundaries.
+
+Next recommended work:
+1. Any actual memory admission or memory write requires a separate future boundary package.
+2. Keep retained JSONL write, runtime influence, predictor mutation, selected_action, final_action, production promotion, and proof claims blocked.
+
 Forbidden claims:
 - No production lesson application.
 - No runtime behavior change.
