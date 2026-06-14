@@ -6517,4 +6517,27 @@ Next recommended work:
 Forbidden claims:
 - This admission is not Long-term Memory, not Core Memory, not Archive Memory, not retained JSONL write, not runtime influence, not predictor influence or mutation, not action selection, not production promotion, and not proof of learning.
 
+## Memory Write Approval Boundary Minimal v0
+
+Status: completed / explicit memory write approval validation boundary / no memory write.
+
+Progress:
+- Adds `ashl_core/memory_write_approval_boundary_minimal.py`.
+- Requires valid `memory_admission` and `reviewed_lesson_memory_candidate` sources.
+- Validates approved, rejected, needs-more-evidence, needs-retention-rule, needs-rollback-rule, and needs-rewrite decisions for a future memory write package.
+- Requires explicit `explicit_user_statement` / `user` / `project_owner` / non-empty `approval_text`.
+- Blocks Codex, AI, fixture, task queue, passing tests, and implicit chat command as approval sources.
+
+Boundary:
+- Boundary Index changes from `2026-06-09-b76` to `2026-06-09-b77`.
+- Rationale: this package introduces an explicit human approval validation boundary for future memory write packages.
+- The approved decision permits only a separate future memory write / retention package to proceed.
+
+Next recommended work:
+1. Future memory write package design or dry-run, still without writing retained JSONL unless explicitly authorized.
+2. Keep memory write, retained JSONL write, runtime influence, predictor mutation, selected_action, final_action, production promotion, and proof claims blocked until separate future boundaries exist.
+
+Forbidden claims:
+- This approval is not memory write, not Long-term/Core/Archive Memory write, not retained JSONL write, not retention write, not runtime influence, not predictor mutation, not action selection, not production promotion, and not proof of learning.
+
 This documentation reconciliation did not complete outcome evaluation at that time and did not claim every documentation inconsistency had been found. Current outcome evaluation status is controlled by the later Level 1 Sandbox Outcome Evaluation and Human Review Summary Minimal v0 section above.

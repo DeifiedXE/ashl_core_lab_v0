@@ -28,6 +28,7 @@ Current queue source:
 - Completed: Memory Admission Package Design Minimal v0.
 - Completed: Memory Admission Approval Boundary Minimal v0.
 - Completed: Memory Admission Minimal v0.
+- Completed: Memory Write Approval Boundary Minimal v0.
 - Deferred: Level 2 Sandbox Readiness Minimal v0.
 - Deferred: Memory Readiness Boundary Minimal v0.
 
@@ -58,6 +59,8 @@ The memory admission package design does not change Boundary Index because it re
 Memory Admission Approval Boundary Minimal v0 changes Boundary Index from b74 to b75 because it introduces an explicit human approval validation boundary for future memory admission packages. The approval only allows a separate future memory admission package to proceed; it does not admit memory, write memory or retained JSONL, influence runtime behavior, mutate predictors, select actions, promote production behavior, or prove learning.
 
 Memory Admission Minimal v0 changes Boundary Index from b75 to b76 because it opens the minimal memory admission boundary for reviewed_lesson_memory_candidate records. This is candidate-layer admission only; it does not write Long-term/Core/Archive Memory, append retained JSONL, influence runtime behavior, mutate predictors, select actions, promote production behavior, or prove learning.
+
+Memory Write Approval Boundary Minimal v0 changes Boundary Index from b76 to b77 because it introduces an explicit human approval validation boundary for future memory write packages. This approval does not write memory, write retained JSONL, write retention, influence runtime behavior, mutate predictors, select actions, promote production behavior, or prove learning.
 
 The Codex task queue coordinates work packages only. It does not approve, apply, observe, evaluate, promote, remember, retain, predict, select, finalize, command, or prove learning.
 
