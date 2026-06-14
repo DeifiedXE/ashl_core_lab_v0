@@ -202,6 +202,7 @@ from ashl_core.memory_admission_package_design_minimal import (
 from ashl_core.memory_admission_approval_boundary_minimal import (
     run_memory_admission_approval_boundary_minimal_check,
 )
+from ashl_core.memory_admission_minimal import run_memory_admission_minimal_check
 from ashl_core.minimal_visual_grounding_trial import run_minimal_visual_grounding_trial_check
 from ashl_core.visual_prediction_error_attention_priority_preview_minimal import (
     run_visual_prediction_error_attention_priority_preview_minimal_check,
@@ -10512,7 +10513,7 @@ def smoke_current_boundary_index_docs() -> dict:
     readme = readme_path.read_text(encoding="utf-8") if readme_path.exists() else ""
     research_plan = research_plan_path.read_text(encoding="utf-8") if research_plan_path.exists() else ""
     compact_required_terms = [
-        "Boundary Index Version: 2026-06-09-b75",
+        "Boundary Index Version: 2026-06-09-b76",
         "Last update log: Memory Admission Approval Boundary Minimal v0",
         "docs/boundary_index_archive_2026_06.md",
         "Minimal Visual Grounding Trial v0",
@@ -10564,10 +10565,10 @@ def smoke_current_boundary_index_docs() -> dict:
         "retry_same_risky_cell_without_check_blocked=True",
         "Phase0 Documentation Consolidation milestone",
         "Documentation consolidation only",
-        "Memory Admission Approval Boundary milestone",
+        "Memory Admission milestone",
         "explicit user/project-owner approval",
-        "future memory admission package",
-        "Codex/AI/fixture/task queue/passing tests/implicit chat command are not approval",
+        "reviewed_lesson_memory_candidate",
+        "actual candidate-layer memory admission is now allowed",
         "docs/phase0_status.md",
         "docs/phase0_capability_matrix.md",
         "docs/phase0_doc_index.md",
@@ -10592,7 +10593,7 @@ def smoke_current_boundary_index_docs() -> dict:
         and all(term in doc for term in compact_required_terms)
         and all(term in archive for term in archive_required_terms)
         and line_count <= 130
-        and "Boundary Index Version: 2026-06-09-b75" in readme
+        and "Boundary Index Version: 2026-06-09-b76" in readme
         and "docs/boundary_index_archive_2026_06.md" in readme
         and "Boundary Index Compaction / Archive v0" in research_plan
         and "Runtime Tendency Memory Influence Safety Sync Minimal v0" in research_plan
@@ -10630,7 +10631,7 @@ def smoke_phase0_documentation_consolidation_minimal() -> dict:
         status_path.exists()
         and matrix_path.exists()
         and index_path.exists()
-        and "Boundary Index Version: 2026-06-09-b75" in status
+        and "Boundary Index Version: 2026-06-09-b76" in status
         and "Current Safe Capability" in status
         and "No proof-of-learning claim" in status
         and "Level 1 Sandbox Outcome Evaluation and Human Review Summary Minimal v0" in status
@@ -10701,7 +10702,7 @@ def smoke_phase0_documentation_inventory_and_consistency_reconciliation() -> dic
     boundary = Path("docs/current_boundary_index.md").read_text(encoding="utf-8")
     passed = (
         all(path.exists() for path in required_paths)
-        and "Boundary Index Version: 2026-06-09-b75" in texts[Path("docs/phase0_status.md")]
+        and "Boundary Index Version: 2026-06-09-b76" in texts[Path("docs/phase0_status.md")]
         and "Inventory count:" in texts[Path("docs/phase0_doc_inventory.md")]
         and "docs/phase0_versioning_policy.md" in texts[Path("docs/phase0_doc_inventory.md")]
         and "unknown_needs_review" in texts[Path("docs/phase0_doc_inventory.md")]
@@ -12335,6 +12336,14 @@ def smoke_codex_task_queue_minimal() -> dict:
         ),
         {},
     )
+    memory_admission_task = next(
+        (
+            task
+            for task in task_entries
+            if task.get("package_id") == "PKG-Phase0-MemoryAdmission-Minimal-v0"
+        ),
+        {},
+    )
     passed = (
         result.get("command") == "run-codex-task-queue-minimal-check"
         and result.get("flow") == "codex_task_queue_minimal_v0"
@@ -12343,7 +12352,7 @@ def smoke_codex_task_queue_minimal() -> dict:
         and valid_queue.get("record_type") == "codex_task_queue_minimal_v0"
         and summary.get("valid_task_queue_count") == 1
         and summary.get("invalid_task_queue_count") == 21
-        and summary.get("valid_task_entry_count") == 21
+        and summary.get("valid_task_entry_count") == 22
         and summary.get("invalid_task_entry_count", 0) >= 9
         and summary.get("queue_scope_checked_count") == 1
         and summary.get("approval_block_checked_count") == 1
@@ -12368,33 +12377,38 @@ def smoke_codex_task_queue_minimal() -> dict:
         and level3_toy_minefield_task.get("boundary_index_version_after") == "2026-06-09-b74"
         and "multi-step application trace scope" in level3_toy_minefield_task.get("boundary_change_rationale", "")
         and level3_variant_suite_task.get("boundary_change_required") is False
-        and level3_variant_suite_task.get("boundary_index_version_before") == "2026-06-09-b75"
-        and level3_variant_suite_task.get("boundary_index_version_after") == "2026-06-09-b75"
+        and level3_variant_suite_task.get("boundary_index_version_before") == "2026-06-09-b76"
+        and level3_variant_suite_task.get("boundary_index_version_after") == "2026-06-09-b76"
         and old_candidate_proposal_task.get("status") == "superseded"
         and old_candidate_proposal_task.get("superseded_by") == "Bucket-Derived Lesson Candidate Signal Minimal v0"
         and bucket_signal_task.get("status") == "completed"
         and bucket_signal_task.get("boundary_change_required") is False
-        and bucket_signal_task.get("boundary_index_version_before") == "2026-06-09-b75"
-        and bucket_signal_task.get("boundary_index_version_after") == "2026-06-09-b75"
+        and bucket_signal_task.get("boundary_index_version_before") == "2026-06-09-b76"
+        and bucket_signal_task.get("boundary_index_version_after") == "2026-06-09-b76"
         and repo_audit_task.get("status") == "completed"
         and repo_audit_task.get("boundary_change_required") is False
         and bucket_signal_review_task.get("status") == "completed"
         and bucket_signal_review_task.get("boundary_change_required") is False
-        and bucket_signal_review_task.get("boundary_index_version_before") == "2026-06-09-b75"
-        and bucket_signal_review_task.get("boundary_index_version_after") == "2026-06-09-b75"
+        and bucket_signal_review_task.get("boundary_index_version_before") == "2026-06-09-b76"
+        and bucket_signal_review_task.get("boundary_index_version_after") == "2026-06-09-b76"
         and memory_readiness_design_task.get("status") == "completed"
         and memory_readiness_design_task.get("boundary_change_required") is False
-        and memory_readiness_design_task.get("boundary_index_version_before") == "2026-06-09-b75"
-        and memory_readiness_design_task.get("boundary_index_version_after") == "2026-06-09-b75"
+        and memory_readiness_design_task.get("boundary_index_version_before") == "2026-06-09-b76"
+        and memory_readiness_design_task.get("boundary_index_version_after") == "2026-06-09-b76"
         and memory_admission_design_task.get("status") == "completed"
         and memory_admission_design_task.get("boundary_change_required") is False
-        and memory_admission_design_task.get("boundary_index_version_before") == "2026-06-09-b75"
-        and memory_admission_design_task.get("boundary_index_version_after") == "2026-06-09-b75"
+        and memory_admission_design_task.get("boundary_index_version_before") == "2026-06-09-b76"
+        and memory_admission_design_task.get("boundary_index_version_after") == "2026-06-09-b76"
         and memory_admission_approval_task.get("status") == "completed"
         and memory_admission_approval_task.get("boundary_change_required") is True
         and memory_admission_approval_task.get("boundary_index_version_before") == "2026-06-09-b74"
         and memory_admission_approval_task.get("boundary_index_version_after") == "2026-06-09-b75"
         and "approval validation boundary" in memory_admission_approval_task.get("boundary_change_rationale", "")
+        and memory_admission_task.get("status") == "completed"
+        and memory_admission_task.get("boundary_change_required") is True
+        and memory_admission_task.get("boundary_index_version_before") == "2026-06-09-b75"
+        and memory_admission_task.get("boundary_index_version_after") == "2026-06-09-b76"
+        and "memory admission boundary" in memory_admission_task.get("boundary_change_rationale", "")
         and valid_queue.get("queue_counts_as_approval") is False
         and valid_queue.get("queue_counts_as_application") is False
         and valid_queue.get("queue_counts_as_runtime_behavior") is False
@@ -13807,6 +13821,63 @@ def smoke_memory_admission_approval_boundary_minimal() -> dict:
     )
     return _result(
         "memory_admission_approval_boundary_minimal",
+        passed,
+        {"summary": summary, "boundary": boundary},
+    )
+
+
+def smoke_memory_admission_minimal() -> dict:
+    result = run_memory_admission_minimal_check()
+    summary = result.get("summary", {})
+    boundary = result.get("boundary", {})
+    admission = result.get("valid_memory_admission_record", {})
+    candidate = result.get("valid_reviewed_lesson_memory_candidate_record", {})
+    passed = (
+        result.get("command") == "run-memory-admission-minimal-check"
+        and result.get("flow") == "memory_admission_minimal_v0"
+        and result.get("status") == "ok"
+        and summary.get("valid_memory_admission_count") == 1
+        and summary.get("invalid_memory_admission_count", 0) >= 1
+        and summary.get("valid_reviewed_lesson_memory_candidate_count") == 1
+        and summary.get("invalid_reviewed_lesson_memory_candidate_count", 0) >= 1
+        and summary.get("approval_checked_count") == 1
+        and summary.get("admission_performed_count") == 1
+        and summary.get("candidate_record_created_count") == 1
+        and summary.get("long_term_memory_write_blocked_count") == 1
+        and summary.get("retained_jsonl_write_blocked_count") == 1
+        and summary.get("runtime_influence_blocked_count") == 1
+        and summary.get("predictor_mutation_blocked_count") == 1
+        and summary.get("proof_claim_blocked_count") == 1
+        and summary.get("rollback_available_count") == 1
+        and boundary.get("boundary_change_required") is True
+        and boundary.get("boundary_index_update_required") is True
+        and boundary.get("boundary_index_version_before") == "2026-06-09-b75"
+        and boundary.get("boundary_index_version_after") == "2026-06-09-b76"
+        and admission.get("record_type") == "memory_admission"
+        and admission.get("admission_status") == "admitted_as_reviewed_lesson_memory_candidate"
+        and admission.get("admission_target_form") == "reviewed_lesson_memory_candidate"
+        and admission.get("memory_layer_target") == "candidate_layer_only"
+        and admission.get("memory_admission_performed") is True
+        and admission.get("long_term_memory_write_performed") is False
+        and admission.get("retained_jsonl_write_performed") is False
+        and admission.get("runtime_influence_enabled") is False
+        and admission.get("predictor_influence_enabled") is False
+        and admission.get("memory_write_allowed") is False
+        and admission.get("long_term_memory_write_allowed") is False
+        and admission.get("retained_jsonl_write_allowed") is False
+        and admission.get("runtime_influence_allowed") is False
+        and admission.get("predictor_mutation_allowed") is False
+        and admission.get("proof_of_learning_claim_allowed") is False
+        and candidate.get("record_type") == "reviewed_lesson_memory_candidate"
+        and candidate.get("candidate_status") == "admitted_candidate_not_long_term_memory"
+        and candidate.get("memory_layer") == "candidate_layer_only"
+        and candidate.get("is_long_term_memory") is False
+        and candidate.get("writes_jsonl") is False
+        and candidate.get("runtime_read_enabled") is False
+        and candidate.get("predictor_read_enabled") is False
+    )
+    return _result(
+        "memory_admission_minimal",
         passed,
         {"summary": summary, "boundary": boundary},
     )
@@ -16527,6 +16598,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_memory_readiness_design_for_approved_bucket_lesson_minimal(),
         smoke_memory_admission_package_design_minimal(),
         smoke_memory_admission_approval_boundary_minimal(),
+        smoke_memory_admission_minimal(),
         smoke_phase0_current_capability_snapshot(),
         smoke_memory_influence_behavior_gate_design(),
         smoke_first_memory_influenced_behavior_boundary(),

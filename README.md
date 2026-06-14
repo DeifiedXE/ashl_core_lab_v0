@@ -1618,7 +1618,7 @@ Two-Trial History Boundary:
 
 - `docs/current_boundary_index.md`
 - Adds a short, versioned, low-token source of global hard boundaries for future work packages.
-- Current version: `Boundary Index Version: 2026-06-09-b75`.
+- Current version: `Boundary Index Version: 2026-06-09-b76`.
 - For current Phase0 status, see `docs/phase0_status.md`.
 - For capability status, see `docs/phase0_capability_matrix.md`.
 - For boundary version history, see `docs/current_boundary_index.md`.
@@ -2740,6 +2740,10 @@ Two-Trial History Boundary:
 ## Memory Admission Approval Boundary Minimal v0
 
 - Memory Admission Approval Boundary Minimal v0 validates explicit user/project-owner approval to proceed with a future memory admission package for one approved human-interpreted bucket-derived lesson candidate. This approval is not memory admission, not memory write, not retained JSONL write, not runtime influence, not predictor influence or mutation, not selected_action/final_action creation, not production promotion, and not proof of learning. Codex, AI, fixtures, task queue status, passing tests, and implicit chat commands do not count as approval. Boundary Index updates from `2026-06-09-b74` to `2026-06-09-b75` because this introduces an explicit approval validation boundary.
+
+## Memory Admission Minimal v0
+
+- Memory Admission Minimal v0 admits one approved human-interpreted bucket-derived lesson as a `reviewed_lesson_memory_candidate` in `candidate_layer_only`. This is candidate-layer admission only: it is not Long-term Memory write, not Core/Archive Memory write, not retained JSONL write, not runtime influence, not predictor influence or mutation, not selected_action/final_action creation, not production promotion, and not proof that Qingyin learned. Boundary Index updates from `2026-06-09-b75` to `2026-06-09-b76` because this opens the minimal memory admission boundary for reviewed lesson memory candidate records.
 
 ## Phase0 Package ID and Boundary Index Version Separation Minimal v0
 

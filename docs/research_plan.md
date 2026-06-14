@@ -6495,4 +6495,26 @@ Next recommended work:
 Forbidden claims:
 - This approval is not memory admission, not memory write, not retained JSONL write, not retention write, not runtime influence, not predictor influence or mutation, not action selection, not production promotion, and not proof of learning.
 
+## Memory Admission Minimal v0
+
+Status: completed / candidate-layer memory admission / no Long-term Memory write.
+
+Progress:
+- Adds `ashl_core/memory_admission_minimal.py`.
+- Requires valid upstream human-interpreted lesson candidate, human review decision, memory readiness design, memory admission package design, and memory admission approval records.
+- Admits one approved human-interpreted bucket-derived lesson as `reviewed_lesson_memory_candidate`.
+- Creates the candidate record in `candidate_layer_only` and keeps runtime and predictor reads disabled.
+
+Boundary:
+- Boundary Index changes from `2026-06-09-b75` to `2026-06-09-b76`.
+- Rationale: this package opens the minimal memory admission boundary for reviewed_lesson_memory_candidate records.
+- Long-term/Core/Archive Memory write, retained JSONL write, runtime influence, predictor mutation, action selection, production promotion, and proof-of-learning remain blocked.
+
+Next recommended work:
+1. Candidate-layer readback / audit view, if needed, without runtime influence.
+2. Future Long-term Memory write or runtime influence requires a separate boundary package.
+
+Forbidden claims:
+- This admission is not Long-term Memory, not Core Memory, not Archive Memory, not retained JSONL write, not runtime influence, not predictor influence or mutation, not action selection, not production promotion, and not proof of learning.
+
 This documentation reconciliation did not complete outcome evaluation at that time and did not claim every documentation inconsistency had been found. Current outcome evaluation status is controlled by the later Level 1 Sandbox Outcome Evaluation and Human Review Summary Minimal v0 section above.
