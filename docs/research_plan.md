@@ -6609,4 +6609,27 @@ Next recommended work:
 Forbidden claims:
 - This approval is not runtime influence, not predictor input or mutation, not selected_action or final_action, not production behavior, not retained JSONL or retention write, and not proof that Qingyin learned.
 
+## Memory Runtime Influence Minimal v0
+
+Status: completed / bounded controlled runtime tendency influence / no action selection.
+
+Progress:
+- Adds `ashl_core/memory_runtime_influence_minimal.py`.
+- Requires valid controlled memory read, memory influence preview, and approved memory runtime influence approval records.
+- Applies a bounded tendency score shift inside a deterministic controlled runner: `retry_same_action_without_check` / `check_before_retry` moves from `0.50/0.50` to `0.45/0.60`.
+- Rolls back to baseline `0.50/0.50` with `dirty_state_after_rollback == False`.
+- Keeps selected_action, final_action, direct command, predictor read/influence/mutation, production behavior, retained JSONL write, retention write, autonomous learning/action, and proof claims blocked.
+
+Boundary:
+- Boundary Index changes from `2026-06-09-b80` to `2026-06-09-b81`.
+- Rationale: this package opens the minimal bounded memory runtime influence boundary for one approved memory record inside a deterministic controlled runner.
+- This is runtime tendency evidence only and does not authorize action selection, predictor influence, production promotion, retention, or proof-of-learning.
+
+Next recommended work:
+1. Observe/evaluate the bounded runtime influence record before considering any action-selection boundary.
+2. Keep predictor mutation, selected_action, final_action, production promotion, retained JSONL write, retention write, and proof claims blocked until separate future boundaries explicitly open them.
+
+Forbidden claims:
+- Bounded runtime tendency influence is not selected_action, not final_action, not direct command, not predictor mutation, not production behavior, not retained JSONL or retention write, and not proof that Qingyin learned.
+
 This documentation reconciliation did not complete outcome evaluation at that time and did not claim every documentation inconsistency had been found. Current outcome evaluation status is controlled by the later Level 1 Sandbox Outcome Evaluation and Human Review Summary Minimal v0 section above.

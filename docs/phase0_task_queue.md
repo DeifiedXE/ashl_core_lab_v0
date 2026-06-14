@@ -33,6 +33,7 @@ Current queue source:
 - Completed: Memory Write and Read Minimal v0.
 - Completed: Memory Influence Preview Minimal v0.
 - Completed: Memory Runtime Influence Approval Boundary Minimal v0.
+- Completed: Memory Runtime Influence Minimal v0.
 - Deferred: Level 2 Sandbox Readiness Minimal v0.
 - Deferred: Memory Readiness Boundary Minimal v0.
 
@@ -71,6 +72,8 @@ Memory Write and Read Minimal v0 changes Boundary Index from b77 to b78 because 
 Memory Influence Preview Minimal v0 changes Boundary Index from b78 to b79 because it introduces a preview-only memory influence validation boundary from controlled memory read. The preview may state that the memory would favor check_before_retry in a future influence design, but it does not enable runtime influence, provide predictor input, mutate predictors, select actions, write retained JSONL, write retention, promote production behavior, or prove learning.
 
 Memory Runtime Influence Approval Boundary Minimal v0 changes Boundary Index from b79 to b80 because it introduces explicit human approval validation for future memory runtime influence packages. The approved decision only allows a separate future package to proceed; it does not perform runtime influence, mutate predictors, create selected_action or final_action, select actions, write retained JSONL, write retention, promote production behavior, or prove learning.
+
+Memory Runtime Influence Minimal v0 changes Boundary Index from b80 to b81 because it opens the minimal bounded memory runtime influence boundary for one approved memory record inside a deterministic controlled runner. It applies a small tendency score shift and rolls it back to baseline; it does not create selected_action, final_action, direct command, predictor mutation, retained JSONL write, retention write, production promotion, or proof of learning.
 
 The Codex task queue coordinates work packages only. It does not approve, apply, observe, evaluate, promote, remember, retain, predict, select, finalize, command, or prove learning.
 

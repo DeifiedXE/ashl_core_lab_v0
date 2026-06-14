@@ -8,8 +8,8 @@ from typing import Any
 
 COMMAND = "run-codex-task-queue-minimal-check"
 FLOW = "codex_task_queue_minimal_v0"
-BOUNDARY_INDEX_VERSION = "2026-06-09-b80"
-PREVIOUS_BOUNDARY_INDEX_VERSION = "2026-06-09-b79"
+BOUNDARY_INDEX_VERSION = "2026-06-09-b81"
+PREVIOUS_BOUNDARY_INDEX_VERSION = "2026-06-09-b80"
 LEVEL2_APPLICATION_BOUNDARY_BEFORE = "2026-06-09-b72"
 LEVEL2_APPLICATION_BOUNDARY_AFTER = "2026-06-09-b73"
 LEVEL3_TOY_MINEFIELD_BOUNDARY_BEFORE = "2026-06-09-b73"
@@ -26,6 +26,8 @@ MEMORY_INFLUENCE_PREVIEW_BOUNDARY_BEFORE = "2026-06-09-b78"
 MEMORY_INFLUENCE_PREVIEW_BOUNDARY_AFTER = "2026-06-09-b79"
 MEMORY_RUNTIME_INFLUENCE_APPROVAL_BOUNDARY_BEFORE = "2026-06-09-b79"
 MEMORY_RUNTIME_INFLUENCE_APPROVAL_BOUNDARY_AFTER = "2026-06-09-b80"
+MEMORY_RUNTIME_INFLUENCE_BOUNDARY_BEFORE = "2026-06-09-b80"
+MEMORY_RUNTIME_INFLUENCE_BOUNDARY_AFTER = "2026-06-09-b81"
 VERSIONING_POLICY_BOUNDARY_BEFORE = "2026-06-09-b71"
 VERSIONING_POLICY_BOUNDARY_AFTER = "2026-06-09-b72"
 QUEUE_NAME = "ashl_core_phase0_codex_task_queue"
@@ -521,6 +523,28 @@ def build_codex_task_queue_minimal() -> dict[str, Any]:
                 ),
             ),
             _task(
+                "task.memory_runtime_influence_minimal.completed",
+                "PKG-Phase0-MemoryRuntimeInfluence-Minimal-v0",
+                "Memory Runtime Influence Minimal v0",
+                "capability_boundary",
+                "completed",
+                "codex_completed_report",
+                ["task.memory_runtime_influence_approval_boundary.completed"],
+                [],
+                (
+                    "Completed bounded memory-influenced runtime tendency shift inside a deterministic "
+                    "controlled runner with rollback to baseline; no selected_action, final_action, predictor "
+                    "mutation, production behavior, retained JSONL write, retention write, or proof claim."
+                ),
+                boundary_change_required=True,
+                boundary_index_version_before=MEMORY_RUNTIME_INFLUENCE_BOUNDARY_BEFORE,
+                boundary_index_version_after=MEMORY_RUNTIME_INFLUENCE_BOUNDARY_AFTER,
+                boundary_change_rationale=(
+                    "Opens the minimal bounded memory runtime influence boundary for one approved memory record "
+                    "inside a deterministic controlled runner."
+                ),
+            ),
+            _task(
                 "task.level2_sandbox_readiness.deferred",
                 "PKG-Phase0-Level2-Readiness-Future",
                 "Level 2 Sandbox Readiness Minimal v0",
@@ -539,7 +563,7 @@ def build_codex_task_queue_minimal() -> dict[str, Any]:
                 "capability_boundary",
                 "deferred",
                 "phase0_future_work",
-                ["task.memory_runtime_influence_approval_boundary.completed"],
+                ["task.memory_runtime_influence_minimal.completed"],
                 [],
                 "Deferred future memory boundary; no memory write or retained JSONL behavior is approved.",
                 deferral_reason="Memory readiness remains blocked until a future explicit boundary package.",
@@ -805,7 +829,7 @@ def _invalid_queues(valid_queue: dict[str, Any]) -> list[dict[str, Any]]:
     )
     queues.append(blocked)
     deferred = deepcopy(valid_queue)
-    deferred["task_entries"][25].pop("deferral_reason", None)
+    deferred["task_entries"][26].pop("deferral_reason", None)
     queues.append(deferred)
     superseded = deepcopy(valid_queue)
     superseded["task_entries"].append(
@@ -877,7 +901,7 @@ def _summary(
         summary["task_queue_result_count"] == 22
         and summary["valid_task_queue_count"] == 1
         and summary["invalid_task_queue_count"] == 21
-        and summary["valid_task_entry_count"] == 27
+        and summary["valid_task_entry_count"] == 28
         and summary["invalid_task_entry_count"] >= 9
         and summary["queue_scope_checked_count"] == 1
         and summary["approval_block_checked_count"] == 1

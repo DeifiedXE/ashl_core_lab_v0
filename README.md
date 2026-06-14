@@ -1618,7 +1618,7 @@ Two-Trial History Boundary:
 
 - `docs/current_boundary_index.md`
 - Adds a short, versioned, low-token source of global hard boundaries for future work packages.
-- Current version: `Boundary Index Version: 2026-06-09-b80`.
+- Current version: `Boundary Index Version: 2026-06-09-b81`.
 - For current Phase0 status, see `docs/phase0_status.md`.
 - For capability status, see `docs/phase0_capability_matrix.md`.
 - For boundary version history, see `docs/current_boundary_index.md`.
@@ -2760,6 +2760,10 @@ Two-Trial History Boundary:
 ## Memory Runtime Influence Approval Boundary Minimal v0
 
 - Memory Runtime Influence Approval Boundary Minimal v0 validates explicit user/project-owner approval to proceed with a future memory runtime influence package from one valid memory influence preview. The approved decision only allows a separate future package to proceed; it does not perform runtime influence, mutate predictors, select actions, create selected_action/final_action, write retained JSONL, write retention, promote production behavior, or prove Qingyin learned. Codex, AI, fixtures, task queue status, passing tests, and implicit chat commands do not count as approval. Boundary Index updates from `2026-06-09-b79` to `2026-06-09-b80` because this introduces an explicit approval validation boundary for future runtime influence packages.
+
+## Memory Runtime Influence Minimal v0
+
+- Memory Runtime Influence Minimal v0 applies a bounded memory-influenced runtime tendency shift inside a deterministic controlled runner and rolls it back to baseline. The controlled A/B/rollback record shows `retry_same_action_without_check` / `check_before_retry` scores move from `0.50/0.50` to `0.45/0.60` and then back to `0.50/0.50`, with `max_absolute_delta <= 0.10` and no dirty state after rollback. It does not create selected_action, final_action, direct commands, predictor read/influence/mutation, retained JSONL writes, retention writes, production behavior, autonomous learning/action, or proof-of-learning claims. Boundary Index updates from `2026-06-09-b80` to `2026-06-09-b81`.
 
 ## Phase0 Package ID and Boundary Index Version Separation Minimal v0
 
