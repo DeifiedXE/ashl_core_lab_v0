@@ -1618,7 +1618,7 @@ Two-Trial History Boundary:
 
 - `docs/current_boundary_index.md`
 - Adds a short, versioned, low-token source of global hard boundaries for future work packages.
-- Current version: `Boundary Index Version: 2026-06-09-b79`.
+- Current version: `Boundary Index Version: 2026-06-09-b80`.
 - For current Phase0 status, see `docs/phase0_status.md`.
 - For capability status, see `docs/phase0_capability_matrix.md`.
 - For boundary version history, see `docs/current_boundary_index.md`.
@@ -2756,6 +2756,10 @@ Two-Trial History Boundary:
 ## Memory Influence Preview Minimal v0
 
 - Memory Influence Preview Minimal v0 generates a preview-only influence view from the controlled memory read. The preview can state that the memory would favor `check_before_retry` and discourage `retry_same_action_without_check` in a future influence design, but it does not influence runtime behavior, provide predictor input, select actions, create selected_action/final_action, write retained JSONL, write retention, promote production behavior, or prove Qingyin learned. Boundary Index updates from `2026-06-09-b78` to `2026-06-09-b79` because this introduces a preview-only memory influence validation boundary.
+
+## Memory Runtime Influence Approval Boundary Minimal v0
+
+- Memory Runtime Influence Approval Boundary Minimal v0 validates explicit user/project-owner approval to proceed with a future memory runtime influence package from one valid memory influence preview. The approved decision only allows a separate future package to proceed; it does not perform runtime influence, mutate predictors, select actions, create selected_action/final_action, write retained JSONL, write retention, promote production behavior, or prove Qingyin learned. Codex, AI, fixtures, task queue status, passing tests, and implicit chat commands do not count as approval. Boundary Index updates from `2026-06-09-b79` to `2026-06-09-b80` because this introduces an explicit approval validation boundary for future runtime influence packages.
 
 ## Phase0 Package ID and Boundary Index Version Separation Minimal v0
 

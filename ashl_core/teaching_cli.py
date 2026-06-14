@@ -185,6 +185,9 @@ from .memory_write_approval_boundary_minimal import (
 )
 from .memory_write_and_read_minimal import run_memory_write_and_read_minimal_check
 from .memory_influence_preview_minimal import run_memory_influence_preview_minimal_check
+from .memory_runtime_influence_approval_boundary_minimal import (
+    run_memory_runtime_influence_approval_boundary_minimal_check,
+)
 from .reviewed_lesson_dry_run_correction_minimal import (
     run_reviewed_lesson_dry_run_correction_minimal_check,
 )
@@ -3777,6 +3780,8 @@ def run_command(command: str) -> dict[str, Any] | str:
         return run_memory_write_and_read_minimal_check()
     if command == "run-memory-influence-preview-minimal-check":
         return run_memory_influence_preview_minimal_check()
+    if command == "run-memory-runtime-influence-approval-boundary-minimal-check":
+        return run_memory_runtime_influence_approval_boundary_minimal_check()
     if command == "run-simple-retina-focus-preview-minimal-check":
         return run_simple_retina_focus_preview_minimal_check()
     if command == "run-generalized-prediction-confidence-check":
@@ -3977,6 +3982,7 @@ def main(argv: list[str] | None = None) -> int:
             "run-memory-write-approval-boundary-minimal-check",
             "run-memory-write-and-read-minimal-check",
             "run-memory-influence-preview-minimal-check",
+            "run-memory-runtime-influence-approval-boundary-minimal-check",
             "run-simple-retina-focus-preview-minimal-check",
             "run-generalized-prediction-confidence-check",
             "run-generalized-candidate-from-pattern-check",
@@ -4346,6 +4352,8 @@ def main(argv: list[str] | None = None) -> int:
         result = run_memory_write_and_read_minimal_check()
     elif args.command == "run-memory-influence-preview-minimal-check":
         result = run_memory_influence_preview_minimal_check()
+    elif args.command == "run-memory-runtime-influence-approval-boundary-minimal-check":
+        result = run_memory_runtime_influence_approval_boundary_minimal_check()
     elif args.command == "run-simple-retina-focus-preview-minimal-check":
         result = run_simple_retina_focus_preview_minimal_check()
     elif args.command == "run-generalized-prediction-confidence-check":

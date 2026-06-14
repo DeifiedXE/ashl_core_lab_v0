@@ -32,6 +32,7 @@ Current queue source:
 - Superseded: Memory Write Minimal v0.
 - Completed: Memory Write and Read Minimal v0.
 - Completed: Memory Influence Preview Minimal v0.
+- Completed: Memory Runtime Influence Approval Boundary Minimal v0.
 - Deferred: Level 2 Sandbox Readiness Minimal v0.
 - Deferred: Memory Readiness Boundary Minimal v0.
 
@@ -68,6 +69,8 @@ Memory Write Approval Boundary Minimal v0 changes Boundary Index from b76 to b77
 Memory Write and Read Minimal v0 changes Boundary Index from b77 to b78 because it opens the minimal memory write and controlled memory read boundary for one approved reviewed_lesson_memory_candidate. It writes a minimal reviewed lesson memory record and reads the stored text through a controlled read path only; it does not write retained JSONL/data JSONL, write retention, enable runtime influence, provide predictor input, mutate predictors, select actions, promote production behavior, or prove learning.
 
 Memory Influence Preview Minimal v0 changes Boundary Index from b78 to b79 because it introduces a preview-only memory influence validation boundary from controlled memory read. The preview may state that the memory would favor check_before_retry in a future influence design, but it does not enable runtime influence, provide predictor input, mutate predictors, select actions, write retained JSONL, write retention, promote production behavior, or prove learning.
+
+Memory Runtime Influence Approval Boundary Minimal v0 changes Boundary Index from b79 to b80 because it introduces explicit human approval validation for future memory runtime influence packages. The approved decision only allows a separate future package to proceed; it does not perform runtime influence, mutate predictors, create selected_action or final_action, select actions, write retained JSONL, write retention, promote production behavior, or prove learning.
 
 The Codex task queue coordinates work packages only. It does not approve, apply, observe, evaluate, promote, remember, retain, predict, select, finalize, command, or prove learning.
 

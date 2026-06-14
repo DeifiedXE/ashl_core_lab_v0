@@ -6586,4 +6586,27 @@ Next recommended work:
 Forbidden claims:
 - Influence preview is not influence, not predictor input, not selected_action or final_action, not production behavior, and not proof that Qingyin learned.
 
+## Memory Runtime Influence Approval Boundary Minimal v0
+
+Status: completed / explicit runtime influence approval validation boundary / no runtime influence.
+
+Progress:
+- Adds `ashl_core/memory_runtime_influence_approval_boundary_minimal.py`.
+- Requires a valid `memory_influence_preview` source.
+- Validates approved, rejected, needs-more-evidence, needs-stronger-safety-envelope, and needs-rewrite decisions for a future memory runtime influence package.
+- Requires explicit `explicit_user_statement` / `user` / `project_owner` / non-empty `approval_text`.
+- Blocks Codex, AI, fixture, task queue, passing tests, and implicit chat command as approval sources.
+
+Boundary:
+- Boundary Index changes from `2026-06-09-b79` to `2026-06-09-b80`.
+- Rationale: this package introduces explicit human approval validation for future memory runtime influence packages.
+- The approved decision permits only a separate future memory runtime influence package to proceed.
+
+Next recommended work:
+1. Future Memory Runtime Influence Minimal v0 package, if and only if it stays bounded by the approved source and safety envelope.
+2. Keep runtime influence, predictor mutation, selected_action, final_action, production promotion, retained JSONL write, retention write, and proof claims blocked until separate future boundaries explicitly open them.
+
+Forbidden claims:
+- This approval is not runtime influence, not predictor input or mutation, not selected_action or final_action, not production behavior, not retained JSONL or retention write, and not proof that Qingyin learned.
+
 This documentation reconciliation did not complete outcome evaluation at that time and did not claim every documentation inconsistency had been found. Current outcome evaluation status is controlled by the later Level 1 Sandbox Outcome Evaluation and Human Review Summary Minimal v0 section above.

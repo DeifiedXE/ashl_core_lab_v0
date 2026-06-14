@@ -1,7 +1,7 @@
-Boundary Index Version: 2026-06-09-b79
-Last update log: Memory Influence Preview Minimal v0
-Previous Boundary Index Version: 2026-06-09-b78
-Previous Last update log: Memory Write and Read Minimal v0
+Boundary Index Version: 2026-06-09-b80
+Last update log: Memory Runtime Influence Approval Boundary Minimal v0
+Previous Boundary Index Version: 2026-06-09-b79
+Previous Last update log: Memory Influence Preview Minimal v0
 Clean count at last update log reset: 0/5; current clean count: 0/5
 ## Purpose
 - This file is the compact current Boundary Index for fast review of present ASHL Core / D Qingyin boundaries.
@@ -54,7 +54,7 @@ Clean count at last update log reset: 0/5; current clean count: 0/5
 - ASHL Core can run, observe, evaluate, and summarize a bounded Phase0 Level 3 toy minefield sandbox-only multi-step trace, using temporary sandbox-only state, explicit user approval, audit, and rollback.
 - Explicit human application approval and future memory admission package approval must come from explicit user/project-owner statements; Codex/AI may record or validate them but cannot grant them. Codex task queue records coordinate work packages only; no task status, completed task, passing test, workflow record, or queue ordering counts as explicit approval.
 - Memory is a warning sign, not a ban command; past failure is a warning, not a prohibition. In current Phase0, memory-influenced behavior remains practically blocked until all required gates and checks are satisfied.
-- ASHL Core can write one approved human-interpreted bucket-derived lesson as a minimal reviewed lesson memory record, read it through a controlled memory read path, and generate a preview-only influence view. The preview may favor check_before_retry for future design, but it is not runtime influence, predictor input, action selection, retained JSONL, production behavior, or proof of learning.
+- ASHL Core can write one approved human-interpreted bucket-derived lesson as a minimal reviewed lesson memory record, read it through a controlled memory read path, generate a preview-only influence view, and validate explicit user/project-owner approval for a future memory runtime influence package. Approval permits only a separate future package to proceed; it is not runtime influence, predictor input, action selection, retained JSONL, production behavior, or proof of learning.
 
 ## Latest Forbidden Claims
 - No object recognition.
@@ -69,7 +69,7 @@ Clean count at last update log reset: 0/5; current clean count: 0/5
 - No production action execution, real navigation, UI behavior change, or generalized behavior claim.
 - No action behavior change.
 - No exploration blocking, curiosity override, or mentor override blocking.
-- No Long-term Memory write, Core Memory write, Archive Memory write, retained JSONL write, retention write, or runtime/predictor memory influence from the minimal reviewed lesson memory record or preview-only influence view.
+- No Long-term Memory write, Core Memory write, Archive Memory write, retained JSONL write, retention write, or runtime/predictor memory influence from the minimal reviewed lesson memory record, preview-only influence view, or runtime influence approval record.
 - No new retention write from visual snapshots or visual grounding trials.
 - No automatic retention.
 - No semantic / fuzzy / vector retrieval.
@@ -100,7 +100,7 @@ Clean count at last update log reset: 0/5; current clean count: 0/5
 - Level 2 Sandbox Application milestone: Boundary Index changed because Level 2 moved from dry-run-only into sandbox-only application, which changes the sandbox application permission boundary. Evidence: explicit_user_statement approval checked; target_scope=phase0_level2_sandbox_only; application_status=applied_to_level2_sandbox_only; observation/evaluation/human review summary created; audit_recorded=True; rollback_available=True. Forbidden: no Level 2 runtime execution, production behavior change, memory/retention/retained JSONL write, predictor mutation, selected_action, final_action, direct command, production promotion, approval replay/session binding, or proof-of-learning claim.
 - Level 3 Toy Minefield Multi-Step Sandbox milestone: Boundary Index changed because Level 3 adds a sandbox-only multi-step application trace scope. Evidence: target_scope=phase0_level3_toy_minefield_sandbox_only; deterministic_fixture; check_before_retry_enforced=True; retry_same_risky_cell_without_check_blocked=True; audit_recorded=True; rollback_available=True. Forbidden: no Level 3 runtime execution, production promotion, memory/retention/retained JSONL write, predictor mutation, selected_action, final_action, direct command, or proof-of-learning claim.
 - Phase0 Documentation Consolidation milestone: Documentation consolidation only; no new ASHL Core runtime, sandbox, memory, retention, predictor, action-selection, production, or proof-of-learning capability added. New entry points: docs/phase0_status.md, docs/phase0_capability_matrix.md, and docs/phase0_doc_index.md.
-- Memory Influence Preview milestone: ASHL Core can generate a preview-only influence view from one controlled memory read of an approved reviewed_lesson_memory_candidate. The view says the memory would favor check_before_retry and discourage retry_same_action_without_check in a future influence design. Boundary changed because this opens a preview-only memory influence validation boundary. Forbidden: no runtime influence, predictor read/input/influence/mutation, selected_action, final_action, direct command, retained JSONL/data JSONL write, retention, production promotion, autonomous learning/action claim, or proof-of-learning.
+- Memory Runtime Influence Approval Boundary milestone: ASHL Core can validate explicit user/project-owner approval to proceed with a future memory runtime influence package from one valid memory_influence_preview sourced from a preview-only memory influence validation boundary over a reviewed_lesson_memory_candidate; the preview still says check_before_retry may be favored over retry_same_action_without_check only for future design. Approval only permits a separate future package; it does not perform runtime influence, predictor mutation, action selection, production promotion, retained JSONL write, retention write, autonomous learning/action, or proof-of-learning.
 ## Archive
 - Older milestone details are archived in `docs/boundary_index_archive_2026_06.md`.
 - Archive files preserve history only.
