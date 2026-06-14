@@ -20,6 +20,8 @@ Current queue source:
 - Completed: Level 2 Sandbox Review Conclusion and Promotion Readiness Minimal v0.
 - Completed: Level 3 Toy Minefield Multi-Step Sandbox Minimal v0.
 - Completed: Level 3 Toy Minefield Variant Suite, Stability Evaluation, and Review Conclusion Minimal v0.
+- Superseded: Sandbox-Stable Lesson Candidate Proposal Minimal v0.
+- Completed: Bucket-Derived Lesson Candidate Signal Minimal v0.
 - Deferred: Level 2 Sandbox Readiness Minimal v0.
 - Deferred: Memory Readiness Boundary Minimal v0.
 
@@ -38,6 +40,8 @@ The Level 2 sandbox review conclusion / promotion readiness package does not cha
 The Level 3 toy minefield package changes Boundary Index because it introduces a new Level 3 sandbox-only multi-step application trace scope. This is not runtime execution, production promotion, memory write, predictor mutation, action selection, final_action, direct command, or proof of learning.
 
 The Level 3 toy minefield variant stability package does not change Boundary Index because it operates inside the existing Level 3 sandbox-only multi-step trace boundary and adds deterministic variants, stability evaluation, and review conclusion only.
+
+The bucket-derived lesson candidate signal package does not change Boundary Index because it records a structured repeated-pattern signal only. It does not generate lesson text, write memory, create retained JSONL, influence runtime behavior, mutate predictors, select actions, promote production behavior, or claim proof of learning.
 
 The Codex task queue coordinates work packages only. It does not approve, apply, observe, evaluate, promote, remember, retain, predict, select, finalize, command, or prove learning.
 

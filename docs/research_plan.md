@@ -6386,6 +6386,25 @@ Next recommended work:
 1. Keep Level 3 runtime execution and production promotion blocked.
 2. Use a separate future boundary package for any runtime behavior, memory/retained JSONL, retention, predictor, action-selection, production, or proof claim.
 
+## Bucket-Derived Lesson Candidate Signal Minimal v0
+
+Status: completed / structured signal only / no lesson text generation.
+
+Progress:
+- Adds `ashl_core/bucket_derived_lesson_candidate_signal_minimal.py`.
+- Supersedes Sandbox-Stable Lesson Candidate Proposal Minimal v0 in the Codex task queue.
+- Builds a structured repeated-pattern signal from Level 3 toy minefield variant evidence.
+- Records repeated key, occurrence count, threshold, supporting contexts, and evidence types.
+- Keeps `generated_lesson_text` and `suggested_human_interpretation` null.
+
+Boundary:
+- Boundary Index remains `2026-06-09-b74`.
+- Rationale: this package records a bucket-derived candidate signal only and does not create lesson text, write memory, write retained JSONL, mutate predictors, change runtime behavior, select actions, promote production behavior, or claim proof of learning.
+
+Next recommended work:
+1. Human interpretation/review may turn the structured signal into text in a future package.
+2. Keep memory write, runtime influence, predictor mutation, selected_action, final_action, production promotion, and proof claims blocked.
+
 Forbidden claims:
 - No production lesson application.
 - No runtime behavior change.

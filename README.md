@@ -2721,6 +2721,10 @@ Two-Trial History Boundary:
 
 - Level 3 Toy Minefield Variant Suite, Stability Evaluation, and Review Conclusion Minimal v0 extends the existing Level 3 toy minefield sandbox-only trace into three deterministic variants, evaluates whether check-before-retry remains stable across the suite, and records a conservative review conclusion. Boundary Index remains `2026-06-09-b74` because this operates inside the already-authorized Level 3 sandbox-only multi-step trace boundary. It does not add runtime behavior, memory or retained JSONL writes, retention writes, predictor mutation, selected_action/final_action/direct command, production promotion, random mine generation, a real Minesweeper engine, approval replay/session binding hardening, or proof-of-learning claims.
 
+## Bucket-Derived Lesson Candidate Signal Minimal v0
+
+- Bucket-Derived Lesson Candidate Signal Minimal v0 creates a structured signal from Level 3 toy minefield variant evidence: a repeated key, occurrence count, threshold, and supporting contexts. It deliberately does not generate lesson text, does not claim Qingyin self-authored a natural-language lesson candidate, and keeps human interpretation/review required. Boundary Index remains `2026-06-09-b74`; no memory write, retained JSONL write, retention write, runtime influence, predictor influence, selected_action/final_action, production behavior change, or proof-of-learning claim is created.
+
 ## Phase0 Package ID and Boundary Index Version Separation Minimal v0
 
 - Phase0 Package ID and Boundary Index Version Separation Minimal v0 separates Codex Package IDs from Boundary Index versions. Package IDs track work packages; Boundary Index versions track boundary and validation-boundary changes only. Completed tasks, CLI commands, smoke tests, unittests, documentation updates, queue status changes, scenario plans, and dry-run records do not automatically increment Boundary Index. This is workflow/versioning governance only and does not add runtime behavior, memory writes, retention writes, predictor mutation, sandbox execution/application, action selection, final_action, direct commands, or proof-of-learning claims.

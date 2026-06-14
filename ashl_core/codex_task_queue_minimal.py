@@ -129,7 +129,7 @@ def build_codex_task_queue_minimal() -> dict[str, Any]:
                 "active",
                 "codex_work_package",
                 ["task.documentation_inventory.completed"],
-                ["task.level3_toy_minefield_variant_suite_stability.completed"],
+                ["task.bucket_derived_lesson_candidate_signal.completed"],
                 "Workflow coordination only; does not approve or execute future packages.",
             ),
             _task(
@@ -278,13 +278,42 @@ def build_codex_task_queue_minimal() -> dict[str, Any]:
                 ),
             ),
             _task(
+                "task.sandbox_stable_lesson_candidate_proposal.superseded",
+                "PKG-Phase0-Sandbox-Stable-Lesson-Candidate-Proposal-Future",
+                "Sandbox-Stable Lesson Candidate Proposal Minimal v0",
+                "workflow_only",
+                "superseded",
+                "phase0_future_work",
+                ["task.level3_toy_minefield_variant_suite_stability.completed"],
+                [],
+                (
+                    "Superseded: candidate should originate as a structured bucket-derived signal, not as "
+                    "direct text lesson proposal."
+                ),
+                superseded_by="Bucket-Derived Lesson Candidate Signal Minimal v0",
+            ),
+            _task(
+                "task.bucket_derived_lesson_candidate_signal.completed",
+                "PKG-Phase0-Bucket-Derived-Lesson-Candidate-Signal-Minimal-v0",
+                "Bucket-Derived Lesson Candidate Signal Minimal v0",
+                "sandbox_only",
+                "completed",
+                "codex_completed_report",
+                ["task.level3_toy_minefield_variant_suite_stability.completed"],
+                [],
+                (
+                    "Completed structured bucket-derived lesson candidate signal from Level 3 variant evidence; "
+                    "no Qingyin-authored lesson text, memory write, runtime influence, predictor mutation, or proof claim."
+                ),
+            ),
+            _task(
                 "task.level2_sandbox_readiness.deferred",
                 "PKG-Phase0-Level2-Readiness-Future",
                 "Level 2 Sandbox Readiness Minimal v0",
                 "capability_boundary",
                 "deferred",
                 "phase0_future_work",
-                ["task.level3_toy_minefield_variant_suite_stability.completed"],
+                ["task.bucket_derived_lesson_candidate_signal.completed"],
                 [],
                 "Deferred future boundary; not implemented and not approved.",
                 deferral_reason="Level 2 application/execution requires a separate future package after dry-run evaluation.",
@@ -296,7 +325,7 @@ def build_codex_task_queue_minimal() -> dict[str, Any]:
                 "capability_boundary",
                 "deferred",
                 "phase0_future_work",
-                ["task.level3_toy_minefield_variant_suite_stability.completed"],
+                ["task.bucket_derived_lesson_candidate_signal.completed"],
                 [],
                 "Deferred future memory boundary; no memory write or retained JSONL behavior is approved.",
                 deferral_reason="Memory readiness remains blocked until a future explicit boundary package.",
@@ -562,7 +591,7 @@ def _invalid_queues(valid_queue: dict[str, Any]) -> list[dict[str, Any]]:
     )
     queues.append(blocked)
     deferred = deepcopy(valid_queue)
-    deferred["task_entries"][12].pop("deferral_reason", None)
+    deferred["task_entries"][14].pop("deferral_reason", None)
     queues.append(deferred)
     superseded = deepcopy(valid_queue)
     superseded["task_entries"].append(
@@ -634,7 +663,7 @@ def _summary(
         summary["task_queue_result_count"] == 22
         and summary["valid_task_queue_count"] == 1
         and summary["invalid_task_queue_count"] == 21
-        and summary["valid_task_entry_count"] == 14
+        and summary["valid_task_entry_count"] == 16
         and summary["invalid_task_entry_count"] >= 9
         and summary["queue_scope_checked_count"] == 1
         and summary["approval_block_checked_count"] == 1

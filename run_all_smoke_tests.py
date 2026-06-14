@@ -187,6 +187,9 @@ from ashl_core.level3_toy_minefield_multistep_sandbox_minimal import (
 from ashl_core.level3_toy_minefield_variant_suite_stability_minimal import (
     run_level3_toy_minefield_variant_suite_stability_review_minimal_check,
 )
+from ashl_core.bucket_derived_lesson_candidate_signal_minimal import (
+    run_bucket_derived_lesson_candidate_signal_minimal_check,
+)
 from ashl_core.minimal_visual_grounding_trial import run_minimal_visual_grounding_trial_check
 from ashl_core.visual_prediction_error_attention_priority_preview_minimal import (
     run_visual_prediction_error_attention_priority_preview_minimal_check,
@@ -12262,6 +12265,22 @@ def smoke_codex_task_queue_minimal() -> dict:
         ),
         {},
     )
+    old_candidate_proposal_task = next(
+        (
+            task
+            for task in task_entries
+            if task.get("package_title") == "Sandbox-Stable Lesson Candidate Proposal Minimal v0"
+        ),
+        {},
+    )
+    bucket_signal_task = next(
+        (
+            task
+            for task in task_entries
+            if task.get("package_id") == "PKG-Phase0-Bucket-Derived-Lesson-Candidate-Signal-Minimal-v0"
+        ),
+        {},
+    )
     passed = (
         result.get("command") == "run-codex-task-queue-minimal-check"
         and result.get("flow") == "codex_task_queue_minimal_v0"
@@ -12270,7 +12289,7 @@ def smoke_codex_task_queue_minimal() -> dict:
         and valid_queue.get("record_type") == "codex_task_queue_minimal_v0"
         and summary.get("valid_task_queue_count") == 1
         and summary.get("invalid_task_queue_count") == 21
-        and summary.get("valid_task_entry_count") == 14
+        and summary.get("valid_task_entry_count") == 16
         and summary.get("invalid_task_entry_count", 0) >= 9
         and summary.get("queue_scope_checked_count") == 1
         and summary.get("approval_block_checked_count") == 1
@@ -12297,6 +12316,12 @@ def smoke_codex_task_queue_minimal() -> dict:
         and level3_variant_suite_task.get("boundary_change_required") is False
         and level3_variant_suite_task.get("boundary_index_version_before") == "2026-06-09-b74"
         and level3_variant_suite_task.get("boundary_index_version_after") == "2026-06-09-b74"
+        and old_candidate_proposal_task.get("status") == "superseded"
+        and old_candidate_proposal_task.get("superseded_by") == "Bucket-Derived Lesson Candidate Signal Minimal v0"
+        and bucket_signal_task.get("status") == "completed"
+        and bucket_signal_task.get("boundary_change_required") is False
+        and bucket_signal_task.get("boundary_index_version_before") == "2026-06-09-b74"
+        and bucket_signal_task.get("boundary_index_version_after") == "2026-06-09-b74"
         and valid_queue.get("queue_counts_as_approval") is False
         and valid_queue.get("queue_counts_as_application") is False
         and valid_queue.get("queue_counts_as_runtime_behavior") is False
@@ -13413,6 +13438,61 @@ def smoke_level3_toy_minefield_variant_suite_stability_review_minimal() -> dict:
     )
     return _result(
         "level3_toy_minefield_variant_suite_stability_review_minimal",
+        passed,
+        {"summary": summary, "boundary": boundary},
+    )
+
+
+def smoke_bucket_derived_lesson_candidate_signal_minimal() -> dict:
+    result = run_bucket_derived_lesson_candidate_signal_minimal_check()
+    summary = result.get("summary", {})
+    boundary = result.get("boundary", {})
+    record = result.get("valid_record", {})
+    passed = (
+        result.get("command") == "run-bucket-derived-lesson-candidate-signal-minimal-check"
+        and result.get("flow") == "bucket_derived_lesson_candidate_signal_minimal_v0"
+        and result.get("status") == "ok"
+        and summary.get("valid_signal_count") == 1
+        and summary.get("invalid_signal_count", 0) >= 1
+        and summary.get("source_bucket_checked_count") == 1
+        and summary.get("repeated_key_checked_count") == 1
+        and summary.get("threshold_checked_count") == 1
+        and summary.get("supporting_context_checked_count") == 1
+        and summary.get("human_interpretation_required_count") == 1
+        and summary.get("memory_write_blocked_count") == 1
+        and summary.get("runtime_influence_blocked_count") == 1
+        and summary.get("proof_claim_blocked_count") == 1
+        and boundary.get("boundary_change_required") is False
+        and boundary.get("boundary_index_update_required") is False
+        and boundary.get("boundary_index_version_before") == "2026-06-09-b74"
+        and boundary.get("boundary_index_version_after") == "2026-06-09-b74"
+        and record.get("record_type") == "bucket_derived_lesson_candidate_signal"
+        and record.get("candidate_signal_status") == "pending_human_interpretation"
+        and record.get("signal_source_type") == "qingyin_bucket_derived_system_detected"
+        and record.get("qingyin_generated_text") is False
+        and record.get("text_lesson_candidate_created") is False
+        and record.get("human_interpretation_required") is True
+        and record.get("source_scope") == "phase0_level3_toy_minefield_variant_suite_only"
+        and record.get("source_review_status") == "concluded_level3_variant_review_passed"
+        and record.get("occurrence_count") >= record.get("minimum_signal_threshold")
+        and record.get("generated_lesson_text") is None
+        and record.get("suggested_human_interpretation") is None
+        and record.get("memory_write_allowed") is False
+        and record.get("retained_jsonl_write_allowed") is False
+        and record.get("runtime_influence_allowed") is False
+        and record.get("predictor_influence_allowed") is False
+        and record.get("production_behavior_change_allowed") is False
+        and record.get("selected_action_allowed") is False
+        and record.get("final_action_allowed") is False
+        and record.get("proof_of_learning_claim_allowed") is False
+        and record.get("task_queue_completed_status_is_approval") is False
+        and record.get("passing_tests_are_approval") is False
+        and record.get("codex_generated_candidate_text_is_qingyin_authored") is False
+        and record.get("audit_recorded") is True
+        and record.get("rollback_available") is True
+    )
+    return _result(
+        "bucket_derived_lesson_candidate_signal_minimal",
         passed,
         {"summary": summary, "boundary": boundary},
     )
@@ -16128,6 +16208,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_level2_sandbox_review_conclusion_and_promotion_readiness_minimal(),
         smoke_level3_toy_minefield_multistep_sandbox_minimal(),
         smoke_level3_toy_minefield_variant_suite_stability_review_minimal(),
+        smoke_bucket_derived_lesson_candidate_signal_minimal(),
         smoke_phase0_current_capability_snapshot(),
         smoke_memory_influence_behavior_gate_design(),
         smoke_first_memory_influenced_behavior_boundary(),
