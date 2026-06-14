@@ -6632,4 +6632,28 @@ Next recommended work:
 Forbidden claims:
 - Bounded runtime tendency influence is not selected_action, not final_action, not direct command, not predictor mutation, not production behavior, not retained JSONL or retention write, and not proof that Qingyin learned.
 
+## Memory-Influenced Sandbox Re-run Minimal v0
+
+Status: completed / Level 3 sandbox tendency trace comparison / no action selection.
+
+Progress:
+- Adds `ashl_core/memory_influenced_sandbox_rerun_minimal.py`.
+- Requires valid Memory Runtime Influence Minimal v0 source plus valid Level 3 toy minefield variant suite source.
+- Re-runs `safe_path_variant`, `risky_repeat_trap_variant`, and `blocked_path_fallback_variant` with memory_off / memory_on / rollback tendency traces.
+- Shows memory_on increases `check_before_retry` from `0.50` to `0.60` and decreases `retry_same_action_without_check` from `0.50` to `0.45`.
+- Confirms rollback restores `0.50/0.50` baseline and no dirty state remains.
+- Keeps selected_action, final_action, direct command, predictor read/influence/mutation, production behavior, retained JSONL write, retention write, autonomous learning/action, and proof claims blocked.
+
+Boundary:
+- Boundary Index changes from `2026-06-09-b81` to `2026-06-09-b82`.
+- Rationale: this package introduces memory-influenced Level 3 sandbox re-run tendency traces using the approved bounded runtime influence.
+- This is sandbox tendency trace evidence only and does not authorize sandbox behavior use, action selection, predictor influence, production promotion, retention, or proof-of-learning.
+
+Next recommended work:
+1. Evaluate the memory-influenced sandbox re-run trace before considering any sandbox behavior-use boundary.
+2. Keep selected_action, final_action, predictor mutation, production promotion, retained JSONL write, retention write, and proof claims blocked until separate future boundaries explicitly open them.
+
+Forbidden claims:
+- Memory-influenced sandbox rerun is not selected_action, not final_action, not direct command, not predictor mutation, not production behavior, not retained JSONL or retention write, and not proof that Qingyin learned.
+
 This documentation reconciliation did not complete outcome evaluation at that time and did not claim every documentation inconsistency had been found. Current outcome evaluation status is controlled by the later Level 1 Sandbox Outcome Evaluation and Human Review Summary Minimal v0 section above.

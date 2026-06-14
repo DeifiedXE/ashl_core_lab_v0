@@ -34,6 +34,7 @@ Current queue source:
 - Completed: Memory Influence Preview Minimal v0.
 - Completed: Memory Runtime Influence Approval Boundary Minimal v0.
 - Completed: Memory Runtime Influence Minimal v0.
+- Completed: Memory-Influenced Sandbox Re-run Minimal v0.
 - Deferred: Level 2 Sandbox Readiness Minimal v0.
 - Deferred: Memory Readiness Boundary Minimal v0.
 
@@ -74,6 +75,8 @@ Memory Influence Preview Minimal v0 changes Boundary Index from b78 to b79 becau
 Memory Runtime Influence Approval Boundary Minimal v0 changes Boundary Index from b79 to b80 because it introduces explicit human approval validation for future memory runtime influence packages. The approved decision only allows a separate future package to proceed; it does not perform runtime influence, mutate predictors, create selected_action or final_action, select actions, write retained JSONL, write retention, promote production behavior, or prove learning.
 
 Memory Runtime Influence Minimal v0 changes Boundary Index from b80 to b81 because it opens the minimal bounded memory runtime influence boundary for one approved memory record inside a deterministic controlled runner. It applies a small tendency score shift and rolls it back to baseline; it does not create selected_action, final_action, direct command, predictor mutation, retained JSONL write, retention write, production promotion, or proof of learning.
+
+Memory-Influenced Sandbox Re-run Minimal v0 changes Boundary Index from b81 to b82 because it introduces memory-influenced Level 3 sandbox re-run tendency traces using the approved bounded runtime influence. It compares memory_off, memory_on, and rollback traces across deterministic Level 3 toy minefield variants; it does not create selected_action, final_action, direct command, predictor mutation, retained JSONL write, retention write, production promotion, or proof of learning.
 
 The Codex task queue coordinates work packages only. It does not approve, apply, observe, evaluate, promote, remember, retain, predict, select, finalize, command, or prove learning.
 
