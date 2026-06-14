@@ -193,6 +193,9 @@ from ashl_core.bucket_derived_lesson_candidate_signal_minimal import (
 from ashl_core.bucket_signal_human_interpretation_review_minimal import (
     run_bucket_signal_human_interpretation_review_minimal_check,
 )
+from ashl_core.memory_readiness_design_for_approved_bucket_lesson_minimal import (
+    run_memory_readiness_design_for_approved_bucket_lesson_minimal_check,
+)
 from ashl_core.minimal_visual_grounding_trial import run_minimal_visual_grounding_trial_check
 from ashl_core.visual_prediction_error_attention_priority_preview_minimal import (
     run_visual_prediction_error_attention_priority_preview_minimal_check,
@@ -12301,6 +12304,15 @@ def smoke_codex_task_queue_minimal() -> dict:
         ),
         {},
     )
+    memory_readiness_design_task = next(
+        (
+            task
+            for task in task_entries
+            if task.get("package_id")
+            == "PKG-Phase0-Memory-Readiness-Design-Approved-Bucket-Lesson-Minimal-v0"
+        ),
+        {},
+    )
     passed = (
         result.get("command") == "run-codex-task-queue-minimal-check"
         and result.get("flow") == "codex_task_queue_minimal_v0"
@@ -12309,7 +12321,7 @@ def smoke_codex_task_queue_minimal() -> dict:
         and valid_queue.get("record_type") == "codex_task_queue_minimal_v0"
         and summary.get("valid_task_queue_count") == 1
         and summary.get("invalid_task_queue_count") == 21
-        and summary.get("valid_task_entry_count") == 18
+        and summary.get("valid_task_entry_count") == 19
         and summary.get("invalid_task_entry_count", 0) >= 9
         and summary.get("queue_scope_checked_count") == 1
         and summary.get("approval_block_checked_count") == 1
@@ -12348,6 +12360,10 @@ def smoke_codex_task_queue_minimal() -> dict:
         and bucket_signal_review_task.get("boundary_change_required") is False
         and bucket_signal_review_task.get("boundary_index_version_before") == "2026-06-09-b74"
         and bucket_signal_review_task.get("boundary_index_version_after") == "2026-06-09-b74"
+        and memory_readiness_design_task.get("status") == "completed"
+        and memory_readiness_design_task.get("boundary_change_required") is False
+        and memory_readiness_design_task.get("boundary_index_version_before") == "2026-06-09-b74"
+        and memory_readiness_design_task.get("boundary_index_version_after") == "2026-06-09-b74"
         and valid_queue.get("queue_counts_as_approval") is False
         and valid_queue.get("queue_counts_as_application") is False
         and valid_queue.get("queue_counts_as_runtime_behavior") is False
@@ -13578,6 +13594,73 @@ def smoke_bucket_signal_human_interpretation_review_minimal() -> dict:
     )
     return _result(
         "bucket_signal_human_interpretation_review_minimal",
+        passed,
+        {"summary": summary, "boundary": boundary},
+    )
+
+
+def smoke_memory_readiness_design_for_approved_bucket_lesson_minimal() -> dict:
+    result = run_memory_readiness_design_for_approved_bucket_lesson_minimal_check()
+    summary = result.get("summary", {})
+    boundary = result.get("boundary", {})
+    record = result.get("valid_record", {})
+    required = set(
+        [
+            "explicit_future_memory_admission_package",
+            "explicit_human_memory_admission_approval",
+            "memory_layer_target_selection",
+            "retention_and_rollback_rule",
+            "cross_session_influence_rebuild_rule",
+            "runtime_influence_boundary",
+            "predictor_influence_boundary",
+            "audit_and_revocation_path",
+        ]
+    )
+    passed = (
+        result.get("command") == "run-memory-readiness-design-for-approved-bucket-lesson-minimal-check"
+        and result.get("flow") == "memory_readiness_design_for_approved_bucket_lesson_minimal_v0"
+        and result.get("status") == "ok"
+        and summary.get("valid_memory_readiness_design_count") == 1
+        and summary.get("invalid_memory_readiness_design_count", 0) >= 1
+        and summary.get("approved_review_checked_count") == 1
+        and summary.get("bucket_signal_source_checked_count") == 1
+        and summary.get("repo_audit_acknowledged_count") == 1
+        and summary.get("memory_write_blocked_count") == 1
+        and summary.get("retained_jsonl_write_blocked_count") == 1
+        and summary.get("runtime_influence_blocked_count") == 1
+        and summary.get("predictor_influence_blocked_count") == 1
+        and summary.get("future_requirements_recorded_count") == 1
+        and summary.get("proof_claim_blocked_count") == 1
+        and boundary.get("boundary_change_required") is False
+        and boundary.get("boundary_index_update_required") is False
+        and boundary.get("boundary_index_version_before") == "2026-06-09-b74"
+        and boundary.get("boundary_index_version_after") == "2026-06-09-b74"
+        and record.get("record_type") == "memory_readiness_design_for_approved_bucket_lesson"
+        and record.get("source_review_decision") == "approved_for_future_memory_readiness_design_only"
+        and record.get("source_signal_authorship") == "qingyin_bucket_derived_system_detected"
+        and record.get("interpretation_author_type") == "human_or_human_gpt_assisted"
+        and record.get("memory_admission_status") == "not_admitted_to_memory"
+        and record.get("memory_write_status") == "not_written"
+        and record.get("current_allowed_use") == "future_memory_readiness_design_only"
+        and record.get("proposed_future_memory_form") == "reviewed_lesson_memory_candidate"
+        and record.get("proposed_runtime_influence") == "blocked"
+        and record.get("proposed_predictor_influence") == "blocked"
+        and required.issubset(set(record.get("required_before_any_memory_write", [])))
+        and record.get("repo_audit_acknowledged") is True
+        and record.get("qingyin_current_status") == "phase0_trace_checker_system"
+        and record.get("qingyin_self_authored_lesson_text") is False
+        and record.get("autonomous_learning_claim_allowed") is False
+        and record.get("memory_write_allowed") is False
+        and record.get("retained_jsonl_write_allowed") is False
+        and record.get("retention_write_allowed") is False
+        and record.get("runtime_influence_allowed") is False
+        and record.get("predictor_influence_allowed") is False
+        and record.get("selected_action_allowed") is False
+        and record.get("final_action_allowed") is False
+        and record.get("proof_of_learning_claim_allowed") is False
+    )
+    return _result(
+        "memory_readiness_design_for_approved_bucket_lesson_minimal",
         passed,
         {"summary": summary, "boundary": boundary},
     )
@@ -16295,6 +16378,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_level3_toy_minefield_variant_suite_stability_review_minimal(),
         smoke_bucket_derived_lesson_candidate_signal_minimal(),
         smoke_bucket_signal_human_interpretation_review_minimal(),
+        smoke_memory_readiness_design_for_approved_bucket_lesson_minimal(),
         smoke_phase0_current_capability_snapshot(),
         smoke_memory_influence_behavior_gate_design(),
         smoke_first_memory_influenced_behavior_boundary(),

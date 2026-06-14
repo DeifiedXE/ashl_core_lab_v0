@@ -336,6 +336,21 @@ def build_codex_task_queue_minimal() -> dict[str, Any]:
                 ),
             ),
             _task(
+                "task.memory_readiness_design_approved_bucket_lesson.completed",
+                "PKG-Phase0-Memory-Readiness-Design-Approved-Bucket-Lesson-Minimal-v0",
+                "Memory Readiness Design for Approved Bucket-Derived Lesson Minimal v0",
+                "capability_boundary",
+                "completed",
+                "codex_completed_report",
+                ["task.bucket_signal_human_interpretation_review.completed"],
+                [],
+                (
+                    "Completed design-only memory readiness constraints for approved human-interpreted "
+                    "bucket-derived lesson; no memory admission, memory write, retained JSONL write, "
+                    "runtime influence, predictor mutation, action selection, production promotion, or proof claim."
+                ),
+            ),
+            _task(
                 "task.level2_sandbox_readiness.deferred",
                 "PKG-Phase0-Level2-Readiness-Future",
                 "Level 2 Sandbox Readiness Minimal v0",
@@ -354,7 +369,7 @@ def build_codex_task_queue_minimal() -> dict[str, Any]:
                 "capability_boundary",
                 "deferred",
                 "phase0_future_work",
-                ["task.bucket_signal_human_interpretation_review.completed"],
+                ["task.memory_readiness_design_approved_bucket_lesson.completed"],
                 [],
                 "Deferred future memory boundary; no memory write or retained JSONL behavior is approved.",
                 deferral_reason="Memory readiness remains blocked until a future explicit boundary package.",
@@ -620,7 +635,7 @@ def _invalid_queues(valid_queue: dict[str, Any]) -> list[dict[str, Any]]:
     )
     queues.append(blocked)
     deferred = deepcopy(valid_queue)
-    deferred["task_entries"][16].pop("deferral_reason", None)
+    deferred["task_entries"][17].pop("deferral_reason", None)
     queues.append(deferred)
     superseded = deepcopy(valid_queue)
     superseded["task_entries"].append(
@@ -692,7 +707,7 @@ def _summary(
         summary["task_queue_result_count"] == 22
         and summary["valid_task_queue_count"] == 1
         and summary["invalid_task_queue_count"] == 21
-        and summary["valid_task_entry_count"] == 18
+        and summary["valid_task_entry_count"] == 19
         and summary["invalid_task_entry_count"] >= 9
         and summary["queue_scope_checked_count"] == 1
         and summary["approval_block_checked_count"] == 1

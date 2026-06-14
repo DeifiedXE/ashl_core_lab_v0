@@ -6425,6 +6425,24 @@ Next recommended work:
 1. Future memory readiness design may use the approved interpreted candidate as design input only.
 2. Keep memory write, retained JSONL write, runtime influence, predictor mutation, selected_action, final_action, production promotion, and proof claims blocked.
 
+## Memory Readiness Design for Approved Bucket-Derived Lesson Minimal v0
+
+Status: completed / design-only readiness constraints / no memory admission.
+
+Progress:
+- Adds `ashl_core/memory_readiness_design_for_approved_bucket_lesson_minimal.py`.
+- Requires an approved `approved_for_future_memory_readiness_design_only` human review decision.
+- Records the future memory form as `reviewed_lesson_memory_candidate`, not Long-term Memory, Core Memory, runtime policy, persistent rule, or predictor parameter.
+- Lists required conditions before any future memory write: explicit future memory admission package, explicit human memory admission approval, memory layer target selection, retention/rollback rule, cross-session influence rebuild rule, runtime and predictor boundaries, and audit/revocation path.
+
+Boundary:
+- Boundary Index remains `2026-06-09-b74`.
+- Rationale: this package records design-only readiness constraints without changing memory write permission, runtime influence, predictor influence, persistence, retention, or action-selection boundaries.
+
+Next recommended work:
+1. A future memory admission boundary package would be required before any memory write.
+2. Keep memory write, retained JSONL write, runtime influence, predictor mutation, selected_action, final_action, production promotion, and proof claims blocked.
+
 Forbidden claims:
 - No production lesson application.
 - No runtime behavior change.
