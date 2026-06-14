@@ -1618,7 +1618,7 @@ Two-Trial History Boundary:
 
 - `docs/current_boundary_index.md`
 - Adds a short, versioned, low-token source of global hard boundaries for future work packages.
-- Current version: `Boundary Index Version: 2026-06-09-b74`.
+- Current version: `Boundary Index Version: 2026-06-09-b75`.
 - For current Phase0 status, see `docs/phase0_status.md`.
 - For capability status, see `docs/phase0_capability_matrix.md`.
 - For boundary version history, see `docs/current_boundary_index.md`.
@@ -2736,6 +2736,10 @@ Two-Trial History Boundary:
 ## Memory Admission Package Design Minimal v0
 
 - Memory Admission Package Design Minimal v0 records a design-only contract for a future memory admission package. It requires explicit future human memory admission approval, target memory layer selection, retention/rollback rules, cross-session rebuild rules, runtime and predictor boundary records, and audit/revocation paths before any future memory write can be attempted. It does not perform memory admission, does not write memory or retained JSONL, does not select Long-term Memory or Core Memory now, does not allow cross-session influence rebuild, runtime influence, predictor mutation, action selection, production promotion, or proof-of-learning claims. Boundary Index remains `2026-06-09-b74`.
+
+## Memory Admission Approval Boundary Minimal v0
+
+- Memory Admission Approval Boundary Minimal v0 validates explicit user/project-owner approval to proceed with a future memory admission package for one approved human-interpreted bucket-derived lesson candidate. This approval is not memory admission, not memory write, not retained JSONL write, not runtime influence, not predictor influence or mutation, not selected_action/final_action creation, not production promotion, and not proof of learning. Codex, AI, fixtures, task queue status, passing tests, and implicit chat commands do not count as approval. Boundary Index updates from `2026-06-09-b74` to `2026-06-09-b75` because this introduces an explicit approval validation boundary.
 
 ## Phase0 Package ID and Boundary Index Version Separation Minimal v0
 

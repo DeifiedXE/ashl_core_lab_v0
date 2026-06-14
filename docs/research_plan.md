@@ -6472,4 +6472,27 @@ Forbidden claims:
 - No generalized behavior change.
 - No proof-of-learning claim.
 
+## Memory Admission Approval Boundary Minimal v0
+
+Status: completed / explicit approval validation boundary / no memory admission.
+
+Progress:
+- Adds `ashl_core/memory_admission_approval_boundary_minimal.py`.
+- Requires a valid `memory_admission_package_design` source.
+- Validates four decisions: `approved_for_future_memory_admission_package`, `rejected_for_memory_admission`, `needs_more_evidence_before_memory_admission`, and `needs_rewrite_before_memory_admission`.
+- Requires explicit `explicit_user_statement` / `user` / `project_owner` / non-empty `approval_text`.
+- Blocks Codex, AI, fixture, task queue, passing tests, and implicit chat command as approval sources.
+
+Boundary:
+- Boundary Index changes from `2026-06-09-b74` to `2026-06-09-b75`.
+- Rationale: this package introduces an explicit human approval validation boundary for future memory admission packages.
+- The approved decision permits only a separate future memory admission package to proceed.
+
+Next recommended work:
+1. Future memory admission package execution/review boundary, if and only if an actual admission record is proposed.
+2. Keep memory admission, memory write, retained JSONL write, runtime influence, predictor mutation, selected_action, final_action, production promotion, and proof claims blocked until separate future boundaries exist.
+
+Forbidden claims:
+- This approval is not memory admission, not memory write, not retained JSONL write, not retention write, not runtime influence, not predictor influence or mutation, not action selection, not production promotion, and not proof of learning.
+
 This documentation reconciliation did not complete outcome evaluation at that time and did not claim every documentation inconsistency had been found. Current outcome evaluation status is controlled by the later Level 1 Sandbox Outcome Evaluation and Human Review Summary Minimal v0 section above.

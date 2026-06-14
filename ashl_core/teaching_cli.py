@@ -176,6 +176,9 @@ from .memory_readiness_design_for_approved_bucket_lesson_minimal import (
 from .memory_admission_package_design_minimal import (
     run_memory_admission_package_design_minimal_check,
 )
+from .memory_admission_approval_boundary_minimal import (
+    run_memory_admission_approval_boundary_minimal_check,
+)
 from .reviewed_lesson_dry_run_correction_minimal import (
     run_reviewed_lesson_dry_run_correction_minimal_check,
 )
@@ -3758,6 +3761,8 @@ def run_command(command: str) -> dict[str, Any] | str:
         return run_memory_readiness_design_for_approved_bucket_lesson_minimal_check()
     if command == "run-memory-admission-package-design-minimal-check":
         return run_memory_admission_package_design_minimal_check()
+    if command == "run-memory-admission-approval-boundary-minimal-check":
+        return run_memory_admission_approval_boundary_minimal_check()
     if command == "run-simple-retina-focus-preview-minimal-check":
         return run_simple_retina_focus_preview_minimal_check()
     if command == "run-generalized-prediction-confidence-check":
@@ -3953,6 +3958,7 @@ def main(argv: list[str] | None = None) -> int:
             "run-bucket-signal-human-interpretation-review-minimal-check",
             "run-memory-readiness-design-for-approved-bucket-lesson-minimal-check",
             "run-memory-admission-package-design-minimal-check",
+            "run-memory-admission-approval-boundary-minimal-check",
             "run-simple-retina-focus-preview-minimal-check",
             "run-generalized-prediction-confidence-check",
             "run-generalized-candidate-from-pattern-check",
@@ -4312,6 +4318,8 @@ def main(argv: list[str] | None = None) -> int:
         result = run_memory_readiness_design_for_approved_bucket_lesson_minimal_check()
     elif args.command == "run-memory-admission-package-design-minimal-check":
         result = run_memory_admission_package_design_minimal_check()
+    elif args.command == "run-memory-admission-approval-boundary-minimal-check":
+        result = run_memory_admission_approval_boundary_minimal_check()
     elif args.command == "run-simple-retina-focus-preview-minimal-check":
         result = run_simple_retina_focus_preview_minimal_check()
     elif args.command == "run-generalized-prediction-confidence-check":

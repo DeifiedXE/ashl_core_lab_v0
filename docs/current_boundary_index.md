@@ -1,7 +1,7 @@
-Boundary Index Version: 2026-06-09-b74
-Last update log: Level 3 Toy Minefield Multi-Step Sandbox Minimal v0
-Previous Boundary Index Version: 2026-06-09-b73
-Previous Last update log: Level 2 Sandbox Application, Observation, Evaluation, and Human Review Summary Minimal v0
+Boundary Index Version: 2026-06-09-b75
+Last update log: Memory Admission Approval Boundary Minimal v0
+Previous Boundary Index Version: 2026-06-09-b74
+Previous Last update log: Level 3 Toy Minefield Multi-Step Sandbox Minimal v0
 Clean count at last update log reset: 0/5; current clean count: 0/5
 ## Purpose
 - This file is the compact current Boundary Index for fast review of present ASHL Core / D Qingyin boundaries.
@@ -52,7 +52,7 @@ Clean count at last update log reset: 0/5; current clean count: 0/5
 - Generic lesson review decisions can bridge into existing reviewed lesson preview, dry-run correction, trial trace preview, before/after contrast, and lesson effect evidence trace without source-specific evidence channels.
 - Generic lesson evidence can approach the reviewed lesson application boundary, but lesson_effect_evidence_trace remains evidence only and is not application approval.
 - ASHL Core can run, observe, evaluate, and summarize a bounded Phase0 Level 3 toy minefield sandbox-only multi-step trace, using temporary sandbox-only state, explicit user approval, audit, and rollback.
-- Explicit human application approval must come from an explicit user/project-owner statement; Codex/AI may record or validate it but cannot grant it. Codex task queue records coordinate work packages only; no task status, completed task, passing test, workflow record, or queue ordering counts as explicit human application approval.
+- Explicit human application approval and future memory admission package approval must come from explicit user/project-owner statements; Codex/AI may record or validate them but cannot grant them. Codex task queue records coordinate work packages only; no task status, completed task, passing test, workflow record, or queue ordering counts as explicit approval.
 - Memory is a warning sign, not a ban command; past failure is a warning, not a prohibition. In current Phase0, memory-influenced behavior remains practically blocked until all required gates and checks are satisfied.
 - Retained records can be appended only through mentor-gated exact `留` approval and read back/listed as retained JSONL records.
 
@@ -69,7 +69,7 @@ Clean count at last update log reset: 0/5; current clean count: 0/5
 - No production action execution, real navigation, UI behavior change, or generalized behavior claim.
 - No action behavior change.
 - No exploration blocking, curiosity override, or mentor override blocking.
-- No memory write outside explicitly scoped mentor-gated retention.
+- No memory admission, Memory Layer write, or memory write outside explicitly scoped mentor-gated retention and future dedicated boundaries.
 - No new retention write from visual snapshots or visual grounding trials.
 - No automatic retention.
 - No semantic / fuzzy / vector retrieval.
@@ -100,7 +100,7 @@ Clean count at last update log reset: 0/5; current clean count: 0/5
 - Level 2 Sandbox Application milestone: Boundary Index changed because Level 2 moved from dry-run-only into sandbox-only application, which changes the sandbox application permission boundary. Evidence: explicit_user_statement approval checked; target_scope=phase0_level2_sandbox_only; application_status=applied_to_level2_sandbox_only; observation/evaluation/human review summary created; audit_recorded=True; rollback_available=True. Forbidden: no Level 2 runtime execution, production behavior change, memory/retention/retained JSONL write, predictor mutation, selected_action, final_action, direct command, production promotion, approval replay/session binding, or proof-of-learning claim.
 - Level 3 Toy Minefield Multi-Step Sandbox milestone: Boundary Index changed because Level 3 adds a sandbox-only multi-step application trace scope. Evidence: target_scope=phase0_level3_toy_minefield_sandbox_only; deterministic_fixture; check_before_retry_enforced=True; retry_same_risky_cell_without_check_blocked=True; audit_recorded=True; rollback_available=True. Forbidden: no Level 3 runtime execution, production promotion, memory/retention/retained JSONL write, predictor mutation, selected_action, final_action, direct command, or proof-of-learning claim.
 - Phase0 Documentation Consolidation milestone: Documentation consolidation only; no new ASHL Core runtime, sandbox, memory, retention, predictor, action-selection, production, or proof-of-learning capability added. New entry points: docs/phase0_status.md, docs/phase0_capability_matrix.md, and docs/phase0_doc_index.md.
-- Phase0 Documentation Inventory / Codex Task Queue milestone: Phase0 docs include documentation inventory, status, capability matrix, authority/index rules, audit, known open risk/gap ledger, and a minimal Codex task queue for work package coordination. The queue may track pending/active/blocked/completed/superseded/deferred tasks only and now records Package IDs plus boundary_change_required metadata for Level 1/Level 2 and versioning packages. Forbidden: no approval, runtime, memory, retention, predictor, sandbox execution, action-selection, final-action, production, or proof-of-learning capability from queue state.
+- Memory Admission Approval Boundary milestone: ASHL Core can validate explicit user/project-owner approval to proceed with a future memory admission package for one approved human-interpreted bucket-derived lesson candidate. Approval only permits a separate future admission package; it does not perform memory admission, memory/retained JSONL/retention write, runtime influence, predictor mutation, action selection, production promotion, or proof-of-learning. Codex/AI/fixture/task queue/passing tests/implicit chat command are not approval.
 ## Archive
 - Older milestone details are archived in `docs/boundary_index_archive_2026_06.md`.
 - Archive files preserve history only.
