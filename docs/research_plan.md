@@ -6563,4 +6563,27 @@ Next recommended work:
 Forbidden claims:
 - Controlled memory read is not runtime influence, not predictor input, not action selection, not production behavior, not autonomous learning/action, and not proof that Qingyin learned.
 
+## Memory Influence Preview Minimal v0
+
+Status: completed / preview-only memory influence view / no runtime influence.
+
+Progress:
+- Adds `ashl_core/memory_influence_preview_minimal.py`.
+- Requires a valid controlled memory read from Memory Write and Read Minimal v0.
+- Converts retrieved memory text into a preview-only influence view.
+- Records preferred future tendency `check_before_retry` and discouraged future tendency `retry_same_action_without_check`.
+- Keeps preview advice separate from action selection, predictor input, runtime behavior, and proof claims.
+
+Boundary:
+- Boundary Index changes from `2026-06-09-b78` to `2026-06-09-b79`.
+- Rationale: this package introduces a preview-only memory influence validation boundary from controlled memory read.
+- Runtime influence, predictor read/input/influence/mutation, action selection, production promotion, retained JSONL write, retention write, and proof-of-learning remain blocked.
+
+Next recommended work:
+1. Memory influence preview audit / comparison view, if useful, still preview-only.
+2. Any real runtime influence or predictor access requires a separate future boundary package.
+
+Forbidden claims:
+- Influence preview is not influence, not predictor input, not selected_action or final_action, not production behavior, and not proof that Qingyin learned.
+
 This documentation reconciliation did not complete outcome evaluation at that time and did not claim every documentation inconsistency had been found. Current outcome evaluation status is controlled by the later Level 1 Sandbox Outcome Evaluation and Human Review Summary Minimal v0 section above.

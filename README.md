@@ -1618,7 +1618,7 @@ Two-Trial History Boundary:
 
 - `docs/current_boundary_index.md`
 - Adds a short, versioned, low-token source of global hard boundaries for future work packages.
-- Current version: `Boundary Index Version: 2026-06-09-b78`.
+- Current version: `Boundary Index Version: 2026-06-09-b79`.
 - For current Phase0 status, see `docs/phase0_status.md`.
 - For capability status, see `docs/phase0_capability_matrix.md`.
 - For boundary version history, see `docs/current_boundary_index.md`.
@@ -2752,6 +2752,10 @@ Two-Trial History Boundary:
 ## Memory Write and Read Minimal v0
 
 - Memory Write and Read Minimal v0 writes one approved human-interpreted bucket-derived lesson as a minimal reviewed lesson memory record and reads it through a controlled memory read path. The controlled read retrieves the stored memory text, but it is not runtime influence, predictor input, action selection, production behavior, retained JSONL, retention, or proof that Qingyin learned. Boundary Index updates from `2026-06-09-b77` to `2026-06-09-b78` because this opens the minimal memory write and controlled memory read boundary for one approved `reviewed_lesson_memory_candidate`.
+
+## Memory Influence Preview Minimal v0
+
+- Memory Influence Preview Minimal v0 generates a preview-only influence view from the controlled memory read. The preview can state that the memory would favor `check_before_retry` and discourage `retry_same_action_without_check` in a future influence design, but it does not influence runtime behavior, provide predictor input, select actions, create selected_action/final_action, write retained JSONL, write retention, promote production behavior, or prove Qingyin learned. Boundary Index updates from `2026-06-09-b78` to `2026-06-09-b79` because this introduces a preview-only memory influence validation boundary.
 
 ## Phase0 Package ID and Boundary Index Version Separation Minimal v0
 
