@@ -22,12 +22,14 @@ Current queue source:
 - Completed: Level 3 Toy Minefield Variant Suite, Stability Evaluation, and Review Conclusion Minimal v0.
 - Superseded: Sandbox-Stable Lesson Candidate Proposal Minimal v0.
 - Completed: Bucket-Derived Lesson Candidate Signal Minimal v0.
+- Completed: ASHL Core / Qingyin Repo Audit Minimal v0.
+- Completed: Bucket Signal Human Interpretation Review + Audit Reconciliation Minimal v0.
 - Deferred: Level 2 Sandbox Readiness Minimal v0.
 - Deferred: Memory Readiness Boundary Minimal v0.
 
 ## Workflow Boundary
 
-No task queue entry, completed task, passing test, Codex-generated status, workflow record, or queue ordering counts as explicit human application approval.
+No task queue entry, completed task, passing test, Codex-generated status, workflow record, or queue ordering counts as explicit human application approval or memory write approval.
 
 No Codex-generated review conclusion or Level 2 readiness precheck counts as explicit human application approval.
 
@@ -42,6 +44,8 @@ The Level 3 toy minefield package changes Boundary Index because it introduces a
 The Level 3 toy minefield variant stability package does not change Boundary Index because it operates inside the existing Level 3 sandbox-only multi-step trace boundary and adds deterministic variants, stability evaluation, and review conclusion only.
 
 The bucket-derived lesson candidate signal package does not change Boundary Index because it records a structured repeated-pattern signal only. It does not generate lesson text, write memory, create retained JSONL, influence runtime behavior, mutate predictors, select actions, promote production behavior, or claim proof of learning.
+
+The bucket signal human interpretation review package does not change Boundary Index because it records human or human/GPT-assisted interpretation and human review for future memory readiness design only. It does not make Qingyin the author of natural-language lesson text, write memory, create retained JSONL, influence runtime behavior, mutate predictors, select actions, promote production behavior, or claim proof of learning.
 
 The Codex task queue coordinates work packages only. It does not approve, apply, observe, evaluate, promote, remember, retain, predict, select, finalize, command, or prove learning.
 

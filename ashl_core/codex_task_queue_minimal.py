@@ -19,7 +19,7 @@ VERSIONING_POLICY_BOUNDARY_AFTER = "2026-06-09-b72"
 QUEUE_NAME = "ashl_core_phase0_codex_task_queue"
 BOUNDARY_PRINCIPLE = (
     "No task queue entry, completed task, passing test, Codex-generated status, workflow record, "
-    "or queue ordering counts as explicit human application approval."
+    "or queue ordering counts as explicit human application approval or memory write approval."
 )
 QUEUE_PRINCIPLE = (
     "The Codex task queue coordinates work packages only. It does not approve, apply, observe, evaluate, "
@@ -129,7 +129,7 @@ def build_codex_task_queue_minimal() -> dict[str, Any]:
                 "active",
                 "codex_work_package",
                 ["task.documentation_inventory.completed"],
-                ["task.bucket_derived_lesson_candidate_signal.completed"],
+                ["task.bucket_signal_human_interpretation_review.completed"],
                 "Workflow coordination only; does not approve or execute future packages.",
             ),
             _task(
@@ -307,13 +307,42 @@ def build_codex_task_queue_minimal() -> dict[str, Any]:
                 ),
             ),
             _task(
+                "task.repo_audit_minimal.completed",
+                "PKG-Phase0-Repo-Audit-Minimal-v0",
+                "ASHL Core / Qingyin Repo Audit Minimal v0",
+                "documentation_only",
+                "completed",
+                "codex_completed_report",
+                ["task.bucket_derived_lesson_candidate_signal.completed"],
+                [],
+                (
+                    "Completed repo audit: Qingyin is a boundary-constrained Phase0 trace/checker system, "
+                    "not an autonomous learner or actor; task status is not approval or memory write."
+                ),
+            ),
+            _task(
+                "task.bucket_signal_human_interpretation_review.completed",
+                "PKG-Phase0-Bucket-Signal-Human-Interpretation-Review-Audit-Reconciliation-Minimal-v0",
+                "Bucket Signal Human Interpretation Review + Audit Reconciliation Minimal v0",
+                "capability_boundary",
+                "completed",
+                "codex_completed_report",
+                ["task.bucket_derived_lesson_candidate_signal.completed", "task.repo_audit_minimal.completed"],
+                [],
+                (
+                    "Completed human or human/GPT-assisted interpretation and human review of bucket signal "
+                    "for future memory readiness design only; no memory write, runtime influence, predictor "
+                    "mutation, action selection, production promotion, or proof claim."
+                ),
+            ),
+            _task(
                 "task.level2_sandbox_readiness.deferred",
                 "PKG-Phase0-Level2-Readiness-Future",
                 "Level 2 Sandbox Readiness Minimal v0",
                 "capability_boundary",
                 "deferred",
                 "phase0_future_work",
-                ["task.bucket_derived_lesson_candidate_signal.completed"],
+                ["task.bucket_signal_human_interpretation_review.completed"],
                 [],
                 "Deferred future boundary; not implemented and not approved.",
                 deferral_reason="Level 2 application/execution requires a separate future package after dry-run evaluation.",
@@ -325,7 +354,7 @@ def build_codex_task_queue_minimal() -> dict[str, Any]:
                 "capability_boundary",
                 "deferred",
                 "phase0_future_work",
-                ["task.bucket_derived_lesson_candidate_signal.completed"],
+                ["task.bucket_signal_human_interpretation_review.completed"],
                 [],
                 "Deferred future memory boundary; no memory write or retained JSONL behavior is approved.",
                 deferral_reason="Memory readiness remains blocked until a future explicit boundary package.",
@@ -591,7 +620,7 @@ def _invalid_queues(valid_queue: dict[str, Any]) -> list[dict[str, Any]]:
     )
     queues.append(blocked)
     deferred = deepcopy(valid_queue)
-    deferred["task_entries"][14].pop("deferral_reason", None)
+    deferred["task_entries"][16].pop("deferral_reason", None)
     queues.append(deferred)
     superseded = deepcopy(valid_queue)
     superseded["task_entries"].append(
@@ -663,7 +692,7 @@ def _summary(
         summary["task_queue_result_count"] == 22
         and summary["valid_task_queue_count"] == 1
         and summary["invalid_task_queue_count"] == 21
-        and summary["valid_task_entry_count"] == 16
+        and summary["valid_task_entry_count"] == 18
         and summary["invalid_task_entry_count"] >= 9
         and summary["queue_scope_checked_count"] == 1
         and summary["approval_block_checked_count"] == 1
