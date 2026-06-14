@@ -8,8 +8,8 @@ from typing import Any
 
 COMMAND = "run-codex-task-queue-minimal-check"
 FLOW = "codex_task_queue_minimal_v0"
-BOUNDARY_INDEX_VERSION = "2026-06-09-b77"
-PREVIOUS_BOUNDARY_INDEX_VERSION = "2026-06-09-b76"
+BOUNDARY_INDEX_VERSION = "2026-06-09-b78"
+PREVIOUS_BOUNDARY_INDEX_VERSION = "2026-06-09-b77"
 LEVEL2_APPLICATION_BOUNDARY_BEFORE = "2026-06-09-b72"
 LEVEL2_APPLICATION_BOUNDARY_AFTER = "2026-06-09-b73"
 LEVEL3_TOY_MINEFIELD_BOUNDARY_BEFORE = "2026-06-09-b73"
@@ -20,6 +20,8 @@ MEMORY_ADMISSION_BOUNDARY_BEFORE = "2026-06-09-b75"
 MEMORY_ADMISSION_BOUNDARY_AFTER = "2026-06-09-b76"
 MEMORY_WRITE_APPROVAL_BOUNDARY_BEFORE = "2026-06-09-b76"
 MEMORY_WRITE_APPROVAL_BOUNDARY_AFTER = "2026-06-09-b77"
+MEMORY_WRITE_AND_READ_BOUNDARY_BEFORE = "2026-06-09-b77"
+MEMORY_WRITE_AND_READ_BOUNDARY_AFTER = "2026-06-09-b78"
 VERSIONING_POLICY_BOUNDARY_BEFORE = "2026-06-09-b71"
 VERSIONING_POLICY_BOUNDARY_AFTER = "2026-06-09-b72"
 QUEUE_NAME = "ashl_core_phase0_codex_task_queue"
@@ -436,6 +438,43 @@ def build_codex_task_queue_minimal() -> dict[str, Any]:
                 ),
             ),
             _task(
+                "task.memory_write_minimal.superseded",
+                "PKG-Phase0-MemoryWrite-Minimal-v0",
+                "Memory Write Minimal v0",
+                "workflow_only",
+                "superseded",
+                "phase0_future_work",
+                ["task.memory_write_approval_boundary.completed"],
+                [],
+                (
+                    "Superseded by Memory Write and Read Minimal v0 because memory write and controlled memory "
+                    "read should be implemented together at this stage."
+                ),
+                superseded_by="Memory Write and Read Minimal v0",
+            ),
+            _task(
+                "task.memory_write_and_read_minimal.completed",
+                "PKG-Phase0-MemoryWriteAndRead-Minimal-v0",
+                "Memory Write and Read Minimal v0",
+                "capability_boundary",
+                "completed",
+                "codex_completed_report",
+                ["task.memory_write_approval_boundary.completed"],
+                [],
+                (
+                    "Completed minimal reviewed lesson memory write and controlled read path for one approved "
+                    "reviewed_lesson_memory_candidate; no retained JSONL write, retention write, runtime influence, "
+                    "predictor mutation, action selection, production promotion, or proof claim."
+                ),
+                boundary_change_required=True,
+                boundary_index_version_before=MEMORY_WRITE_AND_READ_BOUNDARY_BEFORE,
+                boundary_index_version_after=MEMORY_WRITE_AND_READ_BOUNDARY_AFTER,
+                boundary_change_rationale=(
+                    "Opens the minimal memory write and controlled memory read boundary for one approved "
+                    "reviewed_lesson_memory_candidate."
+                ),
+            ),
+            _task(
                 "task.level2_sandbox_readiness.deferred",
                 "PKG-Phase0-Level2-Readiness-Future",
                 "Level 2 Sandbox Readiness Minimal v0",
@@ -454,7 +493,7 @@ def build_codex_task_queue_minimal() -> dict[str, Any]:
                 "capability_boundary",
                 "deferred",
                 "phase0_future_work",
-                ["task.memory_write_approval_boundary.completed"],
+                ["task.memory_write_and_read_minimal.completed"],
                 [],
                 "Deferred future memory boundary; no memory write or retained JSONL behavior is approved.",
                 deferral_reason="Memory readiness remains blocked until a future explicit boundary package.",
@@ -720,7 +759,7 @@ def _invalid_queues(valid_queue: dict[str, Any]) -> list[dict[str, Any]]:
     )
     queues.append(blocked)
     deferred = deepcopy(valid_queue)
-    deferred["task_entries"][21].pop("deferral_reason", None)
+    deferred["task_entries"][23].pop("deferral_reason", None)
     queues.append(deferred)
     superseded = deepcopy(valid_queue)
     superseded["task_entries"].append(
@@ -792,7 +831,7 @@ def _summary(
         summary["task_queue_result_count"] == 22
         and summary["valid_task_queue_count"] == 1
         and summary["invalid_task_queue_count"] == 21
-        and summary["valid_task_entry_count"] == 23
+        and summary["valid_task_entry_count"] == 25
         and summary["invalid_task_entry_count"] >= 9
         and summary["queue_scope_checked_count"] == 1
         and summary["approval_block_checked_count"] == 1

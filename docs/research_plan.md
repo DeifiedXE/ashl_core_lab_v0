@@ -6540,4 +6540,27 @@ Next recommended work:
 Forbidden claims:
 - This approval is not memory write, not Long-term/Core/Archive Memory write, not retained JSONL write, not retention write, not runtime influence, not predictor mutation, not action selection, not production promotion, and not proof of learning.
 
+## Memory Write and Read Minimal v0
+
+Status: completed / minimal reviewed lesson memory record write and controlled read / no runtime influence.
+
+Progress:
+- Adds `ashl_core/memory_write_and_read_minimal.py`.
+- Requires valid `memory_admission`, `reviewed_lesson_memory_candidate`, and approved `memory_write_approval` sources.
+- Writes one approved human-interpreted bucket-derived lesson as a minimal reviewed lesson memory record.
+- Reads that record through a controlled memory read path and retrieves the stored memory text.
+- Supersedes the separate Memory Write Minimal v0 task because write and controlled read should exist together at this stage.
+
+Boundary:
+- Boundary Index changes from `2026-06-09-b77` to `2026-06-09-b78`.
+- Rationale: this package opens the minimal memory write and controlled memory read boundary for one approved reviewed_lesson_memory_candidate.
+- Retained JSONL write, data/ JSONL append, retention write, Long-term/Core/Archive Memory write, runtime influence, predictor read/influence/mutation, action selection, production promotion, and proof-of-learning remain blocked.
+
+Next recommended work:
+1. Memory read audit / rollback invalidation check, if needed, still without runtime influence.
+2. Future runtime or predictor influence requires a separate boundary package.
+
+Forbidden claims:
+- Controlled memory read is not runtime influence, not predictor input, not action selection, not production behavior, not autonomous learning/action, and not proof that Qingyin learned.
+
 This documentation reconciliation did not complete outcome evaluation at that time and did not claim every documentation inconsistency had been found. Current outcome evaluation status is controlled by the later Level 1 Sandbox Outcome Evaluation and Human Review Summary Minimal v0 section above.

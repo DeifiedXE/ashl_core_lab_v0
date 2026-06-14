@@ -1,7 +1,7 @@
-Boundary Index Version: 2026-06-09-b77
-Last update log: Memory Write Approval Boundary Minimal v0
-Previous Boundary Index Version: 2026-06-09-b76
-Previous Last update log: Memory Admission Minimal v0
+Boundary Index Version: 2026-06-09-b78
+Last update log: Memory Write and Read Minimal v0
+Previous Boundary Index Version: 2026-06-09-b77
+Previous Last update log: Memory Write Approval Boundary Minimal v0
 Clean count at last update log reset: 0/5; current clean count: 0/5
 ## Purpose
 - This file is the compact current Boundary Index for fast review of present ASHL Core / D Qingyin boundaries.
@@ -11,7 +11,7 @@ Clean count at last update log reset: 0/5; current clean count: 0/5
 ## Global Hard Boundaries
 - Trace/persistence records are evidence only, not authorization, lesson_store write, Memory Layer write, lesson_candidate creation, or awakening evidence.
 - trace is record, not runtime action.
-- no lesson_store write, Memory Layer write, Long-term Memory write, persistent rule write, or retained JSONL write unless explicitly authorized by a future dedicated package.
+- no lesson_store write, Long-term/Core/Archive Memory write, persistent rule write, retained JSONL write, or runtime memory influence unless explicitly authorized by a future dedicated package.
 - LLM output must not become authoritative failure_reason, Qingyin runtime, self, memory, state, perception, learning loop, or first_output evidence.
 - first_output is a runtime milestone, not awakening, dialogue ability, or long-term growth evidence.
 - mentor_feedback_stub and mentor_feedback_trace are engineering supervision records, not feedback runtime.
@@ -54,7 +54,7 @@ Clean count at last update log reset: 0/5; current clean count: 0/5
 - ASHL Core can run, observe, evaluate, and summarize a bounded Phase0 Level 3 toy minefield sandbox-only multi-step trace, using temporary sandbox-only state, explicit user approval, audit, and rollback.
 - Explicit human application approval and future memory admission package approval must come from explicit user/project-owner statements; Codex/AI may record or validate them but cannot grant them. Codex task queue records coordinate work packages only; no task status, completed task, passing test, workflow record, or queue ordering counts as explicit approval.
 - Memory is a warning sign, not a ban command; past failure is a warning, not a prohibition. In current Phase0, memory-influenced behavior remains practically blocked until all required gates and checks are satisfied.
-- Retained records can be appended only through mentor-gated exact `留` approval and read back/listed as retained JSONL records.
+- ASHL Core can write one approved human-interpreted bucket-derived lesson as a minimal reviewed lesson memory record and read it through a controlled memory read path. Controlled read retrieves memory text only; it is not runtime influence, predictor input, action selection, retained JSONL, production behavior, or proof of learning.
 
 ## Latest Forbidden Claims
 - No object recognition.
@@ -69,7 +69,7 @@ Clean count at last update log reset: 0/5; current clean count: 0/5
 - No production action execution, real navigation, UI behavior change, or generalized behavior claim.
 - No action behavior change.
 - No exploration blocking, curiosity override, or mentor override blocking.
-- No Long-term Memory write, Core Memory write, Archive Memory write, retained JSONL write, or runtime/predictor memory influence from candidate-layer memory admission.
+- No Long-term Memory write, Core Memory write, Archive Memory write, retained JSONL write, retention write, or runtime/predictor memory influence from the minimal reviewed lesson memory record.
 - No new retention write from visual snapshots or visual grounding trials.
 - No automatic retention.
 - No semantic / fuzzy / vector retrieval.
@@ -100,7 +100,7 @@ Clean count at last update log reset: 0/5; current clean count: 0/5
 - Level 2 Sandbox Application milestone: Boundary Index changed because Level 2 moved from dry-run-only into sandbox-only application, which changes the sandbox application permission boundary. Evidence: explicit_user_statement approval checked; target_scope=phase0_level2_sandbox_only; application_status=applied_to_level2_sandbox_only; observation/evaluation/human review summary created; audit_recorded=True; rollback_available=True. Forbidden: no Level 2 runtime execution, production behavior change, memory/retention/retained JSONL write, predictor mutation, selected_action, final_action, direct command, production promotion, approval replay/session binding, or proof-of-learning claim.
 - Level 3 Toy Minefield Multi-Step Sandbox milestone: Boundary Index changed because Level 3 adds a sandbox-only multi-step application trace scope. Evidence: target_scope=phase0_level3_toy_minefield_sandbox_only; deterministic_fixture; check_before_retry_enforced=True; retry_same_risky_cell_without_check_blocked=True; audit_recorded=True; rollback_available=True. Forbidden: no Level 3 runtime execution, production promotion, memory/retention/retained JSONL write, predictor mutation, selected_action, final_action, direct command, or proof-of-learning claim.
 - Phase0 Documentation Consolidation milestone: Documentation consolidation only; no new ASHL Core runtime, sandbox, memory, retention, predictor, action-selection, production, or proof-of-learning capability added. New entry points: docs/phase0_status.md, docs/phase0_capability_matrix.md, and docs/phase0_doc_index.md.
-- Memory Write Approval Boundary milestone: ASHL Core can validate explicit user/project-owner approval to proceed with a future memory write package for one reviewed_lesson_memory_candidate. Approval only permits a separate future write/retention package; it does not write memory, Long-term/Core/Archive Memory, retained JSONL, retention, runtime influence, predictor mutation, action selection, production promotion, or proof-of-learning.
+- Memory Write and Read milestone: ASHL Core can write one approved human-interpreted bucket-derived lesson as a minimal reviewed lesson memory record and read it through a controlled memory read path. Boundary changed because this opens minimal memory write/read for one approved reviewed_lesson_memory_candidate. Forbidden: no retained JSONL/data JSONL write, retention, Long-term/Core/Archive Memory, runtime influence, predictor read/influence/mutation, selected_action, final_action, production promotion, autonomous learning/action claim, or proof-of-learning.
 ## Archive
 - Older milestone details are archived in `docs/boundary_index_archive_2026_06.md`.
 - Archive files preserve history only.

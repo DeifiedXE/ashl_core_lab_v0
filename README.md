@@ -1618,7 +1618,7 @@ Two-Trial History Boundary:
 
 - `docs/current_boundary_index.md`
 - Adds a short, versioned, low-token source of global hard boundaries for future work packages.
-- Current version: `Boundary Index Version: 2026-06-09-b77`.
+- Current version: `Boundary Index Version: 2026-06-09-b78`.
 - For current Phase0 status, see `docs/phase0_status.md`.
 - For capability status, see `docs/phase0_capability_matrix.md`.
 - For boundary version history, see `docs/current_boundary_index.md`.
@@ -2748,6 +2748,10 @@ Two-Trial History Boundary:
 ## Memory Write Approval Boundary Minimal v0
 
 - Memory Write Approval Boundary Minimal v0 validates explicit user/project-owner approval to proceed with a future memory write package for one `reviewed_lesson_memory_candidate`. This approval is not memory write, not Long-term/Core/Archive Memory write, not retained JSONL write, not retention write, not runtime influence, not predictor mutation, not selected_action/final_action creation, not production promotion, and not proof of learning. Boundary Index updates from `2026-06-09-b76` to `2026-06-09-b77` because this introduces an explicit approval validation boundary for future memory write packages.
+
+## Memory Write and Read Minimal v0
+
+- Memory Write and Read Minimal v0 writes one approved human-interpreted bucket-derived lesson as a minimal reviewed lesson memory record and reads it through a controlled memory read path. The controlled read retrieves the stored memory text, but it is not runtime influence, predictor input, action selection, production behavior, retained JSONL, retention, or proof that Qingyin learned. Boundary Index updates from `2026-06-09-b77` to `2026-06-09-b78` because this opens the minimal memory write and controlled memory read boundary for one approved `reviewed_lesson_memory_candidate`.
 
 ## Phase0 Package ID and Boundary Index Version Separation Minimal v0
 
