@@ -6940,4 +6940,23 @@ Next recommended work:
 1. Sandbox Selected Action Minimal v0 may be proposed as a separate implementation package.
 2. Pressure runtime application, final_action, direct command, memory/retention writes, predictor mutation, production behavior, and proof claims still require separate future boundaries.
 
+## Sandbox Selected Action + Execution Approval Boundary Minimal v0
+
+Status: completed / sandbox selected_action boundary / no action execution.
+
+Progress:
+- Adds `ashl_core/sandbox_selected_action_and_execution_approval_boundary_minimal.py`.
+- Requires the b94 selected_action approval boundary source and the b93 same-session reordered candidate list.
+- Creates one sandbox-only selected_action from the top ranked candidate: `observe_or_alternative_probe`.
+- Creates approval for a future Sandbox Action Execution Minimal v0 package only.
+- Keeps action execution, final_action, direct command, persistent updates, memory/retention writes, predictor read/influence/mutation, production behavior, autonomous learning/action, and proof claims blocked.
+
+Boundary:
+- Boundary Index changes from `2026-06-09-b94` to `2026-06-09-b95`.
+- Rationale: this package permits one sandbox-only selected_action to be created from an approved ranked sandbox candidate and creates an explicit approval boundary for a future sandbox action execution package.
+
+Next recommended work:
+1. Sandbox Action Execution Minimal v0 may be proposed as a separate package.
+2. Final_action, direct command, memory/retention writes, predictor mutation, production behavior, and proof claims still require separate future boundaries.
+
 This documentation reconciliation did not complete outcome evaluation at that time and did not claim every documentation inconsistency had been found. Current outcome evaluation status is controlled by the later Level 1 Sandbox Outcome Evaluation and Human Review Summary Minimal v0 section above.

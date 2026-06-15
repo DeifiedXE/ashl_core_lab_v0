@@ -249,6 +249,9 @@ from ashl_core.b85_b93_documentation_compression_status_sync_minimal import (
 from ashl_core.sandbox_selected_action_approval_and_doubt_pressure_trace_minimal import (
     run_sandbox_selected_action_approval_and_doubt_pressure_trace_minimal_check,
 )
+from ashl_core.sandbox_selected_action_and_execution_approval_boundary_minimal import (
+    run_sandbox_selected_action_and_execution_approval_boundary_minimal_check,
+)
 from ashl_core.minimal_visual_grounding_trial import run_minimal_visual_grounding_trial_check
 from ashl_core.visual_prediction_error_attention_priority_preview_minimal import (
     run_visual_prediction_error_attention_priority_preview_minimal_check,
@@ -10559,8 +10562,8 @@ def smoke_current_boundary_index_docs() -> dict:
     readme = readme_path.read_text(encoding="utf-8") if readme_path.exists() else ""
     research_plan = research_plan_path.read_text(encoding="utf-8") if research_plan_path.exists() else ""
     compact_required_terms = [
-        "Boundary Index Version: 2026-06-09-b94",
-        "Last update log: Sandbox Selected Action Approval + Cortisol-Like Doubt Pressure Trace Minimal v0",
+        "Boundary Index Version: 2026-06-09-b95",
+        "Last update log: Sandbox Selected Action + Execution Approval Boundary Minimal v0",
         "docs/boundary_index_archive_2026_06.md",
         "Minimal Visual Grounding Trial v0",
         "Visual Prediction Error + Attention Priority Preview Minimal v0",
@@ -10624,6 +10627,7 @@ def smoke_current_boundary_index_docs() -> dict:
         "Ephemeral Feedback Application milestone",
         "Same-Session Feedback Reordering milestone",
         "Sandbox Selected Action Approval + Cortisol-Like Doubt Pressure Trace milestone",
+        "Sandbox Selected Action + Execution Approval Boundary milestone",
         "rank sandbox-only candidate actions",
         "bounded verification candidate registry",
         "one-step trace-only verification plan",
@@ -10714,7 +10718,7 @@ def smoke_current_boundary_index_docs() -> dict:
         and all(term in doc for term in compact_required_terms)
         and all(term in archive for term in archive_required_terms)
         and line_count <= 150
-        and "Boundary Index Version: 2026-06-09-b94" in readme
+        and "Boundary Index Version: 2026-06-09-b95" in readme
         and "docs/boundary_index_archive_2026_06.md" in readme
         and "Boundary Index Compaction / Archive v0" in research_plan
         and "Runtime Tendency Memory Influence Safety Sync Minimal v0" in research_plan
@@ -10752,7 +10756,7 @@ def smoke_phase0_documentation_consolidation_minimal() -> dict:
         status_path.exists()
         and matrix_path.exists()
         and index_path.exists()
-        and "Boundary Index Version: 2026-06-09-b94" in status
+        and "Boundary Index Version: 2026-06-09-b95" in status
         and "Current Safe Capability" in status
         and "No proof-of-learning claim" in status
         and "Level 1 Sandbox Outcome Evaluation and Human Review Summary Minimal v0" in status
@@ -10771,6 +10775,7 @@ def smoke_phase0_documentation_consolidation_minimal() -> dict:
         and "Ephemeral Feedback Application Minimal v0" in status
         and "Same-Session Feedback Reordering Minimal v0" in status
         and "Sandbox Selected Action Approval + Cortisol-Like Doubt Pressure Trace Minimal v0" in status
+        and "Sandbox Selected Action + Execution Approval Boundary Minimal v0" in status
         and "Phase0 Package ID and Boundary Index Version Separation Minimal v0" in status
         and "| Level 1 sandbox outcome observation | implemented_sandbox_only |" in matrix
         and "| outcome evaluation | implemented_sandbox_only |" in matrix
@@ -10790,6 +10795,7 @@ def smoke_phase0_documentation_consolidation_minimal() -> dict:
         and "| ephemeral feedback application minimal | implemented_same_session_ephemeral_feedback |" in matrix
         and "| same-session feedback reordering minimal | implemented_same_session_sandbox_ordering |" in matrix
         and "| sandbox selected_action approval + cortisol-like doubt pressure trace | implemented_boundary_approval_and_trace_only |" in matrix
+        and "| sandbox selected_action + execution approval boundary | implemented_sandbox_selected_action_boundary |" in matrix
         and "| Package ID / Boundary Index version separation | implemented_workflow_governance |" in matrix
         and "| retention write | blocked |" in matrix
         and "| predictor mutation | blocked |" in matrix
@@ -10845,7 +10851,7 @@ def smoke_phase0_documentation_inventory_and_consistency_reconciliation() -> dic
     boundary = Path("docs/current_boundary_index.md").read_text(encoding="utf-8")
     passed = (
         all(path.exists() for path in required_paths)
-        and "Boundary Index Version: 2026-06-09-b94" in texts[Path("docs/phase0_status.md")]
+        and "Boundary Index Version: 2026-06-09-b95" in texts[Path("docs/phase0_status.md")]
         and "Inventory count:" in texts[Path("docs/phase0_doc_inventory.md")]
         and "docs/phase0_versioning_policy.md" in texts[Path("docs/phase0_doc_inventory.md")]
         and "unknown_needs_review" in texts[Path("docs/phase0_doc_inventory.md")]
@@ -12639,7 +12645,7 @@ def smoke_codex_task_queue_minimal() -> dict:
         and valid_queue.get("record_type") == "codex_task_queue_minimal_v0"
         and summary.get("valid_task_queue_count") == 1
         and summary.get("invalid_task_queue_count") == 21
-        and summary.get("valid_task_entry_count") == 43
+        and summary.get("valid_task_entry_count") == 44
         and summary.get("invalid_task_entry_count", 0) >= 9
         and summary.get("queue_scope_checked_count") == 1
         and summary.get("approval_block_checked_count") == 1
@@ -12823,6 +12829,16 @@ def smoke_codex_task_queue_minimal() -> dict:
             and task.get("boundary_index_version_after") == "2026-06-09-b94"
             and "future sandbox-only selected_action package" in task.get("boundary_change_rationale", "")
             and "cortisol-like doubt pressure" in task.get("boundary_change_rationale", "")
+            for task in valid_queue.get("task_entries", [])
+        )
+        and any(
+            task.get("package_id") == "PKG-Phase0-SandboxSelectedActionAndExecutionApprovalBoundary-Minimal-v0"
+            and task.get("status") == "completed"
+            and task.get("boundary_change_required") is True
+            and task.get("boundary_index_version_before") == "2026-06-09-b94"
+            and task.get("boundary_index_version_after") == "2026-06-09-b95"
+            and "sandbox-only selected_action" in task.get("boundary_change_rationale", "")
+            and "future sandbox action execution package" in task.get("boundary_change_rationale", "")
             for task in valid_queue.get("task_entries", [])
         )
         and valid_queue.get("queue_counts_as_approval") is False
@@ -15555,6 +15571,77 @@ def smoke_sandbox_selected_action_approval_and_doubt_pressure_trace_minimal() ->
     )
     return _result(
         "sandbox_selected_action_approval_and_doubt_pressure_trace_minimal",
+        passed,
+        {"summary": summary, "boundary": boundary},
+    )
+
+
+def smoke_sandbox_selected_action_and_execution_approval_boundary_minimal() -> dict:
+    result = run_sandbox_selected_action_and_execution_approval_boundary_minimal_check()
+    summary = result.get("summary", {})
+    boundary = result.get("boundary", {})
+    selected_action = result.get("selected_action", {})
+    execution_approval = result.get("execution_approval", {})
+    combined = result.get("combined_summary", {})
+    passed = (
+        result.get("command") == "run-sandbox-selected-action-and-execution-approval-boundary-minimal-check"
+        and result.get("flow") == "sandbox_selected_action_and_execution_approval_boundary_minimal_v0"
+        and result.get("status") == "ok"
+        and summary.get("valid_selected_action_count") == 1
+        and summary.get("invalid_selected_action_count", 0) >= 20
+        and summary.get("valid_execution_approval_count") == 1
+        and summary.get("invalid_execution_approval_count", 0) >= 15
+        and summary.get("valid_summary_count") == 1
+        and summary.get("invalid_summary_count", 0) >= 15
+        and summary.get("selected_action_source_checked_count") == 1
+        and summary.get("top_ranked_candidate_checked_count") == 1
+        and summary.get("execution_blocked_count") == 1
+        and summary.get("future_execution_approval_checked_count") == 1
+        and summary.get("final_action_blocked_count") == 1
+        and summary.get("direct_command_blocked_count") == 1
+        and summary.get("persistent_update_blocked_count") == 1
+        and summary.get("memory_write_blocked_count") == 1
+        and summary.get("retention_blocked_count") == 1
+        and summary.get("predictor_mutation_blocked_count") == 1
+        and summary.get("production_behavior_blocked_count") == 1
+        and summary.get("proof_claim_blocked_count") == 1
+        and summary.get("all_sandbox_selected_action_and_execution_approval_boundary_checks_passed") is True
+        and boundary.get("boundary_change_required") is True
+        and boundary.get("boundary_index_update_required") is True
+        and boundary.get("boundary_index_version_before") == "2026-06-09-b94"
+        and boundary.get("boundary_index_version_after") == "2026-06-09-b95"
+        and selected_action.get("record_type") == "sandbox_selected_action"
+        and selected_action.get("source_selected_action_approval_boundary") == "sandbox_selected_action_approval_boundary_b94"
+        and selected_action.get("sandbox_scope") == "phase0_level3_sandbox_only"
+        and selected_action.get("selection_scope") == "sandbox_only"
+        and selected_action.get("top_ranked_candidate") == "observe_or_alternative_probe"
+        and selected_action.get("selected_action") == "observe_or_alternative_probe"
+        and selected_action.get("selected_action_created") is True
+        and selected_action.get("execution_allowed_in_this_package") is False
+        and selected_action.get("action_executed") is False
+        and selected_action.get("final_action_created") is False
+        and selected_action.get("direct_command_created") is False
+        and execution_approval.get("approval_status")
+        == "approved_for_future_sandbox_action_execution_package_only"
+        and execution_approval.get("implementation_in_this_package") is False
+        and execution_approval.get("execution_created") is False
+        and execution_approval.get("execution_allowed_in_future_package") is True
+        and execution_approval.get("selected_action_required_before_execution") is True
+        and combined.get("summary_status") == "selected_action_created_execution_approval_created"
+        and combined.get("sandbox_selected_action_created") is True
+        and combined.get("action_executed") is False
+        and combined.get("future_execution_approval_boundary_created") is True
+        and combined.get("execution_created") is False
+        and combined.get("final_action_created") is False
+        and combined.get("direct_command_created") is False
+        and combined.get("memory_write_performed") is False
+        and combined.get("retention_write_performed") is False
+        and combined.get("predictor_mutation_performed") is False
+        and combined.get("production_behavior_changed") is False
+        and combined.get("proof_of_learning_claim_allowed") is False
+    )
+    return _result(
+        "sandbox_selected_action_and_execution_approval_boundary_minimal",
         passed,
         {"summary": summary, "boundary": boundary},
     )
@@ -18296,6 +18383,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_b85_b93_same_session_thought_loop_audit_minimal(),
         smoke_b85_b93_documentation_compression_status_sync_minimal(),
         smoke_sandbox_selected_action_approval_and_doubt_pressure_trace_minimal(),
+        smoke_sandbox_selected_action_and_execution_approval_boundary_minimal(),
         smoke_phase0_current_capability_snapshot(),
         smoke_memory_influence_behavior_gate_design(),
         smoke_first_memory_influenced_behavior_boundary(),

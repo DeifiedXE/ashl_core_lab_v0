@@ -1618,7 +1618,7 @@ Two-Trial History Boundary:
 
 - `docs/current_boundary_index.md`
 - Adds a short, versioned, low-token source of global hard boundaries for future work packages.
-- Current version: `Boundary Index Version: 2026-06-09-b94`.
+- Current version: `Boundary Index Version: 2026-06-09-b95`.
 - For current Phase0 status, see `docs/phase0_status.md`.
 - For capability status, see `docs/phase0_capability_matrix.md`.
 - For boundary version history, see `docs/current_boundary_index.md`.
@@ -2824,6 +2824,10 @@ Two-Trial History Boundary:
 ## Sandbox Selected Action Approval + Cortisol-Like Doubt Pressure Trace Minimal v0
 
 - Sandbox Selected Action Approval + Cortisol-Like Doubt Pressure Trace Minimal v0 creates an explicit approval boundary for a future sandbox-only selected_action package and adds a trace-only cortisol-like doubt pressure signal with paranoia guard. It previews pressure 0.20 -> 0.45, doubt weighting 0.61 -> 0.71, strategy-shift weighting 0.50 -> 0.60, and direct-retry weighting 0.35 -> 0.30, but does not apply pressure to runtime or persist it. Boundary Index updates from `2026-06-09-b93` to `2026-06-09-b94`; selected_action is not created in this package, and final_action, direct commands, persistent updates, memory/retention writes, predictor mutation, production behavior, autonomous learning/action claims, and proof-of-learning remain blocked.
+
+## Sandbox Selected Action + Execution Approval Boundary Minimal v0
+
+- Sandbox Selected Action + Execution Approval Boundary Minimal v0 creates one sandbox-only selected_action from the top ranked same-session candidate ordering: `observe_or_alternative_probe`. It also creates an explicit approval boundary for a future Sandbox Action Execution Minimal v0 package. The selected_action is not executed in this package. Boundary Index updates from `2026-06-09-b94` to `2026-06-09-b95`; action execution, final_action, direct commands, persistent updates, memory/retention writes, predictor mutation, production behavior, autonomous learning/action claims, and proof-of-learning remain blocked.
 
 ## Phase0 Package ID and Boundary Index Version Separation Minimal v0
 

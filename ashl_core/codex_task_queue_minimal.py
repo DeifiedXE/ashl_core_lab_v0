@@ -8,8 +8,8 @@ from typing import Any
 
 COMMAND = "run-codex-task-queue-minimal-check"
 FLOW = "codex_task_queue_minimal_v0"
-BOUNDARY_INDEX_VERSION = "2026-06-09-b94"
-PREVIOUS_BOUNDARY_INDEX_VERSION = "2026-06-09-b93"
+BOUNDARY_INDEX_VERSION = "2026-06-09-b95"
+PREVIOUS_BOUNDARY_INDEX_VERSION = "2026-06-09-b94"
 LEVEL2_APPLICATION_BOUNDARY_BEFORE = "2026-06-09-b72"
 LEVEL2_APPLICATION_BOUNDARY_AFTER = "2026-06-09-b73"
 LEVEL3_TOY_MINEFIELD_BOUNDARY_BEFORE = "2026-06-09-b73"
@@ -54,7 +54,10 @@ SAME_SESSION_FEEDBACK_REORDERING_BOUNDARY_BEFORE = "2026-06-09-b92"
 SAME_SESSION_FEEDBACK_REORDERING_BOUNDARY_AFTER = "2026-06-09-b93"
 SANDBOX_SELECTED_ACTION_APPROVAL_PRESSURE_BOUNDARY_BEFORE = "2026-06-09-b93"
 SANDBOX_SELECTED_ACTION_APPROVAL_PRESSURE_BOUNDARY_AFTER = "2026-06-09-b94"
+SANDBOX_SELECTED_ACTION_EXECUTION_APPROVAL_BOUNDARY_BEFORE = "2026-06-09-b94"
+SANDBOX_SELECTED_ACTION_EXECUTION_APPROVAL_BOUNDARY_AFTER = "2026-06-09-b95"
 BUCKET_SIGNAL_BASELINE_BOUNDARY_VERSION = "2026-06-09-b93"
+B85_B93_BASELINE_BOUNDARY_VERSION = "2026-06-09-b93"
 VERSIONING_POLICY_BOUNDARY_BEFORE = "2026-06-09-b71"
 VERSIONING_POLICY_BOUNDARY_AFTER = "2026-06-09-b72"
 QUEUE_NAME = "ashl_core_phase0_codex_task_queue"
@@ -862,8 +865,8 @@ def build_codex_task_queue_minimal() -> dict[str, Any]:
                     "runtime capability, Boundary Index change, persistence, memory write, predictor mutation, "
                     "action selection, production behavior, or proof claim."
                 ),
-                boundary_index_version_before=PREVIOUS_BOUNDARY_INDEX_VERSION,
-                boundary_index_version_after=PREVIOUS_BOUNDARY_INDEX_VERSION,
+                boundary_index_version_before=B85_B93_BASELINE_BOUNDARY_VERSION,
+                boundary_index_version_after=B85_B93_BASELINE_BOUNDARY_VERSION,
                 boundary_change_rationale="Audit-only package; no boundary change.",
             ),
             _task(
@@ -880,8 +883,8 @@ def build_codex_task_queue_minimal() -> dict[str, Any]:
                     "runtime capability, Boundary Index change, persistence, memory write, predictor mutation, "
                     "action selection, production behavior, or proof claim."
                 ),
-                boundary_index_version_before=PREVIOUS_BOUNDARY_INDEX_VERSION,
-                boundary_index_version_after=PREVIOUS_BOUNDARY_INDEX_VERSION,
+                boundary_index_version_before=B85_B93_BASELINE_BOUNDARY_VERSION,
+                boundary_index_version_after=B85_B93_BASELINE_BOUNDARY_VERSION,
                 boundary_change_rationale="Documentation/status sync only; no boundary change.",
             ),
             _task(
@@ -904,6 +907,28 @@ def build_codex_task_queue_minimal() -> dict[str, Any]:
                 boundary_change_rationale=(
                     "Creates an explicit approval boundary for a future sandbox-only selected_action package and "
                     "introduces a trace-only cortisol-like doubt pressure validation boundary."
+                ),
+            ),
+            _task(
+                "task.sandbox_selected_action_and_execution_approval_boundary_minimal.completed",
+                "PKG-Phase0-SandboxSelectedActionAndExecutionApprovalBoundary-Minimal-v0",
+                "Sandbox Selected Action + Execution Approval Boundary Minimal v0",
+                "capability_boundary",
+                "completed",
+                "codex_completed_report",
+                ["task.sandbox_selected_action_approval_and_doubt_pressure_trace_minimal.completed"],
+                [],
+                (
+                    "Completed one sandbox-only selected_action from the top ranked same-session candidate and "
+                    "created explicit approval for a future sandbox action execution package; the selected_action "
+                    "is not executed in this package."
+                ),
+                boundary_change_required=True,
+                boundary_index_version_before=SANDBOX_SELECTED_ACTION_EXECUTION_APPROVAL_BOUNDARY_BEFORE,
+                boundary_index_version_after=SANDBOX_SELECTED_ACTION_EXECUTION_APPROVAL_BOUNDARY_AFTER,
+                boundary_change_rationale=(
+                    "Permits one sandbox-only selected_action to be created from an approved ranked sandbox candidate "
+                    "and creates an explicit approval boundary for a future sandbox action execution package."
                 ),
             ),
             _task(
@@ -1191,7 +1216,7 @@ def _invalid_queues(valid_queue: dict[str, Any]) -> list[dict[str, Any]]:
     )
     queues.append(blocked)
     deferred = deepcopy(valid_queue)
-    deferred["task_entries"][41].pop("deferral_reason", None)
+    deferred["task_entries"][42].pop("deferral_reason", None)
     queues.append(deferred)
     superseded = deepcopy(valid_queue)
     superseded["task_entries"].append(
@@ -1263,7 +1288,7 @@ def _summary(
         summary["task_queue_result_count"] == 22
         and summary["valid_task_queue_count"] == 1
         and summary["invalid_task_queue_count"] == 21
-        and summary["valid_task_entry_count"] == 43
+        and summary["valid_task_entry_count"] == 44
         and summary["invalid_task_entry_count"] >= 9
         and summary["queue_scope_checked_count"] == 1
         and summary["approval_block_checked_count"] == 1
