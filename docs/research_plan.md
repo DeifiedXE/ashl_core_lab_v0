@@ -6799,4 +6799,25 @@ Next recommended work:
 1. If proceeding, add a separate verification execution boundary package rather than executing from the plan directly.
 2. Keep selected_action, final_action, direct command, memory/retention writes, predictor mutation, production behavior, and proof claims blocked until separate future boundaries explicitly open them.
 
+## Verification Execution Minimal v0
+
+Status: completed / one registered sandbox-only verification candidate execution / no selected_action or production behavior.
+
+Progress:
+- Adds `ashl_core/verification_execution_minimal.py`.
+- Requires b89 verification planning source.
+- Executes exactly one registered low-risk verification candidate: `observe_or_alternative_probe`.
+- Records `actual_probe_result=local_context_observed`, `execution_count=1`, `execution_budget=1`, and `stop_condition_met=True`.
+- Produces a compact verification execution result trace where future doubt feedback is allowed as evidence, but no doubt/trust score update is performed.
+- Keeps selected_action, final_action, direct command, persistent rule, memory write, retained JSONL write, retention write, predictor read/influence/mutation, production behavior, autonomous learning/action, and proof claims blocked.
+
+Boundary:
+- Boundary Index changes from `2026-06-09-b89` to `2026-06-09-b90`.
+- Rationale: this package permits one registered low-risk verification candidate from a validated verification plan to execute inside sandbox-only scope.
+- This does not authorize selected_action, final_action, direct command, persistent rule creation, memory/retention writes, predictor mutation, production behavior, or proof of learning.
+
+Next recommended work:
+1. Observe/evaluate the verification execution result before considering any selected_action boundary.
+2. Keep persistent score updates, memory/retention writes, predictor mutation, production behavior, selected_action, final_action, and proof claims blocked until separate future boundaries explicitly open them.
+
 This documentation reconciliation did not complete outcome evaluation at that time and did not claim every documentation inconsistency had been found. Current outcome evaluation status is controlled by the later Level 1 Sandbox Outcome Evaluation and Human Review Summary Minimal v0 section above.

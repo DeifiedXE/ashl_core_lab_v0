@@ -1618,7 +1618,7 @@ Two-Trial History Boundary:
 
 - `docs/current_boundary_index.md`
 - Adds a short, versioned, low-token source of global hard boundaries for future work packages.
-- Current version: `Boundary Index Version: 2026-06-09-b89`.
+- Current version: `Boundary Index Version: 2026-06-09-b90`.
 - For current Phase0 status, see `docs/phase0_status.md`.
 - For capability status, see `docs/phase0_capability_matrix.md`.
 - For boundary version history, see `docs/current_boundary_index.md`.
@@ -2796,6 +2796,10 @@ Two-Trial History Boundary:
 ## Verification Planning Minimal v0
 
 - Verification Planning Minimal v0 builds a one-step trace-only verification plan from the registered `observe_or_alternative_probe` candidate after doubt-gated ordering and verification candidate registry validation. The plan uses `plan_budget=1`, `fallback_if_probe_fails=fallback_stop_and_report`, and remains planning-only. Boundary Index updates from `2026-06-09-b88` to `2026-06-09-b89`. This does not execute verification, create selected_action/final_action/direct command, create persistent rules, write memory or retention, mutate predictors, change production behavior, or prove learning.
+
+## Verification Execution Minimal v0
+
+- Verification Execution Minimal v0 executes one registered low-risk verification candidate, `observe_or_alternative_probe`, inside sandbox-only scope. It records `actual_probe_result=local_context_observed`, meets the stop condition within `execution_budget=1`, and leaves selected_action, final_action, direct commands, persistent rules, memory writes, retention writes, predictor read/influence/mutation, production behavior, and proof-of-learning claims blocked. Boundary Index updates from `2026-06-09-b89` to `2026-06-09-b90`.
 
 ## Phase0 Package ID and Boundary Index Version Separation Minimal v0
 

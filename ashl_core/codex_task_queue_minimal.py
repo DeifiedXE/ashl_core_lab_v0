@@ -8,8 +8,8 @@ from typing import Any
 
 COMMAND = "run-codex-task-queue-minimal-check"
 FLOW = "codex_task_queue_minimal_v0"
-BOUNDARY_INDEX_VERSION = "2026-06-09-b89"
-PREVIOUS_BOUNDARY_INDEX_VERSION = "2026-06-09-b88"
+BOUNDARY_INDEX_VERSION = "2026-06-09-b90"
+PREVIOUS_BOUNDARY_INDEX_VERSION = "2026-06-09-b89"
 LEVEL2_APPLICATION_BOUNDARY_BEFORE = "2026-06-09-b72"
 LEVEL2_APPLICATION_BOUNDARY_AFTER = "2026-06-09-b73"
 LEVEL3_TOY_MINEFIELD_BOUNDARY_BEFORE = "2026-06-09-b73"
@@ -44,6 +44,8 @@ VERIFICATION_CANDIDATE_REGISTRY_BOUNDARY_BEFORE = "2026-06-09-b87"
 VERIFICATION_CANDIDATE_REGISTRY_BOUNDARY_AFTER = "2026-06-09-b88"
 VERIFICATION_PLANNING_BOUNDARY_BEFORE = "2026-06-09-b88"
 VERIFICATION_PLANNING_BOUNDARY_AFTER = "2026-06-09-b89"
+VERIFICATION_EXECUTION_BOUNDARY_BEFORE = "2026-06-09-b89"
+VERIFICATION_EXECUTION_BOUNDARY_AFTER = "2026-06-09-b90"
 VERSIONING_POLICY_BOUNDARY_BEFORE = "2026-06-09-b71"
 VERSIONING_POLICY_BOUNDARY_AFTER = "2026-06-09-b72"
 QUEUE_NAME = "ashl_core_phase0_codex_task_queue"
@@ -737,6 +739,28 @@ def build_codex_task_queue_minimal() -> dict[str, Any]:
                 ),
             ),
             _task(
+                "task.verification_execution_minimal.completed",
+                "PKG-Phase0-VerificationExecution-Minimal-v0",
+                "Verification Execution Minimal v0",
+                "capability_boundary",
+                "completed",
+                "codex_completed_report",
+                ["task.verification_planning_minimal.completed"],
+                [],
+                (
+                    "Completed one registered low-risk verification candidate execution inside sandbox-only scope; "
+                    "no selected_action, final_action, direct command, persistent rule, memory write, retention write, "
+                    "predictor mutation, production behavior, or proof claim."
+                ),
+                boundary_change_required=True,
+                boundary_index_version_before=VERIFICATION_EXECUTION_BOUNDARY_BEFORE,
+                boundary_index_version_after=VERIFICATION_EXECUTION_BOUNDARY_AFTER,
+                boundary_change_rationale=(
+                    "Permits one registered low-risk verification candidate from a validated verification plan "
+                    "to execute inside sandbox-only scope."
+                ),
+            ),
+            _task(
                 "task.level2_sandbox_readiness.deferred",
                 "PKG-Phase0-Level2-Readiness-Future",
                 "Level 2 Sandbox Readiness Minimal v0",
@@ -1021,7 +1045,7 @@ def _invalid_queues(valid_queue: dict[str, Any]) -> list[dict[str, Any]]:
     )
     queues.append(blocked)
     deferred = deepcopy(valid_queue)
-    deferred["task_entries"][34].pop("deferral_reason", None)
+    deferred["task_entries"][35].pop("deferral_reason", None)
     queues.append(deferred)
     superseded = deepcopy(valid_queue)
     superseded["task_entries"].append(
@@ -1093,7 +1117,7 @@ def _summary(
         summary["task_queue_result_count"] == 22
         and summary["valid_task_queue_count"] == 1
         and summary["invalid_task_queue_count"] == 21
-        and summary["valid_task_entry_count"] == 36
+        and summary["valid_task_entry_count"] == 37
         and summary["invalid_task_entry_count"] >= 9
         and summary["queue_scope_checked_count"] == 1
         and summary["approval_block_checked_count"] == 1
