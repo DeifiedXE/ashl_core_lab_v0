@@ -37,6 +37,7 @@ Current queue source:
 - Completed: Memory-Influenced Sandbox Re-run Minimal v0.
 - Completed: Level 3 Toy Repair Multi-Step Sandbox Minimal v0.
 - Completed: Memory-Influenced Toy Repair Re-run Minimal v0.
+- Completed: Sandbox Behavior Use Minimal v0.
 - Deferred: Level 2 Sandbox Readiness Minimal v0.
 - Deferred: Memory Readiness Boundary Minimal v0.
 
@@ -83,6 +84,8 @@ Memory-Influenced Sandbox Re-run Minimal v0 changes Boundary Index from b81 to b
 Level 3 Toy Repair Multi-Step Sandbox Minimal v0 changes Boundary Index from b82 to b83 because it introduces a second deterministic Phase0 Level 3 sandbox-only multi-step scenario family. It blocks repeating the same failed quick repair without inspection, observes `inspect_device` before `attempt_safe_repair`, and does not create memory runtime influence, selected_action, final_action, direct command, predictor mutation, retained JSONL write, retention write, production behavior, autonomous learning/action, or proof of learning.
 
 Memory-Influenced Toy Repair Re-run Minimal v0 changes Boundary Index from b83 to b84 because it introduces memory-influenced Level 3 toy repair sandbox re-run tendency traces using the approved bounded runtime influence. It compares memory_off, memory_on, and rollback traces across deterministic toy repair contexts; it does not create selected_action, final_action, direct command, predictor read/influence/mutation, retained JSONL write, retention write, production promotion, or proof of learning.
+
+Sandbox Behavior Use Minimal v0 changes Boundary Index from b84 to b85 because it permits approved memory-influenced tendency to affect sandbox-only candidate action ordering. It ranks `check_before_retry` above `retry_same_action_without_check` as advisory sandbox-only ordering; it does not create selected_action, final_action, direct command, predictor read/influence/mutation, production behavior, retained JSONL write, retention write, autonomous learning/action, or proof of learning.
 
 The Codex task queue coordinates work packages only. It does not approve, apply, observe, evaluate, promote, remember, retain, predict, select, finalize, command, or prove learning.
 

@@ -221,6 +221,7 @@ from ashl_core.memory_influenced_sandbox_rerun_minimal import (
 from ashl_core.memory_influenced_toy_repair_rerun_minimal import (
     run_memory_influenced_toy_repair_rerun_minimal_check,
 )
+from ashl_core.sandbox_behavior_use_minimal import run_sandbox_behavior_use_minimal_check
 from ashl_core.minimal_visual_grounding_trial import run_minimal_visual_grounding_trial_check
 from ashl_core.visual_prediction_error_attention_priority_preview_minimal import (
     run_visual_prediction_error_attention_priority_preview_minimal_check,
@@ -10531,8 +10532,8 @@ def smoke_current_boundary_index_docs() -> dict:
     readme = readme_path.read_text(encoding="utf-8") if readme_path.exists() else ""
     research_plan = research_plan_path.read_text(encoding="utf-8") if research_plan_path.exists() else ""
     compact_required_terms = [
-        "Boundary Index Version: 2026-06-09-b84",
-        "Last update log: Memory-Influenced Toy Repair Re-run Minimal v0",
+        "Boundary Index Version: 2026-06-09-b85",
+        "Last update log: Sandbox Behavior Use Minimal v0",
         "docs/boundary_index_archive_2026_06.md",
         "Minimal Visual Grounding Trial v0",
         "Visual Prediction Error + Attention Priority Preview Minimal v0",
@@ -10586,6 +10587,10 @@ def smoke_current_boundary_index_docs() -> dict:
         "Memory-Influenced Sandbox Re-run milestone",
         "Level 3 Toy Repair Multi-Step Sandbox milestone",
         "Memory-Influenced Toy Repair Re-run milestone",
+        "Sandbox Behavior Use milestone",
+        "rank sandbox-only candidate actions",
+        "candidate_actions_after_ordering=check_before_retry,fallback_stop_and_report,retry_same_action_without_check",
+        "ordering_is_advisory=True",
         "toy_device_alpha",
         "failure_key=quick_fix_failed_due_to_hidden_fault",
         "inspect_device",
@@ -10634,7 +10639,7 @@ def smoke_current_boundary_index_docs() -> dict:
         and all(term in doc for term in compact_required_terms)
         and all(term in archive for term in archive_required_terms)
         and line_count <= 130
-        and "Boundary Index Version: 2026-06-09-b84" in readme
+        and "Boundary Index Version: 2026-06-09-b85" in readme
         and "docs/boundary_index_archive_2026_06.md" in readme
         and "Boundary Index Compaction / Archive v0" in research_plan
         and "Runtime Tendency Memory Influence Safety Sync Minimal v0" in research_plan
@@ -10672,7 +10677,7 @@ def smoke_phase0_documentation_consolidation_minimal() -> dict:
         status_path.exists()
         and matrix_path.exists()
         and index_path.exists()
-        and "Boundary Index Version: 2026-06-09-b84" in status
+        and "Boundary Index Version: 2026-06-09-b85" in status
         and "Current Safe Capability" in status
         and "No proof-of-learning claim" in status
         and "Level 1 Sandbox Outcome Evaluation and Human Review Summary Minimal v0" in status
@@ -10681,6 +10686,7 @@ def smoke_phase0_documentation_consolidation_minimal() -> dict:
         and "Level 3 Toy Minefield Multi-Step Sandbox Minimal v0" in status
         and "Level 3 Toy Repair Multi-Step Sandbox Minimal v0" in status
         and "Memory-Influenced Toy Repair Re-run Minimal v0" in status
+        and "Sandbox Behavior Use Minimal v0" in status
         and "Phase0 Package ID and Boundary Index Version Separation Minimal v0" in status
         and "| Level 1 sandbox outcome observation | implemented_sandbox_only |" in matrix
         and "| outcome evaluation | implemented_sandbox_only |" in matrix
@@ -10692,6 +10698,7 @@ def smoke_phase0_documentation_consolidation_minimal() -> dict:
         and "| Level 2 sandbox application closed loop | implemented_sandbox_only |" in matrix
         and "| Level 3 toy repair multi-step sandbox | implemented_sandbox_only |" in matrix
         and "| memory-influenced toy repair rerun minimal | implemented_sandbox_tendency_trace_only |" in matrix
+        and "| sandbox behavior use minimal | implemented_sandbox_ordering_only |" in matrix
         and "| Package ID / Boundary Index version separation | implemented_workflow_governance |" in matrix
         and "| retention write | blocked |" in matrix
         and "| predictor mutation | blocked |" in matrix
@@ -10747,7 +10754,7 @@ def smoke_phase0_documentation_inventory_and_consistency_reconciliation() -> dic
     boundary = Path("docs/current_boundary_index.md").read_text(encoding="utf-8")
     passed = (
         all(path.exists() for path in required_paths)
-        and "Boundary Index Version: 2026-06-09-b84" in texts[Path("docs/phase0_status.md")]
+        and "Boundary Index Version: 2026-06-09-b85" in texts[Path("docs/phase0_status.md")]
         and "Inventory count:" in texts[Path("docs/phase0_doc_inventory.md")]
         and "docs/phase0_versioning_policy.md" in texts[Path("docs/phase0_doc_inventory.md")]
         and "unknown_needs_review" in texts[Path("docs/phase0_doc_inventory.md")]
@@ -12461,6 +12468,14 @@ def smoke_codex_task_queue_minimal() -> dict:
         ),
         {},
     )
+    sandbox_behavior_use_task = next(
+        (
+            task
+            for task in task_entries
+            if task.get("package_id") == "PKG-Phase0-SandboxBehaviorUse-Minimal-v0"
+        ),
+        {},
+    )
     passed = (
         result.get("command") == "run-codex-task-queue-minimal-check"
         and result.get("flow") == "codex_task_queue_minimal_v0"
@@ -12469,7 +12484,7 @@ def smoke_codex_task_queue_minimal() -> dict:
         and valid_queue.get("record_type") == "codex_task_queue_minimal_v0"
         and summary.get("valid_task_queue_count") == 1
         and summary.get("invalid_task_queue_count") == 21
-        and summary.get("valid_task_entry_count") == 31
+        and summary.get("valid_task_entry_count") == 32
         and summary.get("invalid_task_entry_count", 0) >= 9
         and summary.get("queue_scope_checked_count") == 1
         and summary.get("approval_block_checked_count") == 1
@@ -12494,28 +12509,28 @@ def smoke_codex_task_queue_minimal() -> dict:
         and level3_toy_minefield_task.get("boundary_index_version_after") == "2026-06-09-b74"
         and "multi-step application trace scope" in level3_toy_minefield_task.get("boundary_change_rationale", "")
         and level3_variant_suite_task.get("boundary_change_required") is False
-        and level3_variant_suite_task.get("boundary_index_version_before") == "2026-06-09-b84"
-        and level3_variant_suite_task.get("boundary_index_version_after") == "2026-06-09-b84"
+        and level3_variant_suite_task.get("boundary_index_version_before") == "2026-06-09-b85"
+        and level3_variant_suite_task.get("boundary_index_version_after") == "2026-06-09-b85"
         and old_candidate_proposal_task.get("status") == "superseded"
         and old_candidate_proposal_task.get("superseded_by") == "Bucket-Derived Lesson Candidate Signal Minimal v0"
         and bucket_signal_task.get("status") == "completed"
         and bucket_signal_task.get("boundary_change_required") is False
-        and bucket_signal_task.get("boundary_index_version_before") == "2026-06-09-b84"
-        and bucket_signal_task.get("boundary_index_version_after") == "2026-06-09-b84"
+        and bucket_signal_task.get("boundary_index_version_before") == "2026-06-09-b85"
+        and bucket_signal_task.get("boundary_index_version_after") == "2026-06-09-b85"
         and repo_audit_task.get("status") == "completed"
         and repo_audit_task.get("boundary_change_required") is False
         and bucket_signal_review_task.get("status") == "completed"
         and bucket_signal_review_task.get("boundary_change_required") is False
-        and bucket_signal_review_task.get("boundary_index_version_before") == "2026-06-09-b84"
-        and bucket_signal_review_task.get("boundary_index_version_after") == "2026-06-09-b84"
+        and bucket_signal_review_task.get("boundary_index_version_before") == "2026-06-09-b85"
+        and bucket_signal_review_task.get("boundary_index_version_after") == "2026-06-09-b85"
         and memory_readiness_design_task.get("status") == "completed"
         and memory_readiness_design_task.get("boundary_change_required") is False
-        and memory_readiness_design_task.get("boundary_index_version_before") == "2026-06-09-b84"
-        and memory_readiness_design_task.get("boundary_index_version_after") == "2026-06-09-b84"
+        and memory_readiness_design_task.get("boundary_index_version_before") == "2026-06-09-b85"
+        and memory_readiness_design_task.get("boundary_index_version_after") == "2026-06-09-b85"
         and memory_admission_design_task.get("status") == "completed"
         and memory_admission_design_task.get("boundary_change_required") is False
-        and memory_admission_design_task.get("boundary_index_version_before") == "2026-06-09-b84"
-        and memory_admission_design_task.get("boundary_index_version_after") == "2026-06-09-b84"
+        and memory_admission_design_task.get("boundary_index_version_before") == "2026-06-09-b85"
+        and memory_admission_design_task.get("boundary_index_version_after") == "2026-06-09-b85"
         and memory_admission_approval_task.get("status") == "completed"
         and memory_admission_approval_task.get("boundary_change_required") is True
         and memory_admission_approval_task.get("boundary_index_version_before") == "2026-06-09-b74"
@@ -12573,6 +12588,12 @@ def smoke_codex_task_queue_minimal() -> dict:
         and memory_influenced_toy_repair_rerun_task.get("boundary_index_version_after") == "2026-06-09-b84"
         and "memory-influenced Level 3 toy repair sandbox re-run tendency traces"
         in memory_influenced_toy_repair_rerun_task.get("boundary_change_rationale", "")
+        and sandbox_behavior_use_task.get("status") == "completed"
+        and sandbox_behavior_use_task.get("boundary_change_required") is True
+        and sandbox_behavior_use_task.get("boundary_index_version_before") == "2026-06-09-b84"
+        and sandbox_behavior_use_task.get("boundary_index_version_after") == "2026-06-09-b85"
+        and "sandbox-only candidate action ordering"
+        in sandbox_behavior_use_task.get("boundary_change_rationale", "")
         and valid_queue.get("queue_counts_as_approval") is False
         and valid_queue.get("queue_counts_as_application") is False
         and valid_queue.get("queue_counts_as_runtime_behavior") is False
@@ -14523,6 +14544,65 @@ def smoke_memory_influenced_toy_repair_rerun_minimal() -> dict:
     )
     return _result(
         "memory_influenced_toy_repair_rerun_minimal",
+        passed,
+        {"summary": summary, "boundary": boundary},
+    )
+
+
+def smoke_sandbox_behavior_use_minimal() -> dict:
+    result = run_sandbox_behavior_use_minimal_check()
+    summary = result.get("summary", {})
+    boundary = result.get("boundary", {})
+    approval = result.get("valid_approval", {})
+    ordering = result.get("valid_ordering", {})
+    passed = (
+        result.get("command") == "run-sandbox-behavior-use-minimal-check"
+        and result.get("flow") == "sandbox_behavior_use_minimal_v0"
+        and result.get("status") == "ok"
+        and summary.get("valid_approval_count") == 1
+        and summary.get("invalid_approval_count", 0) >= 1
+        and summary.get("valid_ordering_count") == 1
+        and summary.get("invalid_ordering_count", 0) >= 1
+        and summary.get("candidate_ordering_checked_count") == 1
+        and summary.get("approval_checked_count") == 1
+        and summary.get("memory_runtime_source_checked_count") == 1
+        and summary.get("cross_sandbox_evidence_checked_count") == 1
+        and summary.get("selected_action_blocked_count") == 1
+        and summary.get("final_action_blocked_count") == 1
+        and summary.get("predictor_mutation_blocked_count") == 1
+        and summary.get("production_behavior_blocked_count") == 1
+        and summary.get("retention_blocked_count") == 1
+        and summary.get("proof_claim_blocked_count") == 1
+        and boundary.get("boundary_change_required") is True
+        and boundary.get("boundary_index_update_required") is True
+        and boundary.get("boundary_index_version_before") == "2026-06-09-b84"
+        and boundary.get("boundary_index_version_after") == "2026-06-09-b85"
+        and approval.get("record_type") == "sandbox_behavior_use_approval"
+        and approval.get("approval_status") == "approved_for_sandbox_candidate_ordering_only"
+        and approval.get("allowed_behavior") == "rank_sandbox_candidate_actions"
+        and approval.get("selected_action_allowed") is False
+        and ordering.get("record_type") == "sandbox_candidate_action_ordering"
+        and ordering.get("sandbox_scope") == "phase0_level3_sandbox_only"
+        and ordering.get("candidate_actions_after_ordering") == [
+            "check_before_retry",
+            "fallback_stop_and_report",
+            "retry_same_action_without_check",
+        ]
+        and ordering.get("ordering_is_sandbox_only") is True
+        and ordering.get("ordering_is_advisory") is True
+        and ordering.get("selected_action_created") is False
+        and ordering.get("final_action_created") is False
+        and ordering.get("direct_command_created") is False
+        and ordering.get("predictor_read_enabled") is False
+        and ordering.get("predictor_influence_enabled") is False
+        and ordering.get("predictor_mutation_performed") is False
+        and ordering.get("retained_jsonl_write_performed") is False
+        and ordering.get("retention_write_performed") is False
+        and ordering.get("production_behavior_changed") is False
+        and ordering.get("proof_of_learning_claim_allowed") is False
+    )
+    return _result(
+        "sandbox_behavior_use_minimal",
         passed,
         {"summary": summary, "boundary": boundary},
     )
@@ -17252,6 +17332,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_memory_influenced_sandbox_rerun_minimal(),
         smoke_level3_toy_repair_multistep_sandbox_minimal(),
         smoke_memory_influenced_toy_repair_rerun_minimal(),
+        smoke_sandbox_behavior_use_minimal(),
         smoke_phase0_current_capability_snapshot(),
         smoke_memory_influence_behavior_gate_design(),
         smoke_first_memory_influenced_behavior_boundary(),

@@ -6697,4 +6697,24 @@ Next recommended work:
 Forbidden claims:
 - Memory-influenced sandbox rerun is not selected_action, not final_action, not direct command, not predictor mutation, not production behavior, not retained JSONL or retention write, and not proof that Qingyin learned.
 
+## Sandbox Behavior Use Minimal v0
+
+Status: completed / sandbox-only candidate action ordering / no selected_action.
+
+Progress:
+- Adds `ashl_core/sandbox_behavior_use_minimal.py`.
+- Requires valid approved memory runtime influence source plus minefield and toy-repair memory-influenced sandbox rerun evidence.
+- Uses approved memory-influenced tendency to rank sandbox-only candidate actions.
+- Orders `check_before_retry` above `retry_same_action_without_check` while keeping `fallback_stop_and_report` available.
+- Keeps the ordering advisory, sandbox-only, auditable, and rollback-supported.
+
+Boundary:
+- Boundary Index changes from `2026-06-09-b84` to `2026-06-09-b85`.
+- Rationale: this package permits approved memory-influenced tendency to affect sandbox-only candidate action ordering.
+- This does not authorize selected_action, final_action, direct command, predictor read/influence/mutation, production behavior, retained JSONL write, retention write, autonomous learning/action, or proof-of-learning.
+
+Next recommended work:
+1. Observe/evaluate the sandbox candidate ordering before considering any selected_action or execution boundary.
+2. Keep predictor influence, production promotion, retained JSONL write, retention write, selected_action, final_action, and proof claims blocked until separate future boundaries explicitly open them.
+
 This documentation reconciliation did not complete outcome evaluation at that time and did not claim every documentation inconsistency had been found. Current outcome evaluation status is controlled by the later Level 1 Sandbox Outcome Evaluation and Human Review Summary Minimal v0 section above.
