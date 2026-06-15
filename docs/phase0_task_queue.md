@@ -44,6 +44,7 @@ Current queue source:
 - Completed: Verification Planning Minimal v0.
 - Completed: Verification Execution Minimal v0.
 - Completed: Verification Result Feedback Trace Minimal v0.
+- Completed: Ephemeral Feedback Application Minimal v0.
 - Deferred: Level 2 Sandbox Readiness Minimal v0.
 - Deferred: Memory Readiness Boundary Minimal v0.
 
@@ -66,6 +67,8 @@ Verification Planning Minimal v0 changes Boundary Index from b88 to b89 because 
 Verification Execution Minimal v0 changes Boundary Index from b89 to b90 because it permits one registered low-risk verification candidate from a validated verification plan to execute inside sandbox-only scope. This execution records an `actual_probe_result` and stop condition only; it does not create selected_action/final_action/direct commands, persistent rules, memory or retention writes, predictor mutation, production behavior, or proof of learning.
 
 Verification Result Feedback Trace Minimal v0 changes Boundary Index from b90 to b91 because it introduces a trace-only feedback boundary from sandbox verification result to candidate feedback signals. It may record suggested doubt, verification-candidate trust, direct-retry weight, and hypothesis-trust feedback, but it does not apply persistent trust/doubt updates, runtime feedback updates, selected_action/final_action/direct commands, persistent rules, memory or retention writes, predictor mutation, production behavior, or proof of learning.
+
+Ephemeral Feedback Application Minimal v0 changes Boundary Index from b91 to b92 because it permits b91 verification-result feedback to apply only as same-session ephemeral sandbox feedback with rollback at session end. It may adjust doubt, verification-candidate trust, and direct-retry weight temporarily, but it does not persist trust/doubt, create selected_action/final_action/direct commands, create persistent rules, write memory or retention, mutate predictors, change production behavior, or prove learning.
 
 The Level 3 toy minefield variant stability package does not change Boundary Index because it operates inside the existing Level 3 sandbox-only multi-step trace boundary and adds deterministic variants, stability evaluation, and review conclusion only.
 

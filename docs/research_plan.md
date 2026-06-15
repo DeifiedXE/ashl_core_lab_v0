@@ -6840,4 +6840,25 @@ Next recommended work:
 1. Observe/evaluate the feedback trace before considering any persistent feedback or action-selection boundary.
 2. Keep persistent score updates, memory/retention writes, predictor mutation, production behavior, selected_action, final_action, and proof claims blocked until separate future boundaries explicitly open them.
 
+## Ephemeral Feedback Application Minimal v0
+
+Status: completed / same-session ephemeral sandbox feedback application / rollback at session end.
+
+Progress:
+- Adds `ashl_core/ephemeral_feedback_application_minimal.py`.
+- Requires the b91 verification result feedback trace.
+- Applies feedback only inside the same sandbox session: doubt moves 0.71 -> 0.61, verification-candidate trust moves 0.50 -> 0.55, and direct-retry weight moves 0.50 -> 0.35.
+- Keeps hypothesis trust unchanged because the source was a context-only probe.
+- Produces an `ephemeral_feedback_rollback` record that restores the before values and confirms `dirty_state_after_rollback=False`.
+- Keeps persistent trust/doubt update, cross-session feedback persistence, selected_action, final_action, direct command, persistent rule, memory write, retained JSONL write, retention write, predictor mutation, production behavior, autonomous learning/action, and proof claims blocked.
+
+Boundary:
+- Boundary Index changes from `2026-06-09-b91` to `2026-06-09-b92`.
+- Rationale: this package permits b91 verification-result feedback to apply only as same-session ephemeral sandbox feedback with rollback at session end.
+- This does not authorize persistent trust/doubt updates, cross-session feedback persistence, selected_action, final_action, direct command, persistent rule creation, memory/retention writes, predictor mutation, production behavior, or proof of learning.
+
+Next recommended work:
+1. Evaluate whether same-session ephemeral feedback can influence sandbox-only candidate ordering.
+2. Keep persistent feedback updates, memory/retention writes, predictor mutation, production behavior, selected_action, final_action, and proof claims blocked until separate future boundaries explicitly open them.
+
 This documentation reconciliation did not complete outcome evaluation at that time and did not claim every documentation inconsistency had been found. Current outcome evaluation status is controlled by the later Level 1 Sandbox Outcome Evaluation and Human Review Summary Minimal v0 section above.
