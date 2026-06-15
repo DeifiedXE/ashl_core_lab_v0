@@ -6861,4 +6861,25 @@ Next recommended work:
 1. Evaluate whether same-session ephemeral feedback can influence sandbox-only candidate ordering.
 2. Keep persistent feedback updates, memory/retention writes, predictor mutation, production behavior, selected_action, final_action, and proof claims blocked until separate future boundaries explicitly open them.
 
+## Same-Session Feedback Reordering Minimal v0
+
+Status: completed / same-session sandbox-only candidate reordering / no selected_action.
+
+Progress:
+- Adds `ashl_core/same_session_feedback_reordering_minimal.py`.
+- Requires the b92 ephemeral feedback application source.
+- Uses same-session ephemeral feedback to reorder the next sandbox-only candidate list.
+- Ranks `observe_or_alternative_probe` and `check_before_retry` before `retry_same_action_without_check`; direct retry remains last.
+- Produces a rollback record that restores the original candidate ordering and confirms `dirty_state_after_rollback=False`.
+- Keeps selected_action, final_action, direct command, persistent rule, persistent trust/doubt update, cross-session feedback persistence, memory write, retained JSONL write, retention write, predictor read/influence/mutation, production behavior, autonomous learning/action, and proof claims blocked.
+
+Boundary:
+- Boundary Index changes from `2026-06-09-b92` to `2026-06-09-b93`.
+- Rationale: this package permits same-session ephemeral feedback to influence the next sandbox-only candidate ordering.
+- This does not authorize selected_action, final_action, direct command, persistent rule creation, memory/retention writes, predictor read/influence/mutation, production behavior, cross-session persistence, or proof of learning.
+
+Next recommended work:
+1. Evaluate same-session reordering outcome before considering any selected_action boundary.
+2. Keep selected_action, final_action, persistent feedback, memory/retention writes, predictor mutation, production behavior, and proof claims blocked until separate future boundaries explicitly open them.
+
 This documentation reconciliation did not complete outcome evaluation at that time and did not claim every documentation inconsistency had been found. Current outcome evaluation status is controlled by the later Level 1 Sandbox Outcome Evaluation and Human Review Summary Minimal v0 section above.

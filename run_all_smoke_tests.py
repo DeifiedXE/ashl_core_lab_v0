@@ -237,6 +237,9 @@ from ashl_core.verification_result_feedback_trace_minimal import (
 from ashl_core.ephemeral_feedback_application_minimal import (
     run_ephemeral_feedback_application_minimal_check,
 )
+from ashl_core.same_session_feedback_reordering_minimal import (
+    run_same_session_feedback_reordering_minimal_check,
+)
 from ashl_core.minimal_visual_grounding_trial import run_minimal_visual_grounding_trial_check
 from ashl_core.visual_prediction_error_attention_priority_preview_minimal import (
     run_visual_prediction_error_attention_priority_preview_minimal_check,
@@ -10547,8 +10550,8 @@ def smoke_current_boundary_index_docs() -> dict:
     readme = readme_path.read_text(encoding="utf-8") if readme_path.exists() else ""
     research_plan = research_plan_path.read_text(encoding="utf-8") if research_plan_path.exists() else ""
     compact_required_terms = [
-        "Boundary Index Version: 2026-06-09-b92",
-        "Last update log: Ephemeral Feedback Application Minimal v0",
+        "Boundary Index Version: 2026-06-09-b93",
+        "Last update log: Same-Session Feedback Reordering Minimal v0",
         "docs/boundary_index_archive_2026_06.md",
         "Minimal Visual Grounding Trial v0",
         "Visual Prediction Error + Attention Priority Preview Minimal v0",
@@ -10610,6 +10613,7 @@ def smoke_current_boundary_index_docs() -> dict:
         "Verification Execution milestone",
         "Verification Result Feedback Trace milestone",
         "Ephemeral Feedback Application milestone",
+        "Same-Session Feedback Reordering milestone",
         "rank sandbox-only candidate actions",
         "bounded verification candidate registry",
         "one-step trace-only verification plan",
@@ -10643,6 +10647,11 @@ def smoke_current_boundary_index_docs() -> dict:
         "direct_retry_weight_after_ephemeral=0.35",
         "rollback_status=ephemeral_feedback_rolled_back",
         "dirty_state_after_rollback=False",
+        "reordering_status=completed_same_session_feedback_reordering",
+        "candidate_actions_after_reordering=observe_or_alternative_probe,check_before_retry,fallback_stop_and_report,retry_same_action_without_check",
+        "same_session_only=True",
+        "ephemeral_feedback_used=True",
+        "same_session_feedback_reordering_rolled_back",
         "candidate_actions_after_ordering=observe_or_alternative_probe,check_before_retry,fallback_stop_and_report,retry_same_action_without_check",
         "verification_candidate_ranked_before_direct_retry=True",
         "check_before_retry_ranked_before_direct_retry=True",
@@ -10695,7 +10704,7 @@ def smoke_current_boundary_index_docs() -> dict:
         and all(term in doc for term in compact_required_terms)
         and all(term in archive for term in archive_required_terms)
         and line_count <= 130
-        and "Boundary Index Version: 2026-06-09-b92" in readme
+        and "Boundary Index Version: 2026-06-09-b93" in readme
         and "docs/boundary_index_archive_2026_06.md" in readme
         and "Boundary Index Compaction / Archive v0" in research_plan
         and "Runtime Tendency Memory Influence Safety Sync Minimal v0" in research_plan
@@ -10733,7 +10742,7 @@ def smoke_phase0_documentation_consolidation_minimal() -> dict:
         status_path.exists()
         and matrix_path.exists()
         and index_path.exists()
-        and "Boundary Index Version: 2026-06-09-b92" in status
+        and "Boundary Index Version: 2026-06-09-b93" in status
         and "Current Safe Capability" in status
         and "No proof-of-learning claim" in status
         and "Level 1 Sandbox Outcome Evaluation and Human Review Summary Minimal v0" in status
@@ -10750,6 +10759,7 @@ def smoke_phase0_documentation_consolidation_minimal() -> dict:
         and "Verification Execution Minimal v0" in status
         and "Verification Result Feedback Trace Minimal v0" in status
         and "Ephemeral Feedback Application Minimal v0" in status
+        and "Same-Session Feedback Reordering Minimal v0" in status
         and "Phase0 Package ID and Boundary Index Version Separation Minimal v0" in status
         and "| Level 1 sandbox outcome observation | implemented_sandbox_only |" in matrix
         and "| outcome evaluation | implemented_sandbox_only |" in matrix
@@ -10767,6 +10777,7 @@ def smoke_phase0_documentation_consolidation_minimal() -> dict:
         and "| verification candidate registry trace minimal | implemented_registry_trace_only |" in matrix
         and "| verification result feedback trace minimal | implemented_feedback_trace_only |" in matrix
         and "| ephemeral feedback application minimal | implemented_same_session_ephemeral_feedback |" in matrix
+        and "| same-session feedback reordering minimal | implemented_same_session_sandbox_ordering |" in matrix
         and "| Package ID / Boundary Index version separation | implemented_workflow_governance |" in matrix
         and "| retention write | blocked |" in matrix
         and "| predictor mutation | blocked |" in matrix
@@ -10822,7 +10833,7 @@ def smoke_phase0_documentation_inventory_and_consistency_reconciliation() -> dic
     boundary = Path("docs/current_boundary_index.md").read_text(encoding="utf-8")
     passed = (
         all(path.exists() for path in required_paths)
-        and "Boundary Index Version: 2026-06-09-b92" in texts[Path("docs/phase0_status.md")]
+        and "Boundary Index Version: 2026-06-09-b93" in texts[Path("docs/phase0_status.md")]
         and "Inventory count:" in texts[Path("docs/phase0_doc_inventory.md")]
         and "docs/phase0_versioning_policy.md" in texts[Path("docs/phase0_doc_inventory.md")]
         and "unknown_needs_review" in texts[Path("docs/phase0_doc_inventory.md")]
@@ -12600,6 +12611,14 @@ def smoke_codex_task_queue_minimal() -> dict:
         ),
         {},
     )
+    same_session_feedback_reordering_task = next(
+        (
+            task
+            for task in task_entries
+            if task.get("package_id") == "PKG-Phase0-SameSessionFeedbackReordering-Minimal-v0"
+        ),
+        {},
+    )
     passed = (
         result.get("command") == "run-codex-task-queue-minimal-check"
         and result.get("flow") == "codex_task_queue_minimal_v0"
@@ -12608,7 +12627,7 @@ def smoke_codex_task_queue_minimal() -> dict:
         and valid_queue.get("record_type") == "codex_task_queue_minimal_v0"
         and summary.get("valid_task_queue_count") == 1
         and summary.get("invalid_task_queue_count") == 21
-        and summary.get("valid_task_entry_count") == 39
+        and summary.get("valid_task_entry_count") == 40
         and summary.get("invalid_task_entry_count", 0) >= 9
         and summary.get("queue_scope_checked_count") == 1
         and summary.get("approval_block_checked_count") == 1
@@ -12633,28 +12652,28 @@ def smoke_codex_task_queue_minimal() -> dict:
         and level3_toy_minefield_task.get("boundary_index_version_after") == "2026-06-09-b74"
         and "multi-step application trace scope" in level3_toy_minefield_task.get("boundary_change_rationale", "")
         and level3_variant_suite_task.get("boundary_change_required") is False
-        and level3_variant_suite_task.get("boundary_index_version_before") == "2026-06-09-b92"
-        and level3_variant_suite_task.get("boundary_index_version_after") == "2026-06-09-b92"
+        and level3_variant_suite_task.get("boundary_index_version_before") == "2026-06-09-b93"
+        and level3_variant_suite_task.get("boundary_index_version_after") == "2026-06-09-b93"
         and old_candidate_proposal_task.get("status") == "superseded"
         and old_candidate_proposal_task.get("superseded_by") == "Bucket-Derived Lesson Candidate Signal Minimal v0"
         and bucket_signal_task.get("status") == "completed"
         and bucket_signal_task.get("boundary_change_required") is False
-        and bucket_signal_task.get("boundary_index_version_before") == "2026-06-09-b92"
-        and bucket_signal_task.get("boundary_index_version_after") == "2026-06-09-b92"
+        and bucket_signal_task.get("boundary_index_version_before") == "2026-06-09-b93"
+        and bucket_signal_task.get("boundary_index_version_after") == "2026-06-09-b93"
         and repo_audit_task.get("status") == "completed"
         and repo_audit_task.get("boundary_change_required") is False
         and bucket_signal_review_task.get("status") == "completed"
         and bucket_signal_review_task.get("boundary_change_required") is False
-        and bucket_signal_review_task.get("boundary_index_version_before") == "2026-06-09-b92"
-        and bucket_signal_review_task.get("boundary_index_version_after") == "2026-06-09-b92"
+        and bucket_signal_review_task.get("boundary_index_version_before") == "2026-06-09-b93"
+        and bucket_signal_review_task.get("boundary_index_version_after") == "2026-06-09-b93"
         and memory_readiness_design_task.get("status") == "completed"
         and memory_readiness_design_task.get("boundary_change_required") is False
-        and memory_readiness_design_task.get("boundary_index_version_before") == "2026-06-09-b92"
-        and memory_readiness_design_task.get("boundary_index_version_after") == "2026-06-09-b92"
+        and memory_readiness_design_task.get("boundary_index_version_before") == "2026-06-09-b93"
+        and memory_readiness_design_task.get("boundary_index_version_after") == "2026-06-09-b93"
         and memory_admission_design_task.get("status") == "completed"
         and memory_admission_design_task.get("boundary_change_required") is False
-        and memory_admission_design_task.get("boundary_index_version_before") == "2026-06-09-b92"
-        and memory_admission_design_task.get("boundary_index_version_after") == "2026-06-09-b92"
+        and memory_admission_design_task.get("boundary_index_version_before") == "2026-06-09-b93"
+        and memory_admission_design_task.get("boundary_index_version_after") == "2026-06-09-b93"
         and memory_admission_approval_task.get("status") == "completed"
         and memory_admission_approval_task.get("boundary_change_required") is True
         and memory_admission_approval_task.get("boundary_index_version_before") == "2026-06-09-b74"
@@ -12760,6 +12779,12 @@ def smoke_codex_task_queue_minimal() -> dict:
         and ephemeral_feedback_application_task.get("boundary_index_version_after") == "2026-06-09-b92"
         and "same-session ephemeral"
         in ephemeral_feedback_application_task.get("boundary_change_rationale", "")
+        and same_session_feedback_reordering_task.get("status") == "completed"
+        and same_session_feedback_reordering_task.get("boundary_change_required") is True
+        and same_session_feedback_reordering_task.get("boundary_index_version_before") == "2026-06-09-b92"
+        and same_session_feedback_reordering_task.get("boundary_index_version_after") == "2026-06-09-b93"
+        and "next sandbox-only candidate ordering"
+        in same_session_feedback_reordering_task.get("boundary_change_rationale", "")
         and valid_queue.get("queue_counts_as_approval") is False
         and valid_queue.get("queue_counts_as_application") is False
         and valid_queue.get("queue_counts_as_runtime_behavior") is False
@@ -15207,6 +15232,78 @@ def smoke_ephemeral_feedback_application_minimal() -> dict:
     )
     return _result(
         "ephemeral_feedback_application_minimal",
+        passed,
+        {"summary": summary, "boundary": boundary},
+    )
+
+
+def smoke_same_session_feedback_reordering_minimal() -> dict:
+    result = run_same_session_feedback_reordering_minimal_check()
+    summary = result.get("summary", {})
+    boundary = result.get("boundary", {})
+    reordering = result.get("valid_reordering", {})
+    rollback = result.get("valid_rollback", {})
+    after = reordering.get("candidate_actions_after_reordering", [])
+    passed = (
+        result.get("command") == "run-same-session-feedback-reordering-minimal-check"
+        and result.get("flow") == "same_session_feedback_reordering_minimal_v0"
+        and result.get("status") == "ok"
+        and summary.get("valid_reordering_count") == 1
+        and summary.get("invalid_reordering_count", 0) >= 1
+        and summary.get("valid_rollback_count") == 1
+        and summary.get("invalid_rollback_count", 0) >= 1
+        and summary.get("feedback_source_checked_count") == 1
+        and summary.get("verification_rank_checked_count") == 1
+        and summary.get("check_before_retry_rank_checked_count") == 1
+        and summary.get("direct_retry_suppression_checked_count") == 1
+        and summary.get("same_session_checked_count") == 1
+        and summary.get("rollback_checked_count") == 1
+        and summary.get("persistent_update_blocked_count") == 1
+        and summary.get("cross_session_blocked_count") == 1
+        and summary.get("memory_write_blocked_count") == 1
+        and summary.get("retention_blocked_count") == 1
+        and summary.get("predictor_mutation_blocked_count") == 1
+        and summary.get("selected_action_blocked_count") == 1
+        and summary.get("final_action_blocked_count") == 1
+        and summary.get("proof_claim_blocked_count") == 1
+        and boundary.get("boundary_change_required") is True
+        and boundary.get("boundary_index_update_required") is True
+        and boundary.get("boundary_index_version_before") == "2026-06-09-b92"
+        and boundary.get("boundary_index_version_after") == "2026-06-09-b93"
+        and reordering.get("record_type") == "same_session_feedback_reordering"
+        and reordering.get("reordering_status") == "completed_same_session_feedback_reordering"
+        and reordering.get("source_ephemeral_feedback_application") == "ephemeral_feedback_application_b92"
+        and after == [
+            "observe_or_alternative_probe",
+            "check_before_retry",
+            "fallback_stop_and_report",
+            "retry_same_action_without_check",
+        ]
+        and after.index("observe_or_alternative_probe") < after.index("retry_same_action_without_check")
+        and after.index("check_before_retry") < after.index("retry_same_action_without_check")
+        and reordering.get("direct_retry_ranked_last") is True
+        and reordering.get("selected_action_created") is False
+        and reordering.get("final_action_created") is False
+        and reordering.get("direct_command_created") is False
+        and reordering.get("persistent_rule_created") is False
+        and reordering.get("memory_write_performed") is False
+        and reordering.get("retention_write_performed") is False
+        and reordering.get("predictor_mutation_performed") is False
+        and reordering.get("production_behavior_changed") is False
+        and reordering.get("proof_of_learning_claim_allowed") is False
+        and rollback.get("record_type") == "same_session_feedback_reordering_rollback"
+        and rollback.get("rollback_status") == "same_session_feedback_reordering_rolled_back"
+        and rollback.get("candidate_actions_restored")
+        == [
+            "retry_same_action_without_check",
+            "observe_or_alternative_probe",
+            "check_before_retry",
+            "fallback_stop_and_report",
+        ]
+        and rollback.get("dirty_state_after_rollback") is False
+    )
+    return _result(
+        "same_session_feedback_reordering_minimal",
         passed,
         {"summary": summary, "boundary": boundary},
     )
@@ -17944,6 +18041,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_verification_execution_minimal(),
         smoke_verification_result_feedback_trace_minimal(),
         smoke_ephemeral_feedback_application_minimal(),
+        smoke_same_session_feedback_reordering_minimal(),
         smoke_phase0_current_capability_snapshot(),
         smoke_memory_influence_behavior_gate_design(),
         smoke_first_memory_influenced_behavior_boundary(),

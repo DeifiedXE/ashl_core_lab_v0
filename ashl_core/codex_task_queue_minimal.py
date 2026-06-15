@@ -8,8 +8,8 @@ from typing import Any
 
 COMMAND = "run-codex-task-queue-minimal-check"
 FLOW = "codex_task_queue_minimal_v0"
-BOUNDARY_INDEX_VERSION = "2026-06-09-b92"
-PREVIOUS_BOUNDARY_INDEX_VERSION = "2026-06-09-b91"
+BOUNDARY_INDEX_VERSION = "2026-06-09-b93"
+PREVIOUS_BOUNDARY_INDEX_VERSION = "2026-06-09-b92"
 LEVEL2_APPLICATION_BOUNDARY_BEFORE = "2026-06-09-b72"
 LEVEL2_APPLICATION_BOUNDARY_AFTER = "2026-06-09-b73"
 LEVEL3_TOY_MINEFIELD_BOUNDARY_BEFORE = "2026-06-09-b73"
@@ -50,6 +50,8 @@ VERIFICATION_RESULT_FEEDBACK_TRACE_BOUNDARY_BEFORE = "2026-06-09-b90"
 VERIFICATION_RESULT_FEEDBACK_TRACE_BOUNDARY_AFTER = "2026-06-09-b91"
 EPHEMERAL_FEEDBACK_APPLICATION_BOUNDARY_BEFORE = "2026-06-09-b91"
 EPHEMERAL_FEEDBACK_APPLICATION_BOUNDARY_AFTER = "2026-06-09-b92"
+SAME_SESSION_FEEDBACK_REORDERING_BOUNDARY_BEFORE = "2026-06-09-b92"
+SAME_SESSION_FEEDBACK_REORDERING_BOUNDARY_AFTER = "2026-06-09-b93"
 VERSIONING_POLICY_BOUNDARY_BEFORE = "2026-06-09-b71"
 VERSIONING_POLICY_BOUNDARY_AFTER = "2026-06-09-b72"
 QUEUE_NAME = "ashl_core_phase0_codex_task_queue"
@@ -809,6 +811,27 @@ def build_codex_task_queue_minimal() -> dict[str, Any]:
                 ),
             ),
             _task(
+                "task.same_session_feedback_reordering_minimal.completed",
+                "PKG-Phase0-SameSessionFeedbackReordering-Minimal-v0",
+                "Same-Session Feedback Reordering Minimal v0",
+                "capability_boundary",
+                "completed",
+                "codex_completed_report",
+                ["task.ephemeral_feedback_application_minimal.completed"],
+                [],
+                (
+                    "Completed same-session sandbox-only candidate reordering from ephemeral feedback; no "
+                    "selected_action, final_action, persistent rule, memory write, retention write, predictor mutation, "
+                    "production behavior, or proof claim."
+                ),
+                boundary_change_required=True,
+                boundary_index_version_before=SAME_SESSION_FEEDBACK_REORDERING_BOUNDARY_BEFORE,
+                boundary_index_version_after=SAME_SESSION_FEEDBACK_REORDERING_BOUNDARY_AFTER,
+                boundary_change_rationale=(
+                    "Permits same-session ephemeral feedback to influence the next sandbox-only candidate ordering."
+                ),
+            ),
+            _task(
                 "task.level2_sandbox_readiness.deferred",
                 "PKG-Phase0-Level2-Readiness-Future",
                 "Level 2 Sandbox Readiness Minimal v0",
@@ -1093,7 +1116,7 @@ def _invalid_queues(valid_queue: dict[str, Any]) -> list[dict[str, Any]]:
     )
     queues.append(blocked)
     deferred = deepcopy(valid_queue)
-    deferred["task_entries"][37].pop("deferral_reason", None)
+    deferred["task_entries"][38].pop("deferral_reason", None)
     queues.append(deferred)
     superseded = deepcopy(valid_queue)
     superseded["task_entries"].append(
@@ -1165,7 +1188,7 @@ def _summary(
         summary["task_queue_result_count"] == 22
         and summary["valid_task_queue_count"] == 1
         and summary["invalid_task_queue_count"] == 21
-        and summary["valid_task_entry_count"] == 39
+        and summary["valid_task_entry_count"] == 40
         and summary["invalid_task_entry_count"] >= 9
         and summary["queue_scope_checked_count"] == 1
         and summary["approval_block_checked_count"] == 1

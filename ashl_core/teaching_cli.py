@@ -212,6 +212,9 @@ from .verification_result_feedback_trace_minimal import (
 from .ephemeral_feedback_application_minimal import (
     run_ephemeral_feedback_application_minimal_check,
 )
+from .same_session_feedback_reordering_minimal import (
+    run_same_session_feedback_reordering_minimal_check,
+)
 from .reviewed_lesson_dry_run_correction_minimal import (
     run_reviewed_lesson_dry_run_correction_minimal_check,
 )
@@ -3830,6 +3833,8 @@ def run_command(command: str) -> dict[str, Any] | str:
         return run_verification_result_feedback_trace_minimal_check()
     if command == "run-ephemeral-feedback-application-minimal-check":
         return run_ephemeral_feedback_application_minimal_check()
+    if command == "run-same-session-feedback-reordering-minimal-check":
+        return run_same_session_feedback_reordering_minimal_check()
     if command == "run-simple-retina-focus-preview-minimal-check":
         return run_simple_retina_focus_preview_minimal_check()
     if command == "run-generalized-prediction-confidence-check":
@@ -4043,6 +4048,7 @@ def main(argv: list[str] | None = None) -> int:
             "run-verification-execution-minimal-check",
             "run-verification-result-feedback-trace-minimal-check",
             "run-ephemeral-feedback-application-minimal-check",
+            "run-same-session-feedback-reordering-minimal-check",
             "run-simple-retina-focus-preview-minimal-check",
             "run-generalized-prediction-confidence-check",
             "run-generalized-candidate-from-pattern-check",
@@ -4438,6 +4444,8 @@ def main(argv: list[str] | None = None) -> int:
         result = run_verification_result_feedback_trace_minimal_check()
     elif args.command == "run-ephemeral-feedback-application-minimal-check":
         result = run_ephemeral_feedback_application_minimal_check()
+    elif args.command == "run-same-session-feedback-reordering-minimal-check":
+        result = run_same_session_feedback_reordering_minimal_check()
     elif args.command == "run-simple-retina-focus-preview-minimal-check":
         result = run_simple_retina_focus_preview_minimal_check()
     elif args.command == "run-generalized-prediction-confidence-check":
