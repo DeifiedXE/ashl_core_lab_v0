@@ -6737,4 +6737,25 @@ Next recommended work:
 1. Keep doubt_action evidence as a trace-only adjustment until a separate package explicitly opens any verification execution boundary.
 2. Do not promote verification candidates into selected_action, final_action, direct command, persistent rule, memory write, retention write, predictor mutation, or production behavior without future explicit boundaries.
 
+## Doubt-Gated Sandbox Candidate Ordering Minimal v0
+
+Status: completed / doubt-gated sandbox-only candidate ordering / no verification execution.
+
+Progress:
+- Adds `ashl_core/doubt_gated_sandbox_candidate_ordering_minimal.py`.
+- Requires b85 sandbox behavior use and b86 doubt_action trace sources.
+- Uses trace-only doubt_action output to rank sandbox-only candidate actions after expected/actual mismatch.
+- Places `observe_or_alternative_probe` and `check_before_retry` before `retry_same_action_without_check`.
+- Keeps ordering advisory and sandbox-only.
+- Keeps verification execution, selected_action, final_action, direct command, persistent rule, memory write, retention write, predictor read/influence/mutation, production behavior, autonomous learning/action, and proof claims blocked.
+
+Boundary:
+- Boundary Index changes from `2026-06-09-b86` to `2026-06-09-b87`.
+- Rationale: this package permits trace-only doubt_action output to influence sandbox-only candidate action ordering.
+- This does not authorize verification execution, selected_action, final_action, direct command, or production behavior.
+
+Next recommended work:
+1. Observe/evaluate the doubt-gated ordering before considering any verification execution boundary.
+2. Keep persistent rules, memory/retention writes, predictor mutation, production behavior, selected_action, final_action, and proof claims blocked until separate future boundaries explicitly open them.
+
 This documentation reconciliation did not complete outcome evaluation at that time and did not claim every documentation inconsistency had been found. Current outcome evaluation status is controlled by the later Level 1 Sandbox Outcome Evaluation and Human Review Summary Minimal v0 section above.

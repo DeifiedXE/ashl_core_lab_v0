@@ -8,8 +8,8 @@ from typing import Any
 
 COMMAND = "run-codex-task-queue-minimal-check"
 FLOW = "codex_task_queue_minimal_v0"
-BOUNDARY_INDEX_VERSION = "2026-06-09-b86"
-PREVIOUS_BOUNDARY_INDEX_VERSION = "2026-06-09-b85"
+BOUNDARY_INDEX_VERSION = "2026-06-09-b87"
+PREVIOUS_BOUNDARY_INDEX_VERSION = "2026-06-09-b86"
 LEVEL2_APPLICATION_BOUNDARY_BEFORE = "2026-06-09-b72"
 LEVEL2_APPLICATION_BOUNDARY_AFTER = "2026-06-09-b73"
 LEVEL3_TOY_MINEFIELD_BOUNDARY_BEFORE = "2026-06-09-b73"
@@ -38,6 +38,8 @@ SANDBOX_BEHAVIOR_USE_BOUNDARY_BEFORE = "2026-06-09-b84"
 SANDBOX_BEHAVIOR_USE_BOUNDARY_AFTER = "2026-06-09-b85"
 DOUBT_ACTION_TRACE_BOUNDARY_BEFORE = "2026-06-09-b85"
 DOUBT_ACTION_TRACE_BOUNDARY_AFTER = "2026-06-09-b86"
+DOUBT_GATED_SANDBOX_ORDERING_BOUNDARY_BEFORE = "2026-06-09-b86"
+DOUBT_GATED_SANDBOX_ORDERING_BOUNDARY_AFTER = "2026-06-09-b87"
 VERSIONING_POLICY_BOUNDARY_BEFORE = "2026-06-09-b71"
 VERSIONING_POLICY_BOUNDARY_AFTER = "2026-06-09-b72"
 QUEUE_NAME = "ashl_core_phase0_codex_task_queue"
@@ -664,6 +666,27 @@ def build_codex_task_queue_minimal() -> dict[str, Any]:
                 ),
             ),
             _task(
+                "task.doubt_gated_sandbox_candidate_ordering_minimal.completed",
+                "PKG-Phase0-DoubtGatedSandboxCandidateOrdering-Minimal-v0",
+                "Doubt-Gated Sandbox Candidate Ordering Minimal v0",
+                "capability_boundary",
+                "completed",
+                "codex_completed_report",
+                ["task.sandbox_behavior_use_minimal.completed", "task.doubt_action_trace_minimal.completed"],
+                [],
+                (
+                    "Completed sandbox-only candidate ordering gated by trace-only doubt_action output; "
+                    "no verification execution, selected_action, final_action, persistent rule, memory write, "
+                    "retention write, predictor mutation, production behavior, or proof claim."
+                ),
+                boundary_change_required=True,
+                boundary_index_version_before=DOUBT_GATED_SANDBOX_ORDERING_BOUNDARY_BEFORE,
+                boundary_index_version_after=DOUBT_GATED_SANDBOX_ORDERING_BOUNDARY_AFTER,
+                boundary_change_rationale=(
+                    "Permits trace-only doubt_action output to influence sandbox-only candidate action ordering."
+                ),
+            ),
+            _task(
                 "task.level2_sandbox_readiness.deferred",
                 "PKG-Phase0-Level2-Readiness-Future",
                 "Level 2 Sandbox Readiness Minimal v0",
@@ -948,7 +971,7 @@ def _invalid_queues(valid_queue: dict[str, Any]) -> list[dict[str, Any]]:
     )
     queues.append(blocked)
     deferred = deepcopy(valid_queue)
-    deferred["task_entries"][31].pop("deferral_reason", None)
+    deferred["task_entries"][32].pop("deferral_reason", None)
     queues.append(deferred)
     superseded = deepcopy(valid_queue)
     superseded["task_entries"].append(
@@ -1020,7 +1043,7 @@ def _summary(
         summary["task_queue_result_count"] == 22
         and summary["valid_task_queue_count"] == 1
         and summary["invalid_task_queue_count"] == 21
-        and summary["valid_task_entry_count"] == 33
+        and summary["valid_task_entry_count"] == 34
         and summary["invalid_task_entry_count"] >= 9
         and summary["queue_scope_checked_count"] == 1
         and summary["approval_block_checked_count"] == 1
