@@ -240,6 +240,9 @@ from ashl_core.ephemeral_feedback_application_minimal import (
 from ashl_core.same_session_feedback_reordering_minimal import (
     run_same_session_feedback_reordering_minimal_check,
 )
+from ashl_core.b85_b93_same_session_thought_loop_audit_minimal import (
+    run_b85_b93_same_session_thought_loop_audit_minimal_check,
+)
 from ashl_core.minimal_visual_grounding_trial import run_minimal_visual_grounding_trial_check
 from ashl_core.visual_prediction_error_attention_priority_preview_minimal import (
     run_visual_prediction_error_attention_priority_preview_minimal_check,
@@ -12627,7 +12630,7 @@ def smoke_codex_task_queue_minimal() -> dict:
         and valid_queue.get("record_type") == "codex_task_queue_minimal_v0"
         and summary.get("valid_task_queue_count") == 1
         and summary.get("invalid_task_queue_count") == 21
-        and summary.get("valid_task_entry_count") == 40
+        and summary.get("valid_task_entry_count") == 41
         and summary.get("invalid_task_entry_count", 0) >= 9
         and summary.get("queue_scope_checked_count") == 1
         and summary.get("approval_block_checked_count") == 1
@@ -12785,6 +12788,15 @@ def smoke_codex_task_queue_minimal() -> dict:
         and same_session_feedback_reordering_task.get("boundary_index_version_after") == "2026-06-09-b93"
         and "next sandbox-only candidate ordering"
         in same_session_feedback_reordering_task.get("boundary_change_rationale", "")
+        and any(
+            task.get("package_id") == "PKG-Phase0-B85B93SameSessionThoughtLoopAudit-Minimal-v0"
+            and task.get("status") == "completed"
+            and task.get("boundary_change_required") is False
+            and task.get("boundary_index_version_before") == "2026-06-09-b93"
+            and task.get("boundary_index_version_after") == "2026-06-09-b93"
+            and "Audit-only" in task.get("boundary_change_rationale", "")
+            for task in valid_queue.get("task_entries", [])
+        )
         and valid_queue.get("queue_counts_as_approval") is False
         and valid_queue.get("queue_counts_as_application") is False
         and valid_queue.get("queue_counts_as_runtime_behavior") is False
@@ -15304,6 +15316,78 @@ def smoke_same_session_feedback_reordering_minimal() -> dict:
     )
     return _result(
         "same_session_feedback_reordering_minimal",
+        passed,
+        {"summary": summary, "boundary": boundary},
+    )
+
+
+def smoke_b85_b93_same_session_thought_loop_audit_minimal() -> dict:
+    result = run_b85_b93_same_session_thought_loop_audit_minimal_check()
+    summary = result.get("summary", {})
+    boundary = result.get("boundary", {})
+    audit = result.get("valid_audit", {})
+    passed = (
+        result.get("command") == "run-b85-b93-same-session-thought-loop-audit-minimal-check"
+        and result.get("flow") == "b85_b93_same_session_thought_loop_audit_minimal_v0"
+        and result.get("status") == "ok"
+        and summary.get("valid_audit_count") == 1
+        and summary.get("invalid_audit_count", 0) >= 20
+        and summary.get("audited_step_count") == 9
+        and summary.get("missing_step_count") == 0
+        and summary.get("boundary_unchanged_checked_count") == 1
+        and summary.get("rollback_checked_count") == 1
+        and summary.get("selected_action_blocked_count") == 1
+        and summary.get("final_action_blocked_count") == 1
+        and summary.get("persistent_update_blocked_count") == 1
+        and summary.get("cross_session_blocked_count") == 1
+        and summary.get("memory_write_blocked_count") == 1
+        and summary.get("retention_blocked_count") == 1
+        and summary.get("predictor_mutation_blocked_count") == 1
+        and summary.get("production_behavior_blocked_count") == 1
+        and summary.get("proof_claim_blocked_count") == 1
+        and summary.get("all_b85_b93_same_session_thought_loop_audit_checks_passed") is True
+        and boundary.get("boundary_change_required") is False
+        and boundary.get("boundary_index_update_required") is False
+        and boundary.get("boundary_index_version_before") == "2026-06-09-b93"
+        and boundary.get("boundary_index_version_after") == "2026-06-09-b93"
+        and audit.get("record_type") == "b85_b93_same_session_thought_loop_audit"
+        and audit.get("audit_status") == "passed_same_session_thought_loop_boundary_audit"
+        and audit.get("loop_scope") == "phase0_level3_sandbox_same_session_only"
+        and audit.get("same_session_only") is True
+        and audit.get("rollback_verified") is True
+        and audit.get("dirty_state_after_rollback") is False
+        and audit.get("audited_steps")
+        == [
+            "sandbox_behavior_use_b85",
+            "doubt_action_trace_b86",
+            "doubt_gated_ordering_b87",
+            "verification_candidate_registry_b88",
+            "verification_planning_b89",
+            "verification_execution_b90",
+            "verification_result_feedback_trace_b91",
+            "ephemeral_feedback_application_b92",
+            "same_session_feedback_reordering_b93",
+        ]
+        and audit.get("candidate_ordering_allowed") is True
+        and audit.get("doubt_trace_allowed") is True
+        and audit.get("verification_planning_allowed") is True
+        and audit.get("sandbox_verification_execution_allowed") is True
+        and audit.get("ephemeral_feedback_application_allowed") is True
+        and audit.get("same_session_reordering_allowed") is True
+        and audit.get("selected_action_created") is False
+        and audit.get("final_action_created") is False
+        and audit.get("direct_command_created") is False
+        and audit.get("persistent_trust_doubt_update_performed") is False
+        and audit.get("cross_session_feedback_persistence") is False
+        and audit.get("memory_write_performed") is False
+        and audit.get("retained_jsonl_write_performed") is False
+        and audit.get("retention_write_performed") is False
+        and audit.get("predictor_mutation_performed") is False
+        and audit.get("production_behavior_changed") is False
+        and audit.get("proof_of_learning_claim_allowed") is False
+    )
+    return _result(
+        "b85_b93_same_session_thought_loop_audit_minimal",
         passed,
         {"summary": summary, "boundary": boundary},
     )
@@ -18042,6 +18126,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_verification_result_feedback_trace_minimal(),
         smoke_ephemeral_feedback_application_minimal(),
         smoke_same_session_feedback_reordering_minimal(),
+        smoke_b85_b93_same_session_thought_loop_audit_minimal(),
         smoke_phase0_current_capability_snapshot(),
         smoke_memory_influence_behavior_gate_design(),
         smoke_first_memory_influenced_behavior_boundary(),

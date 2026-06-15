@@ -6882,4 +6882,22 @@ Next recommended work:
 1. Evaluate same-session reordering outcome before considering any selected_action boundary.
 2. Keep selected_action, final_action, persistent feedback, memory/retention writes, predictor mutation, production behavior, and proof claims blocked until separate future boundaries explicitly open them.
 
+## b85-b93 Same-Session Thought Loop Audit Minimal v0
+
+Status: completed / audit-only / no Boundary Index change.
+
+Progress:
+- Adds `ashl_core/b85_b93_same_session_thought_loop_audit_minimal.py`.
+- Audits the completed b85-b93 same-session sandbox thought loop from sandbox behavior use through doubt trace, verification planning/execution, feedback, ephemeral application, reordering, and rollback.
+- Confirms the audited loop remains sandbox-only and same-session-only.
+- Confirms selected_action, final_action, direct command, persistent updates, cross-session feedback persistence, memory write, retained JSONL write, retention write, predictor read/influence/mutation, production behavior, autonomous learning/action, and proof claims remain blocked.
+
+Boundary:
+- Boundary Index remains `2026-06-09-b93`.
+- Rationale: this is audit-only and does not open a new runtime, persistence, predictor, action-selection, production, or proof boundary.
+
+Next recommended work:
+1. Use this audit as a compact checkpoint before any future selected_action or persistent-feedback boundary proposal.
+2. Keep selected_action, final_action, persistent feedback, memory/retention writes, predictor mutation, production behavior, and proof claims blocked until separate future boundaries explicitly open them.
+
 This documentation reconciliation did not complete outcome evaluation at that time and did not claim every documentation inconsistency had been found. Current outcome evaluation status is controlled by the later Level 1 Sandbox Outcome Evaluation and Human Review Summary Minimal v0 section above.

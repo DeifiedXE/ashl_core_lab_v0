@@ -46,6 +46,7 @@ Current queue source:
 - Completed: Verification Result Feedback Trace Minimal v0.
 - Completed: Ephemeral Feedback Application Minimal v0.
 - Completed: Same-Session Feedback Reordering Minimal v0.
+- Completed: b85-b93 Same-Session Thought Loop Audit Minimal v0.
 - Deferred: Level 2 Sandbox Readiness Minimal v0.
 - Deferred: Memory Readiness Boundary Minimal v0.
 
@@ -72,6 +73,8 @@ Verification Result Feedback Trace Minimal v0 changes Boundary Index from b90 to
 Ephemeral Feedback Application Minimal v0 changes Boundary Index from b91 to b92 because it permits b91 verification-result feedback to apply only as same-session ephemeral sandbox feedback with rollback at session end. It may adjust doubt, verification-candidate trust, and direct-retry weight temporarily, but it does not persist trust/doubt, create selected_action/final_action/direct commands, create persistent rules, write memory or retention, mutate predictors, change production behavior, or prove learning.
 
 Same-Session Feedback Reordering Minimal v0 changes Boundary Index from b92 to b93 because it permits same-session ephemeral feedback to influence the next sandbox-only candidate ordering. It may rank `observe_or_alternative_probe` and `check_before_retry` before direct retry and roll the ordering back at session end, but it does not create selected_action/final_action/direct commands, create persistent rules, write memory or retention, read/influence/mutate predictors, change production behavior, persist feedback cross-session, or prove learning.
+
+b85-b93 Same-Session Thought Loop Audit Minimal v0 does not change Boundary Index because it is audit-only. It records that the chain from sandbox behavior use through same-session feedback reordering remains sandbox-only and same-session-only, with rollback verified and selected_action, final_action, direct commands, persistent updates, cross-session feedback persistence, memory/retention writes, predictor read/influence/mutation, production behavior, autonomous learning/action claims, and proof-of-learning claims blocked.
 
 The Level 3 toy minefield variant stability package does not change Boundary Index because it operates inside the existing Level 3 sandbox-only multi-step trace boundary and adds deterministic variants, stability evaluation, and review conclusion only.
 

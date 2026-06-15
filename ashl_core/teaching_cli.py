@@ -215,6 +215,9 @@ from .ephemeral_feedback_application_minimal import (
 from .same_session_feedback_reordering_minimal import (
     run_same_session_feedback_reordering_minimal_check,
 )
+from .b85_b93_same_session_thought_loop_audit_minimal import (
+    run_b85_b93_same_session_thought_loop_audit_minimal_check,
+)
 from .reviewed_lesson_dry_run_correction_minimal import (
     run_reviewed_lesson_dry_run_correction_minimal_check,
 )
@@ -3835,6 +3838,8 @@ def run_command(command: str) -> dict[str, Any] | str:
         return run_ephemeral_feedback_application_minimal_check()
     if command == "run-same-session-feedback-reordering-minimal-check":
         return run_same_session_feedback_reordering_minimal_check()
+    if command == "run-b85-b93-same-session-thought-loop-audit-minimal-check":
+        return run_b85_b93_same_session_thought_loop_audit_minimal_check()
     if command == "run-simple-retina-focus-preview-minimal-check":
         return run_simple_retina_focus_preview_minimal_check()
     if command == "run-generalized-prediction-confidence-check":
@@ -4049,6 +4054,7 @@ def main(argv: list[str] | None = None) -> int:
             "run-verification-result-feedback-trace-minimal-check",
             "run-ephemeral-feedback-application-minimal-check",
             "run-same-session-feedback-reordering-minimal-check",
+            "run-b85-b93-same-session-thought-loop-audit-minimal-check",
             "run-simple-retina-focus-preview-minimal-check",
             "run-generalized-prediction-confidence-check",
             "run-generalized-candidate-from-pattern-check",
@@ -4446,6 +4452,8 @@ def main(argv: list[str] | None = None) -> int:
         result = run_ephemeral_feedback_application_minimal_check()
     elif args.command == "run-same-session-feedback-reordering-minimal-check":
         result = run_same_session_feedback_reordering_minimal_check()
+    elif args.command == "run-b85-b93-same-session-thought-loop-audit-minimal-check":
+        result = run_b85_b93_same_session_thought_loop_audit_minimal_check()
     elif args.command == "run-simple-retina-focus-preview-minimal-check":
         result = run_simple_retina_focus_preview_minimal_check()
     elif args.command == "run-generalized-prediction-confidence-check":

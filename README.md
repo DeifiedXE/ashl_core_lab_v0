@@ -2813,6 +2813,10 @@ Two-Trial History Boundary:
 
 - Same-Session Feedback Reordering Minimal v0 uses b92 same-session ephemeral feedback to reorder the next sandbox-only candidate list. It ranks `observe_or_alternative_probe` and `check_before_retry` before `retry_same_action_without_check`, keeps direct retry last, and rolls the ordering back at session end. It does not create selected_action or final_action, create direct commands or persistent rules, write memory or retention, mutate predictors, change production behavior, persist feedback cross-session, or prove learning. Boundary Index updates from `2026-06-09-b92` to `2026-06-09-b93`.
 
+## b85-b93 Same-Session Thought Loop Audit Minimal v0
+
+- b85-b93 Same-Session Thought Loop Audit Minimal v0 audits the completed same-session sandbox thought loop from sandbox behavior use through doubt trace, verification planning/execution, feedback, ephemeral application, same-session reordering, and rollback. It confirms the chain remains sandbox-only and same-session-only while selected_action, final_action, direct commands, persistent updates, cross-session feedback persistence, memory writes, retained JSONL writes, retention writes, predictor read/influence/mutation, production behavior, autonomous learning/action claims, and proof-of-learning claims remain blocked. Boundary Index remains `2026-06-09-b93`.
+
 ## Phase0 Package ID and Boundary Index Version Separation Minimal v0
 
 - Phase0 Package ID and Boundary Index Version Separation Minimal v0 separates Codex Package IDs from Boundary Index versions. Package IDs track work packages; Boundary Index versions track boundary and validation-boundary changes only. Completed tasks, CLI commands, smoke tests, unittests, documentation updates, queue status changes, scenario plans, and dry-run records do not automatically increment Boundary Index. This is workflow/versioning governance only and does not add runtime behavior, memory writes, retention writes, predictor mutation, sandbox execution/application, action selection, final_action, direct commands, or proof-of-learning claims.
