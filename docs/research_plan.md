@@ -6779,4 +6779,24 @@ Next recommended work:
 1. Observe/evaluate registered verification candidate references before considering any verification execution boundary.
 2. Keep free-form candidate generation, persistent rules, memory/retention writes, predictor mutation, production behavior, selected_action, final_action, and proof claims blocked until separate future boundaries explicitly open them.
 
+## Verification Planning Minimal v0
+
+Status: completed / one-step trace-only verification planning / no verification execution.
+
+Progress:
+- Adds `ashl_core/verification_planning_minimal.py`.
+- Requires b87 doubt-gated sandbox candidate ordering and b88 verification candidate registry sources.
+- Builds a one-step trace-only verification plan from registered `observe_or_alternative_probe`.
+- Uses `plan_budget=1`, `plan_stop_condition=probe_result_recorded_or_budget_used`, and `fallback_if_probe_fails=fallback_stop_and_report`.
+- Keeps verification execution, selected_action, final_action, direct command, persistent rule, memory write, retention write, predictor mutation, production behavior, autonomous learning/action, and proof claims blocked.
+
+Boundary:
+- Boundary Index changes from `2026-06-09-b88` to `2026-06-09-b89`.
+- Rationale: this package introduces a validation boundary for one-step verification plans built from registered verification candidates.
+- This does not authorize verification execution, selected_action, final_action, direct command, or production behavior.
+
+Next recommended work:
+1. If proceeding, add a separate verification execution boundary package rather than executing from the plan directly.
+2. Keep selected_action, final_action, direct command, memory/retention writes, predictor mutation, production behavior, and proof claims blocked until separate future boundaries explicitly open them.
+
 This documentation reconciliation did not complete outcome evaluation at that time and did not claim every documentation inconsistency had been found. Current outcome evaluation status is controlled by the later Level 1 Sandbox Outcome Evaluation and Human Review Summary Minimal v0 section above.
