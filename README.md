@@ -1618,7 +1618,7 @@ Two-Trial History Boundary:
 
 - `docs/current_boundary_index.md`
 - Adds a short, versioned, low-token source of global hard boundaries for future work packages.
-- Current version: `Boundary Index Version: 2026-06-09-b95`.
+- Current version: `Boundary Index Version: 2026-06-09-b96`.
 - For current Phase0 status, see `docs/phase0_status.md`.
 - For capability status, see `docs/phase0_capability_matrix.md`.
 - For boundary version history, see `docs/current_boundary_index.md`.
@@ -2828,6 +2828,10 @@ Two-Trial History Boundary:
 ## Sandbox Selected Action + Execution Approval Boundary Minimal v0
 
 - Sandbox Selected Action + Execution Approval Boundary Minimal v0 creates one sandbox-only selected_action from the top ranked same-session candidate ordering: `observe_or_alternative_probe`. It also creates an explicit approval boundary for a future Sandbox Action Execution Minimal v0 package. The selected_action is not executed in this package. Boundary Index updates from `2026-06-09-b94` to `2026-06-09-b95`; action execution, final_action, direct commands, persistent updates, memory/retention writes, predictor mutation, production behavior, autonomous learning/action claims, and proof-of-learning remain blocked.
+
+## Sandbox Action Execution Minimal v0
+
+- Sandbox Action Execution Minimal v0 executes one sandbox-only selected_action, `observe_or_alternative_probe`, once inside `phase0_level3_sandbox_only` and records `local_context_observed` as a sandbox-only result. Boundary Index updates from `2026-06-09-b95` to `2026-06-09-b96`; final_action, direct commands, persistent updates, memory/retention writes, predictor read/influence/mutation, production behavior, autonomous learning/action claims, and proof-of-learning remain blocked.
 
 ## Phase0 Package ID and Boundary Index Version Separation Minimal v0
 

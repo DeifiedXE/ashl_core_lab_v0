@@ -6959,4 +6959,23 @@ Next recommended work:
 1. Sandbox Action Execution Minimal v0 may be proposed as a separate package.
 2. Final_action, direct command, memory/retention writes, predictor mutation, production behavior, and proof claims still require separate future boundaries.
 
+## Sandbox Action Execution Minimal v0
+
+Status: completed / one sandbox-only selected_action execution / no final_action.
+
+Progress:
+- Adds `ashl_core/sandbox_action_execution_minimal.py`.
+- Requires the b95 sandbox selected_action and execution approval boundary source.
+- Executes `observe_or_alternative_probe` exactly once inside `phase0_level3_sandbox_only`.
+- Records `local_context_observed` as a sandbox-only execution result with `execution_count=1`, `execution_budget=1`, `budget_remaining=0`, and `stop_condition_met=True`.
+- Keeps final_action, direct command, persistent updates, memory/retention writes, predictor read/influence/mutation, production behavior, autonomous learning/action, and proof claims blocked.
+
+Boundary:
+- Boundary Index changes from `2026-06-09-b95` to `2026-06-09-b96`.
+- Rationale: this package permits one approved sandbox-only selected_action to execute once inside sandbox scope and records a sandbox-only result.
+
+Next recommended work:
+1. Review the sandbox execution result before any final_action or direct-command boundary.
+2. Keep final_action, direct command, memory/retention writes, predictor mutation, production behavior, and proof claims blocked until separate future boundaries explicitly open them.
+
 This documentation reconciliation did not complete outcome evaluation at that time and did not claim every documentation inconsistency had been found. Current outcome evaluation status is controlled by the later Level 1 Sandbox Outcome Evaluation and Human Review Summary Minimal v0 section above.
