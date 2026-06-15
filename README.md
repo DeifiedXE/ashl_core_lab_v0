@@ -1618,7 +1618,7 @@ Two-Trial History Boundary:
 
 - `docs/current_boundary_index.md`
 - Adds a short, versioned, low-token source of global hard boundaries for future work packages.
-- Current version: `Boundary Index Version: 2026-06-09-b83`.
+- Current version: `Boundary Index Version: 2026-06-09-b84`.
 - For current Phase0 status, see `docs/phase0_status.md`.
 - For capability status, see `docs/phase0_capability_matrix.md`.
 - For boundary version history, see `docs/current_boundary_index.md`.
@@ -2772,6 +2772,10 @@ Two-Trial History Boundary:
 ## Level 3 Toy Repair Multi-Step Sandbox Minimal v0
 
 - Level 3 Toy Repair Multi-Step Sandbox Minimal v0 adds a second deterministic Phase0 Level 3 sandbox-only multi-step scenario family. The toy repair trace starts with `attempt_quick_fix` failing due to `quick_fix_failed_due_to_hidden_fault`, blocks `attempt_same_quick_fix_again` without inspection, observes `inspect_device` as check-before-retry, and then allows `attempt_safe_repair` in temporary sandbox-only state. Boundary Index updates from `2026-06-09-b82` to `2026-06-09-b83`. It does not use memory runtime influence, create selected_action/final_action/direct command, mutate predictors, write retained JSONL, write retention, change production behavior, claim autonomous learning/action, or prove learning.
+
+## Memory-Influenced Toy Repair Re-run Minimal v0
+
+- Memory-Influenced Toy Repair Re-run Minimal v0 re-runs the deterministic Level 3 toy repair sandbox with memory_off / memory_on / rollback tendency traces from the approved bounded runtime influence. Across `toy_device_hidden_fault_repair_v0`, `invalid_repeat_without_inspection_negative_context`, and `safe_repair_after_inspection_context`, memory_on increases `check_before_retry` tendency from `0.50` to `0.60`, decreases `retry_same_action_without_check` from `0.50` to `0.45`, keeps invalid repeat without inspection blocked, keeps safe repair after inspection available, and rollback restores baseline. Boundary Index updates from `2026-06-09-b83` to `2026-06-09-b84`. This is sandbox tendency trace evidence only: no selected_action, final_action, direct command, predictor mutation/read/influence, retained JSONL write, retention write, production behavior, autonomous learning/action, or proof-of-learning claim.
 
 ## Phase0 Package ID and Boundary Index Version Separation Minimal v0
 

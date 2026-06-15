@@ -6673,6 +6673,27 @@ Next recommended work:
 1. Keep Level 3 toy repair evidence as a separate sandbox scenario family.
 2. Do not mix toy repair with memory-influenced sandbox behavior unless a future explicit boundary opens that path.
 
+## Memory-Influenced Toy Repair Re-run Minimal v0
+
+Status: completed / Level 3 toy repair sandbox tendency trace comparison.
+
+Progress:
+- Adds `ashl_core/memory_influenced_toy_repair_rerun_minimal.py`.
+- Requires valid Memory Runtime Influence Minimal v0 source plus valid Level 3 Toy Repair Multi-Step Sandbox source.
+- Re-runs `toy_device_hidden_fault_repair_v0`, `invalid_repeat_without_inspection_negative_context`, and `safe_repair_after_inspection_context` with memory_off / memory_on / rollback tendency traces.
+- Shows memory_on increases `check_before_retry` from `0.50` to `0.60` and decreases `retry_same_action_without_check` from `0.50` to `0.45`.
+- Confirms invalid repeat without inspection remains blocked and safe repair after inspection remains available.
+- Confirms rollback restores baseline.
+
+Boundary:
+- Boundary Index changes from `2026-06-09-b83` to `2026-06-09-b84`.
+- Rationale: this package introduces memory-influenced Level 3 toy repair sandbox re-run tendency traces using the approved bounded runtime influence.
+- This is sandbox tendency trace evidence only and does not authorize selected_action, final_action, direct command, predictor read/influence/mutation, production behavior, retained JSONL write, retention write, autonomous learning/action, or proof-of-learning.
+
+Next recommended work:
+1. Evaluate whether Level 3 toy repair and toy minefield rerun traces should be summarized together before any sandbox behavior-use boundary.
+2. Keep predictor influence, action selection, production promotion, retained JSONL write, retention write, and proof claims blocked until separate future boundaries explicitly open them.
+
 Forbidden claims:
 - Memory-influenced sandbox rerun is not selected_action, not final_action, not direct command, not predictor mutation, not production behavior, not retained JSONL or retention write, and not proof that Qingyin learned.
 

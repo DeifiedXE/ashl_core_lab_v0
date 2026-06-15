@@ -8,8 +8,8 @@ from typing import Any
 
 COMMAND = "run-codex-task-queue-minimal-check"
 FLOW = "codex_task_queue_minimal_v0"
-BOUNDARY_INDEX_VERSION = "2026-06-09-b83"
-PREVIOUS_BOUNDARY_INDEX_VERSION = "2026-06-09-b82"
+BOUNDARY_INDEX_VERSION = "2026-06-09-b84"
+PREVIOUS_BOUNDARY_INDEX_VERSION = "2026-06-09-b83"
 LEVEL2_APPLICATION_BOUNDARY_BEFORE = "2026-06-09-b72"
 LEVEL2_APPLICATION_BOUNDARY_AFTER = "2026-06-09-b73"
 LEVEL3_TOY_MINEFIELD_BOUNDARY_BEFORE = "2026-06-09-b73"
@@ -32,6 +32,8 @@ MEMORY_INFLUENCED_SANDBOX_RERUN_BOUNDARY_BEFORE = "2026-06-09-b81"
 MEMORY_INFLUENCED_SANDBOX_RERUN_BOUNDARY_AFTER = "2026-06-09-b82"
 LEVEL3_TOY_REPAIR_BOUNDARY_BEFORE = "2026-06-09-b82"
 LEVEL3_TOY_REPAIR_BOUNDARY_AFTER = "2026-06-09-b83"
+MEMORY_INFLUENCED_TOY_REPAIR_RERUN_BOUNDARY_BEFORE = "2026-06-09-b83"
+MEMORY_INFLUENCED_TOY_REPAIR_RERUN_BOUNDARY_AFTER = "2026-06-09-b84"
 VERSIONING_POLICY_BOUNDARY_BEFORE = "2026-06-09-b71"
 VERSIONING_POLICY_BOUNDARY_AFTER = "2026-06-09-b72"
 QUEUE_NAME = "ashl_core_phase0_codex_task_queue"
@@ -593,6 +595,28 @@ def build_codex_task_queue_minimal() -> dict[str, Any]:
                 ),
             ),
             _task(
+                "task.memory_influenced_toy_repair_rerun_minimal.completed",
+                "PKG-Phase0-MemoryInfluencedToyRepairRerun-Minimal-v0",
+                "Memory-Influenced Toy Repair Re-run Minimal v0",
+                "capability_boundary",
+                "completed",
+                "codex_completed_report",
+                ["task.memory_runtime_influence_minimal.completed", "task.level3_toy_repair_multistep_sandbox.completed"],
+                [],
+                (
+                    "Completed deterministic Level 3 toy repair sandbox re-run with memory_off / memory_on / "
+                    "rollback tendency traces; no selected_action, final_action, predictor mutation, production "
+                    "behavior, retained JSONL write, retention write, or proof claim."
+                ),
+                boundary_change_required=True,
+                boundary_index_version_before=MEMORY_INFLUENCED_TOY_REPAIR_RERUN_BOUNDARY_BEFORE,
+                boundary_index_version_after=MEMORY_INFLUENCED_TOY_REPAIR_RERUN_BOUNDARY_AFTER,
+                boundary_change_rationale=(
+                    "Introduces memory-influenced Level 3 toy repair sandbox re-run tendency traces using the "
+                    "approved bounded runtime influence."
+                ),
+            ),
+            _task(
                 "task.level2_sandbox_readiness.deferred",
                 "PKG-Phase0-Level2-Readiness-Future",
                 "Level 2 Sandbox Readiness Minimal v0",
@@ -877,7 +901,7 @@ def _invalid_queues(valid_queue: dict[str, Any]) -> list[dict[str, Any]]:
     )
     queues.append(blocked)
     deferred = deepcopy(valid_queue)
-    deferred["task_entries"][28].pop("deferral_reason", None)
+    deferred["task_entries"][29].pop("deferral_reason", None)
     queues.append(deferred)
     superseded = deepcopy(valid_queue)
     superseded["task_entries"].append(
@@ -949,7 +973,7 @@ def _summary(
         summary["task_queue_result_count"] == 22
         and summary["valid_task_queue_count"] == 1
         and summary["invalid_task_queue_count"] == 21
-        and summary["valid_task_entry_count"] == 30
+        and summary["valid_task_entry_count"] == 31
         and summary["invalid_task_entry_count"] >= 9
         and summary["queue_scope_checked_count"] == 1
         and summary["approval_block_checked_count"] == 1

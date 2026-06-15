@@ -1,7 +1,7 @@
-Boundary Index Version: 2026-06-09-b83
-Last update log: Level 3 Toy Repair Multi-Step Sandbox Minimal v0
-Previous Boundary Index Version: 2026-06-09-b82
-Previous Last update log: Memory-Influenced Sandbox Re-run Minimal v0
+Boundary Index Version: 2026-06-09-b84
+Last update log: Memory-Influenced Toy Repair Re-run Minimal v0
+Previous Boundary Index Version: 2026-06-09-b83
+Previous Last update log: Level 3 Toy Repair Multi-Step Sandbox Minimal v0
 Clean count at last update log reset: 0/5; current clean count: 0/5
 ## Purpose
 - This file is the compact current Boundary Index for fast review of present ASHL Core / D Qingyin boundaries.
@@ -54,8 +54,9 @@ Clean count at last update log reset: 0/5; current clean count: 0/5
 - ASHL Core can run, observe, evaluate, and summarize a bounded Phase0 Level 3 toy minefield sandbox-only multi-step trace, using temporary sandbox-only state, explicit user approval, audit, and rollback.
 - Explicit human application approval and future memory admission package approval must come from explicit user/project-owner statements; Codex/AI may record or validate them but cannot grant them. Codex task queue records coordinate work packages only; no task status, completed task, passing test, workflow record, or queue ordering counts as explicit approval.
 - Memory is a warning sign, not a ban command; past failure is a warning, not a prohibition. In current Phase0, memory-influenced behavior is limited to validated deterministic controlled runner and Level 3 sandbox tendency traces and remains blocked from action selection or production behavior.
-- ASHL Core can write one approved human-interpreted bucket-derived lesson as a minimal reviewed lesson memory record, read it through a controlled memory read path, generate a preview-only influence view, validate explicit user/project-owner approval, apply a bounded memory-influenced runtime tendency shift inside a deterministic controlled runner with rollback, and re-run deterministic Level 3 toy minefield variants with memory_off/memory_on/rollback tendency traces. This is not predictor input/mutation, action selection, retained JSONL, production behavior, or proof of learning.
+- ASHL Core can write/read one approved lesson as minimal reviewed lesson memory through a controlled memory read path, preview its influence, validate explicit user/project-owner approval, apply bounded memory-influenced runtime tendency shift with rollback, and re-run deterministic Level 3 sandbox variants with memory_off/memory_on/rollback tendency traces. This is not predictor input/mutation, action selection, retained JSONL, production behavior, or proof of learning.
 - ASHL Core can run, observe, evaluate, and summarize a deterministic Phase0 Level 3 toy repair sandbox-only multi-step trace where a failed quick repair requires inspect_device before attempt_safe_repair; this is not memory influence, action selection, production behavior, retained JSONL, retention, predictor mutation, or proof of learning.
+- ASHL Core can re-run the deterministic Phase0 Level 3 toy repair sandbox with memory_off/memory_on/rollback tendency traces, showing memory_on increases check_before_retry tendency while rollback restores baseline and invalid repeat without inspection remains blocked. This is sandbox tendency trace evidence only, not selected_action, final_action, predictor mutation, retained JSONL, retention, production behavior, autonomous learning/action, or proof of learning.
 
 ## Latest Forbidden Claims
 - No object recognition.
@@ -103,6 +104,7 @@ Clean count at last update log reset: 0/5; current clean count: 0/5
 - Phase0 Documentation Consolidation milestone: Documentation consolidation only; no new ASHL Core runtime, sandbox, memory, retention, predictor, action-selection, production, or proof-of-learning capability added. New entry points: docs/phase0_status.md, docs/phase0_capability_matrix.md, and docs/phase0_doc_index.md.
 - Memory-Influenced Sandbox Re-run milestone: ASHL Core can re-run the deterministic Phase0 Level 3 toy minefield variant suite with memory_off/memory_on/memory_off_after_rollback tendency traces from the approved bounded runtime influence sourced through memory_influence_preview over reviewed_lesson_memory_candidate after the preview-only memory influence validation boundary. Evidence: variants safe_path_variant, risky_repeat_trap_variant, blocked_path_fallback_variant; memory_on increases check_before_retry 0.50 -> 0.60 and decreases retry_same_action_without_check 0.50 -> 0.45; memory_off_after_rollback 0.50/0.50; max_absolute_delta <= 0.10; dirty_state_after_rollback=False. Forbidden: no selected_action, final_action, direct command, predictor read/influence/mutation, production behavior, retained JSONL write, retention write, autonomous learning/action, or proof-of-learning.
 - Level 3 Toy Repair Multi-Step Sandbox milestone: ASHL Core can run, observe, evaluate, and summarize a deterministic Phase0 Level 3 toy repair multi-step sandbox trace where failed quick repair requires inspect_device before attempt_safe_repair. Evidence: toy_device_alpha; failure_key=quick_fix_failed_due_to_hidden_fault; invalid repeat without inspection blocked; check_before_retry_observed=True; safe_alternative_used_after_check=True. Forbidden: no memory runtime influence, selected_action, final_action, direct command, predictor mutation, production behavior, retained JSONL write, retention write, autonomous learning/action, or proof-of-learning.
+- Memory-Influenced Toy Repair Re-run milestone: ASHL Core can re-run deterministic Level 3 toy repair contexts with memory_off/memory_on/memory_off_after_rollback tendency traces using the approved bounded runtime influence. Evidence: toy_device_hidden_fault_repair_v0, invalid_repeat_without_inspection_negative_context, safe_repair_after_inspection_context; memory_on increases check_before_retry 0.50 -> 0.60 and decreases retry_same_action_without_check 0.50 -> 0.45; invalid repeat without inspection remains blocked; safe repair after inspection remains available; rollback restores 0.50/0.50. Forbidden: no selected_action, final_action, direct command, predictor read/influence/mutation, production behavior, retained JSONL write, retention write, autonomous learning/action, or proof-of-learning.
 ## Archive
 - Older milestone details are archived in `docs/boundary_index_archive_2026_06.md`.
 - Archive files preserve history only; they do not introduce runtime behavior or change claim meaning.
@@ -110,8 +112,7 @@ Clean count at last update log reset: 0/5; current clean count: 0/5
 ## Currently Deferred Areas
 - Open language interfaces: LLM response generation / teaching chat loop / free text conversation.
 - Learning writes: lesson_candidate pipeline / lesson_store write / Memory Layer write / persistent state-action memory.
-- External senses: Screen Sense / Camera Sense / Symbol Grounding / Audio Sense / STT / TTS.
-- Sandbox runtimes: sandbox runtime / trace replay / tactile trace persistence / bounded senses runtime / state store.
+- External senses/sandbox runtimes: Screen Sense / Camera Sense / Symbol Grounding / Audio Sense / STT / TTS / sandbox runtime / trace replay / tactile trace persistence / bounded senses runtime / state store.
 - Autonomous behavior: autonomous action selection / autonomous goal planning / intrinsic action selection runtime / need-state driven action loop.
 - Behavior-changing learning: automatic trial improvement / long-term learning / tactile learning / repeated failure adaptation / full learning pipeline.
 - Review/activation/runtime identity: evaluator runtime / review decision runtime / selection eligibility runtime / activation runtime / lesson_candidate builders / Qingyin runtime / mentor feedback runtime / Core Seed update runtime / self-modification runtime.
@@ -121,9 +122,7 @@ Clean count at last update log reset: 0/5; current clean count: 0/5
 ## Boundary Index Line Policy
 - `current_boundary_index.md` should stay <= 130 lines when possible.
 - Hard limit: <= 150 lines.
-- Older milestone details must be moved to archive files.
-- Archive moves must not change claim meaning.
-- Archive moves are documentation-only.
+- Older milestone details must be moved to archive files; archive moves must not change claim meaning and are documentation-only.
 
 ## Update Rule
 - This file must be updated every time an Update Log is generated.
