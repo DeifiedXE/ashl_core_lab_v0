@@ -1,7 +1,7 @@
-Boundary Index Version: 2026-06-09-b85
-Last update log: Sandbox Behavior Use Minimal v0
-Previous Boundary Index Version: 2026-06-09-b84
-Previous Last update log: Memory-Influenced Toy Repair Re-run Minimal v0
+Boundary Index Version: 2026-06-09-b86
+Last update log: Doubt Action Trace Minimal v0
+Previous Boundary Index Version: 2026-06-09-b85
+Previous Last update log: Sandbox Behavior Use Minimal v0
 Clean count at last update log reset: 0/5; current clean count: 0/5
 ## Purpose
 - This file is the compact current Boundary Index for fast review of present ASHL Core / D Qingyin boundaries.
@@ -38,7 +38,7 @@ Clean count at last update log reset: 0/5; current clean count: 0/5
 - Memory-influenced action tendency previews and dry-run contrasts can show before/after tendency deltas as trace-level evidence only.
 - Runtime tendency memory influence can show same-runner A/B score changes, rollback to baseline, and bounded safety envelope requirements.
 - Phase0 Level 0-1 can reject one-way caution bias with bidirectional obstacle-memory tendency flips, then pass a one-step symbolic danger check in sandbox.
-- Sandbox behavior use exists only as approved advisory ordering of sandbox candidate actions; selected_action, final_action, direct command, predictor mutation, production behavior, retained JSONL write, retention write, and proof claims remain blocked.
+- Sandbox behavior use exists only as approved advisory ordering of sandbox candidate actions; doubt_action exists only as trace/checker evidence for expected/actual mismatch. Selected_action, final_action, direct command, predictor mutation, production behavior, memory/retention write, persistent rule, and proof claims remain blocked.
 
 ## Latest Safe Claims
 - A visual frame-level change can be shown as a read-only demo snapshot and preview-linked to a retained experience by same_exact_key_only.
@@ -57,7 +57,7 @@ Clean count at last update log reset: 0/5; current clean count: 0/5
 - ASHL Core can write/read one approved lesson as minimal reviewed lesson memory through a controlled memory read path, preview its influence, validate explicit user/project-owner approval, apply bounded memory-influenced runtime tendency shift with rollback, and re-run deterministic Level 3 sandbox variants with memory_off/memory_on/rollback tendency traces. This is not predictor input/mutation, action selection, retained JSONL, production behavior, or proof of learning.
 - ASHL Core can run, observe, evaluate, and summarize a deterministic Phase0 Level 3 toy repair sandbox-only multi-step trace where a failed quick repair requires inspect_device before attempt_safe_repair; this is not memory influence, action selection, production behavior, retained JSONL, retention, predictor mutation, or proof of learning.
 - ASHL Core can re-run the deterministic Phase0 Level 3 toy repair sandbox with memory_off/memory_on/rollback tendency traces, showing memory_on increases check_before_retry tendency while rollback restores baseline and invalid repeat without inspection remains blocked. This is sandbox tendency trace evidence only, not selected_action, final_action, predictor mutation, retained JSONL, retention, production behavior, autonomous learning/action, or proof of learning.
-- ASHL Core can use approved memory-influenced tendency to rank sandbox-only candidate actions, placing check_before_retry above retry_same_action_without_check under memory_on. This is advisory sandbox-only ordering only, not selected_action, final_action, direct command, predictor mutation, production behavior, retained JSONL write, retention write, or proof of learning.
+- ASHL Core can use approved memory-influenced tendency to rank sandbox-only candidate actions, placing check_before_retry above retry_same_action_without_check under memory_on. ASHL Core can also produce a trace-only doubt_action record when expected_outcome differs from actual_outcome, increasing doubt_score, lowering direct retry weight, and proposing a low-risk verification candidate. These are advisory/trace-only, not verification execution, selected_action, final_action, direct command, persistent rule, memory/retention write, predictor mutation, production behavior, or proof of learning.
 
 ## Latest Forbidden Claims
 - No object recognition.
@@ -68,7 +68,7 @@ Clean count at last update log reset: 0/5; current clean count: 0/5
 - No runtime action selection influence.
 - No production action selection.
 - No production/runtime memory-influenced behavior is allowed. Phase0 Level 1 sandbox-only lesson application, observation, and evaluation records plus Level 2/Level 3 sandbox-only records are allowed only within their validated sandbox scope and do not constitute production/runtime memory-influenced behavior.
-- No final_action creation or direct action command.
+- No final_action creation, direct action command, or persistent rule creation.
 - No production action execution, real navigation, UI behavior change, or generalized behavior claim.
 - No action behavior change.
 - No exploration blocking, curiosity override, or mentor override blocking.
@@ -106,7 +106,7 @@ Clean count at last update log reset: 0/5; current clean count: 0/5
 - Memory-Influenced Sandbox Re-run milestone: ASHL Core can re-run the deterministic Phase0 Level 3 toy minefield variant suite with memory_off/memory_on/memory_off_after_rollback tendency traces from the approved bounded runtime influence sourced through memory_influence_preview over reviewed_lesson_memory_candidate after the preview-only memory influence validation boundary. Evidence: variants safe_path_variant, risky_repeat_trap_variant, blocked_path_fallback_variant; memory_on increases check_before_retry 0.50 -> 0.60 and decreases retry_same_action_without_check 0.50 -> 0.45; memory_off_after_rollback 0.50/0.50; max_absolute_delta <= 0.10; dirty_state_after_rollback=False. Forbidden: no selected_action, final_action, direct command, predictor read/influence/mutation, production behavior, retained JSONL write, retention write, autonomous learning/action, or proof-of-learning.
 - Level 3 Toy Repair Multi-Step Sandbox milestone: ASHL Core can run, observe, evaluate, and summarize a deterministic Phase0 Level 3 toy repair multi-step sandbox trace where failed quick repair requires inspect_device before attempt_safe_repair. Evidence: toy_device_alpha; failure_key=quick_fix_failed_due_to_hidden_fault; invalid repeat without inspection blocked; check_before_retry_observed=True; safe_alternative_used_after_check=True. Forbidden: no memory runtime influence, selected_action, final_action, direct command, predictor mutation, production behavior, retained JSONL write, retention write, autonomous learning/action, or proof-of-learning.
 - Memory-Influenced Toy Repair Re-run milestone: ASHL Core can re-run deterministic Level 3 toy repair contexts with memory_off/memory_on/memory_off_after_rollback tendency traces using the approved bounded runtime influence. Evidence: toy_device_hidden_fault_repair_v0, invalid_repeat_without_inspection_negative_context, safe_repair_after_inspection_context; memory_on increases check_before_retry 0.50 -> 0.60 and decreases retry_same_action_without_check 0.50 -> 0.45; invalid repeat without inspection remains blocked; safe repair after inspection remains available; rollback restores 0.50/0.50. Forbidden: no selected_action, final_action, direct command, predictor read/influence/mutation, production behavior, retained JSONL write, retention write, autonomous learning/action, or proof-of-learning.
-- Sandbox Behavior Use milestone: ASHL Core can use approved memory-influenced tendency to rank sandbox-only candidate actions. Evidence: source memory influence b81; cross-sandbox evidence minefield_rerun_b82 and toy_repair_rerun_b84; candidate_actions_before_ordering=retry_same_action_without_check,check_before_retry,fallback_stop_and_report; candidate_actions_after_ordering=check_before_retry,fallback_stop_and_report,retry_same_action_without_check; ordering_is_sandbox_only=True; ordering_is_advisory=True. Forbidden: no selected_action, final_action, direct command, predictor read/influence/mutation, production behavior, retained JSONL write, retention write, autonomous learning/action, or proof-of-learning.
+- Sandbox Behavior Use milestone / Doubt Action Trace milestone: ASHL Core can use approved memory-influenced tendency to rank sandbox-only candidate actions and can produce trace-only doubt_action records for expected/actual mismatch. Evidence: source memory influence b81; cross-sandbox evidence minefield_rerun_b82 and toy_repair_rerun_b84; candidate_actions_after_ordering=check_before_retry,fallback_stop_and_report,retry_same_action_without_check; ordering_is_sandbox_only=True; ordering_is_advisory=True; expected_outcome=box_pushed; actual_outcome=box_blocked; doubt_score rises 0.18 -> 0.71; direct retry weight lowers 0.50 -> 0.35; verification_candidate=observe_or_alternative_probe; verification_action_executed=False. Forbidden: no selected_action, final_action, direct command, persistent rule, memory/retention write, predictor read/influence/mutation, production behavior, autonomous learning/action, or proof-of-learning.
 ## Archive
 - Older milestone details are archived in `docs/boundary_index_archive_2026_06.md`.
 

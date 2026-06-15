@@ -6717,4 +6717,24 @@ Next recommended work:
 1. Observe/evaluate the sandbox candidate ordering before considering any selected_action or execution boundary.
 2. Keep predictor influence, production promotion, retained JSONL write, retention write, selected_action, final_action, and proof claims blocked until separate future boundaries explicitly open them.
 
+## Doubt Action Trace Minimal v0
+
+Status: completed / trace-only expected-actual mismatch doubt record / no verification execution.
+
+Progress:
+- Adds `ashl_core/doubt_action_trace_minimal.py`.
+- Creates a valid `doubt_action` trace when `expected_outcome != actual_outcome`.
+- Raises `doubt_score`, lowers direct retry weight, and proposes `observe_or_alternative_probe` as a low-risk verification candidate.
+- Requires verification budget and stop condition.
+- Keeps verification execution, selected_action, final_action, direct command, persistent rule, memory write, retention write, predictor mutation, production behavior, autonomous learning/action, and proof claims blocked.
+
+Boundary:
+- Boundary Index changes from `2026-06-09-b85` to `2026-06-09-b86`.
+- Rationale: this package introduces a trace-only doubt_action validation boundary for expected/actual mismatch.
+- This is trace/checker only and does not authorize verification execution or action selection.
+
+Next recommended work:
+1. Keep doubt_action evidence as a trace-only adjustment until a separate package explicitly opens any verification execution boundary.
+2. Do not promote verification candidates into selected_action, final_action, direct command, persistent rule, memory write, retention write, predictor mutation, or production behavior without future explicit boundaries.
+
 This documentation reconciliation did not complete outcome evaluation at that time and did not claim every documentation inconsistency had been found. Current outcome evaluation status is controlled by the later Level 1 Sandbox Outcome Evaluation and Human Review Summary Minimal v0 section above.

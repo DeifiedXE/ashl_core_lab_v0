@@ -1618,7 +1618,7 @@ Two-Trial History Boundary:
 
 - `docs/current_boundary_index.md`
 - Adds a short, versioned, low-token source of global hard boundaries for future work packages.
-- Current version: `Boundary Index Version: 2026-06-09-b85`.
+- Current version: `Boundary Index Version: 2026-06-09-b86`.
 - For current Phase0 status, see `docs/phase0_status.md`.
 - For capability status, see `docs/phase0_capability_matrix.md`.
 - For boundary version history, see `docs/current_boundary_index.md`.
@@ -2780,6 +2780,10 @@ Two-Trial History Boundary:
 ## Sandbox Behavior Use Minimal v0
 
 - Sandbox Behavior Use Minimal v0 uses approved memory-influenced tendency to rank sandbox-only candidate actions, placing `check_before_retry` above `retry_same_action_without_check` with cross-sandbox evidence from minefield and toy-repair reruns. Boundary Index updates from `2026-06-09-b84` to `2026-06-09-b85` because this opens advisory sandbox candidate ordering. It does not create selected_action, final_action, direct command, predictor read/influence/mutation, production behavior, retained JSONL write, retention write, autonomous learning/action, or proof-of-learning claims.
+
+## Doubt Action Trace Minimal v0
+
+- Doubt Action Trace Minimal v0 produces a trace-only `doubt_action` record when `expected_outcome` differs from `actual_outcome`. The trace can increase `doubt_score`, lower direct retry weight, and propose a low-risk verification candidate without executing it. Boundary Index updates from `2026-06-09-b85` to `2026-06-09-b86`. It does not create selected_action, final_action, direct command, persistent rule, memory write, retention write, predictor mutation, production behavior, autonomous learning/action, or proof-of-learning claims.
 
 ## Phase0 Package ID and Boundary Index Version Separation Minimal v0
 

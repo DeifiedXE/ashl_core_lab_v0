@@ -38,6 +38,7 @@ Current queue source:
 - Completed: Level 3 Toy Repair Multi-Step Sandbox Minimal v0.
 - Completed: Memory-Influenced Toy Repair Re-run Minimal v0.
 - Completed: Sandbox Behavior Use Minimal v0.
+- Completed: Doubt Action Trace Minimal v0.
 - Deferred: Level 2 Sandbox Readiness Minimal v0.
 - Deferred: Memory Readiness Boundary Minimal v0.
 
@@ -86,6 +87,8 @@ Level 3 Toy Repair Multi-Step Sandbox Minimal v0 changes Boundary Index from b82
 Memory-Influenced Toy Repair Re-run Minimal v0 changes Boundary Index from b83 to b84 because it introduces memory-influenced Level 3 toy repair sandbox re-run tendency traces using the approved bounded runtime influence. It compares memory_off, memory_on, and rollback traces across deterministic toy repair contexts; it does not create selected_action, final_action, direct command, predictor read/influence/mutation, retained JSONL write, retention write, production promotion, or proof of learning.
 
 Sandbox Behavior Use Minimal v0 changes Boundary Index from b84 to b85 because it permits approved memory-influenced tendency to affect sandbox-only candidate action ordering. It ranks `check_before_retry` above `retry_same_action_without_check` as advisory sandbox-only ordering; it does not create selected_action, final_action, direct command, predictor read/influence/mutation, production behavior, retained JSONL write, retention write, autonomous learning/action, or proof of learning.
+
+Doubt Action Trace Minimal v0 changes Boundary Index from b85 to b86 because it introduces a trace-only doubt_action validation boundary: expected/actual mismatch may raise doubt_score, lower direct retry weight, and propose a low-risk verification candidate. It does not execute verification, create selected_action, final_action, direct command, persistent rule, memory write, retention write, predictor mutation, production behavior, autonomous learning/action, or proof of learning.
 
 The Codex task queue coordinates work packages only. It does not approve, apply, observe, evaluate, promote, remember, retain, predict, select, finalize, command, or prove learning.
 

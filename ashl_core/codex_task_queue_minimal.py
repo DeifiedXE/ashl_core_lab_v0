@@ -8,8 +8,8 @@ from typing import Any
 
 COMMAND = "run-codex-task-queue-minimal-check"
 FLOW = "codex_task_queue_minimal_v0"
-BOUNDARY_INDEX_VERSION = "2026-06-09-b85"
-PREVIOUS_BOUNDARY_INDEX_VERSION = "2026-06-09-b84"
+BOUNDARY_INDEX_VERSION = "2026-06-09-b86"
+PREVIOUS_BOUNDARY_INDEX_VERSION = "2026-06-09-b85"
 LEVEL2_APPLICATION_BOUNDARY_BEFORE = "2026-06-09-b72"
 LEVEL2_APPLICATION_BOUNDARY_AFTER = "2026-06-09-b73"
 LEVEL3_TOY_MINEFIELD_BOUNDARY_BEFORE = "2026-06-09-b73"
@@ -36,6 +36,8 @@ MEMORY_INFLUENCED_TOY_REPAIR_RERUN_BOUNDARY_BEFORE = "2026-06-09-b83"
 MEMORY_INFLUENCED_TOY_REPAIR_RERUN_BOUNDARY_AFTER = "2026-06-09-b84"
 SANDBOX_BEHAVIOR_USE_BOUNDARY_BEFORE = "2026-06-09-b84"
 SANDBOX_BEHAVIOR_USE_BOUNDARY_AFTER = "2026-06-09-b85"
+DOUBT_ACTION_TRACE_BOUNDARY_BEFORE = "2026-06-09-b85"
+DOUBT_ACTION_TRACE_BOUNDARY_AFTER = "2026-06-09-b86"
 VERSIONING_POLICY_BOUNDARY_BEFORE = "2026-06-09-b71"
 VERSIONING_POLICY_BOUNDARY_AFTER = "2026-06-09-b72"
 QUEUE_NAME = "ashl_core_phase0_codex_task_queue"
@@ -640,6 +642,28 @@ def build_codex_task_queue_minimal() -> dict[str, Any]:
                 ),
             ),
             _task(
+                "task.doubt_action_trace_minimal.completed",
+                "PKG-Phase0-DoubtActionTrace-Minimal-v0",
+                "Doubt Action Trace Minimal v0",
+                "capability_boundary",
+                "completed",
+                "codex_completed_report",
+                ["task.sandbox_behavior_use_minimal.completed"],
+                [],
+                (
+                    "Completed trace-only doubt_action validation for expected/actual mismatch; no verification "
+                    "execution, selected_action, final_action, persistent rule, memory write, retention write, "
+                    "predictor mutation, production behavior, or proof claim."
+                ),
+                boundary_change_required=True,
+                boundary_index_version_before=DOUBT_ACTION_TRACE_BOUNDARY_BEFORE,
+                boundary_index_version_after=DOUBT_ACTION_TRACE_BOUNDARY_AFTER,
+                boundary_change_rationale=(
+                    "Introduces a trace-only doubt_action validation boundary for mismatch-driven doubt and "
+                    "low-risk verification candidate proposal."
+                ),
+            ),
+            _task(
                 "task.level2_sandbox_readiness.deferred",
                 "PKG-Phase0-Level2-Readiness-Future",
                 "Level 2 Sandbox Readiness Minimal v0",
@@ -924,7 +948,7 @@ def _invalid_queues(valid_queue: dict[str, Any]) -> list[dict[str, Any]]:
     )
     queues.append(blocked)
     deferred = deepcopy(valid_queue)
-    deferred["task_entries"][30].pop("deferral_reason", None)
+    deferred["task_entries"][31].pop("deferral_reason", None)
     queues.append(deferred)
     superseded = deepcopy(valid_queue)
     superseded["task_entries"].append(
@@ -996,7 +1020,7 @@ def _summary(
         summary["task_queue_result_count"] == 22
         and summary["valid_task_queue_count"] == 1
         and summary["invalid_task_queue_count"] == 21
-        and summary["valid_task_entry_count"] == 32
+        and summary["valid_task_entry_count"] == 33
         and summary["invalid_task_entry_count"] >= 9
         and summary["queue_scope_checked_count"] == 1
         and summary["approval_block_checked_count"] == 1

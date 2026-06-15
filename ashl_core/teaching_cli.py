@@ -197,6 +197,7 @@ from .memory_influenced_toy_repair_rerun_minimal import (
     run_memory_influenced_toy_repair_rerun_minimal_check,
 )
 from .sandbox_behavior_use_minimal import run_sandbox_behavior_use_minimal_check
+from .doubt_action_trace_minimal import run_doubt_action_trace_minimal_check
 from .reviewed_lesson_dry_run_correction_minimal import (
     run_reviewed_lesson_dry_run_correction_minimal_check,
 )
@@ -3801,6 +3802,8 @@ def run_command(command: str) -> dict[str, Any] | str:
         return run_memory_influenced_toy_repair_rerun_minimal_check()
     if command == "run-sandbox-behavior-use-minimal-check":
         return run_sandbox_behavior_use_minimal_check()
+    if command == "run-doubt-action-trace-minimal-check":
+        return run_doubt_action_trace_minimal_check()
     if command == "run-simple-retina-focus-preview-minimal-check":
         return run_simple_retina_focus_preview_minimal_check()
     if command == "run-generalized-prediction-confidence-check":
@@ -4007,6 +4010,7 @@ def main(argv: list[str] | None = None) -> int:
             "run-memory-influenced-sandbox-rerun-minimal-check",
             "run-memory-influenced-toy-repair-rerun-minimal-check",
             "run-sandbox-behavior-use-minimal-check",
+            "run-doubt-action-trace-minimal-check",
             "run-simple-retina-focus-preview-minimal-check",
             "run-generalized-prediction-confidence-check",
             "run-generalized-candidate-from-pattern-check",
@@ -4388,6 +4392,8 @@ def main(argv: list[str] | None = None) -> int:
         result = run_memory_influenced_toy_repair_rerun_minimal_check()
     elif args.command == "run-sandbox-behavior-use-minimal-check":
         result = run_sandbox_behavior_use_minimal_check()
+    elif args.command == "run-doubt-action-trace-minimal-check":
+        result = run_doubt_action_trace_minimal_check()
     elif args.command == "run-simple-retina-focus-preview-minimal-check":
         result = run_simple_retina_focus_preview_minimal_check()
     elif args.command == "run-generalized-prediction-confidence-check":
