@@ -43,6 +43,7 @@ Current queue source:
 - Completed: Verification Candidate Registry + Trace Minimal v0.
 - Completed: Verification Planning Minimal v0.
 - Completed: Verification Execution Minimal v0.
+- Completed: Verification Result Feedback Trace Minimal v0.
 - Deferred: Level 2 Sandbox Readiness Minimal v0.
 - Deferred: Memory Readiness Boundary Minimal v0.
 
@@ -63,6 +64,8 @@ The Level 3 toy minefield package changes Boundary Index because it introduces a
 Verification Planning Minimal v0 changes Boundary Index from b88 to b89 because it introduces a validation boundary for one-step trace-only verification plans built from registered verification candidates. This is planning only; it does not execute verification, create selected_action/final_action/direct commands, write memory or retention, mutate predictors, change production behavior, or prove learning.
 
 Verification Execution Minimal v0 changes Boundary Index from b89 to b90 because it permits one registered low-risk verification candidate from a validated verification plan to execute inside sandbox-only scope. This execution records an `actual_probe_result` and stop condition only; it does not create selected_action/final_action/direct commands, persistent rules, memory or retention writes, predictor mutation, production behavior, or proof of learning.
+
+Verification Result Feedback Trace Minimal v0 changes Boundary Index from b90 to b91 because it introduces a trace-only feedback boundary from sandbox verification result to candidate feedback signals. It may record suggested doubt, verification-candidate trust, direct-retry weight, and hypothesis-trust feedback, but it does not apply persistent trust/doubt updates, runtime feedback updates, selected_action/final_action/direct commands, persistent rules, memory or retention writes, predictor mutation, production behavior, or proof of learning.
 
 The Level 3 toy minefield variant stability package does not change Boundary Index because it operates inside the existing Level 3 sandbox-only multi-step trace boundary and adds deterministic variants, stability evaluation, and review conclusion only.
 

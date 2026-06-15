@@ -1618,7 +1618,7 @@ Two-Trial History Boundary:
 
 - `docs/current_boundary_index.md`
 - Adds a short, versioned, low-token source of global hard boundaries for future work packages.
-- Current version: `Boundary Index Version: 2026-06-09-b90`.
+- Current version: `Boundary Index Version: 2026-06-09-b91`.
 - For current Phase0 status, see `docs/phase0_status.md`.
 - For capability status, see `docs/phase0_capability_matrix.md`.
 - For boundary version history, see `docs/current_boundary_index.md`.
@@ -2800,6 +2800,10 @@ Two-Trial History Boundary:
 ## Verification Execution Minimal v0
 
 - Verification Execution Minimal v0 executes one registered low-risk verification candidate, `observe_or_alternative_probe`, inside sandbox-only scope. It records `actual_probe_result=local_context_observed`, meets the stop condition within `execution_budget=1`, and leaves selected_action, final_action, direct commands, persistent rules, memory writes, retention writes, predictor read/influence/mutation, production behavior, and proof-of-learning claims blocked. Boundary Index updates from `2026-06-09-b89` to `2026-06-09-b90`.
+
+## Verification Result Feedback Trace Minimal v0
+
+- Verification Result Feedback Trace Minimal v0 converts the sandbox-only verification execution result into trace-only feedback signals. It records suggested feedback for current doubt, verification-candidate trust, direct-retry weight, and hypothesis trust, while leaving persistent trust/doubt updates, runtime feedback updates, selected_action, final_action, direct commands, persistent rules, memory writes, retention writes, predictor mutation, production behavior, autonomous learning/action claims, and proof-of-learning claims blocked. Boundary Index updates from `2026-06-09-b90` to `2026-06-09-b91`.
 
 ## Phase0 Package ID and Boundary Index Version Separation Minimal v0
 

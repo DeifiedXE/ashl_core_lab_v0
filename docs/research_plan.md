@@ -6820,4 +6820,24 @@ Next recommended work:
 1. Observe/evaluate the verification execution result before considering any selected_action boundary.
 2. Keep persistent score updates, memory/retention writes, predictor mutation, production behavior, selected_action, final_action, and proof claims blocked until separate future boundaries explicitly open them.
 
+## Verification Result Feedback Trace Minimal v0
+
+Status: completed / trace-only verification result feedback / no persistent feedback update.
+
+Progress:
+- Adds `ashl_core/verification_result_feedback_trace_minimal.py`.
+- Requires the b90 sandbox-only verification execution result trace.
+- Converts `actual_probe_result=local_context_observed` into trace-only feedback signals for current doubt, verification-candidate trust, direct-retry weight, and hypothesis trust.
+- Records `feedback_status=trace_only_feedback_generated`, `doubt_feedback.suggested_delta=-0.1`, `verification_candidate_trust_feedback.suggested_delta=0.05`, `direct_retry_weight_feedback.suggested_weight=0.35`, and `hypothesis_trust_feedback.suggested_delta=0.0`.
+- Keeps feedback_applied_to_runtime, persistent_update_performed, selected_action, final_action, direct command, persistent rule, memory write, retained JSONL write, retention write, predictor mutation, production behavior, autonomous learning/action, and proof claims blocked.
+
+Boundary:
+- Boundary Index changes from `2026-06-09-b90` to `2026-06-09-b91`.
+- Rationale: this package introduces a trace-only feedback boundary from sandbox verification result to candidate feedback signals.
+- This does not authorize persistent trust/doubt updates, runtime feedback updates, selected_action, final_action, direct command, persistent rule creation, memory/retention writes, predictor mutation, production behavior, or proof of learning.
+
+Next recommended work:
+1. Observe/evaluate the feedback trace before considering any persistent feedback or action-selection boundary.
+2. Keep persistent score updates, memory/retention writes, predictor mutation, production behavior, selected_action, final_action, and proof claims blocked until separate future boundaries explicitly open them.
+
 This documentation reconciliation did not complete outcome evaluation at that time and did not claim every documentation inconsistency had been found. Current outcome evaluation status is controlled by the later Level 1 Sandbox Outcome Evaluation and Human Review Summary Minimal v0 section above.
