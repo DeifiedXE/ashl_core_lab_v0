@@ -8,8 +8,8 @@ from typing import Any
 
 COMMAND = "run-codex-task-queue-minimal-check"
 FLOW = "codex_task_queue_minimal_v0"
-BOUNDARY_INDEX_VERSION = "2026-06-09-b96"
-PREVIOUS_BOUNDARY_INDEX_VERSION = "2026-06-09-b95"
+BOUNDARY_INDEX_VERSION = "2026-06-09-b97"
+PREVIOUS_BOUNDARY_INDEX_VERSION = "2026-06-09-b96"
 LEVEL2_APPLICATION_BOUNDARY_BEFORE = "2026-06-09-b72"
 LEVEL2_APPLICATION_BOUNDARY_AFTER = "2026-06-09-b73"
 LEVEL3_TOY_MINEFIELD_BOUNDARY_BEFORE = "2026-06-09-b73"
@@ -58,6 +58,8 @@ SANDBOX_SELECTED_ACTION_EXECUTION_APPROVAL_BOUNDARY_BEFORE = "2026-06-09-b94"
 SANDBOX_SELECTED_ACTION_EXECUTION_APPROVAL_BOUNDARY_AFTER = "2026-06-09-b95"
 SANDBOX_ACTION_EXECUTION_BOUNDARY_BEFORE = "2026-06-09-b95"
 SANDBOX_ACTION_EXECUTION_BOUNDARY_AFTER = "2026-06-09-b96"
+SANDBOX_EXECUTION_RESULT_FEEDBACK_LOOP_BOUNDARY_BEFORE = "2026-06-09-b96"
+SANDBOX_EXECUTION_RESULT_FEEDBACK_LOOP_BOUNDARY_AFTER = "2026-06-09-b97"
 BUCKET_SIGNAL_BASELINE_BOUNDARY_VERSION = "2026-06-09-b93"
 B85_B93_BASELINE_BOUNDARY_VERSION = "2026-06-09-b93"
 VERSIONING_POLICY_BOUNDARY_BEFORE = "2026-06-09-b71"
@@ -957,6 +959,28 @@ def build_codex_task_queue_minimal() -> dict[str, Any]:
                 ),
             ),
             _task(
+                "task.sandbox_execution_result_feedback_loop_minimal.completed",
+                "PKG-Phase0-SandboxExecutionResultFeedbackLoop-Minimal-v0",
+                "Sandbox Execution Result Feedback Loop Minimal v0",
+                "capability_boundary",
+                "completed",
+                "codex_completed_report",
+                ["task.sandbox_action_execution_minimal.completed"],
+                [],
+                (
+                    "Completed same-session feedback loop from the b96 sandbox-only action execution result; "
+                    "feedback is trace-only, applied ephemerally inside the same sandbox session, can reorder the "
+                    "next sandbox-only candidate list, and rolls back at session end."
+                ),
+                boundary_change_required=True,
+                boundary_index_version_before=SANDBOX_EXECUTION_RESULT_FEEDBACK_LOOP_BOUNDARY_BEFORE,
+                boundary_index_version_after=SANDBOX_EXECUTION_RESULT_FEEDBACK_LOOP_BOUNDARY_AFTER,
+                boundary_change_rationale=(
+                    "Permits one sandbox-only action execution result to generate same-session feedback, apply it "
+                    "ephemerally, and influence the next sandbox-only candidate ordering."
+                ),
+            ),
+            _task(
                 "task.level2_sandbox_readiness.deferred",
                 "PKG-Phase0-Level2-Readiness-Future",
                 "Level 2 Sandbox Readiness Minimal v0",
@@ -1241,7 +1265,7 @@ def _invalid_queues(valid_queue: dict[str, Any]) -> list[dict[str, Any]]:
     )
     queues.append(blocked)
     deferred = deepcopy(valid_queue)
-    deferred["task_entries"][43].pop("deferral_reason", None)
+    deferred["task_entries"][44].pop("deferral_reason", None)
     queues.append(deferred)
     superseded = deepcopy(valid_queue)
     superseded["task_entries"].append(
@@ -1313,7 +1337,7 @@ def _summary(
         summary["task_queue_result_count"] == 22
         and summary["valid_task_queue_count"] == 1
         and summary["invalid_task_queue_count"] == 21
-        and summary["valid_task_entry_count"] == 45
+        and summary["valid_task_entry_count"] == 46
         and summary["invalid_task_entry_count"] >= 9
         and summary["queue_scope_checked_count"] == 1
         and summary["approval_block_checked_count"] == 1

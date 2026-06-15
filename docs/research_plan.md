@@ -6978,4 +6978,26 @@ Next recommended work:
 1. Review the sandbox execution result before any final_action or direct-command boundary.
 2. Keep final_action, direct command, memory/retention writes, predictor mutation, production behavior, and proof claims blocked until separate future boundaries explicitly open them.
 
+## Sandbox Execution Result Feedback Loop Minimal v0
+
+Status: completed / same-session sandbox execution-result feedback loop / rollback at session end.
+
+Progress:
+- Adds `ashl_core/sandbox_execution_result_feedback_loop_minimal.py`.
+- Requires the b96 sandbox-only action execution result source.
+- Converts `execution_result=local_context_observed` into trace-only feedback with `feedback_status=trace_only_feedback_generated`.
+- Applies the feedback ephemerally inside `same_sandbox_session_only`: doubt moves 0.61 -> 0.56, selected_action confidence moves 0.50 -> 0.55, and direct-retry weight moves 0.35 -> 0.30.
+- Reorders the next same-session sandbox-only candidate list while keeping `observe_or_alternative_probe` first and `retry_same_action_without_check` last.
+- Produces a rollback record that restores the before values and confirms `dirty_state_after_rollback=False`.
+- Keeps final_action, direct command, persistent trust/doubt update, cross-session feedback persistence, memory write, retained JSONL write, retention write, predictor read/influence/mutation, production behavior, autonomous learning/action, and proof claims blocked.
+
+Boundary:
+- Boundary Index changes from `2026-06-09-b96` to `2026-06-09-b97`.
+- Rationale: this package permits one sandbox-only action execution result to generate same-session feedback, apply it ephemerally, and influence the next sandbox-only candidate ordering.
+- This does not authorize final_action, direct command, persistent trust/doubt updates, cross-session feedback persistence, memory/retention writes, predictor read/influence/mutation, production behavior, autonomous learning/action, or proof of learning.
+
+Next recommended work:
+1. Review the execution-result feedback outcome before any final_action or direct-command boundary.
+2. Keep persistent feedback, memory/retention writes, predictor mutation, production behavior, final_action, direct command, autonomous claims, and proof claims blocked until separate future boundaries explicitly open them.
+
 This documentation reconciliation did not complete outcome evaluation at that time and did not claim every documentation inconsistency had been found. Current outcome evaluation status is controlled by the later Level 1 Sandbox Outcome Evaluation and Human Review Summary Minimal v0 section above.
