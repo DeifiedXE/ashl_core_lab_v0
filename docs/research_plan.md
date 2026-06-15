@@ -6900,4 +6900,23 @@ Next recommended work:
 1. Use this audit as a compact checkpoint before any future selected_action or persistent-feedback boundary proposal.
 2. Keep selected_action, final_action, persistent feedback, memory/retention writes, predictor mutation, production behavior, and proof claims blocked until separate future boundaries explicitly open them.
 
+## b85-b93 Documentation Compression / Status Sync Minimal v0
+
+Status: completed / documentation-status sync / no Boundary Index change.
+
+Progress:
+- Adds `ashl_core/b85_b93_documentation_compression_status_sync_minimal.py`.
+- Compresses b85-b93 same-session sandbox thought loop wording into: candidate ordering -> doubt -> verification candidate registry/planning/execution -> feedback -> ephemeral application -> same-session reordering -> rollback.
+- Synchronizes README, Phase0 status, capability matrix, task queue docs, and research plan wording.
+- Keeps the loop same-session-only, sandbox-only, rollback-verified, and non-persistent.
+- Keeps selected_action, final_action, direct command, persistent updates, cross-session feedback persistence, memory write, retained JSONL write, retention write, predictor mutation, production behavior, autonomous learning/action, and proof claims blocked.
+
+Boundary:
+- Boundary Index remains `2026-06-09-b93`.
+- Rationale: this is documentation/status sync only and does not change permission scope, runtime behavior, persistence, memory, retention, predictor, action-selection, production, or proof boundaries.
+
+Next recommended work:
+1. Use the compact b85-b93 summary as the default reference before any future selected_action or persistent-feedback proposal.
+2. Keep selected_action, final_action, persistent feedback, memory/retention writes, predictor mutation, production behavior, and proof claims blocked until separate future boundaries explicitly open them.
+
 This documentation reconciliation did not complete outcome evaluation at that time and did not claim every documentation inconsistency had been found. Current outcome evaluation status is controlled by the later Level 1 Sandbox Outcome Evaluation and Human Review Summary Minimal v0 section above.

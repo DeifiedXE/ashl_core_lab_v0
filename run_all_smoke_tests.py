@@ -243,6 +243,9 @@ from ashl_core.same_session_feedback_reordering_minimal import (
 from ashl_core.b85_b93_same_session_thought_loop_audit_minimal import (
     run_b85_b93_same_session_thought_loop_audit_minimal_check,
 )
+from ashl_core.b85_b93_documentation_compression_status_sync_minimal import (
+    run_b85_b93_documentation_compression_status_sync_minimal_check,
+)
 from ashl_core.minimal_visual_grounding_trial import run_minimal_visual_grounding_trial_check
 from ashl_core.visual_prediction_error_attention_priority_preview_minimal import (
     run_visual_prediction_error_attention_priority_preview_minimal_check,
@@ -12630,7 +12633,7 @@ def smoke_codex_task_queue_minimal() -> dict:
         and valid_queue.get("record_type") == "codex_task_queue_minimal_v0"
         and summary.get("valid_task_queue_count") == 1
         and summary.get("invalid_task_queue_count") == 21
-        and summary.get("valid_task_entry_count") == 41
+        and summary.get("valid_task_entry_count") == 42
         and summary.get("invalid_task_entry_count", 0) >= 9
         and summary.get("queue_scope_checked_count") == 1
         and summary.get("approval_block_checked_count") == 1
@@ -12795,6 +12798,15 @@ def smoke_codex_task_queue_minimal() -> dict:
             and task.get("boundary_index_version_before") == "2026-06-09-b93"
             and task.get("boundary_index_version_after") == "2026-06-09-b93"
             and "Audit-only" in task.get("boundary_change_rationale", "")
+            for task in valid_queue.get("task_entries", [])
+        )
+        and any(
+            task.get("package_id") == "PKG-Phase0-B85B93DocumentationCompressionStatusSync-Minimal-v0"
+            and task.get("status") == "completed"
+            and task.get("boundary_change_required") is False
+            and task.get("boundary_index_version_before") == "2026-06-09-b93"
+            and task.get("boundary_index_version_after") == "2026-06-09-b93"
+            and "Documentation/status sync" in task.get("boundary_change_rationale", "")
             for task in valid_queue.get("task_entries", [])
         )
         and valid_queue.get("queue_counts_as_approval") is False
@@ -15388,6 +15400,67 @@ def smoke_b85_b93_same_session_thought_loop_audit_minimal() -> dict:
     )
     return _result(
         "b85_b93_same_session_thought_loop_audit_minimal",
+        passed,
+        {"summary": summary, "boundary": boundary},
+    )
+
+
+def smoke_b85_b93_documentation_compression_status_sync_minimal() -> dict:
+    result = run_b85_b93_documentation_compression_status_sync_minimal_check()
+    summary = result.get("summary", {})
+    boundary = result.get("boundary", {})
+    sync = result.get("valid_sync", {})
+    passed = (
+        result.get("command") == "run-b85-b93-documentation-compression-status-sync-minimal-check"
+        and result.get("flow") == "b85_b93_documentation_compression_status_sync_minimal_v0"
+        and result.get("status") == "ok"
+        and summary.get("valid_sync_count") == 1
+        and summary.get("invalid_sync_count", 0) >= 20
+        and summary.get("boundary_unchanged_checked_count") == 1
+        and summary.get("docs_updated_count") == 5
+        and summary.get("line_count_checked_count") == 1
+        and summary.get("overclaim_blocked_count") == 1
+        and summary.get("selected_action_blocked_count") == 1
+        and summary.get("final_action_blocked_count") == 1
+        and summary.get("persistent_update_blocked_count") == 1
+        and summary.get("cross_session_blocked_count") == 1
+        and summary.get("memory_write_blocked_count") == 1
+        and summary.get("retention_blocked_count") == 1
+        and summary.get("predictor_mutation_blocked_count") == 1
+        and summary.get("production_behavior_blocked_count") == 1
+        and summary.get("proof_claim_blocked_count") == 1
+        and summary.get("all_b85_b93_documentation_compression_status_sync_checks_passed") is True
+        and boundary.get("boundary_change_required") is False
+        and boundary.get("boundary_index_update_required") is False
+        and boundary.get("boundary_index_version_before") == "2026-06-09-b93"
+        and boundary.get("boundary_index_version_after") == "2026-06-09-b93"
+        and sync.get("record_type") == "b85_b93_documentation_compression_status_sync"
+        and sync.get("sync_status") == "completed_documentation_compression_status_sync"
+        and sync.get("current_boundary_index_updated") is False
+        and sync.get("current_boundary_index_line_count_max") == 150
+        and sync.get("same_session_only") is True
+        and sync.get("sandbox_only") is True
+        and sync.get("rollback_verified") is True
+        and sync.get("docs_updated")
+        == [
+            "README.md",
+            "docs/phase0_status.md",
+            "docs/phase0_capability_matrix.md",
+            "docs/phase0_task_queue.md",
+            "docs/research_plan.md",
+        ]
+        and sync.get("selected_action_created") is False
+        and sync.get("final_action_created") is False
+        and sync.get("persistent_trust_doubt_update_performed") is False
+        and sync.get("cross_session_feedback_persistence") is False
+        and sync.get("memory_write_performed") is False
+        and sync.get("retention_write_performed") is False
+        and sync.get("predictor_mutation_performed") is False
+        and sync.get("production_behavior_changed") is False
+        and sync.get("proof_of_learning_claim_allowed") is False
+    )
+    return _result(
+        "b85_b93_documentation_compression_status_sync_minimal",
         passed,
         {"summary": summary, "boundary": boundary},
     )
@@ -18127,6 +18200,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_ephemeral_feedback_application_minimal(),
         smoke_same_session_feedback_reordering_minimal(),
         smoke_b85_b93_same_session_thought_loop_audit_minimal(),
+        smoke_b85_b93_documentation_compression_status_sync_minimal(),
         smoke_phase0_current_capability_snapshot(),
         smoke_memory_influence_behavior_gate_design(),
         smoke_first_memory_influenced_behavior_boundary(),

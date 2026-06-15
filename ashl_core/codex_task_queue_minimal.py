@@ -848,6 +848,22 @@ def build_codex_task_queue_minimal() -> dict[str, Any]:
                 boundary_change_rationale="Audit-only package; no boundary change.",
             ),
             _task(
+                "task.b85_b93_documentation_compression_status_sync_minimal.completed",
+                "PKG-Phase0-B85B93DocumentationCompressionStatusSync-Minimal-v0",
+                "b85-b93 Documentation Compression / Status Sync Minimal v0",
+                "documentation_only",
+                "completed",
+                "codex_completed_report",
+                ["task.b85_b93_same_session_thought_loop_audit_minimal.completed"],
+                [],
+                (
+                    "Completed documentation/status sync for the b85-b93 same-session sandbox thought loop; no "
+                    "runtime capability, Boundary Index change, persistence, memory write, predictor mutation, "
+                    "action selection, production behavior, or proof claim."
+                ),
+                boundary_change_rationale="Documentation/status sync only; no boundary change.",
+            ),
+            _task(
                 "task.level2_sandbox_readiness.deferred",
                 "PKG-Phase0-Level2-Readiness-Future",
                 "Level 2 Sandbox Readiness Minimal v0",
@@ -1132,7 +1148,7 @@ def _invalid_queues(valid_queue: dict[str, Any]) -> list[dict[str, Any]]:
     )
     queues.append(blocked)
     deferred = deepcopy(valid_queue)
-    deferred["task_entries"][39].pop("deferral_reason", None)
+    deferred["task_entries"][40].pop("deferral_reason", None)
     queues.append(deferred)
     superseded = deepcopy(valid_queue)
     superseded["task_entries"].append(
@@ -1204,7 +1220,7 @@ def _summary(
         summary["task_queue_result_count"] == 22
         and summary["valid_task_queue_count"] == 1
         and summary["invalid_task_queue_count"] == 21
-        and summary["valid_task_entry_count"] == 41
+        and summary["valid_task_entry_count"] == 42
         and summary["invalid_task_entry_count"] >= 9
         and summary["queue_scope_checked_count"] == 1
         and summary["approval_block_checked_count"] == 1
