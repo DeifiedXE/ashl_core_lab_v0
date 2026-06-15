@@ -221,6 +221,9 @@ from .b85_b93_same_session_thought_loop_audit_minimal import (
 from .b85_b93_documentation_compression_status_sync_minimal import (
     run_b85_b93_documentation_compression_status_sync_minimal_check,
 )
+from .sandbox_selected_action_approval_and_doubt_pressure_trace_minimal import (
+    run_sandbox_selected_action_approval_and_doubt_pressure_trace_minimal_check,
+)
 from .reviewed_lesson_dry_run_correction_minimal import (
     run_reviewed_lesson_dry_run_correction_minimal_check,
 )
@@ -3845,6 +3848,8 @@ def run_command(command: str) -> dict[str, Any] | str:
         return run_b85_b93_same_session_thought_loop_audit_minimal_check()
     if command == "run-b85-b93-documentation-compression-status-sync-minimal-check":
         return run_b85_b93_documentation_compression_status_sync_minimal_check()
+    if command == "run-sandbox-selected-action-approval-and-doubt-pressure-trace-minimal-check":
+        return run_sandbox_selected_action_approval_and_doubt_pressure_trace_minimal_check()
     if command == "run-simple-retina-focus-preview-minimal-check":
         return run_simple_retina_focus_preview_minimal_check()
     if command == "run-generalized-prediction-confidence-check":
@@ -4061,6 +4066,7 @@ def main(argv: list[str] | None = None) -> int:
             "run-same-session-feedback-reordering-minimal-check",
             "run-b85-b93-same-session-thought-loop-audit-minimal-check",
             "run-b85-b93-documentation-compression-status-sync-minimal-check",
+            "run-sandbox-selected-action-approval-and-doubt-pressure-trace-minimal-check",
             "run-simple-retina-focus-preview-minimal-check",
             "run-generalized-prediction-confidence-check",
             "run-generalized-candidate-from-pattern-check",
@@ -4462,6 +4468,8 @@ def main(argv: list[str] | None = None) -> int:
         result = run_b85_b93_same_session_thought_loop_audit_minimal_check()
     elif args.command == "run-b85-b93-documentation-compression-status-sync-minimal-check":
         result = run_b85_b93_documentation_compression_status_sync_minimal_check()
+    elif args.command == "run-sandbox-selected-action-approval-and-doubt-pressure-trace-minimal-check":
+        result = run_sandbox_selected_action_approval_and_doubt_pressure_trace_minimal_check()
     elif args.command == "run-simple-retina-focus-preview-minimal-check":
         result = run_simple_retina_focus_preview_minimal_check()
     elif args.command == "run-generalized-prediction-confidence-check":

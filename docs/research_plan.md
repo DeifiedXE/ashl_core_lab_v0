@@ -6919,4 +6919,25 @@ Next recommended work:
 1. Use the compact b85-b93 summary as the default reference before any future selected_action or persistent-feedback proposal.
 2. Keep selected_action, final_action, persistent feedback, memory/retention writes, predictor mutation, production behavior, and proof claims blocked until separate future boundaries explicitly open them.
 
+## Sandbox Selected Action Approval + Cortisol-Like Doubt Pressure Trace Minimal v0
+
+Status: completed / boundary approval plus trace-only pressure validation / no selected_action.
+
+Progress:
+- Adds `ashl_core/sandbox_selected_action_approval_and_doubt_pressure_trace_minimal.py`.
+- Requires the audited b85-b93 same-session thought loop source.
+- Records explicit approval for a future Sandbox Selected Action Minimal v0 package only.
+- Adds a trace-only cortisol-like doubt pressure signal with paranoia guard.
+- Pressure preview raises pressure 0.20 -> 0.45, doubt weighting 0.61 -> 0.71, strategy-shift weighting 0.50 -> 0.60, and lowers direct-retry weighting 0.35 -> 0.30.
+- Paranoia guard keeps low-risk action allowed and blocks never-try / permanent-ban behavior.
+- Keeps selected_action, final_action, direct command, pressure runtime application, pressure persistence, persistent updates, memory/retention writes, predictor mutation, production behavior, autonomous learning/action, and proof claims blocked.
+
+Boundary:
+- Boundary Index changes from `2026-06-09-b93` to `2026-06-09-b94`.
+- Rationale: this package creates an explicit approval boundary for a future sandbox-only selected_action package and introduces a trace-only cortisol-like doubt pressure validation boundary.
+
+Next recommended work:
+1. Sandbox Selected Action Minimal v0 may be proposed as a separate implementation package.
+2. Pressure runtime application, final_action, direct command, memory/retention writes, predictor mutation, production behavior, and proof claims still require separate future boundaries.
+
 This documentation reconciliation did not complete outcome evaluation at that time and did not claim every documentation inconsistency had been found. Current outcome evaluation status is controlled by the later Level 1 Sandbox Outcome Evaluation and Human Review Summary Minimal v0 section above.

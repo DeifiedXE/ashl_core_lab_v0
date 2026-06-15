@@ -8,8 +8,8 @@ from typing import Any
 
 COMMAND = "run-codex-task-queue-minimal-check"
 FLOW = "codex_task_queue_minimal_v0"
-BOUNDARY_INDEX_VERSION = "2026-06-09-b93"
-PREVIOUS_BOUNDARY_INDEX_VERSION = "2026-06-09-b92"
+BOUNDARY_INDEX_VERSION = "2026-06-09-b94"
+PREVIOUS_BOUNDARY_INDEX_VERSION = "2026-06-09-b93"
 LEVEL2_APPLICATION_BOUNDARY_BEFORE = "2026-06-09-b72"
 LEVEL2_APPLICATION_BOUNDARY_AFTER = "2026-06-09-b73"
 LEVEL3_TOY_MINEFIELD_BOUNDARY_BEFORE = "2026-06-09-b73"
@@ -52,6 +52,9 @@ EPHEMERAL_FEEDBACK_APPLICATION_BOUNDARY_BEFORE = "2026-06-09-b91"
 EPHEMERAL_FEEDBACK_APPLICATION_BOUNDARY_AFTER = "2026-06-09-b92"
 SAME_SESSION_FEEDBACK_REORDERING_BOUNDARY_BEFORE = "2026-06-09-b92"
 SAME_SESSION_FEEDBACK_REORDERING_BOUNDARY_AFTER = "2026-06-09-b93"
+SANDBOX_SELECTED_ACTION_APPROVAL_PRESSURE_BOUNDARY_BEFORE = "2026-06-09-b93"
+SANDBOX_SELECTED_ACTION_APPROVAL_PRESSURE_BOUNDARY_AFTER = "2026-06-09-b94"
+BUCKET_SIGNAL_BASELINE_BOUNDARY_VERSION = "2026-06-09-b93"
 VERSIONING_POLICY_BOUNDARY_BEFORE = "2026-06-09-b71"
 VERSIONING_POLICY_BOUNDARY_AFTER = "2026-06-09-b72"
 QUEUE_NAME = "ashl_core_phase0_codex_task_queue"
@@ -314,6 +317,8 @@ def build_codex_task_queue_minimal() -> dict[str, Any]:
                     "review conclusion inside the existing Level 3 sandbox boundary; task status is not "
                     "runtime execution, production promotion, memory write, predictor mutation, or proof of learning."
                 ),
+                boundary_index_version_before=BUCKET_SIGNAL_BASELINE_BOUNDARY_VERSION,
+                boundary_index_version_after=BUCKET_SIGNAL_BASELINE_BOUNDARY_VERSION,
             ),
             _task(
                 "task.sandbox_stable_lesson_candidate_proposal.superseded",
@@ -328,6 +333,8 @@ def build_codex_task_queue_minimal() -> dict[str, Any]:
                     "Superseded: candidate should originate as a structured bucket-derived signal, not as "
                     "direct text lesson proposal."
                 ),
+                boundary_index_version_before=BUCKET_SIGNAL_BASELINE_BOUNDARY_VERSION,
+                boundary_index_version_after=BUCKET_SIGNAL_BASELINE_BOUNDARY_VERSION,
                 superseded_by="Bucket-Derived Lesson Candidate Signal Minimal v0",
             ),
             _task(
@@ -343,6 +350,8 @@ def build_codex_task_queue_minimal() -> dict[str, Any]:
                     "Completed structured bucket-derived lesson candidate signal from Level 3 variant evidence; "
                     "no Qingyin-authored lesson text, memory write, runtime influence, predictor mutation, or proof claim."
                 ),
+                boundary_index_version_before=BUCKET_SIGNAL_BASELINE_BOUNDARY_VERSION,
+                boundary_index_version_after=BUCKET_SIGNAL_BASELINE_BOUNDARY_VERSION,
             ),
             _task(
                 "task.repo_audit_minimal.completed",
@@ -357,6 +366,8 @@ def build_codex_task_queue_minimal() -> dict[str, Any]:
                     "Completed repo audit: Qingyin is a boundary-constrained Phase0 trace/checker system, "
                     "not an autonomous learner or actor; task status is not approval or memory write."
                 ),
+                boundary_index_version_before=BUCKET_SIGNAL_BASELINE_BOUNDARY_VERSION,
+                boundary_index_version_after=BUCKET_SIGNAL_BASELINE_BOUNDARY_VERSION,
             ),
             _task(
                 "task.bucket_signal_human_interpretation_review.completed",
@@ -372,6 +383,8 @@ def build_codex_task_queue_minimal() -> dict[str, Any]:
                     "for future memory readiness design only; no memory write, runtime influence, predictor "
                     "mutation, action selection, production promotion, or proof claim."
                 ),
+                boundary_index_version_before=BUCKET_SIGNAL_BASELINE_BOUNDARY_VERSION,
+                boundary_index_version_after=BUCKET_SIGNAL_BASELINE_BOUNDARY_VERSION,
             ),
             _task(
                 "task.memory_readiness_design_approved_bucket_lesson.completed",
@@ -387,6 +400,8 @@ def build_codex_task_queue_minimal() -> dict[str, Any]:
                     "bucket-derived lesson; no memory admission, memory write, retained JSONL write, "
                     "runtime influence, predictor mutation, action selection, production promotion, or proof claim."
                 ),
+                boundary_index_version_before=BUCKET_SIGNAL_BASELINE_BOUNDARY_VERSION,
+                boundary_index_version_after=BUCKET_SIGNAL_BASELINE_BOUNDARY_VERSION,
             ),
             _task(
                 "task.memory_admission_package_design.completed",
@@ -402,6 +417,8 @@ def build_codex_task_queue_minimal() -> dict[str, Any]:
                     "memory write, retained JSONL write, retention write, runtime influence, predictor mutation, "
                     "action selection, production promotion, or proof claim."
                 ),
+                boundary_index_version_before=BUCKET_SIGNAL_BASELINE_BOUNDARY_VERSION,
+                boundary_index_version_after=BUCKET_SIGNAL_BASELINE_BOUNDARY_VERSION,
             ),
             _task(
                 "task.memory_admission_approval_boundary.completed",
@@ -845,6 +862,8 @@ def build_codex_task_queue_minimal() -> dict[str, Any]:
                     "runtime capability, Boundary Index change, persistence, memory write, predictor mutation, "
                     "action selection, production behavior, or proof claim."
                 ),
+                boundary_index_version_before=PREVIOUS_BOUNDARY_INDEX_VERSION,
+                boundary_index_version_after=PREVIOUS_BOUNDARY_INDEX_VERSION,
                 boundary_change_rationale="Audit-only package; no boundary change.",
             ),
             _task(
@@ -861,7 +880,31 @@ def build_codex_task_queue_minimal() -> dict[str, Any]:
                     "runtime capability, Boundary Index change, persistence, memory write, predictor mutation, "
                     "action selection, production behavior, or proof claim."
                 ),
+                boundary_index_version_before=PREVIOUS_BOUNDARY_INDEX_VERSION,
+                boundary_index_version_after=PREVIOUS_BOUNDARY_INDEX_VERSION,
                 boundary_change_rationale="Documentation/status sync only; no boundary change.",
+            ),
+            _task(
+                "task.sandbox_selected_action_approval_and_doubt_pressure_trace_minimal.completed",
+                "PKG-Phase0-SandboxSelectedActionApprovalAndDoubtPressureTrace-Minimal-v0",
+                "Sandbox Selected Action Approval + Cortisol-Like Doubt Pressure Trace Minimal v0",
+                "capability_boundary",
+                "completed",
+                "codex_completed_report",
+                ["task.b85_b93_documentation_compression_status_sync_minimal.completed"],
+                [],
+                (
+                    "Completed explicit approval boundary for a future sandbox-only selected_action package and "
+                    "trace-only cortisol-like doubt pressure validation with paranoia guard; selected_action is not "
+                    "created in this package."
+                ),
+                boundary_change_required=True,
+                boundary_index_version_before=SANDBOX_SELECTED_ACTION_APPROVAL_PRESSURE_BOUNDARY_BEFORE,
+                boundary_index_version_after=SANDBOX_SELECTED_ACTION_APPROVAL_PRESSURE_BOUNDARY_AFTER,
+                boundary_change_rationale=(
+                    "Creates an explicit approval boundary for a future sandbox-only selected_action package and "
+                    "introduces a trace-only cortisol-like doubt pressure validation boundary."
+                ),
             ),
             _task(
                 "task.level2_sandbox_readiness.deferred",
@@ -1148,7 +1191,7 @@ def _invalid_queues(valid_queue: dict[str, Any]) -> list[dict[str, Any]]:
     )
     queues.append(blocked)
     deferred = deepcopy(valid_queue)
-    deferred["task_entries"][40].pop("deferral_reason", None)
+    deferred["task_entries"][41].pop("deferral_reason", None)
     queues.append(deferred)
     superseded = deepcopy(valid_queue)
     superseded["task_entries"].append(
@@ -1220,7 +1263,7 @@ def _summary(
         summary["task_queue_result_count"] == 22
         and summary["valid_task_queue_count"] == 1
         and summary["invalid_task_queue_count"] == 21
-        and summary["valid_task_entry_count"] == 42
+        and summary["valid_task_entry_count"] == 43
         and summary["invalid_task_entry_count"] >= 9
         and summary["queue_scope_checked_count"] == 1
         and summary["approval_block_checked_count"] == 1

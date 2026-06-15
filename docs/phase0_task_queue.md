@@ -48,6 +48,7 @@ Current queue source:
 - Completed: Same-Session Feedback Reordering Minimal v0.
 - Completed: b85-b93 Same-Session Thought Loop Audit Minimal v0.
 - Completed: b85-b93 Documentation Compression / Status Sync Minimal v0.
+- Completed: Sandbox Selected Action Approval + Cortisol-Like Doubt Pressure Trace Minimal v0.
 - Deferred: Level 2 Sandbox Readiness Minimal v0.
 - Deferred: Memory Readiness Boundary Minimal v0.
 
@@ -78,6 +79,8 @@ Same-Session Feedback Reordering Minimal v0 changes Boundary Index from b92 to b
 b85-b93 Same-Session Thought Loop Audit Minimal v0 does not change Boundary Index because it is audit-only. It records that the chain from sandbox behavior use through same-session feedback reordering remains sandbox-only and same-session-only, with rollback verified and selected_action, final_action, direct commands, persistent updates, cross-session feedback persistence, memory/retention writes, predictor read/influence/mutation, production behavior, autonomous learning/action claims, and proof-of-learning claims blocked.
 
 b85-b93 Documentation Compression / Status Sync Minimal v0 does not change Boundary Index because it only synchronizes compact wording for the existing b85-b93 same-session sandbox thought loop: candidate ordering -> doubt -> verification registry/planning/execution -> feedback -> ephemeral application -> reordering -> rollback. It does not create runtime capability, selected_action/final_action/direct commands, persistent updates, cross-session persistence, memory/retention writes, predictor mutation, production behavior, autonomous claims, or proof-of-learning.
+
+Sandbox Selected Action Approval + Cortisol-Like Doubt Pressure Trace Minimal v0 changes Boundary Index from b93 to b94 because it creates explicit approval for a future sandbox-only selected_action implementation package and introduces a trace-only cortisol-like doubt pressure validation boundary. It does not create selected_action, final_action, direct commands, runtime pressure application, pressure persistence, persistent updates, memory/retention writes, predictor mutation, production behavior, autonomous claims, or proof-of-learning.
 
 The Level 3 toy minefield variant stability package does not change Boundary Index because it operates inside the existing Level 3 sandbox-only multi-step trace boundary and adds deterministic variants, stability evaluation, and review conclusion only.
 

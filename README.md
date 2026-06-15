@@ -1618,7 +1618,7 @@ Two-Trial History Boundary:
 
 - `docs/current_boundary_index.md`
 - Adds a short, versioned, low-token source of global hard boundaries for future work packages.
-- Current version: `Boundary Index Version: 2026-06-09-b93`.
+- Current version: `Boundary Index Version: 2026-06-09-b94`.
 - For current Phase0 status, see `docs/phase0_status.md`.
 - For capability status, see `docs/phase0_capability_matrix.md`.
 - For boundary version history, see `docs/current_boundary_index.md`.
@@ -2820,6 +2820,10 @@ Two-Trial History Boundary:
 ## b85-b93 Documentation Compression / Status Sync Minimal v0
 
 - b85-b93 Documentation Compression / Status Sync Minimal v0 keeps the b85-b93 same-session sandbox thought loop wording compact and synchronized: candidate ordering -> doubt -> verification candidate registry/planning/execution -> feedback -> ephemeral application -> same-session reordering -> rollback. The loop remains same-session-only, sandbox-only, rollback-verified, and non-persistent. Boundary Index remains `2026-06-09-b93`; selected_action, final_action, direct commands, persistent updates, cross-session feedback persistence, memory/retention writes, predictor mutation, production behavior, autonomous action/learning claims, and proof-of-learning claims remain blocked.
+
+## Sandbox Selected Action Approval + Cortisol-Like Doubt Pressure Trace Minimal v0
+
+- Sandbox Selected Action Approval + Cortisol-Like Doubt Pressure Trace Minimal v0 creates an explicit approval boundary for a future sandbox-only selected_action package and adds a trace-only cortisol-like doubt pressure signal with paranoia guard. It previews pressure 0.20 -> 0.45, doubt weighting 0.61 -> 0.71, strategy-shift weighting 0.50 -> 0.60, and direct-retry weighting 0.35 -> 0.30, but does not apply pressure to runtime or persist it. Boundary Index updates from `2026-06-09-b93` to `2026-06-09-b94`; selected_action is not created in this package, and final_action, direct commands, persistent updates, memory/retention writes, predictor mutation, production behavior, autonomous learning/action claims, and proof-of-learning remain blocked.
 
 ## Phase0 Package ID and Boundary Index Version Separation Minimal v0
 
