@@ -8,8 +8,8 @@ from typing import Any
 
 COMMAND = "run-codex-task-queue-minimal-check"
 FLOW = "codex_task_queue_minimal_v0"
-BOUNDARY_INDEX_VERSION = "2026-06-09-b87"
-PREVIOUS_BOUNDARY_INDEX_VERSION = "2026-06-09-b86"
+BOUNDARY_INDEX_VERSION = "2026-06-09-b88"
+PREVIOUS_BOUNDARY_INDEX_VERSION = "2026-06-09-b87"
 LEVEL2_APPLICATION_BOUNDARY_BEFORE = "2026-06-09-b72"
 LEVEL2_APPLICATION_BOUNDARY_AFTER = "2026-06-09-b73"
 LEVEL3_TOY_MINEFIELD_BOUNDARY_BEFORE = "2026-06-09-b73"
@@ -40,6 +40,8 @@ DOUBT_ACTION_TRACE_BOUNDARY_BEFORE = "2026-06-09-b85"
 DOUBT_ACTION_TRACE_BOUNDARY_AFTER = "2026-06-09-b86"
 DOUBT_GATED_SANDBOX_ORDERING_BOUNDARY_BEFORE = "2026-06-09-b86"
 DOUBT_GATED_SANDBOX_ORDERING_BOUNDARY_AFTER = "2026-06-09-b87"
+VERIFICATION_CANDIDATE_REGISTRY_BOUNDARY_BEFORE = "2026-06-09-b87"
+VERIFICATION_CANDIDATE_REGISTRY_BOUNDARY_AFTER = "2026-06-09-b88"
 VERSIONING_POLICY_BOUNDARY_BEFORE = "2026-06-09-b71"
 VERSIONING_POLICY_BOUNDARY_AFTER = "2026-06-09-b72"
 QUEUE_NAME = "ashl_core_phase0_codex_task_queue"
@@ -687,6 +689,27 @@ def build_codex_task_queue_minimal() -> dict[str, Any]:
                 ),
             ),
             _task(
+                "task.verification_candidate_registry_trace_minimal.completed",
+                "PKG-Phase0-VerificationCandidateRegistryTrace-Minimal-v0",
+                "Verification Candidate Registry + Trace Minimal v0",
+                "capability_boundary",
+                "completed",
+                "codex_completed_report",
+                ["task.doubt_gated_sandbox_candidate_ordering_minimal.completed"],
+                [],
+                (
+                    "Completed bounded trace-only verification candidate registry and trace; no verification "
+                    "execution, selected_action, final_action, persistent rule, memory write, retention write, "
+                    "predictor mutation, production behavior, or proof claim."
+                ),
+                boundary_change_required=True,
+                boundary_index_version_before=VERIFICATION_CANDIDATE_REGISTRY_BOUNDARY_BEFORE,
+                boundary_index_version_after=VERIFICATION_CANDIDATE_REGISTRY_BOUNDARY_AFTER,
+                boundary_change_rationale=(
+                    "Introduces a validation boundary for named low-risk verification candidates."
+                ),
+            ),
+            _task(
                 "task.level2_sandbox_readiness.deferred",
                 "PKG-Phase0-Level2-Readiness-Future",
                 "Level 2 Sandbox Readiness Minimal v0",
@@ -971,7 +994,7 @@ def _invalid_queues(valid_queue: dict[str, Any]) -> list[dict[str, Any]]:
     )
     queues.append(blocked)
     deferred = deepcopy(valid_queue)
-    deferred["task_entries"][32].pop("deferral_reason", None)
+    deferred["task_entries"][33].pop("deferral_reason", None)
     queues.append(deferred)
     superseded = deepcopy(valid_queue)
     superseded["task_entries"].append(
@@ -1043,7 +1066,7 @@ def _summary(
         summary["task_queue_result_count"] == 22
         and summary["valid_task_queue_count"] == 1
         and summary["invalid_task_queue_count"] == 21
-        and summary["valid_task_entry_count"] == 34
+        and summary["valid_task_entry_count"] == 35
         and summary["invalid_task_entry_count"] >= 9
         and summary["queue_scope_checked_count"] == 1
         and summary["approval_block_checked_count"] == 1

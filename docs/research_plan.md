@@ -6758,4 +6758,25 @@ Next recommended work:
 1. Observe/evaluate the doubt-gated ordering before considering any verification execution boundary.
 2. Keep persistent rules, memory/retention writes, predictor mutation, production behavior, selected_action, final_action, and proof claims blocked until separate future boundaries explicitly open them.
 
+## Verification Candidate Registry + Trace Minimal v0
+
+Status: completed / bounded trace-only verification candidate registry / no verification execution.
+
+Progress:
+- Adds `ashl_core/verification_candidate_registry_trace_minimal.py`.
+- Registers `observe_or_alternative_probe`, `inspect_device`, `check_before_retry`, `retry_limited`, and `fallback_stop_and_report`.
+- Requires each candidate to include risk, reversibility, budget, stop condition, expected probe outcome, forbidden conditions, and allowed sandbox scope.
+- Validates that b87 doubt-gated sandbox candidate ordering references only registered candidates.
+- Blocks free-form/unregistered verification candidate references.
+- Keeps verification execution, selected_action, final_action, direct command, persistent rule, memory write, retention write, predictor mutation, production behavior, autonomous learning/action, and proof claims blocked.
+
+Boundary:
+- Boundary Index changes from `2026-06-09-b87` to `2026-06-09-b88`.
+- Rationale: this package introduces a validation boundary for named low-risk verification candidates.
+- This does not authorize verification execution, selected_action, final_action, direct command, or production behavior.
+
+Next recommended work:
+1. Observe/evaluate registered verification candidate references before considering any verification execution boundary.
+2. Keep free-form candidate generation, persistent rules, memory/retention writes, predictor mutation, production behavior, selected_action, final_action, and proof claims blocked until separate future boundaries explicitly open them.
+
 This documentation reconciliation did not complete outcome evaluation at that time and did not claim every documentation inconsistency had been found. Current outcome evaluation status is controlled by the later Level 1 Sandbox Outcome Evaluation and Human Review Summary Minimal v0 section above.

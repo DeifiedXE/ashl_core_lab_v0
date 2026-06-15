@@ -1618,7 +1618,7 @@ Two-Trial History Boundary:
 
 - `docs/current_boundary_index.md`
 - Adds a short, versioned, low-token source of global hard boundaries for future work packages.
-- Current version: `Boundary Index Version: 2026-06-09-b87`.
+- Current version: `Boundary Index Version: 2026-06-09-b88`.
 - For current Phase0 status, see `docs/phase0_status.md`.
 - For capability status, see `docs/phase0_capability_matrix.md`.
 - For boundary version history, see `docs/current_boundary_index.md`.
@@ -2788,6 +2788,10 @@ Two-Trial History Boundary:
 ## Doubt-Gated Sandbox Candidate Ordering Minimal v0
 
 - Doubt-Gated Sandbox Candidate Ordering Minimal v0 uses trace-only `doubt_action` output to rank sandbox-only candidate actions after expected/actual mismatch. It places low-risk verification and `check_before_retry` before direct retry as advisory ordering only. Boundary Index updates from `2026-06-09-b86` to `2026-06-09-b87`. It does not execute verification, create selected_action/final_action/direct command, create persistent rules, write memory or retention, mutate predictors, change production behavior, or prove learning.
+
+## Verification Candidate Registry + Trace Minimal v0
+
+- Verification Candidate Registry + Trace Minimal v0 maintains a bounded registry of trace-only verification candidates: `observe_or_alternative_probe`, `inspect_device`, `check_before_retry`, `retry_limited`, and `fallback_stop_and_report`. Doubt-gated sandbox ordering may reference only registered verification candidates. Boundary Index updates from `2026-06-09-b87` to `2026-06-09-b88`. This does not execute verification, create selected_action/final_action/direct command, create persistent rules, write memory or retention, mutate predictors, change production behavior, or prove learning.
 
 ## Phase0 Package ID and Boundary Index Version Separation Minimal v0
 
