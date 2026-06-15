@@ -8,8 +8,8 @@ from typing import Any
 
 COMMAND = "run-codex-task-queue-minimal-check"
 FLOW = "codex_task_queue_minimal_v0"
-BOUNDARY_INDEX_VERSION = "2026-06-09-b82"
-PREVIOUS_BOUNDARY_INDEX_VERSION = "2026-06-09-b81"
+BOUNDARY_INDEX_VERSION = "2026-06-09-b83"
+PREVIOUS_BOUNDARY_INDEX_VERSION = "2026-06-09-b82"
 LEVEL2_APPLICATION_BOUNDARY_BEFORE = "2026-06-09-b72"
 LEVEL2_APPLICATION_BOUNDARY_AFTER = "2026-06-09-b73"
 LEVEL3_TOY_MINEFIELD_BOUNDARY_BEFORE = "2026-06-09-b73"
@@ -30,6 +30,8 @@ MEMORY_RUNTIME_INFLUENCE_BOUNDARY_BEFORE = "2026-06-09-b80"
 MEMORY_RUNTIME_INFLUENCE_BOUNDARY_AFTER = "2026-06-09-b81"
 MEMORY_INFLUENCED_SANDBOX_RERUN_BOUNDARY_BEFORE = "2026-06-09-b81"
 MEMORY_INFLUENCED_SANDBOX_RERUN_BOUNDARY_AFTER = "2026-06-09-b82"
+LEVEL3_TOY_REPAIR_BOUNDARY_BEFORE = "2026-06-09-b82"
+LEVEL3_TOY_REPAIR_BOUNDARY_AFTER = "2026-06-09-b83"
 VERSIONING_POLICY_BOUNDARY_BEFORE = "2026-06-09-b71"
 VERSIONING_POLICY_BOUNDARY_AFTER = "2026-06-09-b72"
 QUEUE_NAME = "ashl_core_phase0_codex_task_queue"
@@ -569,6 +571,28 @@ def build_codex_task_queue_minimal() -> dict[str, Any]:
                 ),
             ),
             _task(
+                "task.level3_toy_repair_multistep_sandbox.completed",
+                "PKG-Phase0-Level3ToyRepairMultistepSandbox-Minimal-v0",
+                "Level 3 Toy Repair Multi-Step Sandbox Minimal v0",
+                "sandbox_only",
+                "completed",
+                "codex_completed_report",
+                ["task.level3_toy_minefield_variant_suite_stability.completed"],
+                [],
+                (
+                    "Completed deterministic Phase0 Level 3 toy repair sandbox-only trace, observation, "
+                    "evaluation, and human review summary; no memory influence, selected_action, final_action, "
+                    "predictor mutation, production behavior, retained JSONL write, retention write, or proof claim."
+                ),
+                boundary_change_required=True,
+                boundary_index_version_before=LEVEL3_TOY_REPAIR_BOUNDARY_BEFORE,
+                boundary_index_version_after=LEVEL3_TOY_REPAIR_BOUNDARY_AFTER,
+                boundary_change_rationale=(
+                    "Introduces a second deterministic Phase0 Level 3 sandbox-only multi-step scenario family, "
+                    "Toy Repair."
+                ),
+            ),
+            _task(
                 "task.level2_sandbox_readiness.deferred",
                 "PKG-Phase0-Level2-Readiness-Future",
                 "Level 2 Sandbox Readiness Minimal v0",
@@ -853,7 +877,7 @@ def _invalid_queues(valid_queue: dict[str, Any]) -> list[dict[str, Any]]:
     )
     queues.append(blocked)
     deferred = deepcopy(valid_queue)
-    deferred["task_entries"][27].pop("deferral_reason", None)
+    deferred["task_entries"][28].pop("deferral_reason", None)
     queues.append(deferred)
     superseded = deepcopy(valid_queue)
     superseded["task_entries"].append(
@@ -925,7 +949,7 @@ def _summary(
         summary["task_queue_result_count"] == 22
         and summary["valid_task_queue_count"] == 1
         and summary["invalid_task_queue_count"] == 21
-        and summary["valid_task_entry_count"] == 29
+        and summary["valid_task_entry_count"] == 30
         and summary["invalid_task_entry_count"] >= 9
         and summary["queue_scope_checked_count"] == 1
         and summary["approval_block_checked_count"] == 1

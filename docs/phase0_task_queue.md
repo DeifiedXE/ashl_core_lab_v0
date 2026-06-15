@@ -35,6 +35,7 @@ Current queue source:
 - Completed: Memory Runtime Influence Approval Boundary Minimal v0.
 - Completed: Memory Runtime Influence Minimal v0.
 - Completed: Memory-Influenced Sandbox Re-run Minimal v0.
+- Completed: Level 3 Toy Repair Multi-Step Sandbox Minimal v0.
 - Deferred: Level 2 Sandbox Readiness Minimal v0.
 - Deferred: Memory Readiness Boundary Minimal v0.
 
@@ -77,6 +78,8 @@ Memory Runtime Influence Approval Boundary Minimal v0 changes Boundary Index fro
 Memory Runtime Influence Minimal v0 changes Boundary Index from b80 to b81 because it opens the minimal bounded memory runtime influence boundary for one approved memory record inside a deterministic controlled runner. It applies a small tendency score shift and rolls it back to baseline; it does not create selected_action, final_action, direct command, predictor mutation, retained JSONL write, retention write, production promotion, or proof of learning.
 
 Memory-Influenced Sandbox Re-run Minimal v0 changes Boundary Index from b81 to b82 because it introduces memory-influenced Level 3 sandbox re-run tendency traces using the approved bounded runtime influence. It compares memory_off, memory_on, and rollback traces across deterministic Level 3 toy minefield variants; it does not create selected_action, final_action, direct command, predictor mutation, retained JSONL write, retention write, production promotion, or proof of learning.
+
+Level 3 Toy Repair Multi-Step Sandbox Minimal v0 changes Boundary Index from b82 to b83 because it introduces a second deterministic Phase0 Level 3 sandbox-only multi-step scenario family. It blocks repeating the same failed quick repair without inspection, observes `inspect_device` before `attempt_safe_repair`, and does not create memory runtime influence, selected_action, final_action, direct command, predictor mutation, retained JSONL write, retention write, production behavior, autonomous learning/action, or proof of learning.
 
 The Codex task queue coordinates work packages only. It does not approve, apply, observe, evaluate, promote, remember, retain, predict, select, finalize, command, or prove learning.
 

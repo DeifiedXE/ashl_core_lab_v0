@@ -1618,7 +1618,7 @@ Two-Trial History Boundary:
 
 - `docs/current_boundary_index.md`
 - Adds a short, versioned, low-token source of global hard boundaries for future work packages.
-- Current version: `Boundary Index Version: 2026-06-09-b82`.
+- Current version: `Boundary Index Version: 2026-06-09-b83`.
 - For current Phase0 status, see `docs/phase0_status.md`.
 - For capability status, see `docs/phase0_capability_matrix.md`.
 - For boundary version history, see `docs/current_boundary_index.md`.
@@ -2768,6 +2768,10 @@ Two-Trial History Boundary:
 ## Memory-Influenced Sandbox Re-run Minimal v0
 
 - Memory-Influenced Sandbox Re-run Minimal v0 re-runs the deterministic Phase0 Level 3 toy minefield variant suite with memory_off / memory_on / rollback tendency traces from the approved bounded runtime influence. Across `safe_path_variant`, `risky_repeat_trap_variant`, and `blocked_path_fallback_variant`, memory_on increases `check_before_retry` tendency from `0.50` to `0.60`, decreases `retry_same_action_without_check` from `0.50` to `0.45`, and rollback restores baseline. This is sandbox tendency trace evidence only: no selected_action, final_action, direct command, predictor mutation, retained JSONL write, retention write, production behavior, autonomous learning/action, or proof-of-learning claim. Boundary Index updates from `2026-06-09-b81` to `2026-06-09-b82`.
+
+## Level 3 Toy Repair Multi-Step Sandbox Minimal v0
+
+- Level 3 Toy Repair Multi-Step Sandbox Minimal v0 adds a second deterministic Phase0 Level 3 sandbox-only multi-step scenario family. The toy repair trace starts with `attempt_quick_fix` failing due to `quick_fix_failed_due_to_hidden_fault`, blocks `attempt_same_quick_fix_again` without inspection, observes `inspect_device` as check-before-retry, and then allows `attempt_safe_repair` in temporary sandbox-only state. Boundary Index updates from `2026-06-09-b82` to `2026-06-09-b83`. It does not use memory runtime influence, create selected_action/final_action/direct command, mutate predictors, write retained JSONL, write retention, change production behavior, claim autonomous learning/action, or prove learning.
 
 ## Phase0 Package ID and Boundary Index Version Separation Minimal v0
 

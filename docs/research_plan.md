@@ -6653,6 +6653,26 @@ Next recommended work:
 1. Evaluate the memory-influenced sandbox re-run trace before considering any sandbox behavior-use boundary.
 2. Keep selected_action, final_action, predictor mutation, production promotion, retained JSONL write, retention write, and proof claims blocked until separate future boundaries explicitly open them.
 
+## Level 3 Toy Repair Multi-Step Sandbox Minimal v0
+
+Status: completed / second Level 3 sandbox-only multi-step scenario family.
+
+Progress:
+- Adds `ashl_core/level3_toy_repair_multistep_sandbox_minimal.py`.
+- Runs a deterministic toy repair trace where `attempt_quick_fix` fails with `quick_fix_failed_due_to_hidden_fault`.
+- Blocks `attempt_same_quick_fix_again` without inspection.
+- Observes `inspect_device` as check-before-retry before `attempt_safe_repair`.
+- Records observation, evaluation, and human review summary for sandbox-only review.
+
+Boundary:
+- Boundary Index changes from `2026-06-09-b82` to `2026-06-09-b83`.
+- Rationale: this package introduces a second deterministic Phase0 Level 3 sandbox-only multi-step scenario family.
+- This is not memory runtime influence and does not authorize selected_action, final_action, direct command, predictor mutation, production behavior, retained JSONL write, retention write, autonomous learning/action, or proof-of-learning.
+
+Next recommended work:
+1. Keep Level 3 toy repair evidence as a separate sandbox scenario family.
+2. Do not mix toy repair with memory-influenced sandbox behavior unless a future explicit boundary opens that path.
+
 Forbidden claims:
 - Memory-influenced sandbox rerun is not selected_action, not final_action, not direct command, not predictor mutation, not production behavior, not retained JSONL or retention write, and not proof that Qingyin learned.
 
