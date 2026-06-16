@@ -2857,6 +2857,10 @@ Two-Trial History Boundary:
 
 - b95-b99 Status Compression + Sandbox Direct Command Approval Boundary Minimal v0 records a compact sandbox action line: `selected_action -> sandbox execution -> feedback loop -> sandbox-only final_action -> audit`. It also creates an explicit approval boundary for a future Sandbox Direct Command Minimal v0 package from the audited sandbox-only final_action. Boundary Index updates from `2026-06-09-b99` to `2026-06-09-b100`; this package does not create a direct command, change production behavior, write memory/retention, mutate predictors, persist rules/trust/doubt, or prove learning.
 
+## Host-Dependent Idle Continuance Trace v0
+
+- Host-Dependent Idle Continuance Trace v0 records a design-only OFFLINE / IDLE / ACTIVE model for future low-power idle state continuity. It proposes `idle_tick`, `continuance_pressure`, `weak_intent`, pending prediction suspension, and waiting-tendency invariants, while keeping IDLE blocked from LLM calls, user data scans, external actions, formal memory, retained JSONL, retention, world-model updates, learned principles, prediction-error changes without observation, direct commands, production behavior, and consciousness/proof-of-learning claims. Boundary Index remains unchanged.
+
 ## Phase0 Package ID and Boundary Index Version Separation Minimal v0
 
 - Phase0 Package ID and Boundary Index Version Separation Minimal v0 separates Codex Package IDs from Boundary Index versions. Package IDs track work packages; Boundary Index versions track boundary and validation-boundary changes only. Completed tasks, CLI commands, smoke tests, unittests, documentation updates, queue status changes, scenario plans, and dry-run records do not automatically increment Boundary Index. This is workflow/versioning governance only and does not add runtime behavior, memory writes, retention writes, predictor mutation, sandbox execution/application, action selection, final_action, direct commands, or proof-of-learning claims.

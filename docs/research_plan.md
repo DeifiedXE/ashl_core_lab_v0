@@ -7090,4 +7090,19 @@ Boundary:
 - Boundary Index changes from `2026-06-09-b99` to `2026-06-09-b100`.
 - Rationale: future sandbox-only direct command approval is a new approval boundary; no direct command is created in this package.
 
+## Host-Dependent Idle Continuance Trace v0
+
+Status: design assumption / docs-only / no Boundary Index change.
+
+Progress:
+- Adds `docs/host_dependent_idle_continuance_trace_v0.md`.
+- Records a future OFFLINE / IDLE / ACTIVE state model.
+- Defines proposed design fields: `idle_tick`, `continuance_pressure`, `weak_intent`, pending prediction suspension, and waiting-tendency invariants.
+- Interprets continuance as operational pressure, not survival proof, emotion proof, consciousness, or autonomous self-preservation.
+- Keeps IDLE blocked from LLM calls, user data scan, external action, direct command, formal memory, retained JSONL write, retention write, learned_principle creation, world_model update, prediction-error changes without new observation, production behavior, and proof claims.
+
+Boundary:
+- Boundary Index remains `2026-06-09-b100`.
+- Rationale: this package adds a design document only. Any implementation of OFFLINE/IDLE/ACTIVE runtime state, idle_tick, continuance_pressure, weak_intent, or pending prediction suspension requires a future explicit package and boundary decision.
+
 This documentation reconciliation did not complete outcome evaluation at that time and did not claim every documentation inconsistency had been found. Current outcome evaluation status is controlled by the later Level 1 Sandbox Outcome Evaluation and Human Review Summary Minimal v0 section above.
