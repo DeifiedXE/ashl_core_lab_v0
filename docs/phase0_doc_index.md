@@ -39,6 +39,7 @@ Examples:
 - `docs/five_layer_memory_design_assumption_v0_1.md`
 - `docs/host_dependent_idle_continuance_trace_v0.md`
 - `docs/memory_influence_behavior_gate_design_v0.md`
+- `docs/qingyin_vocal_organ_engine_design_v0.md`
 - `docs/voice_instinct_assumption_v0_1.md`
 
 ## Historical / Superseded Assumptions

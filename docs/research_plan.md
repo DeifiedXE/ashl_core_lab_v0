@@ -7119,4 +7119,18 @@ Boundary:
 - Boundary Index remains `2026-06-09-b100`.
 - Rationale: this package adds a design document only. Any implementation of OFFLINE/IDLE/ACTIVE runtime state, idle_tick, continuance_pressure, weak_intent, or pending prediction suspension requires a future explicit package and boundary decision.
 
+## Qingyin Vocal Organ Engine Design v0
+
+Status: design proposal / docs-only / no Boundary Index change.
+
+Progress:
+- Adds `docs/qingyin_vocal_organ_engine_design_v0.md`.
+- Defines a future vocal organ architecture: internal state -> vocal intent -> phoneme planning -> prosody planning -> vocal synthesis -> generated sound -> trace.
+- Frames future vocal output as generated sound and phoneme/prosody structure, not fixed sound-effect playback when avoidable.
+- Keeps chatbot speech, TTS runtime, LLM speech generation, semantic language understanding, conversation, production-world communication, consciousness evidence, learning approval, memory write, and proof claims blocked.
+
+Boundary:
+- Boundary Index remains current.
+- Rationale: this package adds a design document only. Any vocal intent runtime, phoneme planner, prosody planner, vocal synthesis engine, audio output, or vocal exploration trace requires a future explicit package and boundary decision.
+
 This documentation reconciliation did not complete outcome evaluation at that time and did not claim every documentation inconsistency had been found. Current outcome evaluation status is controlled by the later Level 1 Sandbox Outcome Evaluation and Human Review Summary Minimal v0 section above.

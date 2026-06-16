@@ -2865,6 +2865,10 @@ Two-Trial History Boundary:
 
 - Host-Dependent Idle Continuance Trace v0 records a design-only OFFLINE / IDLE / ACTIVE model for future low-power idle state continuity. It proposes `idle_tick`, `continuance_pressure`, `weak_intent`, pending prediction suspension, and waiting-tendency invariants, while keeping IDLE blocked from LLM calls, user data scans, external actions, formal memory, retained JSONL, retention, world-model updates, learned principles, prediction-error changes without observation, direct commands, production behavior, and consciousness/proof-of-learning claims. Boundary Index remains unchanged.
 
+## Qingyin Vocal Organ Engine Design v0
+
+- Qingyin Vocal Organ Engine Design v0 records a docs-only future vocal organ architecture: internal state -> vocal intent -> phoneme planning -> prosody planning -> vocal synthesis -> generated sound -> trace. It is not chatbot speech, TTS runtime, LLM speech generation, semantic language understanding, conversation, production-world communication, consciousness evidence, learning approval, memory write, or proof of learning. Boundary Index remains unchanged.
+
 ## Phase0 Package ID and Boundary Index Version Separation Minimal v0
 
 - Phase0 Package ID and Boundary Index Version Separation Minimal v0 separates Codex Package IDs from Boundary Index versions. Package IDs track work packages; Boundary Index versions track boundary and validation-boundary changes only. Completed tasks, CLI commands, smoke tests, unittests, documentation updates, queue status changes, scenario plans, and dry-run records do not automatically increment Boundary Index. This is workflow/versioning governance only and does not add runtime behavior, memory writes, retention writes, predictor mutation, sandbox execution/application, action selection, final_action, direct commands, or proof-of-learning claims.
