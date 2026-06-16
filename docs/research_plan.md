@@ -7075,4 +7075,19 @@ Boundary:
 - Boundary Index remains `2026-06-09-b99`.
 - Rationale: audit-only package; it does not change permission scope, runtime behavior condition, persistence, memory, retention, predictor, direct command, production, or proof boundary.
 
+## b95-b99 Status Compression + Sandbox Direct Command Approval Boundary Minimal v0
+
+Status: completed / approval boundary / Boundary Index b99 -> b100.
+
+Progress:
+- Adds `ashl_core/b95_b99_status_compression_and_direct_command_approval_boundary_minimal.py`.
+- Compresses the b95-b99 sandbox action line as `selected_action -> sandbox execution -> feedback loop -> sandbox-only final_action -> audit`.
+- Creates an explicit approval boundary for a future Sandbox Direct Command Minimal v0 package from the audited b99 sandbox-only final_action.
+- Confirms status compression is documentation/status-only and is not the boundary change.
+- Keeps direct command creation/execution, production behavior, persistent rule/trust/doubt updates, cross-session feedback persistence, memory write, retained JSONL write, retention write, predictor read/influence/mutation, autonomous learning/action, and proof claims blocked.
+
+Boundary:
+- Boundary Index changes from `2026-06-09-b99` to `2026-06-09-b100`.
+- Rationale: future sandbox-only direct command approval is a new approval boundary; no direct command is created in this package.
+
 This documentation reconciliation did not complete outcome evaluation at that time and did not claim every documentation inconsistency had been found. Current outcome evaluation status is controlled by the later Level 1 Sandbox Outcome Evaluation and Human Review Summary Minimal v0 section above.

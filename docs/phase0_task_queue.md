@@ -56,6 +56,7 @@ Current queue source:
 - Completed: Sandbox Final Action Approval Boundary Minimal v0.
 - Completed: Test Tier Policy + Sandbox Final Action Minimal v0.
 - Completed: b99 Sandbox Final Action Boundary Audit Minimal v0.
+- Completed: b95-b99 Status Compression + Sandbox Direct Command Approval Boundary Minimal v0.
 - Deferred: Level 2 Sandbox Readiness Minimal v0.
 - Deferred: Memory Readiness Boundary Minimal v0.
 
@@ -102,6 +103,8 @@ Sandbox Final Action Approval Boundary Minimal v0 changes Boundary Index from b9
 Test Tier Policy + Sandbox Final Action Minimal v0 changes Boundary Index from b98 to b99 because it creates one sandbox-only final_action from the approved b98 sandbox execution result. The test-tier policy portion is workflow-only: future packages default to targeted unittest, smoke, git diff check, and git status; full unittest discover is conditional and skipped full regression requires a reason. The sandbox final_action does not create direct commands, persist updates, write memory/retention, read/influence/mutate predictors, change production behavior, or claim autonomous learning/action or proof-of-learning.
 
 b99 Sandbox Final Action Boundary Audit Minimal v0 does not change Boundary Index because it audits existing b99 sandbox-only final_action behavior and workflow-only test-tier policy only. It does not create new capability, direct command, persistent update, cross-session persistence, memory/retention write, predictor mutation, production behavior, autonomous learning/action, or proof-of-learning.
+
+b95-b99 Status Compression + Sandbox Direct Command Approval Boundary Minimal v0 changes Boundary Index from b99 to b100 because it creates an explicit approval boundary for a future sandbox-only direct command package from the audited sandbox-only final_action. The status-compression portion is documentation/status-only and is not the boundary change. This package does not create a direct command, change production behavior, persist updates, write memory/retention, mutate predictors, or claim autonomous learning/action or proof-of-learning.
 
 The Level 3 toy minefield variant stability package does not change Boundary Index because it operates inside the existing Level 3 sandbox-only multi-step trace boundary and adds deterministic variants, stability evaluation, and review conclusion only.
 

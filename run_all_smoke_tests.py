@@ -268,6 +268,9 @@ from ashl_core.sandbox_final_action_minimal import (
 from ashl_core.b99_sandbox_final_action_boundary_audit_minimal import (
     run_b99_sandbox_final_action_boundary_audit_minimal_check,
 )
+from ashl_core.b95_b99_status_compression_and_direct_command_approval_boundary_minimal import (
+    run_b95_b99_status_compression_and_direct_command_approval_boundary_minimal_check,
+)
 from ashl_core.minimal_visual_grounding_trial import run_minimal_visual_grounding_trial_check
 from ashl_core.visual_prediction_error_attention_priority_preview_minimal import (
     run_visual_prediction_error_attention_priority_preview_minimal_check,
@@ -10578,8 +10581,8 @@ def smoke_current_boundary_index_docs() -> dict:
     readme = readme_path.read_text(encoding="utf-8") if readme_path.exists() else ""
     research_plan = research_plan_path.read_text(encoding="utf-8") if research_plan_path.exists() else ""
     compact_required_terms = [
-        "Boundary Index Version: 2026-06-09-b99",
-        "Last update log: Test Tier Policy + Sandbox Final Action Minimal v0",
+        "Boundary Index Version: 2026-06-09-b100",
+        "Last update log: b95-b99 Status Compression + Sandbox Direct Command Approval Boundary Minimal v0",
         "docs/boundary_index_archive_2026_06.md",
         "Minimal Visual Grounding Trial v0",
         "Visual Prediction Error + Attention Priority Preview Minimal v0",
@@ -10651,6 +10654,9 @@ def smoke_current_boundary_index_docs() -> dict:
         "implementation_in_this_package=False",
         "direct_command_allowed=False",
         "Sandbox Final Action milestone",
+        "b95-b99 Status Compression + Sandbox Direct Command Approval Boundary milestone",
+        "future Sandbox Direct Command Minimal v0 package",
+        "no direct command is created yet",
         "workflow-only test-tier policy",
         "final_action=observe_or_alternative_probe",
         "rank sandbox-only candidate actions",
@@ -10750,7 +10756,7 @@ def smoke_current_boundary_index_docs() -> dict:
         and all(term in doc for term in compact_required_terms)
         and all(term in archive for term in archive_required_terms)
         and line_count <= 150
-        and "Boundary Index Version: 2026-06-09-b99" in readme
+        and "Boundary Index Version: 2026-06-09-b100" in readme
         and "docs/boundary_index_archive_2026_06.md" in readme
         and "Boundary Index Compaction / Archive v0" in research_plan
         and "Runtime Tendency Memory Influence Safety Sync Minimal v0" in research_plan
@@ -10788,7 +10794,7 @@ def smoke_phase0_documentation_consolidation_minimal() -> dict:
         status_path.exists()
         and matrix_path.exists()
         and index_path.exists()
-        and "Boundary Index Version: 2026-06-09-b99" in status
+        and "Boundary Index Version: 2026-06-09-b100" in status
         and "Current Safe Capability" in status
         and "No proof-of-learning claim" in status
         and "Level 1 Sandbox Outcome Evaluation and Human Review Summary Minimal v0" in status
@@ -10812,6 +10818,7 @@ def smoke_phase0_documentation_consolidation_minimal() -> dict:
         and "Sandbox Execution Result Feedback Loop Minimal v0" in status
         and "Sandbox Final Action Approval Boundary Minimal v0" in status
         and "Test Tier Policy + Sandbox Final Action Minimal v0" in status
+        and "b95-b99 Status Compression + Sandbox Direct Command Approval Boundary Minimal v0" in status
         and "Phase0 Package ID and Boundary Index Version Separation Minimal v0" in status
         and "| Level 1 sandbox outcome observation | implemented_sandbox_only |" in matrix
         and "| outcome evaluation | implemented_sandbox_only |" in matrix
@@ -10836,6 +10843,7 @@ def smoke_phase0_documentation_consolidation_minimal() -> dict:
         and "| sandbox execution result feedback loop minimal | implemented_same_session_feedback_loop |" in matrix
         and "| sandbox final_action approval boundary | implemented_future_final_action_approval |" in matrix
         and "| sandbox final_action minimal | implemented_sandbox_only_final_action |" in matrix
+        and "| b95-b99 status compression + sandbox direct command approval | implemented_approval_boundary |" in matrix
         and "| Package ID / Boundary Index version separation | implemented_workflow_governance |" in matrix
         and "| retention write | blocked |" in matrix
         and "| predictor mutation | blocked |" in matrix
@@ -10891,7 +10899,7 @@ def smoke_phase0_documentation_inventory_and_consistency_reconciliation() -> dic
     boundary = Path("docs/current_boundary_index.md").read_text(encoding="utf-8")
     passed = (
         all(path.exists() for path in required_paths)
-        and "Boundary Index Version: 2026-06-09-b99" in texts[Path("docs/phase0_status.md")]
+        and "Boundary Index Version: 2026-06-09-b100" in texts[Path("docs/phase0_status.md")]
         and "Inventory count:" in texts[Path("docs/phase0_doc_inventory.md")]
         and "docs/phase0_versioning_policy.md" in texts[Path("docs/phase0_doc_inventory.md")]
         and "unknown_needs_review" in texts[Path("docs/phase0_doc_inventory.md")]
@@ -12725,6 +12733,15 @@ def smoke_codex_task_queue_minimal() -> dict:
         ),
         {},
     )
+    b95_b99_status_compression_direct_command_approval_task = next(
+        (
+            task
+            for task in task_entries
+            if task.get("package_id")
+            == "PKG-Phase0-B95B99StatusCompressionAndDirectCommandApprovalBoundary-Minimal-v0"
+        ),
+        {},
+    )
     passed = (
         result.get("command") == "run-codex-task-queue-minimal-check"
         and result.get("flow") == "codex_task_queue_minimal_v0"
@@ -12733,7 +12750,7 @@ def smoke_codex_task_queue_minimal() -> dict:
         and valid_queue.get("record_type") == "codex_task_queue_minimal_v0"
         and summary.get("valid_task_queue_count") == 1
         and summary.get("invalid_task_queue_count") == 21
-        and summary.get("valid_task_entry_count") == 50
+        and summary.get("valid_task_entry_count") == 51
         and summary.get("invalid_task_entry_count", 0) >= 9
         and summary.get("queue_scope_checked_count") == 1
         and summary.get("approval_block_checked_count") == 1
@@ -12979,6 +12996,15 @@ def smoke_codex_task_queue_minimal() -> dict:
         and "Audit-only" in b99_sandbox_final_action_boundary_audit_task.get(
             "boundary_change_rationale", ""
         )
+        and b95_b99_status_compression_direct_command_approval_task.get("status") == "completed"
+        and b95_b99_status_compression_direct_command_approval_task.get("task_type") == "approval_boundary"
+        and b95_b99_status_compression_direct_command_approval_task.get("boundary_change_required") is True
+        and b95_b99_status_compression_direct_command_approval_task.get("boundary_index_version_before")
+        == "2026-06-09-b99"
+        and b95_b99_status_compression_direct_command_approval_task.get("boundary_index_version_after")
+        == "2026-06-09-b100"
+        and "future sandbox-only direct command package"
+        in b95_b99_status_compression_direct_command_approval_task.get("boundary_change_rationale", "")
         and valid_queue.get("queue_counts_as_approval") is False
         and valid_queue.get("queue_counts_as_application") is False
         and valid_queue.get("queue_counts_as_runtime_behavior") is False
@@ -16158,6 +16184,62 @@ def smoke_b99_sandbox_final_action_boundary_audit_minimal() -> dict:
     )
 
 
+def smoke_b95_b99_status_compression_and_direct_command_approval_boundary_minimal() -> dict:
+    result = run_b95_b99_status_compression_and_direct_command_approval_boundary_minimal_check()
+    summary = result.get("summary", {})
+    boundary = result.get("boundary", {})
+    status_record = result.get("valid_status_compression", {})
+    approval = result.get("valid_direct_command_approval", {})
+    combined = result.get("valid_summary", {})
+    passed = (
+        result.get("command")
+        == "run-b95-b99-status-compression-and-direct-command-approval-boundary-minimal-check"
+        and result.get("flow")
+        == "b95_b99_status_compression_and_direct_command_approval_boundary_minimal_v0"
+        and result.get("status") == "ok"
+        and summary.get("valid_status_compression_count") == 1
+        and summary.get("invalid_status_compression_count", 0) >= 10
+        and summary.get("valid_direct_command_approval_count") == 1
+        and summary.get("invalid_direct_command_approval_count", 0) >= 21
+        and summary.get("valid_summary_count") == 1
+        and summary.get("invalid_summary_count", 0) >= 15
+        and summary.get("status_compression_checked_count") == 1
+        and summary.get("final_action_source_checked_count") == 1
+        and summary.get("final_action_audit_checked_count") == 1
+        and summary.get("future_direct_command_approval_checked_count") == 1
+        and summary.get("direct_command_blocked_count") == 1
+        and summary.get("production_behavior_blocked_count") == 1
+        and summary.get("persistent_update_blocked_count") == 1
+        and summary.get("memory_write_blocked_count") == 1
+        and summary.get("retention_blocked_count") == 1
+        and summary.get("predictor_mutation_blocked_count") == 1
+        and summary.get("proof_claim_blocked_count") == 1
+        and summary.get("boundary_update_checked_count") == 1
+        and summary.get("all_status_compression_and_direct_command_approval_checks_passed") is True
+        and boundary.get("boundary_change_required") is True
+        and boundary.get("boundary_index_update_required") is True
+        and boundary.get("boundary_index_version_before") == "2026-06-09-b99"
+        and boundary.get("boundary_index_version_after") == "2026-06-09-b100"
+        and status_record.get("compression_boundary_change_required") is False
+        and status_record.get("direct_command_created") is False
+        and approval.get("approval_status") == "approved_for_future_sandbox_direct_command_package_only"
+        and approval.get("direct_command_allowed_in_future_package") is True
+        and approval.get("implementation_in_this_package") is False
+        and approval.get("direct_command_created") is False
+        and approval.get("production_behavior_changed") is False
+        and approval.get("memory_write_performed") is False
+        and approval.get("retention_write_performed") is False
+        and approval.get("predictor_mutation_performed") is False
+        and combined.get("boundary_index_before") == "2026-06-09-b99"
+        and combined.get("boundary_index_after") == "2026-06-09-b100"
+    )
+    return _result(
+        "b95_b99_status_compression_and_direct_command_approval_boundary_minimal",
+        passed,
+        {"summary": summary, "boundary": boundary},
+    )
+
+
 def smoke_phase0_current_capability_snapshot() -> dict:
     doc_path = Path("docs/phase0_current_capability_snapshot_2026-06-10.md")
     doc = doc_path.read_text(encoding="utf-8") if doc_path.exists() else ""
@@ -18901,6 +18983,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_sandbox_final_action_approval_boundary_minimal(),
         smoke_test_tier_policy_and_sandbox_final_action_minimal(),
         smoke_b99_sandbox_final_action_boundary_audit_minimal(),
+        smoke_b95_b99_status_compression_and_direct_command_approval_boundary_minimal(),
         smoke_phase0_current_capability_snapshot(),
         smoke_memory_influence_behavior_gate_design(),
         smoke_first_memory_influenced_behavior_boundary(),

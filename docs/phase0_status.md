@@ -2,14 +2,15 @@
 
 ## Current Boundary Index
 
-- Current version: `Boundary Index Version: 2026-06-09-b99`
-- Current update log: Test Tier Policy + Sandbox Final Action Minimal v0
+- Current version: `Boundary Index Version: 2026-06-09-b100`
+- Current update log: b95-b99 Status Compression + Sandbox Direct Command Approval Boundary Minimal v0
 - The task queue is workflow coordination only and does not add ASHL Core runtime capability or approval.
 - Package IDs track Codex work packages; Boundary Index versions track boundary and validation-boundary changes only.
 
 ## Latest Completed Package
 
-- Latest completed capability package: Test Tier Policy + Sandbox Final Action Minimal v0.
+- Latest completed capability package: b95-b99 Status Compression + Sandbox Direct Command Approval Boundary Minimal v0.
+- Previous completed capability package: Test Tier Policy + Sandbox Final Action Minimal v0.
 - Previous completed capability package: Sandbox Final Action Approval Boundary Minimal v0.
 - Previous completed capability package: Sandbox Execution Result Feedback Loop Minimal v0.
 - Previous completed capability package: Sandbox Action Execution Minimal v0.
@@ -29,7 +30,8 @@
 - Earlier Level 3 package: Level 3 Toy Minefield Multi-Step Sandbox Minimal v0.
 - Earlier sandbox application boundary package: Level 2 Sandbox Application, Observation, Evaluation, and Human Review Summary Minimal v0.
 - Earlier Level 2 evidence package: Level 2 Sandbox Dry Run, Observation, Evaluation, and Human Review Summary Minimal v0.
-- Latest documentation/workflow package: b99 Sandbox Final Action Boundary Audit Minimal v0.
+- Latest approval boundary package: b95-b99 Status Compression + Sandbox Direct Command Approval Boundary Minimal v0.
+- Previous documentation/workflow package: b99 Sandbox Final Action Boundary Audit Minimal v0.
 - Previous documentation/workflow package: b95-b97 Sandbox Action Boundary Audit Minimal v0.
 - Previous documentation/workflow package: b85-b93 Documentation Compression / Status Sync Minimal v0.
 - Previous documentation/workflow package: b85-b93 Same-Session Thought Loop Audit Minimal v0.
@@ -58,6 +60,7 @@ Phase0 package/version governance can validate that Codex Package IDs are not Bo
 - No Sandbox Final Action Approval Boundary Minimal v0 as final_action creation, direct command, persistent update, cross-session persistence, memory write, retention write, predictor read/influence/mutation, production behavior, autonomous learning/action, or proof of learning.
 - No Test Tier Policy + Sandbox Final Action Minimal v0 as direct command, persistent update, cross-session persistence, memory write, retention write, predictor read/influence/mutation, production behavior, autonomous learning/action, or proof of learning.
 - No b99 Sandbox Final Action Boundary Audit Minimal v0 as new capability, Boundary Index change, direct command, persistent update, cross-session persistence, memory write, retention write, predictor read/influence/mutation, production behavior, autonomous learning/action, or proof of learning.
+- No b95-b99 Status Compression + Sandbox Direct Command Approval Boundary Minimal v0 as direct command creation, production behavior, persistent update, cross-session persistence, memory write, retention write, predictor read/influence/mutation, autonomous learning/action, or proof of learning.
 - No selected_action execution beyond the single b96 sandbox-only execution, no final_action outside the b99 sandbox-only final_action record, and no direct command.
 - No cortisol-like pressure runtime application, persistence, never-try state, permanent action ban, final_action, direct command, persistent update, memory/retention write, predictor mutation, production behavior, autonomous learning/action, or proof of learning.
 - No Level 2 runtime execution.

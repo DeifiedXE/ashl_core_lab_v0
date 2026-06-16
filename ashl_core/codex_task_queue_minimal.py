@@ -8,8 +8,8 @@ from typing import Any
 
 COMMAND = "run-codex-task-queue-minimal-check"
 FLOW = "codex_task_queue_minimal_v0"
-BOUNDARY_INDEX_VERSION = "2026-06-09-b99"
-PREVIOUS_BOUNDARY_INDEX_VERSION = "2026-06-09-b98"
+BOUNDARY_INDEX_VERSION = "2026-06-09-b100"
+PREVIOUS_BOUNDARY_INDEX_VERSION = "2026-06-09-b99"
 LEVEL2_APPLICATION_BOUNDARY_BEFORE = "2026-06-09-b72"
 LEVEL2_APPLICATION_BOUNDARY_AFTER = "2026-06-09-b73"
 LEVEL3_TOY_MINEFIELD_BOUNDARY_BEFORE = "2026-06-09-b73"
@@ -64,6 +64,8 @@ SANDBOX_FINAL_ACTION_APPROVAL_BOUNDARY_BEFORE = "2026-06-09-b97"
 SANDBOX_FINAL_ACTION_APPROVAL_BOUNDARY_AFTER = "2026-06-09-b98"
 TEST_TIER_POLICY_AND_SANDBOX_FINAL_ACTION_BOUNDARY_BEFORE = "2026-06-09-b98"
 TEST_TIER_POLICY_AND_SANDBOX_FINAL_ACTION_BOUNDARY_AFTER = "2026-06-09-b99"
+B95_B99_STATUS_COMPRESSION_DIRECT_COMMAND_APPROVAL_BOUNDARY_BEFORE = "2026-06-09-b99"
+B95_B99_STATUS_COMPRESSION_DIRECT_COMMAND_APPROVAL_BOUNDARY_AFTER = "2026-06-09-b100"
 BUCKET_SIGNAL_BASELINE_BOUNDARY_VERSION = "2026-06-09-b93"
 B85_B93_BASELINE_BOUNDARY_VERSION = "2026-06-09-b93"
 VERSIONING_POLICY_BOUNDARY_BEFORE = "2026-06-09-b71"
@@ -81,6 +83,7 @@ ALLOWED_STATUSES = {"pending", "active", "blocked", "completed", "superseded", "
 ALLOWED_TASK_TYPES = {
     "documentation_only",
     "workflow_only",
+    "approval_boundary",
     "capability_boundary",
     "sandbox_only",
     "risk_register",
@@ -1072,6 +1075,28 @@ def build_codex_task_queue_minimal() -> dict[str, Any]:
                 ),
             ),
             _task(
+                "task.b95_b99_status_compression_and_direct_command_approval_boundary_minimal.completed",
+                "PKG-Phase0-B95B99StatusCompressionAndDirectCommandApprovalBoundary-Minimal-v0",
+                "b95-b99 Status Compression + Sandbox Direct Command Approval Boundary Minimal v0",
+                "approval_boundary",
+                "completed",
+                "codex_completed_report",
+                ["task.b99_sandbox_final_action_boundary_audit_minimal.completed"],
+                [],
+                (
+                    "Compresses the b95-b99 sandbox action line and creates explicit approval for a future "
+                    "Sandbox Direct Command Minimal v0 package only; no direct command is created here."
+                ),
+                boundary_change_required=True,
+                boundary_index_version_before=B95_B99_STATUS_COMPRESSION_DIRECT_COMMAND_APPROVAL_BOUNDARY_BEFORE,
+                boundary_index_version_after=B95_B99_STATUS_COMPRESSION_DIRECT_COMMAND_APPROVAL_BOUNDARY_AFTER,
+                boundary_change_rationale=(
+                    "Creates an explicit approval boundary for a future sandbox-only direct command package "
+                    "from an audited sandbox-only final_action; the status-compression portion is "
+                    "documentation/status-only."
+                ),
+            ),
+            _task(
                 "task.level2_sandbox_readiness.deferred",
                 "PKG-Phase0-Level2-Readiness-Future",
                 "Level 2 Sandbox Readiness Minimal v0",
@@ -1330,14 +1355,14 @@ def _invalid_queues(valid_queue: dict[str, Any]) -> list[dict[str, Any]]:
         queues.append(_mutate_queue(valid_queue, [field], True))
     queues.append(_mutate_task(valid_queue, 1, ["depends_on"], ["task.unknown"]))
     queues.append(_mutate_task(valid_queue, 0, ["package_id"], ""))
-    queues.append(_mutate_task(valid_queue, 0, ["boundary_index_version_after"], "2026-06-09-b100"))
+    queues.append(_mutate_task(valid_queue, 0, ["boundary_index_version_after"], "2026-06-09-b101"))
     queues.append(_mutate_task(valid_queue, 0, ["boundary_change_required"], True))
-    no_rationale = _mutate_task(valid_queue, 0, ["boundary_index_version_after"], "2026-06-09-b100")
+    no_rationale = _mutate_task(valid_queue, 0, ["boundary_index_version_after"], "2026-06-09-b101")
     no_rationale["task_entries"][0]["boundary_change_required"] = True
     no_rationale["task_entries"][0]["boundary_change_rationale"] = ""
     queues.append(no_rationale)
     completion_rationale = _mutate_task(valid_queue, 0, ["boundary_change_required"], True)
-    completion_rationale["task_entries"][0]["boundary_index_version_after"] = "2026-06-09-b100"
+    completion_rationale["task_entries"][0]["boundary_index_version_after"] = "2026-06-09-b101"
     completion_rationale["task_entries"][0]["boundary_change_rationale"] = "Completed task increments version."
     queues.append(completion_rationale)
     blocked = deepcopy(valid_queue)
@@ -1356,7 +1381,7 @@ def _invalid_queues(valid_queue: dict[str, Any]) -> list[dict[str, Any]]:
     )
     queues.append(blocked)
     deferred = deepcopy(valid_queue)
-    deferred["task_entries"][48].pop("deferral_reason", None)
+    deferred["task_entries"][49].pop("deferral_reason", None)
     queues.append(deferred)
     superseded = deepcopy(valid_queue)
     superseded["task_entries"].append(
@@ -1428,7 +1453,7 @@ def _summary(
         summary["task_queue_result_count"] == 22
         and summary["valid_task_queue_count"] == 1
         and summary["invalid_task_queue_count"] == 21
-        and summary["valid_task_entry_count"] == 50
+        and summary["valid_task_entry_count"] == 51
         and summary["invalid_task_entry_count"] >= 9
         and summary["queue_scope_checked_count"] == 1
         and summary["approval_block_checked_count"] == 1

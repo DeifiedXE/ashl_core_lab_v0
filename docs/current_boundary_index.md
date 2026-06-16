@@ -1,7 +1,7 @@
-Boundary Index Version: 2026-06-09-b99
-Last update log: Test Tier Policy + Sandbox Final Action Minimal v0
-Previous Boundary Index Version: 2026-06-09-b98
-Previous Last update log: Sandbox Final Action Approval Boundary Minimal v0
+Boundary Index Version: 2026-06-09-b100
+Last update log: b95-b99 Status Compression + Sandbox Direct Command Approval Boundary Minimal v0
+Previous Boundary Index Version: 2026-06-09-b99
+Previous Last update log: Test Tier Policy + Sandbox Final Action Minimal v0
 Clean count at last update log reset: 0/5; current clean count: 0/5
 ## Purpose
 - This file is the compact current Boundary Index for fast review of present ASHL Core / D Qingyin boundaries.
@@ -61,6 +61,7 @@ Clean count at last update log reset: 0/5; current clean count: 0/5
 - ASHL Core can validate an explicit approval boundary for a future sandbox-only selected_action package and produce a trace-only cortisol-like doubt pressure signal with paranoia guard. This does not create selected_action, final_action, direct command, pressure runtime application, pressure persistence, memory/retention write, predictor mutation, production behavior, or proof of learning.
 - ASHL Core can validate an explicit approval boundary for a future sandbox-only final_action package from the audited b95-b97 sandbox action chain, while no final_action is created yet and direct command, persistent updates, memory writes, retention writes, predictor mutation, production behavior, and proof-of-learning remain blocked.
 - ASHL Core can use a workflow-only test-tier policy and create one sandbox-only final_action from an approved sandbox execution result, while direct command, persistent updates, memory writes, retention writes, predictor mutation, production behavior, and proof-of-learning remain blocked.
+- ASHL Core can maintain a compact b95-b99 sandbox action-line status and validate an explicit approval boundary for a future sandbox-only direct command package, while no direct command is created yet and production behavior, persistent updates, memory/retention writes, predictor mutation, and proof-of-learning remain blocked.
 
 ## Latest Forbidden Claims
 - No object recognition.
@@ -71,7 +72,7 @@ Clean count at last update log reset: 0/5; current clean count: 0/5
 - No runtime action selection influence.
 - No production action selection.
 - No production/runtime memory-influenced behavior is allowed. Phase0 Level 1 sandbox-only lesson application, observation, and evaluation records plus Level 2/Level 3 sandbox-only records are allowed only within their validated sandbox scope and do not constitute production/runtime memory-influenced behavior.
-- No final_action outside the b99 sandbox-only final_action record, direct action command, or persistent rule creation.
+- No final_action outside the b99 sandbox-only final_action record, no direct command created in b100 approval, and no persistent rule creation.
 - No selected_action was created in b94; b95 creates one sandbox-only selected_action record only.
 - No selected_action execution beyond the single b96 sandbox-only execution; no final_action or direct command.
 - No cortisol-like pressure runtime application, persistence, never-try state, or permanent action ban.
@@ -119,6 +120,7 @@ Clean count at last update log reset: 0/5; current clean count: 0/5
 - Sandbox Execution Result Feedback Loop milestone: b97 routes source_sandbox_action_execution=sandbox_action_execution_b96 and result_classification=context_observation_success into trace-only feedback, then application_status=applied_same_session_execution_feedback inside same_sandbox_session_only: doubt_after_ephemeral=0.56, selected_action_confidence_after_ephemeral=0.55, direct_retry_weight_after_ephemeral=0.30, observe_or_alternative_probe stays first, retry_same_action_without_check stays last, and rollback_status=sandbox_execution_feedback_loop_rolled_back with dirty_state_after_rollback=False. Forbidden: no final_action, direct command, persistent trust/doubt update, cross-session feedback persistence, memory/retention write, predictor read/influence/mutation, production behavior, autonomous learning/action, or proof-of-learning.
 - Sandbox Final Action Approval Boundary milestone: b98 creates explicit approval for a future Sandbox Final Action Minimal v0 package only. Evidence: source_boundary_index=2026-06-09-b97; required sources b95 selected_action, b96 sandbox execution, b97 feedback loop, and b95-b97 audit passed; final_action_allowed_in_future_package=True; implementation_in_this_package=False; final_action_created=False; direct_command_allowed=False. Forbidden: no final_action now, direct command, persistent update, cross-session persistence, memory/retention write, predictor read/influence/mutation, production behavior, autonomous learning/action, or proof-of-learning.
 - Sandbox Final Action milestone: b99 adds workflow-only test-tier policy and creates one sandbox-only final_action from the approved b98 execution result. Evidence: final_action=observe_or_alternative_probe; execution_result=local_context_observed; final_action_created=True; direct_command_created=False; direct_command_allowed=False; full unittest discover is conditional for future packages but was run for this final_action boundary package. Forbidden: no direct command, persistent update, cross-session persistence, memory/retention write, predictor read/influence/mutation, production behavior, autonomous learning/action, or proof-of-learning.
+- b95-b99 Status Compression + Sandbox Direct Command Approval Boundary milestone: b100 compresses the sandbox action line as selected_action -> sandbox execution -> feedback loop -> sandbox-only final_action -> audit, and approves a future Sandbox Direct Command Minimal v0 package from the audited b99 final_action. Forbidden now: no direct command created, production behavior, persistent update, memory/retention write, predictor mutation, autonomous learning/action, or proof-of-learning.
 ## Archive
 - Older milestone details are archived in `docs/boundary_index_archive_2026_06.md`.
 
