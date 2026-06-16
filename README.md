@@ -2837,6 +2837,10 @@ Two-Trial History Boundary:
 
 - Sandbox Execution Result Feedback Loop Minimal v0 routes the b96 sandbox-only action execution result back into a same-session feedback loop. The result can generate trace-only feedback, apply ephemerally inside the same sandbox session, influence the next sandbox-only candidate ordering, and roll back at session end. Boundary Index updates from `2026-06-09-b96` to `2026-06-09-b97`; final_action, direct commands, persistent trust/doubt updates, cross-session feedback persistence, memory/retention writes, predictor read/influence/mutation, production behavior, autonomous learning/action claims, and proof-of-learning remain blocked.
 
+## b95-b97 Sandbox Action Boundary Audit Minimal v0
+
+- b95-b97 Sandbox Action Boundary Audit Minimal v0 audits the completed sandbox action line: b95 selected_action, b96 sandbox-only execution, and b97 execution-result feedback loop. It confirms ASHL Core can create one sandbox-only selected_action, execute it once inside sandbox scope, route the result into same-session feedback, and roll back, while remaining sandbox-only and same-session-only. Boundary Index remains `2026-06-09-b97`; this audit does not create final_action or direct command, persist trust/doubt, write memory or retention, mutate predictors, change production behavior, or prove learning.
+
 ## Phase0 Package ID and Boundary Index Version Separation Minimal v0
 
 - Phase0 Package ID and Boundary Index Version Separation Minimal v0 separates Codex Package IDs from Boundary Index versions. Package IDs track work packages; Boundary Index versions track boundary and validation-boundary changes only. Completed tasks, CLI commands, smoke tests, unittests, documentation updates, queue status changes, scenario plans, and dry-run records do not automatically increment Boundary Index. This is workflow/versioning governance only and does not add runtime behavior, memory writes, retention writes, predictor mutation, sandbox execution/application, action selection, final_action, direct commands, or proof-of-learning claims.
