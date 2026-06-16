@@ -7060,4 +7060,19 @@ Boundary:
 Next recommended work:
 1. Treat future direct command, production promotion, memory write, retention write, or predictor influence as separate explicit boundary packages.
 
+## b99 Sandbox Final Action Boundary Audit Minimal v0
+
+Status: completed / audit-only / no Boundary Index change.
+
+Progress:
+- Adds `ashl_core/b99_sandbox_final_action_boundary_audit_minimal.py`.
+- Audits the b99 sandbox-only final_action boundary.
+- Confirms `final_action=observe_or_alternative_probe`, `final_action_scope=sandbox_only`, and `source_execution_result=local_context_observed`.
+- Audits the b99 test-tier policy as workflow-only and not a runtime capability.
+- Keeps direct command, persistent update, cross-session persistence, memory write, retained JSONL write, retention write, predictor read/influence/mutation, production behavior, autonomous learning/action, and proof claims blocked.
+
+Boundary:
+- Boundary Index remains `2026-06-09-b99`.
+- Rationale: audit-only package; it does not change permission scope, runtime behavior condition, persistence, memory, retention, predictor, direct command, production, or proof boundary.
+
 This documentation reconciliation did not complete outcome evaluation at that time and did not claim every documentation inconsistency had been found. Current outcome evaluation status is controlled by the later Level 1 Sandbox Outcome Evaluation and Human Review Summary Minimal v0 section above.

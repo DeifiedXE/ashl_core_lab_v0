@@ -1051,6 +1051,27 @@ def build_codex_task_queue_minimal() -> dict[str, Any]:
                 ),
             ),
             _task(
+                "task.b99_sandbox_final_action_boundary_audit_minimal.completed",
+                "PKG-Phase0-B99SandboxFinalActionBoundaryAudit-Minimal-v0",
+                "b99 Sandbox Final Action Boundary Audit Minimal v0",
+                "documentation_only",
+                "completed",
+                "codex_completed_report",
+                ["task.test_tier_policy_and_sandbox_final_action_minimal.completed"],
+                [],
+                (
+                    "Audits the b99 sandbox-only final_action boundary and workflow-only test-tier policy; "
+                    "no new capability or boundary change is added."
+                ),
+                boundary_change_required=False,
+                boundary_index_version_before=TEST_TIER_POLICY_AND_SANDBOX_FINAL_ACTION_BOUNDARY_AFTER,
+                boundary_index_version_after=TEST_TIER_POLICY_AND_SANDBOX_FINAL_ACTION_BOUNDARY_AFTER,
+                boundary_change_rationale=(
+                    "Audit-only package; it does not change permission scope, runtime behavior condition, "
+                    "persistence, memory, retention, predictor, direct command, production, or proof boundary."
+                ),
+            ),
+            _task(
                 "task.level2_sandbox_readiness.deferred",
                 "PKG-Phase0-Level2-Readiness-Future",
                 "Level 2 Sandbox Readiness Minimal v0",
@@ -1335,7 +1356,7 @@ def _invalid_queues(valid_queue: dict[str, Any]) -> list[dict[str, Any]]:
     )
     queues.append(blocked)
     deferred = deepcopy(valid_queue)
-    deferred["task_entries"][47].pop("deferral_reason", None)
+    deferred["task_entries"][48].pop("deferral_reason", None)
     queues.append(deferred)
     superseded = deepcopy(valid_queue)
     superseded["task_entries"].append(
@@ -1407,7 +1428,7 @@ def _summary(
         summary["task_queue_result_count"] == 22
         and summary["valid_task_queue_count"] == 1
         and summary["invalid_task_queue_count"] == 21
-        and summary["valid_task_entry_count"] == 49
+        and summary["valid_task_entry_count"] == 50
         and summary["invalid_task_entry_count"] >= 9
         and summary["queue_scope_checked_count"] == 1
         and summary["approval_block_checked_count"] == 1

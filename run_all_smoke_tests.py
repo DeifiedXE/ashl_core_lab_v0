@@ -265,6 +265,9 @@ from ashl_core.sandbox_final_action_approval_boundary_minimal import (
 from ashl_core.sandbox_final_action_minimal import (
     run_test_tier_policy_and_sandbox_final_action_minimal_check,
 )
+from ashl_core.b99_sandbox_final_action_boundary_audit_minimal import (
+    run_b99_sandbox_final_action_boundary_audit_minimal_check,
+)
 from ashl_core.minimal_visual_grounding_trial import run_minimal_visual_grounding_trial_check
 from ashl_core.visual_prediction_error_attention_priority_preview_minimal import (
     run_visual_prediction_error_attention_priority_preview_minimal_check,
@@ -12714,6 +12717,14 @@ def smoke_codex_task_queue_minimal() -> dict:
         ),
         {},
     )
+    b99_sandbox_final_action_boundary_audit_task = next(
+        (
+            task
+            for task in task_entries
+            if task.get("package_id") == "PKG-Phase0-B99SandboxFinalActionBoundaryAudit-Minimal-v0"
+        ),
+        {},
+    )
     passed = (
         result.get("command") == "run-codex-task-queue-minimal-check"
         and result.get("flow") == "codex_task_queue_minimal_v0"
@@ -12722,7 +12733,7 @@ def smoke_codex_task_queue_minimal() -> dict:
         and valid_queue.get("record_type") == "codex_task_queue_minimal_v0"
         and summary.get("valid_task_queue_count") == 1
         and summary.get("invalid_task_queue_count") == 21
-        and summary.get("valid_task_entry_count") == 49
+        and summary.get("valid_task_entry_count") == 50
         and summary.get("invalid_task_entry_count", 0) >= 9
         and summary.get("queue_scope_checked_count") == 1
         and summary.get("approval_block_checked_count") == 1
@@ -12958,6 +12969,14 @@ def smoke_codex_task_queue_minimal() -> dict:
             "boundary_change_rationale", ""
         )
         and "workflow-only" in test_tier_policy_and_sandbox_final_action_task.get(
+            "boundary_change_rationale", ""
+        )
+        and b99_sandbox_final_action_boundary_audit_task.get("status") == "completed"
+        and b99_sandbox_final_action_boundary_audit_task.get("task_type") == "documentation_only"
+        and b99_sandbox_final_action_boundary_audit_task.get("boundary_change_required") is False
+        and b99_sandbox_final_action_boundary_audit_task.get("boundary_index_version_before") == "2026-06-09-b99"
+        and b99_sandbox_final_action_boundary_audit_task.get("boundary_index_version_after") == "2026-06-09-b99"
+        and "Audit-only" in b99_sandbox_final_action_boundary_audit_task.get(
             "boundary_change_rationale", ""
         )
         and valid_queue.get("queue_counts_as_approval") is False
@@ -16092,6 +16111,53 @@ def smoke_test_tier_policy_and_sandbox_final_action_minimal() -> dict:
     )
 
 
+def smoke_b99_sandbox_final_action_boundary_audit_minimal() -> dict:
+    result = run_b99_sandbox_final_action_boundary_audit_minimal_check()
+    summary = result.get("summary", {})
+    boundary = result.get("boundary", {})
+    audit = result.get("valid_audit", {})
+    passed = (
+        result.get("command") == "run-b99-sandbox-final-action-boundary-audit-minimal-check"
+        and result.get("flow") == "b99_sandbox_final_action_boundary_audit_minimal_v0"
+        and result.get("status") == "ok"
+        and summary.get("valid_audit_count") == 1
+        and summary.get("invalid_audit_count", 0) >= 24
+        and summary.get("audited_step_count") == 2
+        and summary.get("missing_step_count") == 0
+        and summary.get("boundary_unchanged_checked_count") == 1
+        and summary.get("final_action_checked_count") == 1
+        and summary.get("sandbox_scope_checked_count") == 1
+        and summary.get("direct_command_blocked_count") == 1
+        and summary.get("persistent_update_blocked_count") == 1
+        and summary.get("memory_write_blocked_count") == 1
+        and summary.get("retention_blocked_count") == 1
+        and summary.get("predictor_mutation_blocked_count") == 1
+        and summary.get("production_behavior_blocked_count") == 1
+        and summary.get("test_policy_workflow_only_checked_count") == 1
+        and summary.get("proof_claim_blocked_count") == 1
+        and summary.get("all_b99_sandbox_final_action_boundary_audit_checks_passed") is True
+        and boundary.get("boundary_change_required") is False
+        and boundary.get("boundary_index_update_required") is False
+        and boundary.get("boundary_index_version_before") == "2026-06-09-b99"
+        and boundary.get("boundary_index_version_after") == "2026-06-09-b99"
+        and audit.get("record_type") == "b99_sandbox_final_action_boundary_audit"
+        and audit.get("audit_status") == "passed_sandbox_final_action_boundary_audit"
+        and audit.get("final_action") == "observe_or_alternative_probe"
+        and audit.get("final_action_scope") == "sandbox_only"
+        and audit.get("source_execution_result") == "local_context_observed"
+        and audit.get("direct_command_created") is False
+        and audit.get("direct_command_allowed") is False
+        and audit.get("test_tier_policy_workflow_only") is True
+        and audit.get("test_tier_policy_runtime_capability") is False
+        and audit.get("test_tier_policy_boundary_change_required_by_itself") is False
+    )
+    return _result(
+        "b99_sandbox_final_action_boundary_audit_minimal",
+        passed,
+        {"summary": summary, "boundary": boundary},
+    )
+
+
 def smoke_phase0_current_capability_snapshot() -> dict:
     doc_path = Path("docs/phase0_current_capability_snapshot_2026-06-10.md")
     doc = doc_path.read_text(encoding="utf-8") if doc_path.exists() else ""
@@ -18834,6 +18900,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_b95_b97_sandbox_action_boundary_audit_minimal(),
         smoke_sandbox_final_action_approval_boundary_minimal(),
         smoke_test_tier_policy_and_sandbox_final_action_minimal(),
+        smoke_b99_sandbox_final_action_boundary_audit_minimal(),
         smoke_phase0_current_capability_snapshot(),
         smoke_memory_influence_behavior_gate_design(),
         smoke_first_memory_influenced_behavior_boundary(),

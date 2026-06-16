@@ -29,7 +29,8 @@
 - Earlier Level 3 package: Level 3 Toy Minefield Multi-Step Sandbox Minimal v0.
 - Earlier sandbox application boundary package: Level 2 Sandbox Application, Observation, Evaluation, and Human Review Summary Minimal v0.
 - Earlier Level 2 evidence package: Level 2 Sandbox Dry Run, Observation, Evaluation, and Human Review Summary Minimal v0.
-- Latest documentation/workflow package: b95-b97 Sandbox Action Boundary Audit Minimal v0.
+- Latest documentation/workflow package: b99 Sandbox Final Action Boundary Audit Minimal v0.
+- Previous documentation/workflow package: b95-b97 Sandbox Action Boundary Audit Minimal v0.
 - Previous documentation/workflow package: b85-b93 Documentation Compression / Status Sync Minimal v0.
 - Previous documentation/workflow package: b85-b93 Same-Session Thought Loop Audit Minimal v0.
 - Previous documentation/workflow package: Phase0 Package ID and Boundary Index Version Separation Minimal v0.
@@ -56,6 +57,7 @@ Phase0 package/version governance can validate that Codex Package IDs are not Bo
 - No b95-b97 audit as new runtime capability, Boundary Index change, additional selected_action, additional action execution, final_action, direct command, persistent update, cross-session persistence, memory write, retention write, predictor read/influence/mutation, production behavior, autonomous learning/action, or proof of learning.
 - No Sandbox Final Action Approval Boundary Minimal v0 as final_action creation, direct command, persistent update, cross-session persistence, memory write, retention write, predictor read/influence/mutation, production behavior, autonomous learning/action, or proof of learning.
 - No Test Tier Policy + Sandbox Final Action Minimal v0 as direct command, persistent update, cross-session persistence, memory write, retention write, predictor read/influence/mutation, production behavior, autonomous learning/action, or proof of learning.
+- No b99 Sandbox Final Action Boundary Audit Minimal v0 as new capability, Boundary Index change, direct command, persistent update, cross-session persistence, memory write, retention write, predictor read/influence/mutation, production behavior, autonomous learning/action, or proof of learning.
 - No selected_action execution beyond the single b96 sandbox-only execution, no final_action outside the b99 sandbox-only final_action record, and no direct command.
 - No cortisol-like pressure runtime application, persistence, never-try state, permanent action ban, final_action, direct command, persistent update, memory/retention write, predictor mutation, production behavior, autonomous learning/action, or proof of learning.
 - No Level 2 runtime execution.

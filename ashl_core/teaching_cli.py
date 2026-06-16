@@ -240,6 +240,9 @@ from .sandbox_final_action_approval_boundary_minimal import (
 from .sandbox_final_action_minimal import (
     run_test_tier_policy_and_sandbox_final_action_minimal_check,
 )
+from .b99_sandbox_final_action_boundary_audit_minimal import (
+    run_b99_sandbox_final_action_boundary_audit_minimal_check,
+)
 from .reviewed_lesson_dry_run_correction_minimal import (
     run_reviewed_lesson_dry_run_correction_minimal_check,
 )
@@ -3878,6 +3881,8 @@ def run_command(command: str) -> dict[str, Any] | str:
         return run_sandbox_final_action_approval_boundary_minimal_check()
     if command == "run-test-tier-policy-and-sandbox-final-action-minimal-check":
         return run_test_tier_policy_and_sandbox_final_action_minimal_check()
+    if command == "run-b99-sandbox-final-action-boundary-audit-minimal-check":
+        return run_b99_sandbox_final_action_boundary_audit_minimal_check()
     if command == "run-simple-retina-focus-preview-minimal-check":
         return run_simple_retina_focus_preview_minimal_check()
     if command == "run-generalized-prediction-confidence-check":
@@ -4101,6 +4106,7 @@ def main(argv: list[str] | None = None) -> int:
             "run-b95-b97-sandbox-action-boundary-audit-minimal-check",
             "run-sandbox-final-action-approval-boundary-minimal-check",
             "run-test-tier-policy-and-sandbox-final-action-minimal-check",
+            "run-b99-sandbox-final-action-boundary-audit-minimal-check",
             "run-simple-retina-focus-preview-minimal-check",
             "run-generalized-prediction-confidence-check",
             "run-generalized-candidate-from-pattern-check",
@@ -4516,6 +4522,8 @@ def main(argv: list[str] | None = None) -> int:
         result = run_sandbox_final_action_approval_boundary_minimal_check()
     elif args.command == "run-test-tier-policy-and-sandbox-final-action-minimal-check":
         result = run_test_tier_policy_and_sandbox_final_action_minimal_check()
+    elif args.command == "run-b99-sandbox-final-action-boundary-audit-minimal-check":
+        result = run_b99_sandbox_final_action_boundary_audit_minimal_check()
     elif args.command == "run-simple-retina-focus-preview-minimal-check":
         result = run_simple_retina_focus_preview_minimal_check()
     elif args.command == "run-generalized-prediction-confidence-check":

@@ -2849,6 +2849,10 @@ Two-Trial History Boundary:
 
 - Test Tier Policy + Sandbox Final Action Minimal v0 adds a workflow-only test-tier policy: future packages default to targeted unittest, smoke, git diff check, and git status; full unittest discover is conditional and skipped full regression requires a reason. It also creates one sandbox-only final_action from the approved b98 sandbox execution result: `observe_or_alternative_probe`, with `execution_result=local_context_observed`. Boundary Index updates from `2026-06-09-b98` to `2026-06-09-b99`; the final_action does not create a direct command, write memory/retention, mutate predictor, change production behavior, or prove learning.
 
+## b99 Sandbox Final Action Boundary Audit Minimal v0
+
+- b99 Sandbox Final Action Boundary Audit Minimal v0 audits the b99 sandbox-only final_action boundary and confirms `final_action=observe_or_alternative_probe` remains `sandbox_only`. It also confirms the b99 test-tier policy is workflow-only and not a runtime capability. Boundary Index remains `2026-06-09-b99`; direct command, production behavior, memory/retention write, predictor mutation, persistent updates, and proof-of-learning remain blocked.
+
 ## Phase0 Package ID and Boundary Index Version Separation Minimal v0
 
 - Phase0 Package ID and Boundary Index Version Separation Minimal v0 separates Codex Package IDs from Boundary Index versions. Package IDs track work packages; Boundary Index versions track boundary and validation-boundary changes only. Completed tasks, CLI commands, smoke tests, unittests, documentation updates, queue status changes, scenario plans, and dry-run records do not automatically increment Boundary Index. This is workflow/versioning governance only and does not add runtime behavior, memory writes, retention writes, predictor mutation, sandbox execution/application, action selection, final_action, direct commands, or proof-of-learning claims.
