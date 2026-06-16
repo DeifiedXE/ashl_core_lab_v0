@@ -7020,4 +7020,24 @@ Next recommended work:
 1. Use this audit as the compact checkpoint before any final_action or direct-command boundary proposal.
 2. Keep persistent feedback, memory/retention writes, predictor mutation, production behavior, final_action, direct command, autonomous claims, and proof claims blocked until separate future boundaries explicitly open them.
 
+## Sandbox Final Action Approval Boundary Minimal v0
+
+Status: completed / future sandbox final_action approval boundary / no final_action created.
+
+Progress:
+- Adds `ashl_core/sandbox_final_action_approval_boundary_minimal.py`.
+- Requires valid b95 selected_action, b96 sandbox action execution, b97 execution-result feedback loop, and passed b95-b97 boundary audit sources.
+- Records approval for a future `Sandbox Final Action Minimal v0` package only.
+- Confirms `implementation_in_this_package=False`, `final_action_created=False`, and `final_action_allowed_in_future_package=True`.
+- Keeps direct command, persistent rule/update, cross-session persistence, memory write, retained JSONL write, retention write, predictor read/influence/mutation, production behavior, autonomous learning/action, and proof claims blocked.
+
+Boundary:
+- Boundary Index changes from `2026-06-09-b97` to `2026-06-09-b98`.
+- Rationale: this package creates an explicit approval boundary for a future sandbox-only final_action package from an audited sandbox selected_action and execution-result chain.
+- This does not authorize final_action creation in this package, direct command, persistent update, memory/retention writes, predictor mutation, production behavior, autonomous learning/action, or proof of learning.
+
+Next recommended work:
+1. Sandbox Final Action Minimal v0 may be proposed as a separate implementation package.
+2. Keep direct command, memory/retention writes, predictor mutation, production behavior, autonomous claims, and proof claims blocked until separate future boundaries explicitly open them.
+
 This documentation reconciliation did not complete outcome evaluation at that time and did not claim every documentation inconsistency had been found. Current outcome evaluation status is controlled by the later Level 1 Sandbox Outcome Evaluation and Human Review Summary Minimal v0 section above.

@@ -8,8 +8,8 @@ from typing import Any
 
 COMMAND = "run-codex-task-queue-minimal-check"
 FLOW = "codex_task_queue_minimal_v0"
-BOUNDARY_INDEX_VERSION = "2026-06-09-b97"
-PREVIOUS_BOUNDARY_INDEX_VERSION = "2026-06-09-b96"
+BOUNDARY_INDEX_VERSION = "2026-06-09-b98"
+PREVIOUS_BOUNDARY_INDEX_VERSION = "2026-06-09-b97"
 LEVEL2_APPLICATION_BOUNDARY_BEFORE = "2026-06-09-b72"
 LEVEL2_APPLICATION_BOUNDARY_AFTER = "2026-06-09-b73"
 LEVEL3_TOY_MINEFIELD_BOUNDARY_BEFORE = "2026-06-09-b73"
@@ -60,6 +60,8 @@ SANDBOX_ACTION_EXECUTION_BOUNDARY_BEFORE = "2026-06-09-b95"
 SANDBOX_ACTION_EXECUTION_BOUNDARY_AFTER = "2026-06-09-b96"
 SANDBOX_EXECUTION_RESULT_FEEDBACK_LOOP_BOUNDARY_BEFORE = "2026-06-09-b96"
 SANDBOX_EXECUTION_RESULT_FEEDBACK_LOOP_BOUNDARY_AFTER = "2026-06-09-b97"
+SANDBOX_FINAL_ACTION_APPROVAL_BOUNDARY_BEFORE = "2026-06-09-b97"
+SANDBOX_FINAL_ACTION_APPROVAL_BOUNDARY_AFTER = "2026-06-09-b98"
 BUCKET_SIGNAL_BASELINE_BOUNDARY_VERSION = "2026-06-09-b93"
 B85_B93_BASELINE_BOUNDARY_VERSION = "2026-06-09-b93"
 VERSIONING_POLICY_BOUNDARY_BEFORE = "2026-06-09-b71"
@@ -995,11 +997,33 @@ def build_codex_task_queue_minimal() -> dict[str, Any]:
                     "sandbox-only and non-persistent."
                 ),
                 boundary_change_required=False,
-                boundary_index_version_before=BOUNDARY_INDEX_VERSION,
-                boundary_index_version_after=BOUNDARY_INDEX_VERSION,
+                boundary_index_version_before=SANDBOX_EXECUTION_RESULT_FEEDBACK_LOOP_BOUNDARY_AFTER,
+                boundary_index_version_after=SANDBOX_EXECUTION_RESULT_FEEDBACK_LOOP_BOUNDARY_AFTER,
                 boundary_change_rationale=(
                     "Audit-only package; it does not change permission scope, runtime behavior condition, "
                     "persistence, memory, retention, predictor, final_action, direct command, production, or proof boundary."
+                ),
+            ),
+            _task(
+                "task.sandbox_final_action_approval_boundary_minimal.completed",
+                "PKG-Phase0-SandboxFinalActionApprovalBoundary-Minimal-v0",
+                "Sandbox Final Action Approval Boundary Minimal v0",
+                "capability_boundary",
+                "completed",
+                "codex_completed_report",
+                ["task.b95_b97_sandbox_action_boundary_audit_minimal.completed"],
+                [],
+                (
+                    "Creates explicit approval for a future Sandbox Final Action Minimal v0 package only; "
+                    "final_action is not created in this package and direct command, persistent update, "
+                    "memory/retention write, predictor mutation, production behavior, and proof claim remain blocked."
+                ),
+                boundary_change_required=True,
+                boundary_index_version_before=SANDBOX_FINAL_ACTION_APPROVAL_BOUNDARY_BEFORE,
+                boundary_index_version_after=SANDBOX_FINAL_ACTION_APPROVAL_BOUNDARY_AFTER,
+                boundary_change_rationale=(
+                    "Creates an explicit approval boundary for a future sandbox-only final_action package from "
+                    "an audited sandbox selected_action and execution-result chain."
                 ),
             ),
             _task(
@@ -1287,7 +1311,7 @@ def _invalid_queues(valid_queue: dict[str, Any]) -> list[dict[str, Any]]:
     )
     queues.append(blocked)
     deferred = deepcopy(valid_queue)
-    deferred["task_entries"][45].pop("deferral_reason", None)
+    deferred["task_entries"][46].pop("deferral_reason", None)
     queues.append(deferred)
     superseded = deepcopy(valid_queue)
     superseded["task_entries"].append(
@@ -1359,7 +1383,7 @@ def _summary(
         summary["task_queue_result_count"] == 22
         and summary["valid_task_queue_count"] == 1
         and summary["invalid_task_queue_count"] == 21
-        and summary["valid_task_entry_count"] == 47
+        and summary["valid_task_entry_count"] == 48
         and summary["invalid_task_entry_count"] >= 9
         and summary["queue_scope_checked_count"] == 1
         and summary["approval_block_checked_count"] == 1

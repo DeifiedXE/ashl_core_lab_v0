@@ -1618,7 +1618,7 @@ Two-Trial History Boundary:
 
 - `docs/current_boundary_index.md`
 - Adds a short, versioned, low-token source of global hard boundaries for future work packages.
-- Current version: `Boundary Index Version: 2026-06-09-b97`.
+- Current version: `Boundary Index Version: 2026-06-09-b98`.
 - For current Phase0 status, see `docs/phase0_status.md`.
 - For capability status, see `docs/phase0_capability_matrix.md`.
 - For boundary version history, see `docs/current_boundary_index.md`.
@@ -2840,6 +2840,10 @@ Two-Trial History Boundary:
 ## b95-b97 Sandbox Action Boundary Audit Minimal v0
 
 - b95-b97 Sandbox Action Boundary Audit Minimal v0 audits the completed sandbox action line: b95 selected_action, b96 sandbox-only execution, and b97 execution-result feedback loop. It confirms ASHL Core can create one sandbox-only selected_action, execute it once inside sandbox scope, route the result into same-session feedback, and roll back, while remaining sandbox-only and same-session-only. Boundary Index remains `2026-06-09-b97`; this audit does not create final_action or direct command, persist trust/doubt, write memory or retention, mutate predictors, change production behavior, or prove learning.
+
+## Sandbox Final Action Approval Boundary Minimal v0
+
+- Sandbox Final Action Approval Boundary Minimal v0 creates an explicit approval boundary for a future Sandbox Final Action Minimal v0 package from the audited b95-b97 sandbox selected_action and execution-result chain. This approval does not create final_action; future final_action must remain sandbox-only and requires a separate implementation package. Boundary Index updates from `2026-06-09-b97` to `2026-06-09-b98`; direct command, predictor mutation, memory/retention writes, production behavior, persistent updates, and proof-of-learning remain blocked.
 
 ## Phase0 Package ID and Boundary Index Version Separation Minimal v0
 
