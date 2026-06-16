@@ -57,6 +57,7 @@ Current queue source:
 - Completed: Test Tier Policy + Sandbox Final Action Minimal v0.
 - Completed: b99 Sandbox Final Action Boundary Audit Minimal v0.
 - Completed: b95-b99 Status Compression + Sandbox Direct Command Approval Boundary Minimal v0.
+- Completed: Sandbox Direct Command Minimal v0.
 - Deferred: Level 2 Sandbox Readiness Minimal v0.
 - Deferred: Memory Readiness Boundary Minimal v0.
 
@@ -105,6 +106,8 @@ Test Tier Policy + Sandbox Final Action Minimal v0 changes Boundary Index from b
 b99 Sandbox Final Action Boundary Audit Minimal v0 does not change Boundary Index because it audits existing b99 sandbox-only final_action behavior and workflow-only test-tier policy only. It does not create new capability, direct command, persistent update, cross-session persistence, memory/retention write, predictor mutation, production behavior, autonomous learning/action, or proof-of-learning.
 
 b95-b99 Status Compression + Sandbox Direct Command Approval Boundary Minimal v0 changes Boundary Index from b99 to b100 because it creates an explicit approval boundary for a future sandbox-only direct command package from the audited sandbox-only final_action. The status-compression portion is documentation/status-only and is not the boundary change. This package does not create a direct command, change production behavior, persist updates, write memory/retention, mutate predictors, or claim autonomous learning/action or proof-of-learning.
+
+Sandbox Direct Command Minimal v0 changes Boundary Index from b100 to b101 because it creates one sandbox-only direct command from the approved b100 boundary and audited b99 final_action. The command is not executed; direct command execution, production behavior, real navigation/UI changes, persistent updates, memory/retention writes, predictor mutation, autonomous learning/action, and proof-of-learning remain blocked.
 
 The Level 3 toy minefield variant stability package does not change Boundary Index because it operates inside the existing Level 3 sandbox-only multi-step trace boundary and adds deterministic variants, stability evaluation, and review conclusion only.
 

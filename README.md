@@ -1618,7 +1618,7 @@ Two-Trial History Boundary:
 
 - `docs/current_boundary_index.md`
 - Adds a short, versioned, low-token source of global hard boundaries for future work packages.
-- Current version: `Boundary Index Version: 2026-06-09-b100`.
+- Current version: `Boundary Index Version: 2026-06-09-b101`.
 - For current Phase0 status, see `docs/phase0_status.md`.
 - For capability status, see `docs/phase0_capability_matrix.md`.
 - For boundary version history, see `docs/current_boundary_index.md`.
@@ -2856,6 +2856,10 @@ Two-Trial History Boundary:
 ## b95-b99 Status Compression + Sandbox Direct Command Approval Boundary Minimal v0
 
 - b95-b99 Status Compression + Sandbox Direct Command Approval Boundary Minimal v0 records a compact sandbox action line: `selected_action -> sandbox execution -> feedback loop -> sandbox-only final_action -> audit`. It also creates an explicit approval boundary for a future Sandbox Direct Command Minimal v0 package from the audited sandbox-only final_action. Boundary Index updates from `2026-06-09-b99` to `2026-06-09-b100`; this package does not create a direct command, change production behavior, write memory/retention, mutate predictors, persist rules/trust/doubt, or prove learning.
+
+## Sandbox Direct Command Minimal v0
+
+- Sandbox Direct Command Minimal v0 creates one sandbox-only direct command, `sandbox.observe_or_alternative_probe`, from the approved b100 direct-command approval boundary and audited b99 sandbox-only final_action. Boundary Index updates from `2026-06-09-b100` to `2026-06-09-b101`; the command is not executed, and command execution, production behavior, real navigation/UI changes, persistent updates, memory/retention writes, predictor mutation, autonomous learning/action claims, and proof-of-learning remain blocked.
 
 ## Host-Dependent Idle Continuance Trace v0
 
