@@ -272,6 +272,9 @@ from ashl_core.b95_b99_status_compression_and_direct_command_approval_boundary_m
     run_b95_b99_status_compression_and_direct_command_approval_boundary_minimal_check,
 )
 from ashl_core.sandbox_direct_command_minimal import run_sandbox_direct_command_minimal_check
+from ashl_core.sandbox_direct_command_execution_approval_boundary_minimal import (
+    run_sandbox_direct_command_execution_approval_boundary_minimal_check,
+)
 from ashl_core.minimal_visual_grounding_trial import run_minimal_visual_grounding_trial_check
 from ashl_core.visual_prediction_error_attention_priority_preview_minimal import (
     run_visual_prediction_error_attention_priority_preview_minimal_check,
@@ -10582,8 +10585,8 @@ def smoke_current_boundary_index_docs() -> dict:
     readme = readme_path.read_text(encoding="utf-8") if readme_path.exists() else ""
     research_plan = research_plan_path.read_text(encoding="utf-8") if research_plan_path.exists() else ""
     compact_required_terms = [
-        "Boundary Index Version: 2026-06-09-b101",
-        "Last update log: Sandbox Direct Command Minimal v0",
+        "Boundary Index Version: 2026-06-09-b102",
+        "Last update log: Sandbox Direct Command Execution Approval Boundary Minimal v0",
         "docs/boundary_index_archive_2026_06.md",
         "Minimal Visual Grounding Trial v0",
         "Visual Prediction Error + Attention Priority Preview Minimal v0",
@@ -10655,9 +10658,10 @@ def smoke_current_boundary_index_docs() -> dict:
         "implementation_in_this_package=False",
         "direct_command_allowed=False",
         "Sandbox Final Action milestone",
-        "b95-b101 Direct Command milestone",
+        "b95-b102 Direct Command milestone",
         "approves future sandbox-only direct command",
         "b101 creates one sandbox-only direct command",
+        "b102 approves a future sandbox-only direct command execution package",
         "no direct command execution",
         "workflow-only test-tier policy",
         "final_action=observe_or_alternative_probe",
@@ -10758,7 +10762,7 @@ def smoke_current_boundary_index_docs() -> dict:
         and all(term in doc for term in compact_required_terms)
         and all(term in archive for term in archive_required_terms)
         and line_count <= 150
-        and "Boundary Index Version: 2026-06-09-b101" in readme
+        and "Boundary Index Version: 2026-06-09-b102" in readme
         and "docs/boundary_index_archive_2026_06.md" in readme
         and "Boundary Index Compaction / Archive v0" in research_plan
         and "Runtime Tendency Memory Influence Safety Sync Minimal v0" in research_plan
@@ -10796,7 +10800,7 @@ def smoke_phase0_documentation_consolidation_minimal() -> dict:
         status_path.exists()
         and matrix_path.exists()
         and index_path.exists()
-        and "Boundary Index Version: 2026-06-09-b101" in status
+        and "Boundary Index Version: 2026-06-09-b102" in status
         and "Current Safe Capability" in status
         and "No proof-of-learning claim" in status
         and "Level 1 Sandbox Outcome Evaluation and Human Review Summary Minimal v0" in status
@@ -10821,6 +10825,7 @@ def smoke_phase0_documentation_consolidation_minimal() -> dict:
         and "Sandbox Final Action Approval Boundary Minimal v0" in status
         and "Test Tier Policy + Sandbox Final Action Minimal v0" in status
         and "b95-b99 Status Compression + Sandbox Direct Command Approval Boundary Minimal v0" in status
+        and "Sandbox Direct Command Execution Approval Boundary Minimal v0" in status
         and "Phase0 Package ID and Boundary Index Version Separation Minimal v0" in status
         and "| Level 1 sandbox outcome observation | implemented_sandbox_only |" in matrix
         and "| outcome evaluation | implemented_sandbox_only |" in matrix
@@ -10846,6 +10851,7 @@ def smoke_phase0_documentation_consolidation_minimal() -> dict:
         and "| sandbox final_action approval boundary | implemented_future_final_action_approval |" in matrix
         and "| sandbox final_action minimal | implemented_sandbox_only_final_action |" in matrix
         and "| b95-b99 status compression + sandbox direct command approval | implemented_approval_boundary |" in matrix
+        and "| sandbox direct command execution approval boundary | implemented_future_execution_approval |" in matrix
         and "| Package ID / Boundary Index version separation | implemented_workflow_governance |" in matrix
         and "| retention write | blocked |" in matrix
         and "| predictor mutation | blocked |" in matrix
@@ -10901,7 +10907,7 @@ def smoke_phase0_documentation_inventory_and_consistency_reconciliation() -> dic
     boundary = Path("docs/current_boundary_index.md").read_text(encoding="utf-8")
     passed = (
         all(path.exists() for path in required_paths)
-        and "Boundary Index Version: 2026-06-09-b101" in texts[Path("docs/phase0_status.md")]
+        and "Boundary Index Version: 2026-06-09-b102" in texts[Path("docs/phase0_status.md")]
         and "Inventory count:" in texts[Path("docs/phase0_doc_inventory.md")]
         and "docs/phase0_versioning_policy.md" in texts[Path("docs/phase0_doc_inventory.md")]
         and "unknown_needs_review" in texts[Path("docs/phase0_doc_inventory.md")]
@@ -16305,6 +16311,54 @@ def smoke_sandbox_direct_command_minimal() -> dict:
     )
 
 
+def smoke_sandbox_direct_command_execution_approval_boundary_minimal() -> dict:
+    result = run_sandbox_direct_command_execution_approval_boundary_minimal_check()
+    summary = result.get("summary", {})
+    boundary = result.get("boundary", {})
+    approval = result.get("valid_approval_boundary", {})
+    passed = (
+        result.get("command")
+        == "run-sandbox-direct-command-execution-approval-boundary-minimal-check"
+        and result.get("flow") == "sandbox_direct_command_execution_approval_boundary_minimal_v0"
+        and result.get("status") == "ok"
+        and summary.get("valid_approval_boundary_count") == 1
+        and summary.get("invalid_approval_boundary_count", 0) >= 36
+        and summary.get("source_direct_command_checked_count") == 1
+        and summary.get("future_execution_boundary_opened_count") == 1
+        and summary.get("sandbox_scope_checked_count") == 1
+        and summary.get("execution_safeguards_checked_count") == 1
+        and summary.get("production_behavior_blocked_count") == 1
+        and summary.get("persistent_update_blocked_count") == 1
+        and summary.get("memory_write_blocked_count") == 1
+        and summary.get("retention_blocked_count") == 1
+        and summary.get("predictor_mutation_blocked_count") == 1
+        and summary.get("real_navigation_blocked_count") == 1
+        and summary.get("ui_behavior_blocked_count") == 1
+        and summary.get("proof_claim_blocked_count") == 1
+        and summary.get("all_sandbox_direct_command_execution_approval_boundary_checks_passed")
+        is True
+        and boundary.get("boundary_change_required") is True
+        and boundary.get("boundary_index_update_required") is True
+        and boundary.get("boundary_index_version_before") == "2026-06-09-b101"
+        and boundary.get("boundary_index_version_after") == "2026-06-09-b102"
+        and approval.get("direct_command") == "sandbox.observe_or_alternative_probe"
+        and approval.get("direct_command_scope") == "sandbox_only"
+        and approval.get("direct_command_execution_allowed_in_future_package") is True
+        and approval.get("execution_allowed_in_this_package") is False
+        and approval.get("direct_command_executed") is False
+        and approval.get("execution_result_created") is False
+        and approval.get("production_behavior_changed") is False
+        and approval.get("memory_write_performed") is False
+        and approval.get("retention_write_performed") is False
+        and approval.get("predictor_mutation_performed") is False
+    )
+    return _result(
+        "sandbox_direct_command_execution_approval_boundary_minimal",
+        passed,
+        {"summary": summary, "boundary": boundary},
+    )
+
+
 def smoke_phase0_current_capability_snapshot() -> dict:
     doc_path = Path("docs/phase0_current_capability_snapshot_2026-06-10.md")
     doc = doc_path.read_text(encoding="utf-8") if doc_path.exists() else ""
@@ -19050,6 +19104,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_b99_sandbox_final_action_boundary_audit_minimal(),
         smoke_b95_b99_status_compression_and_direct_command_approval_boundary_minimal(),
         smoke_sandbox_direct_command_minimal(),
+        smoke_sandbox_direct_command_execution_approval_boundary_minimal(),
         smoke_phase0_current_capability_snapshot(),
         smoke_memory_influence_behavior_gate_design(),
         smoke_first_memory_influenced_behavior_boundary(),

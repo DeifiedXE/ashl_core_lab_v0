@@ -247,6 +247,9 @@ from .b95_b99_status_compression_and_direct_command_approval_boundary_minimal im
     run_b95_b99_status_compression_and_direct_command_approval_boundary_minimal_check,
 )
 from .sandbox_direct_command_minimal import run_sandbox_direct_command_minimal_check
+from .sandbox_direct_command_execution_approval_boundary_minimal import (
+    run_sandbox_direct_command_execution_approval_boundary_minimal_check,
+)
 from .reviewed_lesson_dry_run_correction_minimal import (
     run_reviewed_lesson_dry_run_correction_minimal_check,
 )
@@ -3891,6 +3894,8 @@ def run_command(command: str) -> dict[str, Any] | str:
         return run_b95_b99_status_compression_and_direct_command_approval_boundary_minimal_check()
     if command == "run-sandbox-direct-command-minimal-check":
         return run_sandbox_direct_command_minimal_check()
+    if command == "run-sandbox-direct-command-execution-approval-boundary-minimal-check":
+        return run_sandbox_direct_command_execution_approval_boundary_minimal_check()
     if command == "run-simple-retina-focus-preview-minimal-check":
         return run_simple_retina_focus_preview_minimal_check()
     if command == "run-generalized-prediction-confidence-check":
@@ -4117,6 +4122,7 @@ def main(argv: list[str] | None = None) -> int:
             "run-b99-sandbox-final-action-boundary-audit-minimal-check",
             "run-b95-b99-status-compression-and-direct-command-approval-boundary-minimal-check",
             "run-sandbox-direct-command-minimal-check",
+            "run-sandbox-direct-command-execution-approval-boundary-minimal-check",
             "run-simple-retina-focus-preview-minimal-check",
             "run-generalized-prediction-confidence-check",
             "run-generalized-candidate-from-pattern-check",
@@ -4538,6 +4544,8 @@ def main(argv: list[str] | None = None) -> int:
         result = run_b95_b99_status_compression_and_direct_command_approval_boundary_minimal_check()
     elif args.command == "run-sandbox-direct-command-minimal-check":
         result = run_sandbox_direct_command_minimal_check()
+    elif args.command == "run-sandbox-direct-command-execution-approval-boundary-minimal-check":
+        result = run_sandbox_direct_command_execution_approval_boundary_minimal_check()
     elif args.command == "run-simple-retina-focus-preview-minimal-check":
         result = run_simple_retina_focus_preview_minimal_check()
     elif args.command == "run-generalized-prediction-confidence-check":

@@ -7104,6 +7104,20 @@ Boundary:
 - Boundary Index changes from `2026-06-09-b100` to `2026-06-09-b101`.
 - Rationale: this package creates the sandbox-only direct command that b100 approved, but does not execute it.
 
+## Sandbox Direct Command Execution Approval Boundary Minimal v0
+
+Status: completed / execution approval boundary / no command execution / Boundary Index b101 -> b102.
+
+Progress:
+- Adds `ashl_core/sandbox_direct_command_execution_approval_boundary_minimal.py`.
+- Opens an explicit approval boundary for a future sandbox-only direct command execution package from the existing b101 command `sandbox.observe_or_alternative_probe`.
+- Requires future execution to remain sandbox-only with budget=1, audit, rollback, and mentor override.
+- Keeps direct command execution in this package, execution result creation, production behavior, real navigation/UI changes, persistent updates, memory write, retained JSONL write, retention write, predictor read/influence/mutation, autonomous learning/action, and proof claims blocked.
+
+Boundary:
+- Boundary Index changes from `2026-06-09-b101` to `2026-06-09-b102`.
+- Rationale: future sandbox-only direct command execution approval is a new approval boundary; no direct command is executed in this package.
+
 ## Host-Dependent Idle Continuance Trace v0
 
 Status: design assumption / docs-only / no Boundary Index change.
