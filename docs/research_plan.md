@@ -7133,4 +7133,32 @@ Boundary:
 - Boundary Index remains current.
 - Rationale: this package adds a design document only. Any vocal intent runtime, phoneme planner, prosody planner, vocal synthesis engine, audio output, or vocal exploration trace requires a future explicit package and boundary decision.
 
+## Qingyin Audio Cochlea Decoder Design v0
+
+Status: design proposal / docs-only / no Boundary Index change.
+
+Progress:
+- Adds `docs/qingyin_audio_cochlea_decoder_design_v0.md`.
+- Defines a future auditory organ architecture: audio input -> cochlea decoder -> acoustic feature layer -> audio focus layer -> audio prediction layer -> evidence/trace.
+- Frames future hearing as acoustic event detection, feature extraction, focus priority, prediction, and mismatch evidence before any semantic speech layer.
+- Keeps speech recognition, transcription, conversation, language understanding, speaker identity recognition, emotion detection, production-world surveillance/action, memory write, and consciousness/proof claims blocked.
+
+Boundary:
+- Boundary Index remains current.
+- Rationale: this package adds a design document only. Any audio input runtime, cochlea decoder, acoustic feature extraction, audio focus, audio prediction, audio trace, or semantic speech layer requires a future explicit package and boundary decision.
+
+## Internal Auditory Feedback Design Supplement v0
+
+Status: design supplement / docs-only / no Boundary Index change.
+
+Progress:
+- Adds `docs/internal_auditory_feedback_design_supplement_v0.md`.
+- Extends the vocal organ and audio cochlea designs with a future internal feedback path: generated audio -> internal auditory feedback -> cochlea decoder -> audio evidence -> prediction comparison.
+- Frames self-generated sound as observable evidence, with source metadata such as `self_vocal`, `external`, or `sandbox_environment`.
+- Keeps inner speech, silent narration, self-dialogue, language reasoning, automatic learning, memory creation, personality generation, self-awareness, and consciousness/proof claims blocked.
+
+Boundary:
+- Boundary Index remains current.
+- Rationale: this package adds a design supplement only. Any internal audio feedback runtime, self-vocal source classification, expected/observed vocal comparison, vocal prediction error trace, or sandbox vocal experimentation requires a future explicit package and boundary decision.
+
 This documentation reconciliation did not complete outcome evaluation at that time and did not claim every documentation inconsistency had been found. Current outcome evaluation status is controlled by the later Level 1 Sandbox Outcome Evaluation and Human Review Summary Minimal v0 section above.

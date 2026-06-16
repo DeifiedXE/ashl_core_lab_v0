@@ -2869,6 +2869,14 @@ Two-Trial History Boundary:
 
 - Qingyin Vocal Organ Engine Design v0 records a docs-only future vocal organ architecture: internal state -> vocal intent -> phoneme planning -> prosody planning -> vocal synthesis -> generated sound -> trace. It is not chatbot speech, TTS runtime, LLM speech generation, semantic language understanding, conversation, production-world communication, consciousness evidence, learning approval, memory write, or proof of learning. Boundary Index remains unchanged.
 
+## Qingyin Audio Cochlea Decoder Design v0
+
+- Qingyin Audio Cochlea Decoder Design v0 records a docs-only future auditory organ architecture: audio input -> cochlea decoder -> acoustic feature layer -> audio focus layer -> audio prediction layer -> evidence/trace. It is not speech recognition, transcription, conversation, language understanding, speaker identity recognition, emotion detection, surveillance, memory write, production-world action, or proof of consciousness/learning. Boundary Index remains unchanged.
+
+## Internal Auditory Feedback Design Supplement v0
+
+- Internal Auditory Feedback Design Supplement v0 records a docs-only future path where self-generated vocal output can be routed back through the auditory pipeline as observable evidence: generated audio -> internal auditory feedback -> cochlea decoder -> audio evidence -> prediction comparison. It is not inner speech, self-dialogue, language reasoning, automatic learning, memory creation, personality generation, self-awareness, or proof of consciousness. Boundary Index remains unchanged.
+
 ## Phase0 Package ID and Boundary Index Version Separation Minimal v0
 
 - Phase0 Package ID and Boundary Index Version Separation Minimal v0 separates Codex Package IDs from Boundary Index versions. Package IDs track work packages; Boundary Index versions track boundary and validation-boundary changes only. Completed tasks, CLI commands, smoke tests, unittests, documentation updates, queue status changes, scenario plans, and dry-run records do not automatically increment Boundary Index. This is workflow/versioning governance only and does not add runtime behavior, memory writes, retention writes, predictor mutation, sandbox execution/application, action selection, final_action, direct commands, or proof-of-learning claims.
