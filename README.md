@@ -1618,7 +1618,7 @@ Two-Trial History Boundary:
 
 - `docs/current_boundary_index.md`
 - Adds a short, versioned, low-token source of global hard boundaries for future work packages.
-- Current version: `Boundary Index Version: 2026-06-09-b98`.
+- Current version: `Boundary Index Version: 2026-06-09-b99`.
 - For current Phase0 status, see `docs/phase0_status.md`.
 - For capability status, see `docs/phase0_capability_matrix.md`.
 - For boundary version history, see `docs/current_boundary_index.md`.
@@ -2844,6 +2844,10 @@ Two-Trial History Boundary:
 ## Sandbox Final Action Approval Boundary Minimal v0
 
 - Sandbox Final Action Approval Boundary Minimal v0 creates an explicit approval boundary for a future Sandbox Final Action Minimal v0 package from the audited b95-b97 sandbox selected_action and execution-result chain. This approval does not create final_action; future final_action must remain sandbox-only and requires a separate implementation package. Boundary Index updates from `2026-06-09-b97` to `2026-06-09-b98`; direct command, predictor mutation, memory/retention writes, production behavior, persistent updates, and proof-of-learning remain blocked.
+
+## Test Tier Policy + Sandbox Final Action Minimal v0
+
+- Test Tier Policy + Sandbox Final Action Minimal v0 adds a workflow-only test-tier policy: future packages default to targeted unittest, smoke, git diff check, and git status; full unittest discover is conditional and skipped full regression requires a reason. It also creates one sandbox-only final_action from the approved b98 sandbox execution result: `observe_or_alternative_probe`, with `execution_result=local_context_observed`. Boundary Index updates from `2026-06-09-b98` to `2026-06-09-b99`; the final_action does not create a direct command, write memory/retention, mutate predictor, change production behavior, or prove learning.
 
 ## Phase0 Package ID and Boundary Index Version Separation Minimal v0
 

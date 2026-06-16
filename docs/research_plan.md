@@ -7040,4 +7040,24 @@ Next recommended work:
 1. Sandbox Final Action Minimal v0 may be proposed as a separate implementation package.
 2. Keep direct command, memory/retention writes, predictor mutation, production behavior, autonomous claims, and proof claims blocked until separate future boundaries explicitly open them.
 
+## Test Tier Policy + Sandbox Final Action Minimal v0
+
+Status: completed / workflow-only test policy plus sandbox-only final_action.
+
+Progress:
+- Adds `ashl_core/test_tier_policy_minimal.py` and `ashl_core/sandbox_final_action_minimal.py`.
+- Adds workflow-only test-tier policy: future packages default to targeted unittest, smoke, git diff check, and git status.
+- Makes full unittest discover conditional; skipped full regression requires a reason.
+- Creates one sandbox-only final_action from the approved b98 sandbox execution result.
+- Records `final_action=observe_or_alternative_probe` and `execution_result=local_context_observed`.
+- Keeps direct command, persistent update, cross-session persistence, memory write, retained JSONL write, retention write, predictor read/influence/mutation, production behavior, autonomous learning/action, and proof claims blocked.
+
+Boundary:
+- Boundary Index changes from `2026-06-09-b98` to `2026-06-09-b99`.
+- Rationale: this package permits one sandbox-only final_action to be created from an approved sandbox execution result.
+- The test-tier policy portion is workflow-only and does not require a Boundary Index change by itself.
+
+Next recommended work:
+1. Treat future direct command, production promotion, memory write, retention write, or predictor influence as separate explicit boundary packages.
+
 This documentation reconciliation did not complete outcome evaluation at that time and did not claim every documentation inconsistency had been found. Current outcome evaluation status is controlled by the later Level 1 Sandbox Outcome Evaluation and Human Review Summary Minimal v0 section above.

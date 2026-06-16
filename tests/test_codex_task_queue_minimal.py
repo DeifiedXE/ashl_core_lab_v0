@@ -137,7 +137,7 @@ class CodexTaskQueueMinimalTests(unittest.TestCase):
         self.assertEqual(22, summary["task_queue_result_count"])
         self.assertEqual(1, summary["valid_task_queue_count"])
         self.assertEqual(21, summary["invalid_task_queue_count"])
-        self.assertEqual(48, summary["valid_task_entry_count"])
+        self.assertEqual(49, summary["valid_task_entry_count"])
         self.assertGreaterEqual(summary["invalid_task_entry_count"], 9)
         self.assertEqual(1, summary["queue_scope_checked_count"])
         self.assertEqual(1, summary["approval_block_checked_count"])
@@ -166,7 +166,7 @@ class CodexTaskQueueMinimalTests(unittest.TestCase):
 
     def test_boundary_change_required_false_blocks_version_change(self):
         task = self._task()
-        task["boundary_index_version_after"] = "2026-06-09-b99"
+        task["boundary_index_version_after"] = "2026-06-09-b100"
 
         self.assertIn(
             "boundary_index_changed_without_boundary_change_required",
@@ -176,7 +176,7 @@ class CodexTaskQueueMinimalTests(unittest.TestCase):
     def test_boundary_increment_requires_explicit_rationale(self):
         task = self._task()
         task["boundary_change_required"] = True
-        task["boundary_index_version_after"] = "2026-06-09-b99"
+        task["boundary_index_version_after"] = "2026-06-09-b100"
         task["boundary_change_rationale"] = ""
 
         self.assertIn(
@@ -187,7 +187,7 @@ class CodexTaskQueueMinimalTests(unittest.TestCase):
     def test_task_completion_is_not_boundary_change_rationale(self):
         task = self._task(status="completed")
         task["boundary_change_required"] = True
-        task["boundary_index_version_after"] = "2026-06-09-b99"
+        task["boundary_index_version_after"] = "2026-06-09-b100"
         task["boundary_change_rationale"] = "Completed task increments version."
 
         self.assertIn(
@@ -204,10 +204,10 @@ class CodexTaskQueueMinimalTests(unittest.TestCase):
             "task_status": status,
             "task_type": task_type,
             "status": status,
-            "boundary_index_version": "2026-06-09-b98",
+            "boundary_index_version": "2026-06-09-b99",
             "boundary_change_required": False,
-            "boundary_index_version_before": "2026-06-09-b98",
-            "boundary_index_version_after": "2026-06-09-b98",
+            "boundary_index_version_before": "2026-06-09-b99",
+            "boundary_index_version_after": "2026-06-09-b99",
             "boundary_change_rationale": "",
             "source": "unit_test",
             "creates_capability": False,

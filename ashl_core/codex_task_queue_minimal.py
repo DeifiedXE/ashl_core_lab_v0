@@ -8,8 +8,8 @@ from typing import Any
 
 COMMAND = "run-codex-task-queue-minimal-check"
 FLOW = "codex_task_queue_minimal_v0"
-BOUNDARY_INDEX_VERSION = "2026-06-09-b98"
-PREVIOUS_BOUNDARY_INDEX_VERSION = "2026-06-09-b97"
+BOUNDARY_INDEX_VERSION = "2026-06-09-b99"
+PREVIOUS_BOUNDARY_INDEX_VERSION = "2026-06-09-b98"
 LEVEL2_APPLICATION_BOUNDARY_BEFORE = "2026-06-09-b72"
 LEVEL2_APPLICATION_BOUNDARY_AFTER = "2026-06-09-b73"
 LEVEL3_TOY_MINEFIELD_BOUNDARY_BEFORE = "2026-06-09-b73"
@@ -62,6 +62,8 @@ SANDBOX_EXECUTION_RESULT_FEEDBACK_LOOP_BOUNDARY_BEFORE = "2026-06-09-b96"
 SANDBOX_EXECUTION_RESULT_FEEDBACK_LOOP_BOUNDARY_AFTER = "2026-06-09-b97"
 SANDBOX_FINAL_ACTION_APPROVAL_BOUNDARY_BEFORE = "2026-06-09-b97"
 SANDBOX_FINAL_ACTION_APPROVAL_BOUNDARY_AFTER = "2026-06-09-b98"
+TEST_TIER_POLICY_AND_SANDBOX_FINAL_ACTION_BOUNDARY_BEFORE = "2026-06-09-b98"
+TEST_TIER_POLICY_AND_SANDBOX_FINAL_ACTION_BOUNDARY_AFTER = "2026-06-09-b99"
 BUCKET_SIGNAL_BASELINE_BOUNDARY_VERSION = "2026-06-09-b93"
 B85_B93_BASELINE_BOUNDARY_VERSION = "2026-06-09-b93"
 VERSIONING_POLICY_BOUNDARY_BEFORE = "2026-06-09-b71"
@@ -1027,6 +1029,28 @@ def build_codex_task_queue_minimal() -> dict[str, Any]:
                 ),
             ),
             _task(
+                "task.test_tier_policy_and_sandbox_final_action_minimal.completed",
+                "PKG-Phase0-TestTierPolicyAndSandboxFinalAction-Minimal-v0",
+                "Test Tier Policy + Sandbox Final Action Minimal v0",
+                "capability_boundary",
+                "completed",
+                "codex_completed_report",
+                ["task.sandbox_final_action_approval_boundary_minimal.completed"],
+                [],
+                (
+                    "Adds workflow-only test-tier policy and creates one sandbox-only final_action from "
+                    "the approved b98 sandbox final_action boundary; direct command, persistent update, "
+                    "memory/retention write, predictor mutation, production behavior, and proof claim remain blocked."
+                ),
+                boundary_change_required=True,
+                boundary_index_version_before=TEST_TIER_POLICY_AND_SANDBOX_FINAL_ACTION_BOUNDARY_BEFORE,
+                boundary_index_version_after=TEST_TIER_POLICY_AND_SANDBOX_FINAL_ACTION_BOUNDARY_AFTER,
+                boundary_change_rationale=(
+                    "Permits one sandbox-only final_action to be created from an approved sandbox execution result; "
+                    "the test-tier policy portion is workflow-only and is not the boundary change."
+                ),
+            ),
+            _task(
                 "task.level2_sandbox_readiness.deferred",
                 "PKG-Phase0-Level2-Readiness-Future",
                 "Level 2 Sandbox Readiness Minimal v0",
@@ -1285,14 +1309,14 @@ def _invalid_queues(valid_queue: dict[str, Any]) -> list[dict[str, Any]]:
         queues.append(_mutate_queue(valid_queue, [field], True))
     queues.append(_mutate_task(valid_queue, 1, ["depends_on"], ["task.unknown"]))
     queues.append(_mutate_task(valid_queue, 0, ["package_id"], ""))
-    queues.append(_mutate_task(valid_queue, 0, ["boundary_index_version_after"], "2026-06-09-b99"))
+    queues.append(_mutate_task(valid_queue, 0, ["boundary_index_version_after"], "2026-06-09-b100"))
     queues.append(_mutate_task(valid_queue, 0, ["boundary_change_required"], True))
-    no_rationale = _mutate_task(valid_queue, 0, ["boundary_index_version_after"], "2026-06-09-b99")
+    no_rationale = _mutate_task(valid_queue, 0, ["boundary_index_version_after"], "2026-06-09-b100")
     no_rationale["task_entries"][0]["boundary_change_required"] = True
     no_rationale["task_entries"][0]["boundary_change_rationale"] = ""
     queues.append(no_rationale)
     completion_rationale = _mutate_task(valid_queue, 0, ["boundary_change_required"], True)
-    completion_rationale["task_entries"][0]["boundary_index_version_after"] = "2026-06-09-b99"
+    completion_rationale["task_entries"][0]["boundary_index_version_after"] = "2026-06-09-b100"
     completion_rationale["task_entries"][0]["boundary_change_rationale"] = "Completed task increments version."
     queues.append(completion_rationale)
     blocked = deepcopy(valid_queue)
@@ -1311,7 +1335,7 @@ def _invalid_queues(valid_queue: dict[str, Any]) -> list[dict[str, Any]]:
     )
     queues.append(blocked)
     deferred = deepcopy(valid_queue)
-    deferred["task_entries"][46].pop("deferral_reason", None)
+    deferred["task_entries"][47].pop("deferral_reason", None)
     queues.append(deferred)
     superseded = deepcopy(valid_queue)
     superseded["task_entries"].append(
@@ -1383,7 +1407,7 @@ def _summary(
         summary["task_queue_result_count"] == 22
         and summary["valid_task_queue_count"] == 1
         and summary["invalid_task_queue_count"] == 21
-        and summary["valid_task_entry_count"] == 48
+        and summary["valid_task_entry_count"] == 49
         and summary["invalid_task_entry_count"] >= 9
         and summary["queue_scope_checked_count"] == 1
         and summary["approval_block_checked_count"] == 1
