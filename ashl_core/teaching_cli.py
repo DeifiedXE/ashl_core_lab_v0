@@ -274,6 +274,9 @@ from .time_paced_locomotion_action_completion_minimal import (
 from .mimetic_endocrine_sweetness_preference_sandbox_minimal import (
     run_mimetic_endocrine_sweetness_preference_sandbox_minimal_check,
 )
+from .mimetic_endocrine_cost_sensitive_choice_sandbox_minimal import (
+    run_mimetic_endocrine_cost_sensitive_choice_sandbox_minimal_check,
+)
 from .reviewed_lesson_dry_run_correction_minimal import (
     run_reviewed_lesson_dry_run_correction_minimal_check,
 )
@@ -3939,6 +3942,8 @@ def run_command(command: str) -> dict[str, Any] | str:
         return run_time_paced_locomotion_action_completion_minimal_check()
     if command == "run-mimetic-endocrine-sweetness-preference-sandbox-minimal-check":
         return run_mimetic_endocrine_sweetness_preference_sandbox_minimal_check()
+    if command == "run-mimetic-endocrine-cost-sensitive-choice-sandbox-minimal-check":
+        return run_mimetic_endocrine_cost_sensitive_choice_sandbox_minimal_check()
     if command == "run-simple-retina-focus-preview-minimal-check":
         return run_simple_retina_focus_preview_minimal_check()
     if command == "run-generalized-prediction-confidence-check":
@@ -4176,6 +4181,7 @@ def main(argv: list[str] | None = None) -> int:
             "run-temporal-candy-loop-sandbox-minimal-check",
             "run-time-paced-locomotion-action-completion-minimal-check",
             "run-mimetic-endocrine-sweetness-preference-sandbox-minimal-check",
+            "run-mimetic-endocrine-cost-sensitive-choice-sandbox-minimal-check",
             "run-simple-retina-focus-preview-minimal-check",
             "run-generalized-prediction-confidence-check",
             "run-generalized-candidate-from-pattern-check",
@@ -4616,6 +4622,8 @@ def main(argv: list[str] | None = None) -> int:
         result = run_time_paced_locomotion_action_completion_minimal_check()
     elif args.command == "run-mimetic-endocrine-sweetness-preference-sandbox-minimal-check":
         result = run_mimetic_endocrine_sweetness_preference_sandbox_minimal_check()
+    elif args.command == "run-mimetic-endocrine-cost-sensitive-choice-sandbox-minimal-check":
+        result = run_mimetic_endocrine_cost_sensitive_choice_sandbox_minimal_check()
     elif args.command == "run-simple-retina-focus-preview-minimal-check":
         result = run_simple_retina_focus_preview_minimal_check()
     elif args.command == "run-generalized-prediction-confidence-check":

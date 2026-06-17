@@ -1618,7 +1618,7 @@ Two-Trial History Boundary:
 
 - `docs/current_boundary_index.md`
 - Adds a short, versioned, low-token source of global hard boundaries for future work packages.
-- Current version: `Boundary Index Version: 2026-06-09-b108`.
+- Current version: `Boundary Index Version: 2026-06-09-b109`.
 - For current Phase0 status, see `docs/phase0_status.md`.
 - For capability status, see `docs/phase0_capability_matrix.md`.
 - For boundary version history, see `docs/current_boundary_index.md`.
@@ -2908,6 +2908,10 @@ Two-Trial History Boundary:
 ## Mimetic Endocrine Sweetness Preference Sandbox Minimal v0
 
 - Mimetic Endocrine Sweetness Preference Sandbox Minimal v0 adds a sandbox-only sweetness preference trace using dopamine-like response evidence. Stage 0 calibrates by eating one ordinary candy and one sweeter candy once; Stage 1 and Stage 2 use irreversible one-path choices where the unchosen path is not consumed and return is blocked. The sweeter candy response wins in the unobstructed case and remains higher after a mild obstacle cost. Boundary Index updates from `2026-06-09-b107` to `2026-06-09-b108`. This remains a fixed-choice sandbox fixture and does not add free choice, pathfinding, production behavior, persistent preference, memory/retention writes, predictor mutation, persistent endocrine runtime, biological hormone claims, subjective pleasure claims, autonomous action/learning, or proof-of-learning claims.
+
+## Mimetic Endocrine Cost-Sensitive Choice Sandbox Minimal v0
+
+- Mimetic Endocrine Cost-Sensitive Choice Sandbox Minimal v0 adds a sandbox-only contrast where a much harder sweeter-candy path is returnable before candy consumption but has enough difficulty/return cost that its net tendency falls below the easy ordinary-candy path. The raw dopamine-like response for sweeter candy remains higher, but the fixed sandbox preview prefers the easy ordinary path and does not force the harder sweeter path. Boundary Index updates from `2026-06-09-b108` to `2026-06-09-b109`. This remains a symbolic/numeric fixture and does not add visual detection, free choice, pathfinding, production behavior, persistent preference, memory/retention writes, predictor mutation, persistent endocrine runtime, biological hormone claims, subjective pleasure claims, autonomous action/learning, or proof-of-learning claims.
 
 ## Host-Dependent Idle Continuance Trace v0
 

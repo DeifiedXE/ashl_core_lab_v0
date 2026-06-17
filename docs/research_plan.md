@@ -7275,6 +7275,23 @@ Boundary:
 - Boundary Index updates from `2026-06-09-b107` to `2026-06-09-b108`.
 - Rationale: this package adds a new sandbox-only mimetic endocrine response/preference trace boundary while keeping all behavior and persistence boundaries closed.
 
+## Mimetic Endocrine Cost-Sensitive Choice Sandbox Minimal v0
+
+Status: completed / sandbox-only cost-sensitive mimetic endocrine choice trace / Boundary Index b109.
+
+Progress:
+- Adds `ashl_core/mimetic_endocrine_cost_sensitive_choice_sandbox_minimal.py`.
+- Adds `py -3 -m ashl_core.teaching_cli run-mimetic-endocrine-cost-sensitive-choice-sandbox-minimal-check`.
+- Reuses the b108 stage0 sweetness calibration as source evidence.
+- Compares an easy ordinary-candy path against a much harder sweeter-candy path with return available before candy consumption.
+- Shows raw sweeter dopamine-like response remains higher, but high difficulty/return cost makes the sweeter path net tendency lower.
+- Prefers the easy ordinary path and blocks consuming both candies.
+- Keeps visual detection, free choice, pathfinding, production behavior, persistent preference, memory/retention writes, predictor mutation, persistent endocrine runtime, biological hormone claims, subjective pleasure claims, autonomous learning/action, and proof claims blocked.
+
+Boundary:
+- Boundary Index updates from `2026-06-09-b108` to `2026-06-09-b109`.
+- Rationale: this package adds a new sandbox-only cost-sensitive contrast boundary for mimetic endocrine response while keeping behavior and persistence boundaries closed.
+
 ## Host-Dependent Idle Continuance Trace v0
 
 Status: design assumption / docs-only / no Boundary Index change.
