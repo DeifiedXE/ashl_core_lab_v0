@@ -7210,6 +7210,23 @@ Boundary:
 - Boundary Index remains `2026-06-09-b104`.
 - Rationale: this package evaluates an existing sandbox-only direct command outcome and does not create or execute another command, persist feedback, change behavior, write memory/retention, mutate predictors, or change a boundary.
 
+## Sandbox Multi-Cycle Action Loop Minimal v0
+
+Status: completed / bounded sandbox action loop / Boundary Index b105.
+
+Progress:
+- Adds `ashl_core/sandbox_multi_cycle_action_loop_minimal.py`.
+- Adds `py -3 -m ashl_core.teaching_cli run-sandbox-multi-cycle-action-loop-minimal-check`.
+- Reuses existing selected_action, sandbox action execution, final_action, direct command, direct command execution, and outcome evaluation records.
+- Runs a fixed two-cycle sandbox-only action loop with `max_cycles=2`.
+- Each cycle creates sandbox selected_action, final_action, direct command, direct command execution, and outcome evaluation records.
+- Cycle 1 creates a next-cycle context; cycle 2 stops because the fixed budget is reached.
+- Keeps third-cycle authorization, open-ended looping, production behavior, real navigation/UI changes, persistent feedback, memory/retention writes, predictor mutation, endocrine runtime use, runtime behavior outside sandbox, autonomous learning/action, and proof claims blocked.
+
+Boundary:
+- Boundary Index updates from `2026-06-09-b104` to `2026-06-09-b105`.
+- Rationale: this package moves from one completed sandbox direct-command outcome to a bounded multi-cycle sandbox action loop, which is a new sandbox action-line capability even though it remains sandbox-only and budget-limited.
+
 ## Host-Dependent Idle Continuance Trace v0
 
 Status: design assumption / docs-only / no Boundary Index change.

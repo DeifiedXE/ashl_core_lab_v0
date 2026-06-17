@@ -1618,7 +1618,7 @@ Two-Trial History Boundary:
 
 - `docs/current_boundary_index.md`
 - Adds a short, versioned, low-token source of global hard boundaries for future work packages.
-- Current version: `Boundary Index Version: 2026-06-09-b104`.
+- Current version: `Boundary Index Version: 2026-06-09-b105`.
 - For current Phase0 status, see `docs/phase0_status.md`.
 - For capability status, see `docs/phase0_capability_matrix.md`.
 - For boundary version history, see `docs/current_boundary_index.md`.
@@ -2892,6 +2892,10 @@ Two-Trial History Boundary:
 ## Sandbox Direct Command Outcome Evaluation Minimal v0
 
 - Sandbox Direct Command Outcome Evaluation Minimal v0 evaluates the completed b103/b104 sandbox direct command outcome as a passed sandbox observation with clean rollback and marks it ready only to prepare a future sandbox action cycle. Boundary Index remains `2026-06-09-b104`; this package does not create or execute another command, authorize next direct-command execution, persist feedback, write memory/retention, mutate predictors, change runtime/production behavior, create selected_action/final_action, or prove learning.
+
+## Sandbox Multi-Cycle Action Loop Minimal v0
+
+- Sandbox Multi-Cycle Action Loop Minimal v0 runs a fixed two-cycle sandbox-only action loop by reusing the existing selected_action, sandbox execution, final_action, direct command, direct command execution, and outcome evaluation records. Boundary Index updates from `2026-06-09-b104` to `2026-06-09-b105` because this moves from one completed direct-command outcome to a bounded multi-cycle sandbox action loop. The loop has `max_cycles=2`, creates two sandbox selected_action/final_action/direct-command/execution/outcome-evaluation cycles, stops by budget, and does not authorize a third cycle. It does not create production behavior, real navigation/UI change, persistent feedback, memory/retention writes, predictor mutation, endocrine runtime use, open-ended autonomy, or proof-of-learning claims.
 
 ## Host-Dependent Idle Continuance Trace v0
 

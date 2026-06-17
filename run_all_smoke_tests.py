@@ -287,6 +287,9 @@ from ashl_core.b100_b104_direct_command_line_audit_minimal import (
 from ashl_core.sandbox_direct_command_outcome_evaluation_minimal import (
     run_sandbox_direct_command_outcome_evaluation_minimal_check,
 )
+from ashl_core.sandbox_multi_cycle_action_loop_minimal import (
+    run_sandbox_multi_cycle_action_loop_minimal_check,
+)
 from ashl_core.minimal_visual_grounding_trial import run_minimal_visual_grounding_trial_check
 from ashl_core.visual_prediction_error_attention_priority_preview_minimal import (
     run_visual_prediction_error_attention_priority_preview_minimal_check,
@@ -10668,8 +10671,8 @@ def smoke_current_boundary_index_docs() -> dict:
     readme = readme_path.read_text(encoding="utf-8") if readme_path.exists() else ""
     research_plan = research_plan_path.read_text(encoding="utf-8") if research_plan_path.exists() else ""
     compact_required_terms = [
-        "Boundary Index Version: 2026-06-09-b104",
-        "Last update log: Sandbox Direct Command Execution Feedback Loop Minimal v0",
+        "Boundary Index Version: 2026-06-09-b105",
+        "Last update log: Sandbox Multi-Cycle Action Loop Minimal v0",
         "docs/boundary_index_archive_2026_06.md",
         "Minimal Visual Grounding Trial v0",
         "Visual Prediction Error + Attention Priority Preview Minimal v0",
@@ -10846,7 +10849,7 @@ def smoke_current_boundary_index_docs() -> dict:
         and all(term in doc for term in compact_required_terms)
         and all(term in archive for term in archive_required_terms)
         and line_count <= 150
-        and "Boundary Index Version: 2026-06-09-b104" in readme
+        and "Boundary Index Version: 2026-06-09-b105" in readme
         and "docs/boundary_index_archive_2026_06.md" in readme
         and "Boundary Index Compaction / Archive v0" in research_plan
         and "Runtime Tendency Memory Influence Safety Sync Minimal v0" in research_plan
@@ -10884,7 +10887,7 @@ def smoke_phase0_documentation_consolidation_minimal() -> dict:
         status_path.exists()
         and matrix_path.exists()
         and index_path.exists()
-        and "Boundary Index Version: 2026-06-09-b104" in status
+        and "Boundary Index Version: 2026-06-09-b105" in status
         and "Current Safe Capability" in status
         and "No proof-of-learning claim" in status
         and "Level 1 Sandbox Outcome Evaluation and Human Review Summary Minimal v0" in status
@@ -10995,7 +10998,7 @@ def smoke_phase0_documentation_inventory_and_consistency_reconciliation() -> dic
     boundary = Path("docs/current_boundary_index.md").read_text(encoding="utf-8")
     passed = (
         all(path.exists() for path in required_paths)
-        and "Boundary Index Version: 2026-06-09-b104" in texts[Path("docs/phase0_status.md")]
+        and "Boundary Index Version: 2026-06-09-b105" in texts[Path("docs/phase0_status.md")]
         and "Inventory count:" in texts[Path("docs/phase0_doc_inventory.md")]
         and "docs/phase0_versioning_policy.md" in texts[Path("docs/phase0_doc_inventory.md")]
         and "unknown_needs_review" in texts[Path("docs/phase0_doc_inventory.md")]
@@ -16634,6 +16637,59 @@ def smoke_sandbox_direct_command_outcome_evaluation_minimal() -> dict:
     )
 
 
+def smoke_sandbox_multi_cycle_action_loop_minimal() -> dict:
+    result = run_sandbox_multi_cycle_action_loop_minimal_check()
+    summary = result.get("summary", {})
+    boundary = result.get("boundary", {})
+    loop = result.get("valid_loop", {})
+    loop_result = loop.get("loop_result", {})
+    cycles = loop.get("cycles", [])
+    passed = (
+        result.get("command") == "run-sandbox-multi-cycle-action-loop-minimal-check"
+        and result.get("flow") == "sandbox_multi_cycle_action_loop_minimal_v0"
+        and result.get("status") == "ok"
+        and summary.get("valid_multi_cycle_loop_count") == 1
+        and summary.get("invalid_multi_cycle_loop_count") == 57
+        and summary.get("source_chain_checked_count") == 1
+        and summary.get("cycles_completed_count") == 1
+        and summary.get("sandbox_only_checked_count") == 1
+        and summary.get("selected_action_created_total") == 2
+        and summary.get("final_action_created_total") == 2
+        and summary.get("direct_command_created_total") == 2
+        and summary.get("direct_command_executed_total") == 2
+        and summary.get("outcome_evaluation_passed_total") == 2
+        and summary.get("next_cycle_context_created_total") == 1
+        and summary.get("loop_stopped_by_budget_count") == 1
+        and summary.get("open_ended_loop_blocked_count") == 1
+        and summary.get("next_cycle_execution_blocked_count") == 1
+        and summary.get("production_behavior_blocked_count") == 1
+        and summary.get("memory_write_blocked_count") == 1
+        and summary.get("retention_blocked_count") == 1
+        and summary.get("predictor_mutation_blocked_count") == 1
+        and summary.get("endocrine_runtime_blocked_count") == 1
+        and summary.get("runtime_behavior_change_blocked_count") == 1
+        and summary.get("proof_claim_blocked_count") == 1
+        and summary.get("all_sandbox_multi_cycle_action_loop_checks_passed") is True
+        and boundary.get("boundary_index_version_before") == "2026-06-09-b104"
+        and boundary.get("boundary_index_version_after") == "2026-06-09-b105"
+        and boundary.get("boundary_change_required") is True
+        and loop.get("loop_config", {}).get("max_cycles") == 2
+        and loop_result.get("loop_stopped_by_budget") is True
+        and loop_result.get("next_cycle_execution_authorized") is False
+        and len(cycles) == 2
+        and all(cycle.get("direct_command") == "sandbox.observe_or_alternative_probe" for cycle in cycles)
+        and all(cycle.get("direct_command_executed") is True for cycle in cycles)
+        and all(cycle.get("outcome_evaluation_passed") is True for cycle in cycles)
+        and cycles[0].get("next_cycle_context_created") is True
+        and cycles[1].get("next_cycle_context_created") is False
+    )
+    return _result(
+        "sandbox_multi_cycle_action_loop_minimal",
+        passed,
+        {"summary": summary, "boundary": boundary},
+    )
+
+
 def smoke_phase0_current_capability_snapshot() -> dict:
     doc_path = Path("docs/phase0_current_capability_snapshot_2026-06-10.md")
     doc = doc_path.read_text(encoding="utf-8") if doc_path.exists() else ""
@@ -19384,6 +19440,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_sandbox_direct_command_execution_feedback_loop_minimal(),
         smoke_b100_b104_direct_command_line_audit_minimal(),
         smoke_sandbox_direct_command_outcome_evaluation_minimal(),
+        smoke_sandbox_multi_cycle_action_loop_minimal(),
         smoke_phase0_current_capability_snapshot(),
         smoke_memory_influence_behavior_gate_design(),
         smoke_first_memory_influenced_behavior_boundary(),
