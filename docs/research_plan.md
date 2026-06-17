@@ -7132,6 +7132,20 @@ Boundary:
 - Boundary Index changes from `2026-06-09-b102` to `2026-06-09-b103`.
 - Rationale: this package executes the sandbox-only direct command that b102 approved, but does not feed the result into feedback or production behavior.
 
+## Sandbox Direct Command Execution Feedback Loop Minimal v0
+
+Status: completed / same-session direct-command feedback loop / rollback / Boundary Index b103 -> b104.
+
+Progress:
+- Adds `ashl_core/sandbox_direct_command_execution_feedback_loop_minimal.py`.
+- Routes the b103 sandbox-only direct command execution result into trace-only feedback, same-session ephemeral application, candidate reordering preview, and rollback.
+- Keeps `observe_or_alternative_probe` ranked first, `check_before_retry` before direct retry, and `retry_same_action_without_check` last.
+- Keeps persistent feedback, cross-session feedback, production behavior, real navigation/UI changes, memory write, retained JSONL write, retention write, predictor read/influence/mutation, selected_action/final_action/new direct command, autonomous learning/action, and proof claims blocked.
+
+Boundary:
+- Boundary Index changes from `2026-06-09-b103` to `2026-06-09-b104`.
+- Rationale: direct command execution result now reaches same-session feedback/reordering, while rollback and non-persistence remain required.
+
 ## Host-Dependent Idle Continuance Trace v0
 
 Status: design assumption / docs-only / no Boundary Index change.
