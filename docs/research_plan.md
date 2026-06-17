@@ -7146,6 +7146,20 @@ Boundary:
 - Boundary Index changes from `2026-06-09-b103` to `2026-06-09-b104`.
 - Rationale: direct command execution result now reaches same-session feedback/reordering, while rollback and non-persistence remain required.
 
+## b100-b104 Direct Command Line Audit Minimal v0
+
+Status: completed / audit-only / Boundary Index remains b104.
+
+Progress:
+- Adds `ashl_core/b100_b104_direct_command_line_audit_minimal.py`.
+- Audits and compresses the direct command line: b100 approval boundary, b101 sandbox direct command creation, b102 execution approval boundary, b103 one-time sandbox execution, and b104 same-session feedback/reordering/rollback.
+- Confirms one sandbox-only direct command was created and executed once, same-session feedback remained ephemeral, and rollback left no dirty state.
+- Keeps persistent feedback, cross-session feedback, production behavior, real navigation/UI changes, memory write, retained JSONL write, retention write, predictor read/influence/mutation, selected_action/final_action/new direct command, autonomous learning/action, and proof claims blocked.
+
+Boundary:
+- Boundary Index remains `2026-06-09-b104`.
+- Rationale: this package audits existing b100-b104 records and does not create a new command, execute a command, persist feedback, change behavior, write memory/retention, mutate predictors, or change a boundary.
+
 ## Host-Dependent Idle Continuance Trace v0
 
 Status: design assumption / docs-only / no Boundary Index change.

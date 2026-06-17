@@ -2873,6 +2873,10 @@ Two-Trial History Boundary:
 
 - Sandbox Direct Command Execution Feedback Loop Minimal v0 routes the b103 sandbox-only direct command execution result into trace-only feedback, same-session ephemeral feedback application, candidate reordering preview, and rollback. Boundary Index updates from `2026-06-09-b103` to `2026-06-09-b104`; this package does not create persistent feedback, cross-session feedback, production behavior, memory/retention writes, predictor mutation, real navigation/UI behavior, selected_action/final_action/new direct command, or proof-of-learning claims.
 
+## b100-b104 Direct Command Line Audit Minimal v0
+
+- b100-b104 Direct Command Line Audit Minimal v0 audits and compresses the sandbox direct command line: b100 direct-command approval, b101 direct command creation, b102 execution approval, b103 one-time sandbox execution, and b104 same-session feedback/reordering/rollback. Boundary Index remains `2026-06-09-b104`; this audit does not create a new command, execute a command, persist feedback, write memory/retention, mutate predictors, change production behavior, create selected_action/final_action/new direct command, or prove learning.
+
 ## Host-Dependent Idle Continuance Trace v0
 
 - Host-Dependent Idle Continuance Trace v0 records a design-only OFFLINE / IDLE / ACTIVE model for future low-power idle state continuity. It proposes `idle_tick`, `continuance_pressure`, `weak_intent`, pending prediction suspension, and waiting-tendency invariants, while keeping IDLE blocked from LLM calls, user data scans, external actions, formal memory, retained JSONL, retention, world-model updates, learned principles, prediction-error changes without observation, direct commands, production behavior, and consciousness/proof-of-learning claims. Boundary Index remains unchanged.

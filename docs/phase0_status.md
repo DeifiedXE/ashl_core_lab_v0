@@ -3,12 +3,13 @@
 ## Current Boundary Index
 
 - Current version: `Boundary Index Version: 2026-06-09-b104`
-- Current update log: Sandbox Direct Command Execution Feedback Loop Minimal v0
+- Current update log: Sandbox Direct Command Execution Feedback Loop Minimal v0; b100-b104 Direct Command Line Audit Minimal v0 is audit-only and keeps the same Boundary Index.
 - The task queue is workflow coordination only and does not add ASHL Core runtime capability or approval.
 - Package IDs track Codex work packages; Boundary Index versions track boundary and validation-boundary changes only.
 
 ## Latest Completed Package
 
+- Latest completed audit package: b100-b104 Direct Command Line Audit Minimal v0.
 - Latest completed capability package: Sandbox Direct Command Execution Feedback Loop Minimal v0.
 - Previous completed capability package: Sandbox Direct Command Execution Minimal v0.
 - Previous completed capability package: Sandbox Direct Command Execution Approval Boundary Minimal v0.

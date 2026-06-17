@@ -281,6 +281,9 @@ from ashl_core.sandbox_direct_command_execution_minimal import (
 from ashl_core.sandbox_direct_command_execution_feedback_loop_minimal import (
     run_sandbox_direct_command_execution_feedback_loop_minimal_check,
 )
+from ashl_core.b100_b104_direct_command_line_audit_minimal import (
+    run_b100_b104_direct_command_line_audit_minimal_check,
+)
 from ashl_core.minimal_visual_grounding_trial import run_minimal_visual_grounding_trial_check
 from ashl_core.visual_prediction_error_attention_priority_preview_minimal import (
     run_visual_prediction_error_attention_priority_preview_minimal_check,
@@ -16471,6 +16474,48 @@ def smoke_sandbox_direct_command_execution_feedback_loop_minimal() -> dict:
     )
 
 
+def smoke_b100_b104_direct_command_line_audit_minimal() -> dict:
+    result = run_b100_b104_direct_command_line_audit_minimal_check()
+    summary = result.get("summary", {})
+    boundary = result.get("boundary", {})
+    audit = result.get("valid_audit", {})
+    passed = (
+        result.get("command") == "run-b100-b104-direct-command-line-audit-minimal-check"
+        and result.get("flow") == "b100_b104_direct_command_line_audit_minimal_v0"
+        and result.get("status") == "ok"
+        and summary.get("valid_audit_count") == 1
+        and summary.get("invalid_audit_count") == 43
+        and summary.get("audited_step_count") == 5
+        and summary.get("missing_step_count") == 0
+        and summary.get("source_chain_checked_count") == 1
+        and summary.get("boundary_unchanged_checked_count") == 1
+        and summary.get("direct_command_created_once_checked_count") == 1
+        and summary.get("direct_command_executed_once_checked_count") == 1
+        and summary.get("same_session_feedback_loop_checked_count") == 1
+        and summary.get("rollback_checked_count") == 1
+        and summary.get("persistent_feedback_blocked_count") == 1
+        and summary.get("production_behavior_blocked_count") == 1
+        and summary.get("memory_write_blocked_count") == 1
+        and summary.get("retention_blocked_count") == 1
+        and summary.get("predictor_mutation_blocked_count") == 1
+        and summary.get("new_action_creation_blocked_count") == 1
+        and summary.get("proof_claim_blocked_count") == 1
+        and summary.get("all_b100_b104_direct_command_line_audit_checks_passed") is True
+        and boundary.get("boundary_index_version_before") == "2026-06-09-b104"
+        and boundary.get("boundary_index_version_after") == "2026-06-09-b104"
+        and boundary.get("boundary_change_required") is False
+        and audit.get("record_type") == "b100_b104_direct_command_line_audit"
+        and audit.get("direct_command") == "sandbox.observe_or_alternative_probe"
+        and audit.get("direct_command_executed_once") is True
+        and audit.get("dirty_state_after_rollback") is False
+    )
+    return _result(
+        "b100_b104_direct_command_line_audit_minimal",
+        passed,
+        {"summary": summary, "boundary": boundary},
+    )
+
+
 def smoke_phase0_current_capability_snapshot() -> dict:
     doc_path = Path("docs/phase0_current_capability_snapshot_2026-06-10.md")
     doc = doc_path.read_text(encoding="utf-8") if doc_path.exists() else ""
@@ -19219,6 +19264,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_sandbox_direct_command_execution_approval_boundary_minimal(),
         smoke_sandbox_direct_command_execution_minimal(),
         smoke_sandbox_direct_command_execution_feedback_loop_minimal(),
+        smoke_b100_b104_direct_command_line_audit_minimal(),
         smoke_phase0_current_capability_snapshot(),
         smoke_memory_influence_behavior_gate_design(),
         smoke_first_memory_influenced_behavior_boundary(),
