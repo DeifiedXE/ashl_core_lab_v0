@@ -1618,7 +1618,7 @@ Two-Trial History Boundary:
 
 - `docs/current_boundary_index.md`
 - Adds a short, versioned, low-token source of global hard boundaries for future work packages.
-- Current version: `Boundary Index Version: 2026-06-09-b112`.
+- Current version: `Boundary Index Version: 2026-06-09-b113`.
 - For current Phase0 status, see `docs/phase0_status.md`.
 - For capability status, see `docs/phase0_capability_matrix.md`.
 - For boundary version history, see `docs/current_boundary_index.md`.
@@ -2924,6 +2924,10 @@ Two-Trial History Boundary:
 ## Visual-Spatial Motor Affordance Bridge Minimal v0
 
 - Visual-Spatial Motor Affordance Bridge Minimal v0 derives preview-only body-relative motor affordances from the existing visual_spatial_grounding front-cell trace. It previews `can_step_forward`, `can_turn_left`, `can_turn_right`, `can_reach_front`, `front_blocked`, and `front_contact_possible` for empty, wall, and item front-cell demos. Boundary Index updates from `2026-06-09-b111` to `2026-06-09-b112`. This does not execute motor actions, create selected_action, final_action, direct commands, pathfinding, goal seeking, memory/retention writes, predictor mutation, persistent body schema, semantic vision, production behavior, or proof-of-learning claims.
+
+## Minimal Body Schema and Affordance Consistency Runtime v0
+
+- Minimal Body Schema and Affordance Consistency Runtime v0 adds a sandbox-only body schema readiness gate after visual-spatial motor affordance preview. It checks body position, facing, energy, movement cooldown, balance, hand state, and contact state against `can_step_forward`, `can_turn_left`, `can_turn_right`, and `can_reach_front`. Boundary Index updates from `2026-06-09-b112` to `2026-06-09-b113`. This remains preview/checker-only: no motor action execution, selected motor intent, selected_action, final_action, direct command, pathfinding, production behavior, memory/retention write, predictor mutation, persistent body schema, semantic vision, or proof-of-learning claim is added.
 
 ## Host-Dependent Idle Continuance Trace v0
 

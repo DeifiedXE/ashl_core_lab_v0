@@ -7341,6 +7341,21 @@ Boundary:
 - Boundary Index updates from `2026-06-09-b111` to `2026-06-09-b112`.
 - Rationale: this package creates a new validated perception-to-affordance bridge while keeping action creation and execution boundaries closed.
 
+## Minimal Body Schema and Affordance Consistency Runtime v0
+
+Status: completed / sandbox-only body schema readiness consistency gate / Boundary Index b113.
+
+Progress:
+- Adds `ashl_core/minimal_body_schema_affordance_consistency_runtime.py`.
+- Adds `py -3 -m ashl_core.teaching_cli run-minimal-body-schema-affordance-consistency-runtime-check`.
+- Reuses `visual_spatial_motor_affordance_bridge_minimal` as source.
+- Validates minimal body state fields: position, facing, energy, movement cooldown, balance, hand state, and contact state.
+- Produces preview-only readiness for `step_forward`, `turn_left`, `turn_right`, and `reach_front`.
+
+Boundary:
+- Boundary Index updates from `2026-06-09-b112` to `2026-06-09-b113`.
+- Rationale: this package adds a validated body-state gate between visual motor affordance and future motor intent while keeping motor execution, selected_action, final_action, direct command, pathfinding, persistent body schema, production behavior, memory/retention writes, predictor mutation, and proof claims blocked.
+
 ## Host-Dependent Idle Continuance Trace v0
 
 Status: design assumption / docs-only / no Boundary Index change.

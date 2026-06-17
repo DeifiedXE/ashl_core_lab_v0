@@ -309,6 +309,9 @@ from ashl_core.visual_spatial_grounding_minimal import run_visual_spatial_ground
 from ashl_core.visual_spatial_motor_affordance_bridge_minimal import (
     run_visual_spatial_motor_affordance_bridge_minimal_check,
 )
+from ashl_core.minimal_body_schema_affordance_consistency_runtime import (
+    run_minimal_body_schema_affordance_consistency_runtime_check,
+)
 from ashl_core.minimal_visual_grounding_trial import run_minimal_visual_grounding_trial_check
 from ashl_core.visual_prediction_error_attention_priority_preview_minimal import (
     run_visual_prediction_error_attention_priority_preview_minimal_check,
@@ -10690,8 +10693,8 @@ def smoke_current_boundary_index_docs() -> dict:
     readme = readme_path.read_text(encoding="utf-8") if readme_path.exists() else ""
     research_plan = research_plan_path.read_text(encoding="utf-8") if research_plan_path.exists() else ""
     compact_required_terms = [
-        "Boundary Index Version: 2026-06-09-b112",
-        "Last update log: Visual-Spatial Motor Affordance Bridge Minimal v0",
+        "Boundary Index Version: 2026-06-09-b113",
+        "Last update log: Minimal Body Schema and Affordance Consistency Runtime v0",
         "docs/boundary_index_archive_2026_06.md",
         "Minimal Visual Grounding Trial v0",
         "Visual Prediction Error + Attention Priority Preview Minimal v0",
@@ -10738,7 +10741,7 @@ def smoke_current_boundary_index_docs() -> dict:
         "Memory-Influenced Toy Repair Re-run milestone",
         "b85-b107 Sandbox Action Loop compressed milestone",
         "selected_action -> final_action -> direct command -> execution -> outcome evaluation",
-        "b108-b112 Endocrine / Visual-Spatial Affordance compressed milestone",
+        "b108-b113 Endocrine / Visual-Spatial / Body Schema compressed milestone",
         "candy_contact -> dopamine_like",
         "high sweetness losing to high difficulty/return cost",
         "visible-cell spatial trace",
@@ -10779,7 +10782,7 @@ def smoke_current_boundary_index_docs() -> dict:
         and all(term in doc for term in compact_required_terms)
         and all(term in archive for term in archive_required_terms)
         and line_count <= 150
-        and "Boundary Index Version: 2026-06-09-b112" in readme
+        and "Boundary Index Version: 2026-06-09-b113" in readme
         and "docs/boundary_index_archive_2026_06.md" in readme
         and "Boundary Index Compaction / Archive v0" in research_plan
         and "Runtime Tendency Memory Influence Safety Sync Minimal v0" in research_plan
@@ -10817,7 +10820,7 @@ def smoke_phase0_documentation_consolidation_minimal() -> dict:
         status_path.exists()
         and matrix_path.exists()
         and index_path.exists()
-        and "Boundary Index Version: 2026-06-09-b112" in status
+        and "Boundary Index Version: 2026-06-09-b113" in status
         and "Current Safe Capability" in status
         and "No proof-of-learning claim" in status
         and "Level 1 Sandbox Outcome Evaluation and Human Review Summary Minimal v0" in status
@@ -10928,7 +10931,7 @@ def smoke_phase0_documentation_inventory_and_consistency_reconciliation() -> dic
     boundary = Path("docs/current_boundary_index.md").read_text(encoding="utf-8")
     passed = (
         all(path.exists() for path in required_paths)
-        and "Boundary Index Version: 2026-06-09-b112" in texts[Path("docs/phase0_status.md")]
+        and "Boundary Index Version: 2026-06-09-b113" in texts[Path("docs/phase0_status.md")]
         and "Inventory count:" in texts[Path("docs/phase0_doc_inventory.md")]
         and "docs/phase0_versioning_policy.md" in texts[Path("docs/phase0_doc_inventory.md")]
         and "unknown_needs_review" in texts[Path("docs/phase0_doc_inventory.md")]
@@ -17005,6 +17008,68 @@ def smoke_visual_spatial_motor_affordance_bridge_minimal() -> dict:
     )
 
 
+def smoke_minimal_body_schema_affordance_consistency_runtime() -> dict:
+    result = run_minimal_body_schema_affordance_consistency_runtime_check()
+    summary = result.get("summary", {})
+    boundary = result.get("boundary", {})
+    records = result.get("valid_records", [])
+    empty_record = records[0] if records else {}
+    wall_record = records[1] if len(records) > 1 else {}
+    item_record = records[2] if len(records) > 2 else {}
+    body = empty_record.get("minimal_body_schema_state", {})
+    empty_ready = empty_record.get("motor_readiness_preview", {})
+    wall_ready = wall_record.get("motor_readiness_preview", {})
+    item_ready = item_record.get("motor_readiness_preview", {})
+    passed = (
+        result.get("command") == "run-minimal-body-schema-affordance-consistency-runtime-check"
+        and result.get("flow") == "minimal_body_schema_affordance_consistency_runtime_v0"
+        and result.get("status") == "ok"
+        and boundary.get("boundary_index_version_before") == "2026-06-09-b112"
+        and boundary.get("boundary_index_version_after") == "2026-06-09-b113"
+        and summary.get("body_schema_consistency_result_count") == 32
+        and summary.get("valid_body_schema_consistency_count") == 3
+        and summary.get("invalid_body_schema_consistency_count") == 29
+        and summary.get("source_validated_count") == 3
+        and summary.get("body_schema_valid_count") == 3
+        and summary.get("position_consistent_count") == 3
+        and summary.get("facing_consistent_count") == 3
+        and summary.get("body_schema_consistent_count") == 3
+        and summary.get("step_forward_ready_count") == 2
+        and summary.get("turn_left_ready_count") == 3
+        and summary.get("turn_right_ready_count") == 3
+        and summary.get("reach_front_ready_count") == 1
+        and summary.get("front_blocked_by_affordance_count") == 1
+        and summary.get("body_blocks_movement_count") == 0
+        and summary.get("motor_action_blocked_count") == 3
+        and summary.get("selected_motor_intent_blocked_count") == 3
+        and summary.get("selected_action_blocked_count") == 3
+        and summary.get("final_action_blocked_count") == 3
+        and summary.get("direct_command_blocked_count") == 3
+        and summary.get("pathfinding_blocked_count") == 3
+        and summary.get("memory_write_blocked_count") == 3
+        and summary.get("predictor_mutation_blocked_count") == 3
+        and summary.get("persistent_body_schema_blocked_count") == 3
+        and summary.get("production_behavior_blocked_count") == 3
+        and summary.get("proof_claim_blocked_count") == 3
+        and body.get("body_id") == "qingyin_minimal_grid_body_v0"
+        and body.get("body_scope") == "sandbox_only"
+        and body.get("energy") == 1.0
+        and body.get("movement_cooldown_ticks") == 0
+        and empty_ready.get("step_forward_ready") is True
+        and empty_ready.get("reach_front_ready") is False
+        and wall_ready.get("front_blocked_by_affordance") is True
+        and wall_ready.get("step_forward_ready") is False
+        and item_ready.get("reach_front_ready") is True
+        and empty_ready.get("selected_motor_intent") is None
+        and empty_ready.get("motor_action_executed") is False
+    )
+    return _result(
+        "minimal_body_schema_affordance_consistency_runtime",
+        passed,
+        {"summary": summary, "boundary": boundary},
+    )
+
+
 def smoke_phase0_current_capability_snapshot() -> dict:
     doc_path = Path("docs/phase0_current_capability_snapshot_2026-06-10.md")
     doc = doc_path.read_text(encoding="utf-8") if doc_path.exists() else ""
@@ -19763,6 +19828,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_qingyin_internal_response_modulation_minimal(),
         smoke_visual_spatial_grounding_minimal(),
         smoke_visual_spatial_motor_affordance_bridge_minimal(),
+        smoke_minimal_body_schema_affordance_consistency_runtime(),
         smoke_phase0_current_capability_snapshot(),
         smoke_memory_influence_behavior_gate_design(),
         smoke_first_memory_influenced_behavior_boundary(),
