@@ -7292,6 +7292,22 @@ Boundary:
 - Boundary Index updates from `2026-06-09-b108` to `2026-06-09-b109`.
 - Rationale: this package adds a new sandbox-only cost-sensitive contrast boundary for mimetic endocrine response while keeping behavior and persistence boundaries closed.
 
+## Qingyin Internal Response Modulation Minimal v0
+
+Status: completed / generic same-session internal response modulation preview / Boundary Index b110.
+
+Progress:
+- Adds `ashl_core/qingyin_internal_response_modulation_minimal.py`.
+- Adds `py -3 -m ashl_core.teaching_cli run-qingyin-internal-response-modulation-minimal-check`.
+- Defines a generic outcome-response map: candy_contact -> dopamine_like, blocked_or_failed -> cortisol_like, unexpected_change -> norepinephrine_like, trusted_help_or_mentor_support -> oxytocin_like.
+- Produces internal_response_trace, same_session_modulation_state_preview, candidate_ordering_pressure_preview, and rollback_preview.
+- Keeps the pressure advisory-only and same-session/sandbox-only.
+- Blocks sandbox-specific behavior, selected_action, final_action, direct command, production behavior, persistent state, memory/retention writes, predictor mutation, persistent endocrine runtime, subjective/biological claims, autonomous learning/action, and proof claims.
+
+Boundary:
+- Boundary Index updates from `2026-06-09-b109` to `2026-06-09-b110`.
+- Rationale: this package connects generic action outcomes to a same-session internal response modulation preview layer while keeping all action creation and persistence boundaries closed.
+
 ## Host-Dependent Idle Continuance Trace v0
 
 Status: design assumption / docs-only / no Boundary Index change.

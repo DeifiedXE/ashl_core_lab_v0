@@ -1618,7 +1618,7 @@ Two-Trial History Boundary:
 
 - `docs/current_boundary_index.md`
 - Adds a short, versioned, low-token source of global hard boundaries for future work packages.
-- Current version: `Boundary Index Version: 2026-06-09-b109`.
+- Current version: `Boundary Index Version: 2026-06-09-b110`.
 - For current Phase0 status, see `docs/phase0_status.md`.
 - For capability status, see `docs/phase0_capability_matrix.md`.
 - For boundary version history, see `docs/current_boundary_index.md`.
@@ -2912,6 +2912,10 @@ Two-Trial History Boundary:
 ## Mimetic Endocrine Cost-Sensitive Choice Sandbox Minimal v0
 
 - Mimetic Endocrine Cost-Sensitive Choice Sandbox Minimal v0 adds a sandbox-only contrast where a much harder sweeter-candy path is returnable before candy consumption but has enough difficulty/return cost that its net tendency falls below the easy ordinary-candy path. The raw dopamine-like response for sweeter candy remains higher, but the fixed sandbox preview prefers the easy ordinary path and does not force the harder sweeter path. Boundary Index updates from `2026-06-09-b108` to `2026-06-09-b109`. This remains a symbolic/numeric fixture and does not add visual detection, free choice, pathfinding, production behavior, persistent preference, memory/retention writes, predictor mutation, persistent endocrine runtime, biological hormone claims, subjective pleasure claims, autonomous action/learning, or proof-of-learning claims.
+
+## Qingyin Internal Response Modulation Minimal v0
+
+- Qingyin Internal Response Modulation Minimal v0 adds a generic internal response modulation preview layer: action outcome traces can map to internal response axes and produce same-session sandbox-only advisory candidate-ordering pressure. The first demo maps `candy_contact -> dopamine_like`, while the schema also reserves `blocked_or_failed -> cortisol_like`, `unexpected_change -> norepinephrine_like`, and `trusted_help_or_mentor_support -> oxytocin_like`. Boundary Index updates from `2026-06-09-b109` to `2026-06-09-b110`. This does not create sandbox-specific behavior, selected_action, final_action, direct commands, production behavior, memory/retention writes, predictor mutation, persistent endocrine runtime, subjective claims, autonomous action/learning, or proof-of-learning claims.
 
 ## Host-Dependent Idle Continuance Trace v0
 

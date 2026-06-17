@@ -302,6 +302,9 @@ from ashl_core.mimetic_endocrine_sweetness_preference_sandbox_minimal import (
 from ashl_core.mimetic_endocrine_cost_sensitive_choice_sandbox_minimal import (
     run_mimetic_endocrine_cost_sensitive_choice_sandbox_minimal_check,
 )
+from ashl_core.qingyin_internal_response_modulation_minimal import (
+    run_qingyin_internal_response_modulation_minimal_check,
+)
 from ashl_core.minimal_visual_grounding_trial import run_minimal_visual_grounding_trial_check
 from ashl_core.visual_prediction_error_attention_priority_preview_minimal import (
     run_visual_prediction_error_attention_priority_preview_minimal_check,
@@ -10683,8 +10686,8 @@ def smoke_current_boundary_index_docs() -> dict:
     readme = readme_path.read_text(encoding="utf-8") if readme_path.exists() else ""
     research_plan = research_plan_path.read_text(encoding="utf-8") if research_plan_path.exists() else ""
     compact_required_terms = [
-        "Boundary Index Version: 2026-06-09-b109",
-        "Last update log: Mimetic Endocrine Cost-Sensitive Choice Sandbox Minimal v0",
+        "Boundary Index Version: 2026-06-09-b110",
+        "Last update log: Qingyin Internal Response Modulation Minimal v0",
         "docs/boundary_index_archive_2026_06.md",
         "Minimal Visual Grounding Trial v0",
         "Visual Prediction Error + Attention Priority Preview Minimal v0",
@@ -10841,6 +10844,7 @@ def smoke_current_boundary_index_docs() -> dict:
         "docs/phase0_capability_matrix.md",
         "docs/phase0_doc_index.md",
         "b109 Mimetic Endocrine Cost-Sensitive Choice milestone",
+        "b110 Qingyin Internal Response Modulation milestone",
         "`current_boundary_index.md` should stay <= 130 lines when possible.",
         "Hard limit: <= 150 lines.",
     ]
@@ -10862,7 +10866,7 @@ def smoke_current_boundary_index_docs() -> dict:
         and all(term in doc for term in compact_required_terms)
         and all(term in archive for term in archive_required_terms)
         and line_count <= 150
-        and "Boundary Index Version: 2026-06-09-b109" in readme
+        and "Boundary Index Version: 2026-06-09-b110" in readme
         and "docs/boundary_index_archive_2026_06.md" in readme
         and "Boundary Index Compaction / Archive v0" in research_plan
         and "Runtime Tendency Memory Influence Safety Sync Minimal v0" in research_plan
@@ -10900,7 +10904,7 @@ def smoke_phase0_documentation_consolidation_minimal() -> dict:
         status_path.exists()
         and matrix_path.exists()
         and index_path.exists()
-        and "Boundary Index Version: 2026-06-09-b109" in status
+        and "Boundary Index Version: 2026-06-09-b110" in status
         and "Current Safe Capability" in status
         and "No proof-of-learning claim" in status
         and "Level 1 Sandbox Outcome Evaluation and Human Review Summary Minimal v0" in status
@@ -11011,7 +11015,7 @@ def smoke_phase0_documentation_inventory_and_consistency_reconciliation() -> dic
     boundary = Path("docs/current_boundary_index.md").read_text(encoding="utf-8")
     passed = (
         all(path.exists() for path in required_paths)
-        and "Boundary Index Version: 2026-06-09-b109" in texts[Path("docs/phase0_status.md")]
+        and "Boundary Index Version: 2026-06-09-b110" in texts[Path("docs/phase0_status.md")]
         and "Inventory count:" in texts[Path("docs/phase0_doc_inventory.md")]
         and "docs/phase0_versioning_policy.md" in texts[Path("docs/phase0_doc_inventory.md")]
         and "unknown_needs_review" in texts[Path("docs/phase0_doc_inventory.md")]
@@ -16931,6 +16935,58 @@ def smoke_mimetic_endocrine_cost_sensitive_choice_sandbox_minimal() -> dict:
     )
 
 
+def smoke_qingyin_internal_response_modulation_minimal() -> dict:
+    result = run_qingyin_internal_response_modulation_minimal_check()
+    summary = result.get("summary", {})
+    boundary = result.get("boundary", {})
+    record = result.get("valid_record", {})
+    context = record.get("modulation_context", {})
+    mapping = record.get("outcome_response_mapping", {})
+    response = record.get("internal_response_trace", {})
+    state = record.get("same_session_modulation_state_preview", {})
+    pressure = record.get("candidate_ordering_pressure_preview", {})
+    passed = (
+        result.get("command") == "run-qingyin-internal-response-modulation-minimal-check"
+        and result.get("flow") == "qingyin_internal_response_modulation_minimal_v0"
+        and result.get("status") == "ok"
+        and boundary.get("boundary_index_version_before") == "2026-06-09-b109"
+        and boundary.get("boundary_index_version_after") == "2026-06-09-b110"
+        and boundary.get("boundary_change_required") is True
+        and summary.get("valid_internal_response_modulation_count") == 1
+        and summary.get("invalid_internal_response_modulation_count") == 35
+        and summary.get("generic_mapping_checked_count") == 1
+        and summary.get("internal_response_trace_valid_count") == 1
+        and summary.get("same_session_modulation_created_count") == 1
+        and summary.get("candidate_ordering_pressure_created_count") == 1
+        and summary.get("selected_action_blocked_count") == 1
+        and summary.get("final_action_blocked_count") == 1
+        and summary.get("direct_command_blocked_count") == 1
+        and summary.get("memory_write_blocked_count") == 1
+        and summary.get("predictor_mutation_blocked_count") == 1
+        and summary.get("all_internal_response_modulation_checks_passed") is True
+        and context.get("architecture_scope") == "qingyin_generic_internal_response_layer"
+        and context.get("sandbox_specific_behavior_created") is False
+        and context.get("same_session_only") is True
+        and mapping.get("mapping_schema_generic") is True
+        and mapping.get("supported_outcome_types", {}).get("candy_contact") == "dopamine_like"
+        and mapping.get("supported_outcome_types", {}).get("blocked_or_failed") == "cortisol_like"
+        and response.get("response_axis") == "dopamine_like"
+        and response.get("signal_valid") is True
+        and state.get("modulation_scope") == "same_session_sandbox_only"
+        and state.get("persistent_state_written") is False
+        and pressure.get("pressure_preview_created") is True
+        and pressure.get("advisory_only") is True
+        and pressure.get("selected_action_created") is False
+        and pressure.get("final_action_created") is False
+        and pressure.get("direct_command_created") is False
+    )
+    return _result(
+        "qingyin_internal_response_modulation_minimal",
+        passed,
+        {"summary": summary, "boundary": boundary},
+    )
+
+
 def smoke_phase0_current_capability_snapshot() -> dict:
     doc_path = Path("docs/phase0_current_capability_snapshot_2026-06-10.md")
     doc = doc_path.read_text(encoding="utf-8") if doc_path.exists() else ""
@@ -19686,6 +19742,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_time_paced_locomotion_action_completion_minimal(),
         smoke_mimetic_endocrine_sweetness_preference_sandbox_minimal(),
         smoke_mimetic_endocrine_cost_sensitive_choice_sandbox_minimal(),
+        smoke_qingyin_internal_response_modulation_minimal(),
         smoke_phase0_current_capability_snapshot(),
         smoke_memory_influence_behavior_gate_design(),
         smoke_first_memory_influenced_behavior_boundary(),
