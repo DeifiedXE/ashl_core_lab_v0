@@ -1618,7 +1618,7 @@ Two-Trial History Boundary:
 
 - `docs/current_boundary_index.md`
 - Adds a short, versioned, low-token source of global hard boundaries for future work packages.
-- Current version: `Boundary Index Version: 2026-06-09-b106`.
+- Current version: `Boundary Index Version: 2026-06-09-b107`.
 - For current Phase0 status, see `docs/phase0_status.md`.
 - For capability status, see `docs/phase0_capability_matrix.md`.
 - For boundary version history, see `docs/current_boundary_index.md`.
@@ -2900,6 +2900,10 @@ Two-Trial History Boundary:
 ## Temporal Candy Loop Sandbox Minimal v0
 
 - Temporal Candy Loop Sandbox Minimal v0 adds a sandbox-only time-paced continuity loop over a symbolic candy/item fixture. Boundary Index updates from `2026-06-09-b105` to `2026-06-09-b106` because action continuity now includes OFFLINE/IDLE/ACTIVE-style trace fields, runtime/action/idle ticks, and cooldown enforcement. The demo runs six manually planned sandbox actions, requires two IDLE ticks before every ACTIVE action, contacts candy once as a non-subjective reward trace, and stops by budget. It does not add pathfinding, item inventory, production behavior, real navigation/UI changes, persistent feedback, memory/retention writes, predictor mutation, endocrine runtime, open-ended autonomy, or proof-of-learning claims.
+
+## Time-Paced Locomotion Action Completion Minimal v0
+
+- Time-Paced Locomotion Action Completion Minimal v0 completes each ACTIVE step from the temporal candy loop through sandbox selected_action, final_action, direct command, direct command execution, and outcome evaluation records. Boundary Index updates from `2026-06-09-b106` to `2026-06-09-b107` because the time-paced locomotion trace now uses the full sandbox action-line for each step. The plan remains manually fixed; no free choice, background autonomy, pathfinding, production behavior, real navigation/UI changes, persistent feedback, memory/retention writes, predictor mutation, endocrine runtime, open-ended autonomy, or proof-of-learning claims are added.
 
 ## Host-Dependent Idle Continuance Trace v0
 

@@ -7243,6 +7243,22 @@ Boundary:
 - Boundary Index updates from `2026-06-09-b105` to `2026-06-09-b106`.
 - Rationale: this package adds sandbox-only time-paced continuity with cooldown enforcement around action execution. It does not add production behavior, autonomous open-ended action, memory writes, predictor mutation, or endocrine runtime.
 
+## Time-Paced Locomotion Action Completion Minimal v0
+
+Status: completed / sandbox action-line completion for time-paced locomotion / Boundary Index b107.
+
+Progress:
+- Adds `ashl_core/time_paced_locomotion_action_completion_minimal.py`.
+- Adds `py -3 -m ashl_core.teaching_cli run-time-paced-locomotion-action-completion-minimal-check`.
+- Reuses the Temporal Candy Loop Sandbox Minimal v0 trace as source.
+- Completes each of the six ACTIVE locomotion steps through sandbox selected_action, final_action, direct command, direct command execution, and outcome evaluation records.
+- Preserves the fixed manual action plan and cooldown requirements.
+- Keeps free choice, background autonomy, pathfinding, open-ended looping, production behavior, real navigation/UI change, persistent feedback, memory/retention writes, predictor mutation, endocrine runtime, and proof claims blocked.
+
+Boundary:
+- Boundary Index updates from `2026-06-09-b106` to `2026-06-09-b107`.
+- Rationale: this package connects time-paced locomotion steps to the full sandbox action-line, which is a new sandbox action completion boundary. It remains sandbox-only and manually planned.
+
 ## Host-Dependent Idle Continuance Trace v0
 
 Status: design assumption / docs-only / no Boundary Index change.

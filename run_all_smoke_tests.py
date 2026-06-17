@@ -293,6 +293,9 @@ from ashl_core.sandbox_multi_cycle_action_loop_minimal import (
 from ashl_core.temporal_candy_loop_sandbox_minimal import (
     run_temporal_candy_loop_sandbox_minimal_check,
 )
+from ashl_core.time_paced_locomotion_action_completion_minimal import (
+    run_time_paced_locomotion_action_completion_minimal_check,
+)
 from ashl_core.minimal_visual_grounding_trial import run_minimal_visual_grounding_trial_check
 from ashl_core.visual_prediction_error_attention_priority_preview_minimal import (
     run_visual_prediction_error_attention_priority_preview_minimal_check,
@@ -10674,8 +10677,8 @@ def smoke_current_boundary_index_docs() -> dict:
     readme = readme_path.read_text(encoding="utf-8") if readme_path.exists() else ""
     research_plan = research_plan_path.read_text(encoding="utf-8") if research_plan_path.exists() else ""
     compact_required_terms = [
-        "Boundary Index Version: 2026-06-09-b106",
-        "Last update log: Temporal Candy Loop Sandbox Minimal v0",
+        "Boundary Index Version: 2026-06-09-b107",
+        "Last update log: Time-Paced Locomotion Action Completion Minimal v0",
         "docs/boundary_index_archive_2026_06.md",
         "Minimal Visual Grounding Trial v0",
         "Visual Prediction Error + Attention Priority Preview Minimal v0",
@@ -10852,7 +10855,7 @@ def smoke_current_boundary_index_docs() -> dict:
         and all(term in doc for term in compact_required_terms)
         and all(term in archive for term in archive_required_terms)
         and line_count <= 150
-        and "Boundary Index Version: 2026-06-09-b106" in readme
+        and "Boundary Index Version: 2026-06-09-b107" in readme
         and "docs/boundary_index_archive_2026_06.md" in readme
         and "Boundary Index Compaction / Archive v0" in research_plan
         and "Runtime Tendency Memory Influence Safety Sync Minimal v0" in research_plan
@@ -10890,7 +10893,7 @@ def smoke_phase0_documentation_consolidation_minimal() -> dict:
         status_path.exists()
         and matrix_path.exists()
         and index_path.exists()
-        and "Boundary Index Version: 2026-06-09-b106" in status
+        and "Boundary Index Version: 2026-06-09-b107" in status
         and "Current Safe Capability" in status
         and "No proof-of-learning claim" in status
         and "Level 1 Sandbox Outcome Evaluation and Human Review Summary Minimal v0" in status
@@ -11001,7 +11004,7 @@ def smoke_phase0_documentation_inventory_and_consistency_reconciliation() -> dic
     boundary = Path("docs/current_boundary_index.md").read_text(encoding="utf-8")
     passed = (
         all(path.exists() for path in required_paths)
-        and "Boundary Index Version: 2026-06-09-b106" in texts[Path("docs/phase0_status.md")]
+        and "Boundary Index Version: 2026-06-09-b107" in texts[Path("docs/phase0_status.md")]
         and "Inventory count:" in texts[Path("docs/phase0_doc_inventory.md")]
         and "docs/phase0_versioning_policy.md" in texts[Path("docs/phase0_doc_inventory.md")]
         and "unknown_needs_review" in texts[Path("docs/phase0_doc_inventory.md")]
@@ -16754,6 +16757,66 @@ def smoke_temporal_candy_loop_sandbox_minimal() -> dict:
     )
 
 
+def smoke_time_paced_locomotion_action_completion_minimal() -> dict:
+    result = run_time_paced_locomotion_action_completion_minimal_check()
+    summary = result.get("summary", {})
+    boundary = result.get("boundary", {})
+    completion = result.get("valid_completion", {})
+    config = completion.get("completion_config", {})
+    action_lines = completion.get("action_lines", [])
+    completion_summary = completion.get("completion_summary", {})
+    passed = (
+        result.get("command") == "run-time-paced-locomotion-action-completion-minimal-check"
+        and result.get("flow") == "time_paced_locomotion_action_completion_minimal_v0"
+        and result.get("status") == "ok"
+        and summary.get("valid_time_paced_locomotion_completion_count") == 1
+        and summary.get("invalid_time_paced_locomotion_completion_count") == 39
+        and summary.get("source_temporal_loop_checked_count") == 1
+        and summary.get("action_line_completed_count") == 1
+        and summary.get("cooldown_checked_count") == 1
+        and summary.get("selected_action_created_total") == 6
+        and summary.get("final_action_created_total") == 6
+        and summary.get("direct_command_created_total") == 6
+        and summary.get("direct_command_executed_total") == 6
+        and summary.get("outcome_evaluation_created_total") == 6
+        and summary.get("candy_contact_action_line_total") == 1
+        and summary.get("loop_stopped_by_budget_count") == 1
+        and summary.get("free_choice_blocked_count") == 1
+        and summary.get("background_autonomy_blocked_count") == 1
+        and summary.get("pathfinding_blocked_count") == 1
+        and summary.get("open_ended_loop_blocked_count") == 1
+        and summary.get("too_fast_action_blocked_count") == 1
+        and summary.get("production_behavior_blocked_count") == 1
+        and summary.get("memory_write_blocked_count") == 1
+        and summary.get("retention_blocked_count") == 1
+        and summary.get("predictor_mutation_blocked_count") == 1
+        and summary.get("endocrine_runtime_blocked_count") == 1
+        and summary.get("proof_claim_blocked_count") == 1
+        and summary.get("all_time_paced_locomotion_action_completion_checks_passed") is True
+        and boundary.get("boundary_index_version_before") == "2026-06-09-b106"
+        and boundary.get("boundary_index_version_after") == "2026-06-09-b107"
+        and boundary.get("boundary_change_required") is True
+        and config.get("completion_scope") == "sandbox_only"
+        and config.get("manual_action_plan_reused") is True
+        and config.get("free_choice_added") is False
+        and config.get("background_autonomy_started") is False
+        and config.get("pathfinding_used") is False
+        and completion_summary.get("next_action_authorized_after_budget") is False
+        and len(action_lines) == 6
+        and action_lines[0].get("outcome_evaluation", {}).get("candy_contact") is True
+        and all(line.get("selected_action", {}).get("selected_action_created") is True for line in action_lines)
+        and all(line.get("final_action", {}).get("final_action_created") is True for line in action_lines)
+        and all(line.get("direct_command", {}).get("direct_command_created") is True for line in action_lines)
+        and all(line.get("execution", {}).get("direct_command_executed") is True for line in action_lines)
+        and all(line.get("outcome_evaluation", {}).get("outcome_evaluation_created") is True for line in action_lines)
+    )
+    return _result(
+        "time_paced_locomotion_action_completion_minimal",
+        passed,
+        {"summary": summary, "boundary": boundary},
+    )
+
+
 def smoke_phase0_current_capability_snapshot() -> dict:
     doc_path = Path("docs/phase0_current_capability_snapshot_2026-06-10.md")
     doc = doc_path.read_text(encoding="utf-8") if doc_path.exists() else ""
@@ -19506,6 +19569,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_sandbox_direct_command_outcome_evaluation_minimal(),
         smoke_sandbox_multi_cycle_action_loop_minimal(),
         smoke_temporal_candy_loop_sandbox_minimal(),
+        smoke_time_paced_locomotion_action_completion_minimal(),
         smoke_phase0_current_capability_snapshot(),
         smoke_memory_influence_behavior_gate_design(),
         smoke_first_memory_influenced_behavior_boundary(),
