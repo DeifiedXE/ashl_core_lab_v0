@@ -270,6 +270,9 @@ from .mimetic_endocrine_signal_schema import run_mimetic_endocrine_signal_schema
 from .mimetic_endocrine_four_axis_trace_integration import (
     run_mimetic_endocrine_four_axis_trace_integration_check,
 )
+from .mimetic_endocrine_post_event_settling_design_minimal import (
+    run_mimetic_endocrine_post_event_settling_design_minimal_check,
+)
 from .norepinephrine_like_change_attention_trace_check import (
     run_norepinephrine_like_change_attention_trace_check,
 )
@@ -3938,6 +3941,8 @@ def run_command(command: str) -> dict[str, Any] | str:
         return run_outcome_pair_from_action_trial_trace_check()
     if command == "run-mimetic-endocrine-four-axis-trace-integration-check":
         return run_mimetic_endocrine_four_axis_trace_integration_check()
+    if command == "run-mimetic-endocrine-post-event-settling-design-minimal-check":
+        return run_mimetic_endocrine_post_event_settling_design_minimal_check()
     if command == "run-retina-decoder-feature-schema-check":
         return run_retina_decoder_feature_schema_check()
     if command == "run-retina-decoder-symbolic-feature-decode-check":
@@ -4158,6 +4163,7 @@ def main(argv: list[str] | None = None) -> int:
             "run-oxytocin-like-review-trust-trace-check",
             "run-outcome-pair-from-action-trial-trace-check",
             "run-mimetic-endocrine-four-axis-trace-integration-check",
+            "run-mimetic-endocrine-post-event-settling-design-minimal-check",
             "run-retina-decoder-feature-schema-check",
             "run-retina-decoder-symbolic-feature-decode-check",
             "run-visual-frame-buffer-schema-check",
@@ -4600,6 +4606,8 @@ def main(argv: list[str] | None = None) -> int:
         result = run_outcome_pair_from_action_trial_trace_check()
     elif args.command == "run-mimetic-endocrine-four-axis-trace-integration-check":
         result = run_mimetic_endocrine_four_axis_trace_integration_check()
+    elif args.command == "run-mimetic-endocrine-post-event-settling-design-minimal-check":
+        result = run_mimetic_endocrine_post_event_settling_design_minimal_check()
     elif args.command == "run-retina-decoder-feature-schema-check":
         result = run_retina_decoder_feature_schema_check()
     elif args.command == "run-retina-decoder-symbolic-feature-decode-check":

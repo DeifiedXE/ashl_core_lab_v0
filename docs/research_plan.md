@@ -4689,6 +4689,41 @@ Scope:
 Non-goals:
 - no endocrine runtime behavior, endocrine state runtime, formulas that update values from real runtime, signal interactions, cortisol dampens dopamine logic, norepinephrine attention narrowing, reward bias modification, reward-biased action tendency modification, random-walk modification, autonomous attention control, observation priority runtime modification, protective mechanism addition or trigger, cooldown behavior modification, risk avoidance behavior modification, blind trust behavior, review gate override, candidate auto-approval, Qingyin self-approval permission, candidate application, action selection modification, endocrine suppression/preference of actions, predictor behavior modification, global predictor modification, long-term memory write, lesson_store write, Memory Layer write, personality weight modification, personality drift, autonomous drive system, persistent rule write, persistent preview/dry-run, pathfinding, BFS, A*, route planner, UI change, LLM reasoning, LLM planning, LLM vision, biological hormone simulation claim, happiness claim, pleasure claim, alertness claim, anxiety claim, stress claim, pain claim, trust claim, attachment claim, love claim, consciousness claim, subjective experience claim, or denial of future subjective possibility
 
+## State Settling and Mimetic Endocrine Concept Book v0
+
+Status: completed / documentation-only / no-runtime-change.
+
+Goal:
+Separate action rollback from post-event state settling and define the conceptual relationship between natural settling, comfort-modulated settling, and safety reset.
+
+Scope:
+- adds `docs/state_settling_and_mimetic_endocrine_concept_book_v0.md`
+- defines natural settling as ordinary return toward baseline after minor event perturbation
+- defines comfort-modulated settling as future support from explicit mentor / trusted-source comfort without approval power
+- defines safety reset as a bounded engineering metaphor for forced reset of temporary state, not medical sedation
+- keeps event traces observable and reviewable
+
+Non-goals:
+- no endocrine runtime, runtime settling formula, runtime safety reset, action rollback implementation, action selection influence, selected_action, final_action, direct command, memory write, retention write, predictor mutation, persistent mood, personality drift, medical sedation claim, subjective emotion claim, consciousness claim, or proof-of-learning claim
+
+## Mimetic Endocrine Post-Event Settling Design Minimal v0
+
+Status: completed / design-check-only / no-runtime-change.
+
+Goal:
+Validate a design-only post-event settling vocabulary on top of the existing four-axis mimetic endocrine trace integration.
+
+Scope:
+- adds `ashl_core.mimetic_endocrine_post_event_settling_design_minimal`
+- adds `py -3 -m ashl_core.teaching_cli run-mimetic-endocrine-post-event-settling-design-minimal-check`
+- reuses `mimetic_endocrine_four_axis_trace_integration`
+- validates five design-only settling modes: `natural_settling`, `comfort_modulated_settling`, `attention_interrupt_settling`, `safety_reset`, and `evidence_for_review`
+- validates that safety reset is sedation-like only as a metaphor and has no medical sedation claim
+- keeps Boundary Index unchanged at `2026-06-09-b104`
+
+Non-goals:
+- no endocrine runtime, runtime settling, runtime safety reset, action selection influence, selected_action, final_action, direct command, production behavior change, memory write, retention write, new retention write, predictor mutation, persistent mood, personality change, biological hormone simulation, medical sedation claim, subjective emotion claim, consciousness claim, or proof-of-learning claim
+
 ## Mimetic Endocrine Line Milestone + Boundary Sync v0
 
 Status: completed / documentation-milestone / boundary-index-sync.

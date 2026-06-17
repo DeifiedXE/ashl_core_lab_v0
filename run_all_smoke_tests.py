@@ -324,6 +324,9 @@ from ashl_core.mimetic_endocrine_signal_schema import run_mimetic_endocrine_sign
 from ashl_core.mimetic_endocrine_four_axis_trace_integration import (
     run_mimetic_endocrine_four_axis_trace_integration_check,
 )
+from ashl_core.mimetic_endocrine_post_event_settling_design_minimal import (
+    run_mimetic_endocrine_post_event_settling_design_minimal_check,
+)
 from ashl_core.norepinephrine_like_change_attention_trace_check import (
     run_norepinephrine_like_change_attention_trace_check,
 )
@@ -7262,6 +7265,74 @@ def smoke_mimetic_endocrine_four_axis_trace_integration() -> dict:
             "summary": summary,
             "axis_results": axis_results,
             "boundary": boundary,
+        },
+    )
+
+
+def smoke_mimetic_endocrine_post_event_settling_design_minimal() -> dict:
+    result = run_mimetic_endocrine_post_event_settling_design_minimal_check()
+    summary = result.get("summary", {})
+    record = result.get("valid_record", {})
+    source = record.get("source_four_axis_trace_integration", {})
+    modes = record.get("settling_modes", {})
+    boundaries = record.get("design_boundaries", {})
+    passed = (
+        result.get("command") == "run-mimetic-endocrine-post-event-settling-design-minimal-check"
+        and result.get("flow") == "mimetic_endocrine_post_event_settling_design_minimal_v0"
+        and result.get("status") == "ok"
+        and record.get("record_type") == "mimetic_endocrine_post_event_settling_design"
+        and record.get("design_status") == "valid_design_only_post_event_settling"
+        and record.get("boundary_index_before") == "2026-06-09-b104"
+        and record.get("boundary_index_after") == "2026-06-09-b104"
+        and source.get("axis_count") == 4
+        and source.get("axis_complete_count") == 4
+        and source.get("endocrine_runtime_count") == 0
+        and set(modes)
+        == {
+            "natural_settling",
+            "comfort_modulated_settling",
+            "attention_interrupt_settling",
+            "safety_reset",
+            "evidence_for_review",
+        }
+        and modes.get("safety_reset", {}).get("sedation_metaphor_only") is True
+        and modes.get("safety_reset", {}).get("medical_sedation_claim") is False
+        and modes.get("evidence_for_review", {}).get("memory_write_allowed") is False
+        and boundaries.get("design_only") is True
+        and boundaries.get("trace_only") is True
+        and boundaries.get("endocrine_runtime_added") is False
+        and boundaries.get("settling_runtime_added") is False
+        and boundaries.get("safety_reset_runtime_added") is False
+        and boundaries.get("action_selection_influence") is False
+        and boundaries.get("selected_action_created") is False
+        and boundaries.get("final_action_created") is False
+        and boundaries.get("direct_command_created") is False
+        and boundaries.get("memory_write") is False
+        and boundaries.get("retention_write") is False
+        and boundaries.get("predictor_mutation") is False
+        and boundaries.get("subjective_emotion_claim") is False
+        and boundaries.get("consciousness_claim") is False
+        and boundaries.get("proof_of_learning_claim") is False
+        and summary.get("valid_post_event_settling_design_count") == 1
+        and summary.get("four_axis_source_checked_count") == 1
+        and summary.get("natural_settling_design_count") == 1
+        and summary.get("comfort_modulated_settling_design_count") == 1
+        and summary.get("safety_reset_design_count") == 1
+        and summary.get("endocrine_runtime_blocked_count") == 1
+        and summary.get("settling_runtime_blocked_count") == 1
+        and summary.get("action_selection_blocked_count") == 1
+        and summary.get("memory_write_blocked_count") == 1
+        and summary.get("predictor_mutation_blocked_count") == 1
+        and summary.get("all_mimetic_endocrine_post_event_settling_design_checks_passed") is True
+    )
+    return _result(
+        "mimetic_endocrine_post_event_settling_design_minimal",
+        passed,
+        {
+            "summary": summary,
+            "source": source,
+            "modes": modes,
+            "boundaries": boundaries,
         },
     )
 
@@ -19328,6 +19399,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_cortisol_like_failure_load_trace_check(),
         smoke_oxytocin_like_review_trust_trace_check(),
         smoke_mimetic_endocrine_four_axis_trace_integration(),
+        smoke_mimetic_endocrine_post_event_settling_design_minimal(),
         smoke_retina_decoder_feature_schema(),
         smoke_retina_decoder_symbolic_feature_decode(),
         smoke_visual_frame_buffer_schema(),

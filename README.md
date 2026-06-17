@@ -2140,6 +2140,18 @@ Two-Trial History Boundary:
 - Verifies all four axes produce valid trace records while remaining blocked from action selection, memory writes, candidate approval, predictor mutation, runtime formulas, and signal interactions.
 - Integration-check only: no endocrine runtime, endocrine state runtime, signal interaction formulas, reward bias change, attention control, protective trigger, trust-based approval, memory write, or subjective emotion claim is added.
 
+## State Settling and Mimetic Endocrine Concept Book v0
+
+- Adds `docs/state_settling_and_mimetic_endocrine_concept_book_v0.md`.
+- Separates action rollback from post-event state settling and defines natural settling, comfort-modulated settling, and safety reset as future design concepts.
+- Documentation-only: no endocrine runtime, runtime settling, runtime safety reset, action selection influence, memory write, retention write, predictor mutation, persistent mood, medical sedation claim, subjective emotion claim, or consciousness claim is added.
+
+## Mimetic Endocrine Post-Event Settling Design Minimal v0
+
+- Adds `py -3 -m ashl_core.teaching_cli run-mimetic-endocrine-post-event-settling-design-minimal-check`.
+- Reuses the four-axis mimetic endocrine trace integration and validates a design-only post-event settling vocabulary: natural settling, comfort-modulated settling, attention-interrupt settling, safety reset, and evidence-for-review.
+- Design/checker-only: no endocrine runtime, runtime settling, safety reset runtime, action selection influence, selected_action, final_action, direct command, memory write, retention write, predictor mutation, persistent mood, personality drift, medical sedation claim, subjective emotion claim, consciousness claim, or proof-of-learning claim is added.
+
 ## Mimetic Endocrine Line Milestone v0
 
 - Adds `docs/milestone_logs/mimetic_endocrine_line_milestone_2026-06-09.md`.

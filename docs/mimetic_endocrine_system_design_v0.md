@@ -246,11 +246,45 @@ source event
 -> signal update candidate
 -> boundary check
 -> trace record
--> decay / recovery
+-> post-event settling design
 -> optional downstream annotation
 ```
 
 No direct action selection.
+
+## Post-Event Settling Design Direction
+
+State settling is different from action rollback.
+
+```text
+action rollback:
+  undo or discard an action effect
+
+state settling:
+  reduce temporary post-event pressure / salience / reward load while preserving trace evidence
+```
+
+The mimetic endocrine design may represent three future settling concepts:
+
+```text
+natural_settling:
+  ordinary return toward baseline after minor event perturbation
+
+comfort_modulated_settling:
+  explicit mentor / trusted-source comfort may reduce future pressure load
+
+safety_reset:
+  forced reset of temporary state when a spike is unsafe or explicitly non-persistent
+```
+
+The safety reset concept may be described as sedation-like only as a bounded
+engineering metaphor. It is not medical sedation, consciousness control,
+evidence deletion, or a subjective-state claim.
+
+The current v0 repo may validate the settling design as a trace/checker concept.
+It does not add runtime settling, runtime safety reset, endocrine formulas,
+action selection influence, memory write, predictor mutation, persistent mood,
+or personality drift.
 
 ## Relationship To Existing Systems
 
@@ -302,6 +336,8 @@ No endocrine signal may write memory.
 No endocrine signal may modify predictor rules.
 No endocrine signal may create persistent rules.
 No endocrine signal may claim subjective experience.
+No endocrine signal may run post-event settling in v0.
+No endocrine signal may trigger safety reset in v0.
 ```
 
 ## Suggested Future Status Flow
@@ -322,7 +358,10 @@ Not implemented in this package.
 
 ```text
 No runtime endocrine system.
+No runtime post-event settling system.
+No runtime safety reset system.
 No biological hormone simulation.
+No medical sedation claim.
 No proof of emotion.
 No proof of happiness.
 No proof of trust.
@@ -355,6 +394,7 @@ Oxytocin-Like Review Trust Signal Design v0
 Endocrine State Snapshot v0
 Endocrine Signal Decay Check v0
 Endocrine Trace Integration v0
+Mimetic Endocrine Post-Event Settling Design Minimal v0
 ```
 
 Runtime modulation of action selection is out of v0 scope.
@@ -366,6 +406,9 @@ mimetic_endocrine_system_design_enabled: true
 design_only: true
 runtime_behavior_modified: false
 new_cli_added: false
+post_event_settling_runtime_added: false
+safety_reset_runtime_added: false
+medical_sedation_claimed: false
 
 dopamine_like_defined: true
 norepinephrine_like_defined: true
