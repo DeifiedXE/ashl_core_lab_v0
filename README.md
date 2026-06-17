@@ -1618,7 +1618,7 @@ Two-Trial History Boundary:
 
 - `docs/current_boundary_index.md`
 - Adds a short, versioned, low-token source of global hard boundaries for future work packages.
-- Current version: `Boundary Index Version: 2026-06-09-b107`.
+- Current version: `Boundary Index Version: 2026-06-09-b108`.
 - For current Phase0 status, see `docs/phase0_status.md`.
 - For capability status, see `docs/phase0_capability_matrix.md`.
 - For boundary version history, see `docs/current_boundary_index.md`.
@@ -2904,6 +2904,10 @@ Two-Trial History Boundary:
 ## Time-Paced Locomotion Action Completion Minimal v0
 
 - Time-Paced Locomotion Action Completion Minimal v0 completes each ACTIVE step from the temporal candy loop through sandbox selected_action, final_action, direct command, direct command execution, and outcome evaluation records. Boundary Index updates from `2026-06-09-b106` to `2026-06-09-b107` because the time-paced locomotion trace now uses the full sandbox action-line for each step. The plan remains manually fixed; no free choice, background autonomy, pathfinding, production behavior, real navigation/UI changes, persistent feedback, memory/retention writes, predictor mutation, endocrine runtime, open-ended autonomy, or proof-of-learning claims are added.
+
+## Mimetic Endocrine Sweetness Preference Sandbox Minimal v0
+
+- Mimetic Endocrine Sweetness Preference Sandbox Minimal v0 adds a sandbox-only sweetness preference trace using dopamine-like response evidence. Stage 0 calibrates by eating one ordinary candy and one sweeter candy once; Stage 1 and Stage 2 use irreversible one-path choices where the unchosen path is not consumed and return is blocked. The sweeter candy response wins in the unobstructed case and remains higher after a mild obstacle cost. Boundary Index updates from `2026-06-09-b107` to `2026-06-09-b108`. This remains a fixed-choice sandbox fixture and does not add free choice, pathfinding, production behavior, persistent preference, memory/retention writes, predictor mutation, persistent endocrine runtime, biological hormone claims, subjective pleasure claims, autonomous action/learning, or proof-of-learning claims.
 
 ## Host-Dependent Idle Continuance Trace v0
 

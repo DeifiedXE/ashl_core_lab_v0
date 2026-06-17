@@ -7259,6 +7259,22 @@ Boundary:
 - Boundary Index updates from `2026-06-09-b106` to `2026-06-09-b107`.
 - Rationale: this package connects time-paced locomotion steps to the full sandbox action-line, which is a new sandbox action completion boundary. It remains sandbox-only and manually planned.
 
+## Mimetic Endocrine Sweetness Preference Sandbox Minimal v0
+
+Status: completed / sandbox-only mimetic endocrine sweetness response trace / Boundary Index b108.
+
+Progress:
+- Adds `ashl_core/mimetic_endocrine_sweetness_preference_sandbox_minimal.py`.
+- Adds `py -3 -m ashl_core.teaching_cli run-mimetic-endocrine-sweetness-preference-sandbox-minimal-check`.
+- Stage 0 calibrates by producing dopamine-like response traces for one ordinary candy and one sweeter candy.
+- Stage 1 compares two unobstructed candy paths, consumes only the chosen sweeter path, blocks return, and leaves the unchosen path unconsumed.
+- Stage 2 repeats the irreversible one-path rule where the sweeter path has mild obstacle cost and still has higher net tendency preview.
+- Keeps free choice, pathfinding, production behavior, persistent preference, memory/retention writes, predictor mutation, persistent endocrine runtime, biological hormone claims, subjective pleasure claims, autonomous learning/action, and proof claims blocked.
+
+Boundary:
+- Boundary Index updates from `2026-06-09-b107` to `2026-06-09-b108`.
+- Rationale: this package adds a new sandbox-only mimetic endocrine response/preference trace boundary while keeping all behavior and persistence boundaries closed.
+
 ## Host-Dependent Idle Continuance Trace v0
 
 Status: design assumption / docs-only / no Boundary Index change.

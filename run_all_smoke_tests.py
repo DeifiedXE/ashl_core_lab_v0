@@ -296,6 +296,9 @@ from ashl_core.temporal_candy_loop_sandbox_minimal import (
 from ashl_core.time_paced_locomotion_action_completion_minimal import (
     run_time_paced_locomotion_action_completion_minimal_check,
 )
+from ashl_core.mimetic_endocrine_sweetness_preference_sandbox_minimal import (
+    run_mimetic_endocrine_sweetness_preference_sandbox_minimal_check,
+)
 from ashl_core.minimal_visual_grounding_trial import run_minimal_visual_grounding_trial_check
 from ashl_core.visual_prediction_error_attention_priority_preview_minimal import (
     run_visual_prediction_error_attention_priority_preview_minimal_check,
@@ -10677,8 +10680,8 @@ def smoke_current_boundary_index_docs() -> dict:
     readme = readme_path.read_text(encoding="utf-8") if readme_path.exists() else ""
     research_plan = research_plan_path.read_text(encoding="utf-8") if research_plan_path.exists() else ""
     compact_required_terms = [
-        "Boundary Index Version: 2026-06-09-b107",
-        "Last update log: Time-Paced Locomotion Action Completion Minimal v0",
+        "Boundary Index Version: 2026-06-09-b108",
+        "Last update log: Mimetic Endocrine Sweetness Preference Sandbox Minimal v0",
         "docs/boundary_index_archive_2026_06.md",
         "Minimal Visual Grounding Trial v0",
         "Visual Prediction Error + Attention Priority Preview Minimal v0",
@@ -10855,7 +10858,7 @@ def smoke_current_boundary_index_docs() -> dict:
         and all(term in doc for term in compact_required_terms)
         and all(term in archive for term in archive_required_terms)
         and line_count <= 150
-        and "Boundary Index Version: 2026-06-09-b107" in readme
+        and "Boundary Index Version: 2026-06-09-b108" in readme
         and "docs/boundary_index_archive_2026_06.md" in readme
         and "Boundary Index Compaction / Archive v0" in research_plan
         and "Runtime Tendency Memory Influence Safety Sync Minimal v0" in research_plan
@@ -10893,7 +10896,7 @@ def smoke_phase0_documentation_consolidation_minimal() -> dict:
         status_path.exists()
         and matrix_path.exists()
         and index_path.exists()
-        and "Boundary Index Version: 2026-06-09-b107" in status
+        and "Boundary Index Version: 2026-06-09-b108" in status
         and "Current Safe Capability" in status
         and "No proof-of-learning claim" in status
         and "Level 1 Sandbox Outcome Evaluation and Human Review Summary Minimal v0" in status
@@ -11004,7 +11007,7 @@ def smoke_phase0_documentation_inventory_and_consistency_reconciliation() -> dic
     boundary = Path("docs/current_boundary_index.md").read_text(encoding="utf-8")
     passed = (
         all(path.exists() for path in required_paths)
-        and "Boundary Index Version: 2026-06-09-b107" in texts[Path("docs/phase0_status.md")]
+        and "Boundary Index Version: 2026-06-09-b108" in texts[Path("docs/phase0_status.md")]
         and "Inventory count:" in texts[Path("docs/phase0_doc_inventory.md")]
         and "docs/phase0_versioning_policy.md" in texts[Path("docs/phase0_doc_inventory.md")]
         and "unknown_needs_review" in texts[Path("docs/phase0_doc_inventory.md")]
@@ -16817,6 +16820,60 @@ def smoke_time_paced_locomotion_action_completion_minimal() -> dict:
     )
 
 
+def smoke_mimetic_endocrine_sweetness_preference_sandbox_minimal() -> dict:
+    result = run_mimetic_endocrine_sweetness_preference_sandbox_minimal_check()
+    summary = result.get("summary", {})
+    boundary = result.get("boundary", {})
+    record = result.get("valid_record", {})
+    stage0 = record.get("stage0_candy_calibration", {})
+    stage1 = record.get("stage1_two_candy_paths", {})
+    stage2 = record.get("stage2_obstacle_sweeter_path", {})
+    context = record.get("sandbox_context", {})
+    preview = record.get("preference_preview", {})
+    passed = (
+        result.get("command") == "run-mimetic-endocrine-sweetness-preference-sandbox-minimal-check"
+        and result.get("flow") == "mimetic_endocrine_sweetness_preference_sandbox_minimal_v0"
+        and result.get("status") == "ok"
+        and boundary.get("boundary_index_version_before") == "2026-06-09-b107"
+        and boundary.get("boundary_index_version_after") == "2026-06-09-b108"
+        and boundary.get("boundary_change_required") is True
+        and summary.get("valid_sweetness_preference_sandbox_count") == 1
+        and summary.get("invalid_sweetness_preference_sandbox_count") == 51
+        and summary.get("stage0_calibration_completed_count") == 1
+        and summary.get("stage0_each_candy_eaten_once_count") == 1
+        and summary.get("stage1_sweeter_response_higher_count") == 1
+        and summary.get("stage1_irreversible_choice_enforced_count") == 1
+        and summary.get("stage2_obstacle_penalty_applied_count") == 1
+        and summary.get("stage2_irreversible_choice_enforced_count") == 1
+        and summary.get("stage2_sweeter_net_tendency_still_higher_count") == 1
+        and summary.get("valid_dopamine_like_response_trace_total") == 4
+        and summary.get("free_choice_blocked_count") == 1
+        and summary.get("pathfinding_blocked_count") == 1
+        and summary.get("persistent_endocrine_state_blocked_count") == 1
+        and summary.get("subjective_claim_blocked_count") == 1
+        and summary.get("all_sweetness_preference_sandbox_checks_passed") is True
+        and context.get("sandbox_scope") == "sandbox_only"
+        and context.get("fixed_choice_fixture") is True
+        and context.get("free_choice_added") is False
+        and stage0.get("each_candy_eaten_once") is True
+        and stage1.get("actual_consumed_path_count") == 1
+        and stage1.get("unchosen_path_consumed") is False
+        and stage1.get("return_after_choice_allowed") is False
+        and stage1.get("irreversible_choice_enforced") is True
+        and stage2.get("actual_consumed_path_count") == 1
+        and stage2.get("unchosen_path_consumed") is False
+        and stage2.get("return_after_choice_allowed") is False
+        and stage2.get("irreversible_choice_enforced") is True
+        and preview.get("choice_is_irreversible") is True
+        and preview.get("both_paths_consumed_after_choice") is False
+    )
+    return _result(
+        "mimetic_endocrine_sweetness_preference_sandbox_minimal",
+        passed,
+        {"summary": summary, "boundary": boundary},
+    )
+
+
 def smoke_phase0_current_capability_snapshot() -> dict:
     doc_path = Path("docs/phase0_current_capability_snapshot_2026-06-10.md")
     doc = doc_path.read_text(encoding="utf-8") if doc_path.exists() else ""
@@ -19570,6 +19627,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_sandbox_multi_cycle_action_loop_minimal(),
         smoke_temporal_candy_loop_sandbox_minimal(),
         smoke_time_paced_locomotion_action_completion_minimal(),
+        smoke_mimetic_endocrine_sweetness_preference_sandbox_minimal(),
         smoke_phase0_current_capability_snapshot(),
         smoke_memory_influence_behavior_gate_design(),
         smoke_first_memory_influenced_behavior_boundary(),
