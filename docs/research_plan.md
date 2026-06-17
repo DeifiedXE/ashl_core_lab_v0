@@ -7160,6 +7160,21 @@ Boundary:
 - Boundary Index remains `2026-06-09-b104`.
 - Rationale: this package audits existing b100-b104 records and does not create a new command, execute a command, persist feedback, change behavior, write memory/retention, mutate predictors, or change a boundary.
 
+## Sandbox Direct Command Outcome Evaluation Minimal v0
+
+Status: completed / outcome evaluation and prepare-only readiness / Boundary Index remains b104.
+
+Progress:
+- Adds `ashl_core/sandbox_direct_command_outcome_evaluation_minimal.py`.
+- Reuses b103/b104 direct-command execution feedback-loop records.
+- Evaluates the completed direct command outcome as `passed` with `outcome_label=sandbox_observation_success`, `execution_count=1`, `execution_budget=1`, and clean rollback.
+- Marks the result ready only to prepare a future sandbox action cycle; it does not authorize creating or executing another direct command.
+- Keeps persistent feedback, cross-session feedback, production behavior, real navigation/UI changes, runtime behavior change, memory write, retained JSONL write, retention write, predictor read/influence/mutation, selected_action/final_action/new direct command, autonomous learning/action, and proof claims blocked.
+
+Boundary:
+- Boundary Index remains `2026-06-09-b104`.
+- Rationale: this package evaluates an existing sandbox-only direct command outcome and does not create or execute another command, persist feedback, change behavior, write memory/retention, mutate predictors, or change a boundary.
+
 ## Host-Dependent Idle Continuance Trace v0
 
 Status: design assumption / docs-only / no Boundary Index change.
