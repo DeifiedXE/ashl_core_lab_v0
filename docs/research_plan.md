@@ -7308,6 +7308,22 @@ Boundary:
 - Boundary Index updates from `2026-06-09-b109` to `2026-06-09-b110`.
 - Rationale: this package connects generic action outcomes to a same-session internal response modulation preview layer while keeping all action creation and persistence boundaries closed.
 
+## Visual Spatial Grounding Minimal v0
+
+Status: completed / body-relative symbolic visual spatial trace / Boundary Index b111.
+
+Progress:
+- Adds `ashl_core/visual_spatial_grounding_minimal.py`.
+- Adds `py -3 -m ashl_core.teaching_cli run-visual-spatial-grounding-minimal-check`.
+- Reuses the existing symbolic first-person larger sandbox viewport.
+- Converts visible viewport cells into body-relative spatial cells with world_position, body_direction, forward distance, lateral offset, and Manhattan distance.
+- Grounds immediate front, far front, and self/agent cells as explicit spatial summaries.
+- Keeps the trace visible-cells-only and blocks full-map access, real image vision, object recognition, semantic vision, active focus, action selection influence, pathfinding, memory writes, persistent body schema, predictor mutation, and proof claims.
+
+Boundary:
+- Boundary Index updates from `2026-06-09-b110` to `2026-06-09-b111`.
+- Rationale: this package gives the visual line a validated position/direction/distance spatial perception trace while keeping perception blocked from behavior.
+
 ## Host-Dependent Idle Continuance Trace v0
 
 Status: design assumption / docs-only / no Boundary Index change.

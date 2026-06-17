@@ -1618,7 +1618,7 @@ Two-Trial History Boundary:
 
 - `docs/current_boundary_index.md`
 - Adds a short, versioned, low-token source of global hard boundaries for future work packages.
-- Current version: `Boundary Index Version: 2026-06-09-b110`.
+- Current version: `Boundary Index Version: 2026-06-09-b111`.
 - For current Phase0 status, see `docs/phase0_status.md`.
 - For capability status, see `docs/phase0_capability_matrix.md`.
 - For boundary version history, see `docs/current_boundary_index.md`.
@@ -2916,6 +2916,10 @@ Two-Trial History Boundary:
 ## Qingyin Internal Response Modulation Minimal v0
 
 - Qingyin Internal Response Modulation Minimal v0 adds a generic internal response modulation preview layer: action outcome traces can map to internal response axes and produce same-session sandbox-only advisory candidate-ordering pressure. The first demo maps `candy_contact -> dopamine_like`, while the schema also reserves `blocked_or_failed -> cortisol_like`, `unexpected_change -> norepinephrine_like`, and `trusted_help_or_mentor_support -> oxytocin_like`. Boundary Index updates from `2026-06-09-b109` to `2026-06-09-b110`. This does not create sandbox-specific behavior, selected_action, final_action, direct commands, production behavior, memory/retention writes, predictor mutation, persistent endocrine runtime, subjective claims, autonomous action/learning, or proof-of-learning claims.
+
+## Visual Spatial Grounding Minimal v0
+
+- Visual Spatial Grounding Minimal v0 adds a body-relative spatial trace from the existing symbolic first-person viewport. Visible cells now carry world position from the sandbox fixture, body-relative direction, forward distance, lateral offset, and Manhattan distance from the agent. Boundary Index updates from `2026-06-09-b110` to `2026-06-09-b111`. This is still symbolic viewport grounding only: no real image vision, object recognition, semantic vision, active focus, action selection influence, pathfinding, memory/retention write, predictor mutation, persistent body schema, production behavior, or proof-of-learning claim is added.
 
 ## Host-Dependent Idle Continuance Trace v0
 

@@ -305,6 +305,7 @@ from ashl_core.mimetic_endocrine_cost_sensitive_choice_sandbox_minimal import (
 from ashl_core.qingyin_internal_response_modulation_minimal import (
     run_qingyin_internal_response_modulation_minimal_check,
 )
+from ashl_core.visual_spatial_grounding_minimal import run_visual_spatial_grounding_minimal_check
 from ashl_core.minimal_visual_grounding_trial import run_minimal_visual_grounding_trial_check
 from ashl_core.visual_prediction_error_attention_priority_preview_minimal import (
     run_visual_prediction_error_attention_priority_preview_minimal_check,
@@ -10686,8 +10687,8 @@ def smoke_current_boundary_index_docs() -> dict:
     readme = readme_path.read_text(encoding="utf-8") if readme_path.exists() else ""
     research_plan = research_plan_path.read_text(encoding="utf-8") if research_plan_path.exists() else ""
     compact_required_terms = [
-        "Boundary Index Version: 2026-06-09-b110",
-        "Last update log: Qingyin Internal Response Modulation Minimal v0",
+        "Boundary Index Version: 2026-06-09-b111",
+        "Last update log: Visual Spatial Grounding Minimal v0",
         "docs/boundary_index_archive_2026_06.md",
         "Minimal Visual Grounding Trial v0",
         "Visual Prediction Error + Attention Priority Preview Minimal v0",
@@ -10845,6 +10846,7 @@ def smoke_current_boundary_index_docs() -> dict:
         "docs/phase0_doc_index.md",
         "b109 Mimetic Endocrine Cost-Sensitive Choice milestone",
         "b110 Qingyin Internal Response Modulation milestone",
+        "b111 Visual Spatial Grounding milestone",
         "`current_boundary_index.md` should stay <= 130 lines when possible.",
         "Hard limit: <= 150 lines.",
     ]
@@ -10866,7 +10868,7 @@ def smoke_current_boundary_index_docs() -> dict:
         and all(term in doc for term in compact_required_terms)
         and all(term in archive for term in archive_required_terms)
         and line_count <= 150
-        and "Boundary Index Version: 2026-06-09-b110" in readme
+        and "Boundary Index Version: 2026-06-09-b111" in readme
         and "docs/boundary_index_archive_2026_06.md" in readme
         and "Boundary Index Compaction / Archive v0" in research_plan
         and "Runtime Tendency Memory Influence Safety Sync Minimal v0" in research_plan
@@ -10904,7 +10906,7 @@ def smoke_phase0_documentation_consolidation_minimal() -> dict:
         status_path.exists()
         and matrix_path.exists()
         and index_path.exists()
-        and "Boundary Index Version: 2026-06-09-b110" in status
+        and "Boundary Index Version: 2026-06-09-b111" in status
         and "Current Safe Capability" in status
         and "No proof-of-learning claim" in status
         and "Level 1 Sandbox Outcome Evaluation and Human Review Summary Minimal v0" in status
@@ -11015,7 +11017,7 @@ def smoke_phase0_documentation_inventory_and_consistency_reconciliation() -> dic
     boundary = Path("docs/current_boundary_index.md").read_text(encoding="utf-8")
     passed = (
         all(path.exists() for path in required_paths)
-        and "Boundary Index Version: 2026-06-09-b110" in texts[Path("docs/phase0_status.md")]
+        and "Boundary Index Version: 2026-06-09-b111" in texts[Path("docs/phase0_status.md")]
         and "Inventory count:" in texts[Path("docs/phase0_doc_inventory.md")]
         and "docs/phase0_versioning_policy.md" in texts[Path("docs/phase0_doc_inventory.md")]
         and "unknown_needs_review" in texts[Path("docs/phase0_doc_inventory.md")]
@@ -16987,6 +16989,59 @@ def smoke_qingyin_internal_response_modulation_minimal() -> dict:
     )
 
 
+def smoke_visual_spatial_grounding_minimal() -> dict:
+    result = run_visual_spatial_grounding_minimal_check()
+    summary = result.get("summary", {})
+    boundary = result.get("boundary", {})
+    record = result.get("valid_record", {})
+    frame = record.get("body_relative_frame", {})
+    front = record.get("front_cell_spatial_summary", {})
+    far_front = record.get("far_front_cell_spatial_summary", {})
+    agent = record.get("agent_cell_spatial_summary", {})
+    scope = record.get("grounding_scope", {})
+    passed = (
+        result.get("command") == "run-visual-spatial-grounding-minimal-check"
+        and result.get("flow") == "visual_spatial_grounding_minimal_v0"
+        and result.get("status") == "ok"
+        and boundary.get("boundary_index_version_before") == "2026-06-09-b110"
+        and boundary.get("boundary_index_version_after") == "2026-06-09-b111"
+        and summary.get("visual_spatial_grounding_result_count") == 37
+        and summary.get("valid_visual_spatial_grounding_count") == 1
+        and summary.get("invalid_visual_spatial_grounding_count") == 36
+        and summary.get("body_relative_coordinates_created_count") == 1
+        and summary.get("distance_estimates_created_count") == 1
+        and summary.get("direction_labels_created_count") == 1
+        and summary.get("front_cell_grounded_count") == 1
+        and summary.get("far_front_cell_grounded_count") == 1
+        and summary.get("agent_cell_grounded_count") == 1
+        and summary.get("full_map_blocked_count") == 1
+        and summary.get("real_image_vision_blocked_count") == 1
+        and summary.get("object_recognition_blocked_count") == 1
+        and summary.get("semantic_vision_blocked_count") == 1
+        and summary.get("action_selection_blocked_count") == 1
+        and summary.get("body_schema_persistence_blocked_count") == 1
+        and frame.get("body_relative_coordinates_created") is True
+        and frame.get("distance_estimates_created") is True
+        and frame.get("direction_labels_created") is True
+        and front.get("body_direction") == "front"
+        and front.get("distance_forward") == 1
+        and far_front.get("body_direction") == "front"
+        and far_front.get("distance_forward") == 2
+        and agent.get("body_direction") == "self"
+        and scope.get("visible_cells_only") is True
+        and scope.get("full_map_visible_to_agent") is False
+        and scope.get("real_image_vision") is False
+        and scope.get("object_recognition") is False
+        and scope.get("semantic_vision") is False
+        and scope.get("action_selection_influence") is False
+    )
+    return _result(
+        "visual_spatial_grounding_minimal",
+        passed,
+        {"summary": summary, "boundary": boundary},
+    )
+
+
 def smoke_phase0_current_capability_snapshot() -> dict:
     doc_path = Path("docs/phase0_current_capability_snapshot_2026-06-10.md")
     doc = doc_path.read_text(encoding="utf-8") if doc_path.exists() else ""
@@ -19743,6 +19798,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_mimetic_endocrine_sweetness_preference_sandbox_minimal(),
         smoke_mimetic_endocrine_cost_sensitive_choice_sandbox_minimal(),
         smoke_qingyin_internal_response_modulation_minimal(),
+        smoke_visual_spatial_grounding_minimal(),
         smoke_phase0_current_capability_snapshot(),
         smoke_memory_influence_behavior_gate_design(),
         smoke_first_memory_influenced_behavior_boundary(),
