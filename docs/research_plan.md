@@ -7227,6 +7227,22 @@ Boundary:
 - Boundary Index updates from `2026-06-09-b104` to `2026-06-09-b105`.
 - Rationale: this package moves from one completed sandbox direct-command outcome to a bounded multi-cycle sandbox action loop, which is a new sandbox action-line capability even though it remains sandbox-only and budget-limited.
 
+## Temporal Candy Loop Sandbox Minimal v0
+
+Status: completed / time-paced sandbox continuity loop / Boundary Index b106.
+
+Progress:
+- Adds `ashl_core/temporal_candy_loop_sandbox_minimal.py`.
+- Adds `py -3 -m ashl_core.teaching_cli run-temporal-candy-loop-sandbox-minimal-check`.
+- Connects the Host-Dependent Idle Continuance design vocabulary to a sandbox-only action trace without adding production runtime.
+- Runs six manually planned sandbox actions over a symbolic candy/item fixture.
+- Requires two IDLE ticks before every ACTIVE action, records runtime/action/idle ticks, contacts candy once as a non-subjective reward trace, and stops by budget.
+- Validates that too-fast action bypass, idle evidence creation, idle memory/direct-command creation, open-ended looping, pathfinding, production behavior, persistent updates, memory/retention writes, predictor mutation, endocrine runtime, and proof claims remain blocked.
+
+Boundary:
+- Boundary Index updates from `2026-06-09-b105` to `2026-06-09-b106`.
+- Rationale: this package adds sandbox-only time-paced continuity with cooldown enforcement around action execution. It does not add production behavior, autonomous open-ended action, memory writes, predictor mutation, or endocrine runtime.
+
 ## Host-Dependent Idle Continuance Trace v0
 
 Status: design assumption / docs-only / no Boundary Index change.
