@@ -7324,6 +7324,23 @@ Boundary:
 - Boundary Index updates from `2026-06-09-b110` to `2026-06-09-b111`.
 - Rationale: this package gives the visual line a validated position/direction/distance spatial perception trace while keeping perception blocked from behavior.
 
+## Visual-Spatial Motor Affordance Bridge Minimal v0
+
+Status: completed / preview-only body-relative motor affordance bridge / Boundary Index b112.
+
+Progress:
+- Adds `ashl_core/visual_spatial_motor_affordance_bridge_minimal.py`.
+- Adds `py -3 -m ashl_core.teaching_cli run-visual-spatial-motor-affordance-bridge-minimal-check`.
+- Reuses `visual_spatial_grounding_minimal` as source.
+- Derives front-cell affordances for empty, wall, and item front-symbol demos.
+- Previews can_step_forward, can_turn_left, can_turn_right, can_reach_front, front_blocked, and front_contact_possible.
+- Keeps the bridge preview-only; no motor intent is selected and no motor action is executed.
+- Blocks selected_action, final_action, direct command, pathfinding, goal seeking, memory writes, retention writes, predictor mutation, persistent body schema, semantic vision, production behavior, and proof claims.
+
+Boundary:
+- Boundary Index updates from `2026-06-09-b111` to `2026-06-09-b112`.
+- Rationale: this package creates a new validated perception-to-affordance bridge while keeping action creation and execution boundaries closed.
+
 ## Host-Dependent Idle Continuance Trace v0
 
 Status: design assumption / docs-only / no Boundary Index change.

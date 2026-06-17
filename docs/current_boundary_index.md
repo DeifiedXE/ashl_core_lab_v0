@@ -1,7 +1,7 @@
-Boundary Index Version: 2026-06-09-b111
-Last update log: Visual Spatial Grounding Minimal v0
-Previous Boundary Index Version: 2026-06-09-b110
-Previous Last update log: Qingyin Internal Response Modulation Minimal v0
+Boundary Index Version: 2026-06-09-b112
+Last update log: Visual-Spatial Motor Affordance Bridge Minimal v0
+Previous Boundary Index Version: 2026-06-09-b111
+Previous Last update log: Visual Spatial Grounding Minimal v0
 Clean count at last update log reset: 0/5; current clean count: 0/5
 ## Purpose
 - This file is the compact current Boundary Index for fast review of present ASHL Core / D Qingyin boundaries.
@@ -61,7 +61,7 @@ Clean count at last update log reset: 0/5; current clean count: 0/5
 - ASHL Core can validate an explicit approval boundary for a future sandbox-only selected_action package and produce a trace-only cortisol-like doubt pressure signal with paranoia guard. This does not create selected_action, final_action, direct command, pressure runtime application, pressure persistence, memory/retention write, predictor mutation, production behavior, or proof of learning.
 - ASHL Core can validate an explicit approval boundary for a future sandbox-only final_action package from the audited b95-b97 sandbox action chain, while no final_action is created yet and direct command, persistent updates, memory writes, retention writes, predictor mutation, production behavior, and proof-of-learning remain blocked.
 - ASHL Core can use a workflow-only test-tier policy and create one sandbox-only final_action from an approved sandbox execution result, while direct command, persistent updates, memory writes, retention writes, predictor mutation, production behavior, and proof-of-learning remain blocked.
-- ASHL Core can create and execute sandbox-only direct command `sandbox.observe_or_alternative_probe`, evaluate the outcome, run fixed/time-paced sandbox-only action loops, run sandbox-only mimetic endocrine response traces, convert generic action outcomes into same-session internal response modulation previews, and create body-relative visual spatial traces with visible cell position/direction/distance; selected_action/final_action/direct command creation from modulation or vision, production behavior, persistent updates, memory/retention writes, predictor mutation, semantic vision, persistent body schema/endocrine runtime, subjective/biological claims, open-ended autonomy, and proof-of-learning remain blocked.
+- ASHL Core can create and execute sandbox-only direct command `sandbox.observe_or_alternative_probe`, run fixed/time-paced sandbox-only action loops, run sandbox-only mimetic endocrine response traces, convert generic action outcomes into same-session internal response modulation previews, create body-relative visual spatial traces, and derive preview-only motor affordances from visible front-cell spatial traces; selected_action/final_action/direct command creation from modulation or vision, motor execution, production behavior, persistent updates, memory/retention writes, predictor mutation, semantic vision, persistent body schema/endocrine runtime, subjective/biological claims, open-ended autonomy, and proof-of-learning remain blocked.
 
 ## Latest Forbidden Claims
 - No object recognition.
@@ -125,6 +125,7 @@ Clean count at last update log reset: 0/5; current clean count: 0/5
 - b109 Mimetic Endocrine Cost-Sensitive Choice milestone: higher sweetness raw response can be outweighed by high difficulty/return cost; returnable harder sweeter path is not forced, easy ordinary path is preferred, and only one chosen candy is consumed. Forbidden: no visual detection, free choice, pathfinding, production behavior, persistent preference, memory/retention write, predictor mutation, persistent endocrine runtime, biological hormone/subjective pleasure/proof claim.
 - b110 Qingyin Internal Response Modulation milestone: generic action_outcome_trace can map outcome types to internal response axes and produce same-session sandbox-only advisory candidate-ordering pressure preview. Demo: candy_contact -> dopamine_like. Forbidden: no sandbox-specific behavior, selected_action, final_action, direct command, production behavior, memory/retention write, predictor mutation, persistent endocrine runtime, subjective/biological/proof claim.
 - b111 Visual Spatial Grounding milestone: symbolic first-person viewport now produces body-relative position/direction/distance traces for visible cells. Forbidden: no real image vision, object recognition, semantic vision, active focus, action selection influence, pathfinding, memory/retention write, predictor mutation, persistent body schema, or proof claim.
+- b112 Visual-Spatial Motor Affordance Bridge milestone: visual spatial front-cell trace can preview can_step_forward/can_turn/can_reach/front_blocked/contact affordances. Forbidden: no motor execution, selected_action, final_action, direct command, pathfinding, memory/retention write, predictor mutation, persistent body schema, semantic vision, or proof claim.
 ## Archive
 - Older milestone details are archived in `docs/boundary_index_archive_2026_06.md`.
 

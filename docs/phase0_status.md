@@ -2,14 +2,15 @@
 
 ## Current Boundary Index
 
-- Current version: `Boundary Index Version: 2026-06-09-b111`
-- Current update log: Visual Spatial Grounding Minimal v0; Qingyin Internal Response Modulation Minimal v0 updated Boundary Index to `2026-06-09-b110`.
+- Current version: `Boundary Index Version: 2026-06-09-b112`
+- Current update log: Visual-Spatial Motor Affordance Bridge Minimal v0; Visual Spatial Grounding Minimal v0 updated Boundary Index to `2026-06-09-b111`.
 - The task queue is workflow coordination only and does not add ASHL Core runtime capability or approval.
 - Package IDs track Codex work packages; Boundary Index versions track boundary and validation-boundary changes only.
 
 ## Latest Completed Package
 
-- Latest completed capability package: Visual Spatial Grounding Minimal v0.
+- Latest completed capability package: Visual-Spatial Motor Affordance Bridge Minimal v0.
+- Previous completed capability package: Visual Spatial Grounding Minimal v0.
 - Previous completed capability package: Qingyin Internal Response Modulation Minimal v0.
 - Previous completed capability package: Mimetic Endocrine Cost-Sensitive Choice Sandbox Minimal v0.
 - Previous completed capability package: Mimetic Endocrine Sweetness Preference Sandbox Minimal v0.
@@ -52,9 +53,9 @@
 
 ## Current Safe Capability Claim
 
-ASHL Core can validate explicit user approval, apply one reviewed lesson inside the Phase0 Level 1 toy sandbox only, observe and evaluate the sandbox application outcome, close the Level 1 sandbox-only review loop with a conservative conclusion, produce a Level 2 readiness precheck, define a Level 2 design envelope and scenario plan, complete/observe/evaluate/summarize a Phase0 Level 2 sandbox dry run within that envelope, apply/observe/evaluate/summarize one reviewed lesson inside the Phase0 Level 2 sandbox scope only, conclude that Level 2 sandbox-only review with conservative readiness for a future higher-level design package only, run/observe/evaluate/summarize deterministic Level 3 sandbox-only multi-step traces, evaluate bounded Level 3 variant stability, admit/write/read one approved minimal reviewed lesson memory record through controlled paths, preview and apply bounded memory-influenced runtime tendency shifts with rollback inside deterministic controlled runners, use approved memory-influenced tendency to rank sandbox-only candidate actions as advisory ordering only, run same-session sandbox thought/feedback/reordering loops, create sandbox-only selected_action/final_action/direct-command/execution/evaluation records inside approved scopes, run fixed/time-paced sandbox-only action loops, run sandbox-only mimetic endocrine sweetness and cost-sensitive response traces, convert generic action outcomes into same-session internal response modulation / candidate-ordering pressure previews, and create body-relative visual spatial traces with position/direction/distance for visible symbolic first-person viewport cells while production behavior remains blocked.
+ASHL Core can validate explicit user approval, apply reviewed lessons inside bounded Phase0 sandbox scopes, run/observe/evaluate deterministic Level 2/Level 3 sandbox-only traces, admit/write/read one approved minimal reviewed lesson memory record through controlled paths, preview and apply bounded memory-influenced runtime tendency shifts with rollback inside deterministic controlled runners, use approved memory-influenced tendency to rank sandbox-only candidate actions as advisory ordering only, run same-session sandbox thought/feedback/reordering loops, create sandbox-only selected_action/final_action/direct-command/execution/evaluation records inside approved scopes, run fixed/time-paced sandbox-only action loops, run sandbox-only mimetic endocrine response traces, convert generic action outcomes into same-session internal response modulation previews, create body-relative visual spatial traces for visible symbolic first-person viewport cells, and derive preview-only body-relative motor affordances from visual front-cell traces while production behavior remains blocked.
 
-Phase0 records may contain sandbox-only lesson application/review records, Level 2/Level 3 sandbox-only traces and reviews, approved minimal memory admission/write/read/influence records, same-session feedback records, sandbox selected_action/final_action/direct-command/execution records, time-paced continuity records, mimetic endocrine response records, one b110 qingyin_internal_response_modulation record, and one b111 visual_spatial_grounding record. These include only sandbox-scoped selected_action/final_action/direct-command/execution/outcome-evaluation/time-paced continuity, response-trace, same-session modulation preview, and visible-cell spatial trace records; they do not create production behavior or persist memory/predictor/trust/doubt/endocrine/body-schema updates.
+Phase0 records may contain sandbox-only lesson application/review records, Level 2/Level 3 sandbox-only traces and reviews, approved minimal memory admission/write/read/influence records, same-session feedback records, sandbox selected_action/final_action/direct-command/execution records, time-paced continuity records, mimetic endocrine response records, b110 qingyin_internal_response_modulation records, b111 visual_spatial_grounding records, and b112 visual_spatial_motor_affordance_bridge records. These include only sandbox-scoped action-line, response-trace, same-session modulation preview, visible-cell spatial trace, and motor-affordance preview records; they do not create production behavior or persist memory/predictor/trust/doubt/endocrine/body-schema updates.
 
 Repo Audit Minimal v0 records the current audit baseline: Qingyin is a boundary-constrained Phase0 trace/checker system, not an autonomous learning or autonomous acting individual. The bucket signal is Qingyin bucket-derived/system-detected, while the natural-language candidate interpretation is human or human/GPT-assisted.
 

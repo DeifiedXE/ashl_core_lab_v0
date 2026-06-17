@@ -281,6 +281,9 @@ from .qingyin_internal_response_modulation_minimal import (
     run_qingyin_internal_response_modulation_minimal_check,
 )
 from .visual_spatial_grounding_minimal import run_visual_spatial_grounding_minimal_check
+from .visual_spatial_motor_affordance_bridge_minimal import (
+    run_visual_spatial_motor_affordance_bridge_minimal_check,
+)
 from .reviewed_lesson_dry_run_correction_minimal import (
     run_reviewed_lesson_dry_run_correction_minimal_check,
 )
@@ -3952,6 +3955,8 @@ def run_command(command: str) -> dict[str, Any] | str:
         return run_qingyin_internal_response_modulation_minimal_check()
     if command == "run-visual-spatial-grounding-minimal-check":
         return run_visual_spatial_grounding_minimal_check()
+    if command == "run-visual-spatial-motor-affordance-bridge-minimal-check":
+        return run_visual_spatial_motor_affordance_bridge_minimal_check()
     if command == "run-simple-retina-focus-preview-minimal-check":
         return run_simple_retina_focus_preview_minimal_check()
     if command == "run-generalized-prediction-confidence-check":
@@ -4192,6 +4197,7 @@ def main(argv: list[str] | None = None) -> int:
             "run-mimetic-endocrine-cost-sensitive-choice-sandbox-minimal-check",
             "run-qingyin-internal-response-modulation-minimal-check",
             "run-visual-spatial-grounding-minimal-check",
+            "run-visual-spatial-motor-affordance-bridge-minimal-check",
             "run-simple-retina-focus-preview-minimal-check",
             "run-generalized-prediction-confidence-check",
             "run-generalized-candidate-from-pattern-check",
@@ -4638,6 +4644,8 @@ def main(argv: list[str] | None = None) -> int:
         result = run_qingyin_internal_response_modulation_minimal_check()
     elif args.command == "run-visual-spatial-grounding-minimal-check":
         result = run_visual_spatial_grounding_minimal_check()
+    elif args.command == "run-visual-spatial-motor-affordance-bridge-minimal-check":
+        result = run_visual_spatial_motor_affordance_bridge_minimal_check()
     elif args.command == "run-simple-retina-focus-preview-minimal-check":
         result = run_simple_retina_focus_preview_minimal_check()
     elif args.command == "run-generalized-prediction-confidence-check":
