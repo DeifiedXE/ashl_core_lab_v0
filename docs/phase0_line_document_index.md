@@ -328,14 +328,17 @@ docs/qingyin_proto_purpose_generation_boundary_design_v0.md
 docs/qingyin_proto_purpose_generation_boundary_design_v0_zh.md
 docs/body_motor_affordance_tendency_endocrine_reconciliation_design_v0.md
 docs/phase0_behavior_curiosity_assumption_v0_1.md
+ashl_core/experience_derived_proto_purpose_candidate_trace_minimal.py
+ashl_core/proto_purpose_approval_boundary_minimal.py
 ```
 
 Important current rule:
 
 ```text
 ideal expected states are experience-derived.
-experience-derived ideal expectation is not approved purpose.
-proto-purpose cannot directly authorize action.
+experience-derived ideal expectation is not approved purpose by itself.
+approved_purpose records may enter only a future candidate-ordering boundary.
+approved_purpose cannot directly authorize action.
 ```
 
 ---

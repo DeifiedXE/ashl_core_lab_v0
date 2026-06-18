@@ -7578,3 +7578,21 @@ Boundary:
 
 Next:
 - Proto-Purpose Approval Boundary Minimal v0, if the next package opens an explicit boundary for selected proto-purpose candidates to become approved purposes under strict scope.
+
+## Proto-Purpose Approval Boundary Minimal v0
+
+Status: completed / bounded proto-purpose to approved_purpose boundary / Boundary Index b122.
+
+Progress:
+- Reuses Experience-Derived Proto-Purpose Candidate Trace Minimal v0 as source.
+- `approach_or_reach_item` can become an approved purpose within `bounded_positive_item_contact_scope`.
+- `resolve_mismatch` can become an approved purpose within `bounded_verification_scope`.
+- `support_user_comfort` can become an approved purpose within `bounded_comfort_support_scope`.
+- Approved purposes may enter a future candidate-ordering boundary.
+
+Boundary:
+- Boundary Index updates from `2026-06-09-b121` to `2026-06-09-b122`.
+- This package does not authorize candidate ordering in this package, create selected_action, create final_action, create direct command, execute sandbox action, change runtime behavior, write memory, write retention, mutate predictors, manipulate emotion, claim user happiness, or prove learning.
+
+Next:
+- Approved Purpose Candidate Ordering Boundary Minimal v0, if the next package defines how approved_purpose may enter candidate ordering without creating selected_action.

@@ -2969,6 +2969,10 @@ Two-Trial History Boundary:
 
 - Experience-Derived Proto-Purpose Candidate Trace Minimal v0 adds the first thinking-line proto-purpose trace: bounded reward, mismatch-resolution, and comfort-settling experience can shape ideal expected states and create trace-only proto-purpose candidates (`approach_or_reach_item`, `resolve_mismatch`, `support_user_comfort`). Boundary Index remains `2026-06-09-b121`. This does not create approved purpose, candidate ordering, selected_action, final_action, direct command, sandbox execution, memory/retention write, predictor mutation, runtime behavior change, emotional manipulation, user-happiness claims, or proof-of-learning claims.
 
+## Proto-Purpose Approval Boundary Minimal v0
+
+- Proto-Purpose Approval Boundary Minimal v0 opens the bounded purpose-approval boundary for experience-derived proto-purpose traces. `approach_or_reach_item`, `resolve_mismatch`, and `support_user_comfort` can become `approved_purpose` records and may enter a future candidate-ordering boundary. Boundary Index updates from `2026-06-09-b121` to `2026-06-09-b122`. This does not authorize candidate ordering in this package, create selected_action, final_action, direct command, execute sandbox action, change runtime behavior, write memory/retention, mutate predictors, manipulate emotion, claim user happiness, or prove learning.
+
 ## Host-Dependent Idle Continuance Trace v0
 
 - Host-Dependent Idle Continuance Trace v0 records a design-only OFFLINE / IDLE / ACTIVE model for future low-power idle state continuity. It proposes `idle_tick`, `continuance_pressure`, `weak_intent`, pending prediction suspension, and waiting-tendency invariants, while keeping IDLE blocked from LLM calls, user data scans, external actions, formal memory, retained JSONL, retention, world-model updates, learned principles, prediction-error changes without observation, direct commands, production behavior, and consciousness/proof-of-learning claims. Boundary Index remains unchanged.
