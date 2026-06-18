@@ -2965,6 +2965,10 @@ Two-Trial History Boundary:
 
 - Body-Motor Feedback-Gated Candidate Reordering Approval Boundary Minimal v0 opens only the approval boundary for a future sandbox-only candidate reordering package from settled body-motor feedback pressure. Movement/reach pressure previews may proceed to a future reordering package; wall/no-pressure remains blocked. Boundary Index updates from `2026-06-09-b120` to `2026-06-09-b121`. This package does not apply candidate reordering, create selected_action, final_action, direct command, motor execution, persistence, memory/retention writes, predictor mutation, production behavior, semantic vision, subjective/biological claims, or proof-of-learning claims.
 
+## Experience-Derived Proto-Purpose Candidate Trace Minimal v0
+
+- Experience-Derived Proto-Purpose Candidate Trace Minimal v0 adds the first thinking-line proto-purpose trace: bounded reward, mismatch-resolution, and comfort-settling experience can shape ideal expected states and create trace-only proto-purpose candidates (`approach_or_reach_item`, `resolve_mismatch`, `support_user_comfort`). Boundary Index remains `2026-06-09-b121`. This does not create approved purpose, candidate ordering, selected_action, final_action, direct command, sandbox execution, memory/retention write, predictor mutation, runtime behavior change, emotional manipulation, user-happiness claims, or proof-of-learning claims.
+
 ## Host-Dependent Idle Continuance Trace v0
 
 - Host-Dependent Idle Continuance Trace v0 records a design-only OFFLINE / IDLE / ACTIVE model for future low-power idle state continuity. It proposes `idle_tick`, `continuance_pressure`, `weak_intent`, pending prediction suspension, and waiting-tendency invariants, while keeping IDLE blocked from LLM calls, user data scans, external actions, formal memory, retained JSONL, retention, world-model updates, learned principles, prediction-error changes without observation, direct commands, production behavior, and consciousness/proof-of-learning claims. Boundary Index remains unchanged.

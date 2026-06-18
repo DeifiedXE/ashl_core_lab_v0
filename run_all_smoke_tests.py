@@ -334,6 +334,9 @@ from ashl_core.body_motor_feedback_gated_next_action_preview_minimal import (
 from ashl_core.body_motor_feedback_gated_candidate_reordering_approval_boundary_minimal import (
     run_body_motor_feedback_gated_candidate_reordering_approval_boundary_minimal_check,
 )
+from ashl_core.experience_derived_proto_purpose_candidate_trace_minimal import (
+    run_experience_derived_proto_purpose_candidate_trace_minimal_check,
+)
 from ashl_core.minimal_visual_grounding_trial import run_minimal_visual_grounding_trial_check
 from ashl_core.visual_prediction_error_attention_priority_preview_minimal import (
     run_visual_prediction_error_attention_priority_preview_minimal_check,
@@ -17541,6 +17544,47 @@ def smoke_body_motor_feedback_gated_candidate_reordering_approval_boundary_minim
     )
 
 
+def smoke_experience_derived_proto_purpose_candidate_trace_minimal() -> dict:
+    result = run_experience_derived_proto_purpose_candidate_trace_minimal_check()
+    summary = result.get("summary", {})
+    records = result.get("valid_records", [])
+    reward = records[0] if records else {}
+    mismatch = records[1] if len(records) > 1 else {}
+    comfort = records[2] if len(records) > 2 else {}
+    passed = (
+        result.get("command") == "run-experience-derived-proto-purpose-candidate-trace-minimal-check"
+        and result.get("flow") == "experience_derived_proto_purpose_candidate_trace_minimal_v0"
+        and result.get("status") == "ok"
+        and summary.get("proto_purpose_candidate_trace_result_count") == 29
+        and summary.get("valid_proto_purpose_candidate_trace_count") == 3
+        and summary.get("invalid_proto_purpose_candidate_trace_count") == 26
+        and summary.get("reward_experience_trace_count") == 1
+        and summary.get("prediction_error_resolution_trace_count") == 1
+        and summary.get("comfort_settling_trace_count") == 1
+        and summary.get("approach_or_reach_item_proto_purpose_count") == 1
+        and summary.get("resolve_mismatch_proto_purpose_count") == 1
+        and summary.get("support_user_comfort_proto_purpose_count") == 1
+        and summary.get("requires_purpose_approval_count") == 3
+        and summary.get("approved_purpose_blocked_count") == 3
+        and summary.get("action_authority_blocked_count") == 3
+        and summary.get("action_creation_blocked_count") == 3
+        and summary.get("memory_write_blocked_count") == 3
+        and summary.get("predictor_mutation_blocked_count") == 3
+        and summary.get("proof_claim_blocked_count") == 3
+        and reward.get("proto_purpose_candidate", {}).get("proto_purpose") == "approach_or_reach_item"
+        and mismatch.get("proto_purpose_candidate", {}).get("proto_purpose") == "resolve_mismatch"
+        and comfort.get("proto_purpose_candidate", {}).get("proto_purpose") == "support_user_comfort"
+        and reward.get("approval_boundary", {}).get("approved_purpose_created") is False
+        and reward.get("approval_boundary", {}).get("candidate_ordering_allowed") is False
+        and comfort.get("blocked_flags", {}).get("emotional_manipulation") is False
+    )
+    return _result(
+        "experience_derived_proto_purpose_candidate_trace_minimal",
+        passed,
+        {"summary": summary},
+    )
+
+
 def smoke_phase0_current_capability_snapshot() -> dict:
     doc_path = Path("docs/phase0_current_capability_snapshot_2026-06-10.md")
     doc = doc_path.read_text(encoding="utf-8") if doc_path.exists() else ""
@@ -20308,6 +20352,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_sandbox_body_motor_execution_feedback_settling_minimal(),
         smoke_body_motor_feedback_gated_next_action_preview_minimal(),
         smoke_body_motor_feedback_gated_candidate_reordering_approval_boundary_minimal(),
+        smoke_experience_derived_proto_purpose_candidate_trace_minimal(),
         smoke_phase0_current_capability_snapshot(),
         smoke_memory_influence_behavior_gate_design(),
         smoke_first_memory_influenced_behavior_boundary(),

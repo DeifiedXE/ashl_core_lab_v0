@@ -7560,3 +7560,21 @@ Boundary:
 
 Next:
 - Body-Motor Feedback-Gated Candidate Reordering Minimal v0, if the next package applies sandbox-only candidate ordering changes from approved pressure while still creating no selected_action.
+
+## Experience-Derived Proto-Purpose Candidate Trace Minimal v0
+
+Status: completed / trace-only thinking-line proto-purpose candidates / Boundary Index remains b121.
+
+Progress:
+- Adds trace-only proto-purpose candidates from experience-derived ideal expected states.
+- Reward experience can produce `approach_or_reach_item`.
+- Prediction-error resolution experience can produce `resolve_mismatch`.
+- Comfort-settling experience can produce `support_user_comfort`.
+- All traces require future purpose approval before any ordering or action.
+
+Boundary:
+- Boundary Index remains `2026-06-09-b121`.
+- This package creates no approved purpose, candidate ordering, selected_action, final_action, direct command, sandbox execution, runtime behavior change, memory write, retention write, predictor mutation, emotional manipulation, user-happiness claim, or proof-of-learning claim.
+
+Next:
+- Proto-Purpose Approval Boundary Minimal v0, if the next package opens an explicit boundary for selected proto-purpose candidates to become approved purposes under strict scope.

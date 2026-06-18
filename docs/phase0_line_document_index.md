@@ -317,7 +317,30 @@ application approval must come from explicit user/project-owner statement.
 
 ---
 
-## 8. Continuity / Idle / Host-Dependent Line
+## 8. Thinking / Purpose Formation Line
+
+This line covers purpose source, ideal expectation, proto-purpose formation, and the boundary between internal directional pressure and approved purpose.
+
+Primary docs:
+
+```text
+docs/qingyin_proto_purpose_generation_boundary_design_v0.md
+docs/qingyin_proto_purpose_generation_boundary_design_v0_zh.md
+docs/body_motor_affordance_tendency_endocrine_reconciliation_design_v0.md
+docs/phase0_behavior_curiosity_assumption_v0_1.md
+```
+
+Important current rule:
+
+```text
+ideal expected states are experience-derived.
+experience-derived ideal expectation is not approved purpose.
+proto-purpose cannot directly authorize action.
+```
+
+---
+
+## 9. Continuity / Idle / Host-Dependent Line
 
 This line covers continuity, idle continuance, first output, mentor feedback, and interaction bridge assumptions.
 
@@ -349,7 +372,7 @@ mentor feedback records are supervision records, not autonomous feedback runtime
 
 ---
 
-## 9. Governance / Audit / Planning Line
+## 10. Governance / Audit / Planning Line
 
 This line covers repo governance, package queue, audits, status sync, and high-level planning.
 
