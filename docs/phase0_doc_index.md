@@ -6,6 +6,13 @@
 - `docs/phase0_status.md`
 - `docs/current_boundary_index.md`
 - `docs/level1_sandbox_outcome_evaluation_and_human_review_summary_minimal_v0.md`
+- `docs/phase0_line_document_index.md`
+
+## Line-Based Navigation
+
+- `docs/phase0_line_document_index.md`
+
+Use this file to find documents grouped by development line: action/body-motor, mimetic endocrine, vision/focus, voice/audio/hearing, memory/retention/influence, lesson/review/evidence, continuity/idle, and governance/audit.
 
 ## Boundary Anchors
 
