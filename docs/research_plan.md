@@ -7596,3 +7596,21 @@ Boundary:
 
 Next:
 - Approved Purpose Candidate Ordering Boundary Minimal v0, if the next package defines how approved_purpose may enter candidate ordering without creating selected_action.
+
+## Approved Purpose Candidate Ordering Boundary Minimal v0
+
+Status: completed / approved_purpose to future candidate-ordering boundary / Boundary Index b123.
+
+Progress:
+- Reuses Proto-Purpose Approval Boundary Minimal v0 approved_purpose records as source.
+- `approach_or_reach_item` may enter future `positive_item_interaction_candidates`.
+- `resolve_mismatch` may enter future `verification_or_observation_candidates`.
+- `support_user_comfort` may enter future `bounded_comfort_support_candidates`.
+- This package opens only the future ordering boundary and does not compute or apply ordering.
+
+Boundary:
+- Boundary Index updates from `2026-06-09-b122` to `2026-06-09-b123`.
+- This package does not apply candidate ordering/reordering, create selected_action, create final_action, create direct command, execute sandbox action, change runtime behavior, write memory, write retention, mutate predictors, manipulate emotion, claim user happiness, or prove learning.
+
+Next:
+- Approved Purpose Candidate Ordering Minimal v0, if the next package computes advisory sandbox-only candidate ordering from approved purpose while still creating no selected_action.

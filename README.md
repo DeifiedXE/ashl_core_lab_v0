@@ -1618,7 +1618,7 @@ Two-Trial History Boundary:
 
 - `docs/current_boundary_index.md`
 - Adds a short, versioned, low-token source of global hard boundaries for future work packages.
-- Current version: `Boundary Index Version: 2026-06-09-b121`.
+- Current version: `Boundary Index Version: 2026-06-09-b123`.
 - For current Phase0 status, see `docs/phase0_status.md`.
 - For capability status, see `docs/phase0_capability_matrix.md`.
 - For boundary version history, see `docs/current_boundary_index.md`.
@@ -2972,6 +2972,10 @@ Two-Trial History Boundary:
 ## Proto-Purpose Approval Boundary Minimal v0
 
 - Proto-Purpose Approval Boundary Minimal v0 opens the bounded purpose-approval boundary for experience-derived proto-purpose traces. `approach_or_reach_item`, `resolve_mismatch`, and `support_user_comfort` can become `approved_purpose` records and may enter a future candidate-ordering boundary. Boundary Index updates from `2026-06-09-b121` to `2026-06-09-b122`. This does not authorize candidate ordering in this package, create selected_action, final_action, direct command, execute sandbox action, change runtime behavior, write memory/retention, mutate predictors, manipulate emotion, claim user happiness, or prove learning.
+
+## Approved Purpose Candidate Ordering Boundary Minimal v0
+
+- Approved Purpose Candidate Ordering Boundary Minimal v0 opens the validation boundary for bounded `approved_purpose` records to enter a future candidate-ordering package. `approach_or_reach_item`, `resolve_mismatch`, and `support_user_comfort` map only to future candidate families and scopes; this package does not change candidate order, create selected_action, final_action, direct command, execute sandbox action, change runtime behavior, write memory/retention, mutate predictors, manipulate emotion, claim user happiness, or prove learning. Boundary Index updates from `2026-06-09-b122` to `2026-06-09-b123`.
 
 ## Host-Dependent Idle Continuance Trace v0
 
