@@ -7400,6 +7400,21 @@ Boundary:
 - Boundary Index updates from `2026-06-09-b115` to `2026-06-09-b116`.
 - Rationale: this package opens a final_action approval boundary for body-motor selected_action records while keeping final_action creation, direct command, motor execution, pathfinding, persistent body schema, production behavior, memory/retention writes, predictor mutation, and proof claims blocked.
 
+## Sandbox Body-Motor Final Action Minimal v0
+
+Status: completed / sandbox-only final_action from approved body-motor selected_action / Boundary Index b117.
+
+Progress:
+- Adds `ashl_core/sandbox_body_motor_final_action_minimal.py`.
+- Adds `py -3 -m ashl_core.teaching_cli run-sandbox-body-motor-final-action-minimal-check`.
+- Reuses `sandbox_body_motor_final_action_approval_boundary_minimal` as source.
+- Creates sandbox-only final_action records for approved `step_forward` and `reach_front`.
+- Blocks wall/no-approved-action cases from final_action creation.
+
+Boundary:
+- Boundary Index updates from `2026-06-09-b116` to `2026-06-09-b117`.
+- Rationale: this package creates sandbox-only body-motor final_action records while keeping direct command, motor execution, pathfinding, persistent body schema, production behavior, memory/retention writes, predictor mutation, and proof claims blocked.
+
 ## Host-Dependent Idle Continuance Trace v0
 
 Status: design assumption / docs-only / no Boundary Index change.
