@@ -1618,7 +1618,7 @@ Two-Trial History Boundary:
 
 - `docs/current_boundary_index.md`
 - Adds a short, versioned, low-token source of global hard boundaries for future work packages.
-- Current version: `Boundary Index Version: 2026-06-09-b115`.
+- Current version: `Boundary Index Version: 2026-06-09-b116`.
 - For current Phase0 status, see `docs/phase0_status.md`.
 - For capability status, see `docs/phase0_capability_matrix.md`.
 - For boundary version history, see `docs/current_boundary_index.md`.
@@ -2936,6 +2936,10 @@ Two-Trial History Boundary:
 ## Sandbox Motor Intent To Selected Action Bridge Minimal v0
 
 - Sandbox Motor Intent To Selected Action Bridge Minimal v0 converts ready sandbox selected_motor_intent previews into sandbox-only selected_action records. `step_forward` and `reach_front` intents can become selected_action records; wall-front no-intent remains blocked. Boundary Index updates from `2026-06-09-b114` to `2026-06-09-b115` because this opens a new motor-intent-to-selected-action boundary. This does not create final_action, direct command, motor execution, pathfinding, production behavior, memory/retention write, predictor mutation, persistent body schema, semantic vision, or proof-of-learning claims.
+
+## Sandbox Body-Motor Final Action Approval Boundary Minimal v0
+
+- Sandbox Body-Motor Final Action Approval Boundary Minimal v0 validates a future final_action approval boundary for body-motor selected_action records. `step_forward` and `reach_front` selected_actions may proceed to a future final_action package; no-selected-action wall cases remain blocked. Boundary Index updates from `2026-06-09-b115` to `2026-06-09-b116`. This package does not create final_action, direct command, motor execution, pathfinding, production behavior, memory/retention write, predictor mutation, persistent body schema, semantic vision, or proof-of-learning claims.
 
 ## Host-Dependent Idle Continuance Trace v0
 
