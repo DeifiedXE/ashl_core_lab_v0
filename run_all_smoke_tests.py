@@ -10713,7 +10713,7 @@ def smoke_current_boundary_index_docs() -> dict:
     research_plan = research_plan_path.read_text(encoding="utf-8") if research_plan_path.exists() else ""
     compact_required_terms = [
         "Boundary Index Version: 2026-06-09-b120",
-        "Last update log: Body-Motor Feedback-Gated Next Action Preview Minimal v0",
+        "Last update log: b108-b120 Embodied Action Line Status Compression Minimal v0",
         "docs/boundary_index_archive_2026_06.md",
         "Minimal Visual Grounding Trial v0",
         "Visual Prediction Error + Attention Priority Preview Minimal v0",

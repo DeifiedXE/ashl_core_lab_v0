@@ -3,13 +3,14 @@
 ## Current Boundary Index
 
 - Current version: `Boundary Index Version: 2026-06-09-b120`
-- Current update log: Body-Motor Feedback-Gated Next Action Preview Minimal v0; Sandbox Body-Motor Execution Feedback And Settling Minimal v0 updated Boundary Index to `2026-06-09-b119`.
+- Current update log: b108-b120 Embodied Action Line Status Compression Minimal v0; Boundary Index remains `2026-06-09-b120` because this is documentation compression only.
 - The task queue is workflow coordination only and does not add ASHL Core runtime capability or approval.
 - Package IDs track Codex work packages; Boundary Index versions track boundary and validation-boundary changes only.
 
 ## Latest Completed Package
 
 - Latest completed capability package: Body-Motor Feedback-Gated Next Action Preview Minimal v0.
+- Latest completed documentation package: b108-b120 Embodied Action Line Status Compression Minimal v0.
 - Previous completed capability package: Sandbox Body-Motor Execution Feedback And Settling Minimal v0.
 - Previous completed capability package: Sandbox Body-Motor Command Execution Loop Minimal v0.
 - Previous completed capability package: Sandbox Motor Intent To Selected Action Bridge Minimal v0.

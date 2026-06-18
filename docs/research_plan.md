@@ -7526,3 +7526,20 @@ Boundary:
 Next:
 - Body-Motor Feedback-Gated Candidate Reordering Approval Boundary Minimal v0, if the next package opens only an approval boundary for future sandbox-only candidate reordering.
 - If Boundary Index line pressure becomes the blocker, first do b108-b120 Embodied Action Line Status Compression Minimal v0.
+
+## b108-b120 Embodied Action Line Status Compression Minimal v0
+
+Status: completed / documentation compression only / Boundary Index remains b120.
+
+Progress:
+- Compressed `docs/current_boundary_index.md` after the endocrine / visual-spatial / body schema / motor intent / body-motor command / feedback / next-action preview line reached b120.
+- Moved detailed milestone wording into `docs/boundary_index_archive_2026_06.md`.
+- Kept current safe claims and forbidden claims semantically unchanged.
+- Reduced `docs/current_boundary_index.md` to 129 lines.
+
+Boundary:
+- Boundary Index remains `2026-06-09-b120`.
+- This package adds no runtime behavior, no sandbox execution, no candidate reordering, no selected_action, no final_action, no direct command, no motor execution, no memory/retention write, no predictor mutation, no production behavior, and no proof-of-learning claim.
+
+Next:
+- Body-Motor Feedback-Gated Candidate Reordering Approval Boundary Minimal v0, if opening only the approval boundary for future sandbox-only candidate reordering.
