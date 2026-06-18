@@ -7507,3 +7507,22 @@ Boundary:
 
 Next:
 - Body-Motor Feedback-Gated Next Action Preview Minimal v0, if the next step allows same-session settled feedback to preview candidate pressure without creating selected_action or direct command.
+
+## Body-Motor Feedback-Gated Next Action Preview Minimal v0
+
+Status: completed / same-session advisory next-action pressure preview from settled body-motor feedback / Boundary Index b120.
+
+Progress:
+- Reuses Sandbox Body-Motor Execution Feedback And Settling Minimal v0 as source.
+- Settled `movement_success_feedback` can preview advisory pressure for `continue_body_motor_exploration`.
+- Settled `reach_success_feedback` can preview advisory pressure for `inspect_or_reach_nearby_item`.
+- Wall / no-feedback cases remain blocked from pressure preview.
+- Candidate order is preserved and rollback restores baseline.
+
+Boundary:
+- Boundary Index updates from `2026-06-09-b119` to `2026-06-09-b120`.
+- This remains same-session advisory preview only. It does not create candidate reordering, selected_action, final_action, direct command, motor execution, persistent feedback, memory write, retention write, predictor mutation, production behavior, semantic vision, subjective emotion/biological hormone claims, or proof-of-learning claims.
+
+Next:
+- Body-Motor Feedback-Gated Candidate Reordering Approval Boundary Minimal v0, if the next package opens only an approval boundary for future sandbox-only candidate reordering.
+- If Boundary Index line pressure becomes the blocker, first do b108-b120 Embodied Action Line Status Compression Minimal v0.
