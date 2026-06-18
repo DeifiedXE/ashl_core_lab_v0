@@ -7490,3 +7490,20 @@ Boundary:
 
 Next:
 - Sandbox Body-Motor Execution Feedback And Settling Minimal v0, if the next step connects sandbox outcome observation into same-session feedback/internal settling without persistence.
+
+## Sandbox Body-Motor Execution Feedback And Settling Minimal v0
+
+Status: completed / same-session feedback and settling from body-motor sandbox outcomes / Boundary Index b119.
+
+Progress:
+- Reuses Sandbox Body-Motor Command Execution Loop Minimal v0 as source.
+- `moved_forward_one_cell` creates trace-only `movement_success_feedback`, `dopamine_like`, and `natural_settling` back to baseline.
+- `front_item_reached` creates trace-only `reach_success_feedback`, `dopamine_like`, and `natural_settling` back to baseline.
+- Wall / no-outcome remains blocked before feedback and settling.
+
+Boundary:
+- Boundary Index updates from `2026-06-09-b118` to `2026-06-09-b119`.
+- This remains same-session and sandbox-only. It does not create new selected_action, final_action, direct command, motor execution, candidate reordering, persistent feedback, memory write, retention write, predictor mutation, production behavior, persistent body/endocrine state, semantic vision, subjective emotion/biological hormone claims, or proof-of-learning claims.
+
+Next:
+- Body-Motor Feedback-Gated Next Action Preview Minimal v0, if the next step allows same-session settled feedback to preview candidate pressure without creating selected_action or direct command.

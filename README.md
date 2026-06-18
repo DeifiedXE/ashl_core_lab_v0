@@ -1618,7 +1618,7 @@ Two-Trial History Boundary:
 
 - `docs/current_boundary_index.md`
 - Adds a short, versioned, low-token source of global hard boundaries for future work packages.
-- Current version: `Boundary Index Version: 2026-06-09-b118`.
+- Current version: `Boundary Index Version: 2026-06-09-b119`.
 - For current Phase0 status, see `docs/phase0_status.md`.
 - For capability status, see `docs/phase0_capability_matrix.md`.
 - For boundary version history, see `docs/current_boundary_index.md`.
@@ -2948,6 +2948,10 @@ Two-Trial History Boundary:
 ## Sandbox Body-Motor Command Execution Loop Minimal v0
 
 - Sandbox Body-Motor Command Execution Loop Minimal v0 completes approved body-motor final_action records through sandbox-only direct command, one-step execution, and outcome observation. `step_forward` becomes `sandbox.body.step_forward` with `moved_forward_one_cell`; `reach_front` becomes `sandbox.body.reach_front` with `front_item_reached`; wall/no-approved-action remains blocked. Boundary Index updates from `2026-06-09-b117` to `2026-06-09-b118`. This package does not add pathfinding, production behavior, real navigation/UI behavior, memory/retention writes, predictor mutation, persistent body schema, semantic vision, object recognition, open-ended autonomy, or proof-of-learning claims.
+
+## Sandbox Body-Motor Execution Feedback And Settling Minimal v0
+
+- Sandbox Body-Motor Execution Feedback And Settling Minimal v0 connects b118 body-motor sandbox outcome observations into same-session feedback and settling traces. `moved_forward_one_cell` creates `movement_success_feedback`; `front_item_reached` creates `reach_success_feedback`; both use `dopamine_like` trace labels and `natural_settling` back to baseline. Wall/no-outcome remains blocked. Boundary Index updates from `2026-06-09-b118` to `2026-06-09-b119`. This package does not create new actions, candidate reordering, persistent feedback, memory/retention writes, predictor mutation, production behavior, persistent body/endocrine state, semantic vision, subjective emotion/biological hormone claims, or proof-of-learning claims.
 
 ## Host-Dependent Idle Continuance Trace v0
 
