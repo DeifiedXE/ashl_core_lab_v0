@@ -6,7 +6,7 @@ Minimum inventory rule: every relevant markdown/documentation file found in this
 
 Allowed role/status/authority values follow the work package: `current_status_anchor`, `boundary_anchor`, `capability_matrix`, `risk_ledger`, `design_assumption`, `historical_context`, `implementation_note`, `planning`, `smoke_or_test_support`, `unknown_needs_review`; `current`, `current_with_caveats`, `historical`, `superseded`, `planning_only`, `test_support_only`, `needs_review`; `current_status_controls`, `boundary_controls`, `newer_boundary_controls`, `historical_context_only`, `planning_only`, `not_authoritative`, `needs_review`.
 
-- Inventory count: 127 markdown/documentation files.
+- Inventory count: 128 markdown/documentation files.
 
 | path | role | current_status | authority_level | contains_current_capability_claims | superseded_by | notes |
 | --- | --- | --- | --- | --- | --- | --- |
@@ -88,6 +88,7 @@ Allowed role/status/authority values follow the work package: `current_status_an
 | docs/persistent_rule_application_design_v0.md | design_assumption | planning_only | planning_only | no | docs/phase0_status.md | Design/planning context only unless newer boundary docs say otherwise. |
 | docs/phase0_action_lesson_loop_return_planning_v0.md | unknown_needs_review | needs_review | needs_review | maybe | docs/phase0_unresolved_doc_issues.md | Needs future human review for exact authority. |
 | docs/phase0_assumption_consistency_audit_v0_1.md | boundary_anchor | current_with_caveats | newer_boundary_controls | maybe | docs/current_boundary_index.md | Boundary/contract/audit doc; newer status docs control current capability claims. |
+| docs/phase0_b118_documentation_alignment_minimal_v0.md | smoke_or_test_support | current | current_status_controls | no | none | Documentation alignment note for b118 stale wording cleanup; no capability grant. |
 | docs/phase0_behavior_curiosity_assumption_v0_1.md | design_assumption | planning_only | planning_only | no | docs/phase0_status.md | Design/planning context only unless newer boundary docs say otherwise. |
 | docs/phase0_capability_matrix.md | capability_matrix | current | current_status_controls | yes | none | Capability status table. |
 | docs/phase0_current_capability_snapshot_2026-06-10.md | historical_context | historical | historical_context_only | maybe | docs/current_boundary_index.md | Historical/progress context; not a current capability grant. |

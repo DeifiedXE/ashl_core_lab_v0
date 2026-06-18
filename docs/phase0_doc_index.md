@@ -24,6 +24,7 @@
 
 - `docs/phase0_doc_inventory.md`
 - `docs/phase0_doc_consistency_audit.md`
+- `docs/phase0_b118_documentation_alignment_minimal_v0.md`
 
 ## Open-Gap / Risk Docs
 

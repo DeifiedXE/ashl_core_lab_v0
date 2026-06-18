@@ -74,7 +74,7 @@ Clean count at last update log reset: 0/5; current clean count: 0/5
 - No production/runtime memory-influenced behavior is allowed. Phase0 Level 1 sandbox-only lesson application, observation, and evaluation records plus Level 2/Level 3 sandbox-only records are allowed only within their validated sandbox scope and do not constitute production/runtime memory-influenced behavior.
 - No final_action, direct command, or direct command execution outside validated sandbox-only action-line scopes; no open-ended loop, no too-fast action bypass, no persistent feedback from b104-b106, and no persistent rule creation.
 - No selected_action was created in b94; b95 creates one sandbox-only selected_action record only.
-- No selected_action execution beyond the single b96 sandbox-only execution; no final_action or direct command.
+- No selected_action, final_action, direct command, or execution outside explicitly validated sandbox-only scopes.
 - No cortisol-like pressure runtime application, persistence, never-try state, or permanent action ban.
 - No production action execution, real navigation, UI behavior change, or generalized behavior claim.
 - No action behavior change.

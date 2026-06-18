@@ -85,14 +85,14 @@ Phase0 package/version governance can validate that Codex Package IDs are not Bo
 - No Sandbox Direct Command Execution Minimal v0 as feedback loop creation, production behavior, real navigation/UI change, persistent update, cross-session persistence, memory write, retention write, predictor read/influence/mutation, autonomous learning/action, or proof of learning.
 - No Sandbox Direct Command Execution Feedback Loop Minimal v0 as persistent feedback, cross-session feedback, production behavior, real navigation/UI change, memory write, retention write, predictor mutation, selected_action/final_action/new direct command creation, autonomous learning/action, or proof of learning.
 - No Sandbox Direct Command Outcome Evaluation Minimal v0 as next direct-command execution approval, new direct command, selected_action, final_action, production behavior, persistent feedback, memory/retention write, predictor mutation, runtime behavior change, autonomous learning/action, or proof of learning.
-- No selected_action execution beyond the single b96 sandbox-only execution, no final_action outside the b99 sandbox-only final_action record, and no direct command execution beyond the single b103 sandbox-only direct command execution.
+- No selected_action/final_action/direct-command/execution outside validated sandbox-only scopes. Current validated scopes include the earlier b95-b104 sandbox action/direct-command line, fixed/time-paced sandbox action loops, and the b114-b118 body-motor selected_motor_intent -> selected_action -> final_action -> direct command -> one-step execution -> outcome observation line.
 - No cortisol-like pressure runtime application, persistence, never-try state, permanent action ban, final_action, direct command, persistent update, memory/retention write, predictor mutation, production behavior, autonomous learning/action, or proof of learning.
 - No Level 2 runtime execution.
 - No Level 3 runtime execution.
 - No retained JSONL write or retained JSONL cross-session influence rebuild.
 - No retention write.
 - No predictor mutation.
-- No selected_action execution beyond the single b96 sandbox-only execution, `final_action`, or direct command.
+- No selected_action, final_action, direct command, or execution outside explicitly validated sandbox-only scopes.
 - No Qingyin-authored natural-language lesson candidate.
 - No human review decision as application approval or memory write approval.
 - No memory readiness design as memory admission or memory write.
