@@ -1618,7 +1618,7 @@ Two-Trial History Boundary:
 
 - `docs/current_boundary_index.md`
 - Adds a short, versioned, low-token source of global hard boundaries for future work packages.
-- Current version: `Boundary Index Version: 2026-06-09-b117`.
+- Current version: `Boundary Index Version: 2026-06-09-b118`.
 - For current Phase0 status, see `docs/phase0_status.md`.
 - For capability status, see `docs/phase0_capability_matrix.md`.
 - For boundary version history, see `docs/current_boundary_index.md`.
@@ -2944,6 +2944,10 @@ Two-Trial History Boundary:
 ## Sandbox Body-Motor Final Action Minimal v0
 
 - Sandbox Body-Motor Final Action Minimal v0 creates sandbox-only body-motor final_action records from approved selected_actions. `step_forward` and `reach_front` can become final_action records; wall/no-approved-action cases remain blocked. Boundary Index updates from `2026-06-09-b116` to `2026-06-09-b117`. This package does not create direct commands, execute motor actions, pathfind, change production behavior, write memory/retention, mutate predictors, persist body schema, add semantic vision, or claim proof of learning.
+
+## Sandbox Body-Motor Command Execution Loop Minimal v0
+
+- Sandbox Body-Motor Command Execution Loop Minimal v0 completes approved body-motor final_action records through sandbox-only direct command, one-step execution, and outcome observation. `step_forward` becomes `sandbox.body.step_forward` with `moved_forward_one_cell`; `reach_front` becomes `sandbox.body.reach_front` with `front_item_reached`; wall/no-approved-action remains blocked. Boundary Index updates from `2026-06-09-b117` to `2026-06-09-b118`. This package does not add pathfinding, production behavior, real navigation/UI behavior, memory/retention writes, predictor mutation, persistent body schema, semantic vision, object recognition, open-ended autonomy, or proof-of-learning claims.
 
 ## Host-Dependent Idle Continuance Trace v0
 

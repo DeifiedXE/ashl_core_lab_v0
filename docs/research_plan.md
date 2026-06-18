@@ -7473,3 +7473,20 @@ Boundary:
 - Rationale: this package adds a design supplement only. Any internal audio feedback runtime, self-vocal source classification, expected/observed vocal comparison, vocal prediction error trace, or sandbox vocal experimentation requires a future explicit package and boundary decision.
 
 This documentation reconciliation did not complete outcome evaluation at that time and did not claim every documentation inconsistency had been found. Current outcome evaluation status is controlled by the later Level 1 Sandbox Outcome Evaluation and Human Review Summary Minimal v0 section above.
+
+## Sandbox Body-Motor Command Execution Loop Minimal v0
+
+Status: completed / sandbox-only body-motor direct command, one-step execution, and outcome observation / Boundary Index b118.
+
+Progress:
+- Reuses Sandbox Body-Motor Final Action Minimal v0 as source.
+- Approved `step_forward` final_action creates `sandbox.body.step_forward`, executes once, and observes `moved_forward_one_cell`.
+- Approved `reach_front` final_action creates `sandbox.body.reach_front`, executes once, and observes `front_item_reached`.
+- Wall / no-approved-action remains blocked before direct command and execution.
+
+Boundary:
+- Boundary Index updates from `2026-06-09-b117` to `2026-06-09-b118`.
+- This remains sandbox-only and does not add pathfinding, production behavior, real navigation/UI behavior, memory write, retention write, predictor mutation, persistent body schema, semantic vision, object recognition, open-ended autonomy, or proof-of-learning claims.
+
+Next:
+- Sandbox Body-Motor Execution Feedback And Settling Minimal v0, if the next step connects sandbox outcome observation into same-session feedback/internal settling without persistence.
