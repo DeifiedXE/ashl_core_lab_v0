@@ -1618,7 +1618,7 @@ Two-Trial History Boundary:
 
 - `docs/current_boundary_index.md`
 - Adds a short, versioned, low-token source of global hard boundaries for future work packages.
-- Current version: `Boundary Index Version: 2026-06-09-b113`.
+- Current version: `Boundary Index Version: 2026-06-09-b114`.
 - For current Phase0 status, see `docs/phase0_status.md`.
 - For capability status, see `docs/phase0_capability_matrix.md`.
 - For boundary version history, see `docs/current_boundary_index.md`.
@@ -2928,6 +2928,10 @@ Two-Trial History Boundary:
 ## Minimal Body Schema and Affordance Consistency Runtime v0
 
 - Minimal Body Schema and Affordance Consistency Runtime v0 adds a sandbox-only body schema readiness gate after visual-spatial motor affordance preview. It checks body position, facing, energy, movement cooldown, balance, hand state, and contact state against `can_step_forward`, `can_turn_left`, `can_turn_right`, and `can_reach_front`. Boundary Index updates from `2026-06-09-b112` to `2026-06-09-b113`. This remains preview/checker-only: no motor action execution, selected motor intent, selected_action, final_action, direct command, pathfinding, production behavior, memory/retention write, predictor mutation, persistent body schema, semantic vision, or proof-of-learning claim is added.
+
+## Sandbox Motor Intent Preview Minimal v0
+
+- Sandbox Motor Intent Preview Minimal v0 converts validated body-schema readiness into sandbox-only selected_motor_intent previews. Empty front-cell readiness previews `step_forward`; item front-cell readiness previews `reach_front`; wall-front blocked affordance creates no intent. Boundary Index updates from `2026-06-09-b113` to `2026-06-09-b114` because selected_motor_intent preview is now created inside sandbox scope. This does not create selected_action, final_action, direct command, motor execution, pathfinding, production behavior, memory/retention write, predictor mutation, persistent body schema, semantic vision, or proof-of-learning claims.
 
 ## Host-Dependent Idle Continuance Trace v0
 

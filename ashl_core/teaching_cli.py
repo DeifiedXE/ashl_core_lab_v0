@@ -287,6 +287,7 @@ from .visual_spatial_motor_affordance_bridge_minimal import (
 from .minimal_body_schema_affordance_consistency_runtime import (
     run_minimal_body_schema_affordance_consistency_runtime_check,
 )
+from .sandbox_motor_intent_preview_minimal import run_sandbox_motor_intent_preview_minimal_check
 from .reviewed_lesson_dry_run_correction_minimal import (
     run_reviewed_lesson_dry_run_correction_minimal_check,
 )
@@ -3962,6 +3963,8 @@ def run_command(command: str) -> dict[str, Any] | str:
         return run_visual_spatial_motor_affordance_bridge_minimal_check()
     if command == "run-minimal-body-schema-affordance-consistency-runtime-check":
         return run_minimal_body_schema_affordance_consistency_runtime_check()
+    if command == "run-sandbox-motor-intent-preview-minimal-check":
+        return run_sandbox_motor_intent_preview_minimal_check()
     if command == "run-simple-retina-focus-preview-minimal-check":
         return run_simple_retina_focus_preview_minimal_check()
     if command == "run-generalized-prediction-confidence-check":
@@ -4204,6 +4207,7 @@ def main(argv: list[str] | None = None) -> int:
             "run-visual-spatial-grounding-minimal-check",
             "run-visual-spatial-motor-affordance-bridge-minimal-check",
             "run-minimal-body-schema-affordance-consistency-runtime-check",
+            "run-sandbox-motor-intent-preview-minimal-check",
             "run-simple-retina-focus-preview-minimal-check",
             "run-generalized-prediction-confidence-check",
             "run-generalized-candidate-from-pattern-check",
@@ -4654,6 +4658,8 @@ def main(argv: list[str] | None = None) -> int:
         result = run_visual_spatial_motor_affordance_bridge_minimal_check()
     elif args.command == "run-minimal-body-schema-affordance-consistency-runtime-check":
         result = run_minimal_body_schema_affordance_consistency_runtime_check()
+    elif args.command == "run-sandbox-motor-intent-preview-minimal-check":
+        result = run_sandbox_motor_intent_preview_minimal_check()
     elif args.command == "run-simple-retina-focus-preview-minimal-check":
         result = run_simple_retina_focus_preview_minimal_check()
     elif args.command == "run-generalized-prediction-confidence-check":

@@ -7356,6 +7356,20 @@ Boundary:
 - Boundary Index updates from `2026-06-09-b112` to `2026-06-09-b113`.
 - Rationale: this package adds a validated body-state gate between visual motor affordance and future motor intent while keeping motor execution, selected_action, final_action, direct command, pathfinding, persistent body schema, production behavior, memory/retention writes, predictor mutation, and proof claims blocked.
 
+## Sandbox Motor Intent Preview Minimal v0
+
+Status: completed / sandbox-only selected_motor_intent preview / Boundary Index b114.
+
+Progress:
+- Adds `ashl_core/sandbox_motor_intent_preview_minimal.py`.
+- Adds `py -3 -m ashl_core.teaching_cli run-sandbox-motor-intent-preview-minimal-check`.
+- Reuses `minimal_body_schema_affordance_consistency_runtime` as source.
+- Produces deterministic preview cases: empty front -> `step_forward`; wall front -> no intent; item front -> `reach_front`.
+
+Boundary:
+- Boundary Index updates from `2026-06-09-b113` to `2026-06-09-b114`.
+- Rationale: this package opens sandbox-only selected_motor_intent preview while keeping selected_action, final_action, direct command, motor execution, pathfinding, persistent body schema, production behavior, memory/retention writes, predictor mutation, and proof claims blocked.
+
 ## Host-Dependent Idle Continuance Trace v0
 
 Status: design assumption / docs-only / no Boundary Index change.
