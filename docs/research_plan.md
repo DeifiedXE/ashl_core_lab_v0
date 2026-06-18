@@ -7370,6 +7370,21 @@ Boundary:
 - Boundary Index updates from `2026-06-09-b113` to `2026-06-09-b114`.
 - Rationale: this package opens sandbox-only selected_motor_intent preview while keeping selected_action, final_action, direct command, motor execution, pathfinding, persistent body schema, production behavior, memory/retention writes, predictor mutation, and proof claims blocked.
 
+## Sandbox Motor Intent To Selected Action Bridge Minimal v0
+
+Status: completed / sandbox-only selected_action bridge from motor intent / Boundary Index b115.
+
+Progress:
+- Adds `ashl_core/sandbox_motor_intent_to_selected_action_bridge_minimal.py`.
+- Adds `py -3 -m ashl_core.teaching_cli run-sandbox-motor-intent-to-selected-action-bridge-minimal-check`.
+- Reuses `sandbox_motor_intent_preview_minimal` as source.
+- Converts ready `step_forward` and `reach_front` motor intents into sandbox-only selected_action records.
+- Blocks wall-front no-intent from becoming selected_action.
+
+Boundary:
+- Boundary Index updates from `2026-06-09-b114` to `2026-06-09-b115`.
+- Rationale: this package opens a sandbox-only motor-intent-to-selected-action bridge while keeping final_action, direct command, motor execution, pathfinding, persistent body schema, production behavior, memory/retention writes, predictor mutation, and proof claims blocked.
+
 ## Host-Dependent Idle Continuance Trace v0
 
 Status: design assumption / docs-only / no Boundary Index change.
