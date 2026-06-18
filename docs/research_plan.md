@@ -7543,3 +7543,20 @@ Boundary:
 
 Next:
 - Body-Motor Feedback-Gated Candidate Reordering Approval Boundary Minimal v0, if opening only the approval boundary for future sandbox-only candidate reordering.
+
+## Body-Motor Feedback-Gated Candidate Reordering Approval Boundary Minimal v0
+
+Status: completed / approval boundary only / Boundary Index b121.
+
+Progress:
+- Reuses Body-Motor Feedback-Gated Next Action Preview Minimal v0 as source.
+- Valid movement and reach pressure previews may proceed to a future sandbox-only candidate reordering package.
+- Wall / no-pressure preview remains blocked.
+- This package creates no actual candidate reordering and no action.
+
+Boundary:
+- Boundary Index updates from `2026-06-09-b120` to `2026-06-09-b121`.
+- This is approval-boundary only. It does not reorder candidates, create selected_action, create final_action, create direct command, execute motor action, persist feedback, write memory, write retention, mutate predictors, change production behavior, add semantic vision, or claim proof of learning.
+
+Next:
+- Body-Motor Feedback-Gated Candidate Reordering Minimal v0, if the next package applies sandbox-only candidate ordering changes from approved pressure while still creating no selected_action.

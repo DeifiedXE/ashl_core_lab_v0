@@ -1618,7 +1618,7 @@ Two-Trial History Boundary:
 
 - `docs/current_boundary_index.md`
 - Adds a short, versioned, low-token source of global hard boundaries for future work packages.
-- Current version: `Boundary Index Version: 2026-06-09-b120`.
+- Current version: `Boundary Index Version: 2026-06-09-b121`.
 - For current Phase0 status, see `docs/phase0_status.md`.
 - For capability status, see `docs/phase0_capability_matrix.md`.
 - For boundary version history, see `docs/current_boundary_index.md`.
@@ -2960,6 +2960,10 @@ Two-Trial History Boundary:
 ## b108-b120 Embodied Action Line Status Compression Minimal v0
 
 - b108-b120 Embodied Action Line Status Compression Minimal v0 compresses the current Boundary Index after the endocrine / visual-spatial / body schema / motor intent / body-motor command / feedback / next-action preview line reached b120. Details moved to `docs/boundary_index_archive_2026_06.md`; `docs/current_boundary_index.md` remains `Boundary Index Version: 2026-06-09-b120` and is reduced to 129 lines. This is documentation-only and does not add runtime behavior, candidate reordering, selected_action, final_action, direct command, motor execution, memory/retention write, predictor mutation, production behavior, semantic vision, subjective/biological claim, or proof-of-learning claim.
+
+## Body-Motor Feedback-Gated Candidate Reordering Approval Boundary Minimal v0
+
+- Body-Motor Feedback-Gated Candidate Reordering Approval Boundary Minimal v0 opens only the approval boundary for a future sandbox-only candidate reordering package from settled body-motor feedback pressure. Movement/reach pressure previews may proceed to a future reordering package; wall/no-pressure remains blocked. Boundary Index updates from `2026-06-09-b120` to `2026-06-09-b121`. This package does not apply candidate reordering, create selected_action, final_action, direct command, motor execution, persistence, memory/retention writes, predictor mutation, production behavior, semantic vision, subjective/biological claims, or proof-of-learning claims.
 
 ## Host-Dependent Idle Continuance Trace v0
 

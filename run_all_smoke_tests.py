@@ -331,6 +331,9 @@ from ashl_core.sandbox_body_motor_execution_feedback_settling_minimal import (
 from ashl_core.body_motor_feedback_gated_next_action_preview_minimal import (
     run_body_motor_feedback_gated_next_action_preview_minimal_check,
 )
+from ashl_core.body_motor_feedback_gated_candidate_reordering_approval_boundary_minimal import (
+    run_body_motor_feedback_gated_candidate_reordering_approval_boundary_minimal_check,
+)
 from ashl_core.minimal_visual_grounding_trial import run_minimal_visual_grounding_trial_check
 from ashl_core.visual_prediction_error_attention_priority_preview_minimal import (
     run_visual_prediction_error_attention_priority_preview_minimal_check,
@@ -10712,8 +10715,8 @@ def smoke_current_boundary_index_docs() -> dict:
     readme = readme_path.read_text(encoding="utf-8") if readme_path.exists() else ""
     research_plan = research_plan_path.read_text(encoding="utf-8") if research_plan_path.exists() else ""
     compact_required_terms = [
-        "Boundary Index Version: 2026-06-09-b120",
-        "Last update log: b108-b120 Embodied Action Line Status Compression Minimal v0",
+        "Boundary Index Version: 2026-06-09-b121",
+        "Last update log: Body-Motor Feedback-Gated Candidate Reordering Approval Boundary Minimal v0",
         "docs/boundary_index_archive_2026_06.md",
         "Minimal Visual Grounding Trial v0",
         "Visual Prediction Error + Attention Priority Preview Minimal v0",
@@ -10802,7 +10805,7 @@ def smoke_current_boundary_index_docs() -> dict:
         and all(term in doc for term in compact_required_terms)
         and all(term in archive for term in archive_required_terms)
         and line_count <= 150
-        and "Boundary Index Version: 2026-06-09-b120" in readme
+        and "Boundary Index Version: 2026-06-09-b121" in readme
         and "docs/boundary_index_archive_2026_06.md" in readme
         and "Boundary Index Compaction / Archive v0" in research_plan
         and "Runtime Tendency Memory Influence Safety Sync Minimal v0" in research_plan
@@ -10840,7 +10843,7 @@ def smoke_phase0_documentation_consolidation_minimal() -> dict:
         status_path.exists()
         and matrix_path.exists()
         and index_path.exists()
-        and "Boundary Index Version: 2026-06-09-b120" in status
+        and "Boundary Index Version: 2026-06-09-b121" in status
         and "Current Safe Capability" in status
         and "No proof-of-learning claim" in status
         and "Level 1 Sandbox Outcome Evaluation and Human Review Summary Minimal v0" in status
@@ -10951,7 +10954,7 @@ def smoke_phase0_documentation_inventory_and_consistency_reconciliation() -> dic
     boundary = Path("docs/current_boundary_index.md").read_text(encoding="utf-8")
     passed = (
         all(path.exists() for path in required_paths)
-        and "Boundary Index Version: 2026-06-09-b120" in texts[Path("docs/phase0_status.md")]
+        and "Boundary Index Version: 2026-06-09-b121" in texts[Path("docs/phase0_status.md")]
         and "Inventory count:" in texts[Path("docs/phase0_doc_inventory.md")]
         and "docs/phase0_versioning_policy.md" in texts[Path("docs/phase0_doc_inventory.md")]
         and "unknown_needs_review" in texts[Path("docs/phase0_doc_inventory.md")]
@@ -17490,6 +17493,54 @@ def smoke_body_motor_feedback_gated_next_action_preview_minimal() -> dict:
     )
 
 
+def smoke_body_motor_feedback_gated_candidate_reordering_approval_boundary_minimal() -> dict:
+    result = run_body_motor_feedback_gated_candidate_reordering_approval_boundary_minimal_check()
+    summary = result.get("summary", {})
+    boundary = result.get("boundary", {})
+    records = result.get("valid_records", [])
+    movement_record = records[0] if records else {}
+    wall_record = records[1] if len(records) > 1 else {}
+    reach_record = records[2] if len(records) > 2 else {}
+    movement_boundary = movement_record.get("candidate_reordering_approval_boundary", {})
+    wall_boundary = wall_record.get("candidate_reordering_approval_boundary", {})
+    reach_boundary = reach_record.get("candidate_reordering_approval_boundary", {})
+    passed = (
+        result.get("command")
+        == "run-body-motor-feedback-gated-candidate-reordering-approval-boundary-minimal-check"
+        and result.get("flow") == "body_motor_feedback_gated_candidate_reordering_approval_boundary_minimal_v0"
+        and result.get("status") == "ok"
+        and boundary.get("boundary_index_version_before") == "2026-06-09-b120"
+        and boundary.get("boundary_index_version_after") == "2026-06-09-b121"
+        and summary.get("candidate_reordering_approval_boundary_result_count") == 37
+        and summary.get("valid_candidate_reordering_approval_boundary_count") == 3
+        and summary.get("invalid_candidate_reordering_approval_boundary_count") == 34
+        and summary.get("future_reordering_allowed_count") == 2
+        and summary.get("future_reordering_blocked_count") == 1
+        and summary.get("movement_pressure_allowed_count") == 1
+        and summary.get("reach_pressure_allowed_count") == 1
+        and summary.get("wall_pressure_blocked_count") == 1
+        and summary.get("implementation_blocked_count") == 3
+        and summary.get("candidate_reordering_blocked_count") == 3
+        and summary.get("action_creation_blocked_count") == 3
+        and summary.get("memory_write_blocked_count") == 3
+        and summary.get("predictor_mutation_blocked_count") == 3
+        and summary.get("production_behavior_blocked_count") == 3
+        and summary.get("proof_claim_blocked_count") == 3
+        and movement_boundary.get("candidate_reordering_allowed_in_future_package") is True
+        and movement_boundary.get("candidate_reordering_applied") is False
+        and movement_boundary.get("selected_action_created") is False
+        and wall_boundary.get("candidate_reordering_allowed_in_future_package") is False
+        and wall_boundary.get("blocked_reason") == "no_pressure_preview_for_candidate_reordering"
+        and reach_boundary.get("candidate_reordering_allowed_in_future_package") is True
+        and reach_boundary.get("direct_command_created") is False
+    )
+    return _result(
+        "body_motor_feedback_gated_candidate_reordering_approval_boundary_minimal",
+        passed,
+        {"summary": summary, "boundary": boundary},
+    )
+
+
 def smoke_phase0_current_capability_snapshot() -> dict:
     doc_path = Path("docs/phase0_current_capability_snapshot_2026-06-10.md")
     doc = doc_path.read_text(encoding="utf-8") if doc_path.exists() else ""
@@ -20256,6 +20307,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_sandbox_body_motor_command_execution_loop_minimal(),
         smoke_sandbox_body_motor_execution_feedback_settling_minimal(),
         smoke_body_motor_feedback_gated_next_action_preview_minimal(),
+        smoke_body_motor_feedback_gated_candidate_reordering_approval_boundary_minimal(),
         smoke_phase0_current_capability_snapshot(),
         smoke_memory_influence_behavior_gate_design(),
         smoke_first_memory_influenced_behavior_boundary(),
