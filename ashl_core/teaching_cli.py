@@ -314,6 +314,9 @@ from .proto_purpose_approval_boundary_minimal import run_proto_purpose_approval_
 from .approved_purpose_candidate_ordering_boundary_minimal import (
     run_approved_purpose_candidate_ordering_boundary_minimal_check,
 )
+from .approved_purpose_candidate_ordering_minimal import (
+    run_approved_purpose_candidate_ordering_minimal_check,
+)
 from .reviewed_lesson_dry_run_correction_minimal import (
     run_reviewed_lesson_dry_run_correction_minimal_check,
 )
@@ -4011,6 +4014,8 @@ def run_command(command: str) -> dict[str, Any] | str:
         return run_proto_purpose_approval_boundary_minimal_check()
     if command == "run-approved-purpose-candidate-ordering-boundary-minimal-check":
         return run_approved_purpose_candidate_ordering_boundary_minimal_check()
+    if command == "run-approved-purpose-candidate-ordering-minimal-check":
+        return run_approved_purpose_candidate_ordering_minimal_check()
     if command == "run-simple-retina-focus-preview-minimal-check":
         return run_simple_retina_focus_preview_minimal_check()
     if command == "run-generalized-prediction-confidence-check":
@@ -4264,6 +4269,7 @@ def main(argv: list[str] | None = None) -> int:
             "run-experience-derived-proto-purpose-candidate-trace-minimal-check",
             "run-proto-purpose-approval-boundary-minimal-check",
             "run-approved-purpose-candidate-ordering-boundary-minimal-check",
+            "run-approved-purpose-candidate-ordering-minimal-check",
             "run-simple-retina-focus-preview-minimal-check",
             "run-generalized-prediction-confidence-check",
             "run-generalized-candidate-from-pattern-check",

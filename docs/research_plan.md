@@ -7614,3 +7614,21 @@ Boundary:
 
 Next:
 - Approved Purpose Candidate Ordering Minimal v0, if the next package computes advisory sandbox-only candidate ordering from approved purpose while still creating no selected_action.
+
+## Approved Purpose Candidate Ordering Minimal v0
+
+Status: completed / approved_purpose to sandbox-only advisory candidate ordering / Boundary Index b124.
+
+Progress:
+- Reuses Approved Purpose Candidate Ordering Boundary Minimal v0 as source.
+- `approach_or_reach_item` ranks `reach_front_item` and `step_toward_item` before passive waiting.
+- `resolve_mismatch` ranks `observe_or_alternative_probe` and `check_before_retry` before retry_same_action_without_check.
+- `support_user_comfort` ranks `offer_low_pressure_support` and `ask_if_help_needed` first while blocking emotion manipulation and user-happiness claims.
+- Adds rollback preview that restores the pre-order candidate list with `dirty_state_after_rollback=False`.
+
+Boundary:
+- Boundary Index updates from `2026-06-09-b123` to `2026-06-09-b124`.
+- This package is sandbox-only advisory ordering. It does not create selected_action, create final_action, create direct command, execute sandbox action, perform runtime action selection, change runtime behavior, write memory, write retention, read/influence/mutate predictors, manipulate emotion, claim user happiness, or prove learning.
+
+Next:
+- Approved Purpose To Sandbox Selected Action Approval Boundary Minimal v0, if the next package opens only an explicit approval boundary for future selected_action creation from approved-purpose advisory ordering.

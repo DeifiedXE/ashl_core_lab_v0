@@ -1618,7 +1618,7 @@ Two-Trial History Boundary:
 
 - `docs/current_boundary_index.md`
 - Adds a short, versioned, low-token source of global hard boundaries for future work packages.
-- Current version: `Boundary Index Version: 2026-06-09-b123`.
+- Current version: `Boundary Index Version: 2026-06-09-b124`.
 - For current Phase0 status, see `docs/phase0_status.md`.
 - For capability status, see `docs/phase0_capability_matrix.md`.
 - For boundary version history, see `docs/current_boundary_index.md`.
@@ -2976,6 +2976,10 @@ Two-Trial History Boundary:
 ## Approved Purpose Candidate Ordering Boundary Minimal v0
 
 - Approved Purpose Candidate Ordering Boundary Minimal v0 opens the validation boundary for bounded `approved_purpose` records to enter a future candidate-ordering package. `approach_or_reach_item`, `resolve_mismatch`, and `support_user_comfort` map only to future candidate families and scopes; this package does not change candidate order, create selected_action, final_action, direct command, execute sandbox action, change runtime behavior, write memory/retention, mutate predictors, manipulate emotion, claim user happiness, or prove learning. Boundary Index updates from `2026-06-09-b122` to `2026-06-09-b123`.
+
+## Approved Purpose Candidate Ordering Minimal v0
+
+- Approved Purpose Candidate Ordering Minimal v0 uses bounded `approved_purpose` records to create sandbox-only advisory candidate ordering. `approach_or_reach_item` ranks `reach_front_item` first, `resolve_mismatch` ranks `observe_or_alternative_probe` and `check_before_retry` before retry, and `support_user_comfort` ranks bounded low-pressure support candidates first without emotion manipulation or user-happiness claims. Boundary Index updates from `2026-06-09-b123` to `2026-06-09-b124`. This does not create selected_action, final_action, direct command, sandbox execution, runtime action selection, runtime behavior change, memory/retention write, predictor read/influence/mutation, emotional manipulation, user-happiness claim, or proof-of-learning claim.
 
 ## Host-Dependent Idle Continuance Trace v0
 

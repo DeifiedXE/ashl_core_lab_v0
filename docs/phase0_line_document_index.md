@@ -331,6 +331,7 @@ docs/phase0_behavior_curiosity_assumption_v0_1.md
 ashl_core/experience_derived_proto_purpose_candidate_trace_minimal.py
 ashl_core/proto_purpose_approval_boundary_minimal.py
 ashl_core/approved_purpose_candidate_ordering_boundary_minimal.py
+ashl_core/approved_purpose_candidate_ordering_minimal.py
 ```
 
 Important current rule:
@@ -341,7 +342,8 @@ experience-derived ideal expectation is not approved purpose by itself.
 approved_purpose records may enter only a future candidate-ordering boundary.
 approved_purpose candidate-ordering boundary records may authorize only a future package to compute ordering.
 the boundary record itself does not change candidate order.
-approved_purpose cannot directly authorize action.
+approved_purpose candidate-ordering records may change sandbox-only advisory candidate order.
+approved_purpose ordering cannot directly authorize selected_action or execution.
 ```
 
 ---
