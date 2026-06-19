@@ -7649,3 +7649,21 @@ Boundary:
 
 Next:
 - Approved Purpose Sandbox Selected Action Minimal v0, if the next package creates sandbox-only selected_action records from approved-purpose advisory ordering while still blocking final_action, direct command, execution, persistence, predictor mutation, and proof claims.
+
+## Approved Purpose Sandbox Selected Action Minimal v0
+
+Status: completed / approved-purpose advisory candidate to sandbox-only selected_action / Boundary Index b126.
+
+Progress:
+- Reuses Approved Purpose To Sandbox Selected Action Approval Boundary Minimal v0 as source.
+- `approach_or_reach_item` creates sandbox-only selected_action `reach_front_item`.
+- `resolve_mismatch` creates sandbox-only selected_action `observe_or_alternative_probe`.
+- `support_user_comfort` creates sandbox-only selected_action `offer_low_pressure_support`.
+- Adds rollback preview that removes selected_action with `dirty_state_after_rollback=False`.
+
+Boundary:
+- Boundary Index updates from `2026-06-09-b125` to `2026-06-09-b126`.
+- This package creates sandbox-only selected_action records only. It does not create final_action, create direct command, execute sandbox action, perform runtime action selection outside the record, change runtime behavior, write memory, write retention, read/influence/mutate predictors, manipulate emotion, claim user happiness, or prove learning.
+
+Next:
+- Approved Purpose Sandbox Final Action Approval Boundary Minimal v0, if the next package opens only an explicit approval boundary for final_action from approved-purpose selected_action while still blocking direct command, execution, persistence, predictor mutation, and proof claims.
