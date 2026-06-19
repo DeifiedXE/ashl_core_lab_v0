@@ -332,6 +332,7 @@ ashl_core/experience_derived_proto_purpose_candidate_trace_minimal.py
 ashl_core/proto_purpose_approval_boundary_minimal.py
 ashl_core/approved_purpose_candidate_ordering_boundary_minimal.py
 ashl_core/approved_purpose_candidate_ordering_minimal.py
+ashl_core/approved_purpose_to_sandbox_selected_action_approval_boundary_minimal.py
 ```
 
 Important current rule:
@@ -343,7 +344,8 @@ approved_purpose records may enter only a future candidate-ordering boundary.
 approved_purpose candidate-ordering boundary records may authorize only a future package to compute ordering.
 the boundary record itself does not change candidate order.
 approved_purpose candidate-ordering records may change sandbox-only advisory candidate order.
-approved_purpose ordering cannot directly authorize selected_action or execution.
+approved_purpose ordering cannot directly create selected_action or execution.
+approved_purpose selected-action approval-boundary records only authorize a future selected_action package.
 ```
 
 ---
