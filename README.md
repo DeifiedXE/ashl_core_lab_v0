@@ -1618,7 +1618,7 @@ Two-Trial History Boundary:
 
 - `docs/current_boundary_index.md`
 - Adds a short, versioned, low-token source of global hard boundaries for future work packages.
-- Current version: `Boundary Index Version: 2026-06-09-b126`.
+- Current version: `Boundary Index Version: 2026-06-09-b127`.
 - For current Phase0 status, see `docs/phase0_status.md`.
 - For capability status, see `docs/phase0_capability_matrix.md`.
 - For boundary version history, see `docs/current_boundary_index.md`.
@@ -2985,6 +2985,7 @@ Two-Trial History Boundary:
 
 - Approved Purpose To Sandbox Selected Action Approval Boundary Minimal v0 opens the approval boundary for top-ranked approved-purpose advisory candidates to enter a future sandbox selected_action package. `reach_front_item`, `observe_or_alternative_probe`, and `offer_low_pressure_support` may become future selected_action candidates, but this package creates no selected_action. Boundary Index updates from `2026-06-09-b124` to `2026-06-09-b125`. This does not create final_action, direct command, sandbox execution, runtime action selection, runtime behavior change, memory/retention write, predictor read/influence/mutation, emotional manipulation, user-happiness claim, or proof-of-learning claim.
 - Approved Purpose Sandbox Selected Action Minimal v0 creates sandbox-only selected_action records from top-ranked approved-purpose advisory candidates. `approach_or_reach_item` selects `reach_front_item`, `resolve_mismatch` selects `observe_or_alternative_probe`, and `support_user_comfort` selects `offer_low_pressure_support`; rollback preview removes the selected_action without dirty state. Boundary Index updates from `2026-06-09-b125` to `2026-06-09-b126`. This does not create final_action, direct command, sandbox execution, runtime action selection outside the record, runtime behavior change, memory/retention write, predictor read/influence/mutation, emotional manipulation, user-happiness claim, or proof-of-learning claim.
+- Approved Purpose Sandbox Final Action Approval Boundary Minimal v0 opens the approval boundary for approved-purpose sandbox selected_action records to enter a future sandbox final_action package. `reach_front_item`, `observe_or_alternative_probe`, and `offer_low_pressure_support` may become future final_action candidates, but this package creates no final_action. Boundary Index updates from `2026-06-09-b126` to `2026-06-09-b127`. This does not create direct command, sandbox execution, runtime action selection outside the record, runtime behavior change, memory/retention write, predictor read/influence/mutation, emotional manipulation, user-happiness claim, or proof-of-learning claim.
 
 ## Host-Dependent Idle Continuance Trace v0
 
