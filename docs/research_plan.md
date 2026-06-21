@@ -7781,3 +7781,23 @@ Boundary:
 
 Next:
 - Approved Purpose Sandbox Direct Command Outcome Observation Minimal v0, if the next package observes sandbox-only outcomes for these executed commands while still blocking feedback loops, persistence, predictor mutation, production behavior, manipulation, user-happiness claims, and proof claims.
+
+## Approved Purpose Sandbox Direct Command Outcome Observation Minimal v0
+
+Status: completed / approved-purpose sandbox outcome observation from executed direct_commands / Boundary Index b133.
+
+Progress:
+- Observes bounded sandbox outcomes from executed approved-purpose direct_commands.
+- `sandbox.approved_purpose.reach_front_item` observes `front_item_reached`.
+- `sandbox.approved_purpose.observe_or_alternative_probe` observes `local_context_observed`.
+- `sandbox.approved_purpose.offer_low_pressure_support` observes `low_pressure_support_offered`.
+- Each observation uses observation_count=1, observation_budget=1, and budget_remaining=0.
+- Feedback loop and candidate reordering remain blocked.
+
+Boundary:
+- Boundary Index updates from `2026-06-09-b132` to `2026-06-09-b133`.
+- This is sandbox-only outcome observation only.
+- Feedback loop, candidate reordering, runtime action selection outside the record, runtime behavior change, memory/retention write, predictor read/influence/mutation, emotional manipulation, user-happiness claim, and proof-of-learning claim remain blocked.
+
+Next:
+- Approved Purpose Sandbox Outcome Feedback Approval Boundary Minimal v0, if the next package opens only a future same-session feedback boundary from these outcome observations while still blocking feedback application, reordering, persistence, predictor mutation, production behavior, manipulation, user-happiness claims, and proof claims.
