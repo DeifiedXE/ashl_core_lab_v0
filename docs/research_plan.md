@@ -7761,3 +7761,23 @@ Boundary:
 
 Next:
 - Approved Purpose Sandbox Direct Command Execution Minimal v0, if the next package executes approved-purpose sandbox direct_command records once inside sandbox-only scope while still blocking persistence, predictor mutation, production behavior, manipulation, user-happiness claims, and proof claims.
+
+## Approved Purpose Sandbox Direct Command Execution Minimal v0
+
+Status: completed / approved-purpose direct_command execution inside sandbox-only scope / Boundary Index b132.
+
+Progress:
+- Executes approved-purpose sandbox direct_command records once inside sandbox-only scope.
+- `sandbox.approved_purpose.reach_front_item` dispatches as `reach_front_item`.
+- `sandbox.approved_purpose.observe_or_alternative_probe` dispatches as `observe_or_alternative_probe`.
+- `sandbox.approved_purpose.offer_low_pressure_support` dispatches as `offer_low_pressure_support`.
+- Each execution uses execution_count=1, execution_budget=1, and budget_remaining=0.
+- Execution result records are dispatch-only; outcome_observation_created=False.
+
+Boundary:
+- Boundary Index updates from `2026-06-09-b131` to `2026-06-09-b132`.
+- This is sandbox-only direct_command execution only.
+- Outcome observation, feedback loop, runtime action selection outside the record, runtime behavior change, memory/retention write, predictor read/influence/mutation, emotional manipulation, user-happiness claim, and proof-of-learning claim remain blocked.
+
+Next:
+- Approved Purpose Sandbox Direct Command Outcome Observation Minimal v0, if the next package observes sandbox-only outcomes for these executed commands while still blocking feedback loops, persistence, predictor mutation, production behavior, manipulation, user-happiness claims, and proof claims.
