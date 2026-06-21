@@ -7723,3 +7723,22 @@ Boundary:
 
 Next:
 - Approved Purpose Sandbox Direct Command Minimal v0, if the next package creates sandbox-only direct_command records from approved-purpose final_actions while still blocking execution, persistence, predictor mutation, and proof claims.
+
+## Approved Purpose Sandbox Direct Command Minimal v0
+
+Status: completed / approved-purpose final_action to sandbox-only direct_command records / Boundary Index b130.
+
+Progress:
+- Creates sandbox-only direct_command records from approved-purpose final_action records.
+- approach_or_reach_item creates `sandbox.approved_purpose.reach_front_item`.
+- resolve_mismatch creates `sandbox.approved_purpose.observe_or_alternative_probe`.
+- support_user_comfort creates `sandbox.approved_purpose.offer_low_pressure_support`.
+- Rollback preview removes direct_command with dirty_state_after_rollback=False.
+
+Boundary:
+- Boundary Index updates from `2026-06-09-b129` to `2026-06-09-b130`.
+- This is direct_command record creation only.
+- Sandbox execution, runtime action selection outside the record, runtime behavior change, memory/retention write, predictor read/influence/mutation, emotional manipulation, user-happiness claim, and proof-of-learning claim remain blocked.
+
+Next:
+- Approved Purpose Sandbox Direct Command Execution Approval Boundary Minimal v0, if the next package opens only a future execution approval boundary from approved-purpose sandbox direct_command records while still blocking execution, persistence, predictor mutation, and proof claims.
