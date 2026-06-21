@@ -7704,3 +7704,22 @@ Boundary:
 
 Next:
 - Approved Purpose Sandbox Direct Command Approval Boundary Minimal v0, if the next package opens only a future direct-command approval boundary from approved-purpose sandbox final_action while still blocking command creation, execution, persistence, predictor mutation, and proof claims.
+
+## Approved Purpose Sandbox Direct Command Approval Boundary Minimal v0
+
+Status: completed / approved-purpose final_action to future sandbox direct-command approval boundary / Boundary Index b129.
+
+Progress:
+- Opens a future sandbox-only direct-command approval boundary from approved-purpose final_action records.
+- reach_front_item may enter a future `sandbox.approved_purpose.reach_front_item` direct-command package.
+- observe_or_alternative_probe may enter a future `sandbox.approved_purpose.observe_or_alternative_probe` direct-command package.
+- offer_low_pressure_support may enter a future `sandbox.approved_purpose.offer_low_pressure_support` direct-command package.
+- Direct command creation remains blocked in this package.
+
+Boundary:
+- Boundary Index updates from `2026-06-09-b128` to `2026-06-09-b129`.
+- This is approval-boundary validation only.
+- Direct command creation, sandbox execution, runtime action selection outside the record, runtime behavior change, memory/retention write, predictor read/influence/mutation, emotional manipulation, user-happiness claim, and proof-of-learning claim remain blocked.
+
+Next:
+- Approved Purpose Sandbox Direct Command Minimal v0, if the next package creates sandbox-only direct_command records from approved-purpose final_actions while still blocking execution, persistence, predictor mutation, and proof claims.
