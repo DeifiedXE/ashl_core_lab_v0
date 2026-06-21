@@ -338,6 +338,7 @@ ashl_core/approved_purpose_sandbox_final_action_approval_boundary_minimal.py
 ashl_core/approved_purpose_sandbox_final_action_minimal.py
 ashl_core/approved_purpose_sandbox_direct_command_approval_boundary_minimal.py
 ashl_core/approved_purpose_sandbox_direct_command_minimal.py
+ashl_core/approved_purpose_sandbox_direct_command_execution_approval_boundary_minimal.py
 ```
 
 Important current rule:
@@ -358,6 +359,8 @@ approved_purpose direct-command approval-boundary records may authorize only a f
 the direct-command approval-boundary record itself does not create direct command or execution.
 approved_purpose sandbox direct_command records may create direct_command only inside sandbox scope.
 approved_purpose sandbox direct_command records do not execute.
+approved_purpose execution approval-boundary records may authorize only a future package to execute sandbox direct_command.
+the execution approval-boundary record itself does not execute or create execution result.
 approved_purpose candidate-ordering records may change sandbox-only advisory candidate order.
 approved_purpose ordering cannot directly create selected_action or execution.
 approved_purpose selected-action approval-boundary records only authorize a future selected_action package.
