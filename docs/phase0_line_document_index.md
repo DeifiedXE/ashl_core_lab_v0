@@ -183,6 +183,26 @@ No active_focus / focus_applied / attention_control unless a future boundary ope
 
 ---
 
+## 4A. Bridge / Capability Perception Line
+
+This line covers future dual-eye environment perception, capability maps, action gateways, and feedback packet boundaries.
+
+Primary docs:
+
+```text
+docs/qingyin_bridge_dual_eye_capability_perception_design_v0.md
+```
+
+Important current rule:
+
+```text
+Qingyin Bridge is design-only.
+ASHL Core should receive capability maps, not raw APIs.
+Feedback Packet must enter trace first and must not directly feed endocrine or tendency systems.
+```
+
+---
+
 ## 5. Voice / Audio / Hearing Line
 
 This line covers future vocal output, cochlea/audio decoding, and internal auditory feedback.
@@ -455,6 +475,7 @@ Recommended compact reading order:
 7. docs/body_motor_feedback_to_affordance_confidence_design_v0.md
 8. docs/phase0_open_risk_ledger.md
 9. docs/boundary_self_audit_policy_v0.md
+10. docs/qingyin_bridge_dual_eye_capability_perception_design_v0.md
 ```
 
 Then read line-specific docs only as needed.
