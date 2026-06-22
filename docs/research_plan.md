@@ -7892,3 +7892,24 @@ Boundary:
 
 Next:
 - Approved Purpose Feedback-Gated Reordering To Sandbox Selected Action Approval Boundary Minimal v0, if the next package opens only a future selected_action boundary from feedback-gated advisory ordering while still blocking selected_action creation and execution.
+
+## Sandbox Candidate Ordering Signal Arbitration Minimal v0
+
+Status: completed / sandbox candidate ordering signal authority rule / Boundary Index b139.
+
+Progress:
+- Defines the checked ordering authority for approved purpose, affordance confidence, approved-purpose feedback, and tendency.
+- Purpose answers what the system is trying to do.
+- Affordance answers whether a candidate is currently feasible.
+- Same-purpose feedback answers which candidate worked in the current approved purpose.
+- Tendency can only nudge or break ties among eligible candidates.
+- Raw weighted sums are rejected.
+
+Boundary:
+- Boundary Index updates from `2026-06-09-b138` to `2026-06-09-b139`.
+- This is sandbox-only advisory signal arbitration.
+- Purpose creation/change from affordance, feedback, or tendency remains blocked.
+- Action intent, selected_action, final_action, direct command, execution, persistence, memory/retention write, predictor read/influence/mutation, direct endocrine/tendency feed, production behavior, and proof-of-learning claim remain blocked.
+
+Next:
+- Sandbox Candidate Ordering Arbitration To Selected Action Approval Boundary Minimal v0, if the next package opens only a future selected_action boundary from arbitration-checked ordering while still blocking selected_action creation and execution.
