@@ -191,14 +191,17 @@ Primary docs:
 
 ```text
 docs/qingyin_bridge_dual_eye_capability_perception_design_v0.md
+ashl_core/qingyin_bridge_grounded_capability_map_minimal.py
 ```
 
 Important current rule:
 
 ```text
-Qingyin Bridge is design-only.
+Qingyin Bridge design document is design-only; current runtime is limited to grounded capability-map records.
 ASHL Core should receive capability maps, not raw APIs.
 Feedback Packet must enter trace first and must not directly feed endocrine or tendency systems.
+Grounded capability maps may bind symbolic visible front-cell objects to declared sandbox body capabilities.
+Grounded capability maps must not create action intent, call Action Gateway, execute, or create feedback packets.
 ```
 
 ---

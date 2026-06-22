@@ -7820,3 +7820,23 @@ Boundary:
 
 Next:
 - Approved Purpose Sandbox Outcome Feedback Minimal v0, if the next package creates same-session sandbox feedback traces from approved-purpose outcome observations while still blocking candidate reordering, persistence, predictor mutation, production behavior, manipulation, user-happiness claims, and proof claims.
+
+## Qingyin Bridge Grounded Capability Map Minimal v0
+
+Status: completed / grounded sandbox affordance to Qingyin Bridge capability map / Boundary Index b135.
+
+Progress:
+- Reuses existing visual-spatial motor affordance previews as the grounded source.
+- Builds one symbolic visible front-cell object.
+- Declares sandbox body capabilities for `sandbox.body.step_forward`, `sandbox.body.turn_left`, `sandbox.body.turn_right`, and `sandbox.body.reach_front`.
+- Creates visual-operational bindings for empty, wall, and item front-symbol cases.
+- Echoes symbolic text grounding through `front_symbol:e`, `front_symbol:w`, and `front_symbol:i`.
+- Keeps declared capabilities and discovered visible objects separate.
+
+Boundary:
+- Boundary Index updates from `2026-06-09-b134` to `2026-06-09-b135`.
+- This is grounded capability-map creation only.
+- Action intent creation, Action Gateway calls, selected_action/final_action/direct command, sandbox execution, feedback packet creation, direct endocrine/tendency feed, memory/retention write, predictor read/influence/mutation, raw API access, semantic vision, object recognition, production behavior, and proof-of-learning claim remain blocked.
+
+Next:
+- Qingyin Bridge Action Gateway Preview Minimal v0, if the next package consumes a grounded capability map and previews allow / blocked / review_required decisions without executing an action or producing feedback packets.
