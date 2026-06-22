@@ -1618,7 +1618,7 @@ Two-Trial History Boundary:
 
 - `docs/current_boundary_index.md`
 - Adds a short, versioned, low-token source of global hard boundaries for future work packages.
-- Current version: `Boundary Index Version: 2026-06-09-b137`.
+- Current version: `Boundary Index Version: 2026-06-09-b138`.
 - For current Phase0 status, see `docs/phase0_status.md`.
 - For capability status, see `docs/phase0_capability_matrix.md`.
 - For boundary version history, see `docs/current_boundary_index.md`.
@@ -2996,6 +2996,7 @@ Two-Trial History Boundary:
 - Qingyin Bridge Grounded Capability Map Minimal v0 converts existing sandbox visual affordance previews into a grounded capability map: a symbolic front-cell visible object, declared sandbox body capabilities, and visual-operational bindings for empty, wall, and item front symbols. Boundary Index updates from `2026-06-09-b134` to `2026-06-09-b135`. This does not create action intent, call an action gateway, execute, create feedback packets, directly feed endocrine/tendency systems, access raw APIs, add semantic vision/object recognition, write memory/retention, use predictors, change production behavior, or claim proof of learning.
 - Approved Purpose Sandbox Outcome Feedback Minimal v0 creates same-session trace-only feedback from approved-purpose outcome observations: `front_item_reached -> positive_item_contact_feedback`, `local_context_observed -> mismatch_resolution_observation_feedback`, and `low_pressure_support_offered -> bounded_support_outcome_feedback`. Boundary Index updates from `2026-06-09-b135` to `2026-06-09-b136`. This does not reorder candidates, create actions, execute, persist feedback, write memory/retention, read/influence/mutate predictors, directly feed endocrine/tendency systems, manipulate emotion, claim user happiness, change production behavior, or prove learning.
 - Approved Purpose Feedback-Gated Candidate Reordering Approval Boundary Minimal v0 opens a future boundary for same-session feedback traces to influence sandbox-only candidate reordering. Boundary Index updates from `2026-06-09-b136` to `2026-06-09-b137`. This does not reorder candidates, create action intent, create selected_action/final_action/direct command, execute, persist feedback, write memory/retention, use/mutate predictors, directly feed endocrine/tendency systems, manipulate emotion, claim user happiness, change production behavior, or prove learning.
+- Approved Purpose Feedback-Gated Candidate Reordering Minimal v0 applies same-session feedback to sandbox-only advisory candidate ordering. Positive feedback ranks `reach_front_item` first, mismatch feedback ranks `observe_or_alternative_probe` first, and bounded support feedback ranks `offer_low_pressure_support` first. Boundary Index updates from `2026-06-09-b137` to `2026-06-09-b138`. This does not create action intent, selected_action, final_action, direct command, execution, persistent feedback, memory/retention writes, predictor use/mutation, direct endocrine/tendency feed, production behavior, or proof-of-learning claims.
 
 ## Host-Dependent Idle Continuance Trace v0
 

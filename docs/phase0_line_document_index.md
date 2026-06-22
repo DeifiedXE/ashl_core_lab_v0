@@ -367,6 +367,7 @@ ashl_core/approved_purpose_sandbox_direct_command_outcome_observation_minimal.py
 ashl_core/approved_purpose_sandbox_outcome_feedback_approval_boundary_minimal.py
 ashl_core/approved_purpose_sandbox_outcome_feedback_minimal.py
 ashl_core/approved_purpose_feedback_gated_candidate_reordering_approval_boundary_minimal.py
+ashl_core/approved_purpose_feedback_gated_candidate_reordering_minimal.py
 ```
 
 Important current rule:
@@ -399,6 +400,8 @@ approved_purpose outcome feedback records may create same-session trace-only fee
 approved_purpose outcome feedback records do not reorder candidates, create actions, execute, persist feedback, write memory, use predictors, or directly feed endocrine/tendency systems.
 approved_purpose feedback-gated reordering approval-boundary records may authorize only a future sandbox-only candidate reordering package.
 approved_purpose feedback-gated reordering approval-boundary records do not reorder candidates, create actions, execute, persist feedback, write memory, use predictors, or directly feed endocrine/tendency systems.
+approved_purpose feedback-gated reordering records may change sandbox-only advisory candidate order.
+approved_purpose feedback-gated reordering records do not create action intent, selected_action, final_action, direct command, execution, memory write, predictor use, or direct endocrine/tendency feed.
 approved_purpose candidate-ordering records may change sandbox-only advisory candidate order.
 approved_purpose ordering cannot directly create selected_action or execution.
 approved_purpose selected-action approval-boundary records only authorize a future selected_action package.
