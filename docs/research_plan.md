@@ -7913,3 +7913,21 @@ Boundary:
 
 Next:
 - Sandbox Candidate Ordering Arbitration To Selected Action Approval Boundary Minimal v0, if the next package opens only a future selected_action boundary from arbitration-checked ordering while still blocking selected_action creation and execution.
+
+## Sandbox Candidate Ordering Arbitration To Selected Action Approval Boundary Minimal v0
+
+Status: completed / arbitration-checked ordering to future sandbox selected_action approval boundary / Boundary Index b140.
+
+Progress:
+- Reuses Sandbox Candidate Ordering Signal Arbitration Minimal v0 as source.
+- Opens a future sandbox selected_action approval boundary for the top-ranked arbitration-checked candidate.
+- Preserves the arbitration rules: purpose scope, affordance gate, same-purpose feedback, bounded tendency nudge, and no raw weighted sum.
+- Records `reach_front_item`, `wait_or_observe`, and `observe_or_alternative_probe` as future selected_action candidates in their respective arbitration scenarios.
+
+Boundary:
+- Boundary Index updates from `2026-06-09-b139` to `2026-06-09-b140`.
+- This is an approval boundary only.
+- selected_action creation, final_action, direct command, execution, persistence, memory/retention write, predictor read/influence/mutation, direct endocrine/tendency feed, production behavior, and proof-of-learning claim remain blocked.
+
+Next:
+- Sandbox Candidate Ordering Arbitration Selected Action Minimal v0, if the next package creates sandbox-only selected_action records from this approval boundary while still blocking final_action, direct command, and execution.

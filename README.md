@@ -1618,7 +1618,7 @@ Two-Trial History Boundary:
 
 - `docs/current_boundary_index.md`
 - Adds a short, versioned, low-token source of global hard boundaries for future work packages.
-- Current version: `Boundary Index Version: 2026-06-09-b139`.
+- Current version: `Boundary Index Version: 2026-06-09-b140`.
 - For current Phase0 status, see `docs/phase0_status.md`.
 - For capability status, see `docs/phase0_capability_matrix.md`.
 - For boundary version history, see `docs/current_boundary_index.md`.
@@ -2998,6 +2998,7 @@ Two-Trial History Boundary:
 - Approved Purpose Feedback-Gated Candidate Reordering Approval Boundary Minimal v0 opens a future boundary for same-session feedback traces to influence sandbox-only candidate reordering. Boundary Index updates from `2026-06-09-b136` to `2026-06-09-b137`. This does not reorder candidates, create action intent, create selected_action/final_action/direct command, execute, persist feedback, write memory/retention, use/mutate predictors, directly feed endocrine/tendency systems, manipulate emotion, claim user happiness, change production behavior, or prove learning.
 - Approved Purpose Feedback-Gated Candidate Reordering Minimal v0 applies same-session feedback to sandbox-only advisory candidate ordering. Positive feedback ranks `reach_front_item` first, mismatch feedback ranks `observe_or_alternative_probe` first, and bounded support feedback ranks `offer_low_pressure_support` first. Boundary Index updates from `2026-06-09-b137` to `2026-06-09-b138`. This does not create action intent, selected_action, final_action, direct command, execution, persistent feedback, memory/retention writes, predictor use/mutation, direct endocrine/tendency feed, production behavior, or proof-of-learning claims.
 - Sandbox Candidate Ordering Signal Arbitration Minimal v0 defines the checked priority rule for sandbox candidate ordering signals: approved purpose sets scope, safety and affordance gate feasibility, approved-purpose feedback may reorder only within the same purpose, and tendency can only nudge or break ties. Boundary Index updates from `2026-06-09-b138` to `2026-06-09-b139`. This rejects raw weighted sums and blocks purpose creation/change from affordance, feedback, or tendency; it does not create action intent, selected_action, final_action, direct command, execution, persistence, memory/retention writes, predictor use/mutation, direct endocrine/tendency feed, production behavior, or proof-of-learning claims.
+- Sandbox Candidate Ordering Arbitration To Selected Action Approval Boundary Minimal v0 opens a future selected_action approval boundary from arbitration-checked sandbox candidate ordering. Boundary Index updates from `2026-06-09-b139` to `2026-06-09-b140`. The top-ranked arbitration candidate may become a future sandbox selected_action candidate, but this package does not create selected_action, final_action, direct command, execution, persistence, memory/retention writes, predictor use/mutation, direct endocrine/tendency feed, production behavior, or proof-of-learning claims.
 
 ## Host-Dependent Idle Continuance Trace v0
 
