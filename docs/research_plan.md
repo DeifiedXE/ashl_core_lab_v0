@@ -7858,3 +7858,19 @@ Boundary:
 
 Next:
 - Approved Purpose Feedback-Gated Candidate Reordering Approval Boundary Minimal v0, if the next package opens only a future boundary for trace-only feedback to influence sandbox candidate ordering while still blocking actual reordering, action creation, execution, persistence, predictor mutation, and production behavior.
+
+## Approved Purpose Feedback-Gated Candidate Reordering Approval Boundary Minimal v0
+
+Status: completed / same-session feedback trace to future candidate reordering approval boundary / Boundary Index b137.
+
+Progress:
+- Consumes approved-purpose same-session feedback traces.
+- Opens a future sandbox-only candidate reordering boundary for positive item contact, mismatch observation, and bounded support feedback.
+- Keeps the actual candidate order unchanged in this package.
+
+Boundary:
+- Boundary Index updates from `2026-06-09-b136` to `2026-06-09-b137`.
+- Actual candidate reordering, action intent creation, selected_action, final_action, direct command, sandbox execution, feedback persistence, memory/retention write, predictor read/influence/mutation, direct endocrine/tendency feed, emotional manipulation, user-happiness claim, production behavior, and proof-of-learning claim remain blocked.
+
+Next:
+- Approved Purpose Feedback-Gated Candidate Reordering Minimal v0, if the next package applies bounded same-session feedback to sandbox-only advisory candidate ordering while still blocking action creation, execution, persistence, memory/retention write, predictor mutation, production behavior, and proof claims.
