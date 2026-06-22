@@ -425,6 +425,7 @@ docs/phase0_doc_index.md
 docs/phase0_line_document_index.md
 docs/phase0_task_queue.md
 docs/codex_task_queue_minimal_v0.md
+docs/boundary_self_audit_policy_v0.md
 docs/research_plan.md
 docs/experiment_order.md
 docs/current_phase_milestone_progress_log_2026-06-10.md
@@ -453,6 +454,7 @@ Recommended compact reading order:
 6. docs/mimetic_endocrine_system_design_v0.md
 7. docs/body_motor_feedback_to_affordance_confidence_design_v0.md
 8. docs/phase0_open_risk_ledger.md
+9. docs/boundary_self_audit_policy_v0.md
 ```
 
 Then read line-specific docs only as needed.
