@@ -377,6 +377,9 @@ from ashl_core.approved_purpose_sandbox_direct_command_outcome_observation_minim
 from ashl_core.approved_purpose_sandbox_outcome_feedback_approval_boundary_minimal import (
     run_approved_purpose_sandbox_outcome_feedback_approval_boundary_minimal_check,
 )
+from ashl_core.approved_purpose_sandbox_outcome_feedback_minimal import (
+    run_approved_purpose_sandbox_outcome_feedback_minimal_check,
+)
 from ashl_core.minimal_visual_grounding_trial import run_minimal_visual_grounding_trial_check
 from ashl_core.visual_prediction_error_attention_priority_preview_minimal import (
     run_visual_prediction_error_attention_priority_preview_minimal_check,
@@ -10758,8 +10761,8 @@ def smoke_current_boundary_index_docs() -> dict:
     readme = readme_path.read_text(encoding="utf-8") if readme_path.exists() else ""
     research_plan = research_plan_path.read_text(encoding="utf-8") if research_plan_path.exists() else ""
     compact_required_terms = [
-        "Boundary Index Version: 2026-06-09-b135",
-        "Last update log: Qingyin Bridge Grounded Capability Map Minimal v0",
+        "Boundary Index Version: 2026-06-09-b136",
+        "Last update log: Approved Purpose Sandbox Outcome Feedback Minimal v0",
         "docs/boundary_index_archive_2026_06.md",
         "Minimal Visual Grounding Trial v0",
         "Visual Prediction Error + Attention Priority Preview Minimal v0",
@@ -10822,6 +10825,7 @@ def smoke_current_boundary_index_docs() -> dict:
         "b133 Approved Purpose Sandbox Direct Command Outcome Observation milestone",
         "b134 Approved Purpose Sandbox Outcome Feedback Approval Boundary milestone",
         "b135 Qingyin Bridge Grounded Capability Map milestone",
+        "b136 Approved Purpose Sandbox Outcome Feedback milestone",
         "approved_purpose records for approach_or_reach_item, resolve_mismatch, and support_user_comfort",
         "sandbox-only advisory candidate ordering",
         "positive_item_interaction_candidates",
@@ -10851,6 +10855,9 @@ def smoke_current_boundary_index_docs() -> dict:
         "action_intent_created=False",
         "action_gateway_called=False",
         "feedback_packet_created=False",
+        "trace_only=True",
+        "direct_endocrine_feed=False",
+        "direct_tendency_feed=False",
         "candy_contact -> dopamine_like",
         "high-sweetness cost tradeoff",
         "visible-cell spatial trace",
@@ -10892,7 +10899,7 @@ def smoke_current_boundary_index_docs() -> dict:
         and all(term in doc for term in compact_required_terms)
         and all(term in archive for term in archive_required_terms)
         and line_count <= 150
-        and "2026-06-09-b135" in readme
+        and "2026-06-09-b136" in readme
         and "docs/boundary_index_archive_2026_06.md" in readme
         and "Boundary Index Compaction / Archive v0" in research_plan
         and "Runtime Tendency Memory Influence Safety Sync Minimal v0" in research_plan
@@ -10930,7 +10937,7 @@ def smoke_phase0_documentation_consolidation_minimal() -> dict:
         status_path.exists()
         and matrix_path.exists()
         and index_path.exists()
-        and "Boundary Index Version: 2026-06-09-b135" in status
+        and "Boundary Index Version: 2026-06-09-b136" in status
         and "Current Safe Capability" in status
         and "No proof-of-learning claim" in status
         and "Level 1 Sandbox Outcome Evaluation and Human Review Summary Minimal v0" in status
@@ -10974,6 +10981,7 @@ def smoke_phase0_documentation_consolidation_minimal() -> dict:
         and "Approved Purpose Sandbox Direct Command Outcome Observation Minimal v0" in status
         and "Approved Purpose Sandbox Outcome Feedback Approval Boundary Minimal v0" in status
         and "Qingyin Bridge Grounded Capability Map Minimal v0" in status
+        and "Approved Purpose Sandbox Outcome Feedback Minimal v0" in status
         and "| Level 1 sandbox outcome observation | implemented_sandbox_only |" in matrix
         and "| outcome evaluation | implemented_sandbox_only |" in matrix
         and "| human review summary | implemented_report_only |" in matrix
@@ -11017,6 +11025,7 @@ def smoke_phase0_documentation_consolidation_minimal() -> dict:
         and "| approved purpose sandbox direct command outcome observation minimal | implemented_sandbox_outcome_observation |" in matrix
         and "| approved purpose sandbox outcome feedback approval boundary minimal | implemented_future_feedback_boundary |" in matrix
         and "| Qingyin Bridge grounded capability map minimal | implemented_grounded_capability_map |" in matrix
+        and "| approved purpose sandbox outcome feedback minimal | implemented_same_session_feedback_trace |" in matrix
         and "| retention write | blocked |" in matrix
         and "| predictor mutation | blocked |" in matrix
         and "| runtime behavior change | blocked |" in matrix
@@ -11071,7 +11080,7 @@ def smoke_phase0_documentation_inventory_and_consistency_reconciliation() -> dic
     boundary = Path("docs/current_boundary_index.md").read_text(encoding="utf-8")
     passed = (
         all(path.exists() for path in required_paths)
-        and "Boundary Index Version: 2026-06-09-b135" in texts[Path("docs/phase0_status.md")]
+        and "Boundary Index Version: 2026-06-09-b136" in texts[Path("docs/phase0_status.md")]
         and "Inventory count:" in texts[Path("docs/phase0_doc_inventory.md")]
         and "docs/phase0_versioning_policy.md" in texts[Path("docs/phase0_doc_inventory.md")]
         and "unknown_needs_review" in texts[Path("docs/phase0_doc_inventory.md")]
@@ -18394,6 +18403,59 @@ def smoke_approved_purpose_sandbox_outcome_feedback_approval_boundary_minimal() 
     )
 
 
+def smoke_approved_purpose_sandbox_outcome_feedback_minimal() -> dict:
+    result = run_approved_purpose_sandbox_outcome_feedback_minimal_check()
+    summary = result.get("summary", {})
+    boundary = result.get("boundary", {})
+    records = result.get("valid_records", [])
+    reward = records[0] if records else {}
+    mismatch = records[1] if len(records) > 1 else {}
+    support = records[2] if len(records) > 2 else {}
+    reward_feedback = reward.get("same_session_feedback_trace", {})
+    mismatch_feedback = mismatch.get("same_session_feedback_trace", {})
+    support_feedback = support.get("same_session_feedback_trace", {})
+    safety = reward.get("feedback_safety_boundary", {})
+    passed = (
+        result.get("command") == "run-approved-purpose-sandbox-outcome-feedback-minimal-check"
+        and result.get("flow") == "approved_purpose_sandbox_outcome_feedback_minimal_v0"
+        and result.get("status") == "ok"
+        and boundary.get("boundary_index_version_before") == "2026-06-09-b135"
+        and boundary.get("boundary_index_version_after") == "2026-06-09-b136"
+        and summary.get("feedback_result_count") == 44
+        and summary.get("valid_feedback_count") == 3
+        and summary.get("invalid_feedback_count") == 41
+        and summary.get("feedback_created_count") == 3
+        and summary.get("positive_item_feedback_count") == 1
+        and summary.get("mismatch_feedback_count") == 1
+        and summary.get("support_feedback_count") == 1
+        and summary.get("trace_only_count") == 3
+        and summary.get("candidate_reordering_blocked_count") == 3
+        and summary.get("action_creation_blocked_count") == 3
+        and summary.get("direct_feedback_to_endocrine_blocked_count") == 3
+        and summary.get("direct_feedback_to_tendency_blocked_count") == 3
+        and summary.get("memory_write_blocked_count") == 3
+        and summary.get("predictor_use_blocked_count") == 3
+        and summary.get("proof_claim_blocked_count") == 3
+        and reward_feedback.get("feedback_type") == "positive_item_contact_feedback"
+        and reward_feedback.get("signals", {}).get("success") == 1.0
+        and mismatch_feedback.get("feedback_type") == "mismatch_resolution_observation_feedback"
+        and support_feedback.get("feedback_type") == "bounded_support_outcome_feedback"
+        and support_feedback.get("user_happiness_claim") is False
+        and reward_feedback.get("candidate_reordering_created") is False
+        and reward_feedback.get("direct_endocrine_feed") is False
+        and reward_feedback.get("direct_tendency_feed") is False
+        and safety.get("feedback_must_enter_trace_first") is True
+        and safety.get("candidate_reordering_requires_separate_boundary") is True
+        and safety.get("direct_endocrine_feed_allowed") is False
+        and safety.get("direct_tendency_feed_allowed") is False
+    )
+    return _result(
+        "approved_purpose_sandbox_outcome_feedback_minimal",
+        passed,
+        {"summary": summary, "boundary": boundary},
+    )
+
+
 def smoke_phase0_current_capability_snapshot() -> dict:
     doc_path = Path("docs/phase0_current_capability_snapshot_2026-06-10.md")
     doc = doc_path.read_text(encoding="utf-8") if doc_path.exists() else ""
@@ -21176,6 +21238,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_approved_purpose_sandbox_direct_command_execution_minimal(),
         smoke_approved_purpose_sandbox_direct_command_outcome_observation_minimal(),
         smoke_approved_purpose_sandbox_outcome_feedback_approval_boundary_minimal(),
+        smoke_approved_purpose_sandbox_outcome_feedback_minimal(),
         smoke_phase0_current_capability_snapshot(),
         smoke_memory_influence_behavior_gate_design(),
         smoke_first_memory_influenced_behavior_boundary(),

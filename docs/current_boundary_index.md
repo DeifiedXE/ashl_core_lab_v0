@@ -1,7 +1,7 @@
-Boundary Index Version: 2026-06-09-b135
-Last update log: Qingyin Bridge Grounded Capability Map Minimal v0
-Previous Boundary Index Version: 2026-06-09-b134
-Previous Last update log: Approved Purpose Sandbox Outcome Feedback Approval Boundary Minimal v0
+Boundary Index Version: 2026-06-09-b136
+Last update log: Approved Purpose Sandbox Outcome Feedback Minimal v0
+Previous Boundary Index Version: 2026-06-09-b135
+Previous Last update log: Qingyin Bridge Grounded Capability Map Minimal v0
 Clean count at last update log reset: 0/5; current clean count: 0/5
 ## Purpose
 - This file is the compact current Boundary Index for fast review of present ASHL Core / D Qingyin boundaries.
@@ -125,6 +125,7 @@ Clean count at last update log reset: 0/5; current clean count: 0/5
 - b133 Approved Purpose Sandbox Direct Command Outcome Observation milestone: executed approved-purpose direct_commands produce sandbox-only outcome observations. Evidence: reach_front_item -> front_item_reached; observe_or_alternative_probe -> local_context_observed; offer_low_pressure_support -> low_pressure_support_offered; feedback_loop_created=False; future_feedback_requires_separate_boundary=True. Forbidden: no feedback loop, candidate reordering, memory/retention write, predictor read/influence/mutation, runtime behavior change, emotional manipulation, user-happiness claim, or proof claim.
 - b134 Approved Purpose Sandbox Outcome Feedback Approval Boundary milestone: approved-purpose outcome observations validate a future same-session feedback boundary. Evidence: positive_item_contact_feedback, mismatch_resolution_observation_feedback, and bounded_support_outcome_feedback may enter a future feedback package; feedback_applied_in_this_package=False; candidate_reordering_created_in_this_package=False. Forbidden: no feedback application, candidate reordering, new action, memory/retention write, predictor read/influence/mutation, runtime behavior change, emotional manipulation, user-happiness claim, or proof claim.
 - b135 Qingyin Bridge Grounded Capability Map milestone: existing visual-spatial motor affordance previews produce grounded capability maps. Evidence: visible object `sandbox.front_cell`, grounded_text_token `front_symbol:e/w/i`, declared sandbox body capabilities, and bindings; action_intent_created=False; action_gateway_called=False; execution_created=False; feedback_packet_created=False; direct endocrine/tendency feeds blocked. Forbidden: no action, gateway execution, raw API, semantic vision, object recognition, memory/retention write, predictor use, production behavior, or proof claim.
+- b136 Approved Purpose Sandbox Outcome Feedback milestone: approved-purpose outcome observations create same-session trace-only feedback. Evidence: positive_item_contact_feedback, mismatch_resolution_observation_feedback, bounded_support_outcome_feedback; trace_only=True; candidate_reordering_created=False; direct_endocrine_feed=False; direct_tendency_feed=False. Forbidden: no candidate reordering, new action, execution, persistence, memory/retention write, predictor use, manipulation, user-happiness claim, or proof claim.
 ## Archive
 - Older milestone details are archived in `docs/boundary_index_archive_2026_06.md`.
 

@@ -7840,3 +7840,21 @@ Boundary:
 
 Next:
 - Qingyin Bridge Action Gateway Preview Minimal v0, if the next package consumes a grounded capability map and previews allow / blocked / review_required decisions without executing an action or producing feedback packets.
+
+## Approved Purpose Sandbox Outcome Feedback Minimal v0
+
+Status: completed / approved-purpose outcome observation to same-session feedback trace / Boundary Index b136.
+
+Progress:
+- Creates trace-only same-session feedback from approved-purpose outcome observations.
+- `front_item_reached -> positive_item_contact_feedback`.
+- `local_context_observed -> mismatch_resolution_observation_feedback`.
+- `low_pressure_support_offered -> bounded_support_outcome_feedback`.
+- Feedback remains trace-only and must enter trace before any future influence path.
+
+Boundary:
+- Boundary Index updates from `2026-06-09-b135` to `2026-06-09-b136`.
+- Candidate reordering, action intent creation, selected_action, final_action, direct command, sandbox execution, feedback persistence, memory/retention write, predictor read/influence/mutation, direct endocrine/tendency feed, emotional manipulation, user-happiness claim, production behavior, and proof-of-learning claim remain blocked.
+
+Next:
+- Approved Purpose Feedback-Gated Candidate Reordering Approval Boundary Minimal v0, if the next package opens only a future boundary for trace-only feedback to influence sandbox candidate ordering while still blocking actual reordering, action creation, execution, persistence, predictor mutation, and production behavior.

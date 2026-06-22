@@ -1618,7 +1618,7 @@ Two-Trial History Boundary:
 
 - `docs/current_boundary_index.md`
 - Adds a short, versioned, low-token source of global hard boundaries for future work packages.
-- Current version: `Boundary Index Version: 2026-06-09-b135`.
+- Current version: `Boundary Index Version: 2026-06-09-b136`.
 - For current Phase0 status, see `docs/phase0_status.md`.
 - For capability status, see `docs/phase0_capability_matrix.md`.
 - For boundary version history, see `docs/current_boundary_index.md`.
@@ -2994,6 +2994,7 @@ Two-Trial History Boundary:
 - Approved Purpose Sandbox Direct Command Outcome Observation Minimal v0 observes bounded sandbox outcomes from executed approved-purpose direct_command records. It records `reach_front_item -> front_item_reached`, `observe_or_alternative_probe -> local_context_observed`, and `offer_low_pressure_support -> low_pressure_support_offered`; feedback and candidate reordering remain blocked. Boundary Index updates from `2026-06-09-b132` to `2026-06-09-b133`. This does not create feedback loops, change runtime behavior, write memory/retention, read/influence/mutate predictors, manipulate emotion, claim user happiness, or claim proof of learning.
 - Approved Purpose Sandbox Outcome Feedback Approval Boundary Minimal v0 opens the approval boundary for approved-purpose outcome observations to enter a future same-session sandbox feedback package. `front_item_reached` maps to `positive_item_contact_feedback`, `local_context_observed` maps to `mismatch_resolution_observation_feedback`, and `low_pressure_support_offered` maps to `bounded_support_outcome_feedback`. Boundary Index updates from `2026-06-09-b133` to `2026-06-09-b134`. This does not apply feedback, reorder candidates, create actions, change runtime behavior, write memory/retention, read/influence/mutate predictors, manipulate emotion, claim user happiness, or claim proof of learning.
 - Qingyin Bridge Grounded Capability Map Minimal v0 converts existing sandbox visual affordance previews into a grounded capability map: a symbolic front-cell visible object, declared sandbox body capabilities, and visual-operational bindings for empty, wall, and item front symbols. Boundary Index updates from `2026-06-09-b134` to `2026-06-09-b135`. This does not create action intent, call an action gateway, execute, create feedback packets, directly feed endocrine/tendency systems, access raw APIs, add semantic vision/object recognition, write memory/retention, use predictors, change production behavior, or claim proof of learning.
+- Approved Purpose Sandbox Outcome Feedback Minimal v0 creates same-session trace-only feedback from approved-purpose outcome observations: `front_item_reached -> positive_item_contact_feedback`, `local_context_observed -> mismatch_resolution_observation_feedback`, and `low_pressure_support_offered -> bounded_support_outcome_feedback`. Boundary Index updates from `2026-06-09-b135` to `2026-06-09-b136`. This does not reorder candidates, create actions, execute, persist feedback, write memory/retention, read/influence/mutate predictors, directly feed endocrine/tendency systems, manipulate emotion, claim user happiness, change production behavior, or prove learning.
 
 ## Host-Dependent Idle Continuance Trace v0
 
