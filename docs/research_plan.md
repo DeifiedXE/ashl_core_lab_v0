@@ -8090,6 +8090,22 @@ Progress:
 
 Boundary:
 - Boundary Index updates from `2026-06-09-b148` to `2026-06-09-b149`.
+
+## Sandbox Candidate Ordering Arbitration Outcome Feedback Minimal v0
+
+Status: completed / same-session sandbox-only arbitration outcome feedback evaluation records / Boundary Index b150.
+
+What changed:
+- b149 arbitration outcome feedback approval boundaries can now create same-session sandbox-only feedback records.
+- Feedback candidates covered: `arbitration_positive_item_contact_feedback`, `arbitration_wait_context_observation_feedback`, and `arbitration_mismatch_probe_context_feedback`.
+- Boundary Index updates from `2026-06-09-b149` to `2026-06-09-b150`.
+
+Explicitly not changed:
+- No feedback application, feedback loop, candidate reordering, score change, selected_action, final_action, direct_command, execution, memory/retention write, predictor read/influence/mutation, direct endocrine/tendency feed, production behavior, or proof-of-learning claim.
+
+B0/10 hallucination self-check and boundary audit:
+- Documentation claims match the b150 module, CLI, smoke, tests, and Boundary Index.
+- b150 is a sandbox-only feedback evaluation record, not production behavior, memory influence, predictor influence, or proof of learning.
 - This is a feedback approval boundary only.
 - Feedback evaluation/application, feedback loops, candidate reordering, persistence, memory/retention write, predictor read/influence/mutation, direct endocrine/tendency feed, production behavior, and proof-of-learning claim remain blocked.
 
