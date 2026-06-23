@@ -398,6 +398,9 @@ from ashl_core.sandbox_candidate_ordering_arbitration_selected_action_minimal im
 from ashl_core.sandbox_candidate_ordering_arbitration_final_action_approval_boundary_minimal import (
     run_sandbox_candidate_ordering_arbitration_final_action_approval_boundary_minimal_check,
 )
+from ashl_core.sandbox_candidate_ordering_arbitration_final_action_minimal import (
+    run_sandbox_candidate_ordering_arbitration_final_action_minimal_check,
+)
 from ashl_core.minimal_visual_grounding_trial import run_minimal_visual_grounding_trial_check
 from ashl_core.visual_prediction_error_attention_priority_preview_minimal import (
     run_visual_prediction_error_attention_priority_preview_minimal_check,
@@ -10779,8 +10782,8 @@ def smoke_current_boundary_index_docs() -> dict:
     readme = readme_path.read_text(encoding="utf-8") if readme_path.exists() else ""
     research_plan = research_plan_path.read_text(encoding="utf-8") if research_plan_path.exists() else ""
     compact_required_terms = [
-        "Boundary Index Version: 2026-06-09-b142",
-        "Last update log: Sandbox Candidate Ordering Arbitration Final Action Approval Boundary Minimal v0",
+        "Boundary Index Version: 2026-06-09-b143",
+        "Last update log: Sandbox Candidate Ordering Arbitration Final Action Minimal v0",
         "docs/boundary_index_archive_2026_06.md",
         "Minimal Visual Grounding Trial v0",
         "Visual Prediction Error + Attention Priority Preview Minimal v0",
@@ -10825,8 +10828,8 @@ def smoke_current_boundary_index_docs() -> dict:
         "b85-b107 Sandbox Action Loop compressed milestone",
         "selected_action -> final_action -> direct command -> execution -> outcome evaluation",
         "b108-b120 Endocrine / Visual-Spatial / Body Schema / Motor Intent compressed milestone",
-        "b121-b142 Approved Purpose / Qingyin Bridge compressed milestone",
-        "approval-boundary -> approved_purpose -> sandbox-only advisory candidate ordering -> selected_action -> final_action -> direct_command -> execution -> outcome observation -> same-session feedback trace -> feedback-gated sandbox-only advisory reordering -> checked signal arbitration -> future selected_action approval boundary -> sandbox-only selected_action -> future final_action approval boundary",
+        "b121-b143 Approved Purpose / Qingyin Bridge compressed milestone",
+        "approval-boundary -> approved_purpose -> sandbox-only advisory candidate ordering -> selected_action -> final_action -> direct_command -> execution -> outcome observation -> same-session feedback trace -> feedback-gated sandbox-only advisory reordering -> checked signal arbitration -> future selected_action approval boundary -> sandbox-only selected_action -> future final_action approval boundary -> sandbox-only final_action",
         "sandbox-only advisory candidate ordering",
         "reach_front_item",
         "offer_low_pressure_support",
@@ -10847,9 +10850,9 @@ def smoke_current_boundary_index_docs() -> dict:
         "reordering_is_sandbox_only=True",
         "reordering_is_advisory=True",
         "selected_action_created=True",
+        "final_action_created=True",
         "selected_action_source=arbitration_checked_selected_action_approval_boundary",
-        "future_final_action_allowed=True",
-        "final_action_created_in_this_package=False",
+        "final_action_source=sandbox_candidate_ordering_arbitration_final_action_approval_boundary",
         "direct_command_created=False",
         "sandbox_execution_created=False",
         "purpose > safety > affordance gate > same-purpose feedback > bounded tendency nudge",
@@ -10900,7 +10903,7 @@ def smoke_current_boundary_index_docs() -> dict:
         and all(term in doc for term in compact_required_terms)
         and all(term in archive for term in archive_required_terms)
         and line_count <= 150
-        and "2026-06-09-b142" in readme
+        and "2026-06-09-b143" in readme
         and "docs/boundary_index_archive_2026_06.md" in readme
         and "Boundary Index Compaction / Archive v0" in research_plan
         and "Runtime Tendency Memory Influence Safety Sync Minimal v0" in research_plan
@@ -10938,7 +10941,7 @@ def smoke_phase0_documentation_consolidation_minimal() -> dict:
         status_path.exists()
         and matrix_path.exists()
         and index_path.exists()
-        and "Boundary Index Version: 2026-06-09-b142" in status
+        and "Boundary Index Version: 2026-06-09-b143" in status
         and "Current Safe Capability" in status
         and "No proof-of-learning claim" in status
         and "Level 1 Sandbox Outcome Evaluation and Human Review Summary Minimal v0" in status
@@ -10989,6 +10992,7 @@ def smoke_phase0_documentation_consolidation_minimal() -> dict:
         and "Sandbox Candidate Ordering Arbitration To Selected Action Approval Boundary Minimal v0" in status
         and "Sandbox Candidate Ordering Arbitration Selected Action Minimal v0" in status
         and "Sandbox Candidate Ordering Arbitration Final Action Approval Boundary Minimal v0" in status
+        and "Sandbox Candidate Ordering Arbitration Final Action Minimal v0" in status
         and "| Level 1 sandbox outcome observation | implemented_sandbox_only |" in matrix
         and "| outcome evaluation | implemented_sandbox_only |" in matrix
         and "| human review summary | implemented_report_only |" in matrix
@@ -11089,7 +11093,7 @@ def smoke_phase0_documentation_inventory_and_consistency_reconciliation() -> dic
     boundary = Path("docs/current_boundary_index.md").read_text(encoding="utf-8")
     passed = (
         all(path.exists() for path in required_paths)
-        and "Boundary Index Version: 2026-06-09-b142" in texts[Path("docs/phase0_status.md")]
+        and "Boundary Index Version: 2026-06-09-b143" in texts[Path("docs/phase0_status.md")]
         and "Inventory count:" in texts[Path("docs/phase0_doc_inventory.md")]
         and "docs/phase0_versioning_policy.md" in texts[Path("docs/phase0_doc_inventory.md")]
         and "unknown_needs_review" in texts[Path("docs/phase0_doc_inventory.md")]
@@ -18760,6 +18764,50 @@ def smoke_sandbox_candidate_ordering_arbitration_final_action_approval_boundary_
     )
 
 
+def smoke_sandbox_candidate_ordering_arbitration_final_action_minimal() -> dict:
+    result = run_sandbox_candidate_ordering_arbitration_final_action_minimal_check()
+    summary = result.get("summary", {})
+    boundary = result.get("boundary", {})
+    records = result.get("valid_records", [])
+    final_actions = [
+        record.get("sandbox_final_action", {}).get("final_action")
+        for record in records
+    ]
+    first_final = records[0].get("sandbox_final_action", {}) if records else {}
+    passed = (
+        result.get("command") == "run-sandbox-candidate-ordering-arbitration-final-action-minimal-check"
+        and result.get("flow") == "sandbox_candidate_ordering_arbitration_final_action_minimal_v0"
+        and result.get("status") == "ok"
+        and boundary.get("boundary_index_version_before") == "2026-06-09-b142"
+        and boundary.get("boundary_index_version_after") == "2026-06-09-b143"
+        and summary.get("final_action_result_count") == 30
+        and summary.get("valid_final_action_count") == 3
+        and summary.get("invalid_final_action_count") == 27
+        and summary.get("final_action_created_count") == 3
+        and summary.get("sandbox_only_final_action_count") == 3
+        and summary.get("arbitration_rules_preserved_count") == 3
+        and summary.get("reach_front_item_final_action_count") == 1
+        and summary.get("wait_or_observe_final_action_count") == 1
+        and summary.get("observe_or_alternative_probe_final_action_count") == 1
+        and summary.get("direct_command_blocked_count") == 3
+        and summary.get("execution_blocked_count") == 3
+        and summary.get("memory_write_blocked_count") == 3
+        and summary.get("predictor_use_blocked_count") == 3
+        and summary.get("direct_feed_blocked_count") == 3
+        and summary.get("proof_claim_blocked_count") == 3
+        and final_actions == ["reach_front_item", "wait_or_observe", "observe_or_alternative_probe"]
+        and first_final.get("final_action_created") is True
+        and first_final.get("final_action_scope") == "sandbox_only"
+        and first_final.get("direct_command_created") is False
+        and first_final.get("sandbox_execution_created") is False
+    )
+    return _result(
+        "sandbox_candidate_ordering_arbitration_final_action_minimal",
+        passed,
+        {"summary": summary, "boundary": boundary, "final_actions": final_actions},
+    )
+
+
 def smoke_phase0_current_capability_snapshot() -> dict:
     doc_path = Path("docs/phase0_current_capability_snapshot_2026-06-10.md")
     doc = doc_path.read_text(encoding="utf-8") if doc_path.exists() else ""
@@ -21549,6 +21597,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_sandbox_candidate_ordering_arbitration_to_selected_action_approval_boundary_minimal(),
         smoke_sandbox_candidate_ordering_arbitration_selected_action_minimal(),
         smoke_sandbox_candidate_ordering_arbitration_final_action_approval_boundary_minimal(),
+        smoke_sandbox_candidate_ordering_arbitration_final_action_minimal(),
         smoke_phase0_current_capability_snapshot(),
         smoke_memory_influence_behavior_gate_design(),
         smoke_first_memory_influenced_behavior_boundary(),
