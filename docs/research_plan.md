@@ -7950,3 +7950,21 @@ Boundary:
 
 Next:
 - Sandbox Candidate Ordering Arbitration Final Action Approval Boundary Minimal v0, if the next package opens only a future final_action boundary from these sandbox selected_action records while still blocking final_action creation and execution.
+
+## Sandbox Candidate Ordering Arbitration Final Action Approval Boundary Minimal v0
+
+Status: completed / arbitration selected_action to future sandbox final_action approval boundary / Boundary Index b142.
+
+Progress:
+- Reuses Sandbox Candidate Ordering Arbitration Selected Action Minimal v0 as source.
+- Opens a future sandbox final_action approval boundary for arbitration-created selected_action records.
+- Records `reach_front_item`, `wait_or_observe`, and `observe_or_alternative_probe` as future final_action candidates.
+- Preserves source arbitration rules and sandbox-only scope.
+
+Boundary:
+- Boundary Index updates from `2026-06-09-b141` to `2026-06-09-b142`.
+- This is an approval boundary only.
+- final_action creation, direct command, execution, persistence, memory/retention write, predictor read/influence/mutation, direct endocrine/tendency feed, production behavior, and proof-of-learning claim remain blocked.
+
+Next:
+- Sandbox Candidate Ordering Arbitration Final Action Minimal v0, if the next package creates sandbox-only final_action records from this approval boundary while still blocking direct command and execution.
