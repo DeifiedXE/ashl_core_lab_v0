@@ -8005,3 +8005,19 @@ Boundary:
 
 Next:
 - Sandbox Candidate Ordering Arbitration Direct Command Minimal v0, if the next package creates sandbox-only direct_command records from this approval boundary while still blocking execution.
+
+## Sandbox Candidate Ordering Arbitration Direct Command Minimal v0
+
+Status: completed / arbitration direct-command approval boundary to sandbox-only direct_command / Boundary Index b145.
+
+Progress:
+- Reuses Sandbox Candidate Ordering Arbitration Direct Command Approval Boundary Minimal v0 as source.
+- Creates sandbox-only direct_command records for `sandbox.arbitration.reach_front_item`, `sandbox.arbitration.wait_or_observe`, and `sandbox.arbitration.observe_or_alternative_probe`.
+- Preserves arbitration rules, sandbox-only scope, rollback, and audit fields.
+
+Boundary:
+- Boundary Index updates from `2026-06-09-b144` to `2026-06-09-b145`.
+- Execution, execution result creation, persistence, memory/retention write, predictor read/influence/mutation, direct endocrine/tendency feed, production behavior, and proof-of-learning claim remain blocked.
+
+Next:
+- Sandbox Candidate Ordering Arbitration Direct Command Execution Approval Boundary Minimal v0, if the next package opens only a future execution boundary from these sandbox direct_command records while still blocking execution.
