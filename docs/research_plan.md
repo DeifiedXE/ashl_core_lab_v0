@@ -8058,5 +8058,40 @@ Boundary:
 Next:
 - Sandbox Candidate Ordering Arbitration Direct Command Outcome Observation Minimal v0, if the next package observes execution outcomes while still blocking feedback loops, memory writes, predictor mutation, and production behavior.
 
+## Sandbox Candidate Ordering Arbitration Direct Command Outcome Observation Minimal v0
+
+Status: completed / arbitration sandbox direct_command outcome observation records / Boundary Index b148.
+
+Progress:
+- Reused Sandbox Candidate Ordering Arbitration Direct Command Execution Minimal v0 as source.
+- Observed bounded sandbox outcomes for `sandbox.arbitration.reach_front_item`, `sandbox.arbitration.wait_or_observe`, and `sandbox.arbitration.observe_or_alternative_probe`.
+- Recorded `outcome_observation_created=True`, `outcome_scope=sandbox_only`, and one observation per executed command.
+- Kept `feedback_loop_created=False` and `candidate_reordering_created=False`.
+
+Boundary:
+- Boundary Index updates from `2026-06-09-b147` to `2026-06-09-b148`.
+- This is sandbox-only outcome observation, not feedback or behavior change.
+- Feedback loops, candidate reordering, persistence, memory/retention write, predictor read/influence/mutation, direct endocrine/tendency feed, production behavior, and proof-of-learning claim remain blocked.
+
 Next:
-- Sandbox Candidate Ordering Arbitration Direct Command Execution Minimal v0, if the next package executes these sandbox direct_commands once while still blocking outcome feedback, persistence, memory/retention write, predictor mutation, production behavior, and proof claims.
+- Sandbox Candidate Ordering Arbitration Outcome Feedback Approval Boundary Minimal v0, if the next package opens only a future feedback boundary from these observations while still blocking actual feedback, reordering, memory writes, predictor mutation, and production behavior.
+
+## Sandbox Candidate Ordering Arbitration Outcome Feedback Approval Boundary Minimal v0
+
+Status: completed / arbitration outcome observation to future same-session sandbox feedback approval boundary / Boundary Index b149.
+
+Progress:
+- Reused Sandbox Candidate Ordering Arbitration Direct Command Outcome Observation Minimal v0 as source.
+- Opened a future same-session sandbox feedback approval boundary for b148 arbitration outcome observations.
+- Mapped `arbitration_positive_item_contact_observed` to `arbitration_positive_item_contact_feedback`.
+- Mapped `arbitration_wait_context_observed` to `arbitration_wait_context_observation_feedback`.
+- Mapped `arbitration_mismatch_probe_context_observed` to `arbitration_mismatch_probe_context_feedback`.
+- Kept feedback evaluation/application, feedback loop creation, candidate reordering, action creation, and execution creation false.
+
+Boundary:
+- Boundary Index updates from `2026-06-09-b148` to `2026-06-09-b149`.
+- This is a feedback approval boundary only.
+- Feedback evaluation/application, feedback loops, candidate reordering, persistence, memory/retention write, predictor read/influence/mutation, direct endocrine/tendency feed, production behavior, and proof-of-learning claim remain blocked.
+
+Next:
+- Sandbox Candidate Ordering Arbitration Outcome Feedback Minimal v0, if the next package creates sandbox-only feedback records from this boundary while still blocking candidate reordering and all persistent/runtime effects.

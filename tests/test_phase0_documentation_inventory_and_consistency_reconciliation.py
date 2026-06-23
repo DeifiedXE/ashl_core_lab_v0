@@ -51,7 +51,7 @@ class Phase0DocumentationInventoryConsistencyReconciliationTests(unittest.TestCa
     def test_current_boundary_index_has_sandbox_production_distinction(self):
         boundary = self._read("docs/current_boundary_index.md")
 
-        self.assertIn("Boundary Index Version: 2026-06-09-b147", boundary)
+        self.assertIn("Boundary Index Version: 2026-06-09-b149", boundary)
         self.assertIn("No production/runtime memory-influenced behavior is allowed.", boundary)
         self.assertIn("sandbox-only lesson application, observation, and evaluation records", boundary)
         self.assertIn("do not constitute production/runtime memory-influenced behavior", boundary)
