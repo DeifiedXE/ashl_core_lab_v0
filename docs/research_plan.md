@@ -8038,4 +8038,25 @@ Boundary:
 - Execution, execution result creation, persistence, memory/retention write, predictor read/influence/mutation, direct endocrine/tendency feed, production behavior, and proof-of-learning claim remain blocked.
 
 Next:
+- Sandbox Candidate Ordering Arbitration Direct Command Execution Minimal v0, if the next package executes the approved arbitration sandbox direct_commands once in sandbox-only records while still blocking outcome observation and feedback.
+
+## Sandbox Candidate Ordering Arbitration Direct Command Execution Minimal v0
+
+Status: completed / arbitration sandbox direct_command execution records / Boundary Index b147.
+
+Progress:
+- Reused the arbitration direct_command execution approval boundary.
+- Executed `sandbox.arbitration.reach_front_item`, `sandbox.arbitration.wait_or_observe`, and `sandbox.arbitration.observe_or_alternative_probe` once each in sandbox-only execution records.
+- Recorded `sandbox_action_executed=True`, `execution_count=1`, and `execution_result_created=True`.
+- Kept `outcome_observation_created=False` and `feedback_loop_created=False`.
+
+Boundary:
+- Boundary Index updates from `2026-06-09-b146` to `2026-06-09-b147`.
+- This is sandbox-only command execution, not outcome interpretation.
+- Outcome observation, feedback loops, persistence, memory/retention write, predictor read/influence/mutation, direct endocrine/tendency feed, production behavior, and proof-of-learning claim remain blocked.
+
+Next:
+- Sandbox Candidate Ordering Arbitration Direct Command Outcome Observation Minimal v0, if the next package observes execution outcomes while still blocking feedback loops, memory writes, predictor mutation, and production behavior.
+
+Next:
 - Sandbox Candidate Ordering Arbitration Direct Command Execution Minimal v0, if the next package executes these sandbox direct_commands once while still blocking outcome feedback, persistence, memory/retention write, predictor mutation, production behavior, and proof claims.

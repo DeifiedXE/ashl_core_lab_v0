@@ -1618,7 +1618,7 @@ Two-Trial History Boundary:
 
 - `docs/current_boundary_index.md`
 - Adds a short, versioned, low-token source of global hard boundaries for future work packages.
-- Current version: `Boundary Index Version: 2026-06-09-b146`.
+- Current version: `Boundary Index Version: 2026-06-09-b147`.
 - For current Phase0 status, see `docs/phase0_status.md`.
 - For capability status, see `docs/phase0_capability_matrix.md`.
 - For boundary version history, see `docs/current_boundary_index.md`.
@@ -3005,6 +3005,7 @@ Two-Trial History Boundary:
 - Sandbox Candidate Ordering Arbitration Direct Command Approval Boundary Minimal v0 opens a future direct_command approval boundary from arbitration-created sandbox final_actions. Boundary Index updates from `2026-06-09-b143` to `2026-06-09-b144`. It records future command candidates `sandbox.arbitration.reach_front_item`, `sandbox.arbitration.wait_or_observe`, and `sandbox.arbitration.observe_or_alternative_probe`, but does not create direct command, execution, persistence, memory/retention writes, predictor use/mutation, direct endocrine/tendency feed, production behavior, or proof-of-learning claims.
 - Sandbox Candidate Ordering Arbitration Direct Command Minimal v0 creates sandbox-only direct_command records from arbitration final_actions: `sandbox.arbitration.reach_front_item`, `sandbox.arbitration.wait_or_observe`, and `sandbox.arbitration.observe_or_alternative_probe`. Boundary Index updates from `2026-06-09-b144` to `2026-06-09-b145`. It does not execute commands, create execution results, persist feedback, write memory/retention, use/mutate predictors, feed endocrine/tendency directly, change production behavior, or claim proof of learning.
 - Sandbox Candidate Ordering Arbitration Direct Command Execution Approval Boundary Minimal v0 opens a future execution approval boundary from arbitration-created sandbox direct_commands. Boundary Index updates from `2026-06-09-b145` to `2026-06-09-b146`. It records future execution candidates for `sandbox.arbitration.reach_front_item`, `sandbox.arbitration.wait_or_observe`, and `sandbox.arbitration.observe_or_alternative_probe`, but does not execute commands, create execution results, persist feedback, write memory/retention, use/mutate predictors, feed endocrine/tendency directly, change production behavior, or claim proof of learning.
+- Sandbox Candidate Ordering Arbitration Direct Command Execution Minimal v0 executes the arbitration sandbox-only direct_commands once in sandbox records: `sandbox.arbitration.reach_front_item`, `sandbox.arbitration.wait_or_observe`, and `sandbox.arbitration.observe_or_alternative_probe`. Boundary Index updates from `2026-06-09-b146` to `2026-06-09-b147`. It creates sandbox-only execution records and execution results, but does not create outcome observation, feedback loops, persistence, memory/retention writes, predictor use/mutation, direct endocrine/tendency feeds, production behavior, or proof-of-learning claims.
 
 ## Host-Dependent Idle Continuance Trace v0
 
