@@ -8235,3 +8235,18 @@ Explicitly not changed:
 
 Next:
 - Sandbox Candidate Ordering Arbitration Reordered Candidate Direct Command Minimal v0, if the next package creates same-session sandbox-only direct_command records from this boundary while still blocking execution, new outcome observation, memory/retention writes, predictor influence/mutation, direct endocrine/tendency feeds, production behavior, and proof-of-learning claims.
+
+## Sandbox Candidate Ordering Arbitration Reordered Candidate Direct Command Minimal v0
+
+Status: completed / same-session sandbox-only direct_command records from reordered candidates / Boundary Index b160.
+
+What changed:
+- b159 reordered-candidate direct_command approval boundaries can now create same-session sandbox-only direct_command records.
+- Direct commands covered: `sandbox.arbitration.reach_front_item`, `sandbox.arbitration.wait_or_observe`, and `sandbox.arbitration.observe_or_alternative_probe`.
+- Boundary Index updates from `2026-06-09-b159` to `2026-06-09-b160`.
+
+Explicitly not changed:
+- No execution, new outcome observation, candidate score change, runtime next-cycle ordering change, feedback loop, selected_action, final_action, memory/retention write, predictor read/influence/mutation, direct endocrine/tendency feed, production behavior, or proof-of-learning claim.
+
+Next:
+- Sandbox Candidate Ordering Arbitration Reordered Candidate Direct Command Execution Approval Boundary Minimal v0, if the next package opens only a future execution approval boundary from these direct_command records while still blocking execution, outcome observation, feedback, memory/retention writes, predictor influence/mutation, direct endocrine/tendency feeds, production behavior, and proof-of-learning claims.
