@@ -8118,6 +8118,18 @@ What changed:
 
 Explicitly not changed:
 - No feedback application, feedback loop, candidate reordering, score change, next-cycle ordering change, selected_action, final_action, direct_command, execution, new outcome observation, memory/retention write, predictor read/influence/mutation, direct endocrine/tendency feed, production behavior, or proof-of-learning claim.
+
+## Sandbox Candidate Ordering Arbitration Outcome Feedback Application Minimal v0
+
+Status: completed / same-session sandbox-only record-level feedback application / Boundary Index b152.
+
+What changed:
+- b151-approved arbitration feedback can now create same-session sandbox-only feedback application records.
+- `feedback_applied=True` is limited to `feedback_application_effect_scope=record_only_no_ordering_change`.
+- Boundary Index updates from `2026-06-09-b151` to `2026-06-09-b152`.
+
+Explicitly not changed:
+- No feedback loop, candidate reordering, score change, next-cycle ordering change, selected_action, final_action, direct_command, execution, new outcome observation, memory/retention write, predictor read/influence/mutation, direct endocrine/tendency feed, production behavior, or proof-of-learning claim.
 - This is a feedback approval boundary only.
 - Feedback evaluation/application, feedback loops, candidate reordering, persistence, memory/retention write, predictor read/influence/mutation, direct endocrine/tendency feed, production behavior, and proof-of-learning claim remain blocked.
 
