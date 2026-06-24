@@ -473,6 +473,9 @@ from ashl_core.sandbox_candidate_ordering_arbitration_reordered_candidate_outcom
 from ashl_core.sandbox_candidate_ordering_arbitration_reordered_candidate_outcome_feedback_application_minimal import (
     run_sandbox_candidate_ordering_arbitration_reordered_candidate_outcome_feedback_application_minimal_check,
 )
+from ashl_core.sandbox_candidate_ordering_arbitration_reordered_candidate_feedback_gated_candidate_reordering_approval_boundary_minimal import (
+    run_sandbox_candidate_ordering_arbitration_reordered_candidate_feedback_gated_candidate_reordering_approval_boundary_minimal_check,
+)
 from ashl_core.minimal_visual_grounding_trial import run_minimal_visual_grounding_trial_check
 from ashl_core.visual_prediction_error_attention_priority_preview_minimal import (
     run_visual_prediction_error_attention_priority_preview_minimal_check,
@@ -10854,8 +10857,8 @@ def smoke_current_boundary_index_docs() -> dict:
     readme = readme_path.read_text(encoding="utf-8") if readme_path.exists() else ""
     research_plan = research_plan_path.read_text(encoding="utf-8") if research_plan_path.exists() else ""
     compact_required_terms = [
-        "Boundary Index Version: 2026-06-09-b167",
-        "Last update log: Sandbox Candidate Ordering Arbitration Reordered Candidate Outcome Feedback Application Minimal v0",
+        "Boundary Index Version: 2026-06-09-b168",
+        "Last update log: Sandbox Candidate Ordering Arbitration Reordered Candidate Feedback-Gated Candidate Reordering Approval Boundary Minimal v0",
         "docs/boundary_index_archive_2026_06.md",
         "Minimal Visual Grounding Trial v0",
         "Visual Prediction Error + Attention Priority Preview Minimal v0",
@@ -10900,8 +10903,8 @@ def smoke_current_boundary_index_docs() -> dict:
         "b85-b107 Sandbox Action Loop compressed milestone",
         "selected_action -> final_action -> direct command -> execution -> outcome evaluation",
         "b108-b120 Endocrine / Visual-Spatial / Body Schema / Motor Intent compressed milestone",
-        "b121-b167 Approved Purpose / Qingyin Bridge compressed milestone",
-        "approval-boundary -> approved_purpose -> sandbox-only advisory candidate ordering -> selected_action -> final_action -> direct_command -> execution -> outcome observation -> same-session feedback trace -> feedback-gated sandbox-only advisory reordering -> checked signal arbitration -> future selected_action approval boundary -> sandbox-only selected_action -> future final_action approval boundary -> sandbox-only final_action -> future direct_command approval boundary -> sandbox-only direct_command -> future execution approval boundary -> sandbox-only execution -> sandbox-only outcome observation -> future same-session sandbox feedback approval boundary -> same-session sandbox feedback evaluation records -> future same-session sandbox feedback application approval boundary -> same-session sandbox record-only feedback application records -> future feedback-gated candidate reordering approval boundary -> same-session sandbox-only advisory reordering records -> future selected_action approval boundary from reordered candidates -> same-session sandbox-only selected_action records from reordered candidates -> future final_action approval boundary from reordered selected_actions -> same-session sandbox-only final_action records from reordered selected_actions -> future direct_command approval boundary from reordered final_actions -> same-session sandbox-only direct_command records from reordered final_actions -> future execution approval boundary from reordered direct_commands -> same-session sandbox-only execution records from reordered direct_commands -> same-session sandbox-only outcome observation records from reordered executions -> future same-session sandbox feedback approval boundary from reordered observations -> same-session sandbox feedback evaluation records from reordered observations -> future same-session sandbox feedback application approval boundary from reordered feedback records -> same-session sandbox record-only feedback application records from reordered feedback",
+        "b121-b168 Approved Purpose / Qingyin Bridge compressed milestone",
+        "approval-boundary -> approved_purpose -> sandbox-only advisory candidate ordering -> selected_action -> final_action -> direct_command -> execution -> outcome observation -> same-session feedback trace -> feedback-gated sandbox-only advisory reordering -> checked signal arbitration -> future selected_action approval boundary -> sandbox-only selected_action -> future final_action approval boundary -> sandbox-only final_action -> future direct_command approval boundary -> sandbox-only direct_command -> future execution approval boundary -> sandbox-only execution -> sandbox-only outcome observation -> future same-session sandbox feedback approval boundary -> same-session sandbox feedback evaluation records -> future same-session sandbox feedback application approval boundary -> same-session sandbox record-only feedback application records -> future feedback-gated candidate reordering approval boundary -> same-session sandbox-only advisory reordering records -> future selected_action approval boundary from reordered candidates -> same-session sandbox-only selected_action records from reordered candidates -> future final_action approval boundary from reordered selected_actions -> same-session sandbox-only final_action records from reordered selected_actions -> future direct_command approval boundary from reordered final_actions -> same-session sandbox-only direct_command records from reordered final_actions -> future execution approval boundary from reordered direct_commands -> same-session sandbox-only execution records from reordered direct_commands -> same-session sandbox-only outcome observation records from reordered executions -> future same-session sandbox feedback approval boundary from reordered observations -> same-session sandbox feedback evaluation records from reordered observations -> future same-session sandbox feedback application approval boundary from reordered feedback records -> same-session sandbox record-only feedback application records from reordered feedback -> future feedback-gated candidate reordering approval boundary from reordered record-only feedback applications",
         "sandbox-only advisory candidate ordering",
         "reach_front_item",
         "grounded_text_token",
@@ -10941,6 +10944,8 @@ def smoke_current_boundary_index_docs() -> dict:
         "b167 feedback_applied=True",
         "b167 feedback_application_effect_scope=record_only_no_ordering_change",
         "b167 records keep candidate_reordering_created=False",
+        "b168 future_candidate_reordering_allowed=True",
+        "b168 records keep candidate_reordering_applied_in_this_package=False",
         "final_action_created=True",
         "direct_command_created=True",
         "outcome_observation_created=True",
@@ -11057,7 +11062,7 @@ def smoke_phase0_documentation_consolidation_minimal() -> dict:
         status_path.exists()
         and matrix_path.exists()
         and index_path.exists()
-        and "Boundary Index Version: 2026-06-09-b167" in status
+        and "Boundary Index Version: 2026-06-09-b168" in status
         and "Current Safe Capability" in status
         and "No proof-of-learning claim" in status
         and "Level 1 Sandbox Outcome Evaluation and Human Review Summary Minimal v0" in status
@@ -11237,7 +11242,7 @@ def smoke_phase0_documentation_inventory_and_consistency_reconciliation() -> dic
     boundary = Path("docs/current_boundary_index.md").read_text(encoding="utf-8")
     passed = (
         all(path.exists() for path in required_paths)
-        and "Boundary Index Version: 2026-06-09-b167" in texts[Path("docs/phase0_status.md")]
+        and "Boundary Index Version: 2026-06-09-b168" in texts[Path("docs/phase0_status.md")]
         and "Inventory count:" in texts[Path("docs/phase0_doc_inventory.md")]
         and "docs/phase0_versioning_policy.md" in texts[Path("docs/phase0_doc_inventory.md")]
         and "unknown_needs_review" in texts[Path("docs/phase0_doc_inventory.md")]
@@ -20246,6 +20251,60 @@ def smoke_sandbox_candidate_ordering_arbitration_reordered_candidate_outcome_fee
     )
 
 
+def smoke_sandbox_candidate_ordering_arbitration_reordered_candidate_feedback_gated_candidate_reordering_approval_boundary_minimal() -> dict:
+    result = (
+        run_sandbox_candidate_ordering_arbitration_reordered_candidate_feedback_gated_candidate_reordering_approval_boundary_minimal_check()
+    )
+    summary = result.get("summary", {})
+    boundary = result.get("boundary", {})
+    records = result.get("valid_records", [])
+    reordering_targets = [
+        record.get("feedback_gated_reordering_approval_boundary", {}).get("candidate_for_future_reordering")
+        for record in records
+    ]
+    first_boundary = records[0].get("feedback_gated_reordering_approval_boundary", {}) if records else {}
+    passed = (
+        result.get("command")
+        == "run-sandbox-candidate-ordering-arbitration-reordered-candidate-feedback-gated-candidate-reordering-approval-boundary-minimal-check"
+        and result.get("flow")
+        == "sandbox_candidate_ordering_arbitration_reordered_candidate_feedback_gated_candidate_reordering_approval_boundary_minimal_v0"
+        and result.get("status") == "ok"
+        and boundary.get("boundary_index_version_before") == "2026-06-09-b167"
+        and boundary.get("boundary_index_version_after") == "2026-06-09-b168"
+        and summary.get("reordering_approval_boundary_result_count") == 49
+        and summary.get("valid_reordering_approval_boundary_count") == 3
+        and summary.get("invalid_reordering_approval_boundary_count") == 46
+        and summary.get("future_candidate_reordering_allowed_count") == 3
+        and summary.get("positive_item_reordering_boundary_count") == 1
+        and summary.get("wait_context_reordering_boundary_count") == 1
+        and summary.get("mismatch_probe_reordering_boundary_count") == 1
+        and summary.get("candidate_reordering_blocked_count") == 3
+        and summary.get("feedback_loop_blocked_count") == 3
+        and summary.get("action_creation_blocked_count") == 3
+        and summary.get("memory_write_blocked_count") == 3
+        and summary.get("predictor_use_blocked_count") == 3
+        and summary.get("direct_feed_blocked_count") == 3
+        and summary.get("proof_claim_blocked_count") == 3
+        and reordering_targets == ["reach_front_item", "wait_or_observe", "observe_or_alternative_probe"]
+        and first_boundary.get("future_candidate_reordering_allowed") is True
+        and first_boundary.get("candidate_reordering_applied_in_this_package") is False
+        and first_boundary.get("candidate_ordering_changed_in_this_package") is False
+        and first_boundary.get("candidate_scores_changed_in_this_package") is False
+        and first_boundary.get("next_cycle_candidate_ordering_changed_in_this_package") is False
+        and first_boundary.get("candidate_order_before") == []
+        and first_boundary.get("candidate_order_after") == []
+        and first_boundary.get("ordering_delta") == 0.0
+        and first_boundary.get("new_action_created_in_this_package") is False
+        and first_boundary.get("new_execution_created_in_this_package") is False
+        and first_boundary.get("new_outcome_observation_created_in_this_package") is False
+    )
+    return _result(
+        "sandbox_candidate_ordering_arbitration_reordered_candidate_feedback_gated_candidate_reordering_approval_boundary_minimal",
+        passed,
+        {"summary": summary, "boundary": boundary, "reordering_targets": reordering_targets},
+    )
+
+
 def smoke_phase0_current_capability_snapshot() -> dict:
     doc_path = Path("docs/phase0_current_capability_snapshot_2026-06-10.md")
     doc = doc_path.read_text(encoding="utf-8") if doc_path.exists() else ""
@@ -23060,6 +23119,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_sandbox_candidate_ordering_arbitration_reordered_candidate_outcome_feedback_minimal(),
         smoke_sandbox_candidate_ordering_arbitration_reordered_candidate_outcome_feedback_application_approval_boundary_minimal(),
         smoke_sandbox_candidate_ordering_arbitration_reordered_candidate_outcome_feedback_application_minimal(),
+        smoke_sandbox_candidate_ordering_arbitration_reordered_candidate_feedback_gated_candidate_reordering_approval_boundary_minimal(),
         smoke_phase0_current_capability_snapshot(),
         smoke_memory_influence_behavior_gate_design(),
         smoke_first_memory_influenced_behavior_boundary(),

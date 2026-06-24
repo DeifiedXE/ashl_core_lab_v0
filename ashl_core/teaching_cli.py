@@ -446,6 +446,9 @@ from .sandbox_candidate_ordering_arbitration_reordered_candidate_outcome_feedbac
 from .sandbox_candidate_ordering_arbitration_reordered_candidate_outcome_feedback_application_minimal import (
     run_sandbox_candidate_ordering_arbitration_reordered_candidate_outcome_feedback_application_minimal_check,
 )
+from .sandbox_candidate_ordering_arbitration_reordered_candidate_feedback_gated_candidate_reordering_approval_boundary_minimal import (
+    run_sandbox_candidate_ordering_arbitration_reordered_candidate_feedback_gated_candidate_reordering_approval_boundary_minimal_check,
+)
 from .reviewed_lesson_dry_run_correction_minimal import (
     run_reviewed_lesson_dry_run_correction_minimal_check,
 )
@@ -4236,6 +4239,13 @@ def run_command(command: str) -> dict[str, Any] | str:
         )
     if command == "run-sandbox-candidate-ordering-arbitration-reordered-candidate-outcome-feedback-application-minimal-check":
         return run_sandbox_candidate_ordering_arbitration_reordered_candidate_outcome_feedback_application_minimal_check()
+    if (
+        command
+        == "run-sandbox-candidate-ordering-arbitration-reordered-candidate-feedback-gated-candidate-reordering-approval-boundary-minimal-check"
+    ):
+        return (
+            run_sandbox_candidate_ordering_arbitration_reordered_candidate_feedback_gated_candidate_reordering_approval_boundary_minimal_check()
+        )
     if command == "run-simple-retina-focus-preview-minimal-check":
         return run_simple_retina_focus_preview_minimal_check()
     if command == "run-generalized-prediction-confidence-check":
@@ -4533,6 +4543,7 @@ def main(argv: list[str] | None = None) -> int:
             "run-sandbox-candidate-ordering-arbitration-reordered-candidate-outcome-feedback-minimal-check",
             "run-sandbox-candidate-ordering-arbitration-reordered-candidate-outcome-feedback-application-approval-boundary-minimal-check",
             "run-sandbox-candidate-ordering-arbitration-reordered-candidate-outcome-feedback-application-minimal-check",
+            "run-sandbox-candidate-ordering-arbitration-reordered-candidate-feedback-gated-candidate-reordering-approval-boundary-minimal-check",
             "run-simple-retina-focus-preview-minimal-check",
             "run-generalized-prediction-confidence-check",
             "run-generalized-candidate-from-pattern-check",
@@ -5064,6 +5075,13 @@ def main(argv: list[str] | None = None) -> int:
         )
     elif args.command == "run-sandbox-candidate-ordering-arbitration-reordered-candidate-outcome-feedback-application-minimal-check":
         result = run_sandbox_candidate_ordering_arbitration_reordered_candidate_outcome_feedback_application_minimal_check()
+    elif (
+        args.command
+        == "run-sandbox-candidate-ordering-arbitration-reordered-candidate-feedback-gated-candidate-reordering-approval-boundary-minimal-check"
+    ):
+        result = (
+            run_sandbox_candidate_ordering_arbitration_reordered_candidate_feedback_gated_candidate_reordering_approval_boundary_minimal_check()
+        )
     elif args.command == "run-simple-retina-focus-preview-minimal-check":
         result = run_simple_retina_focus_preview_minimal_check()
     elif args.command == "run-generalized-prediction-confidence-check":

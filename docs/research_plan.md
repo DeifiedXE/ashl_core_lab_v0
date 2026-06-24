@@ -8355,3 +8355,18 @@ Explicitly not changed:
 
 Next:
 - Sandbox Candidate Ordering Arbitration Reordered Candidate Feedback-Gated Candidate Reordering Approval Boundary Minimal v0, if the next package only lets these record-only feedback application records enter a future candidate reordering package while still blocking actual reordering, score/order changes, new action creation, memory/retention writes, predictor influence/mutation, direct endocrine/tendency feeds, production behavior, and proof-of-learning claims.
+
+## Sandbox Candidate Ordering Arbitration Reordered Candidate Feedback-Gated Candidate Reordering Approval Boundary Minimal v0
+
+Status: completed / reordered-candidate record-only feedback application to future candidate reordering approval boundary only / Boundary Index b168.
+
+What changed:
+- b167 same-session sandbox-only record-only feedback application records can now enter a future same-session sandbox candidate reordering approval boundary.
+- Future reordering candidates covered: `reach_front_item`, `wait_or_observe`, and `observe_or_alternative_probe`.
+- Boundary Index updates from `2026-06-09-b167` to `2026-06-09-b168`.
+
+Explicitly not changed:
+- No actual candidate reordering, candidate score change, runtime next-cycle ordering change, feedback loop, selected_action, final_action, new direct_command, new execution, new outcome observation, memory/retention write, predictor read/influence/mutation, direct endocrine/tendency feed, production behavior, or proof-of-learning claim.
+
+Next:
+- Sandbox Candidate Ordering Arbitration Reordered Candidate Feedback-Gated Candidate Reordering Minimal v0, if the next package creates same-session sandbox-only advisory reordering records while still blocking selected_action/final_action/direct_command/execution, new outcome observation, score changes, runtime next-cycle ordering changes, feedback loops, memory/retention writes, predictor influence/mutation, direct endocrine/tendency feeds, production behavior, and proof-of-learning claims.
