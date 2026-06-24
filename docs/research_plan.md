@@ -8280,3 +8280,18 @@ Explicitly not changed:
 
 Next:
 - Sandbox Candidate Ordering Arbitration Reordered Candidate Direct Command Outcome Observation Minimal v0, if the next package records what these sandbox executions produced while still blocking feedback, reordering, score/order changes, new action creation, memory/retention writes, predictor influence/mutation, direct endocrine/tendency feeds, production behavior, and proof-of-learning claims.
+
+## Sandbox Candidate Ordering Arbitration Reordered Candidate Direct Command Outcome Observation Minimal v0
+
+Status: completed / same-session sandbox-only outcome observation records from reordered direct_command executions / Boundary Index b163.
+
+What changed:
+- b162 same-session sandbox-only execution records can now create same-session sandbox-only outcome observation records.
+- Observed labels covered: `arbitration_reordered_positive_item_contact_observed`, `arbitration_reordered_wait_context_observed`, and `arbitration_reordered_mismatch_probe_context_observed`.
+- Boundary Index updates from `2026-06-09-b162` to `2026-06-09-b163`.
+
+Explicitly not changed:
+- No feedback loop, feedback evaluation/application, candidate reordering, candidate score change, runtime next-cycle ordering change, selected_action, final_action, new direct_command, new execution, memory/retention write, predictor read/influence/mutation, direct endocrine/tendency feed, production behavior, or proof-of-learning claim.
+
+Next:
+- Sandbox Candidate Ordering Arbitration Reordered Candidate Outcome Feedback Approval Boundary Minimal v0, if the next package only lets these observations enter a future same-session sandbox feedback package while still blocking actual feedback creation, feedback application, reordering, score/order changes, new action creation, memory/retention writes, predictor influence/mutation, direct endocrine/tendency feeds, production behavior, and proof-of-learning claims.
