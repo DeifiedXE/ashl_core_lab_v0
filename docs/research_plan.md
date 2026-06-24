@@ -8190,3 +8190,18 @@ Explicitly not changed:
 
 Next:
 - Sandbox Candidate Ordering Arbitration Reordered Candidate Final Action Approval Boundary Minimal v0, if the next package opens only a future final_action approval boundary from these sandbox-only selected_action records while still blocking final_action creation, direct command, execution, new outcome observation, memory/retention writes, predictor influence/mutation, direct endocrine/tendency feeds, production behavior, and proof-of-learning claims.
+
+## Sandbox Candidate Ordering Arbitration Reordered Candidate Final Action Approval Boundary Minimal v0
+
+Status: completed / reordered-candidate selected_action to future final_action approval boundary only / Boundary Index b157.
+
+What changed:
+- b156 same-session sandbox-only selected_action records can now enter a future final_action approval boundary.
+- Future final_action candidates covered: `reach_front_item`, `wait_or_observe`, and `observe_or_alternative_probe`.
+- Boundary Index updates from `2026-06-09-b156` to `2026-06-09-b157`.
+
+Explicitly not changed:
+- No final_action, direct_command, execution, new outcome observation, candidate score change, runtime next-cycle ordering change, feedback loop, memory/retention write, predictor read/influence/mutation, direct endocrine/tendency feed, production behavior, or proof-of-learning claim.
+
+Next:
+- Sandbox Candidate Ordering Arbitration Reordered Candidate Final Action Minimal v0, if the next package creates same-session sandbox-only final_action records from this boundary while still blocking direct command, execution, new outcome observation, memory/retention writes, predictor influence/mutation, direct endocrine/tendency feeds, production behavior, and proof-of-learning claims.
