@@ -8130,8 +8130,18 @@ What changed:
 
 Explicitly not changed:
 - No feedback loop, candidate reordering, score change, next-cycle ordering change, selected_action, final_action, direct_command, execution, new outcome observation, memory/retention write, predictor read/influence/mutation, direct endocrine/tendency feed, production behavior, or proof-of-learning claim.
-- This is a feedback approval boundary only.
-- Feedback evaluation/application, feedback loops, candidate reordering, persistence, memory/retention write, predictor read/influence/mutation, direct endocrine/tendency feed, production behavior, and proof-of-learning claim remain blocked.
+
+## Sandbox Candidate Ordering Arbitration Feedback-Gated Candidate Reordering Approval Boundary Minimal v0
+
+Status: completed / record-only arbitration feedback application to future same-session sandbox reordering approval boundary / Boundary Index b153.
+
+What changed:
+- b152 record-only feedback application records can now enter a future same-session sandbox candidate reordering approval boundary.
+- Future reordering candidates covered: `reach_front_item`, `wait_or_observe`, and `observe_or_alternative_probe`.
+- Boundary Index updates from `2026-06-09-b152` to `2026-06-09-b153`.
+
+Explicitly not changed:
+- No candidate reordering, score change, next-cycle ordering change, feedback loop, selected_action, final_action, direct_command, execution, new outcome observation, memory/retention write, predictor read/influence/mutation, direct endocrine/tendency feed, production behavior, or proof-of-learning claim.
 
 Next:
-- Sandbox Candidate Ordering Arbitration Outcome Feedback Minimal v0, if the next package creates sandbox-only feedback records from this boundary while still blocking candidate reordering and all persistent/runtime effects.
+- Sandbox Candidate Ordering Arbitration Feedback-Gated Candidate Reordering Minimal v0, if the next package creates sandbox-only advisory reordering records from this boundary while still blocking selected_action, final_action, direct_command, execution, outcome observation, memory/retention write, predictor use/mutation, endocrine/tendency feed, production behavior, and proof-of-learning claim.
