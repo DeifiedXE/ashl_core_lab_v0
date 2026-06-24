@@ -8325,3 +8325,18 @@ Explicitly not changed:
 
 Next:
 - Sandbox Candidate Ordering Arbitration Reordered Candidate Outcome Feedback Application Approval Boundary Minimal v0, if the next package only lets these feedback evaluation records enter a future feedback application package while still blocking actual feedback application, reordering, score/order changes, new action creation, memory/retention writes, predictor influence/mutation, direct endocrine/tendency feeds, production behavior, and proof-of-learning claims.
+
+## Sandbox Candidate Ordering Arbitration Reordered Candidate Outcome Feedback Application Approval Boundary Minimal v0
+
+Status: completed / reordered-candidate feedback to future application approval boundary only / Boundary Index b166.
+
+What changed:
+- b165 same-session sandbox-only feedback evaluation records can now enter a future same-session sandbox feedback application approval boundary.
+- Future feedback application candidates covered: `arbitration_reordered_positive_item_contact_feedback_application`, `arbitration_reordered_wait_context_observation_feedback_application`, and `arbitration_reordered_mismatch_probe_context_feedback_application`.
+- Boundary Index updates from `2026-06-09-b165` to `2026-06-09-b166`.
+
+Explicitly not changed:
+- No feedback application, feedback loop, candidate reordering, candidate score change, runtime next-cycle ordering change, selected_action, final_action, new direct_command, new execution, new outcome observation, memory/retention write, predictor read/influence/mutation, direct endocrine/tendency feed, production behavior, or proof-of-learning claim.
+
+Next:
+- Sandbox Candidate Ordering Arbitration Reordered Candidate Outcome Feedback Application Minimal v0, if the next package creates same-session sandbox-only record-only feedback application records while still blocking feedback loops, candidate reordering, score/order changes, new action creation, memory/retention writes, predictor influence/mutation, direct endocrine/tendency feeds, production behavior, and proof-of-learning claims.
