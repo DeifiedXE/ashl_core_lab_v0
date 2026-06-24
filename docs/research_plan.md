@@ -8106,6 +8106,18 @@ Explicitly not changed:
 B0/10 hallucination self-check and boundary audit:
 - Documentation claims match the b150 module, CLI, smoke, tests, and Boundary Index.
 - b150 is a sandbox-only feedback evaluation record, not production behavior, memory influence, predictor influence, or proof of learning.
+
+## Sandbox Candidate Ordering Arbitration Outcome Feedback Application Approval Boundary Minimal v0
+
+Status: completed / arbitration feedback evaluation to future same-session sandbox application approval boundary / Boundary Index b151.
+
+What changed:
+- b150 same-session sandbox feedback evaluation records can now enter a future feedback application approval boundary.
+- Future application candidates covered: `arbitration_positive_item_contact_feedback_application`, `arbitration_wait_context_observation_feedback_application`, and `arbitration_mismatch_probe_context_feedback_application`.
+- Boundary Index updates from `2026-06-09-b150` to `2026-06-09-b151`.
+
+Explicitly not changed:
+- No feedback application, feedback loop, candidate reordering, score change, next-cycle ordering change, selected_action, final_action, direct_command, execution, new outcome observation, memory/retention write, predictor read/influence/mutation, direct endocrine/tendency feed, production behavior, or proof-of-learning claim.
 - This is a feedback approval boundary only.
 - Feedback evaluation/application, feedback loops, candidate reordering, persistence, memory/retention write, predictor read/influence/mutation, direct endocrine/tendency feed, production behavior, and proof-of-learning claim remain blocked.
 
