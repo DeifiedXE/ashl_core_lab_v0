@@ -8340,3 +8340,18 @@ Explicitly not changed:
 
 Next:
 - Sandbox Candidate Ordering Arbitration Reordered Candidate Outcome Feedback Application Minimal v0, if the next package creates same-session sandbox-only record-only feedback application records while still blocking feedback loops, candidate reordering, score/order changes, new action creation, memory/retention writes, predictor influence/mutation, direct endocrine/tendency feeds, production behavior, and proof-of-learning claims.
+
+## Sandbox Candidate Ordering Arbitration Reordered Candidate Outcome Feedback Application Minimal v0
+
+Status: completed / same-session sandbox-only record-only feedback application from reordered feedback / Boundary Index b167.
+
+What changed:
+- b166 feedback application approval boundaries can now create same-session sandbox-only record-only feedback application records.
+- Feedback application types covered: `arbitration_reordered_positive_item_contact_feedback_application`, `arbitration_reordered_wait_context_observation_feedback_application`, and `arbitration_reordered_mismatch_probe_context_feedback_application`.
+- Boundary Index updates from `2026-06-09-b166` to `2026-06-09-b167`.
+
+Explicitly not changed:
+- No feedback loop, candidate reordering, candidate score change, runtime next-cycle ordering change, selected_action, final_action, new direct_command, new execution, new outcome observation, memory/retention write, predictor read/influence/mutation, direct endocrine/tendency feed, production behavior, or proof-of-learning claim.
+
+Next:
+- Sandbox Candidate Ordering Arbitration Reordered Candidate Feedback-Gated Candidate Reordering Approval Boundary Minimal v0, if the next package only lets these record-only feedback application records enter a future candidate reordering package while still blocking actual reordering, score/order changes, new action creation, memory/retention writes, predictor influence/mutation, direct endocrine/tendency feeds, production behavior, and proof-of-learning claims.
