@@ -8145,3 +8145,18 @@ Explicitly not changed:
 
 Next:
 - Sandbox Candidate Ordering Arbitration Feedback-Gated Candidate Reordering Minimal v0, if the next package creates sandbox-only advisory reordering records from this boundary while still blocking selected_action, final_action, direct_command, execution, outcome observation, memory/retention write, predictor use/mutation, endocrine/tendency feed, production behavior, and proof-of-learning claim.
+
+## Sandbox Candidate Ordering Arbitration Feedback-Gated Candidate Reordering Minimal v0
+
+Status: completed / same-session sandbox-only advisory candidate reordering records / Boundary Index b154.
+
+What changed:
+- b153 reordering approval boundaries can now create same-session sandbox-only advisory candidate reordering records.
+- Reordered candidates covered: `reach_front_item`, `wait_or_observe`, and `observe_or_alternative_probe`.
+- Boundary Index updates from `2026-06-09-b153` to `2026-06-09-b154`.
+
+Explicitly not changed:
+- No selected_action, final_action, direct_command, execution, new outcome observation, candidate score change, runtime next-cycle ordering change, feedback loop, memory/retention write, predictor read/influence/mutation, direct endocrine/tendency feed, production behavior, or proof-of-learning claim.
+
+Next:
+- Sandbox Candidate Ordering Arbitration Reordered Candidate To Selected Action Approval Boundary Minimal v0, if the next package opens only a future selected_action approval boundary from top-ranked advisory reordering records while still blocking selected_action, final_action, direct command, execution, new outcome observation, memory/retention writes, predictor influence/mutation, direct endocrine/tendency feeds, production behavior, and proof-of-learning claims.
