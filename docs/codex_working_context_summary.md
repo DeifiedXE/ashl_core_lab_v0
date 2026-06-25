@@ -57,7 +57,7 @@ The point is not to deny the relationship between the user and Qingyin. The poin
 Current Boundary Index at the time this summary was written:
 
 ```text
-2026-06-09-b177
+2026-06-09-b178
 ```
 
 Current endpoint:
@@ -72,6 +72,7 @@ b169 advisory reordering evidence
 -> b175 compact next sandbox action path and outcome observation
 -> b176 same-session working-memory update from the second-cycle outcome
 -> b177 two-cycle influence check
+-> b178 Phase0 mini-loop closure audit
 ```
 
 Plain meaning:
@@ -94,9 +95,11 @@ b176 can write that observed second-cycle sandbox result into same-session tempo
 
 b177 can compare the first-cycle temporary memory / hint / ordering path with the second-cycle action / outcome / working-memory path and record that the hint visibly shaped the second sandbox cycle.
 
-## What b177 Does Not Do
+b178 can audit the whole same-session sandbox thought/action/memory mini-loop and record that Phase0 closure criteria are met as sandbox record evidence.
 
-b177 does not create:
+## What b178 Does Not Do
+
+b178 does not create:
 
 - feedback evaluation
 - feedback application
@@ -243,16 +246,15 @@ Before coding, Codex should answer in plain language:
 4. What visible output will exist after the work?
 5. What does it still refuse to do?
 
-For the current b177 endpoint, the next real step should be:
+For the current b178 endpoint, the next real step should be:
 
 ```text
-audit the completed same-session thought/action/memory mini-loop
-and confirm which Phase0 closure criteria are met
+choose the first post-Phase0 route deliberately
 ```
 
-That would be progress because the repo would have one compact audit saying the minimal Phase0 loop is complete in sandbox record evidence, while still refusing long-term learning or production claims.
+Phase0 now has one compact audit saying the minimal same-session sandbox loop is complete in record evidence, while still refusing long-term learning or production claims.
 
-It still must not write long-term memory, apply feedback, reorder candidates again, create another action, affect production, or claim learning.
+The next work should not add another empty approval-only boundary. It should choose a concrete next route, such as persistent memory admission, runtime policy gates, or broader repeated sandbox trials, while still not writing long-term memory, applying feedback as runtime behavior, creating production behavior, or claiming learning/consciousness without dedicated evidence.
 
 The current Phase 0 closure plan is:
 

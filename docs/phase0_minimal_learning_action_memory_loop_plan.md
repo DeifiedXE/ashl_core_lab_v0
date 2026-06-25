@@ -1,6 +1,6 @@
 # Phase0 Minimal Learning Action Memory Loop Plan
 
-Status: planning document only.
+Status: Phase0 closure route completed at Boundary Index b178.
 Runtime impact: none.
 Boundary Index impact: none.
 
@@ -53,7 +53,7 @@ b172 does not allow readback, candidate hints, reordering, action creation, memo
 Current progress:
 
 ```text
-Boundary Index: 2026-06-09-b177
+Boundary Index: 2026-06-09-b178
 
 b172 temporary alignment signal
 -> b173 same-session signal readback
@@ -62,6 +62,7 @@ b172 temporary alignment signal
 -> b175 compact same-session sandbox action/outcome path
 -> b176 same-session working-memory update from second-cycle outcome
 -> b177 two-cycle influence check
+-> b178 Phase0 closure audit
 ```
 
 b173 creates weak hints for `reach_front_item`, `wait_or_observe`, and `observe_or_alternative_probe`.
@@ -81,6 +82,10 @@ b176 still does not allow feedback evaluation/application, candidate reordering,
 b177 compares the first-cycle temporary memory path with the second-cycle action/outcome/working-memory path. It records that the hint moved the candidate to the front, the second-cycle action matched that top hint, and the outcome was linked back into same-session working memory.
 
 b177 still does not allow feedback evaluation/application, candidate reordering, candidate score mutation, runtime next-cycle ordering, new action creation, new working-memory update, long-term/Core/Archive/persistent memory write, retention write, memory admission, habit/skill anchor creation, predictor influence, direct endocrine/tendency feed, production behavior, consciousness claim, or proof claim.
+
+b178 audits the whole two-cycle same-session sandbox path and records that the Phase0 closure criteria are met as sandbox record evidence.
+
+b178 still does not allow feedback evaluation/application, candidate reordering, candidate score mutation, runtime next-cycle ordering, new action creation, new working-memory update, long-term/Core/Archive/persistent memory write, retention write, memory admission, habit/skill anchor creation, predictor influence, direct endocrine/tendency feed, production behavior, consciousness claim, or proof claim.
 
 ## Completion Definition
 
@@ -130,7 +135,7 @@ flowchart TD
     C --> D["3. run next sandbox action through compact existing action path (done at b175)"]
     D --> E["4. observe outcome and update same-session working memory (done at b176)"]
     E --> F["5. compare cycle 1 vs cycle 2 influence (done at b177)"]
-    F --> G["6. final Phase0 mini-loop audit"]
+    F --> G["6. final Phase0 mini-loop audit (done at b178)"]
 ```
 
 ## Step 1: Signal Readback And Candidate Hint
@@ -279,9 +284,11 @@ It must not claim:
 
 ## Step 6: Phase0 Mini-Loop Audit
 
+Status: completed at Boundary Index b178.
+
 Plain result:
 
-The audit confirms that the minimal two-cycle sandbox loop happened and stayed inside scope.
+The audit confirms that the minimal two-cycle sandbox loop happened and stayed inside scope as same-session sandbox record evidence.
 
 This step should verify:
 
@@ -295,7 +302,7 @@ This step should verify:
 - same-session working memory updated
 - no persistent memory or production behavior was created
 
-It must not open a new capability by itself.
+It does not open production behavior, persistent memory, predictor influence, proof of learning, or a consciousness claim by itself.
 
 ## Package Guidance
 
@@ -321,7 +328,7 @@ Boundary checks should remain in validators and tests, but the package itself sh
 
 ## Success Statement
 
-When this plan is complete, the honest claim should be:
+This plan is complete. The honest claim is:
 
 ```text
 ASHL Core can run a deterministic same-session sandbox mini-loop where first-cycle outcome context is held in temporary working memory, read by the next thought step, converted into a weak candidate hint, used to alter sandbox advisory ordering, and checked against second-cycle action/outcome evidence.

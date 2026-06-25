@@ -1,9 +1,9 @@
 # Current Boundary Index
 
-Boundary Index Version: 2026-06-09-b177
-Last update log: Thought Memory Action Parallel Mini Loop Two-Cycle Influence Check Minimal v0
-Previous Boundary Index Version: 2026-06-09-b176
-Previous Last update log: Thought Memory Action Parallel Mini Loop Outcome To Same-Session Working Memory Minimal v0
+Boundary Index Version: 2026-06-09-b178
+Last update log: Thought Memory Action Parallel Mini Loop Phase0 Closure Audit Minimal v0
+Previous Boundary Index Version: 2026-06-09-b177
+Previous Last update log: Thought Memory Action Parallel Mini Loop Two-Cycle Influence Check Minimal v0
 
 Archived previous current index:
 
@@ -14,7 +14,7 @@ This file is the active short index. Archive files preserve older milestone deta
 
 ## Current Safe Claim
 
-b177 compares the first-cycle temporary memory path with the second-cycle sandbox path and records whether the temporary hint visibly influenced that second cycle:
+b178 audits the same-session thought/action/memory mini-loop and records that the Phase0 closure criteria are met as sandbox record evidence:
 
 ```text
 first-cycle temporary working memory
@@ -27,6 +27,7 @@ hint-influenced ordering
 -> outcome observation
 -> same-session working-memory update
 -> two-cycle influence check
+-> Phase0 closure audit
 ```
 
 The three deterministic paths are:
@@ -35,7 +36,7 @@ The three deterministic paths are:
 - `wait_or_observe` -> `sandbox.arbitration.wait_or_observe` -> `local_context_observed`
 - `observe_or_alternative_probe` -> `sandbox.arbitration.observe_or_alternative_probe` -> `local_context_observed`
 
-This is same-session sandbox-only comparison evidence. It is not production behavior, not long-term learning, and not proof of consciousness.
+This is same-session sandbox-only closure evidence. It is not production behavior, not long-term learning, and not proof of consciousness.
 
 ## Recent Phase0 Mini-Loop Chain
 
@@ -48,23 +49,24 @@ b170 one-cycle thought/action/working-memory trace
 -> b175 compact next sandbox action path and outcome observation
 -> b176 same-session working-memory update from second-cycle outcome
 -> b177 two-cycle influence check
+-> b178 Phase0 mini-loop closure audit
 ```
 
 Plain wording:
 
-The first sandbox cycle can now leave a temporary signal, the next thought step can read it as a weak hint, that hint can move a candidate to the front of a sandbox advisory order, the top candidate can run once in the sandbox, that second-cycle result can be remembered inside the same session, and the repo can compare the two-cycle path as evidence that the hint shaped the second cycle.
+The first sandbox cycle can leave a temporary signal, the next thought step can read it as a weak hint, that hint can move a candidate to the front of a sandbox advisory order, the top candidate can run once in the sandbox, that second-cycle result can be remembered inside the same session, and the repo can audit the whole two-cycle path as a completed Phase0 mini-loop.
 
 Compatibility anchor for b170 B0/10 self-check: b170 Thought Memory Action Parallel Mini Loop evidence.
 
-## What b177 Adds
+## What b178 Adds
 
-- `influence_check_created=True`
-- `cycle_count_checked=2`
-- `influence_visible=True`
-- `hint_moved_candidate_to_front=True`
-- `second_cycle_action_matches_top_hint=True`
-- `outcome_memory_linked=True`
-- `boundary_audit.boundary_number=177`
+- `closure_audit_created=True`
+- `phase0_minimal_loop_complete=True`
+- `closure_status=complete_as_same_session_sandbox_record_evidence`
+- `criteria_met_count=13`
+- `criteria_total_count=13`
+- `closure_record_only=True`
+- `boundary_audit.boundary_number=178`
 
 ## Still Blocked
 
@@ -103,15 +105,15 @@ The active closure route is:
 
 - `docs/phase0_minimal_learning_action_memory_loop_plan.md`
 
-Next useful package:
+Next useful direction:
 
 ```text
-Phase0 Mini-Loop Audit
+Phase1 route decision: persistent memory admission, runtime policy gate, or broader sandbox repetition
 ```
 
 Plain wording:
 
-Audit the completed same-session thought/action/memory mini-loop and confirm which Phase0 closure criteria are met. Do not add a new action, feedback loop, reordering, persistent memory, predictor use, production behavior, or learning/consciousness claim.
+Phase0 now has a compact same-session sandbox closure audit. The next work should choose which real next line opens first instead of adding another empty boundary: persistent memory admission, runtime policy gates, or repeated sandbox trials. Do not silently promote b178 into production behavior, persistent memory, predictor use, or learning/consciousness proof.
 
 ## Line Count Rule
 

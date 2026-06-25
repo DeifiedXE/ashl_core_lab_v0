@@ -503,6 +503,9 @@ from ashl_core.thought_memory_action_parallel_mini_loop_outcome_to_same_session_
 from ashl_core.thought_memory_action_parallel_mini_loop_two_cycle_influence_check_minimal import (
     run_thought_memory_action_parallel_mini_loop_two_cycle_influence_check_minimal_check,
 )
+from ashl_core.thought_memory_action_parallel_mini_loop_phase0_closure_audit_minimal import (
+    run_thought_memory_action_parallel_mini_loop_phase0_closure_audit_minimal_check,
+)
 from ashl_core.minimal_visual_grounding_trial import run_minimal_visual_grounding_trial_check
 from ashl_core.visual_prediction_error_attention_priority_preview_minimal import (
     run_visual_prediction_error_attention_priority_preview_minimal_check,
@@ -10886,9 +10889,9 @@ def smoke_current_boundary_index_docs() -> dict:
     readme = readme_path.read_text(encoding="utf-8") if readme_path.exists() else ""
     research_plan = research_plan_path.read_text(encoding="utf-8") if research_plan_path.exists() else ""
     compact_required_terms = [
-        "Boundary Index Version: 2026-06-09-b177",
-        "Last update log: Thought Memory Action Parallel Mini Loop Two-Cycle Influence Check Minimal v0",
-        "Previous Boundary Index Version: 2026-06-09-b176",
+        "Boundary Index Version: 2026-06-09-b178",
+        "Last update log: Thought Memory Action Parallel Mini Loop Phase0 Closure Audit Minimal v0",
+        "Previous Boundary Index Version: 2026-06-09-b177",
         "docs/boundary_archive/current_boundary_index_2026-06-25_b174.md",
         "first-cycle temporary working memory",
         "weak candidate hint",
@@ -10899,6 +10902,9 @@ def smoke_current_boundary_index_docs() -> dict:
         "one sandbox execution",
         "outcome observation",
         "same-session working-memory update",
+        "Phase0 closure audit",
+        "phase0_minimal_loop_complete=True",
+        "closure_status=complete_as_same_session_sandbox_record_evidence",
         "reach_front_item",
         "wait_or_observe",
         "observe_or_alternative_probe",
@@ -10912,7 +10918,7 @@ def smoke_current_boundary_index_docs() -> dict:
         "Level 2 Sandbox Application milestone",
         "Level 3 Toy Minefield Multi-Step Sandbox milestone",
         "Memory is a warning sign, not a ban command",
-        "Phase0 Mini-Loop Audit",
+        "Phase1 route decision",
         "This current index must stay under 150 lines.",
     ]
     archive_required_terms = [
@@ -10938,8 +10944,8 @@ def smoke_current_boundary_index_docs() -> dict:
         and all(term in archive for term in archive_required_terms)
         and all(term in legacy_archive for term in legacy_required_terms)
         and line_count <= 150
-        and "Thought Memory Action Parallel Mini Loop Two-Cycle Influence Check Minimal v0" in readme
-        and "Thought Memory Action Parallel Mini Loop Two-Cycle Influence Check Minimal v0" in research_plan
+        and "Thought Memory Action Parallel Mini Loop Phase0 Closure Audit Minimal v0" in readme
+        and "Thought Memory Action Parallel Mini Loop Phase0 Closure Audit Minimal v0" in research_plan
     )
     return _result(
         "boundary_index_current_archive",
@@ -10982,8 +10988,9 @@ def smoke_phase0_documentation_consolidation_minimal() -> dict:
         and matrix_path.exists()
         and index_path.exists()
         and plan_path.exists()
-        and "Boundary Index Version: 2026-06-09-b177" in status
+        and "Boundary Index Version: 2026-06-09-b178" in status
         and "Current Safe Capability" in status
+        and "Thought Memory Action Parallel Mini Loop Phase0 Closure Audit Minimal v0" in status
         and "Thought Memory Action Parallel Mini Loop Two-Cycle Influence Check Minimal v0" in status
         and "Thought Memory Action Parallel Mini Loop Outcome To Same-Session Working Memory Minimal v0" in status
         and "Thought Memory Action Parallel Mini Loop Ordering To Next Sandbox Action Minimal v0" in status
@@ -11119,6 +11126,7 @@ def smoke_phase0_documentation_consolidation_minimal() -> dict:
         and "| thought memory action parallel mini loop minimal | implemented_one_cycle_same_session_parallel_trace_link |" in matrix
         and "| thought memory action parallel mini loop consistency evaluation minimal | implemented_record_only_consistency_evaluation |" in matrix
         and "| thought memory action parallel mini loop temporary alignment signal minimal | implemented_temporary_alignment_signal |" in matrix
+        and "| thought memory action parallel mini loop phase0 closure audit minimal | implemented_phase0_closure_audit |" in matrix
         and "| phase0 thought memory action parallel loop plan | planning_only |" in matrix
         and "| retention write | blocked |" in matrix
         and "| predictor mutation | blocked |" in matrix
@@ -11178,7 +11186,7 @@ def smoke_phase0_documentation_inventory_and_consistency_reconciliation() -> dic
     boundary = Path("docs/current_boundary_index.md").read_text(encoding="utf-8")
     passed = (
         all(path.exists() for path in required_paths)
-        and "Boundary Index Version: 2026-06-09-b177" in texts[Path("docs/phase0_status.md")]
+        and "Boundary Index Version: 2026-06-09-b178" in texts[Path("docs/phase0_status.md")]
         and "Inventory count:" in texts[Path("docs/phase0_doc_inventory.md")]
         and "docs/phase0_versioning_policy.md" in texts[Path("docs/phase0_doc_inventory.md")]
         and "unknown_needs_review" in texts[Path("docs/phase0_doc_inventory.md")]
@@ -20873,6 +20881,97 @@ def smoke_thought_memory_action_parallel_mini_loop_two_cycle_influence_check_min
     )
 
 
+def smoke_thought_memory_action_parallel_mini_loop_phase0_closure_audit_minimal() -> dict:
+    result = run_thought_memory_action_parallel_mini_loop_phase0_closure_audit_minimal_check()
+    summary = result.get("summary", {})
+    boundary = result.get("boundary", {})
+    records = result.get("valid_records", [])
+    evidences = [record.get("phase0_closure_evidence", {}) for record in records]
+    criteria = [record.get("closure_criteria_audit", {}) for record in records]
+    containments = [record.get("closure_containment", {}) for record in records]
+    audits = [record.get("boundary_audit", {}) for record in records]
+    selected_actions = [
+        record.get("source_two_cycle_influence_check", {}).get("selected_action") for record in records
+    ]
+    first_evidence = evidences[0] if evidences else {}
+    first_criteria = criteria[0] if criteria else {}
+    first_containment = containments[0] if containments else {}
+    first_audit = audits[0] if audits else {}
+    passed = (
+        result.get("command")
+        == "run-thought-memory-action-parallel-mini-loop-phase0-closure-audit-minimal-check"
+        and result.get("flow") == "thought_memory_action_parallel_mini_loop_phase0_closure_audit_minimal_v0"
+        and result.get("status") == "ok"
+        and boundary.get("boundary_index_version_before") == "2026-06-09-b177"
+        and boundary.get("boundary_index_version_after") == "2026-06-09-b178"
+        and summary.get("phase0_closure_audit_result_count") == 78
+        and summary.get("valid_phase0_closure_audit_count") == 3
+        and summary.get("invalid_phase0_closure_audit_count") == 75
+        and summary.get("closure_audit_created_count") == 3
+        and summary.get("phase0_minimal_loop_complete_count") == 3
+        and summary.get("all_closure_criteria_met_count") == 3
+        and summary.get("closure_record_only_count") == 3
+        and summary.get("reach_closure_audit_count") == 1
+        and summary.get("wait_closure_audit_count") == 1
+        and summary.get("probe_closure_audit_count") == 1
+        and summary.get("feedback_blocked_count") == 3
+        and summary.get("candidate_reordering_blocked_count") == 3
+        and summary.get("action_creation_blocked_count") == 3
+        and summary.get("memory_persistence_blocked_count") == 3
+        and summary.get("predictor_use_blocked_count") == 3
+        and summary.get("direct_feed_blocked_count") == 3
+        and summary.get("production_behavior_blocked_count") == 3
+        and summary.get("proof_claim_blocked_count") == 3
+        and summary.get("consciousness_claim_blocked_count") == 3
+        and summary.get("boundary_audit_passed_count") == 3
+        and selected_actions == ["reach_front_item", "wait_or_observe", "observe_or_alternative_probe"]
+        and all(evidence.get("closure_audit_created") is True for evidence in evidences)
+        and all(evidence.get("cycle_count_verified") == 2 for evidence in evidences)
+        and all(evidence.get("two_cycle_influence_visible") is True for evidence in evidences)
+        and all(item.get("phase0_minimal_loop_complete") is True for item in criteria)
+        and all(item.get("criteria_met_count") == 13 for item in criteria)
+        and all(item.get("criteria_total_count") == 13 for item in criteria)
+        and all(
+            item.get("closure_status") == "complete_as_same_session_sandbox_record_evidence"
+            for item in criteria
+        )
+        and all(containment.get("uses_existing_trace_records_only") is True for containment in containments)
+        and all(containment.get("no_new_source_trace_record_created") is True for containment in containments)
+        and all(audit.get("boundary_number") == 178 for audit in audits)
+        and first_evidence.get("feedback_evaluation_created") is False
+        and first_evidence.get("candidate_reordering_created") is False
+        and first_evidence.get("new_selected_action_created") is False
+        and first_evidence.get("new_execution_created") is False
+        and first_evidence.get("working_memory_update_created") is False
+        and first_evidence.get("memory_write") is False
+        and first_evidence.get("retention_write") is False
+        and first_evidence.get("predictor_read_enabled") is False
+        and first_evidence.get("direct_endocrine_feed") is False
+        and first_evidence.get("production_behavior_created") is False
+        and first_evidence.get("proof_of_learning_claim") is False
+        and first_evidence.get("consciousness_claim") is False
+        and first_criteria.get("long_term_memory_written") is False
+        and first_criteria.get("production_behavior_created") is False
+        and first_criteria.get("proof_of_learning_claim") is False
+        and first_containment.get("future_runtime_promotion_requires_separate_boundary") is True
+        and first_containment.get("future_persistent_memory_requires_separate_boundary") is True
+        and first_containment.get("future_feedback_learning_requires_separate_boundary") is True
+        and first_audit.get("triggered") is True
+        and first_audit.get("production_behavior_created") is False
+        and first_audit.get("predictor_read_enabled") is False
+        and first_audit.get("next_layer_precreated") is False
+    )
+    return _result(
+        "thought_memory_action_parallel_mini_loop_phase0_closure_audit_minimal",
+        passed,
+        {
+            "summary": summary,
+            "boundary": boundary,
+            "selected_actions": selected_actions,
+        },
+    )
+
+
 def smoke_phase0_current_capability_snapshot() -> dict:
     doc_path = Path("docs/phase0_current_capability_snapshot_2026-06-10.md")
     doc = doc_path.read_text(encoding="utf-8") if doc_path.exists() else ""
@@ -23697,6 +23796,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_thought_memory_action_parallel_mini_loop_ordering_to_next_sandbox_action_minimal(),
         smoke_thought_memory_action_parallel_mini_loop_outcome_to_same_session_working_memory_minimal(),
         smoke_thought_memory_action_parallel_mini_loop_two_cycle_influence_check_minimal(),
+        smoke_thought_memory_action_parallel_mini_loop_phase0_closure_audit_minimal(),
         smoke_phase0_current_capability_snapshot(),
         smoke_memory_influence_behavior_gate_design(),
         smoke_first_memory_influenced_behavior_boundary(),
