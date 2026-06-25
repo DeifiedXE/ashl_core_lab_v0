@@ -8383,6 +8383,3 @@ What changed:
 
 Explicitly not changed:
 - No selected_action, final_action, direct_command, execution, new outcome observation, candidate score change, runtime next-cycle ordering change, feedback loop, memory/retention write, predictor read/influence/mutation, direct endocrine/tendency feed, production behavior, or proof-of-learning claim.
-
-Next:
-- Sandbox Candidate Ordering Arbitration Reordered Candidate To Selected Action Approval Boundary Minimal v0. Plain meaning: let the top-ranked reordered advisory candidate ask for future selected_action review; do not actually select, finalize, command, execute, observe, write memory, touch predictor, change production behavior, or claim learning.
