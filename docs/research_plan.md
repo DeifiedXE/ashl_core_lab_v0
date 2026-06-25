@@ -8437,3 +8437,16 @@ What changed:
 
 Explicitly not changed:
 - No candidate reordering, candidate score change, runtime next-cycle ordering change, selected_action, final_action, direct_command, execution, new outcome observation, memory write, retention write, memory admission, habit/skill anchor creation, predictor read/influence/mutation, direct endocrine/tendency feed, production behavior, or proof-of-learning claim.
+
+## Thought Memory Action Parallel Mini Loop Candidate Hint Into Ordering Minimal v0
+
+Status: completed / same-session sandbox advisory ordering records from weak candidate hints / Boundary Index b174.
+
+What changed:
+- b173 weak candidate hints can now create same-session sandbox advisory ordering records.
+- Each record stores candidate order before and after the hint, preserves the candidate set, and moves the hinted candidate first.
+- The supported hints are `reach_front_item`, `wait_or_observe`, and `observe_or_alternative_probe`.
+- Boundary Index updates from `2026-06-09-b173` to `2026-06-09-b174`.
+
+Explicitly not changed:
+- No selected_action, final_action, direct_command, execution, new outcome observation, candidate score mutation, runtime next-cycle ordering, memory write, retention write, memory admission, habit/skill anchor creation, predictor read/influence/mutation, direct endocrine/tendency feed, production behavior, or proof-of-learning claim.

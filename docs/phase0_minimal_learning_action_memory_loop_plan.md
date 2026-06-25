@@ -53,16 +53,19 @@ b172 does not allow readback, candidate hints, reordering, action creation, memo
 Current progress:
 
 ```text
-Boundary Index: 2026-06-09-b173
+Boundary Index: 2026-06-09-b174
 
 b172 temporary alignment signal
 -> b173 same-session signal readback
 -> b173 weak candidate_input_only hint
+-> b174 same-session sandbox advisory ordering
 ```
 
 b173 creates weak hints for `reach_front_item`, `wait_or_observe`, and `observe_or_alternative_probe`.
 
-b173 still does not allow candidate reordering, action creation, memory write, predictor influence, production behavior, or proof claims.
+b174 uses those hints to change same-session sandbox advisory ordering while preserving the candidate set.
+
+b174 still does not allow selected_action, final_action, direct command, execution, new outcome observation, score mutation, runtime next-cycle ordering, memory write, predictor influence, production behavior, or proof claims.
 
 ## Completion Definition
 
@@ -108,7 +111,7 @@ Phase 0 also should not keep adding boundary-only packages that do not produce a
 ```mermaid
 flowchart TD
     A["b172 temporary alignment signal"] --> B["1. read signal and create weak candidate hint (done at b173)"]
-    B --> C["2. feed hint into sandbox advisory ordering"]
+    B --> C["2. feed hint into sandbox advisory ordering (done at b174)"]
     C --> D["3. run next sandbox action through compact existing action path"]
     D --> E["4. observe outcome and update same-session working memory"]
     E --> F["5. compare cycle 1 vs cycle 2 influence"]
@@ -147,6 +150,8 @@ It must not create:
 - proof of learning
 
 ## Step 2: Candidate Hint Into Ordering
+
+Status: completed at Boundary Index b174.
 
 Plain result:
 

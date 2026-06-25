@@ -57,7 +57,7 @@ The point is not to deny the relationship between the user and Qingyin. The poin
 Current Boundary Index at the time this summary was written:
 
 ```text
-2026-06-09-b173
+2026-06-09-b174
 ```
 
 Current endpoint:
@@ -68,6 +68,7 @@ b169 advisory reordering evidence
 -> b171 record-only consistency evaluation
 -> b172 same-session sandbox-only temporary alignment signal
 -> b173 same-session signal readback and weak candidate hint
+-> b174 same-session sandbox advisory ordering from weak hint
 ```
 
 Plain meaning:
@@ -82,11 +83,12 @@ thought / action / memory lined up in this same-session sandbox trace
 
 b173 can read that temporary signal once and turn it into a weak `candidate_input_only` hint for the next sandbox thought/action/memory step.
 
-## What b173 Does Not Do
+b174 can use that weak hint to change a same-session sandbox advisory candidate order while preserving the candidate set.
 
-b173 does not create:
+## What b174 Does Not Do
 
-- candidate reordering
+b174 does not create:
+
 - selected_action
 - final_action
 - direct command
@@ -228,16 +230,16 @@ Before coding, Codex should answer in plain language:
 4. What visible output will exist after the work?
 5. What does it still refuse to do?
 
-For the current b173 endpoint, a useful next real step would be something like:
+For the current b174 endpoint, a useful next real step would be something like:
 
 ```text
-feed the weak candidate hint into sandbox advisory ordering
-and show a small before/after ordering change
+run the top hinted candidate through a compact sandbox action path
+and observe the second-cycle outcome
 ```
 
-That would be progress because the weak hint would finally affect sandbox advisory ordering.
+That would be progress because the hinted ordering would finally produce a bounded second-cycle sandbox action/outcome record.
 
-It still must not select, execute, write long-term memory, affect production, or claim learning.
+It still must stay inside the sandbox compact action path and must not write long-term memory, affect production, or claim learning.
 
 The current Phase 0 closure plan is:
 
@@ -254,13 +256,13 @@ Avoid package-name fog.
 Say:
 
 ```text
-This lets Qingyin use the weak hint to change sandbox advisory ordering, without selecting or executing anything yet.
+This lets Qingyin run the top hinted sandbox candidate through the action path, still without writing long-term memory or production behavior.
 ```
 
 Do not only say:
 
 ```text
-Thought Memory Action Parallel Mini Loop Signal Readback Candidate Hint Minimal v0.
+Thought Memory Action Parallel Mini Loop Candidate Hint Into Ordering Minimal v0.
 ```
 
 ## Non-Negotiable Non-Claims
