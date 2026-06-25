@@ -59,6 +59,8 @@ ASHL Core Lab 是 ASHL Core／D清音 的最小 Python 實驗專案，用來驗�
 - Formal Lesson Candidate Creation Boundary Audit Docs
 - Current Boundary Index Docs
 - Thought Memory Action Parallel Mini Loop Minimal v0
+- Thought Memory Action Parallel Mini Loop Consistency Evaluation Minimal v0
+- Thought Memory Action Parallel Mini Loop Temporary Alignment Signal Minimal v0
 - v2.11c Lesson Stale Supersede Memory Freeze Notice Contract
 - Qingyin First Output v0 Contract
 - Qingyin Runtime Ontology Boundary v0.1
@@ -3050,6 +3052,10 @@ Two-Trial History Boundary:
 
 - Thought Memory Action Parallel Mini Loop Consistency Evaluation Minimal v0 creates same-session sandbox-only record-only consistency evaluation records from b170 mini-loop records. It checks that the thought preview candidate matches the existing action observation candidate, that temporary working memory links preview and observation, and that preview is not treated as reality. Boundary Index updates from `2026-06-09-b170` to `2026-06-09-b171`. This does not create a temporary signal, candidate hint, next-cycle read, selected_action/final_action/direct_command/execution/new outcome observation, memory/retention write, memory admission, habit/skill anchor, predictor read/influence/mutation, direct endocrine/tendency feed, production behavior, or proof of learning.
 - The planning document for the Phase0 thought/memory/action small loop is `docs/phase0_thought_memory_action_parallel_loop_plan.md`. It is planning only and does not authorize runtime behavior or future packages.
+
+## Thought Memory Action Parallel Mini Loop Temporary Alignment Signal Minimal v0
+
+- Thought Memory Action Parallel Mini Loop Temporary Alignment Signal Minimal v0 creates same-session sandbox-only temporary alignment signal records from b171 consistency evaluation records. It records `temporary_alignment_signal_created=True`, `signal_label=temporary_thought_action_memory_alignment_signal`, `signal_scope=same_session_sandbox_only`, and `signal_lifetime=same_session_temporary_only`. Boundary Index updates from `2026-06-09-b171` to `2026-06-09-b172`. This does not enable readback, create candidate hints, reorder candidates, select/finalize/command/execute actions, create new outcome observations, write memory/retention, admit memory, create habit/skill anchors, read/influence/mutate predictors, feed endocrine/tendency directly, change production behavior, or claim proof of learning.
 
 ## Host-Dependent Idle Continuance Trace v0
 

@@ -458,6 +458,9 @@ from .thought_memory_action_parallel_mini_loop_minimal import (
 from .thought_memory_action_parallel_mini_loop_consistency_evaluation_minimal import (
     run_thought_memory_action_parallel_mini_loop_consistency_evaluation_minimal_check,
 )
+from .thought_memory_action_parallel_mini_loop_temporary_alignment_signal_minimal import (
+    run_thought_memory_action_parallel_mini_loop_temporary_alignment_signal_minimal_check,
+)
 from .reviewed_lesson_dry_run_correction_minimal import (
     run_reviewed_lesson_dry_run_correction_minimal_check,
 )
@@ -4264,6 +4267,8 @@ def run_command(command: str) -> dict[str, Any] | str:
         return run_thought_memory_action_parallel_mini_loop_minimal_check()
     if command == "run-thought-memory-action-parallel-mini-loop-consistency-evaluation-minimal-check":
         return run_thought_memory_action_parallel_mini_loop_consistency_evaluation_minimal_check()
+    if command == "run-thought-memory-action-parallel-mini-loop-temporary-alignment-signal-minimal-check":
+        return run_thought_memory_action_parallel_mini_loop_temporary_alignment_signal_minimal_check()
     if command == "run-simple-retina-focus-preview-minimal-check":
         return run_simple_retina_focus_preview_minimal_check()
     if command == "run-generalized-prediction-confidence-check":
@@ -4565,6 +4570,7 @@ def main(argv: list[str] | None = None) -> int:
             "run-sandbox-candidate-ordering-arbitration-reordered-candidate-feedback-gated-candidate-reordering-minimal-check",
             "run-thought-memory-action-parallel-mini-loop-minimal-check",
             "run-thought-memory-action-parallel-mini-loop-consistency-evaluation-minimal-check",
+            "run-thought-memory-action-parallel-mini-loop-temporary-alignment-signal-minimal-check",
             "run-simple-retina-focus-preview-minimal-check",
             "run-generalized-prediction-confidence-check",
             "run-generalized-candidate-from-pattern-check",
@@ -5112,6 +5118,8 @@ def main(argv: list[str] | None = None) -> int:
         result = run_thought_memory_action_parallel_mini_loop_minimal_check()
     elif args.command == "run-thought-memory-action-parallel-mini-loop-consistency-evaluation-minimal-check":
         result = run_thought_memory_action_parallel_mini_loop_consistency_evaluation_minimal_check()
+    elif args.command == "run-thought-memory-action-parallel-mini-loop-temporary-alignment-signal-minimal-check":
+        result = run_thought_memory_action_parallel_mini_loop_temporary_alignment_signal_minimal_check()
     elif args.command == "run-simple-retina-focus-preview-minimal-check":
         result = run_simple_retina_focus_preview_minimal_check()
     elif args.command == "run-generalized-prediction-confidence-check":

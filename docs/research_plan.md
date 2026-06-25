@@ -8411,3 +8411,16 @@ What changed:
 
 Explicitly not changed:
 - No temporary signal, candidate hint, next-cycle read, selected_action, final_action, direct_command, execution, new outcome observation, candidate score change, runtime next-cycle ordering change, long-term memory write, retention write, memory admission, habit/skill anchor creation, predictor read/influence/mutation, direct endocrine/tendency feed, production behavior, or proof-of-learning claim.
+
+## Thought Memory Action Parallel Mini Loop Temporary Alignment Signal Minimal v0
+
+Status: completed / same-session sandbox-only temporary alignment signal record / Boundary Index b172.
+
+What changed:
+- b171 consistency evaluation records can now create same-session sandbox-only temporary alignment signal records.
+- The signal records `temporary_alignment_signal_created=True`, `signal_label=temporary_thought_action_memory_alignment_signal`, `signal_scope=same_session_sandbox_only`, and `signal_lifetime=same_session_temporary_only`.
+- The signal is a record-only context marker, not readback authority or action authority.
+- Boundary Index updates from `2026-06-09-b171` to `2026-06-09-b172`.
+
+Explicitly not changed:
+- No signal readback, candidate hint, candidate reordering, candidate score change, runtime next-cycle ordering change, selected_action, final_action, direct_command, execution, new outcome observation, memory write, retention write, memory admission, habit/skill anchor creation, predictor read/influence/mutation, direct endocrine/tendency feed, production behavior, or proof-of-learning claim.
