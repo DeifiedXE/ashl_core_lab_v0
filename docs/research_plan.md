@@ -8383,3 +8383,17 @@ What changed:
 
 Explicitly not changed:
 - No selected_action, final_action, direct_command, execution, new outcome observation, candidate score change, runtime next-cycle ordering change, feedback loop, memory/retention write, predictor read/influence/mutation, direct endocrine/tendency feed, production behavior, or proof-of-learning claim.
+
+## Thought Memory Action Parallel Mini Loop Minimal v0
+
+Status: completed / one-cycle same-session sandbox-only thought-memory-action trace link / Boundary Index b170.
+
+What changed:
+- b169 advisory reordering records can now create one bounded parallel mini-loop record.
+- The record links a memory-grounded thought preview, existing action-line evidence, and a temporary working-memory update in the same sandbox cycle.
+- Records set `thought_preview_created=True`, `action_observation_created=True`, `working_memory_update_created=True`, `parallel_loop_created=True`, `cycle_index=1`, and `max_cycles=1`.
+- B0/10 self-check and boundary audit are included for b170.
+- Boundary Index updates from `2026-06-09-b169` to `2026-06-09-b170`.
+
+Explicitly not changed:
+- No selected_action, final_action, direct_command, execution, new outcome observation, next-cycle selection, open-ended runtime loop, long-term memory write, retention write, memory admission, habit/skill anchor creation, predictor read/influence/mutation, direct endocrine/tendency feed, production behavior, or proof-of-learning claim.

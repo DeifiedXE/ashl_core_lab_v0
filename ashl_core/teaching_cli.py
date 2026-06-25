@@ -452,6 +452,9 @@ from .sandbox_candidate_ordering_arbitration_reordered_candidate_feedback_gated_
 from .sandbox_candidate_ordering_arbitration_reordered_candidate_feedback_gated_candidate_reordering_minimal import (
     run_sandbox_candidate_ordering_arbitration_reordered_candidate_feedback_gated_candidate_reordering_minimal_check,
 )
+from .thought_memory_action_parallel_mini_loop_minimal import (
+    run_thought_memory_action_parallel_mini_loop_minimal_check,
+)
 from .reviewed_lesson_dry_run_correction_minimal import (
     run_reviewed_lesson_dry_run_correction_minimal_check,
 )
@@ -4254,6 +4257,8 @@ def run_command(command: str) -> dict[str, Any] | str:
         == "run-sandbox-candidate-ordering-arbitration-reordered-candidate-feedback-gated-candidate-reordering-minimal-check"
     ):
         return run_sandbox_candidate_ordering_arbitration_reordered_candidate_feedback_gated_candidate_reordering_minimal_check()
+    if command == "run-thought-memory-action-parallel-mini-loop-minimal-check":
+        return run_thought_memory_action_parallel_mini_loop_minimal_check()
     if command == "run-simple-retina-focus-preview-minimal-check":
         return run_simple_retina_focus_preview_minimal_check()
     if command == "run-generalized-prediction-confidence-check":
@@ -4553,6 +4558,7 @@ def main(argv: list[str] | None = None) -> int:
             "run-sandbox-candidate-ordering-arbitration-reordered-candidate-outcome-feedback-application-minimal-check",
             "run-sandbox-candidate-ordering-arbitration-reordered-candidate-feedback-gated-candidate-reordering-approval-boundary-minimal-check",
             "run-sandbox-candidate-ordering-arbitration-reordered-candidate-feedback-gated-candidate-reordering-minimal-check",
+            "run-thought-memory-action-parallel-mini-loop-minimal-check",
             "run-simple-retina-focus-preview-minimal-check",
             "run-generalized-prediction-confidence-check",
             "run-generalized-candidate-from-pattern-check",
@@ -5096,6 +5102,8 @@ def main(argv: list[str] | None = None) -> int:
         == "run-sandbox-candidate-ordering-arbitration-reordered-candidate-feedback-gated-candidate-reordering-minimal-check"
     ):
         result = run_sandbox_candidate_ordering_arbitration_reordered_candidate_feedback_gated_candidate_reordering_minimal_check()
+    elif args.command == "run-thought-memory-action-parallel-mini-loop-minimal-check":
+        result = run_thought_memory_action_parallel_mini_loop_minimal_check()
     elif args.command == "run-simple-retina-focus-preview-minimal-check":
         result = run_simple_retina_focus_preview_minimal_check()
     elif args.command == "run-generalized-prediction-confidence-check":
