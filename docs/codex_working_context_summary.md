@@ -57,7 +57,7 @@ The point is not to deny the relationship between the user and Qingyin. The poin
 Current Boundary Index at the time this summary was written:
 
 ```text
-2026-06-09-b178
+2026-06-09-b179
 ```
 
 Current endpoint:
@@ -73,6 +73,7 @@ b169 advisory reordering evidence
 -> b176 same-session working-memory update from the second-cycle outcome
 -> b177 two-cycle influence check
 -> b178 Phase0 mini-loop closure audit
+-> b179 Phase1 record-only session trace spine
 ```
 
 Plain meaning:
@@ -97,10 +98,17 @@ b177 can compare the first-cycle temporary memory / hint / ordering path with th
 
 b178 can audit the whole same-session sandbox thought/action/memory mini-loop and record that Phase0 closure criteria are met as sandbox record evidence.
 
-## What b178 Does Not Do
+b179 can index that completed b178 closure audit under one record-only Phase1 session trace spine, with a `session_id`, 8 ordered ticks, trace state snapshots, expected-vs-actual notes, and evaluator summaries.
 
-b178 does not create:
+## What b179 Does Not Do
 
+b179 does not create:
+
+- a live runtime session
+- a runtime tick scheduler
+- a persistent state store or persistent session store
+- a runtime evaluator
+- a runtime action loop
 - feedback evaluation
 - feedback application
 - new candidate ordering or candidate reordering
@@ -246,19 +254,23 @@ Before coding, Codex should answer in plain language:
 4. What visible output will exist after the work?
 5. What does it still refuse to do?
 
-For the current b178 endpoint, the next real step should be:
+For the current b179 endpoint, the next real step should be:
 
 ```text
-choose the first post-Phase0 route deliberately
+read the Phase1 session trace spine back as bounded session context
 ```
 
 Phase0 now has one compact audit saying the minimal same-session sandbox loop is complete in record evidence, while still refusing long-term learning or production claims.
 
-The next work should not add another empty approval-only boundary. It should choose a concrete next route, such as persistent memory admission, runtime policy gates, or broader repeated sandbox trials, while still not writing long-term memory, applying feedback as runtime behavior, creating production behavior, or claiming learning/consciousness without dedicated evidence.
+Phase1 now has a record-only session trace spine over that completed sandbox loop. The next work should inspect that spine as bounded session context without starting a live runtime, writing memory, selecting a new action, or claiming learning/consciousness.
 
 The current Phase 0 closure plan is:
 
 - `docs/phase0_minimal_learning_action_memory_loop_plan.md`
+
+The current Phase 1-5 growth substrate plan is:
+
+- `docs/phase1_to_phase5_growth_substrate_plan.md`
 
 Use that plan to avoid drifting back into endless boundary-only packages.
 

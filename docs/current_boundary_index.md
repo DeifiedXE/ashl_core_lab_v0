@@ -1,9 +1,9 @@
 # Current Boundary Index
 
-Boundary Index Version: 2026-06-09-b178
-Last update log: Thought Memory Action Parallel Mini Loop Phase0 Closure Audit Minimal v0
-Previous Boundary Index Version: 2026-06-09-b177
-Previous Last update log: Thought Memory Action Parallel Mini Loop Two-Cycle Influence Check Minimal v0
+Boundary Index Version: 2026-06-09-b179
+Last update log: Phase1 Runtime Session Trace Spine Minimal v0
+Previous Boundary Index Version: 2026-06-09-b178
+Previous Last update log: Thought Memory Action Parallel Mini Loop Phase0 Closure Audit Minimal v0
 
 Archived previous current index:
 
@@ -14,12 +14,18 @@ This file is the active short index. Archive files preserve older milestone deta
 
 ## Current Safe Claim
 
-b178 audits the same-session thought/action/memory mini-loop and records that the Phase0 closure criteria are met as sandbox record evidence:
+b179 takes the completed b178 Phase0 thought/action/memory mini-loop closure audit and gives it a record-only Phase1 session trace spine.
+
+Plain wording:
+
+The same sandbox mini-loop now has a `session_id`, 8 ordered trace ticks, per-tick state snapshots, expected-vs-actual notes, and evaluator summaries. This makes the loop readable as a small time trace. It is still record evidence only, not a live runtime session.
+
+The current endpoint is:
 
 ```text
 first-cycle temporary working memory
 -> weak candidate hint
-hint-influenced ordering
+-> hint-influenced advisory ordering
 -> selected_action
 -> final_action
 -> direct_command
@@ -28,17 +34,18 @@ hint-influenced ordering
 -> same-session working-memory update
 -> two-cycle influence check
 -> Phase0 closure audit
+-> Phase1 record-only session trace spine
 ```
 
-The three deterministic paths are:
+The three deterministic paths remain:
 
 - `reach_front_item` -> `sandbox.arbitration.reach_front_item` -> `front_item_reached`
 - `wait_or_observe` -> `sandbox.arbitration.wait_or_observe` -> `local_context_observed`
 - `observe_or_alternative_probe` -> `sandbox.arbitration.observe_or_alternative_probe` -> `local_context_observed`
 
-This is same-session sandbox-only closure evidence. It is not production behavior, not long-term learning, and not proof of consciousness.
+This is same-session sandbox-only trace evidence. It is not production behavior, not long-term learning, and not proof of consciousness.
 
-## Recent Phase0 Mini-Loop Chain
+## Recent Phase0 / Phase1 Chain
 
 ```text
 b170 one-cycle thought/action/working-memory trace
@@ -50,28 +57,31 @@ b170 one-cycle thought/action/working-memory trace
 -> b176 same-session working-memory update from second-cycle outcome
 -> b177 two-cycle influence check
 -> b178 Phase0 mini-loop closure audit
+-> b179 Phase1 record-only runtime session trace spine
 ```
-
-Plain wording:
-
-The first sandbox cycle can leave a temporary signal, the next thought step can read it as a weak hint, that hint can move a candidate to the front of a sandbox advisory order, the top candidate can run once in the sandbox, that second-cycle result can be remembered inside the same session, and the repo can audit the whole two-cycle path as a completed Phase0 mini-loop.
 
 Compatibility anchor for b170 B0/10 self-check: b170 Thought Memory Action Parallel Mini Loop evidence.
 
-## What b178 Adds
+## What b179 Adds
 
-- `closure_audit_created=True`
-- `phase0_minimal_loop_complete=True`
-- `closure_status=complete_as_same_session_sandbox_record_evidence`
-- `criteria_met_count=13`
-- `criteria_total_count=13`
-- `closure_record_only=True`
-- `boundary_audit.boundary_number=178`
+- `session_trace_spine_created=True`
+- `runtime_tick_sequence_created=True`
+- `tick_count=8`
+- `state_snapshot_kind=trace_state_summary`
+- `expected_actual_trace_created=True`
+- `evaluator_trace_created=True`
+- `trace_spine_authority=record_only_trace_index`
+- `boundary_audit.boundary_number=179`
 
 ## Still Blocked
 
+- No live runtime session.
+- No runtime tick scheduler.
+- No persistent state store or persistent session store.
+- No runtime evaluator.
+- No runtime action loop.
 - No feedback evaluation or feedback application.
-- No new candidate ordering or candidate reordering.
+- No candidate ordering or candidate reordering.
 - No candidate score mutation.
 - No runtime next-cycle candidate ordering.
 - No new selected_action, final_action, direct command, execution, or outcome observation.
@@ -101,19 +111,21 @@ Memory is a warning sign, not a ban command. Memory-influenced behavior remains 
 
 ## Current Planning Pointer
 
-The active closure route is:
+Must-read planning docs:
 
+- `docs/codex_working_context_summary.md`
 - `docs/phase0_minimal_learning_action_memory_loop_plan.md`
+- `docs/phase1_to_phase5_growth_substrate_plan.md`
 
 Next useful direction:
 
 ```text
-Phase1 route decision: persistent memory admission, runtime policy gate, or broader sandbox repetition
+Phase1 Session Trace Readback Minimal v0
 ```
 
 Plain wording:
 
-Phase0 now has a compact same-session sandbox closure audit. The next work should choose which real next line opens first instead of adding another empty boundary: persistent memory admission, runtime policy gates, or repeated sandbox trials. Do not silently promote b178 into production behavior, persistent memory, predictor use, or learning/consciousness proof.
+The next small step should read the b179 session spine back as session context and verify the trace can be inspected without starting a live runtime, writing memory, selecting a new action, or claiming learning.
 
 ## Line Count Rule
 

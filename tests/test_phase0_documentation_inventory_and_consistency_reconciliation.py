@@ -11,6 +11,7 @@ REQUIRED_DOCS = [
     Path("docs/phase0_open_risk_ledger.md"),
     Path("docs/phase0_unresolved_doc_issues.md"),
     Path("docs/phase0_versioning_policy.md"),
+    Path("docs/phase1_to_phase5_growth_substrate_plan.md"),
 ]
 
 
@@ -29,6 +30,7 @@ class Phase0DocumentationInventoryConsistencyReconciliationTests(unittest.TestCa
         self.assertIn("Inventory count:", inventory)
         self.assertIn("| README.md | current_status_anchor | current | current_status_controls |", inventory)
         self.assertIn("| docs/current_boundary_index.md | boundary_anchor | current | boundary_controls |", inventory)
+        self.assertIn("| docs/phase1_to_phase5_growth_substrate_plan.md | planning | planning_only | planning_only |", inventory)
         self.assertIn("| docs/phase0_open_risk_ledger.md | risk_ledger | current | current_status_controls |", inventory)
         self.assertIn("unknown_needs_review", inventory)
         self.assertNotIn("|  |", inventory)
@@ -51,7 +53,7 @@ class Phase0DocumentationInventoryConsistencyReconciliationTests(unittest.TestCa
     def test_current_boundary_index_has_sandbox_production_distinction(self):
         boundary = self._read("docs/current_boundary_index.md")
 
-        self.assertIn("Boundary Index Version: 2026-06-09-b178", boundary)
+        self.assertIn("Boundary Index Version: 2026-06-09-b179", boundary)
         self.assertIn("No production/runtime memory-influenced behavior is allowed.", boundary)
         self.assertIn("sandbox-only lesson application, observation, and evaluation records", boundary)
         self.assertIn("do not constitute production/runtime memory-influenced behavior", boundary)

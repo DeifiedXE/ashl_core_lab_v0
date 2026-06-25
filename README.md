@@ -67,6 +67,7 @@ ASHL Core Lab 是 ASHL Core／D清音 的最小 Python 實驗專案，用來驗�
 - Thought Memory Action Parallel Mini Loop Outcome To Same-Session Working Memory Minimal v0
 - Thought Memory Action Parallel Mini Loop Two-Cycle Influence Check Minimal v0
 - Thought Memory Action Parallel Mini Loop Phase0 Closure Audit Minimal v0
+- Phase1 Runtime Session Trace Spine Minimal v0
 - v2.11c Lesson Stale Supersede Memory Freeze Notice Contract
 - Qingyin First Output v0 Contract
 - Qingyin Runtime Ontology Boundary v0.1
@@ -3086,6 +3087,11 @@ Two-Trial History Boundary:
 ## Thought Memory Action Parallel Mini Loop Phase0 Closure Audit Minimal v0
 
 - Thought Memory Action Parallel Mini Loop Phase0 Closure Audit Minimal v0 audits the completed same-session sandbox thought/action/memory mini-loop from b177. It records `closure_audit_created=True`, `phase0_minimal_loop_complete=True`, `criteria_met_count=13`, and `closure_status=complete_as_same_session_sandbox_record_evidence` for `reach_front_item`, `wait_or_observe`, and `observe_or_alternative_probe`. Boundary Index updates from `2026-06-09-b177` to `2026-06-09-b178`. This does not create feedback evaluation/application, candidate reordering, candidate score mutation, runtime next-cycle ordering, selected_action/final_action/direct_command/execution/outcome observation, new working-memory update, long-term/Core/Archive/persistent memory write, retention write, memory admission, habit/skill anchor, predictor use/mutation, direct endocrine/tendency feed, production behavior, consciousness claim, long-term learning claim, or proof of learning.
+
+## Phase1 Runtime Session Trace Spine Minimal v0
+
+- Phase1 Runtime Session Trace Spine Minimal v0 creates record-only Phase1 session trace spine records from b178 Phase0 closure audits. Each record adds a deterministic `session_id`, 8 ordered trace ticks, per-tick `trace_state_summary` snapshots, expected-vs-actual notes, and evaluator summaries for `reach_front_item`, `wait_or_observe`, and `observe_or_alternative_probe`. Boundary Index updates from `2026-06-09-b178` to `2026-06-09-b179`. This does not start a live runtime session, create a runtime tick scheduler, create a persistent state/session store, create a runtime evaluator, create new actions, write memory/retention, admit memory, read/influence/mutate predictors, feed endocrine/tendency directly, change production behavior, or claim learning/consciousness.
+- The Phase 1-5 growth substrate planning guide is `docs/phase1_to_phase5_growth_substrate_plan.md`. It is a must-read construction plan only and does not grant runtime authority by itself.
 
 ## Host-Dependent Idle Continuance Trace v0
 

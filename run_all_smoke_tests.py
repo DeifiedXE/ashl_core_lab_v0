@@ -506,6 +506,9 @@ from ashl_core.thought_memory_action_parallel_mini_loop_two_cycle_influence_chec
 from ashl_core.thought_memory_action_parallel_mini_loop_phase0_closure_audit_minimal import (
     run_thought_memory_action_parallel_mini_loop_phase0_closure_audit_minimal_check,
 )
+from ashl_core.phase1_runtime_session_trace_spine_minimal import (
+    run_phase1_runtime_session_trace_spine_minimal_check,
+)
 from ashl_core.minimal_visual_grounding_trial import run_minimal_visual_grounding_trial_check
 from ashl_core.visual_prediction_error_attention_priority_preview_minimal import (
     run_visual_prediction_error_attention_priority_preview_minimal_check,
@@ -10889,13 +10892,13 @@ def smoke_current_boundary_index_docs() -> dict:
     readme = readme_path.read_text(encoding="utf-8") if readme_path.exists() else ""
     research_plan = research_plan_path.read_text(encoding="utf-8") if research_plan_path.exists() else ""
     compact_required_terms = [
-        "Boundary Index Version: 2026-06-09-b178",
-        "Last update log: Thought Memory Action Parallel Mini Loop Phase0 Closure Audit Minimal v0",
-        "Previous Boundary Index Version: 2026-06-09-b177",
+        "Boundary Index Version: 2026-06-09-b179",
+        "Last update log: Phase1 Runtime Session Trace Spine Minimal v0",
+        "Previous Boundary Index Version: 2026-06-09-b178",
         "docs/boundary_archive/current_boundary_index_2026-06-25_b174.md",
         "first-cycle temporary working memory",
         "weak candidate hint",
-        "hint-influenced ordering",
+        "hint-influenced advisory ordering",
         "selected_action",
         "final_action",
         "direct_command",
@@ -10903,13 +10906,19 @@ def smoke_current_boundary_index_docs() -> dict:
         "outcome observation",
         "same-session working-memory update",
         "Phase0 closure audit",
-        "phase0_minimal_loop_complete=True",
-        "closure_status=complete_as_same_session_sandbox_record_evidence",
+        "Phase1 record-only session trace spine",
+        "session_trace_spine_created=True",
+        "runtime_tick_sequence_created=True",
+        "tick_count=8",
         "reach_front_item",
         "wait_or_observe",
         "observe_or_alternative_probe",
+        "No live runtime session.",
+        "No runtime tick scheduler.",
+        "No persistent state store or persistent session store.",
+        "No runtime evaluator.",
         "No feedback evaluation or feedback application.",
-        "No new candidate ordering or candidate reordering.",
+        "No candidate ordering or candidate reordering.",
         "No new selected_action, final_action, direct command, execution, or outcome observation.",
         "No new working-memory update.",
         "No production/runtime memory-influenced behavior is allowed.",
@@ -10918,7 +10927,8 @@ def smoke_current_boundary_index_docs() -> dict:
         "Level 2 Sandbox Application milestone",
         "Level 3 Toy Minefield Multi-Step Sandbox milestone",
         "Memory is a warning sign, not a ban command",
-        "Phase1 route decision",
+        "docs/phase1_to_phase5_growth_substrate_plan.md",
+        "Phase1 Session Trace Readback Minimal v0",
         "This current index must stay under 150 lines.",
     ]
     archive_required_terms = [
@@ -10944,8 +10954,8 @@ def smoke_current_boundary_index_docs() -> dict:
         and all(term in archive for term in archive_required_terms)
         and all(term in legacy_archive for term in legacy_required_terms)
         and line_count <= 150
-        and "Thought Memory Action Parallel Mini Loop Phase0 Closure Audit Minimal v0" in readme
-        and "Thought Memory Action Parallel Mini Loop Phase0 Closure Audit Minimal v0" in research_plan
+        and "Phase1 Runtime Session Trace Spine Minimal v0" in readme
+        and "Phase1 Runtime Session Trace Spine Minimal v0" in research_plan
     )
     return _result(
         "boundary_index_current_archive",
@@ -10988,8 +10998,10 @@ def smoke_phase0_documentation_consolidation_minimal() -> dict:
         and matrix_path.exists()
         and index_path.exists()
         and plan_path.exists()
-        and "Boundary Index Version: 2026-06-09-b178" in status
+        and "Boundary Index Version: 2026-06-09-b179" in status
         and "Current Safe Capability" in status
+        and "Phase1 Runtime Session Trace Spine Minimal v0" in status
+        and "phase1_to_phase5_growth_substrate_plan.md" in index
         and "Thought Memory Action Parallel Mini Loop Phase0 Closure Audit Minimal v0" in status
         and "Thought Memory Action Parallel Mini Loop Two-Cycle Influence Check Minimal v0" in status
         and "Thought Memory Action Parallel Mini Loop Outcome To Same-Session Working Memory Minimal v0" in status
@@ -11168,6 +11180,7 @@ def smoke_phase0_documentation_inventory_and_consistency_reconciliation() -> dic
         Path("docs/phase0_open_risk_ledger.md"),
         Path("docs/phase0_unresolved_doc_issues.md"),
         Path("docs/phase0_versioning_policy.md"),
+        Path("docs/phase1_to_phase5_growth_substrate_plan.md"),
     ]
     texts = {path: path.read_text(encoding="utf-8") if path.exists() else "" for path in required_paths}
     combined = "\n".join(texts.values()).lower()
@@ -11186,8 +11199,9 @@ def smoke_phase0_documentation_inventory_and_consistency_reconciliation() -> dic
     boundary = Path("docs/current_boundary_index.md").read_text(encoding="utf-8")
     passed = (
         all(path.exists() for path in required_paths)
-        and "Boundary Index Version: 2026-06-09-b178" in texts[Path("docs/phase0_status.md")]
+        and "Boundary Index Version: 2026-06-09-b179" in texts[Path("docs/phase0_status.md")]
         and "Inventory count:" in texts[Path("docs/phase0_doc_inventory.md")]
+        and "docs/phase1_to_phase5_growth_substrate_plan.md" in texts[Path("docs/phase0_doc_inventory.md")]
         and "docs/phase0_versioning_policy.md" in texts[Path("docs/phase0_doc_inventory.md")]
         and "unknown_needs_review" in texts[Path("docs/phase0_doc_inventory.md")]
         and "Conflict Resolution Rule" in texts[Path("docs/phase0_doc_index.md")]
@@ -20972,6 +20986,98 @@ def smoke_thought_memory_action_parallel_mini_loop_phase0_closure_audit_minimal(
     )
 
 
+def smoke_phase1_runtime_session_trace_spine_minimal() -> dict:
+    result = run_phase1_runtime_session_trace_spine_minimal_check()
+    summary = result.get("summary", {})
+    boundary = result.get("boundary", {})
+    records = result.get("valid_records", [])
+    sources = [record.get("source_phase0_closure_audit", {}) for record in records]
+    spines = [record.get("session_trace_spine", {}) for record in records]
+    tick_traces = [record.get("runtime_tick_trace", {}) for record in records]
+    expected_actual = [record.get("expected_actual_evaluator_trace", {}) for record in records]
+    containments = [record.get("session_containment", {}) for record in records]
+    audits = [record.get("boundary_audit", {}) for record in records]
+    selected_actions = [source.get("selected_action") for source in sources]
+    first_spine = spines[0] if spines else {}
+    first_tick_trace = tick_traces[0] if tick_traces else {}
+    first_ticks = first_tick_trace.get("ordered_ticks", []) if isinstance(first_tick_trace, dict) else []
+    first_containment = containments[0] if containments else {}
+    first_audit = audits[0] if audits else {}
+    passed = (
+        result.get("command") == "run-phase1-runtime-session-trace-spine-minimal-check"
+        and result.get("flow") == "phase1_runtime_session_trace_spine_minimal_v0"
+        and result.get("status") == "ok"
+        and boundary.get("boundary_index_version_before") == "2026-06-09-b178"
+        and boundary.get("boundary_index_version_after") == "2026-06-09-b179"
+        and summary.get("runtime_session_trace_spine_result_count") == 79
+        and summary.get("valid_runtime_session_trace_spine_count") == 3
+        and summary.get("invalid_runtime_session_trace_spine_count") == 76
+        and summary.get("session_trace_spine_created_count") == 3
+        and summary.get("runtime_tick_sequence_created_count") == 3
+        and summary.get("trace_spine_record_only_count") == 3
+        and summary.get("expected_actual_evaluator_trace_created_count") == 3
+        and summary.get("all_ticks_linked_count") == 3
+        and summary.get("all_ticks_have_state_snapshot_count") == 3
+        and summary.get("reach_session_spine_count") == 1
+        and summary.get("wait_session_spine_count") == 1
+        and summary.get("probe_session_spine_count") == 1
+        and summary.get("live_runtime_blocked_count") == 3
+        and summary.get("persistent_state_store_blocked_count") == 3
+        and summary.get("action_creation_blocked_count") == 3
+        and summary.get("memory_write_blocked_count") == 3
+        and summary.get("predictor_use_blocked_count") == 3
+        and summary.get("production_behavior_blocked_count") == 3
+        and summary.get("proof_claim_blocked_count") == 3
+        and summary.get("consciousness_claim_blocked_count") == 3
+        and summary.get("boundary_audit_passed_count") == 3
+        and selected_actions == ["reach_front_item", "wait_or_observe", "observe_or_alternative_probe"]
+        and all(source.get("source_boundary_index") == "2026-06-09-b178" for source in sources)
+        and all(source.get("phase0_minimal_loop_complete") is True for source in sources)
+        and all(spine.get("session_scope") == "same_session_sandbox_record_only" for spine in spines)
+        and all(spine.get("session_trace_spine_created") is True for spine in spines)
+        and all(spine.get("runtime_tick_sequence_created") is True for spine in spines)
+        and all(spine.get("tick_count") == 8 for spine in spines)
+        and all(trace.get("tick_count") == 8 for trace in tick_traces)
+        and all(trace.get("all_ticks_linked") is True for trace in tick_traces)
+        and all(trace.get("all_ticks_have_state_snapshot") is True for trace in tick_traces)
+        and all(item.get("expected_actual_trace_created") is True for item in expected_actual)
+        and all(item.get("evaluator_trace_created") is True for item in expected_actual)
+        and all(item.get("runtime_evaluator_created") is False for item in expected_actual)
+        and len(first_ticks) == 8
+        and [tick.get("tick_index") for tick in first_ticks] == list(range(8))
+        and first_spine.get("ordered_tick_ids") == [tick.get("tick_id") for tick in first_ticks]
+        and all(tick.get("created_live_runtime_tick") is False for tick in first_ticks)
+        and all(tick.get("created_runtime_behavior") is False for tick in first_ticks)
+        and first_containment.get("record_only_trace_spine") is True
+        and first_containment.get("future_state_store_requires_separate_package") is True
+        and first_containment.get("future_memory_admission_requires_separate_package") is True
+        and first_containment.get("future_runtime_policy_gate_requires_separate_package") is True
+        and first_containment.get("selected_action_created_in_this_package") is False
+        and first_containment.get("long_term_memory_write_created_in_this_package") is False
+        and first_containment.get("memory_admission_created_in_this_package") is False
+        and first_containment.get("predictor_read_enabled_in_this_package") is False
+        and first_containment.get("production_behavior_created_in_this_package") is False
+        and first_containment.get("proof_of_learning_claim") is False
+        and all(audit.get("boundary_number") == 179 for audit in audits)
+        and first_audit.get("live_runtime_session_started") is False
+        and first_audit.get("persistent_state_store_created") is False
+        and first_audit.get("memory_admission_created") is False
+        and first_audit.get("predictor_read_enabled") is False
+        and first_audit.get("production_behavior_created") is False
+        and first_audit.get("consciousness_claim") is False
+        and first_audit.get("next_layer_precreated") is False
+    )
+    return _result(
+        "phase1_runtime_session_trace_spine_minimal",
+        passed,
+        {
+            "summary": summary,
+            "boundary": boundary,
+            "selected_actions": selected_actions,
+        },
+    )
+
+
 def smoke_phase0_current_capability_snapshot() -> dict:
     doc_path = Path("docs/phase0_current_capability_snapshot_2026-06-10.md")
     doc = doc_path.read_text(encoding="utf-8") if doc_path.exists() else ""
@@ -23797,6 +23903,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_thought_memory_action_parallel_mini_loop_outcome_to_same_session_working_memory_minimal(),
         smoke_thought_memory_action_parallel_mini_loop_two_cycle_influence_check_minimal(),
         smoke_thought_memory_action_parallel_mini_loop_phase0_closure_audit_minimal(),
+        smoke_phase1_runtime_session_trace_spine_minimal(),
         smoke_phase0_current_capability_snapshot(),
         smoke_memory_influence_behavior_gate_design(),
         smoke_first_memory_influenced_behavior_boundary(),

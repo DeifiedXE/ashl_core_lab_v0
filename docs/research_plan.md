@@ -8506,3 +8506,35 @@ What changed:
 
 Explicitly not changed:
 - No feedback evaluation/application, candidate reordering, candidate score mutation, runtime next-cycle ordering, selected_action/final_action/direct_command/execution/outcome observation creation, new working-memory update, long-term/Core/Archive/persistent memory write, retention write, memory admission, habit/skill anchor creation, predictor read/influence/mutation, direct endocrine/tendency feed, production behavior, consciousness claim, long-term learning claim, or proof-of-learning claim.
+
+## Phase1 Runtime Session Trace Spine Minimal v0
+
+Status: completed / record-only Phase1 session trace spine / Boundary Index b179.
+
+What changed:
+- b178 Phase0 closure audit records can now create Phase1 runtime session trace spine records.
+- Each record adds a deterministic `session_id`, 8 ordered trace ticks, and per-tick state snapshots.
+- Each tick has expected outcome, actual outcome, and evaluator result text.
+- The supported trace paths remain `reach_front_item`, `wait_or_observe`, and `observe_or_alternative_probe`.
+- Boundary Index updates from `2026-06-09-b178` to `2026-06-09-b179`.
+
+Plain meaning:
+- The completed sandbox loop now has a time spine on paper. It can be inspected as one session trace, but it is not yet a live running session.
+
+Explicitly not changed:
+- No live runtime session, runtime tick scheduler, persistent state/session store, runtime evaluator, runtime action loop, feedback evaluation/application, candidate ordering/reordering, candidate score mutation, runtime next-cycle ordering, selected_action/final_action/direct_command/execution/outcome observation creation, new working-memory update, long-term/Core/Archive/persistent memory write, retention write, memory admission, habit/skill anchor creation, predictor read/influence/mutation, direct endocrine/tendency feed, production behavior, consciousness claim, long-term learning claim, or proof-of-learning claim.
+
+## Phase 1-5 Growth Substrate Plan
+
+Status: planning / construction must-read / no runtime authority.
+
+What changed:
+- `docs/phase1_to_phase5_growth_substrate_plan.md` records the tentative Phase 1-5 plan for completing the nine-line growth substrate.
+- Phase 1 starts with runtime session trace spine records.
+- Phase 2 targets perception and capability grounding.
+- Phase 3 targets memory admission and retention.
+- Phase 4 targets layered thought and state settling.
+- Phase 5 targets nine-line substrate integration.
+
+Explicitly not changed:
+- This planning document does not grant runtime behavior, persistent memory, predictor influence, production behavior, or learning/consciousness claims.

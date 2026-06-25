@@ -9,6 +9,7 @@
 - `docs/level1_sandbox_outcome_evaluation_and_human_review_summary_minimal_v0.md`
 - `docs/phase0_line_document_index.md`
 - `docs/phase0_minimal_learning_action_memory_loop_plan.md`
+- `docs/phase1_to_phase5_growth_substrate_plan.md`
 
 ## Line-Based Navigation
 
@@ -81,6 +82,7 @@ Examples:
 - `docs/experiment_order.md`
 - `docs/phase0_task_queue.md`
 - `docs/phase0_minimal_learning_action_memory_loop_plan.md`
+- `docs/phase1_to_phase5_growth_substrate_plan.md`
 - `docs/codex_task_queue_minimal_v0.md`
 
 Planning docs guide next work. They are not standalone proof that a capability exists.
