@@ -8450,3 +8450,17 @@ What changed:
 
 Explicitly not changed:
 - No selected_action, final_action, direct_command, execution, new outcome observation, candidate score mutation, runtime next-cycle ordering, memory write, retention write, memory admission, habit/skill anchor creation, predictor read/influence/mutation, direct endocrine/tendency feed, production behavior, or proof-of-learning claim.
+
+## Thought Memory Action Parallel Mini Loop Ordering To Next Sandbox Action Minimal v0
+
+Status: completed / compact second-cycle sandbox action path and outcome observation / Boundary Index b175.
+
+What changed:
+- The b174 top hinted candidate can now move through one compact same-session sandbox action path.
+- Each record creates selected_action, final_action, direct_command, one sandbox execution, and outcome observation.
+- The supported actions are `reach_front_item`, `wait_or_observe`, and `observe_or_alternative_probe`.
+- Trace links preserve the source b174 ordering record, b173 candidate hint record, and working-memory update id.
+- Boundary Index updates from `2026-06-09-b174` to `2026-06-09-b175`.
+
+Explicitly not changed:
+- No working-memory update, feedback evaluation/application, candidate reordering, candidate score mutation, runtime next-cycle ordering, memory write, retention write, memory admission, habit/skill anchor creation, predictor read/influence/mutation, direct endocrine/tendency feed, production behavior, consciousness claim, or proof-of-learning claim.

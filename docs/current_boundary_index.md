@@ -1,145 +1,111 @@
-﻿Boundary Index Version: 2026-06-09-b174
-Last update log: Thought Memory Action Parallel Mini Loop Candidate Hint Into Ordering Minimal v0
-Previous Boundary Index Version: 2026-06-09-b173
-Previous Last update log: Thought Memory Action Parallel Mini Loop Signal Readback Candidate Hint Minimal v0
-Clean count at last update log reset: 0/5; current clean count: 0/5
-## Purpose
-- This file is the compact current Boundary Index for fast review of present ASHL Core / D Qingyin boundaries.
-- Older milestone details are archived in `docs/boundary_index_archive_2026_06.md`.
-- Archive moves are documentation-only and must not change safe claims or forbidden claims.
+# Current Boundary Index
 
-## Global Hard Boundaries
-- Trace/persistence records are evidence only, not authorization, lesson_store write, Memory Layer write, lesson_candidate creation, or awakening evidence.
-- trace is record, not runtime action.
-- no lesson_store write, Long-term/Core/Archive Memory write, persistent rule write, retained JSONL write, or runtime memory influence unless explicitly authorized by a future dedicated package.
-- LLM output must not become authoritative failure_reason, Qingyin runtime, self, memory, state, perception, learning loop, or first_output evidence.
-- first_output is a runtime milestone, not awakening, dialogue ability, or long-term growth evidence.
-- mentor_feedback_stub and mentor_feedback_trace are engineering supervision records, not feedback runtime.
-- append-only persistence is not lesson_store write, Memory Layer write, lesson_candidate creation, or awakening evidence.
-- bounded sandbox traces are microscope evidence only; they do not prove understanding, autonomy, map understanding, learning, or consciousness.
-- human_summary is report text, not Qingyin utterance or dialogue.
-- ASHL Core provides evidence; Qingyin Memory Layers decide memory admission.
-- Qingyin self-approval remains blocked.
-- Qingyin is currently in the test-object stage, not an awakened individual.
+Boundary Index Version: 2026-06-09-b175
+Last update log: Thought Memory Action Parallel Mini Loop Ordering To Next Sandbox Action Minimal v0
+Previous Boundary Index Version: 2026-06-09-b174
+Previous Last update log: Thought Memory Action Parallel Mini Loop Candidate Hint Into Ordering Minimal v0
 
-## Current Implemented / Previewed Status
-- Local sandbox memory effects exist only as bounded local state-action outcome memory; they are not Long-term Memory or general learning proof.
-- Experience abstraction can pass controlled records through deterministic reason classification, exact/position-independent keys, prediction/mismatch, review gates, approved previews, and temporary in-memory apply verification.
-- Mentor-gated durable retention Minimal v0 exists: exact mentor_text `留` can append a minimal retained record to JSONL and load/list/readback it.
-- Retention remains mentor-gated and does not apply lessons, influence action selection, change behavior, mutate predictors, or prove learning.
-- Visual frame-level changes can become trace-only visual_experience_candidate records.
-- Visual candidates can become read-only retina_focus_preview records.
-- Retina focus previews can become visual_lesson_evidence_candidate records requiring human review.
-- Visual evidence can preview-link to retained experiences by same_exact_key_only.
-- Visual-Retention Demo Snapshot Minimal v0 can show visual change -> focus preview -> visual lesson evidence -> retained experience link preview -> demo snapshot.
-- Minimal Visual Grounding Trial v0 can run a controlled symbolic visual change through visual_experience_candidate -> retina_focus_preview -> visual_lesson_evidence_candidate -> visual_retention_demo_snapshot -> human-readable grounding trial summary.
-- Visual Prediction Error + Attention Priority Preview Minimal v0 can compare expected vs actual controlled visual traces and produce read-only notice/ignore attention priority previews.
-- Retained memory can be read-only exact-key queried, shown as dry-run context, and converted into preview-only bounded action-tendency advice.
-- Memory-influenced action tendency previews and dry-run contrasts can show before/after tendency deltas as trace-level evidence only.
-- Runtime tendency memory influence can show same-runner A/B score changes, rollback to baseline, and bounded safety envelope requirements.
-- Phase0 Level 0-1 can reject one-way caution bias with bidirectional obstacle-memory tendency flips, then pass a one-step symbolic danger check in sandbox.
-- Sandbox behavior use, doubt-gated ordering, verification candidate registry, verification planning, and one sandbox-only verification execution exist only as advisory sandbox candidate/trace records; doubt_action exists only as trace/checker evidence for expected/actual mismatch. Selected_action, final_action, direct command, predictor mutation, production behavior, memory/retention write, persistent rule, and proof claims remain blocked.
+Archived previous current index:
 
-## Latest Safe Claims
-- Visual grounding remains symbolic and trace/read-only: frame changes, focus previews, visual lesson evidence, same_exact_key_only retained links, human-readable grounding summaries, and read-only visual prediction-error attention previews are available without semantic vision or object recognition.
-- Retained memory can be exact-key read, previewed through a controlled memory read path, contrasted, and used in deterministic controlled runner sandbox tendency traces with rollback: check_before_retry 0.5 -> 0.6; memory_on 0.45/0.60; memory_off_again returns 0.50/0.50; max_absolute_delta <= 0.10; no persistent influence.
-- Memory is a warning sign, not a ban command; past failure is a warning, not a prohibition.
-- Generic lesson review/evidence can bridge to existing preview, dry-run, trial trace, before/after contrast, lesson_effect_evidence_trace, and application-boundary reconciliation, but evidence is not application approval.
-- Explicit human application approval and future memory admission approval must come from explicit user/project-owner approval statements; Codex/AI may record or validate approval but cannot grant it.
-- Level 1-3 sandbox application/review, minefield, repair, and memory-influenced rerun records are sandbox-only, audited, rollback-aware trace/checker evidence, not production behavior or proof of learning.
-- Verification/doubt/same-session feedback packages can create bounded trace/checker records and one low-risk sandbox verification execution, but they do not create production behavior or persistent policy.
-- b85-b120 established sandbox-only selected_action/final_action/direct-command/action-loop/body-motor/endocrine/visual-spatial/motor-intent records under bounded scopes; persistent updates, production behavior, and proof claims remain blocked.
-- b121-b174 established approval-boundary -> approved_purpose -> sandbox-only advisory candidate ordering -> selected_action -> final_action -> direct_command -> execution -> outcome observation -> same-session feedback trace -> feedback-gated sandbox-only advisory reordering -> checked signal arbitration -> future selected_action approval boundary -> sandbox-only selected_action -> future final_action approval boundary -> sandbox-only final_action -> future direct_command approval boundary -> sandbox-only direct_command -> future execution approval boundary -> sandbox-only execution -> sandbox-only outcome observation -> future same-session sandbox feedback approval boundary -> same-session sandbox feedback evaluation records -> future same-session sandbox feedback application approval boundary -> same-session sandbox record-only feedback application records -> future feedback-gated candidate reordering approval boundary -> same-session sandbox-only advisory reordering records -> future selected_action approval boundary from reordered candidates -> same-session sandbox-only selected_action records from reordered candidates -> future final_action approval boundary from reordered selected_actions -> same-session sandbox-only final_action records from reordered selected_actions -> future direct_command approval boundary from reordered final_actions -> same-session sandbox-only direct_command records from reordered final_actions -> future execution approval boundary from reordered direct_commands -> same-session sandbox-only execution records from reordered direct_commands -> same-session sandbox-only outcome observation records from reordered executions -> future same-session sandbox feedback approval boundary from reordered observations -> same-session sandbox feedback evaluation records from reordered observations -> future same-session sandbox feedback application approval boundary from reordered feedback records -> same-session sandbox record-only feedback application records from reordered feedback -> future feedback-gated candidate reordering approval boundary from reordered record-only feedback applications -> same-session sandbox-only advisory reordering records from reordered feedback, plus Qingyin Bridge grounded capability maps. Current endpoint: b173 weak candidate_hint records create b174 same-session sandbox advisory ordering records; b174 stores before/after candidate order, preserves the candidate set, and moves the hinted candidate first without score mutation, selected_action/final_action/direct command/execution/new outcome observation, memory/retention write, predictor use/mutation, production behavior, or proof claim.
+- `docs/boundary_archive/current_boundary_index_2026-06-25_b174.md`
+- `docs/boundary_index_archive_2026_06.md`
 
-## Latest Forbidden Claims
-- No object recognition.
-- No semantic vision or semantic labels.
-- No active_focus, focus_applied, or attention_control.
-- No automatic lesson candidate creation.
-- No lesson application.
-- No production action selection.
-- No production/runtime memory-influenced behavior is allowed. Phase0 Level 1 sandbox-only lesson application, observation, and evaluation records plus Level 2/Level 3 sandbox-only records are allowed only within their validated sandbox scope and do not constitute production/runtime memory-influenced behavior.
-- No selected_action, final_action, direct command, execution, or feedback-driven candidate reordering outside explicitly validated sandbox-only scopes.
-- No feedback application, candidate reordering, runtime action selection, memory/retention write, predictor mutation/read/influence, runtime behavior change, emotional manipulation, user-happiness claim, or proof-of-learning claim from approved_purpose feedback approval-boundary or feedback records. b136 permits same-session trace-only feedback only.
-- No actual feedback-gated candidate reordering, action creation, execution, persistence, direct endocrine/tendency feed, memory/retention write, predictor use/mutation, emotional manipulation, user-happiness claim, production behavior, or proof claim from b137 feedback-gated reordering approval-boundary records.
-- No feedback evaluation/application, feedback loop, candidate reordering, candidate score change, new action, selected_action, final_action, direct command, execution, persistence, raw weighted sum, purpose creation/change from affordance/feedback/tendency, direct endocrine/tendency feed, memory/retention write, predictor use/mutation, production behavior, or proof claim from b149 arbitration outcome feedback approval-boundary records. b149 allows future feedback only.
-- No feedback application, feedback loop, candidate reordering, candidate score change, selected_action, final_action, direct command, execution, persistence, raw weighted sum, purpose creation/change from affordance/feedback/tendency, direct endocrine/tendency feed, memory/retention write, predictor use/mutation, production behavior, or proof claim from b150 arbitration outcome feedback records. b150 creates same-session sandbox feedback evaluation records only.
-- No feedback application, feedback loop, candidate reordering, candidate score change, next-cycle ordering change, selected_action, final_action, direct command, execution, new outcome observation, persistence, raw weighted sum, purpose creation/change from affordance/feedback/tendency, direct endocrine/tendency feed, memory/retention write, predictor use/mutation, production behavior, or proof claim from b151 arbitration outcome feedback application approval-boundary records. b151 allows future feedback application only.
-- No feedback loop, candidate reordering, candidate score change, next-cycle ordering change, selected_action, final_action, direct command, execution, new outcome observation, persistence, raw weighted sum, purpose creation/change from affordance/feedback/tendency, direct endocrine/tendency feed, memory/retention write, predictor use/mutation, production behavior, or proof claim from b152 arbitration outcome feedback application records. b152 applies feedback only as same-session sandbox record-only application evidence.
-- No actual feedback-gated candidate reordering, candidate score change, next-cycle ordering change, feedback loop, selected_action, final_action, direct command, execution, new outcome observation, persistence, raw weighted sum, purpose creation/change from affordance/feedback/tendency, direct endocrine/tendency feed, memory/retention write, predictor use/mutation, production behavior, or proof claim from b153 arbitration reordering approval-boundary records. b153 allows future reordering only.
-- No selected_action, final_action, direct command, execution, new outcome observation, candidate score change, runtime next-cycle ordering change, feedback loop, persistence, raw weighted sum, purpose creation/change from affordance/feedback/tendency, direct endocrine/tendency feed, memory/retention write, predictor use/mutation, production behavior, or proof claim from b154 arbitration feedback-gated candidate reordering records. b154 creates same-session sandbox-only advisory reordering records only.
-- No selected_action, final_action, direct command, execution, new outcome observation, candidate score change, runtime next-cycle ordering change, feedback loop, persistence, raw weighted sum, purpose creation/change from affordance/feedback/tendency, direct endocrine/tendency feed, memory/retention write, predictor use/mutation, production behavior, or proof claim from b155 reordered-candidate selected_action approval-boundary records. b155 allows future selected_action only.
-- No final_action, direct command, execution, new outcome observation, candidate score change, runtime next-cycle ordering change, feedback loop, persistence, raw weighted sum, purpose creation/change from affordance/feedback/tendency, direct endocrine/tendency feed, memory/retention write, predictor use/mutation, production behavior, or proof claim from b156 reordered-candidate selected_action records. b156 creates same-session sandbox-only selected_action records only.
-- No direct command, execution, new outcome observation, candidate score change, runtime next-cycle ordering change, feedback loop, persistence, raw weighted sum, purpose creation/change from affordance/feedback/tendency, direct endocrine/tendency feed, memory/retention write, predictor use/mutation, production behavior, or proof claim from b158 reordered-candidate final_action records. b158 creates same-session sandbox-only final_action records only.
-- No direct_command, execution, new outcome observation, candidate score change, runtime next-cycle ordering change, feedback loop, persistence, raw weighted sum, purpose creation/change from affordance/feedback/tendency, direct endocrine/tendency feed, memory/retention write, predictor use/mutation, production behavior, or proof claim from b159 reordered-candidate direct_command approval-boundary records. b159 allows future direct_command only.
-- No execution, new outcome observation, candidate score change, runtime next-cycle ordering change, feedback loop, selected_action/final_action creation, persistence, raw weighted sum, purpose creation/change from affordance/feedback/tendency, direct endocrine/tendency feed, memory/retention write, predictor use/mutation, production behavior, or proof claim from b160 reordered-candidate direct_command records. b160 creates same-session sandbox-only direct_command records only.
-- No execution, execution result, new outcome observation, candidate score change, runtime next-cycle ordering change, feedback loop, selected_action/final_action/new direct_command creation, persistence, raw weighted sum, purpose creation/change from affordance/feedback/tendency, direct endocrine/tendency feed, memory/retention write, predictor use/mutation, production behavior, or proof claim from b161 reordered-candidate execution approval-boundary records. b161 allows future execution only.
-- No feedback application/loop, candidate reordering, candidate score change, runtime next-cycle ordering change, selected_action/final_action/new direct_command/new execution/new outcome observation creation, persistence, raw weighted sum, purpose creation/change from affordance/feedback/tendency, direct endocrine/tendency feed, memory/retention write, predictor use/mutation, production behavior, or proof claim from b165 reordered-candidate feedback evaluation records. b165 creates same-session sandbox feedback evaluation records only.
-- No actual feedback application, feedback loop, candidate reordering, candidate score change, runtime next-cycle ordering change, selected_action/final_action/new direct_command/new execution/new outcome observation creation, persistence, raw weighted sum, purpose creation/change from affordance/feedback/tendency, direct endocrine/tendency feed, memory/retention write, predictor use/mutation, production behavior, or proof claim from b166 reordered-candidate feedback application approval-boundary records. b166 allows future feedback application only.
-- No feedback loop, candidate reordering, candidate score change, runtime next-cycle ordering change, selected_action/final_action/new direct_command/new execution/new outcome observation creation, persistence, raw weighted sum, purpose creation/change from affordance/feedback/tendency, direct endocrine/tendency feed, memory/retention write, predictor use/mutation, production behavior, or proof claim from b167 reordered-candidate feedback application records. b167 applies feedback only as same-session sandbox record-only evidence.
-- b167 records keep candidate_reordering_created=False; record-only feedback application is not candidate ordering authority.
-- No actual feedback-gated candidate reordering, candidate score change, runtime next-cycle ordering change, feedback loop, selected_action, final_action, new direct_command, new execution, new outcome observation, persistence, raw weighted sum, purpose creation/change from affordance/feedback/tendency, direct endocrine/tendency feed, memory/retention write, predictor use/mutation, production behavior, or proof claim from b168 reordered-candidate reordering approval-boundary records. b168 allows future reordering only.
-- No selected_action, final_action, direct command, execution, new outcome observation, candidate score change, runtime next-cycle ordering change, feedback loop, persistence, raw weighted sum, purpose creation/change from affordance/feedback/tendency, direct endocrine/tendency feed, memory/retention write, predictor use/mutation, production behavior, or proof claim from b169 reordered-candidate feedback-gated candidate reordering records. b169 creates same-session sandbox-only advisory reordering records only.
-- No selected_action, final_action, direct command, execution, new outcome observation, next-cycle selection, open-ended runtime loop, long-term memory write, retention write, memory admission, habit/skill anchor creation, predictor read/influence/mutation, direct endocrine/tendency feed, production behavior, or proof claim from b170 thought/memory/action mini-loop records. b170 creates one-cycle same-session sandbox trace links only.
-- No action intent, action gateway call, execution, feedback packet, direct endocrine/tendency feed, raw API access, semantic vision, object recognition, memory/retention write, predictor use, production behavior, or proof-of-learning claim from Qingyin Bridge grounded capability maps. b135 permits capability-map creation only.
-- No cortisol-like pressure runtime application, persistence, never-try state, or permanent action ban.
-- No exploration blocking, curiosity override, or mentor override blocking.
-- No Long-term Memory write, Core Memory write, Archive Memory write, retained JSONL write, retention write, predictor memory influence, action-selection influence, selected_action, or final_action from the minimal reviewed lesson memory record, preview-only influence view, approval record, bounded controlled runner tendency shift, or Level 3 sandbox rerun tendency trace.
-- No automatic retention.
-- No semantic / fuzzy / vector retrieval.
-- No predictor mutation.
-- No four/five-layer memory runtime.
-- No Archive Memory or Anchor Layer runtime.
+This file is the active short index. Archive files preserve older milestone detail.
+
+## Current Safe Claim
+
+b175 lets the b174 top hinted same-session sandbox candidate move through one compact existing sandbox action path:
+
+```text
+hint-influenced ordering
+-> selected_action
+-> final_action
+-> direct_command
+-> one sandbox execution
+-> outcome observation
+```
+
+The three deterministic paths are:
+
+- `reach_front_item` -> `sandbox.arbitration.reach_front_item` -> `front_item_reached`
+- `wait_or_observe` -> `sandbox.arbitration.wait_or_observe` -> `local_context_observed`
+- `observe_or_alternative_probe` -> `sandbox.arbitration.observe_or_alternative_probe` -> `local_context_observed`
+
+This is same-session sandbox-only record evidence. It is not production behavior, not long-term learning, and not proof of consciousness.
+
+## Recent Phase0 Mini-Loop Chain
+
+```text
+b170 one-cycle thought/action/working-memory trace
+-> b171 record-only consistency evaluation
+-> b172 temporary alignment signal
+-> b173 signal readback and weak candidate hint
+-> b174 hint-influenced sandbox advisory ordering
+-> b175 compact next sandbox action path and outcome observation
+```
+
+Plain wording:
+
+The first sandbox cycle can now leave a temporary signal, the next thought step can read it as a weak hint, that hint can move a candidate to the front of a sandbox advisory order, and the top candidate can run once in the sandbox so its result can be observed.
+
+Compatibility anchor for b170 B0/10 self-check: b170 Thought Memory Action Parallel Mini Loop evidence.
+
+## What b175 Adds
+
+- `selected_action_created=True`
+- `final_action_created=True`
+- `direct_command_created=True`
+- `execution_count=1`
+- `outcome_observation_created=True`
+- `hallucination_self_check.passed=True`
+- `boundary_audit.boundary_number=175`
+
+## Still Blocked
+
+- No working-memory update from b175 outcome.
+- No feedback evaluation or feedback application.
+- No candidate reordering beyond the b174 source ordering.
+- No candidate score mutation.
+- No runtime next-cycle candidate ordering.
+- No external tool operation.
+- No production/runtime behavior.
+- No production/runtime memory-influenced behavior is allowed.
+- No long-term, Core, Archive, retained JSONL, or persistent memory write.
+- No memory admission, habit, or skill anchor.
+- No retention write.
+- No predictor read, influence, or mutation.
+- No direct endocrine feed.
+- No direct tendency feed.
+- No raw weighted sum as direct decision authority.
+- No affordance used as desire.
+- No tendency override of purpose or affordance gate.
 - No proof-of-learning claim.
-- No consciousness, awakening, subjective understanding, subjective pleasure, biological hormone, or subjective emotion proof.
+- No consciousness or awakening claim.
 
-## Current Milestone Index
-- Bounded local dead-end memory and valid dead-end A/B control details are archived.
-- Simulated symbolic first-person vision grounding details are archived.
-- Experience abstraction, integrated trace, persistent eligibility, generalized memory, and mimetic endocrine trace milestones are archived.
-- Eye-structure simulation and focus selector trace/checker milestones are archived.
-- Phase 0 lesson dry-run/evidence/session-experience and trial/bucket link milestones are archived.
-- Mentor-Gated Experience Retention, Retention Readback, and Retention Listing milestones are archived.
-- Visual and memory influence compressed milestone: Visual-Retention Snapshot, Minimal Visual Grounding Trial milestone, Eye Line Pause / Memory-Influence Roadmap milestone, Memory Influence Dry-Run Contrast milestone, and Runtime Tendency Memory Influence Safety milestone are completed and archived. Current terms retained: Minimal Visual Grounding Trial v0; Visual Prediction Error + Attention Priority Preview Minimal v0; controlled symbolic visual change; human-readable grounding trial summary; notice/ignore attention priority previews; five-layer memory framework boundary -> retained exact-key lookup -> retained experience into dry-run -> first memory-influenced behavior gate; same_exact_key_only; check_before_retry 0.5 -> 0.6; runtime_tendency_changed=True; memory_on 0.45/0.60; memory_off_again returns 0.50/0.50; max_absolute_delta <= 0.10.
-- Phase0 Level 0-1 milestone: Level 0 obstacle memory flip and Level 1 first contact danger completed. Safe claim: ASHL Core can show content-sensitive bidirectional runtime tendency memory influence in a controlled obstacle fixture, then pass a controlled one-step symbolic danger check in sandbox. Level 0 rejects one-way caution bias: retry_failed memory makes check_before_retry 0.60 > retry_same_action 0.45; retry_succeeded memory makes retry_same_action 0.60 > check_before_retry 0.45. Level 1: front_symbol=d; danger_ahead=True; check_before_retry executed once; danger_detected=True; retry_same_action_executed=False; movement_executed=False; outcome_match=True; sandbox_check_success=True; human review required before any lesson. Forbidden: no pathfinding, goal reach, multi-step loop, production/runtime action selection, selected_action, final_action, direct command, object recognition, semantic vision, lesson application, memory/retention write, predictor mutation, or proof-of-learning claim.
-- Generic lesson/application compressed milestone: Generic Lesson Evidence Pipeline milestone and Reviewed Lesson Application Boundary reconciliation completed. generic decisions bridge to reviewed lesson preview/dry-run/trial trace/before-after/lesson_effect_evidence_trace; lesson_effect_evidence_trace is evidence only; none are application approval; explicit human application approval remains required before any application.
-- Explicit approval and Level 1-3 sandbox application compressed milestone: Explicit User Approval Source Boundary correction, Level 1 Sandbox Lesson Application milestone, Level 2 Sandbox Application milestone, and Level 3 Toy Minefield Multi-Step Sandbox milestone completed. explicit_human_application_approval must come from an explicit user/project-owner statement; Codex/AI may record or validate approval but cannot grant it; Level 2 moved from dry-run-only into sandbox-only application; target_scope=phase0_level3_toy_minefield_sandbox_only. Forbidden: no production promotion, memory/retention/retained JSONL write, predictor mutation, selected_action/final_action/direct command outside validated sandbox scopes, or proof-of-learning claim.
-- Phase0 Documentation Consolidation milestone: Documentation consolidation only; no new ASHL Core runtime, sandbox, memory, retention, predictor, action-selection, production, or proof-of-learning capability added. Entry points: docs/phase0_status.md, docs/phase0_capability_matrix.md, docs/phase0_doc_index.md.
-- Memory-Influenced Sandbox Re-run milestone: ASHL Core can re-run the deterministic Phase0 Level 3 toy minefield variant suite with memory_off/memory_on/memory_off_after_rollback tendency traces from the approved bounded runtime influence sourced through memory_influence_preview over reviewed_lesson_memory_candidate after the preview-only memory influence validation boundary. Evidence: variants safe_path_variant, risky_repeat_trap_variant, blocked_path_fallback_variant; memory_on increases check_before_retry 0.50 -> 0.60 and decreases retry_same_action_without_check 0.50 -> 0.45; memory_off_after_rollback 0.50/0.50; max_absolute_delta <= 0.10; dirty_state_after_rollback=False. Forbidden: no selected_action, final_action, direct command, predictor read/influence/mutation, production behavior, retained JSONL write, retention write, autonomous learning/action, or proof-of-learning.
-- Level 3 Toy Repair Multi-Step Sandbox milestone: ASHL Core can run, observe, evaluate, and summarize a deterministic Phase0 Level 3 toy repair multi-step sandbox trace where failed quick repair requires inspect_device before attempt_safe_repair. Evidence: toy_device_alpha; failure_key=quick_fix_failed_due_to_hidden_fault; invalid repeat without inspection blocked; check_before_retry_observed=True; safe_alternative_used_after_check=True. Forbidden: no memory runtime influence, selected_action, final_action, direct command, predictor mutation, production behavior, retained JSONL write, retention write, autonomous learning/action, or proof-of-learning.
-- Memory-Influenced Toy Repair Re-run milestone: ASHL Core can re-run deterministic Level 3 toy repair contexts with memory_off/memory_on/memory_off_after_rollback tendency traces using the approved bounded runtime influence. Evidence: toy_device_hidden_fault_repair_v0, invalid_repeat_without_inspection_negative_context, safe_repair_after_inspection_context; memory_on increases check_before_retry 0.50 -> 0.60 and decreases retry_same_action_without_check 0.50 -> 0.45; invalid repeat without inspection remains blocked; safe repair after inspection remains available; rollback restores 0.50/0.50. Forbidden: no selected_action, final_action, direct command, predictor read/influence/mutation, production behavior, retained JSONL write, retention write, autonomous learning/action, or proof-of-learning.
-- b85-b107 Sandbox Action Loop compressed milestone: approved memory-influenced ordering, doubt/verification traces, same-session feedback/reordering, selected_action, execution, final_action, direct command, fixed two-cycle loop, time-paced candy loop, and each locomotion step through sandbox selected_action -> final_action -> direct command -> execution -> outcome evaluation. All remain sandbox-only with rollback/limits; no free choice, production behavior, persistent update, memory/retention write, predictor mutation, open-ended autonomy, or proof claim.
-- b108-b120 Endocrine / Visual-Spatial / Body Schema / Motor Intent compressed milestone: sandbox-only mimetic endocrine traces, internal response modulation preview, body-relative visual spatial trace, visual motor affordance preview, minimal body schema readiness gate, selected_motor_intent preview, motor-intent -> sandbox selected_action bridge, final_action approval boundary, body-motor final_action records, body-motor command execution loop, same-session feedback/settling traces, and feedback-gated advisory next-action pressure previews. Evidence includes candy_contact -> dopamine_like, high-sweetness cost tradeoff, visible-cell spatial trace, can_step_forward/can_reach/front_blocked affordances, readiness checks, empty->step_forward/item->reach_front/wall->no-intent previews, selected_action/final_action records for step_forward/reach_front, sandbox.body.step_forward -> moved_forward_one_cell -> movement_success_feedback/natural_settling -> continue_body_motor_exploration pressure preview, sandbox.body.reach_front -> front_item_reached -> reach_success_feedback/natural_settling -> inspect_or_reach_nearby_item pressure preview, and wall/no-feedback pressure blocked. Forbidden: no candidate reordering, selected_action/final_action/direct command creation from feedback, semantic vision, object recognition, pathfinding, production behavior, memory/retention write, predictor mutation, persistent endocrine/body schema, subjective/biological/proof claim.
-- b121-b174 Approved Purpose / Qingyin Bridge compressed milestone: settled pressure can pass future reordering boundary; proto-purpose can become approved_purpose; approved_purpose can drive sandbox-only advisory ordering, selected_action, final_action, direct_command, execution, outcome observation, same-session trace-only feedback, feedback-gated advisory reordering, checked signal arbitration, a selected_action approval boundary from arbitration, sandbox-only selected_action records from that boundary, a future final_action approval boundary, sandbox-only final_action records, a future direct_command approval boundary, sandbox-only direct_command records, a future execution approval boundary, sandbox-only execution records, sandbox-only outcome observation records, a future same-session sandbox feedback approval boundary, same-session sandbox feedback records, a future same-session sandbox feedback application approval boundary, same-session sandbox record-only feedback application records, a future feedback-gated candidate reordering approval boundary, same-session sandbox-only advisory reordering records, a future selected_action approval boundary from top-ranked advisory reordering records, same-session sandbox-only selected_action records from those boundaries, a future final_action approval boundary from those selected_actions, same-session sandbox-only final_action records from those reordered selected_actions, a future direct_command approval boundary from those final_actions, same-session sandbox-only direct_command records from those reordered final_actions, a future execution approval boundary from those reordered direct_commands, same-session sandbox-only execution records from those reordered direct_commands, same-session sandbox-only outcome observation records from those reordered executions, a future same-session sandbox feedback approval boundary from those reordered observations, same-session sandbox feedback evaluation records from those reordered observations, a future same-session sandbox feedback application approval boundary from those reordered feedback records, same-session sandbox record-only feedback application records from those reordered feedback records, future feedback-gated candidate reordering approval boundaries from those reordered record-only feedback application records, and same-session sandbox-only advisory reordering records from those reordered feedback records. Evidence: selected_action_created=True in validated sandbox-only scopes, selected_action_scope=same_session_sandbox_only, future_final_action_allowed=True for reordered selected_actions, b155 approval records kept selected_action_created_in_this_package=False, b157 approval records kept final_action_created_in_this_package=False and final_action_created=False before b158, b158 final_action_created=True with final_action_scope=same_session_sandbox_only and direct_command_created=False before b159, b159 future_direct_command_allowed=True for reordered final_actions, direct_command_created_in_this_package=False, b160 direct_command_created=True with direct_command_scope=same_session_sandbox_only and execution_count=0, b161 future_execution_allowed=True and sandbox_execution_created_in_this_package=False, execution_result_created_in_this_package=False, new_outcome_observation_created_in_this_package=False, feedback_loop_created_in_this_package=False, candidate_scores_changed_in_this_package=False, runtime_next_cycle_candidate_ordering_changed_in_this_package=False, b162 sandbox_action_executed=True with execution_scope=same_session_sandbox_only, execution_result_created=True, execution_count=1, b163 outcome_observation_created=True with outcome_scope=same_session_sandbox_only, arbitration_reordered_positive_item_contact_observed, arbitration_reordered_wait_context_observed, arbitration_reordered_mismatch_probe_context_observed, b164 future_feedback_allowed=True for reordered observations, arbitration_reordered_positive_item_contact_feedback, arbitration_reordered_wait_context_observation_feedback, arbitration_reordered_mismatch_probe_context_feedback, b165 feedback_created=True, b165 feedback_evaluation_created=True, b166 future_feedback_application_allowed=True, b166 records keep feedback_applied_in_this_package=False, b167 feedback_application_created=True, b167 feedback_applied=True, b167 feedback_application_effect_scope=record_only_no_ordering_change, b168 future_candidate_reordering_allowed=True, b168 records keep candidate_reordering_applied_in_this_package=False, candidate_ordering_changed_in_this_package=False, candidate_scores_changed_in_this_package=False, next_cycle_candidate_ordering_changed_in_this_package=False, b169 candidate_reordering_created=True, b169 candidate_reordering_applied=True, b169 candidate_order_changed=True, b169 reordering_effect_scope=same_session_sandbox_advisory_record_only, b169 records keep candidate_scores_changed=False, runtime_next_cycle_candidate_ordering_changed=False, new_selected_action_created=False, new_final_action_created=False, new_direct_command_created=False, new_execution_created=False, and new_outcome_observation_created=False, final_action_created=True in earlier final_action scopes, direct_command_created=True, future_execution_allowed=True, sandbox_action_executed=True, outcome_observation_created=True, future_feedback_allowed=True, feedback_created=True, feedback_evaluation_created=True, future_feedback_application_allowed=True, feedback_applied=True only with `feedback_application_effect_scope=record_only_no_ordering_change`, future_candidate_reordering_allowed=True for `sandbox.arbitration.reach_front_item`, `sandbox.arbitration.wait_or_observe`, and `sandbox.arbitration.observe_or_alternative_probe`, candidate_reordering_created=True, candidate_reordering_applied=True, candidate_order_changed=True, reordering_effect_scope=same_session_sandbox_advisory_record_only, future_selected_action_allowed=True for reordered candidates `reach_front_item`, `wait_or_observe`, and `observe_or_alternative_probe`; b162 records keep outcome_observation_created=False; b163 records keep feedback_loop_created=False, candidate_reordering_created=False, candidate_scores_changed=False, runtime_next_cycle_candidate_ordering_changed=False, new_selected_action_created=False, new_final_action_created=False, new_direct_command_created=False, and new_execution_created=False; b164 records keep feedback_evaluation_created_in_this_package=False; b165 records keep feedback_applied=False, feedback_loop_created=False, candidate_reordering_created=False, candidate_scores_changed=False, next_cycle_candidate_ordering_changed=False, new_action_created=False, new_execution_created=False, and new_outcome_observation_created=False; b166 records keep feedback_loop_created_in_this_package=False, candidate_reordering_created_in_this_package=False, candidate_scores_changed_in_this_package=False, next_cycle_candidate_ordering_changed_in_this_package=False, new_action_created_in_this_package=False, new_execution_created_in_this_package=False, and new_outcome_observation_created_in_this_package=False; b167 records keep feedback_loop_created=False, candidate_reordering_created=False, candidate_scores_changed=False, next_cycle_candidate_ordering_changed=False, new_action_created=False, new_execution_created=False, and new_outcome_observation_created=False; b168 records keep candidate_reordering_applied_in_this_package=False, candidate_ordering_changed_in_this_package=False, candidate_scores_changed_in_this_package=False, next_cycle_candidate_ordering_changed_in_this_package=False, new_action_created_in_this_package=False, new_execution_created_in_this_package=False, and new_outcome_observation_created_in_this_package=False. Forbidden: no raw weighted sum, purpose creation/change from affordance/feedback/tendency, feedback loop, candidate score/runtime next-cycle change, selected_action/final_action/direct command/execution/new outcome observation from b169, no selected_action/final_action/direct command/execution/new outcome observation/next-cycle selection/open-ended loop/long-term memory or retention write/predictor use/production behavior/proof claim from b170 mini-loop records, no candidate hint/next-cycle read/action/memory/predictor/production/proof claim from b171 consistency evaluation records, no readback/candidate hint/reordering/action/memory/predictor/production/proof claim from b172 temporary alignment signal records before b173, no candidate reordering/action/memory/predictor/production/proof claim from b173 signal readback candidate hint records before b174, and no action/memory/predictor/production/proof claim from b174 candidate hint ordering records.
-- b170 Thought Memory Action Parallel Mini Loop evidence: thought_preview_created=True, action_observation_created=True, working_memory_update_created=True, parallel_loop_created=True, cycle_index=1, max_cycles=1, B0/10 self-check passed, and boundary audit passed. These are trace links only.
-- b171 Consistency Evaluation evidence: consistency_evaluation_created=True, preview_candidate_matches_action_observation=True, working_memory_links_preview_and_observation=True, alignment_label=thought_action_memory_aligned, temporary_signal_created=False, candidate_hint_created=False, next_cycle_read_enabled=False, and boundary audit passed. These are record-only evaluations.
-- No temporary signal, candidate hint, next-cycle read, selected_action, final_action, direct command, execution, new outcome observation, memory/retention write, memory admission, habit/skill anchor creation, predictor read/influence/mutation, direct endocrine/tendency feed, production behavior, or proof claim from b171 consistency evaluation records. b171 creates record-only alignment checks only.
-- b172 Temporary Alignment Signal evidence: temporary_alignment_signal_created=True, signal_label=temporary_thought_action_memory_alignment_signal, signal_scope=same_session_sandbox_only, signal_lifetime=same_session_temporary_only, readback_enabled=False, candidate_hint_created=False, action_selection_enabled=False, future_readback_requires_separate_boundary=True, and boundary audit passed. This is a temporary record-only marker.
-- No readback, candidate hint, candidate reordering, selected_action, final_action, direct command, execution, new outcome observation, memory/retention write, memory admission, habit/skill anchor creation, predictor read/influence/mutation, direct endocrine/tendency feed, production behavior, or proof claim from b172 temporary alignment signal records.
-- b173 Signal Readback Candidate Hint evidence: signal_readback_created=True, candidate_hint_created=True, hint_strength=weak, hint_authority=candidate_input_only, candidate_for_hint in reach_front_item / wait_or_observe / observe_or_alternative_probe, and boundary audit passed.
-- No candidate reordering, candidate score change, runtime next-cycle ordering change, selected_action, final_action, direct command, execution, new outcome observation, memory/retention write, memory admission, habit/skill anchor creation, predictor read/influence/mutation, direct endocrine/tendency feed, production behavior, or proof claim from b173 signal readback candidate hint records.
-- b174 Candidate Hint Into Ordering evidence: candidate_ordering_created=True, candidate_order_changed=True, candidate_set_preserved=True, hint_used_for_ordering=True, primary_ranked_action in reach_front_item / wait_or_observe / observe_or_alternative_probe, and boundary audit passed.
-- No selected_action, final_action, direct command, execution, new outcome observation, candidate score mutation, runtime next-cycle ordering, memory/retention write, memory admission, habit/skill anchor creation, predictor read/influence/mutation, direct endocrine/tendency feed, production behavior, or proof claim from b174 candidate hint ordering records.
-- Retained arbitration feedback/application labels: arbitration_positive_item_contact_feedback, arbitration_wait_context_observation_feedback, arbitration_mismatch_probe_context_feedback, arbitration_positive_item_contact_feedback_application, arbitration_wait_context_observation_feedback_application, arbitration_mismatch_probe_context_feedback_application, arbitration_reordered_positive_item_contact_feedback_application, arbitration_reordered_wait_context_observation_feedback_application, and arbitration_reordered_mismatch_probe_context_feedback_application. Arbitration ordering rule remains purpose > safety > affordance gate > same-purpose feedback > bounded tendency nudge.
-- b135 Qingyin Bridge detail retained in compressed form: grounded_text_token with declared sandbox body capabilities such as sandbox.body.step_forward may become a capability map only. action_intent_created=False; action_gateway_called=False; feedback_packet_created=False.
-## Archive
-- Older milestone details are archived in `docs/boundary_index_archive_2026_06.md`.
+## Sandbox / Production Distinction
 
-## Currently Deferred Areas
-- Open language interfaces: LLM response generation / teaching chat loop / free text conversation.
-- Learning writes: lesson_candidate pipeline / lesson_store write / Memory Layer write / persistent state-action memory.
-- External senses/sandbox runtimes: Screen Sense / Camera Sense / Symbol Grounding / Audio Sense / STT / TTS / sandbox runtime / trace replay / tactile trace persistence / bounded senses runtime / state store.
-- Autonomous behavior: autonomous action selection / autonomous goal planning / intrinsic action selection runtime / need-state driven action loop.
-- Behavior-changing learning: automatic trial improvement / long-term learning / tactile learning / repeated failure adaptation / full learning pipeline.
-- Review/activation/runtime identity: evaluator runtime / review decision runtime / selection eligibility runtime / activation runtime / lesson_candidate builders / Qingyin runtime / mentor feedback runtime / Core Seed update runtime / self-modification runtime.
-- Mimetic endocrine runtime: formulas / signal interactions / endocrine state runtime / reward bias changes / autonomous attention / protective triggers / trust-based approval.
-- Push-box full solve remains deferred.
+Earlier Phase0 Level 1 and Level 2 work created sandbox-only lesson application, observation, and evaluation records. Those records do not constitute production/runtime memory-influenced behavior.
 
-## Boundary Index Line Policy
-- `current_boundary_index.md` should stay <= 130 lines when possible.
-- Hard limit: <= 150 lines.
-- Older milestone details must be moved to archive files; archive moves must not change claim meaning and are documentation-only.
+Level 2 Sandbox Application milestone and Level 3 Toy Minefield Multi-Step Sandbox milestone remain sandbox-only historical milestones, now archived for detail.
 
-## Update Rule
-- This file must be updated every time an Update Log is generated.
-- Boundary Index sync may also be milestone-triggered.
+Memory is a warning sign, not a ban command. Memory-influenced behavior remains practically blocked unless all required gates and checks are satisfied.
+
+## Current Planning Pointer
+
+The active closure route is:
+
+- `docs/phase0_minimal_learning_action_memory_loop_plan.md`
+
+Next useful package:
+
+```text
+Outcome To Same-Session Working Memory
+```
+
+Plain wording:
+
+Take the b175 observed second-cycle sandbox result and update same-session working memory only. Do not write long-term memory, do not apply feedback, do not reorder candidates again, and do not claim learning.
+
+## Line Count Rule
+
+This current index must stay under 150 lines. Older details must be archived before the file grows again.

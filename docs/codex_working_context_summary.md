@@ -57,7 +57,7 @@ The point is not to deny the relationship between the user and Qingyin. The poin
 Current Boundary Index at the time this summary was written:
 
 ```text
-2026-06-09-b174
+2026-06-09-b175
 ```
 
 Current endpoint:
@@ -69,6 +69,7 @@ b169 advisory reordering evidence
 -> b172 same-session sandbox-only temporary alignment signal
 -> b173 same-session signal readback and weak candidate hint
 -> b174 same-session sandbox advisory ordering from weak hint
+-> b175 compact next sandbox action path and outcome observation
 ```
 
 Plain meaning:
@@ -85,15 +86,18 @@ b173 can read that temporary signal once and turn it into a weak `candidate_inpu
 
 b174 can use that weak hint to change a same-session sandbox advisory candidate order while preserving the candidate set.
 
-## What b174 Does Not Do
+b175 can take the top hinted candidate from b174 and run one compact same-session sandbox action path: selected_action, final_action, direct_command, one execution, and outcome observation.
 
-b174 does not create:
+## What b175 Does Not Do
 
-- selected_action
-- final_action
-- direct command
-- execution
-- new outcome observation
+b175 does not create:
+
+- working-memory update from the second-cycle outcome
+- feedback evaluation
+- feedback application
+- candidate reordering beyond the b174 source ordering
+- candidate score mutation
+- runtime next-cycle ordering
 - long-term memory write
 - retention write
 - memory admission
@@ -102,6 +106,7 @@ b174 does not create:
 - direct endocrine feed
 - direct tendency feed
 - production behavior
+- consciousness claim
 - proof of learning
 
 ## Main System Lines
@@ -230,16 +235,16 @@ Before coding, Codex should answer in plain language:
 4. What visible output will exist after the work?
 5. What does it still refuse to do?
 
-For the current b174 endpoint, a useful next real step would be something like:
+For the current b175 endpoint, the next real step should be:
 
 ```text
-run the top hinted candidate through a compact sandbox action path
-and observe the second-cycle outcome
+take the observed second-cycle sandbox outcome
+and update same-session working memory only
 ```
 
-That would be progress because the hinted ordering would finally produce a bounded second-cycle sandbox action/outcome record.
+That would be progress because the second-cycle result would finally return to temporary working memory, closing the visible thought/action/memory loop one notch further.
 
-It still must stay inside the sandbox compact action path and must not write long-term memory, affect production, or claim learning.
+It still must not write long-term memory, apply feedback, reorder candidates again, affect production, or claim learning.
 
 The current Phase 0 closure plan is:
 

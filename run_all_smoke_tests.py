@@ -494,6 +494,9 @@ from ashl_core.thought_memory_action_parallel_mini_loop_signal_readback_candidat
 from ashl_core.thought_memory_action_parallel_mini_loop_candidate_hint_into_ordering_minimal import (
     run_thought_memory_action_parallel_mini_loop_candidate_hint_into_ordering_minimal_check,
 )
+from ashl_core.thought_memory_action_parallel_mini_loop_ordering_to_next_sandbox_action_minimal import (
+    run_thought_memory_action_parallel_mini_loop_ordering_to_next_sandbox_action_minimal_check,
+)
 from ashl_core.minimal_visual_grounding_trial import run_minimal_visual_grounding_trial_check
 from ashl_core.visual_prediction_error_attention_priority_preview_minimal import (
     run_visual_prediction_error_attention_priority_preview_minimal_check,
@@ -10867,230 +10870,76 @@ def smoke_formal_lesson_candidate_creation_boundary_audit_docs() -> dict:
 
 def smoke_current_boundary_index_docs() -> dict:
     doc_path = Path("docs/current_boundary_index.md")
-    archive_path = Path("docs/boundary_index_archive_2026_06.md")
+    archive_path = Path("docs/boundary_archive/current_boundary_index_2026-06-25_b174.md")
+    legacy_archive_path = Path("docs/boundary_index_archive_2026_06.md")
     readme_path = Path("README.md")
     research_plan_path = Path("docs/research_plan.md")
     doc = doc_path.read_text(encoding="utf-8") if doc_path.exists() else ""
     archive = archive_path.read_text(encoding="utf-8") if archive_path.exists() else ""
+    legacy_archive = legacy_archive_path.read_text(encoding="utf-8") if legacy_archive_path.exists() else ""
     readme = readme_path.read_text(encoding="utf-8") if readme_path.exists() else ""
     research_plan = research_plan_path.read_text(encoding="utf-8") if research_plan_path.exists() else ""
     compact_required_terms = [
-        "Boundary Index Version: 2026-06-09-b174",
-        "Last update log: Thought Memory Action Parallel Mini Loop Candidate Hint Into Ordering Minimal v0",
-        "docs/boundary_index_archive_2026_06.md",
-        "Minimal Visual Grounding Trial v0",
-        "Visual Prediction Error + Attention Priority Preview Minimal v0",
-        "Eye Line Pause / Memory-Influence Roadmap milestone",
-        "Memory Influence Dry-Run Contrast milestone",
-        "Runtime Tendency Memory Influence Safety milestone",
-        "runtime_tendency_changed=True",
-        "memory_on 0.45/0.60",
-        "memory_off_again returns 0.50/0.50",
-        "max_absolute_delta <= 0.10",
-        "check_before_retry 0.5 -> 0.6",
-        "controlled symbolic visual change",
-        "human-readable grounding trial summary",
-        "notice/ignore attention priority previews",
-        "five-layer memory framework boundary -> retained exact-key lookup -> retained experience into dry-run -> first memory-influenced behavior gate",
-        "same_exact_key_only",
-        "No object recognition.",
-        "No semantic vision or semantic labels.",
-        "No active_focus, focus_applied, or attention_control.",
-        "No automatic lesson candidate creation.",
-        "No production action selection.",
-        "No semantic / fuzzy / vector retrieval.",
-        "No predictor mutation.",
-        "No proof-of-learning claim.",
-        "Reviewed Lesson Application Boundary reconciliation",
-        "lesson_effect_evidence_trace is evidence only",
-        "none are application approval",
-        "explicit human application approval",
-        "Explicit User Approval Source Boundary correction",
-        "explicit_human_application_approval must come from an explicit user/project-owner statement",
-        "Codex/AI may record or validate approval but cannot grant it",
-        "Level 1 Sandbox Lesson Application milestone",
-        "Level 2 Sandbox Application milestone",
-        "Level 2 moved from dry-run-only into sandbox-only application",
-        "Level 3 Toy Minefield Multi-Step Sandbox milestone",
-        "target_scope=phase0_level3_toy_minefield_sandbox_only",
-        "Phase0 Documentation Consolidation milestone",
-        "Documentation consolidation only",
-        "Memory-Influenced Sandbox Re-run milestone",
-        "Level 3 Toy Repair Multi-Step Sandbox milestone",
-        "Memory-Influenced Toy Repair Re-run milestone",
-        "b85-b107 Sandbox Action Loop compressed milestone",
-        "selected_action -> final_action -> direct command -> execution -> outcome evaluation",
-        "b108-b120 Endocrine / Visual-Spatial / Body Schema / Motor Intent compressed milestone",
-        "b121-b174 Approved Purpose / Qingyin Bridge compressed milestone",
-        "approval-boundary -> approved_purpose -> sandbox-only advisory candidate ordering -> selected_action -> final_action -> direct_command -> execution -> outcome observation -> same-session feedback trace -> feedback-gated sandbox-only advisory reordering -> checked signal arbitration -> future selected_action approval boundary -> sandbox-only selected_action -> future final_action approval boundary -> sandbox-only final_action -> future direct_command approval boundary -> sandbox-only direct_command -> future execution approval boundary -> sandbox-only execution -> sandbox-only outcome observation -> future same-session sandbox feedback approval boundary -> same-session sandbox feedback evaluation records -> future same-session sandbox feedback application approval boundary -> same-session sandbox record-only feedback application records -> future feedback-gated candidate reordering approval boundary -> same-session sandbox-only advisory reordering records -> future selected_action approval boundary from reordered candidates -> same-session sandbox-only selected_action records from reordered candidates -> future final_action approval boundary from reordered selected_actions -> same-session sandbox-only final_action records from reordered selected_actions -> future direct_command approval boundary from reordered final_actions -> same-session sandbox-only direct_command records from reordered final_actions -> future execution approval boundary from reordered direct_commands -> same-session sandbox-only execution records from reordered direct_commands -> same-session sandbox-only outcome observation records from reordered executions -> future same-session sandbox feedback approval boundary from reordered observations -> same-session sandbox feedback evaluation records from reordered observations -> future same-session sandbox feedback application approval boundary from reordered feedback records -> same-session sandbox record-only feedback application records from reordered feedback -> future feedback-gated candidate reordering approval boundary from reordered record-only feedback applications -> same-session sandbox-only advisory reordering records from reordered feedback",
-        "sandbox-only advisory candidate ordering",
+        "Boundary Index Version: 2026-06-09-b175",
+        "Last update log: Thought Memory Action Parallel Mini Loop Ordering To Next Sandbox Action Minimal v0",
+        "Previous Boundary Index Version: 2026-06-09-b174",
+        "docs/boundary_archive/current_boundary_index_2026-06-25_b174.md",
+        "hint-influenced ordering",
+        "selected_action",
+        "final_action",
+        "direct_command",
+        "one sandbox execution",
+        "outcome observation",
         "reach_front_item",
-        "grounded_text_token",
-        "sandbox.body.step_forward",
-        "action_intent_created=False",
-        "action_gateway_called=False",
-        "feedback_packet_created=False",
-        "selected_action_created=True",
-        "selected_action_scope=same_session_sandbox_only",
-        "future_final_action_allowed=True for reordered selected_actions",
-        "b158 final_action_created=True with final_action_scope=same_session_sandbox_only",
-        "future_direct_command_allowed=True for reordered final_actions",
-        "direct_command_created_in_this_package=False",
-        "b160 direct_command_created=True with direct_command_scope=same_session_sandbox_only",
-        "execution_count=0",
-        "b161 future_execution_allowed=True",
-        "sandbox_execution_created_in_this_package=False",
-        "execution_result_created_in_this_package=False",
-        "b162 sandbox_action_executed=True with execution_scope=same_session_sandbox_only",
-        "b162 records keep outcome_observation_created=False",
-        "b163 outcome_observation_created=True with outcome_scope=same_session_sandbox_only",
-        "arbitration_reordered_positive_item_contact_observed",
-        "arbitration_reordered_wait_context_observed",
-        "arbitration_reordered_mismatch_probe_context_observed",
-        "b163 records keep feedback_loop_created=False",
-        "b164 future_feedback_allowed=True for reordered observations",
-        "arbitration_reordered_positive_item_contact_feedback",
-        "arbitration_reordered_wait_context_observation_feedback",
-        "arbitration_reordered_mismatch_probe_context_feedback",
-        "b164 records keep feedback_evaluation_created_in_this_package=False",
-        "b165 feedback_created=True",
-        "b165 feedback_evaluation_created=True",
-        "b165 records keep feedback_applied=False",
-        "b166 future_feedback_application_allowed=True",
-        "b166 records keep feedback_applied_in_this_package=False",
-        "b167 feedback_application_created=True",
-        "b167 feedback_applied=True",
-        "b167 feedback_application_effect_scope=record_only_no_ordering_change",
-        "b167 records keep candidate_reordering_created=False",
-        "b168 future_candidate_reordering_allowed=True",
-        "b168 records keep candidate_reordering_applied_in_this_package=False",
-        "b169 candidate_reordering_created=True",
-        "b169 candidate_reordering_applied=True",
-        "b169 candidate_order_changed=True",
-        "b169 reordering_effect_scope=same_session_sandbox_advisory_record_only",
-        "b169 records keep candidate_scores_changed=False",
-        "b170 thought/memory/action mini-loop records",
-        "thought_preview_created=True",
-        "action_observation_created=True",
-        "working_memory_update_created=True",
-        "parallel_loop_created=True",
-        "cycle_index=1",
-        "max_cycles=1",
-        "b171 Consistency Evaluation evidence",
-        "consistency_evaluation_created=True",
-        "preview_candidate_matches_action_observation=True",
-        "working_memory_links_preview_and_observation=True",
-        "alignment_label=thought_action_memory_aligned",
-        "temporary_signal_created=False",
-        "candidate_hint_created=False",
-        "next_cycle_read_enabled=False",
-        "b172 Temporary Alignment Signal evidence",
-        "temporary_alignment_signal_created=True",
-        "signal_label=temporary_thought_action_memory_alignment_signal",
-        "signal_scope=same_session_sandbox_only",
-        "signal_lifetime=same_session_temporary_only",
-        "readback_enabled=False",
-        "action_selection_enabled=False",
-        "future_readback_requires_separate_boundary=True",
-        "b173 Signal Readback Candidate Hint evidence",
-        "signal_readback_created=True",
-        "hint_strength=weak",
-        "hint_authority=candidate_input_only",
-        "candidate_for_hint in reach_front_item / wait_or_observe / observe_or_alternative_probe",
-        "b174 Candidate Hint Into Ordering evidence",
-        "candidate_ordering_created=True",
-        "candidate_order_changed=True",
-        "candidate_set_preserved=True",
-        "hint_used_for_ordering=True",
-        "primary_ranked_action in reach_front_item / wait_or_observe / observe_or_alternative_probe",
-        "runtime_next_cycle_candidate_ordering_changed=False",
-        "final_action_created=True",
-        "direct_command_created=True",
-        "outcome_observation_created=True",
-        "future_feedback_allowed=True",
-        "feedback_created=True",
-        "future_feedback_application_allowed=True",
-        "future_candidate_reordering_allowed=True",
-        "arbitration_positive_item_contact_feedback",
-        "arbitration_wait_context_observation_feedback",
-        "arbitration_mismatch_probe_context_feedback",
-        "arbitration_positive_item_contact_feedback_application",
-        "arbitration_wait_context_observation_feedback_application",
-        "arbitration_mismatch_probe_context_feedback_application",
-        "future_selected_action_allowed=True for reordered candidates `reach_front_item`, `wait_or_observe`, and `observe_or_alternative_probe`",
-        "future_execution_allowed=True",
-        "feedback_evaluation_created=True",
-        "feedback_applied=True",
-        "feedback_application_effect_scope=record_only_no_ordering_change",
-        "feedback_loop_created_in_this_package=False",
-        "candidate_reordering_created=True",
-        "candidate_reordering_applied=True",
-        "candidate_order_changed=True",
-        "reordering_effect_scope=same_session_sandbox_advisory_record_only",
-        "future_selected_action_allowed=True",
-        "selected_action_created_in_this_package=False",
-        "final_action_created_in_this_package=False",
-        "final_action_created=False",
-        "direct_command_created=False",
-        "sandbox_execution_created_in_this_package=False",
-        "new_outcome_observation_created_in_this_package=False",
-        "candidate_scores_changed_in_this_package=False",
-        "runtime_next_cycle_candidate_ordering_changed_in_this_package=False",
-        "purpose > safety > affordance gate > same-purpose feedback > bounded tendency nudge",
+        "wait_or_observe",
         "observe_or_alternative_probe",
-        "candy_contact -> dopamine_like",
-        "high-sweetness cost tradeoff",
-        "visible-cell spatial trace",
-        "can_step_forward/can_reach/front_blocked affordances",
-        "empty->step_forward/item->reach_front/wall->no-intent previews",
-        "reviewed_lesson_memory_candidate",
-        "minimal reviewed lesson memory record",
-        "controlled memory read path",
-        "preview-only memory influence validation boundary",
-        "memory_influence_preview",
-        "explicit user/project-owner approval",
-        "deterministic controlled runner",
-        "memory_off_after_rollback 0.50/0.50",
-        "dirty_state_after_rollback=False",
-        "memory_on increases check_before_retry",
-        "check_before_retry",
-        "retry_same_action_without_check",
-        "docs/phase0_status.md",
-        "docs/phase0_capability_matrix.md",
-        "docs/phase0_doc_index.md",
-        "`current_boundary_index.md` should stay <= 130 lines when possible.",
-        "Hard limit: <= 150 lines.",
+        "No working-memory update from b175 outcome.",
+        "No feedback evaluation or feedback application.",
+        "No candidate reordering beyond the b174 source ordering.",
+        "No production/runtime memory-influenced behavior is allowed.",
+        "No proof-of-learning claim.",
+        "No consciousness or awakening claim.",
+        "Level 2 Sandbox Application milestone",
+        "Level 3 Toy Minefield Multi-Step Sandbox milestone",
+        "Memory is a warning sign, not a ban command",
+        "Outcome To Same-Session Working Memory",
+        "This current index must stay under 150 lines.",
     ]
     archive_required_terms = [
+        "Boundary Index Version: 2026-06-09-b174",
+        "Last update log: Thought Memory Action Parallel Mini Loop Candidate Hint Into Ordering Minimal v0",
+        "b174 Candidate Hint Into Ordering evidence",
+        "candidate_ordering_created=True",
+        "candidate_set_preserved=True",
+        "runtime_next_cycle_candidate_ordering_changed=False",
+    ]
+    legacy_required_terms = [
         "# Boundary Index Archive 2026-06",
         "archive-only",
         "It does not introduce runtime behavior.",
-        "It does not change safe claims or forbidden claims.",
-        "Legacy / Dead-End Memory Milestones",
-        "Simulated Vision Grounding Milestone",
-        "Experience And Memory Milestones",
-        "Recent Visual-Retention Milestones",
-        "Minimal Visual Grounding Trial milestone",
-        "Archived Current-Index Compression 2026-06-22",
-        "b121 Body-Motor Feedback-Gated Candidate Reordering Approval Boundary milestone",
         "b136 Approved Purpose Sandbox Outcome Feedback milestone",
     ]
     line_count = len(doc.splitlines()) if doc else 0
     compact_passed = (
         doc_path.exists()
         and archive_path.exists()
+        and legacy_archive_path.exists()
         and all(term in doc for term in compact_required_terms)
         and all(term in archive for term in archive_required_terms)
+        and all(term in legacy_archive for term in legacy_required_terms)
         and line_count <= 150
-        and "2026-06-09-b159" in readme
-        and "docs/boundary_index_archive_2026_06.md" in readme
-        and "Boundary Index Compaction / Archive v0" in research_plan
-        and "Runtime Tendency Memory Influence Safety Sync Minimal v0" in research_plan
+        and "Thought Memory Action Parallel Mini Loop Ordering To Next Sandbox Action Minimal v0" in readme
+        and "Thought Memory Action Parallel Mini Loop Ordering To Next Sandbox Action Minimal v0" in research_plan
     )
     return _result(
-        "boundary_index_compaction_archive",
+        "boundary_index_current_archive",
         compact_passed,
-        {"doc": str(doc_path), "archive": str(archive_path), "line_count": line_count},
+        {
+            "doc": str(doc_path),
+            "archive": str(archive_path),
+            "legacy_archive": str(legacy_archive_path),
+            "line_count": line_count,
+        },
     )
 
 
@@ -11123,7 +10972,7 @@ def smoke_phase0_documentation_consolidation_minimal() -> dict:
         and matrix_path.exists()
         and index_path.exists()
         and plan_path.exists()
-        and "Boundary Index Version: 2026-06-09-b174" in status
+        and "Boundary Index Version: 2026-06-09-b175" in status
         and "Current Safe Capability" in status
         and "Thought Memory Action Parallel Mini Loop Candidate Hint Into Ordering Minimal v0" in status
         and "Thought Memory Action Parallel Mini Loop Signal Readback Candidate Hint Minimal v0" in status
@@ -11316,7 +11165,7 @@ def smoke_phase0_documentation_inventory_and_consistency_reconciliation() -> dic
     boundary = Path("docs/current_boundary_index.md").read_text(encoding="utf-8")
     passed = (
         all(path.exists() for path in required_paths)
-        and "Boundary Index Version: 2026-06-09-b174" in texts[Path("docs/phase0_status.md")]
+        and "Boundary Index Version: 2026-06-09-b175" in texts[Path("docs/phase0_status.md")]
         and "Inventory count:" in texts[Path("docs/phase0_doc_inventory.md")]
         and "docs/phase0_versioning_policy.md" in texts[Path("docs/phase0_doc_inventory.md")]
         and "unknown_needs_review" in texts[Path("docs/phase0_doc_inventory.md")]
@@ -20751,6 +20600,89 @@ def smoke_thought_memory_action_parallel_mini_loop_candidate_hint_into_ordering_
     )
 
 
+def smoke_thought_memory_action_parallel_mini_loop_ordering_to_next_sandbox_action_minimal() -> dict:
+    result = run_thought_memory_action_parallel_mini_loop_ordering_to_next_sandbox_action_minimal_check()
+    summary = result.get("summary", {})
+    boundary = result.get("boundary", {})
+    records = result.get("valid_records", [])
+    selected_actions = [
+        record.get("compact_sandbox_action_path", {}).get("selected_action") for record in records
+    ]
+    direct_commands = [
+        record.get("compact_sandbox_action_path", {}).get("direct_command") for record in records
+    ]
+    first_path = records[0].get("compact_sandbox_action_path", {}) if records else {}
+    first_containment = records[0].get("action_path_containment", {}) if records else {}
+    first_audit = records[0].get("boundary_audit", {}) if records else {}
+    first_self_check = records[0].get("hallucination_self_check", {}) if records else {}
+    passed = (
+        result.get("command")
+        == "run-thought-memory-action-parallel-mini-loop-ordering-to-next-sandbox-action-minimal-check"
+        and result.get("flow")
+        == "thought_memory_action_parallel_mini_loop_ordering_to_next_sandbox_action_minimal_v0"
+        and result.get("status") == "ok"
+        and boundary.get("boundary_index_version_before") == "2026-06-09-b174"
+        and boundary.get("boundary_index_version_after") == "2026-06-09-b175"
+        and summary.get("compact_sandbox_action_path_result_count") == 114
+        and summary.get("valid_compact_sandbox_action_path_count") == 3
+        and summary.get("invalid_compact_sandbox_action_path_count") == 111
+        and summary.get("compact_action_path_created_count") == 3
+        and summary.get("selected_action_created_count") == 3
+        and summary.get("final_action_created_count") == 3
+        and summary.get("direct_command_created_count") == 3
+        and summary.get("execution_created_count") == 3
+        and summary.get("sandbox_action_executed_count") == 3
+        and summary.get("outcome_observation_created_count") == 3
+        and summary.get("reach_action_path_count") == 1
+        and summary.get("wait_action_path_count") == 1
+        and summary.get("probe_action_path_count") == 1
+        and summary.get("working_memory_update_blocked_count") == 3
+        and summary.get("feedback_blocked_count") == 3
+        and summary.get("candidate_reordering_blocked_count") == 3
+        and summary.get("memory_write_blocked_count") == 3
+        and summary.get("predictor_use_blocked_count") == 3
+        and summary.get("direct_feed_blocked_count") == 3
+        and summary.get("production_behavior_blocked_count") == 3
+        and summary.get("proof_claim_blocked_count") == 3
+        and summary.get("consciousness_claim_blocked_count") == 3
+        and summary.get("boundary_audit_passed_count") == 3
+        and summary.get("hallucination_self_check_passed_count") == 3
+        and selected_actions == ["reach_front_item", "wait_or_observe", "observe_or_alternative_probe"]
+        and direct_commands
+        == [
+            "sandbox.arbitration.reach_front_item",
+            "sandbox.arbitration.wait_or_observe",
+            "sandbox.arbitration.observe_or_alternative_probe",
+        ]
+        and first_path.get("selected_action_created") is True
+        and first_path.get("final_action_created") is True
+        and first_path.get("direct_command_created") is True
+        and first_path.get("execution_count") == 1
+        and first_path.get("outcome_observation_created") is True
+        and first_path.get("working_memory_update_created") is False
+        and first_path.get("feedback_evaluation_created") is False
+        and first_path.get("production_behavior_created") is False
+        and first_containment.get("future_working_memory_update_requires_separate_package") is True
+        and first_containment.get("future_feedback_requires_separate_package") is True
+        and first_audit.get("triggered") is True
+        and first_audit.get("boundary_number") == 175
+        and first_audit.get("production_behavior_created") is False
+        and first_audit.get("predictor_read_enabled") is False
+        and first_self_check.get("triggered") is True
+        and first_self_check.get("passed") is True
+    )
+    return _result(
+        "thought_memory_action_parallel_mini_loop_ordering_to_next_sandbox_action_minimal",
+        passed,
+        {
+            "summary": summary,
+            "boundary": boundary,
+            "selected_actions": selected_actions,
+            "direct_commands": direct_commands,
+        },
+    )
+
+
 def smoke_phase0_current_capability_snapshot() -> dict:
     doc_path = Path("docs/phase0_current_capability_snapshot_2026-06-10.md")
     doc = doc_path.read_text(encoding="utf-8") if doc_path.exists() else ""
@@ -23572,6 +23504,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_thought_memory_action_parallel_mini_loop_temporary_alignment_signal_minimal(),
         smoke_thought_memory_action_parallel_mini_loop_signal_readback_candidate_hint_minimal(),
         smoke_thought_memory_action_parallel_mini_loop_candidate_hint_into_ordering_minimal(),
+        smoke_thought_memory_action_parallel_mini_loop_ordering_to_next_sandbox_action_minimal(),
         smoke_phase0_current_capability_snapshot(),
         smoke_memory_influence_behavior_gate_design(),
         smoke_first_memory_influenced_behavior_boundary(),

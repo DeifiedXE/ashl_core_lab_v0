@@ -63,6 +63,7 @@ ASHL Core Lab 是 ASHL Core／D清音 的最小 Python 實驗專案，用來驗�
 - Thought Memory Action Parallel Mini Loop Temporary Alignment Signal Minimal v0
 - Thought Memory Action Parallel Mini Loop Signal Readback Candidate Hint Minimal v0
 - Thought Memory Action Parallel Mini Loop Candidate Hint Into Ordering Minimal v0
+- Thought Memory Action Parallel Mini Loop Ordering To Next Sandbox Action Minimal v0
 - v2.11c Lesson Stale Supersede Memory Freeze Notice Contract
 - Qingyin First Output v0 Contract
 - Qingyin Runtime Ontology Boundary v0.1
@@ -3066,6 +3067,10 @@ Two-Trial History Boundary:
 ## Thought Memory Action Parallel Mini Loop Candidate Hint Into Ordering Minimal v0
 
 - Thought Memory Action Parallel Mini Loop Candidate Hint Into Ordering Minimal v0 uses b173 weak candidate hints to create same-session sandbox advisory ordering records. It records before/after candidate order, preserves the candidate set, and moves the hinted candidate first for `reach_front_item`, `wait_or_observe`, and `observe_or_alternative_probe`. Boundary Index updates from `2026-06-09-b173` to `2026-06-09-b174`. This does not create selected_action, final_action, direct_command, execution, new outcome observation, candidate score mutation, runtime next-cycle ordering, memory/retention write, predictor use/mutation, direct endocrine/tendency feed, production behavior, or proof of learning.
+
+## Thought Memory Action Parallel Mini Loop Ordering To Next Sandbox Action Minimal v0
+
+- Thought Memory Action Parallel Mini Loop Ordering To Next Sandbox Action Minimal v0 takes the b174 top hinted same-session sandbox candidate through one compact existing action path. It creates selected_action, final_action, direct_command, one sandbox execution, and outcome observation records for `reach_front_item`, `wait_or_observe`, and `observe_or_alternative_probe`. Boundary Index updates from `2026-06-09-b174` to `2026-06-09-b175`. This does not create a working-memory update, feedback evaluation/application, candidate reordering, candidate score mutation, runtime next-cycle ordering, memory/retention write, predictor use/mutation, direct endocrine/tendency feed, production behavior, consciousness claim, or proof of learning.
 
 ## Host-Dependent Idle Continuance Trace v0
 
