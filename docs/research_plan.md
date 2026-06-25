@@ -8397,3 +8397,17 @@ What changed:
 
 Explicitly not changed:
 - No selected_action, final_action, direct_command, execution, new outcome observation, next-cycle selection, open-ended runtime loop, long-term memory write, retention write, memory admission, habit/skill anchor creation, predictor read/influence/mutation, direct endocrine/tendency feed, production behavior, or proof-of-learning claim.
+
+## Thought Memory Action Parallel Mini Loop Consistency Evaluation Minimal v0
+
+Status: completed / same-session sandbox-only record-only consistency evaluation / Boundary Index b171.
+
+What changed:
+- b170 one-cycle thought/memory/action mini-loop records can now create record-only consistency evaluation records.
+- The evaluation checks that the thought preview candidate matches the existing action observation candidate.
+- The evaluation checks that temporary working memory links the preview and observation, and that preview is not treated as reality.
+- Added `docs/phase0_thought_memory_action_parallel_loop_plan.md` as a planning-only route for the Phase0 thought/memory/action small loop.
+- Boundary Index updates from `2026-06-09-b170` to `2026-06-09-b171`.
+
+Explicitly not changed:
+- No temporary signal, candidate hint, next-cycle read, selected_action, final_action, direct_command, execution, new outcome observation, candidate score change, runtime next-cycle ordering change, long-term memory write, retention write, memory admission, habit/skill anchor creation, predictor read/influence/mutation, direct endocrine/tendency feed, production behavior, or proof-of-learning claim.

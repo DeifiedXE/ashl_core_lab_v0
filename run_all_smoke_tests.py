@@ -482,6 +482,9 @@ from ashl_core.sandbox_candidate_ordering_arbitration_reordered_candidate_feedba
 from ashl_core.thought_memory_action_parallel_mini_loop_minimal import (
     run_thought_memory_action_parallel_mini_loop_minimal_check,
 )
+from ashl_core.thought_memory_action_parallel_mini_loop_consistency_evaluation_minimal import (
+    run_thought_memory_action_parallel_mini_loop_consistency_evaluation_minimal_check,
+)
 from ashl_core.minimal_visual_grounding_trial import run_minimal_visual_grounding_trial_check
 from ashl_core.visual_prediction_error_attention_priority_preview_minimal import (
     run_visual_prediction_error_attention_priority_preview_minimal_check,
@@ -10863,8 +10866,8 @@ def smoke_current_boundary_index_docs() -> dict:
     readme = readme_path.read_text(encoding="utf-8") if readme_path.exists() else ""
     research_plan = research_plan_path.read_text(encoding="utf-8") if research_plan_path.exists() else ""
     compact_required_terms = [
-        "Boundary Index Version: 2026-06-09-b170",
-        "Last update log: Thought Memory Action Parallel Mini Loop Minimal v0",
+        "Boundary Index Version: 2026-06-09-b171",
+        "Last update log: Thought Memory Action Parallel Mini Loop Consistency Evaluation Minimal v0",
         "docs/boundary_index_archive_2026_06.md",
         "Minimal Visual Grounding Trial v0",
         "Visual Prediction Error + Attention Priority Preview Minimal v0",
@@ -10909,7 +10912,7 @@ def smoke_current_boundary_index_docs() -> dict:
         "b85-b107 Sandbox Action Loop compressed milestone",
         "selected_action -> final_action -> direct command -> execution -> outcome evaluation",
         "b108-b120 Endocrine / Visual-Spatial / Body Schema / Motor Intent compressed milestone",
-        "b121-b170 Approved Purpose / Qingyin Bridge compressed milestone",
+        "b121-b171 Approved Purpose / Qingyin Bridge compressed milestone",
         "approval-boundary -> approved_purpose -> sandbox-only advisory candidate ordering -> selected_action -> final_action -> direct_command -> execution -> outcome observation -> same-session feedback trace -> feedback-gated sandbox-only advisory reordering -> checked signal arbitration -> future selected_action approval boundary -> sandbox-only selected_action -> future final_action approval boundary -> sandbox-only final_action -> future direct_command approval boundary -> sandbox-only direct_command -> future execution approval boundary -> sandbox-only execution -> sandbox-only outcome observation -> future same-session sandbox feedback approval boundary -> same-session sandbox feedback evaluation records -> future same-session sandbox feedback application approval boundary -> same-session sandbox record-only feedback application records -> future feedback-gated candidate reordering approval boundary -> same-session sandbox-only advisory reordering records -> future selected_action approval boundary from reordered candidates -> same-session sandbox-only selected_action records from reordered candidates -> future final_action approval boundary from reordered selected_actions -> same-session sandbox-only final_action records from reordered selected_actions -> future direct_command approval boundary from reordered final_actions -> same-session sandbox-only direct_command records from reordered final_actions -> future execution approval boundary from reordered direct_commands -> same-session sandbox-only execution records from reordered direct_commands -> same-session sandbox-only outcome observation records from reordered executions -> future same-session sandbox feedback approval boundary from reordered observations -> same-session sandbox feedback evaluation records from reordered observations -> future same-session sandbox feedback application approval boundary from reordered feedback records -> same-session sandbox record-only feedback application records from reordered feedback -> future feedback-gated candidate reordering approval boundary from reordered record-only feedback applications -> same-session sandbox-only advisory reordering records from reordered feedback",
         "sandbox-only advisory candidate ordering",
         "reach_front_item",
@@ -10964,6 +10967,14 @@ def smoke_current_boundary_index_docs() -> dict:
         "parallel_loop_created=True",
         "cycle_index=1",
         "max_cycles=1",
+        "b171 Consistency Evaluation evidence",
+        "consistency_evaluation_created=True",
+        "preview_candidate_matches_action_observation=True",
+        "working_memory_links_preview_and_observation=True",
+        "alignment_label=thought_action_memory_aligned",
+        "temporary_signal_created=False",
+        "candidate_hint_created=False",
+        "next_cycle_read_enabled=False",
         "runtime_next_cycle_candidate_ordering_changed=False",
         "final_action_created=True",
         "direct_command_created=True",
@@ -11059,11 +11070,13 @@ def smoke_phase0_documentation_consolidation_minimal() -> dict:
     status_path = Path("docs/phase0_status.md")
     matrix_path = Path("docs/phase0_capability_matrix.md")
     index_path = Path("docs/phase0_doc_index.md")
+    plan_path = Path("docs/phase0_thought_memory_action_parallel_loop_plan.md")
     readme_path = Path("README.md")
     research_plan_path = Path("docs/research_plan.md")
     status = status_path.read_text(encoding="utf-8") if status_path.exists() else ""
     matrix = matrix_path.read_text(encoding="utf-8") if matrix_path.exists() else ""
     index = index_path.read_text(encoding="utf-8") if index_path.exists() else ""
+    plan_doc = plan_path.read_text(encoding="utf-8") if plan_path.exists() else ""
     readme = readme_path.read_text(encoding="utf-8") if readme_path.exists() else ""
     research_plan = research_plan_path.read_text(encoding="utf-8") if research_plan_path.exists() else ""
     combined = "\n".join([status, matrix, index]).lower()
@@ -11081,8 +11094,10 @@ def smoke_phase0_documentation_consolidation_minimal() -> dict:
         status_path.exists()
         and matrix_path.exists()
         and index_path.exists()
-        and "Boundary Index Version: 2026-06-09-b170" in status
+        and plan_path.exists()
+        and "Boundary Index Version: 2026-06-09-b171" in status
         and "Current Safe Capability" in status
+        and "Thought Memory Action Parallel Mini Loop Consistency Evaluation Minimal v0" in status
         and "Thought Memory Action Parallel Mini Loop Minimal v0" in status
         and "No proof-of-learning claim" in status
         and "Level 1 Sandbox Outcome Evaluation and Human Review Summary Minimal v0" in status
@@ -11209,6 +11224,8 @@ def smoke_phase0_documentation_consolidation_minimal() -> dict:
         and "| sandbox candidate ordering arbitration reordered candidate final_action minimal | implemented_sandbox_final_action |" in matrix
         and "| sandbox candidate ordering arbitration reordered candidate direct_command approval boundary minimal | implemented_future_direct_command_boundary |" in matrix
         and "| thought memory action parallel mini loop minimal | implemented_one_cycle_same_session_parallel_trace_link |" in matrix
+        and "| thought memory action parallel mini loop consistency evaluation minimal | implemented_record_only_consistency_evaluation |" in matrix
+        and "| phase0 thought memory action parallel loop plan | planning_only |" in matrix
         and "| retention write | blocked |" in matrix
         and "| predictor mutation | blocked |" in matrix
         and "| runtime behavior change | blocked |" in matrix
@@ -11221,9 +11238,13 @@ def smoke_phase0_documentation_consolidation_minimal() -> dict:
         and "docs/phase0_status.md" in readme
         and "docs/phase0_capability_matrix.md" in readme
         and "docs/current_boundary_index.md" in readme
+        and "docs/phase0_thought_memory_action_parallel_loop_plan.md" in readme
         and "docs/phase0_status.md" in research_plan
         and "docs/phase0_capability_matrix.md" in research_plan
         and "docs/current_boundary_index.md" in research_plan
+        and "docs/phase0_thought_memory_action_parallel_loop_plan.md" in research_plan
+        and "planning document only" in plan_doc
+        and "this document is not approval" in plan_doc
         and all(claim not in combined for claim in forbidden_claims)
         and ("?" + chr(0x822A) + "??") not in (status + matrix + index)
         and "implicit chat command is not application approval" in (status + matrix + index)
@@ -11263,7 +11284,7 @@ def smoke_phase0_documentation_inventory_and_consistency_reconciliation() -> dic
     boundary = Path("docs/current_boundary_index.md").read_text(encoding="utf-8")
     passed = (
         all(path.exists() for path in required_paths)
-        and "Boundary Index Version: 2026-06-09-b170" in texts[Path("docs/phase0_status.md")]
+        and "Boundary Index Version: 2026-06-09-b171" in texts[Path("docs/phase0_status.md")]
         and "Inventory count:" in texts[Path("docs/phase0_doc_inventory.md")]
         and "docs/phase0_versioning_policy.md" in texts[Path("docs/phase0_doc_inventory.md")]
         and "unknown_needs_review" in texts[Path("docs/phase0_doc_inventory.md")]
@@ -20455,6 +20476,69 @@ def smoke_thought_memory_action_parallel_mini_loop_minimal() -> dict:
     )
 
 
+def smoke_thought_memory_action_parallel_mini_loop_consistency_evaluation_minimal() -> dict:
+    result = run_thought_memory_action_parallel_mini_loop_consistency_evaluation_minimal_check()
+    summary = result.get("summary", {})
+    boundary = result.get("boundary", {})
+    records = result.get("valid_records", [])
+    previewed_candidates = [
+        record.get("source_parallel_mini_loop", {}).get("previewed_candidate")
+        for record in records
+    ]
+    first_evaluation = records[0].get("consistency_evaluation", {}) if records else {}
+    first_result = records[0].get("evaluation_result", {}) if records else {}
+    first_audit = records[0].get("boundary_audit", {}) if records else {}
+    passed = (
+        result.get("command")
+        == "run-thought-memory-action-parallel-mini-loop-consistency-evaluation-minimal-check"
+        and result.get("flow")
+        == "thought_memory_action_parallel_mini_loop_consistency_evaluation_minimal_v0"
+        and result.get("status") == "ok"
+        and boundary.get("boundary_index_version_before") == "2026-06-09-b170"
+        and boundary.get("boundary_index_version_after") == "2026-06-09-b171"
+        and summary.get("consistency_evaluation_result_count") == 46
+        and summary.get("valid_consistency_evaluation_count") == 3
+        and summary.get("invalid_consistency_evaluation_count") == 43
+        and summary.get("consistency_evaluation_created_count") == 3
+        and summary.get("aligned_evaluation_count") == 3
+        and summary.get("preview_action_match_count") == 3
+        and summary.get("working_memory_alignment_checked_count") == 3
+        and summary.get("reach_evaluation_count") == 1
+        and summary.get("wait_evaluation_count") == 1
+        and summary.get("probe_evaluation_count") == 1
+        and summary.get("temporary_signal_blocked_count") == 3
+        and summary.get("candidate_hint_blocked_count") == 3
+        and summary.get("next_cycle_read_blocked_count") == 3
+        and summary.get("action_creation_blocked_count") == 3
+        and summary.get("memory_write_blocked_count") == 3
+        and summary.get("predictor_use_blocked_count") == 3
+        and summary.get("production_behavior_blocked_count") == 3
+        and summary.get("proof_claim_blocked_count") == 3
+        and summary.get("boundary_audit_passed_count") == 3
+        and previewed_candidates == ["reach_front_item", "wait_or_observe", "observe_or_alternative_probe"]
+        and first_evaluation.get("consistency_evaluation_created") is True
+        and first_evaluation.get("preview_candidate_matches_action_observation") is True
+        and first_evaluation.get("working_memory_links_preview_and_observation") is True
+        and first_evaluation.get("alignment_label") == "thought_action_memory_aligned"
+        and first_evaluation.get("mismatch_signal_created") is False
+        and first_evaluation.get("candidate_hint_created") is False
+        and first_evaluation.get("next_cycle_read_enabled") is False
+        and first_result.get("temporary_signal_created_in_this_package") is False
+        and first_result.get("candidate_hint_created_in_this_package") is False
+        and first_result.get("next_cycle_read_created_in_this_package") is False
+        and first_result.get("memory_write_created_in_this_package") is False
+        and first_audit.get("triggered") is True
+        and first_audit.get("boundary_number") == 171
+        and first_audit.get("production_behavior_created") is False
+        and first_audit.get("predictor_read_enabled") is False
+    )
+    return _result(
+        "thought_memory_action_parallel_mini_loop_consistency_evaluation_minimal",
+        passed,
+        {"summary": summary, "boundary": boundary, "previewed_candidates": previewed_candidates},
+    )
+
+
 def smoke_phase0_current_capability_snapshot() -> dict:
     doc_path = Path("docs/phase0_current_capability_snapshot_2026-06-10.md")
     doc = doc_path.read_text(encoding="utf-8") if doc_path.exists() else ""
@@ -23272,6 +23356,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_sandbox_candidate_ordering_arbitration_reordered_candidate_feedback_gated_candidate_reordering_approval_boundary_minimal(),
         smoke_sandbox_candidate_ordering_arbitration_reordered_candidate_feedback_gated_candidate_reordering_minimal(),
         smoke_thought_memory_action_parallel_mini_loop_minimal(),
+        smoke_thought_memory_action_parallel_mini_loop_consistency_evaluation_minimal(),
         smoke_phase0_current_capability_snapshot(),
         smoke_memory_influence_behavior_gate_design(),
         smoke_first_memory_influenced_behavior_boundary(),

@@ -378,9 +378,9 @@ def _build_b0_10_self_check() -> dict[str, Any]:
     smoke = _read_repo_text("run_all_smoke_tests.py")
     tests = _read_repo_text("tests/test_thought_memory_action_parallel_mini_loop_minimal.py")
     docs_status_matches_code = (
-        "Boundary Index Version: 2026-06-09-b170" in current_boundary
-        and "Thought Memory Action Parallel Mini Loop Minimal v0" in current_boundary
-        and "Boundary Index Version: 2026-06-09-b170" in phase0_status
+        "Thought Memory Action Parallel Mini Loop Minimal v0" in current_boundary
+        and "b170 Thought Memory Action Parallel Mini Loop evidence" in current_boundary
+        and "Thought Memory Action Parallel Mini Loop Minimal v0" in phase0_status
     )
     docs_consistent = (
         "Thought Memory Action Parallel Mini Loop Minimal v0" in readme
