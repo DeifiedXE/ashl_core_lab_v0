@@ -500,6 +500,9 @@ from ashl_core.thought_memory_action_parallel_mini_loop_ordering_to_next_sandbox
 from ashl_core.thought_memory_action_parallel_mini_loop_outcome_to_same_session_working_memory_minimal import (
     run_thought_memory_action_parallel_mini_loop_outcome_to_same_session_working_memory_minimal_check,
 )
+from ashl_core.thought_memory_action_parallel_mini_loop_two_cycle_influence_check_minimal import (
+    run_thought_memory_action_parallel_mini_loop_two_cycle_influence_check_minimal_check,
+)
 from ashl_core.minimal_visual_grounding_trial import run_minimal_visual_grounding_trial_check
 from ashl_core.visual_prediction_error_attention_priority_preview_minimal import (
     run_visual_prediction_error_attention_priority_preview_minimal_check,
@@ -10883,10 +10886,12 @@ def smoke_current_boundary_index_docs() -> dict:
     readme = readme_path.read_text(encoding="utf-8") if readme_path.exists() else ""
     research_plan = research_plan_path.read_text(encoding="utf-8") if research_plan_path.exists() else ""
     compact_required_terms = [
-        "Boundary Index Version: 2026-06-09-b176",
-        "Last update log: Thought Memory Action Parallel Mini Loop Outcome To Same-Session Working Memory Minimal v0",
-        "Previous Boundary Index Version: 2026-06-09-b175",
+        "Boundary Index Version: 2026-06-09-b177",
+        "Last update log: Thought Memory Action Parallel Mini Loop Two-Cycle Influence Check Minimal v0",
+        "Previous Boundary Index Version: 2026-06-09-b176",
         "docs/boundary_archive/current_boundary_index_2026-06-25_b174.md",
+        "first-cycle temporary working memory",
+        "weak candidate hint",
         "hint-influenced ordering",
         "selected_action",
         "final_action",
@@ -10898,15 +10903,16 @@ def smoke_current_boundary_index_docs() -> dict:
         "wait_or_observe",
         "observe_or_alternative_probe",
         "No feedback evaluation or feedback application.",
-        "No candidate reordering beyond the b174 source ordering.",
+        "No new candidate ordering or candidate reordering.",
         "No new selected_action, final_action, direct command, execution, or outcome observation.",
+        "No new working-memory update.",
         "No production/runtime memory-influenced behavior is allowed.",
         "No proof-of-learning claim.",
         "No consciousness or awakening claim.",
         "Level 2 Sandbox Application milestone",
         "Level 3 Toy Minefield Multi-Step Sandbox milestone",
         "Memory is a warning sign, not a ban command",
-        "Two-Cycle Influence Check",
+        "Phase0 Mini-Loop Audit",
         "This current index must stay under 150 lines.",
     ]
     archive_required_terms = [
@@ -10932,8 +10938,8 @@ def smoke_current_boundary_index_docs() -> dict:
         and all(term in archive for term in archive_required_terms)
         and all(term in legacy_archive for term in legacy_required_terms)
         and line_count <= 150
-        and "Thought Memory Action Parallel Mini Loop Outcome To Same-Session Working Memory Minimal v0" in readme
-        and "Thought Memory Action Parallel Mini Loop Outcome To Same-Session Working Memory Minimal v0" in research_plan
+        and "Thought Memory Action Parallel Mini Loop Two-Cycle Influence Check Minimal v0" in readme
+        and "Thought Memory Action Parallel Mini Loop Two-Cycle Influence Check Minimal v0" in research_plan
     )
     return _result(
         "boundary_index_current_archive",
@@ -10976,8 +10982,9 @@ def smoke_phase0_documentation_consolidation_minimal() -> dict:
         and matrix_path.exists()
         and index_path.exists()
         and plan_path.exists()
-        and "Boundary Index Version: 2026-06-09-b176" in status
+        and "Boundary Index Version: 2026-06-09-b177" in status
         and "Current Safe Capability" in status
+        and "Thought Memory Action Parallel Mini Loop Two-Cycle Influence Check Minimal v0" in status
         and "Thought Memory Action Parallel Mini Loop Outcome To Same-Session Working Memory Minimal v0" in status
         and "Thought Memory Action Parallel Mini Loop Ordering To Next Sandbox Action Minimal v0" in status
         and "Thought Memory Action Parallel Mini Loop Candidate Hint Into Ordering Minimal v0" in status
@@ -11171,7 +11178,7 @@ def smoke_phase0_documentation_inventory_and_consistency_reconciliation() -> dic
     boundary = Path("docs/current_boundary_index.md").read_text(encoding="utf-8")
     passed = (
         all(path.exists() for path in required_paths)
-        and "Boundary Index Version: 2026-06-09-b176" in texts[Path("docs/phase0_status.md")]
+        and "Boundary Index Version: 2026-06-09-b177" in texts[Path("docs/phase0_status.md")]
         and "Inventory count:" in texts[Path("docs/phase0_doc_inventory.md")]
         and "docs/phase0_versioning_policy.md" in texts[Path("docs/phase0_doc_inventory.md")]
         and "unknown_needs_review" in texts[Path("docs/phase0_doc_inventory.md")]
@@ -20781,6 +20788,91 @@ def smoke_thought_memory_action_parallel_mini_loop_outcome_to_same_session_worki
     )
 
 
+def smoke_thought_memory_action_parallel_mini_loop_two_cycle_influence_check_minimal() -> dict:
+    result = run_thought_memory_action_parallel_mini_loop_two_cycle_influence_check_minimal_check()
+    summary = result.get("summary", {})
+    boundary = result.get("boundary", {})
+    records = result.get("valid_records", [])
+    comparisons = [record.get("influence_comparison", {}) for record in records]
+    evidences = [record.get("two_cycle_evidence", {}) for record in records]
+    first_comparison = comparisons[0] if comparisons else {}
+    first_containment = records[0].get("comparison_containment", {}) if records else {}
+    first_audit = records[0].get("boundary_audit", {}) if records else {}
+    selected_actions = [record.get("source_same_session_working_memory", {}).get("selected_action") for record in records]
+    influence_results = [comparison.get("comparison_result") for comparison in comparisons]
+    passed = (
+        result.get("command")
+        == "run-thought-memory-action-parallel-mini-loop-two-cycle-influence-check-minimal-check"
+        and result.get("flow") == "thought_memory_action_parallel_mini_loop_two_cycle_influence_check_minimal_v0"
+        and result.get("status") == "ok"
+        and boundary.get("boundary_index_version_before") == "2026-06-09-b176"
+        and boundary.get("boundary_index_version_after") == "2026-06-09-b177"
+        and summary.get("two_cycle_influence_check_result_count") == 79
+        and summary.get("valid_two_cycle_influence_check_count") == 3
+        and summary.get("invalid_two_cycle_influence_check_count") == 76
+        and summary.get("influence_check_created_count") == 3
+        and summary.get("two_cycle_checked_count") == 3
+        and summary.get("influence_visible_count") == 3
+        and summary.get("hint_moved_candidate_to_front_count") == 3
+        and summary.get("second_cycle_action_matches_hint_count") == 3
+        and summary.get("outcome_memory_linked_count") == 3
+        and summary.get("comparison_record_only_count") == 3
+        and summary.get("reach_influence_check_count") == 1
+        and summary.get("wait_influence_check_count") == 1
+        and summary.get("probe_influence_check_count") == 1
+        and summary.get("feedback_blocked_count") == 3
+        and summary.get("candidate_reordering_blocked_count") == 3
+        and summary.get("action_creation_blocked_count") == 3
+        and summary.get("memory_persistence_blocked_count") == 3
+        and summary.get("predictor_use_blocked_count") == 3
+        and summary.get("direct_feed_blocked_count") == 3
+        and summary.get("production_behavior_blocked_count") == 3
+        and summary.get("proof_claim_blocked_count") == 3
+        and summary.get("consciousness_claim_blocked_count") == 3
+        and summary.get("boundary_audit_passed_count") == 3
+        and selected_actions == ["reach_front_item", "wait_or_observe", "observe_or_alternative_probe"]
+        and influence_results
+        == [
+            "temporary_hint_influenced_second_cycle_sandbox_path",
+            "temporary_hint_influenced_second_cycle_sandbox_path",
+            "temporary_hint_influenced_second_cycle_sandbox_path",
+        ]
+        and all(evidence.get("cycle_count_checked") == 2 for evidence in evidences)
+        and all(comparison.get("influence_visible") is True for comparison in comparisons)
+        and all(comparison.get("hint_moved_candidate_to_front") is True for comparison in comparisons)
+        and all(comparison.get("second_cycle_action_matches_top_hint") is True for comparison in comparisons)
+        and first_comparison.get("comparison_scope") == "same_session_sandbox_record_only"
+        and first_comparison.get("feedback_evaluation_created") is False
+        and first_comparison.get("candidate_reordering_created") is False
+        and first_comparison.get("new_selected_action_created") is False
+        and first_comparison.get("new_execution_created") is False
+        and first_comparison.get("working_memory_update_created") is False
+        and first_comparison.get("memory_write") is False
+        and first_comparison.get("predictor_read_enabled") is False
+        and first_comparison.get("direct_endocrine_feed") is False
+        and first_comparison.get("production_behavior_created") is False
+        and first_comparison.get("proof_of_learning_claim") is False
+        and first_comparison.get("consciousness_claim") is False
+        and first_containment.get("uses_existing_trace_records_only") is True
+        and first_containment.get("future_phase0_mini_loop_audit_requires_separate_package") is True
+        and first_audit.get("triggered") is True
+        and first_audit.get("boundary_number") == 177
+        and first_audit.get("production_behavior_created") is False
+        and first_audit.get("predictor_read_enabled") is False
+        and first_audit.get("next_layer_precreated") is False
+    )
+    return _result(
+        "thought_memory_action_parallel_mini_loop_two_cycle_influence_check_minimal",
+        passed,
+        {
+            "summary": summary,
+            "boundary": boundary,
+            "selected_actions": selected_actions,
+            "influence_results": influence_results,
+        },
+    )
+
+
 def smoke_phase0_current_capability_snapshot() -> dict:
     doc_path = Path("docs/phase0_current_capability_snapshot_2026-06-10.md")
     doc = doc_path.read_text(encoding="utf-8") if doc_path.exists() else ""
@@ -23604,6 +23696,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_thought_memory_action_parallel_mini_loop_candidate_hint_into_ordering_minimal(),
         smoke_thought_memory_action_parallel_mini_loop_ordering_to_next_sandbox_action_minimal(),
         smoke_thought_memory_action_parallel_mini_loop_outcome_to_same_session_working_memory_minimal(),
+        smoke_thought_memory_action_parallel_mini_loop_two_cycle_influence_check_minimal(),
         smoke_phase0_current_capability_snapshot(),
         smoke_memory_influence_behavior_gate_design(),
         smoke_first_memory_influenced_behavior_boundary(),

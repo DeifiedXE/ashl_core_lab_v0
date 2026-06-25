@@ -8478,3 +8478,17 @@ What changed:
 
 Explicitly not changed:
 - No feedback evaluation/application, candidate reordering, candidate score mutation, runtime next-cycle ordering, selected_action/final_action/direct_command/execution/outcome observation creation, long-term/Core/Archive/persistent memory write, retention write, memory admission, habit/skill anchor creation, predictor read/influence/mutation, direct endocrine/tendency feed, production behavior, consciousness claim, or proof-of-learning claim.
+
+## Thought Memory Action Parallel Mini Loop Two-Cycle Influence Check Minimal v0
+
+Status: completed / same-session two-cycle influence comparison / Boundary Index b177.
+
+What changed:
+- The first-cycle temporary working-memory path is now compared with the second-cycle sandbox action/outcome/working-memory path.
+- Each record checks that the weak hint moved its candidate to the front, the second-cycle action matched that top hint, and the outcome memory link remained intact.
+- The supported actions are `reach_front_item`, `wait_or_observe`, and `observe_or_alternative_probe`.
+- The comparison is same-session sandbox record-only evidence.
+- Boundary Index updates from `2026-06-09-b176` to `2026-06-09-b177`.
+
+Explicitly not changed:
+- No feedback evaluation/application, candidate reordering, candidate score mutation, runtime next-cycle ordering, selected_action/final_action/direct_command/execution/outcome observation creation, new working-memory update, long-term/Core/Archive/persistent memory write, retention write, memory admission, habit/skill anchor creation, predictor read/influence/mutation, direct endocrine/tendency feed, production behavior, consciousness claim, or proof-of-learning claim.
