@@ -240,6 +240,12 @@ That would be progress because the signal becomes readable context.
 
 It still must not select, execute, write long-term memory, affect production, or claim learning.
 
+The current Phase 0 closure plan is:
+
+- `docs/phase0_minimal_learning_action_memory_loop_plan.md`
+
+Use that plan to avoid drifting back into endless boundary-only packages.
+
 ## Required Communication Style
 
 When reporting work, Codex should use human language first.
