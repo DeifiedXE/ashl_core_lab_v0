@@ -57,7 +57,7 @@ The point is not to deny the relationship between the user and Qingyin. The poin
 Current Boundary Index at the time this summary was written:
 
 ```text
-2026-06-09-b175
+2026-06-09-b176
 ```
 
 Current endpoint:
@@ -70,6 +70,7 @@ b169 advisory reordering evidence
 -> b173 same-session signal readback and weak candidate hint
 -> b174 same-session sandbox advisory ordering from weak hint
 -> b175 compact next sandbox action path and outcome observation
+-> b176 same-session working-memory update from the second-cycle outcome
 ```
 
 Plain meaning:
@@ -88,18 +89,21 @@ b174 can use that weak hint to change a same-session sandbox advisory candidate 
 
 b175 can take the top hinted candidate from b174 and run one compact same-session sandbox action path: selected_action, final_action, direct_command, one execution, and outcome observation.
 
-## What b175 Does Not Do
+b176 can write that observed second-cycle sandbox result into same-session temporary working memory, linked back to the previous temporary memory update and the second-cycle action path.
 
-b175 does not create:
+## What b176 Does Not Do
 
-- working-memory update from the second-cycle outcome
+b176 does not create:
+
 - feedback evaluation
 - feedback application
 - candidate reordering beyond the b174 source ordering
 - candidate score mutation
 - runtime next-cycle ordering
+- new selected_action / final_action / direct_command / execution / outcome observation
 - long-term memory write
 - retention write
+- persistent working memory
 - memory admission
 - habit or skill anchor
 - predictor read / influence / mutation
@@ -235,16 +239,16 @@ Before coding, Codex should answer in plain language:
 4. What visible output will exist after the work?
 5. What does it still refuse to do?
 
-For the current b175 endpoint, the next real step should be:
+For the current b176 endpoint, the next real step should be:
 
 ```text
-take the observed second-cycle sandbox outcome
-and update same-session working memory only
+compare the first-cycle temporary memory path with the second-cycle action/outcome path
+and show whether the temporary hint actually influenced the sandbox path
 ```
 
-That would be progress because the second-cycle result would finally return to temporary working memory, closing the visible thought/action/memory loop one notch further.
+That would be progress because the repo would no longer only show "it acted and remembered"; it would also show a deterministic comparison that the second cycle was shaped by the first cycle's temporary context.
 
-It still must not write long-term memory, apply feedback, reorder candidates again, affect production, or claim learning.
+It still must not write long-term memory, apply feedback, reorder candidates again, create another action, affect production, or claim learning.
 
 The current Phase 0 closure plan is:
 

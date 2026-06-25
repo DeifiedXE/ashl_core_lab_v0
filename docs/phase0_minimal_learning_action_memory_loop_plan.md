@@ -53,13 +53,14 @@ b172 does not allow readback, candidate hints, reordering, action creation, memo
 Current progress:
 
 ```text
-Boundary Index: 2026-06-09-b175
+Boundary Index: 2026-06-09-b176
 
 b172 temporary alignment signal
 -> b173 same-session signal readback
 -> b173 weak candidate_input_only hint
 -> b174 same-session sandbox advisory ordering
 -> b175 compact same-session sandbox action/outcome path
+-> b176 same-session working-memory update from second-cycle outcome
 ```
 
 b173 creates weak hints for `reach_front_item`, `wait_or_observe`, and `observe_or_alternative_probe`.
@@ -71,6 +72,10 @@ b174 still does not allow selected_action, final_action, direct command, executi
 b175 runs the b174 top hinted candidate through one compact same-session sandbox action path. It creates selected_action, final_action, direct_command, one sandbox execution, and outcome observation records for reach, wait, and probe scenarios.
 
 b175 still does not allow working-memory update from the second-cycle outcome, feedback evaluation/application, candidate reordering, candidate score mutation, runtime next-cycle ordering, long-term memory/retention write, predictor influence, direct endocrine/tendency feed, production behavior, consciousness claim, or proof claim.
+
+b176 writes the b175 observed second-cycle outcome into same-session temporary working memory, linked to both the previous temporary working-memory update and the second-cycle action path.
+
+b176 still does not allow feedback evaluation/application, candidate reordering, candidate score mutation, runtime next-cycle ordering, new selected_action/final_action/direct_command/execution/outcome observation, long-term/Core/Archive/persistent memory write, retention write, memory admission, habit/skill anchor creation, predictor influence, direct endocrine/tendency feed, production behavior, consciousness claim, or proof claim.
 
 ## Completion Definition
 
@@ -118,7 +123,7 @@ flowchart TD
     A["b172 temporary alignment signal"] --> B["1. read signal and create weak candidate hint (done at b173)"]
     B --> C["2. feed hint into sandbox advisory ordering (done at b174)"]
     C --> D["3. run next sandbox action through compact existing action path (done at b175)"]
-    D --> E["4. observe outcome and update same-session working memory"]
+    D --> E["4. observe outcome and update same-session working memory (done at b176)"]
     E --> F["5. compare cycle 1 vs cycle 2 influence"]
     F --> G["6. final Phase0 mini-loop audit"]
 ```
@@ -214,6 +219,8 @@ It must not create:
 - proof of learning
 
 ## Step 4: Outcome To Same-Session Working Memory
+
+Status: completed at Boundary Index b176.
 
 Plain result:
 

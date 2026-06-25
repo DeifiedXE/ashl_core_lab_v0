@@ -1,9 +1,9 @@
 # Current Boundary Index
 
-Boundary Index Version: 2026-06-09-b175
-Last update log: Thought Memory Action Parallel Mini Loop Ordering To Next Sandbox Action Minimal v0
-Previous Boundary Index Version: 2026-06-09-b174
-Previous Last update log: Thought Memory Action Parallel Mini Loop Candidate Hint Into Ordering Minimal v0
+Boundary Index Version: 2026-06-09-b176
+Last update log: Thought Memory Action Parallel Mini Loop Outcome To Same-Session Working Memory Minimal v0
+Previous Boundary Index Version: 2026-06-09-b175
+Previous Last update log: Thought Memory Action Parallel Mini Loop Ordering To Next Sandbox Action Minimal v0
 
 Archived previous current index:
 
@@ -14,7 +14,7 @@ This file is the active short index. Archive files preserve older milestone deta
 
 ## Current Safe Claim
 
-b175 lets the b174 top hinted same-session sandbox candidate move through one compact existing sandbox action path:
+b176 lets the b175 observed second-cycle sandbox outcome update same-session temporary working memory:
 
 ```text
 hint-influenced ordering
@@ -23,6 +23,7 @@ hint-influenced ordering
 -> direct_command
 -> one sandbox execution
 -> outcome observation
+-> same-session working-memory update
 ```
 
 The three deterministic paths are:
@@ -42,35 +43,36 @@ b170 one-cycle thought/action/working-memory trace
 -> b173 signal readback and weak candidate hint
 -> b174 hint-influenced sandbox advisory ordering
 -> b175 compact next sandbox action path and outcome observation
+-> b176 same-session working-memory update from second-cycle outcome
 ```
 
 Plain wording:
 
-The first sandbox cycle can now leave a temporary signal, the next thought step can read it as a weak hint, that hint can move a candidate to the front of a sandbox advisory order, and the top candidate can run once in the sandbox so its result can be observed.
+The first sandbox cycle can now leave a temporary signal, the next thought step can read it as a weak hint, that hint can move a candidate to the front of a sandbox advisory order, the top candidate can run once in the sandbox, and that second-cycle result can be remembered inside the same session.
 
 Compatibility anchor for b170 B0/10 self-check: b170 Thought Memory Action Parallel Mini Loop evidence.
 
-## What b175 Adds
+## What b176 Adds
 
-- `selected_action_created=True`
-- `final_action_created=True`
-- `direct_command_created=True`
-- `execution_count=1`
-- `outcome_observation_created=True`
-- `hallucination_self_check.passed=True`
-- `boundary_audit.boundary_number=175`
+- `working_memory_update_created=True`
+- `memory_scope=same_session_temporary_working_memory_only`
+- `stored_observed_outcome` from b175
+- links to the previous working-memory update
+- links to the second-cycle sandbox action path
+- `available_for_future_two_cycle_comparison=True`
+- `boundary_audit.boundary_number=176`
 
 ## Still Blocked
 
-- No working-memory update from b175 outcome.
 - No feedback evaluation or feedback application.
 - No candidate reordering beyond the b174 source ordering.
 - No candidate score mutation.
 - No runtime next-cycle candidate ordering.
+- No new selected_action, final_action, direct command, execution, or outcome observation.
 - No external tool operation.
 - No production/runtime behavior.
 - No production/runtime memory-influenced behavior is allowed.
-- No long-term, Core, Archive, retained JSONL, or persistent memory write.
+- No long-term, Core, Archive, retained JSONL, retained working-memory, or persistent memory write.
 - No memory admission, habit, or skill anchor.
 - No retention write.
 - No predictor read, influence, or mutation.
@@ -99,12 +101,12 @@ The active closure route is:
 Next useful package:
 
 ```text
-Outcome To Same-Session Working Memory
+Two-Cycle Influence Check
 ```
 
 Plain wording:
 
-Take the b175 observed second-cycle sandbox result and update same-session working memory only. Do not write long-term memory, do not apply feedback, do not reorder candidates again, and do not claim learning.
+Compare the first-cycle temporary memory path with the second-cycle action/outcome path and show whether the temporary hint actually influenced the sandbox path. Do not create new actions, do not write persistent memory, and do not claim learning.
 
 ## Line Count Rule
 

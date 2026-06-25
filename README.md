@@ -64,6 +64,7 @@ ASHL Core Lab 是 ASHL Core／D清音 的最小 Python 實驗專案，用來驗�
 - Thought Memory Action Parallel Mini Loop Signal Readback Candidate Hint Minimal v0
 - Thought Memory Action Parallel Mini Loop Candidate Hint Into Ordering Minimal v0
 - Thought Memory Action Parallel Mini Loop Ordering To Next Sandbox Action Minimal v0
+- Thought Memory Action Parallel Mini Loop Outcome To Same-Session Working Memory Minimal v0
 - v2.11c Lesson Stale Supersede Memory Freeze Notice Contract
 - Qingyin First Output v0 Contract
 - Qingyin Runtime Ontology Boundary v0.1
@@ -3071,6 +3072,10 @@ Two-Trial History Boundary:
 ## Thought Memory Action Parallel Mini Loop Ordering To Next Sandbox Action Minimal v0
 
 - Thought Memory Action Parallel Mini Loop Ordering To Next Sandbox Action Minimal v0 takes the b174 top hinted same-session sandbox candidate through one compact existing action path. It creates selected_action, final_action, direct_command, one sandbox execution, and outcome observation records for `reach_front_item`, `wait_or_observe`, and `observe_or_alternative_probe`. Boundary Index updates from `2026-06-09-b174` to `2026-06-09-b175`. This does not create a working-memory update, feedback evaluation/application, candidate reordering, candidate score mutation, runtime next-cycle ordering, memory/retention write, predictor use/mutation, direct endocrine/tendency feed, production behavior, consciousness claim, or proof of learning.
+
+## Thought Memory Action Parallel Mini Loop Outcome To Same-Session Working Memory Minimal v0
+
+- Thought Memory Action Parallel Mini Loop Outcome To Same-Session Working Memory Minimal v0 writes b175 second-cycle sandbox outcomes into same-session temporary working memory. It stores the observed outcome and label for `reach_front_item`, `wait_or_observe`, and `observe_or_alternative_probe`, links back to the previous temporary working-memory update and the second-cycle action path, and marks the records available for a future two-cycle comparison. Boundary Index updates from `2026-06-09-b175` to `2026-06-09-b176`. This does not create feedback evaluation/application, candidate reordering, candidate score mutation, runtime next-cycle ordering, selected_action/final_action/direct_command/execution/outcome observation, long-term/Core/Archive/persistent memory write, retention write, memory admission, habit/skill anchor, predictor use/mutation, direct endocrine/tendency feed, production behavior, consciousness claim, or proof of learning.
 
 ## Host-Dependent Idle Continuance Trace v0
 
