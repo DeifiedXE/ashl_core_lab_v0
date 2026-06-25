@@ -8424,3 +8424,16 @@ What changed:
 
 Explicitly not changed:
 - No signal readback, candidate hint, candidate reordering, candidate score change, runtime next-cycle ordering change, selected_action, final_action, direct_command, execution, new outcome observation, memory write, retention write, memory admission, habit/skill anchor creation, predictor read/influence/mutation, direct endocrine/tendency feed, production behavior, or proof-of-learning claim.
+
+## Thought Memory Action Parallel Mini Loop Signal Readback Candidate Hint Minimal v0
+
+Status: completed / same-session sandbox-only signal readback and weak candidate hint records / Boundary Index b173.
+
+What changed:
+- b172 temporary alignment signal records can now be read once inside same-session sandbox scope.
+- The readback creates weak `candidate_input_only` hints for `reach_front_item`, `wait_or_observe`, and `observe_or_alternative_probe`.
+- The hint is temporary context for the thought/memory/action mini-loop, not action authority.
+- Boundary Index updates from `2026-06-09-b172` to `2026-06-09-b173`.
+
+Explicitly not changed:
+- No candidate reordering, candidate score change, runtime next-cycle ordering change, selected_action, final_action, direct_command, execution, new outcome observation, memory write, retention write, memory admission, habit/skill anchor creation, predictor read/influence/mutation, direct endocrine/tendency feed, production behavior, or proof-of-learning claim.

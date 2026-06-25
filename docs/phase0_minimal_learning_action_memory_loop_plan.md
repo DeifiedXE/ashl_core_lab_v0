@@ -50,6 +50,20 @@ b172 creates a temporary record-only marker that the thought preview, action evi
 
 b172 does not allow readback, candidate hints, reordering, action creation, memory write, predictor influence, production behavior, or proof claims.
 
+Current progress:
+
+```text
+Boundary Index: 2026-06-09-b173
+
+b172 temporary alignment signal
+-> b173 same-session signal readback
+-> b173 weak candidate_input_only hint
+```
+
+b173 creates weak hints for `reach_front_item`, `wait_or_observe`, and `observe_or_alternative_probe`.
+
+b173 still does not allow candidate reordering, action creation, memory write, predictor influence, production behavior, or proof claims.
+
 ## Completion Definition
 
 Phase 0 minimal loop is complete when a deterministic sandbox test can show:
@@ -93,7 +107,7 @@ Phase 0 also should not keep adding boundary-only packages that do not produce a
 
 ```mermaid
 flowchart TD
-    A["b172 temporary alignment signal"] --> B["1. read signal and create weak candidate hint"]
+    A["b172 temporary alignment signal"] --> B["1. read signal and create weak candidate hint (done at b173)"]
     B --> C["2. feed hint into sandbox advisory ordering"]
     C --> D["3. run next sandbox action through compact existing action path"]
     D --> E["4. observe outcome and update same-session working memory"]
@@ -102,6 +116,8 @@ flowchart TD
 ```
 
 ## Step 1: Signal Readback And Candidate Hint
+
+Status: completed at Boundary Index b173.
 
 Plain result:
 

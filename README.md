@@ -61,6 +61,7 @@ ASHL Core Lab 是 ASHL Core／D清音 的最小 Python 實驗專案，用來驗�
 - Thought Memory Action Parallel Mini Loop Minimal v0
 - Thought Memory Action Parallel Mini Loop Consistency Evaluation Minimal v0
 - Thought Memory Action Parallel Mini Loop Temporary Alignment Signal Minimal v0
+- Thought Memory Action Parallel Mini Loop Signal Readback Candidate Hint Minimal v0
 - v2.11c Lesson Stale Supersede Memory Freeze Notice Contract
 - Qingyin First Output v0 Contract
 - Qingyin Runtime Ontology Boundary v0.1
@@ -3056,6 +3057,10 @@ Two-Trial History Boundary:
 ## Thought Memory Action Parallel Mini Loop Temporary Alignment Signal Minimal v0
 
 - Thought Memory Action Parallel Mini Loop Temporary Alignment Signal Minimal v0 creates same-session sandbox-only temporary alignment signal records from b171 consistency evaluation records. It records `temporary_alignment_signal_created=True`, `signal_label=temporary_thought_action_memory_alignment_signal`, `signal_scope=same_session_sandbox_only`, and `signal_lifetime=same_session_temporary_only`. Boundary Index updates from `2026-06-09-b171` to `2026-06-09-b172`. This does not enable readback, create candidate hints, reorder candidates, select/finalize/command/execute actions, create new outcome observations, write memory/retention, admit memory, create habit/skill anchors, read/influence/mutate predictors, feed endocrine/tendency directly, change production behavior, or claim proof of learning.
+
+## Thought Memory Action Parallel Mini Loop Signal Readback Candidate Hint Minimal v0
+
+- Thought Memory Action Parallel Mini Loop Signal Readback Candidate Hint Minimal v0 reads b172 temporary alignment signal records once inside same-session sandbox scope and creates weak candidate-input-only hints for `reach_front_item`, `wait_or_observe`, and `observe_or_alternative_probe`. Boundary Index updates from `2026-06-09-b172` to `2026-06-09-b173`. This does not reorder candidates, change scores, select/finalize/command/execute actions, create new outcome observations, write memory/retention, admit memory, create habit/skill anchors, read/influence/mutate predictors, feed endocrine/tendency directly, change production behavior, or claim proof of learning.
 
 ## Host-Dependent Idle Continuance Trace v0
 

@@ -57,7 +57,7 @@ The point is not to deny the relationship between the user and Qingyin. The poin
 Current Boundary Index at the time this summary was written:
 
 ```text
-2026-06-09-b172
+2026-06-09-b173
 ```
 
 Current endpoint:
@@ -67,6 +67,7 @@ b169 advisory reordering evidence
 -> b170 one-cycle thought / action / working-memory mini-loop trace
 -> b171 record-only consistency evaluation
 -> b172 same-session sandbox-only temporary alignment signal
+-> b173 same-session signal readback and weak candidate hint
 ```
 
 Plain meaning:
@@ -79,14 +80,12 @@ b172 can create a temporary alignment signal saying:
 thought / action / memory lined up in this same-session sandbox trace
 ```
 
-But b172 still does not allow that signal to steer behavior.
+b173 can read that temporary signal once and turn it into a weak `candidate_input_only` hint for the next sandbox thought/action/memory step.
 
-## What b172 Does Not Do
+## What b173 Does Not Do
 
-b172 does not create:
+b173 does not create:
 
-- signal readback
-- candidate hint
 - candidate reordering
 - selected_action
 - final_action
@@ -229,14 +228,14 @@ Before coding, Codex should answer in plain language:
 4. What visible output will exist after the work?
 5. What does it still refuse to do?
 
-For the current b172 endpoint, a useful next real step would be something like:
+For the current b173 endpoint, a useful next real step would be something like:
 
 ```text
-read the temporary alignment signal once inside the same session
-and produce a weak candidate hint
+feed the weak candidate hint into sandbox advisory ordering
+and show a small before/after ordering change
 ```
 
-That would be progress because the signal becomes readable context.
+That would be progress because the weak hint would finally affect sandbox advisory ordering.
 
 It still must not select, execute, write long-term memory, affect production, or claim learning.
 
@@ -255,13 +254,13 @@ Avoid package-name fog.
 Say:
 
 ```text
-This lets Qingyin read the temporary "the loop lined up" marker and turn it into a weak hint.
+This lets Qingyin use the weak hint to change sandbox advisory ordering, without selecting or executing anything yet.
 ```
 
 Do not only say:
 
 ```text
-Temporary Alignment Signal Readback Candidate Hint Boundary Minimal v0.
+Thought Memory Action Parallel Mini Loop Signal Readback Candidate Hint Minimal v0.
 ```
 
 ## Non-Negotiable Non-Claims
