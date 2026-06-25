@@ -478,16 +478,17 @@ completed work package, passing test, task queue entry, or Codex-generated statu
 Recommended compact reading order:
 
 ```text
-1. docs/current_boundary_index.md
-2. docs/phase0_status.md
-3. docs/phase0_capability_matrix.md
-4. docs/phase0_line_document_index.md
-5. docs/body_motor_affordance_tendency_endocrine_reconciliation_design_v0.md
-6. docs/mimetic_endocrine_system_design_v0.md
-7. docs/body_motor_feedback_to_affordance_confidence_design_v0.md
-8. docs/phase0_open_risk_ledger.md
-9. docs/boundary_self_audit_policy_v0.md
-10. docs/qingyin_bridge_dual_eye_capability_perception_design_v0.md
+1. docs/codex_working_context_summary.md
+2. docs/current_boundary_index.md
+3. docs/phase0_status.md
+4. docs/phase0_capability_matrix.md
+5. docs/phase0_line_document_index.md
+6. docs/body_motor_affordance_tendency_endocrine_reconciliation_design_v0.md
+7. docs/mimetic_endocrine_system_design_v0.md
+8. docs/body_motor_feedback_to_affordance_confidence_design_v0.md
+9. docs/phase0_open_risk_ledger.md
+10. docs/boundary_self_audit_policy_v0.md
+11. docs/qingyin_bridge_dual_eye_capability_perception_design_v0.md
 ```
 
 Then read line-specific docs only as needed.

@@ -3,6 +3,7 @@
 ## Current Status Anchors
 
 - `README.md`
+- `docs/codex_working_context_summary.md`
 - `docs/phase0_status.md`
 - `docs/current_boundary_index.md`
 - `docs/level1_sandbox_outcome_evaluation_and_human_review_summary_minimal_v0.md`
