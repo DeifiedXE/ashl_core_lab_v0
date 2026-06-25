@@ -8370,3 +8370,19 @@ Explicitly not changed:
 
 Next:
 - Sandbox Candidate Ordering Arbitration Reordered Candidate Feedback-Gated Candidate Reordering Minimal v0, if the next package creates same-session sandbox-only advisory reordering records while still blocking selected_action/final_action/direct_command/execution, new outcome observation, score changes, runtime next-cycle ordering changes, feedback loops, memory/retention writes, predictor influence/mutation, direct endocrine/tendency feeds, production behavior, and proof-of-learning claims.
+
+## Sandbox Candidate Ordering Arbitration Reordered Candidate Feedback-Gated Candidate Reordering Minimal v0
+
+Status: completed / reordered-candidate same-session sandbox-only advisory reordering records / Boundary Index b169.
+
+What changed:
+- b168 future reordering approval boundaries can now create same-session sandbox-only advisory candidate reordering records.
+- Reordered candidates covered: `reach_front_item`, `wait_or_observe`, and `observe_or_alternative_probe`.
+- Records set `candidate_reordering_created=True`, `candidate_reordering_applied=True`, `candidate_order_changed=True`, and `reordering_effect_scope=same_session_sandbox_advisory_record_only`.
+- Boundary Index updates from `2026-06-09-b168` to `2026-06-09-b169`.
+
+Explicitly not changed:
+- No selected_action, final_action, direct_command, execution, new outcome observation, candidate score change, runtime next-cycle ordering change, feedback loop, memory/retention write, predictor read/influence/mutation, direct endocrine/tendency feed, production behavior, or proof-of-learning claim.
+
+Next:
+- Sandbox Candidate Ordering Arbitration Reordered Candidate To Selected Action Approval Boundary Minimal v0. Plain meaning: let the top-ranked reordered advisory candidate ask for future selected_action review; do not actually select, finalize, command, execute, observe, write memory, touch predictor, change production behavior, or claim learning.
