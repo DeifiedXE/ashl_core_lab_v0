@@ -1,9 +1,9 @@
 # Current Boundary Index
 
-Boundary Index Version: 2026-06-09-b181
-Last update log: Phase1 Session Frame Runtime Tick Handoff Minimal v0
-Previous Boundary Index Version: 2026-06-09-b180
-Previous Last update log: Phase1 Session Frame Materialization Minimal v0
+Boundary Index Version: 2026-06-09-b182
+Last update log: Phase1 Tick1 Frame Three-Line Substrate Index Minimal v0
+Previous Boundary Index Version: 2026-06-09-b181
+Previous Last update log: Phase1 Session Frame Runtime Tick Handoff Minimal v0
 
 Archived previous current index:
 
@@ -14,11 +14,11 @@ This file is the active short index. Archive files preserve older milestone deta
 
 ## Current Safe Claim
 
-b181 reads the b180 same-session frame as tick0 input, creates a sandbox-only same-session tick1 context, appends one record-only frame, and compares tick0/tick1 continuity.
+b182 reads the b181 tick1 frame handoff and creates three read-only substrate indexes: thought, action, and memory.
 
 Plain wording:
 
-The session frame can now hand its context to the next sandbox tick. The new tick is a checked context record plus an appended frame, not a live runtime scheduler and not production behavior.
+The next sandbox step can now see tick1 as three named lanes. This is indexing only: no candidate input, no action selection, no memory write, and no live runtime.
 
 The current endpoint is:
 
@@ -37,6 +37,7 @@ first-cycle temporary working memory
 -> Phase1 record-only session trace spine
 -> Phase1 record-only same-session frame
 -> Phase1 same-session runtime tick handoff
+-> Phase1 tick1 three-line substrate index
 ```
 
 The three deterministic paths remain:
@@ -62,6 +63,7 @@ b170 one-cycle thought/action/working-memory trace
 -> b179 Phase1 record-only runtime session trace spine
 -> b180 Phase1 record-only same-session frame
 -> b181 Phase1 same-session runtime tick handoff
+-> b182 Phase1 tick1 three-line substrate index
 ```
 
 Compatibility anchor for b170 B0/10 self-check: b170 Thought Memory Action Parallel Mini Loop evidence.
@@ -70,18 +72,20 @@ Compatibility anchor for b180 B0/10 self-check: Phase1 Session Frame Materializa
 
 Compatibility field retained from b180: `b0_10_counter=B0/10`.
 
-## What b181 Adds
+## What b182 Adds
 
-- `read_b180_frame_as_next_tick_input=True`
-- `next_tick_context_created=True`
-- `frame_appended=True`
-- `previous_frame_tick_count=8`
+- `reads_b181_tick1_frame_only=True`
+- `tick1_frame_reference_created=True`
+- `thought_line_index_created=True`
+- `action_line_index_created=True`
+- `memory_line_index_created=True`
+- `cross_line_continuity_index_created=True`
+- `lane_count=3`
+- `all_lanes_record_only=True`
 - `frame_tick_count=9`
-- `continuity_compared=True`
-- `tick_index_advances_by_one=True`
-- `frame_count_advances_by_one=True`
-- `external_tools_absent=True`
-- `persistent_memory_absent=True`
+- `candidate_input_created=False`
+- `selected_action_created=False`
+- `persistent_memory_write=False`
 
 ## Still Blocked
 
@@ -93,6 +97,7 @@ Compatibility field retained from b180: `b0_10_counter=B0/10`.
 - No runtime action loop.
 - No persistent state store or persistent session store.
 - No feedback evaluation or feedback application.
+- No candidate input creation.
 - No candidate ordering or candidate reordering.
 - No candidate score mutation.
 - No new selected_action, final_action, direct command, execution, or outcome observation.
@@ -132,12 +137,12 @@ Must-read planning docs:
 Next useful direction:
 
 ```text
-Phase1 Tick1 Context Sandbox Readback Minimal v0
+Phase1 Tick1 Three-Line Candidate Input Minimal v0
 ```
 
 Plain wording:
 
-The next small step should read the b181 tick1 context and report what the next sandbox tick is allowed to know, without selecting or executing an action.
+The next small step should read the b182 three-line index and create a same-session sandbox candidate-input record. It should still not order candidates, select an action, execute, write memory, or claim learning/consciousness.
 
 ## Line Count Rule
 

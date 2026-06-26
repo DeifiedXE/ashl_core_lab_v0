@@ -114,29 +114,29 @@ Completed at Boundary Index `2026-06-09-b179`.
 
 ## Current Phase1 Step
 
-The simple b179 readback gap is closed by b180 Session Frame Materialization. b181 then reads that frame as tick0 input, creates same-session sandbox-only tick1 context, appends one record-only frame, and compares continuity.
+The simple b179 readback gap is closed by b180 Session Frame Materialization. b181 reads that frame as tick0 input, creates same-session sandbox-only tick1 context, appends one record-only frame, and compares continuity. b182 reads that tick1 handoff and indexes it into read-only thought, action, and memory lanes.
 
 Current implemented step:
 
 ```text
-Phase1 Session Frame Runtime Tick Handoff Minimal v0
+Phase1 Tick1 Frame Three-Line Substrate Index Minimal v0
 ```
 
 Plain version:
 
-The frame can hand context to the next sandbox tick without becoming a live runtime scheduler.
+The next sandbox step can now see tick1 as three named lanes: what thought context is visible, what action history is visible, and what memory references are visible.
 
-It still avoids live runtime, new action selection, execution, persistent memory, external tool use, predictor influence, production behavior, and learning/consciousness claims.
+It still avoids candidate input creation, ordering, action selection, execution, persistent memory, external tool use, predictor influence, production behavior, and learning/consciousness claims.
 
 Next useful step:
 
 ```text
-Phase1 Tick1 Context Sandbox Readback Minimal v0
+Phase1 Tick1 Three-Line Candidate Input Minimal v0
 ```
 
 Plain version:
 
-Read the b181 tick1 context and report what the next sandbox tick is allowed to know, without selecting or executing an action.
+Read the b182 three-line index and create a same-session sandbox candidate-input record. Do not order candidates, select an action, execute, write memory, or claim learning/consciousness.
 
 ## Working Rule
 

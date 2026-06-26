@@ -4,7 +4,7 @@ Status: docs-only actual capability inventory.
 Runtime impact: none.
 Boundary Index impact: none.
 
-This file records what the repository can actually run or produce after Boundary Index `2026-06-09-b181`.
+This file records what the repository can actually run or produce after Boundary Index `2026-06-09-b182`.
 
 It is a work-start reality check. It does not grant runtime authority and does not replace:
 
@@ -15,14 +15,14 @@ It is a work-start reality check. It does not grant runtime authority and does n
 
 ## Scan Baseline
 
-Repository scan baseline after the b181 tick handoff package:
+Repository scan baseline after the b182 tick1 three-line substrate index package:
 
-- tracked files: 803
-- `ashl_core/*.py`: 285
-- `tests/*.py`: 355
+- tracked files: 805
+- `ashl_core/*.py`: 286
+- `tests/*.py`: 356
 - top-level `docs/*.md`: 148
-- smoke functions in `run_all_smoke_tests.py`: 421
-- expected refreshed full smoke report: 421 / 421 passed
+- smoke functions in `run_all_smoke_tests.py`: 422
+- expected refreshed full smoke report: 422 / 422 passed
 
 Important caveat:
 
@@ -61,6 +61,7 @@ Action and sandbox substrate:
 - b170 through b178 create a bounded two-cycle thought/action/memory mini-loop as same-session sandbox record evidence
 - b179 creates a record-only Phase1 session trace spine over that completed mini-loop
 - b181 creates a same-session sandbox-only tick handoff from b180 frames, including tick1 context, appended frame, and tick0/tick1 continuity comparison
+- b182 creates read-only thought, action, and memory lane indexes from b181 tick1 handoff records
 
 Session and working memory substrate:
 
@@ -70,6 +71,7 @@ Session and working memory substrate:
 - b179 can index the closed Phase0 loop as one ordered session trace spine
 - b180 can materialize that spine into one record-only same-session frame with current tick, trace snapshot, temporary working-memory reference slots, and evidence source references
 - b181 can read that frame as tick0 input and append one record-only tick1 frame while preserving working-memory and evidence references
+- b182 can expose those preserved references as a read-only memory lane, alongside thought and action lanes
 
 Memory and retention substrate:
 
@@ -131,6 +133,7 @@ Representative data shapes already produced by existing modules/tests include:
 - Phase1 session trace spine records
 - Phase1 same-session frame records
 - Phase1 same-session runtime tick handoff records
+- Phase1 tick1 three-line substrate index records
 - smoke test report data
 
 ## Not Present Yet
@@ -140,6 +143,7 @@ ASHL Core does not yet have:
 - a live Qingyin runtime session
 - a session frame promoted to live runtime
 - a tick handoff promoted to live runtime
+- a three-line index promoted to candidate ordering or action selection
 - a runtime tick scheduler
 - automatic runtime ticks
 - a persistent runtime session store
@@ -174,22 +178,23 @@ The next useful Phase1 engineering step should not be duplicate frame classifica
 Current implemented step:
 
 ```text
-Phase1 Session Frame Runtime Tick Handoff Minimal v0
+Phase1 Tick1 Frame Three-Line Substrate Index Minimal v0
 ```
 
 Plain meaning:
 
 Status:
 
-Completed at Boundary Index `2026-06-09-b181`.
+Completed at Boundary Index `2026-06-09-b182`.
 
-Reads the b180 frame as tick0 input, creates tick1 context, appends one record-only frame, and compares tick0/tick1 continuity.
+Reads b181 tick1 handoff records and creates read-only thought, action, and memory lane indexes plus a cross-line continuity index.
 
-It makes the same-session trace move one checked step forward without becoming a live runtime.
+It lets the next sandbox step see tick1 context as three named lanes without turning those lanes into behavior authority.
 
 It still must not:
 
 - start a live runtime loop
+- create candidate input or ordering
 - create a new action
 - write persistent memory
 - call external tools
@@ -202,9 +207,9 @@ It still must not:
 Better next direction:
 
 ```text
-Phase1 Tick1 Context Sandbox Readback Minimal v0
+Phase1 Tick1 Three-Line Candidate Input Minimal v0
 ```
 
 Plain meaning:
 
-Read the b181 tick1 context and report what the next sandbox tick is allowed to know, without selecting or executing an action.
+Read the b182 three-line index and create a same-session sandbox candidate-input record, without ordering candidates, selecting or executing an action, writing memory, or claiming learning/consciousness.

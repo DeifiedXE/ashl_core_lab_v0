@@ -57,7 +57,7 @@ The point is not to deny the relationship between the user and Qingyin. The poin
 Current Boundary Index at the time this summary was written:
 
 ```text
-2026-06-09-b181
+2026-06-09-b182
 ```
 
 Current endpoint:
@@ -76,6 +76,7 @@ b169 advisory reordering evidence
 -> b179 Phase1 record-only session trace spine
 -> b180 Phase1 record-only same-session frame
 -> b181 Phase1 same-session runtime tick handoff
+-> b182 Phase1 tick1 three-line substrate index
 ```
 
 Plain meaning:
@@ -106,9 +107,11 @@ b180 can materialize the b179 spine into one standard same-session frame with a 
 
 b181 can read the b180 frame as tick0 input, create same-session sandbox-only tick1 context, append one record-only frame, and compare tick0/tick1 continuity.
 
-## What b181 Does Not Do
+b182 can read the b181 tick1 handoff and create read-only thought, action, and memory lane indexes plus a cross-line continuity index.
 
-b181 does not create:
+## What b182 Does Not Do
+
+b182 does not create:
 
 - a live runtime session
 - a session frame promoted to live runtime
@@ -119,6 +122,7 @@ b181 does not create:
 - a runtime action loop
 - feedback evaluation
 - feedback application
+- candidate input
 - new candidate ordering or candidate reordering
 - candidate score mutation
 - runtime next-cycle ordering
@@ -262,17 +266,17 @@ Before coding, Codex should answer in plain language:
 4. What visible output will exist after the work?
 5. What does it still refuse to do?
 
-For the current b181 endpoint, do not treat the tick1 context or appended frame as a live runtime. b181 only creates same-session sandbox continuity records.
+For the current b182 endpoint, do not treat the three-line substrate index as candidate generation, candidate ordering, action selection, memory writing, or live runtime. b182 only creates read-only lane index records.
 
 The next real step should be:
 
 ```text
-read the b181 tick1 context and report what the next sandbox tick is allowed to know
+read the b182 three-line index and create a same-session sandbox candidate-input record
 ```
 
 Phase0 now has one compact audit saying the minimal same-session sandbox loop is complete in record evidence, while still refusing long-term learning or production claims.
 
-Phase1 now has a record-only tick handoff from the b180 frame. The next work should read the tick1 context as allowed sandbox input without starting a live runtime, writing memory, selecting a new action, or claiming learning/consciousness.
+Phase1 now has a record-only tick1 three-line substrate index. The next work should create candidate input from those lane indexes without ordering candidates, starting a live runtime, writing memory, selecting a new action, or claiming learning/consciousness.
 
 The current Phase 0 closure plan is:
 

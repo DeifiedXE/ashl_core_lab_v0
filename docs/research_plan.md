@@ -8557,21 +8557,38 @@ Plain meaning:
 Explicitly not changed:
 - No live runtime session, runtime scheduler, live runtime tick, runtime action loop, selected_action/final_action/direct_command/execution/outcome observation creation, working-memory update, persistent memory write, external tool use, predictor mutation, direct endocrine/tendency feed, production behavior, consciousness claim, long-term learning claim, or proof-of-learning claim.
 
+## Phase1 Tick1 Frame Three-Line Substrate Index Minimal v0
+
+Status: completed / read-only tick1 three-line substrate index / Boundary Index b182.
+
+What changed:
+- b181 tick1 frame handoff records can now be read as source records.
+- Each record creates a read-only tick1 frame reference.
+- Each record creates separate thought, action, and memory lane indexes.
+- Each record creates a cross-line continuity index proving there are exactly three record-only lanes.
+- Boundary Index updates from `2026-06-09-b181` to `2026-06-09-b182`.
+
+Plain meaning:
+- Tick1 can now be viewed as three named shelves: what purpose/context is visible, what action history is visible, and what working-memory references are visible. It is a map for the next sandbox package, not a decision.
+
+Explicitly not changed:
+- No candidate input, candidate ordering, selected_action/final_action/direct_command/execution/outcome observation creation, working-memory update, persistent memory write, external tool use, predictor read/influence/mutation, direct endocrine/tendency feed, production behavior, consciousness claim, long-term learning claim, or proof-of-learning claim.
+
 ## ASHL Core Actual Capability Inventory / Runtime Substrate Map v0
 
 Status: completed / docs-only actual capability inventory / no Boundary Index change.
 
 What changed:
-- `docs/ashl_core_actual_capability_inventory_runtime_substrate_map_v0.md` records what the repo can actually run or produce after b179.
+- `docs/ashl_core_actual_capability_inventory_runtime_substrate_map_v0.md` records what the repo can actually run or produce after b182.
 - It separates executable sandbox/helper capability, record/checker capability, controlled file helpers, and design-only capability.
-- It records the pre-inventory-file scan baseline: 798 tracked files, 283 core Python modules, 353 test modules, 138 top-level docs, and 419 smoke functions.
+- It records the current b182 baseline: 805 tracked files, 286 core Python modules, 356 test modules, 148 top-level docs, and 422 smoke functions.
 - It marks a readback-only b179 follow-up as redundant.
 
 Plain meaning:
 - The repo now has a compact map of real parts on the table. It should stop Codex from mistaking old docs, package names, or boundary paperwork for actual runtime progress.
 
 Recommended next direction:
-- Phase1 Tick1 Context Sandbox Readback Minimal v0: read the b181 tick1 context and report what the next sandbox tick is allowed to know without selecting or executing an action.
+- Phase1 Tick1 Three-Line Candidate Input Minimal v0: read the b182 three-line index and create a same-session sandbox candidate-input record without ordering candidates, selecting an action, executing, writing memory, or claiming learning/consciousness.
 
 Explicitly not changed:
 - No runtime behavior, Boundary Index change, live session, action creation, memory/retention write, memory admission, predictor use/mutation, direct endocrine/tendency feed, production behavior, learning claim, or consciousness claim.
