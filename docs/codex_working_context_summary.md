@@ -57,7 +57,7 @@ The point is not to deny the relationship between the user and Qingyin. The poin
 Current Boundary Index at the time this summary was written:
 
 ```text
-2026-06-09-b186
+2026-06-09-b187
 ```
 
 Current endpoint:
@@ -81,6 +81,7 @@ b169 advisory reordering evidence
 -> b184 Phase2 perception/capability grounding entry report
 -> b185 Phase2 perception/capability evidence source-link report
 -> b186 Phase2 grounding unknown classification correction report
+-> b187 Phase2-to-Phase10 completed capability cross-check report
 ```
 
 Plain meaning:
@@ -121,9 +122,11 @@ b185 can read those b184 entry reports and link their perception/capability evid
 
 b186 corrects two b185 unresolved operation labels. `wait_or_observe` and `observe_or_alternative_probe` are not perception sources or capability bindings; they are deferred as future Phase4 endocrine/tendency/settling clues. This is a record-only correction, not a Phase4 feed.
 
-## What b186 Does Not Do
+b187 reads the current capability inventory, matrix, status, line index, boundary index, and growth plan. It produces a record-only cross-check separating completed/do-not-repeat work, partial/extend-only work, unfinished roadmap candidates, and design-only/not-runtime docs. This blocks duplicate Phase1/Phase2 packages and design-only runtime claims.
 
-b186 does not create:
+## What b187 Does Not Do
+
+b187 does not create:
 
 - a live runtime session
 - a session frame promoted to live runtime
@@ -288,17 +291,17 @@ Before coding, Codex should answer in plain language:
 4. What visible output will exist after the work?
 5. What does it still refuse to do?
 
-For the current b186 endpoint, do not keep growing duplicate Phase1 readback/index/handoff packages. Phase1 is closed as record-only substrate evidence, and Phase2 has begun as perception/capability grounding.
+For the current b187 endpoint, do not keep growing duplicate Phase1 readback/index/handoff packages. Phase1 is closed as record-only substrate evidence, and Phase2 has begun as perception/capability grounding.
 
 The next real step should be:
 
 ```text
-read the b186 correction report and b185 source-link reports; summarize linked, unresolved, and Phase4-deferred evidence
+read the b187 cross-check, b186 correction report, and b185 source-link reports; summarize linked, unresolved, and Phase4-deferred evidence
 ```
 
 Phase0 now has one compact audit saying the minimal same-session sandbox loop is complete in record evidence, while still refusing long-term learning or production claims.
 
-Phase2 now has source-link reports plus a correction report that prevents wait/probe settling cues from being forced into capability. The next work should read this into a compact availability summary, while still refusing semantic vision, capability binding, endocrine/tendency feed, candidate input, ordering, action selection, execution, memory write, or learning/consciousness claims.
+Phase2 now has source-link reports plus a correction report that prevents wait/probe settling cues from being forced into capability. b187 also adds a cross-check so future work does not rebuild completed packages or treat design-only docs as runtime. The next work should read this into a compact availability summary, while still refusing semantic vision, capability binding, endocrine/tendency feed, candidate input, ordering, action selection, execution, memory write, or learning/consciousness claims.
 
 The current Phase 0 closure plan is:
 

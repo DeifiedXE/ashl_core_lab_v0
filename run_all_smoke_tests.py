@@ -528,6 +528,9 @@ from ashl_core.phase2_perception_capability_evidence_source_link_minimal import 
 from ashl_core.phase2_grounding_unknown_classification_correction_minimal import (
     run_phase2_grounding_unknown_classification_correction_minimal_check,
 )
+from ashl_core.phase2_to_phase10_completed_capability_cross_check_minimal import (
+    run_phase2_to_phase10_completed_capability_cross_check_minimal_check,
+)
 from ashl_core.minimal_visual_grounding_trial import run_minimal_visual_grounding_trial_check
 from ashl_core.visual_prediction_error_attention_priority_preview_minimal import (
     run_visual_prediction_error_attention_priority_preview_minimal_check,
@@ -10913,9 +10916,9 @@ def smoke_current_boundary_index_docs() -> dict:
     readme = readme_path.read_text(encoding="utf-8") if readme_path.exists() else ""
     research_plan = research_plan_path.read_text(encoding="utf-8") if research_plan_path.exists() else ""
     compact_required_terms = [
-        "Boundary Index Version: 2026-06-09-b186",
-        "Last update log: Phase2 Grounding Unknown Classification Correction Minimal v0",
-        "Previous Boundary Index Version: 2026-06-09-b185",
+        "Boundary Index Version: 2026-06-09-b187",
+        "Last update log: Phase2-to-Phase10 Completed Capability Cross-Check Minimal v0",
+        "Previous Boundary Index Version: 2026-06-09-b186",
         "docs/boundary_archive/current_boundary_index_2026-06-25_b174.md",
         "docs/boundary_archive/current_boundary_index_2026-06-26_b184.md",
         "Phase0 two-cycle thought/action/working-memory mini-loop",
@@ -10927,13 +10930,17 @@ def smoke_current_boundary_index_docs() -> dict:
         "Phase2 perception/capability grounding entry report",
         "Phase2 evidence source-link report",
         "Phase2 unknown classification correction report",
-        "deferred_source_classification_created=True",
-        "phase2_purpose=perception_and_capability_grounding",
-        "wait_or_observe_marked_not_capability=True",
-        "observe_or_alternative_probe_marked_not_capability=True",
-        "phase4_deferred_reference_created=True",
-        "unknown_items_not_forced_into_capability=True",
-        "no_endocrine_feed=True",
+        "Phase2-to-Phase10 completed capability cross-check report",
+        "completed_do_not_repeat_count=5",
+        "partial_only_extend_count=4",
+        "unfinished_roadmap_candidate_count=6",
+        "design_only_not_runtime_count=5",
+        "reads_capability_inventory=True",
+        "reads_capability_matrix=True",
+        "reads_status=True",
+        "reads_line_index=True",
+        "duplicate_reimplementation_blocked=True",
+        "design_only_runtime_confusion_blocked=True",
         "candidate_input_created=False",
         "candidate_ordering_created=False",
         "action_selection_created=False",
@@ -10993,8 +11000,8 @@ def smoke_current_boundary_index_docs() -> dict:
         and all(term in b184_archive for term in b184_archive_required_terms)
         and all(term in legacy_archive for term in legacy_required_terms)
         and line_count <= 150
-        and "Phase2 Grounding Unknown Classification Correction Minimal v0" in readme
-        and "Phase2 Grounding Unknown Classification Correction Minimal v0" in research_plan
+        and "Phase2-to-Phase10 Completed Capability Cross-Check Minimal v0" in readme
+        and "Phase2-to-Phase10 Completed Capability Cross-Check Minimal v0" in research_plan
     )
     return _result(
         "boundary_index_current_archive",
@@ -11038,9 +11045,9 @@ def smoke_phase0_documentation_consolidation_minimal() -> dict:
         and matrix_path.exists()
         and index_path.exists()
         and plan_path.exists()
-        and "Boundary Index Version: 2026-06-09-b186" in status
+        and "Boundary Index Version: 2026-06-09-b187" in status
         and "Current Safe Capability" in status
-        and "Phase2 Grounding Unknown Classification Correction Minimal v0" in status
+        and "Phase2-to-Phase10 Completed Capability Cross-Check Minimal v0" in status
         and "Phase1 Closure Audit Minimal v0" in status
         and "ashl_core_actual_capability_inventory_runtime_substrate_map_v0.md" in index
         and "phase1_to_phase5_growth_substrate_plan.md" in index
@@ -11242,7 +11249,7 @@ def smoke_phase0_documentation_inventory_and_consistency_reconciliation() -> dic
     boundary = Path("docs/current_boundary_index.md").read_text(encoding="utf-8")
     passed = (
         all(path.exists() for path in required_paths)
-        and "Boundary Index Version: 2026-06-09-b186" in texts[Path("docs/phase0_status.md")]
+        and "Boundary Index Version: 2026-06-09-b187" in texts[Path("docs/phase0_status.md")]
         and "Inventory count:" in texts[Path("docs/phase0_doc_inventory.md")]
         and "docs/phase1_to_phase5_growth_substrate_plan.md" in texts[Path("docs/phase0_doc_inventory.md")]
         and "docs/ashl_core_actual_capability_inventory_runtime_substrate_map_v0.md" in texts[
@@ -11250,7 +11257,7 @@ def smoke_phase0_documentation_inventory_and_consistency_reconciliation() -> dic
         ]
         and "docs/phase0_versioning_policy.md" in texts[Path("docs/phase0_doc_inventory.md")]
         and "unknown_needs_review" in texts[Path("docs/phase0_doc_inventory.md")]
-        and "Phase2 Grounding Unknown Classification Correction Minimal v0" in texts[
+        and "Phase2-to-Phase10 Completed Capability Cross-Check Minimal v0" in texts[
             Path("docs/ashl_core_actual_capability_inventory_runtime_substrate_map_v0.md")
         ]
         and "phase1 closure audit minimal" in texts[
@@ -21668,6 +21675,60 @@ def smoke_phase2_grounding_unknown_classification_correction_minimal() -> dict:
     )
 
 
+def smoke_phase2_to_phase10_completed_capability_cross_check_minimal() -> dict:
+    result = run_phase2_to_phase10_completed_capability_cross_check_minimal_check()
+    summary = result.get("summary", {})
+    boundary = result.get("boundary", {})
+    records = result.get("valid_records", [])
+    record = records[0] if records else {}
+    source = record.get("source_document_readback", {})
+    duplicate = record.get("duplicate_prevention", {})
+    authority = record.get("authority_containment", {})
+    passed = (
+        result.get("command") == "run-phase2-to-phase10-completed-capability-cross-check-minimal-check"
+        and result.get("flow") == "phase2_to_phase10_completed_capability_cross_check_minimal_v0"
+        and result.get("status") == "ok"
+        and boundary.get("boundary_index_version_before") == "2026-06-09-b186"
+        and boundary.get("boundary_index_version_after") == "2026-06-09-b187"
+        and source.get("reads_capability_inventory") is True
+        and source.get("reads_capability_matrix") is True
+        and source.get("reads_status") is True
+        and source.get("reads_line_index") is True
+        and summary.get("cross_check_result_count") == 25
+        and summary.get("valid_cross_check_count") == 1
+        and summary.get("invalid_cross_check_count") == 24
+        and summary.get("completed_do_not_repeat_count") == 5
+        and summary.get("partial_only_extend_count") == 4
+        and summary.get("unfinished_roadmap_candidate_count") == 6
+        and summary.get("design_only_not_runtime_count") == 5
+        and summary.get("phase2_completed_items_present_count") == 1
+        and summary.get("phase3_to_phase5_partial_or_unfinished_present_count") == 1
+        and summary.get("phase6_to_phase10_not_authorized_as_runtime_count") == 1
+        and summary.get("duplicate_reimplementation_blocked_count") == 1
+        and summary.get("design_only_runtime_confusion_blocked_count") == 1
+        and summary.get("roadmap_uncertainty_reduced_count") == 1
+        and summary.get("new_runtime_authority_created_count") == 0
+        and duplicate.get("completed_items_must_not_be_reimplemented") is True
+        and duplicate.get("phase2_wait_probe_capability_mistake_blocked") is True
+        and duplicate.get("phase6_to_phase10_runtime_claim_blocked_without_plan") is True
+        and authority.get("new_runtime_authority_created") is False
+        and authority.get("candidate_input_created_in_this_package") is False
+        and authority.get("selected_action_created_in_this_package") is False
+        and authority.get("memory_write_created_in_this_package") is False
+        and authority.get("production_behavior_created_in_this_package") is False
+        and authority.get("proof_of_learning_claim") is False
+        and authority.get("consciousness_claim") is False
+    )
+    return _result(
+        "phase2_to_phase10_completed_capability_cross_check_minimal",
+        passed,
+        {
+            "summary": summary,
+            "boundary": boundary,
+        },
+    )
+
+
 def smoke_phase0_current_capability_snapshot() -> dict:
     doc_path = Path("docs/phase0_current_capability_snapshot_2026-06-10.md")
     doc = doc_path.read_text(encoding="utf-8") if doc_path.exists() else ""
@@ -24501,6 +24562,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_phase2_closed_phase1_substrate_perception_capability_grounding_entry_minimal(),
         smoke_phase2_perception_capability_evidence_source_link_minimal(),
         smoke_phase2_grounding_unknown_classification_correction_minimal(),
+        smoke_phase2_to_phase10_completed_capability_cross_check_minimal(),
         smoke_phase0_current_capability_snapshot(),
         smoke_memory_influence_behavior_gate_design(),
         smoke_first_memory_influenced_behavior_boundary(),

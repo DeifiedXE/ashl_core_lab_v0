@@ -56,31 +56,31 @@ class Phase0DocumentationInventoryConsistencyReconciliationTests(unittest.TestCa
     def test_current_boundary_index_has_sandbox_production_distinction(self):
         boundary = self._read("docs/current_boundary_index.md")
 
-        self.assertIn("Boundary Index Version: 2026-06-09-b186", boundary)
+        self.assertIn("Boundary Index Version: 2026-06-09-b187", boundary)
         self.assertIn("No production/runtime memory-influenced behavior is allowed.", boundary)
         self.assertIn("sandbox-only lesson application, observation, and evaluation records", boundary)
         self.assertIn("do not constitute production/runtime memory-influenced behavior", boundary)
         self.assertIn("Level 2 Sandbox Application milestone", boundary)
         self.assertIn("Level 3 Toy Minefield Multi-Step Sandbox milestone", boundary)
-        self.assertIn("Phase2 Grounding Unknown Classification Correction Minimal v0", boundary)
+        self.assertIn("Phase2-to-Phase10 Completed Capability Cross-Check Minimal v0", boundary)
         self.assertIn("B0/10", boundary)
 
     def test_actual_capability_inventory_records_repo_reality(self):
         inventory = self._read("docs/ashl_core_actual_capability_inventory_runtime_substrate_map_v0.md")
 
         for phrase in (
-            "tracked files: 814",
-            "`ashl_core/*.py`: 290",
-            "`tests/*.py`: 360",
-            "top-level `docs/*.md`: 148",
-            "smoke functions in `run_all_smoke_tests.py`: 426",
-            "expected refreshed full smoke report: 426 / 426 passed",
+            "tracked files: 816",
+            "`ashl_core/*.py`: 291",
+            "`tests/*.py`: 361",
+            "top-level `docs/*.md`: 149",
+            "smoke functions in `run_all_smoke_tests.py`: 427",
+            "expected refreshed full smoke report: 427 / 427 passed",
             "Executable sandbox/helper capability",
             "Record/checker capability",
             "Design-only capability",
             "A readback-only package after b179 would be redundant",
-            "Phase2 Grounding Unknown Classification Correction Minimal v0",
-            "Phase2 grounding unknown classification correction reports",
+            "Phase2-to-Phase10 Completed Capability Cross-Check Minimal v0",
+            "Phase2-to-Phase10 completed capability cross-check reports",
             "no unrestricted Qingyin long-term memory runtime",
         ):
             with self.subTest(phrase=phrase):
@@ -117,6 +117,14 @@ class Phase0DocumentationInventoryConsistencyReconciliationTests(unittest.TestCa
         self.assertIn("implemented_phase2_unknown_classification_correction", matrix)
         self.assertIn("deferred to future Phase4 endocrine/tendency/settling review", matrix)
         self.assertIn("ashl_core/phase2_grounding_unknown_classification_correction_minimal.py", matrix)
+
+    def test_capability_matrix_records_b187_phase2_to_phase10_cross_check(self):
+        matrix = self._read("docs/phase0_capability_matrix.md")
+
+        self.assertIn("phase2 to phase10 completed capability cross-check minimal", matrix)
+        self.assertIn("implemented_docs_backed_capability_cross_check", matrix)
+        self.assertIn("completed/do-not-repeat, partial/extend-only, unfinished/roadmap, and design-only/not-runtime", matrix)
+        self.assertIn("ashl_core/phase2_to_phase10_completed_capability_cross_check_minimal.py", matrix)
 
     def test_long_term_memory_priority_note_exists(self):
         design = self._read("docs/five_layer_memory_design_assumption_v0_1.md")

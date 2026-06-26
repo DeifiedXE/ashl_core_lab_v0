@@ -162,6 +162,16 @@ Status:
 
 Completed at Boundary Index `2026-06-09-b186`.
 
+### Phase2-to-Phase10 Completed Capability Cross-Check Minimal v0
+
+Plain version:
+
+Read the capability inventory, matrix, status, line index, boundary index, and growth plan. Produce a checked report that separates completed/do-not-repeat work, partial/extend-only work, unfinished roadmap candidates, and design-only/not-runtime docs.
+
+Status:
+
+Completed at Boundary Index `2026-06-09-b187`.
+
 Next useful step:
 
 ```text
@@ -170,7 +180,7 @@ Phase2 Grounding Source Availability Readback Minimal v0
 
 Plain version:
 
-Read the b186 correction report and b185 source-link reports; summarize which evidence references are linked, still unresolved, or deferred to Phase4. Do not create semantic vision, capability bindings, endocrine/tendency feed, candidate input, action preparation, execution, memory writes, production behavior, or learning/consciousness claims.
+Read the b187 cross-check, b186 correction report, and b185 source-link reports; summarize which evidence references are linked, still unresolved, or deferred to Phase4. Do not create semantic vision, capability bindings, endocrine/tendency feed, candidate input, action preparation, execution, memory writes, production behavior, or learning/consciousness claims.
 
 ## Working Rule
 

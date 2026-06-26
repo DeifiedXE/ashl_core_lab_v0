@@ -8653,21 +8653,40 @@ Plain meaning:
 Explicitly not changed:
 - No endocrine feed, direct tendency feed, state settling application, semantic vision, object recognition, active focus, capability binding/map creation/mutation, candidate input, candidate ordering/reordering, selected_action/final_action/direct_command/execution/outcome observation creation, working-memory update, persistent memory write, external tool use, predictor read/influence/mutation, production behavior, consciousness claim, long-term learning claim, or proof-of-learning claim.
 
+## Phase2-to-Phase10 Completed Capability Cross-Check Minimal v0
+
+Status: completed / docs-backed capability cross-check / Boundary Index b187.
+
+What changed:
+- Adds `ashl_core/phase2_to_phase10_completed_capability_cross_check_minimal.py`.
+- Adds `tests/test_phase2_to_phase10_completed_capability_cross_check_minimal.py`.
+- Adds CLI `run-phase2-to-phase10-completed-capability-cross-check-minimal-check`.
+- Adds smoke `phase2_to_phase10_completed_capability_cross_check_minimal`.
+- Reads the capability inventory, capability matrix, phase status, line index, boundary index, and Phase1-5 growth plan.
+- Creates a record-only cross-check with completed/do-not-repeat, partial/extend-only, unfinished/roadmap, and design-only/not-runtime buckets.
+- Boundary Index updates from `2026-06-09-b186` to `2026-06-09-b187`.
+
+Plain meaning:
+- Before choosing more Phase2-Phase10 work, ASHL Core can now produce a checked map of what is already done, what may only be connected, what is unfinished, and what is only design. This blocks duplicate packages and blocks design docs from being treated as runtime.
+
+Explicitly not changed:
+- No candidate input, candidate ordering/reordering, selected_action/final_action/direct_command/execution/outcome observation creation, semantic vision, object recognition, active focus, capability binding/map creation/mutation, working-memory update, persistent memory write, external tool use, predictor read/influence/mutation, endocrine/tendency feed, production behavior, consciousness claim, long-term learning claim, or proof-of-learning claim.
+
 ## ASHL Core Actual Capability Inventory / Runtime Substrate Map v0
 
 Status: completed / docs-only actual capability inventory / no Boundary Index change.
 
 What changed:
-- `docs/ashl_core_actual_capability_inventory_runtime_substrate_map_v0.md` records what the repo can actually run or produce after b186.
+- `docs/ashl_core_actual_capability_inventory_runtime_substrate_map_v0.md` records what the repo can actually run or produce after b187.
 - It separates executable sandbox/helper capability, record/checker capability, controlled file helpers, and design-only capability.
-- It records the current b186 baseline: 814 tracked files, 290 core Python modules, 360 test modules, 148 top-level docs, and 426 smoke functions.
+- It records the current b187 baseline: 816 tracked files, 291 core Python modules, 361 test modules, 149 top-level docs, and 427 smoke functions.
 - It marks a readback-only b179 follow-up as redundant.
 
 Plain meaning:
 - The repo now has a compact map of real parts on the table. It should stop Codex from mistaking old docs, package names, or boundary paperwork for actual runtime progress.
 
 Recommended next direction:
-- Phase2 Grounding Source Availability Readback Minimal v0: read the b186 correction report and b185 source-link reports, then summarize which evidence references are linked, still unresolved, or deferred to Phase4 while avoiding semantic vision, capability binding, endocrine/tendency feed, candidate input, or action preparation.
+- Phase2 Grounding Source Availability Readback Minimal v0: read the b187 cross-check, b186 correction report, and b185 source-link reports, then summarize which evidence references are linked, still unresolved, or deferred to Phase4 while avoiding semantic vision, capability binding, endocrine/tendency feed, candidate input, or action preparation.
 
 Explicitly not changed:
 - No runtime behavior, Boundary Index change, live session, action creation, memory/retention write, memory admission, predictor use/mutation, direct endocrine/tendency feed, production behavior, learning claim, or consciousness claim.

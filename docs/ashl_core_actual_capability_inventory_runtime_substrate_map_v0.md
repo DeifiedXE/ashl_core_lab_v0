@@ -4,7 +4,7 @@ Status: docs-only actual capability inventory.
 Runtime impact: none.
 Boundary Index impact: none.
 
-This file records what the repository can actually run or produce after Boundary Index `2026-06-09-b186`.
+This file records what the repository can actually run or produce after Boundary Index `2026-06-09-b187`.
 
 It is a work-start reality check. It does not grant runtime authority and does not replace:
 
@@ -15,14 +15,14 @@ It is a work-start reality check. It does not grant runtime authority and does n
 
 ## Scan Baseline
 
-Repository scan baseline after the b186 Phase2 grounding unknown classification correction package:
+Repository scan baseline after the b187 Phase2-to-Phase10 completed capability cross-check package:
 
-- tracked files: 814
-- `ashl_core/*.py`: 290
-- `tests/*.py`: 360
-- top-level `docs/*.md`: 148
-- smoke functions in `run_all_smoke_tests.py`: 426
-- expected refreshed full smoke report: 426 / 426 passed
+- tracked files: 816
+- `ashl_core/*.py`: 291
+- `tests/*.py`: 361
+- top-level `docs/*.md`: 149
+- smoke functions in `run_all_smoke_tests.py`: 427
+- expected refreshed full smoke report: 427 / 427 passed
 
 Important caveat:
 
@@ -66,6 +66,7 @@ Action and sandbox substrate:
 - b184 starts Phase2 with record-only perception/capability grounding entry reports from the closed Phase1 substrate
 - b185 links those Phase2 evidence candidates to existing visual-spatial and Qingyin Bridge capability-map source references while preserving unresolved unknowns
 - b186 corrects wait/probe operation labels so they are not forced into capability and are deferred to future Phase4 settling work
+- b187 creates a docs-backed Phase2-to-Phase10 completed capability cross-check report to block duplicate rebuilds and design-only runtime claims
 
 Session and working memory substrate:
 
@@ -143,6 +144,7 @@ Representative data shapes already produced by existing modules/tests include:
 - Phase2 perception/capability grounding entry reports
 - Phase2 perception/capability evidence source-link reports
 - Phase2 grounding unknown classification correction reports
+- Phase2-to-Phase10 completed capability cross-check reports
 - smoke test report data
 
 ## Not Present Yet
@@ -156,6 +158,7 @@ ASHL Core does not yet have:
 - Phase1 duplicate substrate packages after closure
 - Phase2 candidate input or action preparation
 - Phase2 semantic vision or grounded capability binding
+- Phase6-Phase10 runtime claims backed by an authoritative plan
 - a runtime tick scheduler
 - automatic runtime ticks
 - a persistent runtime session store
@@ -247,4 +250,27 @@ Phase2 Grounding Source Availability Readback Minimal v0
 
 Plain meaning:
 
-Read the b186 correction report and b185 source-link reports; summarize which evidence references are linked, still unresolved, or deferred to Phase4. Do not create semantic vision, capability bindings, endocrine/tendency feed, candidate input, action preparation, execution, memory writes, or learning/consciousness claims.
+Read the b187 cross-check, b186 correction report, and b185 source-link reports; summarize which evidence references are linked, still unresolved, or deferred to Phase4. Do not create semantic vision, capability bindings, endocrine/tendency feed, candidate input, action preparation, execution, memory writes, or learning/consciousness claims.
+
+Current implemented cross-check:
+
+```text
+Phase2-to-Phase10 Completed Capability Cross-Check Minimal v0
+```
+
+Plain meaning:
+
+Status:
+
+Completed at Boundary Index `2026-06-09-b187`.
+
+Reads the capability inventory, matrix, status, line index, boundary index, and growth plan. It lists completed work that must not be rebuilt, partial work that can only be extended, unfinished work that can enter roadmap, and design-only docs that cannot be treated as runtime.
+
+It still must not:
+
+- create candidate input or ordering
+- create selected_action / final_action / direct command / execution
+- create semantic vision, capability binding, or capability-map mutation
+- write memory or retention
+- feed endocrine or tendency
+- claim production behavior, learning, or consciousness
