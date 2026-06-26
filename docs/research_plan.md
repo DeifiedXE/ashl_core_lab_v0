@@ -8692,21 +8692,41 @@ Plain meaning:
 Explicitly not changed:
 - No runtime behavior change, file move, file delete, rename, import path change, module merge, boundary expansion, candidate input, action selection, execution, memory write, retention write, predictor use, endocrine feed, production behavior, learning claim, or consciousness claim.
 
+## ASHL Core Refactor R2 Compatibility Alias Plan Minimal v0
+
+Status: completed / compatibility alias planning map / Boundary Index b189.
+
+What changed:
+- Adds `docs/ashl_core_refactor_r2_compatibility_alias_plan_v0.md`.
+- Adds `ashl_core/refactor_r2_compatibility_alias_plan_minimal.py`.
+- Adds `tests/test_refactor_r2_compatibility_alias_plan_minimal.py`.
+- Adds CLI `run-refactor-r2-compatibility-alias-plan-minimal-check`.
+- Adds smoke `refactor_r2_compatibility_alias_plan_minimal`.
+- Reads the b188 structural refactor map as the source plan.
+- Lists the future target package layout, compatibility strategy, alias candidate table, import compatibility test plan, and R1-R7 refactor phase gate.
+- Boundary Index updates from `2026-06-09-b188` to `2026-06-09-b189`.
+
+Plain meaning:
+- ASHL Core now has a checked plan for preserving old module imports before any future file movement into line folders. New homes are planned; old doors are not touched.
+
+Explicitly not changed:
+- No file move, file rename, import path change, module merge, old path deletion, alias implementation, runtime behavior, candidate input, action selection, execution, memory write, retention write, predictor use, endocrine feed, production behavior, learning claim, or consciousness claim.
+
 ## ASHL Core Actual Capability Inventory / Runtime Substrate Map v0
 
 Status: completed / docs-only actual capability inventory / no Boundary Index change.
 
 What changed:
-- `docs/ashl_core_actual_capability_inventory_runtime_substrate_map_v0.md` records what the repo can actually run or produce after b188.
+- `docs/ashl_core_actual_capability_inventory_runtime_substrate_map_v0.md` records what the repo can actually run or produce after b189.
 - It separates executable sandbox/helper capability, record/checker capability, controlled file helpers, and design-only capability.
-- It records the current b188 baseline: 819 tracked files, 292 core Python modules, 362 test modules, 150 top-level docs, and 428 smoke functions.
+- It records the current b189 baseline: 822 tracked files after this package is committed, 293 core Python modules, 363 test modules, 141 top-level docs, and 429 smoke functions.
 - It marks a readback-only b179 follow-up as redundant.
 
 Plain meaning:
 - The repo now has a compact map of real parts on the table. It should stop Codex from mistaking old docs, package names, or boundary paperwork for actual runtime progress.
 
 Recommended next direction:
-- ASHL Core Refactor Phase R2 Compatibility Alias Plan Minimal v0: plan package aliases and wrappers before any file move, while avoiding file moves, deletes, renames, import changes, module merges, runtime behavior, memory writes, endocrine feed, production behavior, and learning/consciousness claims.
+- ASHL Core Refactor R3 Low-Risk Docs Folder Plan Minimal v0: plan documentation-folder organization before any Python module move, while avoiding core file moves, deletes, renames, import changes, module merges, runtime behavior, memory writes, endocrine feed, production behavior, and learning/consciousness claims.
 
 Explicitly not changed:
 - No runtime behavior, Boundary Index change, live session, action creation, memory/retention write, memory admission, predictor use/mutation, direct endocrine/tendency feed, production behavior, learning claim, or consciousness claim.

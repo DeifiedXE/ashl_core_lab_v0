@@ -4,7 +4,7 @@ Status: docs-only actual capability inventory.
 Runtime impact: none.
 Boundary Index impact: none.
 
-This file records what the repository can actually run or produce after Boundary Index `2026-06-09-b188`.
+This file records what the repository can actually run or produce after Boundary Index `2026-06-09-b189`.
 
 It is a work-start reality check. It does not grant runtime authority and does not replace:
 
@@ -15,14 +15,14 @@ It is a work-start reality check. It does not grant runtime authority and does n
 
 ## Scan Baseline
 
-Repository scan baseline after the b188 ASHL Core structural refactor map package:
+Repository scan baseline after the b189 ASHL Core R2 compatibility alias plan package:
 
-- tracked files: 819
-- `ashl_core/*.py`: 292
-- `tests/*.py`: 362
-- top-level `docs/*.md`: 150
-- smoke functions in `run_all_smoke_tests.py`: 428
-- expected refreshed full smoke report: 428 / 428 passed
+- tracked files after this package is committed: 822
+- `ashl_core/*.py`: 293
+- `tests/*.py`: 363
+- top-level `docs/*.md`: 141
+- smoke functions in `run_all_smoke_tests.py`: 429
+- expected refreshed full smoke report: 429 / 429 passed
 
 Important caveat:
 
@@ -68,6 +68,7 @@ Action and sandbox substrate:
 - b186 corrects wait/probe operation labels so they are not forced into capability and are deferred to future Phase4 settling work
 - b187 creates a docs-backed Phase2-to-Phase10 completed capability cross-check report to block duplicate rebuilds and design-only runtime claims
 - b188 adds a structural refactor map and read-only checker for nine ASHL Core repository lines without moving files or changing imports
+- b189 adds an R2 compatibility alias plan and read-only checker for future line-folder refactor work without moving files, changing imports, implementing aliases, or changing runtime behavior
 
 Session and working memory substrate:
 
@@ -147,6 +148,7 @@ Representative data shapes already produced by existing modules/tests include:
 - Phase2 grounding unknown classification correction reports
 - Phase2-to-Phase10 completed capability cross-check reports
 - ASHL Core structural refactor map reports
+- ASHL Core R2 compatibility alias plan reports
 - smoke test report data
 
 ## Not Present Yet
@@ -160,7 +162,7 @@ ASHL Core does not yet have:
 - Phase1 duplicate substrate packages after closure
 - Phase2 candidate input or action preparation
 - Phase2 semantic vision or grounded capability binding
-- structural refactor execution, file moves, import changes, module merges, or compatibility aliases
+- structural refactor execution, file moves, import changes, module merges, compatibility alias implementation, or old-path deletion
 - Phase6-Phase10 runtime claims backed by an authoritative plan
 - a runtime tick scheduler
 - automatic runtime ticks
@@ -299,6 +301,34 @@ It still must not:
 - rename modules
 - change imports
 - merge modules
+- create runtime behavior
+- create action selection or execution
+- write memory or retention
+- feed endocrine or tendency
+- claim production behavior, learning, or consciousness
+
+Current implemented R2 compatibility alias plan:
+
+```text
+ASHL Core Refactor R2 Compatibility Alias Plan Minimal v0
+```
+
+Plain meaning:
+
+Status:
+
+Completed at Boundary Index `2026-06-09-b189`.
+
+Adds `docs/ashl_core_refactor_r2_compatibility_alias_plan_v0.md` and a read-only CLI checker. It plans the future target package layout, alias candidate table, compatibility strategy, import compatibility test plan, and R1-R7 refactor phase gate.
+
+It still must not:
+
+- move files
+- rename modules
+- change imports
+- merge modules
+- delete old paths
+- implement compatibility aliases
 - create runtime behavior
 - create action selection or execution
 - write memory or retention

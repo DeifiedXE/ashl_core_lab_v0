@@ -534,6 +534,9 @@ from ashl_core.phase2_to_phase10_completed_capability_cross_check_minimal import
 from ashl_core.structural_refactor_map_minimal import (
     run_structural_refactor_map_minimal_check,
 )
+from ashl_core.refactor_r2_compatibility_alias_plan_minimal import (
+    run_refactor_r2_compatibility_alias_plan_minimal_check,
+)
 from ashl_core.minimal_visual_grounding_trial import run_minimal_visual_grounding_trial_check
 from ashl_core.visual_prediction_error_attention_priority_preview_minimal import (
     run_visual_prediction_error_attention_priority_preview_minimal_check,
@@ -10919,9 +10922,9 @@ def smoke_current_boundary_index_docs() -> dict:
     readme = readme_path.read_text(encoding="utf-8") if readme_path.exists() else ""
     research_plan = research_plan_path.read_text(encoding="utf-8") if research_plan_path.exists() else ""
     compact_required_terms = [
-        "Boundary Index Version: 2026-06-09-b188",
-        "Last update log: ASHL Core Structural Refactor Map Minimal v0",
-        "Previous Boundary Index Version: 2026-06-09-b187",
+        "Boundary Index Version: 2026-06-09-b189",
+        "Last update log: ASHL Core Refactor R2 Compatibility Alias Plan Minimal v0",
+        "Previous Boundary Index Version: 2026-06-09-b188",
         "docs/boundary_archive/current_boundary_index_2026-06-25_b174.md",
         "docs/boundary_archive/current_boundary_index_2026-06-26_b184.md",
         "Phase0 two-cycle thought/action/working-memory mini-loop",
@@ -10935,24 +10938,21 @@ def smoke_current_boundary_index_docs() -> dict:
         "Phase2 unknown classification correction report",
         "Phase2-to-Phase10 completed capability cross-check report",
         "ASHL Core structural refactor map",
-        "structural_refactor_map_created=True",
-        "nine_lines_present=True",
-        "line_count=9",
-        "completed_do_not_rebuild_section_present=True",
-        "partial_extend_only_section_present=True",
-        "duplicate_merge_candidates_listed=True",
-        "historical_archive_candidates_listed=True",
-        "future_folder_suggestions_present=True",
+        "ASHL Core R2 compatibility alias plan",
+        "r2_alias_plan_created=True",
+        "target_package_layout_present=True",
+        "compatibility_strategy_present=True",
+        "alias_candidate_table_present=True",
+        "nine_lines_have_alias_candidates=True",
+        "spine_alias_candidates_present=True",
+        "import_compatibility_test_plan_present=True",
+        "refactor_phase_gate_present=True",
         "runtime_behavior_changed=False",
         "files_moved=False",
-        "files_deleted=False",
         "files_renamed=False",
         "imports_changed=False",
-        "new_runtime_authority_created=False",
-        "candidate_input_created=False",
-        "candidate_ordering_created=False",
-        "action_selection_created=False",
-        "memory_write_created=False",
+        "modules_merged=False",
+        "old_paths_deleted=False",
         "b0_10_counter=B0/10",
         "reach_front_item",
         "wait_or_observe",
@@ -10973,7 +10973,7 @@ def smoke_current_boundary_index_docs() -> dict:
         "Memory is a warning sign, not a ban command",
         "docs/ashl_core_actual_capability_inventory_runtime_substrate_map_v0.md",
         "docs/phase1_to_phase5_growth_substrate_plan.md",
-        "ASHL Core Refactor Phase R2 Compatibility Alias Plan Minimal v0",
+        "ASHL Core Refactor R3 Low-Risk Docs Folder Plan Minimal v0",
         "This current index must stay under 150 lines.",
     ]
     archive_required_terms = [
@@ -11008,8 +11008,8 @@ def smoke_current_boundary_index_docs() -> dict:
         and all(term in b184_archive for term in b184_archive_required_terms)
         and all(term in legacy_archive for term in legacy_required_terms)
         and line_count <= 150
-        and "ASHL Core Structural Refactor Map Minimal v0" in readme
-        and "ASHL Core Structural Refactor Map Minimal v0" in research_plan
+        and "ASHL Core Refactor R2 Compatibility Alias Plan Minimal v0" in readme
+        and "ASHL Core Refactor R2 Compatibility Alias Plan Minimal v0" in research_plan
     )
     return _result(
         "boundary_index_current_archive",
@@ -11053,8 +11053,9 @@ def smoke_phase0_documentation_consolidation_minimal() -> dict:
         and matrix_path.exists()
         and index_path.exists()
         and plan_path.exists()
-        and "Boundary Index Version: 2026-06-09-b188" in status
+        and "Boundary Index Version: 2026-06-09-b189" in status
         and "Current Safe Capability" in status
+        and "ASHL Core Refactor R2 Compatibility Alias Plan Minimal v0" in status
         and "ASHL Core Structural Refactor Map Minimal v0" in status
         and "Phase1 Closure Audit Minimal v0" in status
         and "ashl_core_actual_capability_inventory_runtime_substrate_map_v0.md" in index
@@ -11257,7 +11258,7 @@ def smoke_phase0_documentation_inventory_and_consistency_reconciliation() -> dic
     boundary = Path("docs/current_boundary_index.md").read_text(encoding="utf-8")
     passed = (
         all(path.exists() for path in required_paths)
-        and "Boundary Index Version: 2026-06-09-b188" in texts[Path("docs/phase0_status.md")]
+        and "Boundary Index Version: 2026-06-09-b189" in texts[Path("docs/phase0_status.md")]
         and "Inventory count:" in texts[Path("docs/phase0_doc_inventory.md")]
         and "docs/phase1_to_phase5_growth_substrate_plan.md" in texts[Path("docs/phase0_doc_inventory.md")]
         and "docs/ashl_core_actual_capability_inventory_runtime_substrate_map_v0.md" in texts[
@@ -11266,6 +11267,9 @@ def smoke_phase0_documentation_inventory_and_consistency_reconciliation() -> dic
         and "docs/phase0_versioning_policy.md" in texts[Path("docs/phase0_doc_inventory.md")]
         and "unknown_needs_review" in texts[Path("docs/phase0_doc_inventory.md")]
         and "ASHL Core Structural Refactor Map Minimal v0" in texts[
+            Path("docs/ashl_core_actual_capability_inventory_runtime_substrate_map_v0.md")
+        ]
+        and "ASHL Core Refactor R2 Compatibility Alias Plan Minimal v0" in texts[
             Path("docs/ashl_core_actual_capability_inventory_runtime_substrate_map_v0.md")
         ]
         and "phase1 closure audit minimal" in texts[
@@ -21773,6 +21777,42 @@ def smoke_structural_refactor_map_minimal() -> dict:
     )
 
 
+def smoke_refactor_r2_compatibility_alias_plan_minimal() -> dict:
+    result = run_refactor_r2_compatibility_alias_plan_minimal_check()
+    boundary = result.get("boundary", {})
+    passed = (
+        result.get("command") == "run-refactor-r2-compatibility-alias-plan-minimal-check"
+        and result.get("flow") == "ashl_core_refactor_r2_compatibility_alias_plan_minimal_v0"
+        and result.get("status") == "ok"
+        and boundary.get("boundary_index_version_before") == "2026-06-09-b188"
+        and boundary.get("boundary_index_version_after") == "2026-06-09-b189"
+        and boundary.get("runtime_capability_change") is False
+        and result.get("r2_alias_plan_created") is True
+        and result.get("target_package_layout_present") is True
+        and result.get("compatibility_strategy_present") is True
+        and result.get("alias_candidate_table_present") is True
+        and result.get("nine_lines_have_alias_candidates") is True
+        and result.get("spine_alias_candidates_present") is True
+        and result.get("import_compatibility_test_plan_present") is True
+        and result.get("refactor_phase_gate_present") is True
+        and result.get("files_moved") is False
+        and result.get("files_renamed") is False
+        and result.get("imports_changed") is False
+        and result.get("modules_merged") is False
+        and result.get("old_paths_deleted") is False
+        and result.get("runtime_behavior_changed") is False
+    )
+    return _result(
+        "refactor_r2_compatibility_alias_plan_minimal",
+        passed,
+        {
+            "boundary": boundary,
+            "cli_visible_summary": result.get("cli_visible_summary"),
+            "alias_candidate_counts": result.get("alias_candidate_counts"),
+        },
+    )
+
+
 def smoke_phase0_current_capability_snapshot() -> dict:
     doc_path = Path("docs/phase0_current_capability_snapshot_2026-06-10.md")
     doc = doc_path.read_text(encoding="utf-8") if doc_path.exists() else ""
@@ -24608,6 +24648,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_phase2_grounding_unknown_classification_correction_minimal(),
         smoke_phase2_to_phase10_completed_capability_cross_check_minimal(),
         smoke_structural_refactor_map_minimal(),
+        smoke_refactor_r2_compatibility_alias_plan_minimal(),
         smoke_phase0_current_capability_snapshot(),
         smoke_memory_influence_behavior_gate_design(),
         smoke_first_memory_influenced_behavior_boundary(),

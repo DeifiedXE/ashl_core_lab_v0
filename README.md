@@ -3161,9 +3161,17 @@ Two-Trial History Boundary:
 - Boundary Index updates from `2026-06-09-b187` to `2026-06-09-b188`.
 - Plain meaning: this is a structural map and validation check, not a refactor execution. It does not move files, delete files, rename modules, change imports, merge modules, create candidate input, select actions, execute, write memory, feed endocrine/tendency, change production behavior, or claim learning/consciousness.
 
+## ASHL Core Refactor R2 Compatibility Alias Plan Minimal v0
+
+- Adds `docs/ashl_core_refactor_r2_compatibility_alias_plan_v0.md`.
+- Adds `py -3 -m ashl_core.teaching_cli run-refactor-r2-compatibility-alias-plan-minimal-check`.
+- ASHL Core Refactor R2 Compatibility Alias Plan Minimal v0 plans how future line-folder moves can preserve old module paths while new module paths become canonical later.
+- Boundary Index updates from `2026-06-09-b188` to `2026-06-09-b189`.
+- Plain meaning: this is the "keep the old doors open before moving rooms" plan. It does not move files, rename modules, change imports, merge modules, delete old paths, implement aliases, create runtime behavior, or claim learning/consciousness.
+
 ## ASHL Core Actual Capability Inventory / Runtime Substrate Map v0
 
-- Adds `docs/ashl_core_actual_capability_inventory_runtime_substrate_map_v0.md` as a docs-only reality check for current repo capabilities; it is now updated through b188.
+- Adds `docs/ashl_core_actual_capability_inventory_runtime_substrate_map_v0.md` as a docs-only reality check for current repo capabilities; it is now updated through b189.
 - Records the actual tracked-file, core-module, test-module, docs, and smoke-test baseline, then separates executable sandbox helpers, record/checker paths, controlled file helpers, and design-only documents.
 - Corrects the Phase1 next direction away from duplicate readback/classification packages; b181 now advances the b180 frame into a same-session tick handoff and continuity comparison.
 - This does not change Boundary Index version, add runtime behavior, create actions, write memory/retention, use predictors, feed endocrine/tendency directly, change production behavior, or claim learning/consciousness.

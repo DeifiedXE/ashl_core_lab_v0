@@ -57,7 +57,7 @@ The point is not to deny the relationship between the user and Qingyin. The poin
 Current Boundary Index at the time this summary was written:
 
 ```text
-2026-06-09-b188
+2026-06-09-b189
 ```
 
 Current endpoint:
@@ -83,6 +83,7 @@ b169 advisory reordering evidence
 -> b186 Phase2 grounding unknown classification correction report
 -> b187 Phase2-to-Phase10 completed capability cross-check report
 -> b188 ASHL Core structural refactor map
+-> b189 ASHL Core R2 compatibility alias plan
 ```
 
 Plain meaning:
@@ -127,9 +128,11 @@ b187 reads the current capability inventory, matrix, status, line index, boundar
 
 b188 adds `docs/ashl_core_structural_refactor_map_v0.md` and a read-only checker. It maps the current repo into nine structural lines, lists future folder suggestions, duplicate/merge candidates, archive candidates, and do-not-rebuild anchors. This is a map, not a file move.
 
-## What b188 Does Not Do
+b189 adds `docs/ashl_core_refactor_r2_compatibility_alias_plan_v0.md` and a read-only checker. It plans how future line-folder refactor work can keep old module paths importable while new module paths become canonical later. This is a compatibility plan, not alias implementation and not file movement.
 
-b188 does not create:
+## What b189 Does Not Do
+
+b189 does not create:
 
 - a live runtime session
 - a session frame promoted to live runtime
@@ -145,6 +148,8 @@ b188 does not create:
 - module rename
 - import path change
 - module merge
+- compatibility alias implementation
+- old-path deletion
 - candidate input
 - new candidate ordering or candidate reordering
 - candidate score mutation
@@ -299,17 +304,17 @@ Before coding, Codex should answer in plain language:
 4. What visible output will exist after the work?
 5. What does it still refuse to do?
 
-For the current b188 endpoint, do not keep growing duplicate Phase1 readback/index/handoff packages. Phase1 is closed as record-only substrate evidence, and Phase2 has begun as perception/capability grounding.
+For the current b189 endpoint, do not keep growing duplicate Phase1 readback/index/handoff packages. Phase1 is closed as record-only substrate evidence, and Phase2 has begun as perception/capability grounding.
 
 The next real step should be:
 
 ```text
-ASHL Core Refactor Phase R2 Compatibility Alias Plan Minimal v0
+ASHL Core Refactor R3 Low-Risk Docs Folder Plan Minimal v0
 ```
 
 Phase0 now has one compact audit saying the minimal same-session sandbox loop is complete in record evidence, while still refusing long-term learning or production claims.
 
-Phase2 now has source-link reports plus a correction report that prevents wait/probe settling cues from being forced into capability. b187 also adds a cross-check so future work does not rebuild completed packages or treat design-only docs as runtime. b188 adds a structural map so future refactor work does not scatter files further or start moving modules without a compatibility plan.
+Phase2 now has source-link reports plus a correction report that prevents wait/probe settling cues from being forced into capability. b187 also adds a cross-check so future work does not rebuild completed packages or treat design-only docs as runtime. b188 adds a structural map so future refactor work does not scatter files further. b189 adds the compatibility alias plan so future module moves do not break old imports.
 
 The current Phase 0 closure plan is:
 
