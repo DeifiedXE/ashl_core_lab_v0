@@ -1,9 +1,9 @@
 # Current Boundary Index
 
-Boundary Index Version: 2026-06-09-b180
-Last update log: Phase1 Session Frame Materialization Minimal v0
-Previous Boundary Index Version: 2026-06-09-b179
-Previous Last update log: Phase1 Runtime Session Trace Spine Minimal v0
+Boundary Index Version: 2026-06-09-b181
+Last update log: Phase1 Session Frame Runtime Tick Handoff Minimal v0
+Previous Boundary Index Version: 2026-06-09-b180
+Previous Last update log: Phase1 Session Frame Materialization Minimal v0
 
 Archived previous current index:
 
@@ -14,11 +14,11 @@ This file is the active short index. Archive files preserve older milestone deta
 
 ## Current Safe Claim
 
-b180 takes the b179 record-only Phase1 session trace spine and materializes a standard same-session frame around it.
+b181 reads the b180 same-session frame as tick0 input, creates a sandbox-only same-session tick1 context, appends one record-only frame, and compares tick0/tick1 continuity.
 
 Plain wording:
 
-The same sandbox mini-loop now has one frame containing the source session id, current tick, trace snapshot, two same-session working-memory reference slots, evidence source references, B0/10 self-check, and boundary audit. It is still record evidence only, not a live runtime session.
+The session frame can now hand its context to the next sandbox tick. The new tick is a checked context record plus an appended frame, not a live runtime scheduler and not production behavior.
 
 The current endpoint is:
 
@@ -36,6 +36,7 @@ first-cycle temporary working memory
 -> Phase0 closure audit
 -> Phase1 record-only session trace spine
 -> Phase1 record-only same-session frame
+-> Phase1 same-session runtime tick handoff
 ```
 
 The three deterministic paths remain:
@@ -44,7 +45,7 @@ The three deterministic paths remain:
 - `wait_or_observe` -> `sandbox.arbitration.wait_or_observe` -> `local_context_observed`
 - `observe_or_alternative_probe` -> `sandbox.arbitration.observe_or_alternative_probe` -> `local_context_observed`
 
-This is same-session sandbox-only frame evidence. It is not production behavior, not long-term learning, and not proof of consciousness.
+This is same-session sandbox-only continuity evidence. It is not production behavior, not long-term learning, and not proof of consciousness.
 
 ## Recent Phase0 / Phase1 Chain
 
@@ -60,36 +61,40 @@ b170 one-cycle thought/action/working-memory trace
 -> b178 Phase0 mini-loop closure audit
 -> b179 Phase1 record-only runtime session trace spine
 -> b180 Phase1 record-only same-session frame
+-> b181 Phase1 same-session runtime tick handoff
 ```
 
 Compatibility anchor for b170 B0/10 self-check: b170 Thought Memory Action Parallel Mini Loop evidence.
 
 Compatibility anchor for b180 B0/10 self-check: Phase1 Session Frame Materialization evidence.
 
-## What b180 Adds
+Compatibility field retained from b180: `b0_10_counter=B0/10`.
 
-- `session_frame_materialized=True`
-- `frame_authority=record_only_same_session_context_frame`
-- `trace_snapshot_kind=session_frame_trace_snapshot`
-- `working_memory_slots.slot_count=2`
-- `evidence_sources.evidence_source_count=9`
-- `b0_10_counter=B0/10`
-- `hallucination_self_check.boundary_number=180`
-- `boundary_audit.boundary_number=180`
+## What b181 Adds
+
+- `read_b180_frame_as_next_tick_input=True`
+- `next_tick_context_created=True`
+- `frame_appended=True`
+- `previous_frame_tick_count=8`
+- `frame_tick_count=9`
+- `continuity_compared=True`
+- `tick_index_advances_by_one=True`
+- `frame_count_advances_by_one=True`
+- `external_tools_absent=True`
+- `persistent_memory_absent=True`
 
 ## Still Blocked
 
 - No live runtime session.
 - No session frame promotion to live runtime.
 - No runtime tick scheduler.
-- No new runtime tick.
-- No persistent state store or persistent session store.
+- No live runtime tick.
 - No runtime evaluator.
 - No runtime action loop.
+- No persistent state store or persistent session store.
 - No feedback evaluation or feedback application.
 - No candidate ordering or candidate reordering.
 - No candidate score mutation.
-- No runtime next-cycle candidate ordering.
 - No new selected_action, final_action, direct command, execution, or outcome observation.
 - No new working-memory update.
 - No external tool operation.
@@ -127,12 +132,12 @@ Must-read planning docs:
 Next useful direction:
 
 ```text
-Phase1 Session Frame Three-Line Substrate Index Minimal v0
+Phase1 Tick1 Context Sandbox Readback Minimal v0
 ```
 
 Plain wording:
 
-The next small step should classify the b180 frame evidence into read-only thought, action, and memory lanes so later packages know where each existing record belongs. It must not start a live runtime, create new actions, write memory, or claim learning.
+The next small step should read the b181 tick1 context and report what the next sandbox tick is allowed to know, without selecting or executing an action.
 
 ## Line Count Rule
 

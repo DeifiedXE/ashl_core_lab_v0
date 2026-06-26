@@ -112,21 +112,31 @@ Status:
 
 Completed at Boundary Index `2026-06-09-b179`.
 
-## Next Useful Phase1 Step
+## Current Phase1 Step
 
-The simple b179 readback gap is closed by b180 Session Frame Materialization. The b180 frame is still record-only, but it gives later packages one standard same-session surface.
+The simple b179 readback gap is closed by b180 Session Frame Materialization. b181 then reads that frame as tick0 input, creates same-session sandbox-only tick1 context, appends one record-only frame, and compares continuity.
 
-Better next step:
+Current implemented step:
 
 ```text
-Phase1 Session Frame Three-Line Substrate Index Minimal v0
+Phase1 Session Frame Runtime Tick Handoff Minimal v0
 ```
 
 Plain version:
 
-Classify the b180 frame's existing evidence sources into read-only thought, action, and memory lanes. This helps future packages know where to look without creating new behavior.
+The frame can hand context to the next sandbox tick without becoming a live runtime scheduler.
 
-It must still avoid live runtime, new actions, persistent memory, predictor influence, production behavior, and learning/consciousness claims.
+It still avoids live runtime, new action selection, execution, persistent memory, external tool use, predictor influence, production behavior, and learning/consciousness claims.
+
+Next useful step:
+
+```text
+Phase1 Tick1 Context Sandbox Readback Minimal v0
+```
+
+Plain version:
+
+Read the b181 tick1 context and report what the next sandbox tick is allowed to know, without selecting or executing an action.
 
 ## Working Rule
 

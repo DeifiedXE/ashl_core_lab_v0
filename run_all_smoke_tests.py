@@ -512,6 +512,9 @@ from ashl_core.phase1_runtime_session_trace_spine_minimal import (
 from ashl_core.phase1_session_frame_materialization_minimal import (
     run_phase1_session_frame_materialization_minimal_check,
 )
+from ashl_core.phase1_session_frame_runtime_tick_handoff_minimal import (
+    run_phase1_session_frame_runtime_tick_handoff_minimal_check,
+)
 from ashl_core.minimal_visual_grounding_trial import run_minimal_visual_grounding_trial_check
 from ashl_core.visual_prediction_error_attention_priority_preview_minimal import (
     run_visual_prediction_error_attention_priority_preview_minimal_check,
@@ -10895,9 +10898,9 @@ def smoke_current_boundary_index_docs() -> dict:
     readme = readme_path.read_text(encoding="utf-8") if readme_path.exists() else ""
     research_plan = research_plan_path.read_text(encoding="utf-8") if research_plan_path.exists() else ""
     compact_required_terms = [
-        "Boundary Index Version: 2026-06-09-b180",
-        "Last update log: Phase1 Session Frame Materialization Minimal v0",
-        "Previous Boundary Index Version: 2026-06-09-b179",
+        "Boundary Index Version: 2026-06-09-b181",
+        "Last update log: Phase1 Session Frame Runtime Tick Handoff Minimal v0",
+        "Previous Boundary Index Version: 2026-06-09-b180",
         "docs/boundary_archive/current_boundary_index_2026-06-25_b174.md",
         "first-cycle temporary working memory",
         "weak candidate hint",
@@ -10911,11 +10914,14 @@ def smoke_current_boundary_index_docs() -> dict:
         "Phase0 closure audit",
         "Phase1 record-only session trace spine",
         "Phase1 record-only same-session frame",
-        "session_frame_materialized=True",
-        "frame_authority=record_only_same_session_context_frame",
-        "trace_snapshot_kind=session_frame_trace_snapshot",
-        "working_memory_slots.slot_count=2",
-        "evidence_sources.evidence_source_count=9",
+        "Phase1 same-session runtime tick handoff",
+        "read_b180_frame_as_next_tick_input=True",
+        "next_tick_context_created=True",
+        "frame_appended=True",
+        "frame_tick_count=9",
+        "continuity_compared=True",
+        "tick_index_advances_by_one=True",
+        "persistent_memory_absent=True",
         "b0_10_counter=B0/10",
         "reach_front_item",
         "wait_or_observe",
@@ -10923,7 +10929,7 @@ def smoke_current_boundary_index_docs() -> dict:
         "No live runtime session.",
         "No session frame promotion to live runtime.",
         "No runtime tick scheduler.",
-        "No new runtime tick.",
+        "No live runtime tick.",
         "No persistent state store or persistent session store.",
         "No runtime evaluator.",
         "No feedback evaluation or feedback application.",
@@ -10938,7 +10944,7 @@ def smoke_current_boundary_index_docs() -> dict:
         "Memory is a warning sign, not a ban command",
         "docs/ashl_core_actual_capability_inventory_runtime_substrate_map_v0.md",
         "docs/phase1_to_phase5_growth_substrate_plan.md",
-        "Phase1 Session Frame Three-Line Substrate Index Minimal v0",
+        "Phase1 Tick1 Context Sandbox Readback Minimal v0",
         "This current index must stay under 150 lines.",
     ]
     archive_required_terms = [
@@ -10964,8 +10970,8 @@ def smoke_current_boundary_index_docs() -> dict:
         and all(term in archive for term in archive_required_terms)
         and all(term in legacy_archive for term in legacy_required_terms)
         and line_count <= 150
-        and "Phase1 Session Frame Materialization Minimal v0" in readme
-        and "Phase1 Session Frame Materialization Minimal v0" in research_plan
+        and "Phase1 Session Frame Runtime Tick Handoff Minimal v0" in readme
+        and "Phase1 Session Frame Runtime Tick Handoff Minimal v0" in research_plan
     )
     return _result(
         "boundary_index_current_archive",
@@ -11008,9 +11014,9 @@ def smoke_phase0_documentation_consolidation_minimal() -> dict:
         and matrix_path.exists()
         and index_path.exists()
         and plan_path.exists()
-        and "Boundary Index Version: 2026-06-09-b180" in status
+        and "Boundary Index Version: 2026-06-09-b181" in status
         and "Current Safe Capability" in status
-        and "Phase1 Session Frame Materialization Minimal v0" in status
+        and "Phase1 Session Frame Runtime Tick Handoff Minimal v0" in status
         and "ashl_core_actual_capability_inventory_runtime_substrate_map_v0.md" in index
         and "phase1_to_phase5_growth_substrate_plan.md" in index
         and "Thought Memory Action Parallel Mini Loop Phase0 Closure Audit Minimal v0" in status
@@ -11211,7 +11217,7 @@ def smoke_phase0_documentation_inventory_and_consistency_reconciliation() -> dic
     boundary = Path("docs/current_boundary_index.md").read_text(encoding="utf-8")
     passed = (
         all(path.exists() for path in required_paths)
-        and "Boundary Index Version: 2026-06-09-b180" in texts[Path("docs/phase0_status.md")]
+        and "Boundary Index Version: 2026-06-09-b181" in texts[Path("docs/phase0_status.md")]
         and "Inventory count:" in texts[Path("docs/phase0_doc_inventory.md")]
         and "docs/phase1_to_phase5_growth_substrate_plan.md" in texts[Path("docs/phase0_doc_inventory.md")]
         and "docs/ashl_core_actual_capability_inventory_runtime_substrate_map_v0.md" in texts[
@@ -11219,10 +11225,10 @@ def smoke_phase0_documentation_inventory_and_consistency_reconciliation() -> dic
         ]
         and "docs/phase0_versioning_policy.md" in texts[Path("docs/phase0_doc_inventory.md")]
         and "unknown_needs_review" in texts[Path("docs/phase0_doc_inventory.md")]
-        and "Phase1 Session Frame Materialization Minimal v0" in texts[
+        and "Phase1 Session Frame Runtime Tick Handoff Minimal v0" in texts[
             Path("docs/ashl_core_actual_capability_inventory_runtime_substrate_map_v0.md")
         ]
-        and "phase1 session frame materialization minimal" in texts[
+        and "phase1 session frame runtime tick handoff minimal" in texts[
             Path("docs/phase0_capability_matrix.md")
         ].lower()
         and "Conflict Resolution Rule" in texts[Path("docs/phase0_doc_index.md")]
@@ -21190,6 +21196,86 @@ def smoke_phase1_session_frame_materialization_minimal() -> dict:
     )
 
 
+def smoke_phase1_session_frame_runtime_tick_handoff_minimal() -> dict:
+    result = run_phase1_session_frame_runtime_tick_handoff_minimal_check()
+    summary = result.get("summary", {})
+    boundary = result.get("boundary", {})
+    records = result.get("valid_records", [])
+    sources = [record.get("source_session_frame", {}) for record in records]
+    tick0_contexts = [record.get("tick0_context", {}) for record in records]
+    tick1_contexts = [record.get("tick1_context", {}) for record in records]
+    appended_frames = [record.get("appended_session_frame", {}) for record in records]
+    continuities = [record.get("continuity_comparison", {}) for record in records]
+    containments = [record.get("authority_containment", {}) for record in records]
+    audits = [record.get("boundary_audit", {}) for record in records]
+    selected_actions = [source.get("selected_action") for source in sources]
+    first_containment = containments[0] if containments else {}
+    first_audit = audits[0] if audits else {}
+    passed = (
+        result.get("command") == "run-phase1-session-frame-runtime-tick-handoff-minimal-check"
+        and result.get("flow") == "phase1_session_frame_runtime_tick_handoff_minimal_v0"
+        and result.get("status") == "ok"
+        and boundary.get("boundary_index_version_before") == "2026-06-09-b180"
+        and boundary.get("boundary_index_version_after") == "2026-06-09-b181"
+        and summary.get("runtime_tick_handoff_result_count") == 36
+        and summary.get("valid_runtime_tick_handoff_count") == 3
+        and summary.get("invalid_runtime_tick_handoff_count") == 33
+        and summary.get("tick0_context_created_count") == 3
+        and summary.get("tick1_context_created_count") == 3
+        and summary.get("appended_frame_created_count") == 3
+        and summary.get("continuity_compared_count") == 3
+        and summary.get("continuity_passed_count") == 3
+        and summary.get("tick_index_advanced_count") == 3
+        and summary.get("frame_count_advanced_count") == 3
+        and summary.get("runtime_handoff_record_only_count") == 3
+        and summary.get("external_tools_blocked_count") == 3
+        and summary.get("memory_write_blocked_count") == 3
+        and summary.get("predictor_use_blocked_count") == 3
+        and summary.get("production_behavior_blocked_count") == 3
+        and summary.get("proof_claim_blocked_count") == 3
+        and summary.get("consciousness_claim_blocked_count") == 3
+        and selected_actions == ["reach_front_item", "wait_or_observe", "observe_or_alternative_probe"]
+        and all(source.get("source_boundary_index") == "2026-06-09-b180" for source in sources)
+        and all(source.get("source_frame_tick_count") == 8 for source in sources)
+        and all(tick0.get("read_b180_frame_as_next_tick_input") is True for tick0 in tick0_contexts)
+        and all(tick0.get("mutates_source_frame") is False for tick0 in tick0_contexts)
+        and all(tick1.get("next_tick_context_created") is True for tick1 in tick1_contexts)
+        and all(tick1.get("next_tick_index") == 8 for tick1 in tick1_contexts)
+        and all(tick1.get("selected_action_created") is False for tick1 in tick1_contexts)
+        and all(tick1.get("external_tool_called") is False for tick1 in tick1_contexts)
+        and all(frame.get("frame_appended") is True for frame in appended_frames)
+        and all(frame.get("frame_tick_count") == 9 for frame in appended_frames)
+        and all(frame.get("persistent_memory_write") is False for frame in appended_frames)
+        and all(frame.get("live_runtime_tick_created") is False for frame in appended_frames)
+        and all(continuity.get("continuity_passed") is True for continuity in continuities)
+        and all(continuity.get("tick_index_advances_by_one") is True for continuity in continuities)
+        and all(continuity.get("frame_count_advances_by_one") is True for continuity in continuities)
+        and first_containment.get("next_tick_context_created_in_this_package") is True
+        and first_containment.get("appended_frame_created_in_this_package") is True
+        and first_containment.get("external_tool_called_in_this_package") is False
+        and first_containment.get("persistent_memory_write_created_in_this_package") is False
+        and first_containment.get("predictor_modified_in_this_package") is False
+        and first_containment.get("production_behavior_created_in_this_package") is False
+        and first_containment.get("consciousness_claim") is False
+        and first_audit.get("boundary_number") == 181
+        and first_audit.get("external_tool_called") is False
+        and first_audit.get("persistent_memory_write_created") is False
+        and first_audit.get("predictor_modified") is False
+        and first_audit.get("production_behavior_created") is False
+        and first_audit.get("proof_of_learning_claim") is False
+        and first_audit.get("consciousness_claim") is False
+    )
+    return _result(
+        "phase1_session_frame_runtime_tick_handoff_minimal",
+        passed,
+        {
+            "summary": summary,
+            "boundary": boundary,
+            "selected_actions": selected_actions,
+        },
+    )
+
+
 def smoke_phase0_current_capability_snapshot() -> dict:
     doc_path = Path("docs/phase0_current_capability_snapshot_2026-06-10.md")
     doc = doc_path.read_text(encoding="utf-8") if doc_path.exists() else ""
@@ -24017,6 +24103,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_thought_memory_action_parallel_mini_loop_phase0_closure_audit_minimal(),
         smoke_phase1_runtime_session_trace_spine_minimal(),
         smoke_phase1_session_frame_materialization_minimal(),
+        smoke_phase1_session_frame_runtime_tick_handoff_minimal(),
         smoke_phase0_current_capability_snapshot(),
         smoke_memory_influence_behavior_gate_design(),
         smoke_first_memory_influenced_behavior_boundary(),

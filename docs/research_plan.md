@@ -8540,6 +8540,23 @@ Plain meaning:
 Explicitly not changed:
 - No live runtime session, runtime scheduler, new runtime tick, persistent state/session store, runtime evaluator, runtime action loop, feedback evaluation/application, candidate ordering/reordering, candidate score mutation, selected_action/final_action/direct_command/execution/outcome observation creation, new working-memory update, persistent memory write, retention write, memory admission, habit/skill anchor, predictor use/mutation, direct endocrine/tendency feed, production behavior, consciousness claim, long-term learning claim, or proof-of-learning claim.
 
+## Phase1 Session Frame Runtime Tick Handoff Minimal v0
+
+Status: completed / same-session sandbox tick handoff / Boundary Index b181.
+
+What changed:
+- b180 same-session frames can now be read as tick0 input.
+- Each record creates a same-session sandbox-only tick1 context.
+- Each record appends one record-only frame, advancing frame tick count from 8 to 9.
+- Each record compares tick0/tick1 continuity, preserving session id, scenario id, purpose, working-memory references, and evidence references.
+- Boundary Index updates from `2026-06-09-b180` to `2026-06-09-b181`.
+
+Plain meaning:
+- The frame can now hand context to the next sandbox tick. It is still a checked record path, not a live scheduler.
+
+Explicitly not changed:
+- No live runtime session, runtime scheduler, live runtime tick, runtime action loop, selected_action/final_action/direct_command/execution/outcome observation creation, working-memory update, persistent memory write, external tool use, predictor mutation, direct endocrine/tendency feed, production behavior, consciousness claim, long-term learning claim, or proof-of-learning claim.
+
 ## ASHL Core Actual Capability Inventory / Runtime Substrate Map v0
 
 Status: completed / docs-only actual capability inventory / no Boundary Index change.
@@ -8554,7 +8571,7 @@ Plain meaning:
 - The repo now has a compact map of real parts on the table. It should stop Codex from mistaking old docs, package names, or boundary paperwork for actual runtime progress.
 
 Recommended next direction:
-- Phase1 Session Frame Materialization Minimal v0: create a standard same-session frame from existing trace and working-memory evidence.
+- Phase1 Tick1 Context Sandbox Readback Minimal v0: read the b181 tick1 context and report what the next sandbox tick is allowed to know without selecting or executing an action.
 
 Explicitly not changed:
 - No runtime behavior, Boundary Index change, live session, action creation, memory/retention write, memory admission, predictor use/mutation, direct endocrine/tendency feed, production behavior, learning claim, or consciousness claim.

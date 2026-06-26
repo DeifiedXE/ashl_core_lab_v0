@@ -57,7 +57,7 @@ The point is not to deny the relationship between the user and Qingyin. The poin
 Current Boundary Index at the time this summary was written:
 
 ```text
-2026-06-09-b180
+2026-06-09-b181
 ```
 
 Current endpoint:
@@ -75,6 +75,7 @@ b169 advisory reordering evidence
 -> b178 Phase0 mini-loop closure audit
 -> b179 Phase1 record-only session trace spine
 -> b180 Phase1 record-only same-session frame
+-> b181 Phase1 same-session runtime tick handoff
 ```
 
 Plain meaning:
@@ -103,14 +104,16 @@ b179 can index that completed b178 closure audit under one record-only Phase1 se
 
 b180 can materialize the b179 spine into one standard same-session frame with a current tick, trace snapshot, two temporary working-memory reference slots, evidence source references, B0/10 self-check, and boundary audit.
 
-## What b180 Does Not Do
+b181 can read the b180 frame as tick0 input, create same-session sandbox-only tick1 context, append one record-only frame, and compare tick0/tick1 continuity.
 
-b180 does not create:
+## What b181 Does Not Do
+
+b181 does not create:
 
 - a live runtime session
 - a session frame promoted to live runtime
 - a runtime tick scheduler
-- a new runtime tick
+- a live runtime tick
 - a persistent state store or persistent session store
 - a runtime evaluator
 - a runtime action loop
@@ -259,17 +262,17 @@ Before coding, Codex should answer in plain language:
 4. What visible output will exist after the work?
 5. What does it still refuse to do?
 
-For the current b180 endpoint, do not create a package that treats the session frame as a live runtime. b180 only gives existing trace evidence one standard same-session frame.
+For the current b181 endpoint, do not treat the tick1 context or appended frame as a live runtime. b181 only creates same-session sandbox continuity records.
 
 The next real step should be:
 
 ```text
-classify the b180 frame evidence into read-only thought, action, and memory lanes
+read the b181 tick1 context and report what the next sandbox tick is allowed to know
 ```
 
 Phase0 now has one compact audit saying the minimal same-session sandbox loop is complete in record evidence, while still refusing long-term learning or production claims.
 
-Phase1 now has a record-only session frame around that completed sandbox loop. The next work should make the existing frame easier for thought/action/memory packages to read without starting a live runtime, writing memory, selecting a new action, or claiming learning/consciousness.
+Phase1 now has a record-only tick handoff from the b180 frame. The next work should read the tick1 context as allowed sandbox input without starting a live runtime, writing memory, selecting a new action, or claiming learning/consciousness.
 
 The current Phase 0 closure plan is:
 

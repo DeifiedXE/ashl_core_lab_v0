@@ -4,7 +4,7 @@ Status: docs-only actual capability inventory.
 Runtime impact: none.
 Boundary Index impact: none.
 
-This file records what the repository can actually run or produce after Boundary Index `2026-06-09-b180`.
+This file records what the repository can actually run or produce after Boundary Index `2026-06-09-b181`.
 
 It is a work-start reality check. It does not grant runtime authority and does not replace:
 
@@ -15,16 +15,14 @@ It is a work-start reality check. It does not grant runtime authority and does n
 
 ## Scan Baseline
 
-Repository scan baseline from the tracked workspace before this docs-only inventory file was added:
+Repository scan baseline after the b181 tick handoff package:
 
-- tracked files: 798
-- `ashl_core/*.py`: 283
-- `tests/*.py`: 353
-- top-level `docs/*.md`: 138
-- smoke functions in `run_all_smoke_tests.py`: 419
-- latest smoke report on disk: 419 / 419 passed
-
-After b180, one additional smoke is expected for `phase1_session_frame_materialization_minimal`, so the full smoke runner should report 420 / 420 when refreshed.
+- tracked files: 803
+- `ashl_core/*.py`: 285
+- `tests/*.py`: 355
+- top-level `docs/*.md`: 148
+- smoke functions in `run_all_smoke_tests.py`: 421
+- expected refreshed full smoke report: 421 / 421 passed
 
 Important caveat:
 
@@ -62,6 +60,7 @@ Action and sandbox substrate:
 - same-session sandbox action-line records exist through candidate ordering, selected_action, final_action, direct_command, execution, outcome observation, feedback, application, reordering, and later selected action paths
 - b170 through b178 create a bounded two-cycle thought/action/memory mini-loop as same-session sandbox record evidence
 - b179 creates a record-only Phase1 session trace spine over that completed mini-loop
+- b181 creates a same-session sandbox-only tick handoff from b180 frames, including tick1 context, appended frame, and tick0/tick1 continuity comparison
 
 Session and working memory substrate:
 
@@ -70,6 +69,7 @@ Session and working memory substrate:
 - b176 can create same-session temporary working-memory update records from the second-cycle sandbox outcome
 - b179 can index the closed Phase0 loop as one ordered session trace spine
 - b180 can materialize that spine into one record-only same-session frame with current tick, trace snapshot, temporary working-memory reference slots, and evidence source references
+- b181 can read that frame as tick0 input and append one record-only tick1 frame while preserving working-memory and evidence references
 
 Memory and retention substrate:
 
@@ -130,6 +130,7 @@ Representative data shapes already produced by existing modules/tests include:
 - Phase0 closure audit records
 - Phase1 session trace spine records
 - Phase1 same-session frame records
+- Phase1 same-session runtime tick handoff records
 - smoke test report data
 
 ## Not Present Yet
@@ -138,6 +139,7 @@ ASHL Core does not yet have:
 
 - a live Qingyin runtime session
 - a session frame promoted to live runtime
+- a tick handoff promoted to live runtime
 - a runtime tick scheduler
 - automatic runtime ticks
 - a persistent runtime session store
@@ -160,36 +162,37 @@ ASHL Core does not yet have:
 Current docs are useful but uneven.
 
 - `docs/current_boundary_index.md` is a compact current boundary pointer, not a full capability inventory.
-- `docs/phase0_capability_matrix.md` is a milestone/status matrix, not an exhaustive map of all 283 core Python files.
+- `docs/phase0_capability_matrix.md` is a milestone/status matrix, not an exhaustive map of all 285 core Python files.
 - A previous scan found no broken references inside the capability matrix, but many core files are not directly named there.
 - `docs/phase0_doc_inventory.md` is stale as a full file count; use it for navigation and authority classification, not exact coverage.
 - A readback-only package after b179 would be redundant because b179 already returns and tests session trace spine records.
 
 ## Phase 1 Direction Correction
 
-The next useful Phase1 engineering step should not be simple readback.
+The next useful Phase1 engineering step should not be duplicate frame classification.
 
-Better next direction:
+Current implemented step:
 
 ```text
-Phase1 Session Frame Materialization Minimal v0
+Phase1 Session Frame Runtime Tick Handoff Minimal v0
 ```
 
 Plain meaning:
 
 Status:
 
-Completed at Boundary Index `2026-06-09-b180`.
+Completed at Boundary Index `2026-06-09-b181`.
 
-Created a standard same-session frame from existing evidence: session id, ordered ticks, current trace snapshot, same-session working-memory reference slots, available evidence sources, blocked authority flags, B0/10 self-check, and boundary audit.
+Reads the b180 frame as tick0 input, creates tick1 context, appends one record-only frame, and compares tick0/tick1 continuity.
 
-It should make the session easier to inspect and hand to later perception/memory/thought packages.
+It makes the same-session trace move one checked step forward without becoming a live runtime.
 
-It must not:
+It still must not:
 
 - start a live runtime loop
 - create a new action
 - write persistent memory
+- call external tools
 - admit memory
 - read or mutate predictors
 - feed endocrine or tendency directly
@@ -199,9 +202,9 @@ It must not:
 Better next direction:
 
 ```text
-Phase1 Session Frame Three-Line Substrate Index Minimal v0
+Phase1 Tick1 Context Sandbox Readback Minimal v0
 ```
 
 Plain meaning:
 
-Classify the b180 frame's existing evidence sources into read-only thought, action, and memory lanes without creating behavior.
+Read the b181 tick1 context and report what the next sandbox tick is allowed to know, without selecting or executing an action.
