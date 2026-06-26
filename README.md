@@ -68,6 +68,7 @@ ASHL Core Lab 是 ASHL Core／D清音 的最小 Python 實驗專案，用來驗�
 - Thought Memory Action Parallel Mini Loop Two-Cycle Influence Check Minimal v0
 - Thought Memory Action Parallel Mini Loop Phase0 Closure Audit Minimal v0
 - Phase1 Runtime Session Trace Spine Minimal v0
+- Phase1 Session Frame Materialization Minimal v0
 - ASHL Core Actual Capability Inventory / Runtime Substrate Map v0
 - v2.11c Lesson Stale Supersede Memory Freeze Notice Contract
 - Qingyin First Output v0 Contract
@@ -3094,9 +3095,15 @@ Two-Trial History Boundary:
 - Phase1 Runtime Session Trace Spine Minimal v0 creates record-only Phase1 session trace spine records from b178 Phase0 closure audits. Each record adds a deterministic `session_id`, 8 ordered trace ticks, per-tick `trace_state_summary` snapshots, expected-vs-actual notes, and evaluator summaries for `reach_front_item`, `wait_or_observe`, and `observe_or_alternative_probe`. Boundary Index updates from `2026-06-09-b178` to `2026-06-09-b179`. This does not start a live runtime session, create a runtime tick scheduler, create a persistent state/session store, create a runtime evaluator, create new actions, write memory/retention, admit memory, read/influence/mutate predictors, feed endocrine/tendency directly, change production behavior, or claim learning/consciousness.
 - The Phase 1-5 growth substrate planning guide is `docs/phase1_to_phase5_growth_substrate_plan.md`. It is a must-read construction plan only and does not grant runtime authority by itself.
 
+## Phase1 Session Frame Materialization Minimal v0
+
+- Phase1 Session Frame Materialization Minimal v0 materializes b179 trace spines into record-only same-session frames. Each frame contains the source session id, current tick, trace snapshot, two same-session temporary working-memory reference slots, and nine existing evidence source references.
+- Boundary Index updates from `2026-06-09-b179` to `2026-06-09-b180`; because b180 is a B0/10 point, the record includes hallucination self-check and boundary audit sections.
+- This does not start a live runtime session, create a runtime scheduler or new runtime tick, create new actions, write memory/retention, admit memory, create habit/skill anchors, read/influence/mutate predictors, feed endocrine/tendency directly, change production behavior, or claim learning/consciousness.
+
 ## ASHL Core Actual Capability Inventory / Runtime Substrate Map v0
 
-- Adds `docs/ashl_core_actual_capability_inventory_runtime_substrate_map_v0.md` as a docs-only reality check for current repo capabilities after b179.
+- Adds `docs/ashl_core_actual_capability_inventory_runtime_substrate_map_v0.md` as a docs-only reality check for current repo capabilities; it is now updated through b180.
 - Records the actual tracked-file, core-module, test-module, docs, and smoke-test baseline, then separates executable sandbox helpers, record/checker paths, controlled file helpers, and design-only documents.
 - Corrects the Phase1 next direction away from a readback-only package: b179 already returns and tests session trace spine records. The next useful work should materialize a standard same-session frame from existing trace and working-memory evidence.
 - This does not change Boundary Index version, add runtime behavior, create actions, write memory/retention, use predictors, feed endocrine/tendency directly, change production behavior, or claim learning/consciousness.

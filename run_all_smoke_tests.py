@@ -509,6 +509,9 @@ from ashl_core.thought_memory_action_parallel_mini_loop_phase0_closure_audit_min
 from ashl_core.phase1_runtime_session_trace_spine_minimal import (
     run_phase1_runtime_session_trace_spine_minimal_check,
 )
+from ashl_core.phase1_session_frame_materialization_minimal import (
+    run_phase1_session_frame_materialization_minimal_check,
+)
 from ashl_core.minimal_visual_grounding_trial import run_minimal_visual_grounding_trial_check
 from ashl_core.visual_prediction_error_attention_priority_preview_minimal import (
     run_visual_prediction_error_attention_priority_preview_minimal_check,
@@ -10892,9 +10895,9 @@ def smoke_current_boundary_index_docs() -> dict:
     readme = readme_path.read_text(encoding="utf-8") if readme_path.exists() else ""
     research_plan = research_plan_path.read_text(encoding="utf-8") if research_plan_path.exists() else ""
     compact_required_terms = [
-        "Boundary Index Version: 2026-06-09-b179",
-        "Last update log: Phase1 Runtime Session Trace Spine Minimal v0",
-        "Previous Boundary Index Version: 2026-06-09-b178",
+        "Boundary Index Version: 2026-06-09-b180",
+        "Last update log: Phase1 Session Frame Materialization Minimal v0",
+        "Previous Boundary Index Version: 2026-06-09-b179",
         "docs/boundary_archive/current_boundary_index_2026-06-25_b174.md",
         "first-cycle temporary working memory",
         "weak candidate hint",
@@ -10907,14 +10910,20 @@ def smoke_current_boundary_index_docs() -> dict:
         "same-session working-memory update",
         "Phase0 closure audit",
         "Phase1 record-only session trace spine",
-        "session_trace_spine_created=True",
-        "runtime_tick_sequence_created=True",
-        "tick_count=8",
+        "Phase1 record-only same-session frame",
+        "session_frame_materialized=True",
+        "frame_authority=record_only_same_session_context_frame",
+        "trace_snapshot_kind=session_frame_trace_snapshot",
+        "working_memory_slots.slot_count=2",
+        "evidence_sources.evidence_source_count=9",
+        "b0_10_counter=B0/10",
         "reach_front_item",
         "wait_or_observe",
         "observe_or_alternative_probe",
         "No live runtime session.",
+        "No session frame promotion to live runtime.",
         "No runtime tick scheduler.",
+        "No new runtime tick.",
         "No persistent state store or persistent session store.",
         "No runtime evaluator.",
         "No feedback evaluation or feedback application.",
@@ -10929,7 +10938,7 @@ def smoke_current_boundary_index_docs() -> dict:
         "Memory is a warning sign, not a ban command",
         "docs/ashl_core_actual_capability_inventory_runtime_substrate_map_v0.md",
         "docs/phase1_to_phase5_growth_substrate_plan.md",
-        "Phase1 Session Frame Materialization Minimal v0",
+        "Phase1 Session Frame Three-Line Substrate Index Minimal v0",
         "This current index must stay under 150 lines.",
     ]
     archive_required_terms = [
@@ -10955,8 +10964,8 @@ def smoke_current_boundary_index_docs() -> dict:
         and all(term in archive for term in archive_required_terms)
         and all(term in legacy_archive for term in legacy_required_terms)
         and line_count <= 150
-        and "Phase1 Runtime Session Trace Spine Minimal v0" in readme
-        and "Phase1 Runtime Session Trace Spine Minimal v0" in research_plan
+        and "Phase1 Session Frame Materialization Minimal v0" in readme
+        and "Phase1 Session Frame Materialization Minimal v0" in research_plan
     )
     return _result(
         "boundary_index_current_archive",
@@ -10999,9 +11008,9 @@ def smoke_phase0_documentation_consolidation_minimal() -> dict:
         and matrix_path.exists()
         and index_path.exists()
         and plan_path.exists()
-        and "Boundary Index Version: 2026-06-09-b179" in status
+        and "Boundary Index Version: 2026-06-09-b180" in status
         and "Current Safe Capability" in status
-        and "Phase1 Runtime Session Trace Spine Minimal v0" in status
+        and "Phase1 Session Frame Materialization Minimal v0" in status
         and "ashl_core_actual_capability_inventory_runtime_substrate_map_v0.md" in index
         and "phase1_to_phase5_growth_substrate_plan.md" in index
         and "Thought Memory Action Parallel Mini Loop Phase0 Closure Audit Minimal v0" in status
@@ -11202,7 +11211,7 @@ def smoke_phase0_documentation_inventory_and_consistency_reconciliation() -> dic
     boundary = Path("docs/current_boundary_index.md").read_text(encoding="utf-8")
     passed = (
         all(path.exists() for path in required_paths)
-        and "Boundary Index Version: 2026-06-09-b179" in texts[Path("docs/phase0_status.md")]
+        and "Boundary Index Version: 2026-06-09-b180" in texts[Path("docs/phase0_status.md")]
         and "Inventory count:" in texts[Path("docs/phase0_doc_inventory.md")]
         and "docs/phase1_to_phase5_growth_substrate_plan.md" in texts[Path("docs/phase0_doc_inventory.md")]
         and "docs/ashl_core_actual_capability_inventory_runtime_substrate_map_v0.md" in texts[
@@ -11213,6 +11222,9 @@ def smoke_phase0_documentation_inventory_and_consistency_reconciliation() -> dic
         and "Phase1 Session Frame Materialization Minimal v0" in texts[
             Path("docs/ashl_core_actual_capability_inventory_runtime_substrate_map_v0.md")
         ]
+        and "phase1 session frame materialization minimal" in texts[
+            Path("docs/phase0_capability_matrix.md")
+        ].lower()
         and "Conflict Resolution Rule" in texts[Path("docs/phase0_doc_index.md")]
         and "newer boundary/current-status document controls" in texts[Path("docs/phase0_doc_index.md")]
         and "This audit does not prove that no documentation inconsistencies remain." in texts[
@@ -21087,6 +21099,97 @@ def smoke_phase1_runtime_session_trace_spine_minimal() -> dict:
     )
 
 
+def smoke_phase1_session_frame_materialization_minimal() -> dict:
+    result = run_phase1_session_frame_materialization_minimal_check()
+    summary = result.get("summary", {})
+    boundary = result.get("boundary", {})
+    records = result.get("valid_records", [])
+    sources = [record.get("source_runtime_session_trace_spine", {}) for record in records]
+    frames = [record.get("session_frame", {}) for record in records]
+    snapshots = [record.get("trace_snapshot", {}) for record in records]
+    slots = [record.get("working_memory_slots", {}) for record in records]
+    evidence_sets = [record.get("evidence_sources", {}) for record in records]
+    containments = [record.get("authority_containment", {}) for record in records]
+    self_checks = [record.get("hallucination_self_check", {}) for record in records]
+    audits = [record.get("boundary_audit", {}) for record in records]
+    selected_actions = [source.get("selected_action") for source in sources]
+    first_slots = slots[0].get("slots", []) if slots else []
+    first_evidence_sources = evidence_sets[0].get("sources", []) if evidence_sets else []
+    first_containment = containments[0] if containments else {}
+    first_self_check = self_checks[0] if self_checks else {}
+    first_audit = audits[0] if audits else {}
+    passed = (
+        result.get("command") == "run-phase1-session-frame-materialization-minimal-check"
+        and result.get("flow") == "phase1_session_frame_materialization_minimal_v0"
+        and result.get("status") == "ok"
+        and boundary.get("boundary_index_version_before") == "2026-06-09-b179"
+        and boundary.get("boundary_index_version_after") == "2026-06-09-b180"
+        and boundary.get("b0_10_counter") == "B0/10"
+        and summary.get("session_frame_materialization_result_count") == 49
+        and summary.get("valid_session_frame_count") == 3
+        and summary.get("invalid_session_frame_count") == 46
+        and summary.get("session_frame_materialized_count") == 3
+        and summary.get("trace_snapshot_materialized_count") == 3
+        and summary.get("working_memory_slots_materialized_count") == 3
+        and summary.get("evidence_sources_materialized_count") == 3
+        and summary.get("frame_record_only_count") == 3
+        and summary.get("b0_10_self_check_passed_count") == 3
+        and summary.get("boundary_audit_passed_count") == 3
+        and summary.get("live_runtime_blocked_count") == 3
+        and summary.get("action_creation_blocked_count") == 3
+        and summary.get("memory_write_blocked_count") == 3
+        and summary.get("predictor_use_blocked_count") == 3
+        and summary.get("direct_feed_blocked_count") == 3
+        and summary.get("production_behavior_blocked_count") == 3
+        and summary.get("proof_claim_blocked_count") == 3
+        and summary.get("consciousness_claim_blocked_count") == 3
+        and selected_actions == ["reach_front_item", "wait_or_observe", "observe_or_alternative_probe"]
+        and all(source.get("source_boundary_index") == "2026-06-09-b179" for source in sources)
+        and all(source.get("source_trace_spine_record_only") is True for source in sources)
+        and all(frame.get("frame_scope") == "same_session_sandbox_record_only" for frame in frames)
+        and all(frame.get("session_frame_materialized") is True for frame in frames)
+        and all(frame.get("frame_tick_count") == 8 for frame in frames)
+        and all(frame.get("new_runtime_tick_created") is False for frame in frames)
+        and all(snapshot.get("trace_snapshot_kind") == "session_frame_trace_snapshot" for snapshot in snapshots)
+        and all(snapshot.get("runtime_evaluator_created") is False for snapshot in snapshots)
+        and all(slot_set.get("slot_count") == 2 for slot_set in slots)
+        and all(slot.get("reference_only") is True for slot in first_slots)
+        and all(slot.get("memory_write_created") is False for slot in first_slots)
+        and all(evidence.get("evidence_source_count") == 9 for evidence in evidence_sets)
+        and all(source.get("record_reference_only") is True for source in first_evidence_sources)
+        and all(source.get("creates_new_source_record") is False for source in first_evidence_sources)
+        and first_containment.get("record_only_session_frame") is True
+        and first_containment.get("live_runtime_session_started_in_this_package") is False
+        and first_containment.get("selected_action_created_in_this_package") is False
+        and first_containment.get("memory_write_created_in_this_package") is False
+        and first_containment.get("predictor_read_enabled_in_this_package") is False
+        and first_containment.get("production_behavior_created_in_this_package") is False
+        and first_self_check.get("triggered") is True
+        and first_self_check.get("boundary_number") == 180
+        and first_self_check.get("b0_10_counter") == "B0/10"
+        and first_self_check.get("docs_claims_backed_by_code") is True
+        and first_self_check.get("sandbox_claimed_as_production") is False
+        and first_audit.get("triggered") is True
+        and first_audit.get("boundary_number") == 180
+        and first_audit.get("runtime_behavior_leak") is False
+        and first_audit.get("memory_write_created") is False
+        and first_audit.get("predictor_read_enabled") is False
+        and first_audit.get("direct_endocrine_feed") is False
+        and first_audit.get("direct_tendency_feed") is False
+        and first_audit.get("next_layer_precreated") is False
+        and first_audit.get("proof_of_learning_claim") is False
+    )
+    return _result(
+        "phase1_session_frame_materialization_minimal",
+        passed,
+        {
+            "summary": summary,
+            "boundary": boundary,
+            "selected_actions": selected_actions,
+        },
+    )
+
+
 def smoke_phase0_current_capability_snapshot() -> dict:
     doc_path = Path("docs/phase0_current_capability_snapshot_2026-06-10.md")
     doc = doc_path.read_text(encoding="utf-8") if doc_path.exists() else ""
@@ -23913,6 +24016,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_thought_memory_action_parallel_mini_loop_two_cycle_influence_check_minimal(),
         smoke_thought_memory_action_parallel_mini_loop_phase0_closure_audit_minimal(),
         smoke_phase1_runtime_session_trace_spine_minimal(),
+        smoke_phase1_session_frame_materialization_minimal(),
         smoke_phase0_current_capability_snapshot(),
         smoke_memory_influence_behavior_gate_design(),
         smoke_first_memory_influenced_behavior_boundary(),

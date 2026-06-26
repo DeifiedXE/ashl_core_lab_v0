@@ -4,7 +4,7 @@ Status: docs-only actual capability inventory.
 Runtime impact: none.
 Boundary Index impact: none.
 
-This file records what the repository can actually run or produce after Boundary Index `2026-06-09-b179`.
+This file records what the repository can actually run or produce after Boundary Index `2026-06-09-b180`.
 
 It is a work-start reality check. It does not grant runtime authority and does not replace:
 
@@ -23,6 +23,8 @@ Repository scan baseline from the tracked workspace before this docs-only invent
 - top-level `docs/*.md`: 138
 - smoke functions in `run_all_smoke_tests.py`: 419
 - latest smoke report on disk: 419 / 419 passed
+
+After b180, one additional smoke is expected for `phase1_session_frame_materialization_minimal`, so the full smoke runner should report 420 / 420 when refreshed.
 
 Important caveat:
 
@@ -67,6 +69,7 @@ Session and working memory substrate:
 - session working memory trial CLI paths can show records before clear and no records after clear
 - b176 can create same-session temporary working-memory update records from the second-cycle sandbox outcome
 - b179 can index the closed Phase0 loop as one ordered session trace spine
+- b180 can materialize that spine into one record-only same-session frame with current tick, trace snapshot, temporary working-memory reference slots, and evidence source references
 
 Memory and retention substrate:
 
@@ -126,6 +129,7 @@ Representative data shapes already produced by existing modules/tests include:
 - mimetic endocrine / settling trace records
 - Phase0 closure audit records
 - Phase1 session trace spine records
+- Phase1 same-session frame records
 - smoke test report data
 
 ## Not Present Yet
@@ -133,7 +137,9 @@ Representative data shapes already produced by existing modules/tests include:
 ASHL Core does not yet have:
 
 - a live Qingyin runtime session
+- a session frame promoted to live runtime
 - a runtime tick scheduler
+- automatic runtime ticks
 - a persistent runtime session store
 - an open-ended runtime action loop
 - production action execution
@@ -171,7 +177,11 @@ Phase1 Session Frame Materialization Minimal v0
 
 Plain meaning:
 
-Create a standard same-session frame from existing evidence: session id, ordered ticks, current trace snapshot, same-session working-memory slots, available evidence sources, and blocked authority flags.
+Status:
+
+Completed at Boundary Index `2026-06-09-b180`.
+
+Created a standard same-session frame from existing evidence: session id, ordered ticks, current trace snapshot, same-session working-memory reference slots, available evidence sources, blocked authority flags, B0/10 self-check, and boundary audit.
 
 It should make the session easier to inspect and hand to later perception/memory/thought packages.
 
@@ -185,3 +195,13 @@ It must not:
 - feed endocrine or tendency directly
 - change production behavior
 - claim learning or consciousness
+
+Better next direction:
+
+```text
+Phase1 Session Frame Three-Line Substrate Index Minimal v0
+```
+
+Plain meaning:
+
+Classify the b180 frame's existing evidence sources into read-only thought, action, and memory lanes without creating behavior.

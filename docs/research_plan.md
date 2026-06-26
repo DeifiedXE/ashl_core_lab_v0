@@ -8524,6 +8524,22 @@ Plain meaning:
 Explicitly not changed:
 - No live runtime session, runtime tick scheduler, persistent state/session store, runtime evaluator, runtime action loop, feedback evaluation/application, candidate ordering/reordering, candidate score mutation, runtime next-cycle ordering, selected_action/final_action/direct_command/execution/outcome observation creation, new working-memory update, long-term/Core/Archive/persistent memory write, retention write, memory admission, habit/skill anchor creation, predictor read/influence/mutation, direct endocrine/tendency feed, production behavior, consciousness claim, long-term learning claim, or proof-of-learning claim.
 
+## Phase1 Session Frame Materialization Minimal v0
+
+Status: completed / record-only same-session frame / Boundary Index b180 / B0/10 self-check.
+
+What changed:
+- b179 Phase1 session trace spine records can now create standard same-session frame records.
+- Each frame contains the source session id, current tick, record-only trace snapshot, two same-session temporary working-memory reference slots, and nine existing evidence source references.
+- The record includes B0/10 hallucination self-check and boundary audit sections.
+- Boundary Index updates from `2026-06-09-b179` to `2026-06-09-b180`.
+
+Plain meaning:
+- The completed sandbox loop now has a small table where later packages can find the current tick, temporary memory references, and evidence sources. It is still a table, not a running runtime.
+
+Explicitly not changed:
+- No live runtime session, runtime scheduler, new runtime tick, persistent state/session store, runtime evaluator, runtime action loop, feedback evaluation/application, candidate ordering/reordering, candidate score mutation, selected_action/final_action/direct_command/execution/outcome observation creation, new working-memory update, persistent memory write, retention write, memory admission, habit/skill anchor, predictor use/mutation, direct endocrine/tendency feed, production behavior, consciousness claim, long-term learning claim, or proof-of-learning claim.
+
 ## ASHL Core Actual Capability Inventory / Runtime Substrate Map v0
 
 Status: completed / docs-only actual capability inventory / no Boundary Index change.

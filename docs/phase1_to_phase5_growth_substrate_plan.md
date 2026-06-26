@@ -114,17 +114,17 @@ Completed at Boundary Index `2026-06-09-b179`.
 
 ## Next Useful Phase1 Step
 
-Do not spend the next package on simple b179 readback. The b179 runner already returns the session trace spine and tests inspect those records.
+The simple b179 readback gap is closed by b180 Session Frame Materialization. The b180 frame is still record-only, but it gives later packages one standard same-session surface.
 
 Better next step:
 
 ```text
-Phase1 Session Frame Materialization Minimal v0
+Phase1 Session Frame Three-Line Substrate Index Minimal v0
 ```
 
 Plain version:
 
-Use the existing b179 spine and same-session working-memory evidence to create a standard same-session frame: session id, current tick list, trace snapshot, temporary working-memory slots, available evidence sources, and blocked authority flags.
+Classify the b180 frame's existing evidence sources into read-only thought, action, and memory lanes. This helps future packages know where to look without creating new behavior.
 
 It must still avoid live runtime, new actions, persistent memory, predictor influence, production behavior, and learning/consciousness claims.
 

@@ -482,6 +482,9 @@ from .thought_memory_action_parallel_mini_loop_phase0_closure_audit_minimal impo
 from .phase1_runtime_session_trace_spine_minimal import (
     run_phase1_runtime_session_trace_spine_minimal_check,
 )
+from .phase1_session_frame_materialization_minimal import (
+    run_phase1_session_frame_materialization_minimal_check,
+)
 from .reviewed_lesson_dry_run_correction_minimal import (
     run_reviewed_lesson_dry_run_correction_minimal_check,
 )
@@ -4304,6 +4307,8 @@ def run_command(command: str) -> dict[str, Any] | str:
         return run_thought_memory_action_parallel_mini_loop_phase0_closure_audit_minimal_check()
     if command == "run-phase1-runtime-session-trace-spine-minimal-check":
         return run_phase1_runtime_session_trace_spine_minimal_check()
+    if command == "run-phase1-session-frame-materialization-minimal-check":
+        return run_phase1_session_frame_materialization_minimal_check()
     if command == "run-simple-retina-focus-preview-minimal-check":
         return run_simple_retina_focus_preview_minimal_check()
     if command == "run-generalized-prediction-confidence-check":
@@ -4613,6 +4618,7 @@ def main(argv: list[str] | None = None) -> int:
             "run-thought-memory-action-parallel-mini-loop-two-cycle-influence-check-minimal-check",
             "run-thought-memory-action-parallel-mini-loop-phase0-closure-audit-minimal-check",
             "run-phase1-runtime-session-trace-spine-minimal-check",
+            "run-phase1-session-frame-materialization-minimal-check",
             "run-simple-retina-focus-preview-minimal-check",
             "run-generalized-prediction-confidence-check",
             "run-generalized-candidate-from-pattern-check",
@@ -5176,6 +5182,8 @@ def main(argv: list[str] | None = None) -> int:
         result = run_thought_memory_action_parallel_mini_loop_phase0_closure_audit_minimal_check()
     elif args.command == "run-phase1-runtime-session-trace-spine-minimal-check":
         result = run_phase1_runtime_session_trace_spine_minimal_check()
+    elif args.command == "run-phase1-session-frame-materialization-minimal-check":
+        result = run_phase1_session_frame_materialization_minimal_check()
     elif args.command == "run-simple-retina-focus-preview-minimal-check":
         result = run_simple_retina_focus_preview_minimal_check()
     elif args.command == "run-generalized-prediction-confidence-check":
