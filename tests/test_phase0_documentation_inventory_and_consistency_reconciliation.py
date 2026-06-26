@@ -16,6 +16,7 @@ REQUIRED_DOCS = [
     Path("docs/ashl_core_structural_refactor_map_v0.md"),
     Path("docs/ashl_core_refactor_r2_compatibility_alias_plan_v0.md"),
     Path("docs/ashl_core_refactor_r3_low_risk_docs_folder_plan_v0.md"),
+    Path("docs/ashl_core_refactor_r3a_docs_authority_freeze_v0.md"),
 ]
 
 
@@ -59,26 +60,26 @@ class Phase0DocumentationInventoryConsistencyReconciliationTests(unittest.TestCa
     def test_current_boundary_index_has_sandbox_production_distinction(self):
         boundary = self._read("docs/current_boundary_index.md")
 
-        self.assertIn("Boundary Index Version: 2026-06-09-b190", boundary)
+        self.assertIn("Boundary Index Version: 2026-06-09-b191", boundary)
         self.assertIn("No production/runtime memory-influenced behavior is allowed.", boundary)
         self.assertIn("sandbox-only lesson application, observation, and evaluation records", boundary)
         self.assertIn("do not constitute production/runtime memory-influenced behavior", boundary)
         self.assertIn("Level 2 Sandbox Application milestone", boundary)
         self.assertIn("Level 3 Toy Minefield Multi-Step Sandbox milestone", boundary)
-        self.assertIn("ASHL Core Refactor R3 Low-Risk Docs Folder Plan Minimal v0", boundary)
-        self.assertIn("B0/10 self-check", boundary)
-        self.assertIn("B0/10", boundary)
+        self.assertIn("ASHL Core Refactor R3A Docs Authority Freeze Minimal v0", boundary)
+        self.assertIn("R3A docs authority freeze", boundary)
+        self.assertIn("B1/10", boundary)
 
     def test_actual_capability_inventory_records_repo_reality(self):
         inventory = self._read("docs/ashl_core_actual_capability_inventory_runtime_substrate_map_v0.md")
 
         for phrase in (
-            "tracked files after this package is committed: 825",
-            "`ashl_core/*.py`: 294",
-            "`tests/*.py`: 364",
-            "top-level `docs/*.md`: 142",
-            "smoke functions in `run_all_smoke_tests.py`: 430",
-            "expected refreshed full smoke report: 430 / 430 passed",
+            "tracked files after this package is committed: 828",
+            "`ashl_core/*.py`: 295",
+            "`tests/*.py`: 365",
+            "top-level `docs/*.md`: 143",
+            "smoke functions in `run_all_smoke_tests.py`: 431",
+            "expected refreshed full smoke report: 431 / 431 passed",
             "Executable sandbox/helper capability",
             "Record/checker capability",
             "Design-only capability",
@@ -89,6 +90,8 @@ class Phase0DocumentationInventoryConsistencyReconciliationTests(unittest.TestCa
             "ASHL Core R2 compatibility alias plan reports",
             "ASHL Core Refactor R3 Low-Risk Docs Folder Plan Minimal v0",
             "ASHL Core R3 low-risk docs folder plan reports",
+            "ASHL Core Refactor R3A Docs Authority Freeze Minimal v0",
+            "ASHL Core R3A docs authority freeze reports",
             "no unrestricted Qingyin long-term memory runtime",
         ):
             with self.subTest(phrase=phrase):
@@ -195,6 +198,27 @@ class Phase0DocumentationInventoryConsistencyReconciliationTests(unittest.TestCa
         self.assertIn("No docs moved.", plan)
         self.assertIn("No Python import changed.", plan)
         self.assertIn("No runtime behavior changed.", plan)
+
+    def test_capability_matrix_records_b191_r3a_docs_authority_freeze(self):
+        matrix = self._read("docs/phase0_capability_matrix.md")
+
+        self.assertIn("refactor r3a docs authority freeze minimal", matrix)
+        self.assertIn("implemented_docs_authority_freeze", matrix)
+        self.assertIn("8 root authority docs", matrix)
+        self.assertIn("ashl_core/refactor_r3a_docs_authority_freeze_minimal.py", matrix)
+        self.assertIn("docs/ashl_core_refactor_r3a_docs_authority_freeze_v0.md", matrix)
+
+    def test_r3a_docs_authority_freeze_records_no_docs_movement(self):
+        freeze = self._read("docs/ashl_core_refactor_r3a_docs_authority_freeze_v0.md")
+
+        self.assertIn("R3A freezes the root authority docs before any future documentation movement.", freeze)
+        self.assertIn("frozen_root_authority_doc_count=8", freeze)
+        self.assertIn("redirect_index_created=True", freeze)
+        self.assertIn("user_explicitly_approved_authority_doc_move=True", freeze)
+        self.assertIn("docs_moved=False", freeze)
+        self.assertIn("docs_renamed=False", freeze)
+        self.assertIn("path_references_changed=False", freeze)
+        self.assertIn("runtime_behavior_changed=False", freeze)
 
     def test_long_term_memory_priority_note_exists(self):
         design = self._read("docs/five_layer_memory_design_assumption_v0_1.md")

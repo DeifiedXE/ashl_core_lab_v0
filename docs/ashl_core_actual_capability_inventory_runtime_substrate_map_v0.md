@@ -4,7 +4,7 @@ Status: docs-only actual capability inventory.
 Runtime impact: none.
 Boundary Index impact: none.
 
-This file records what the repository can actually run or produce after Boundary Index `2026-06-09-b190`.
+This file records what the repository can actually run or produce after Boundary Index `2026-06-09-b191`.
 
 It is a work-start reality check. It does not grant runtime authority and does not replace:
 
@@ -15,14 +15,14 @@ It is a work-start reality check. It does not grant runtime authority and does n
 
 ## Scan Baseline
 
-Repository scan baseline after the b190 ASHL Core R3 low-risk docs folder plan package:
+Repository scan baseline after the b191 ASHL Core R3A docs authority freeze package:
 
-- tracked files after this package is committed: 825
-- `ashl_core/*.py`: 294
-- `tests/*.py`: 364
-- top-level `docs/*.md`: 142
-- smoke functions in `run_all_smoke_tests.py`: 430
-- expected refreshed full smoke report: 430 / 430 passed
+- tracked files after this package is committed: 828
+- `ashl_core/*.py`: 295
+- `tests/*.py`: 365
+- top-level `docs/*.md`: 143
+- smoke functions in `run_all_smoke_tests.py`: 431
+- expected refreshed full smoke report: 431 / 431 passed
 
 Important caveat:
 
@@ -70,6 +70,7 @@ Action and sandbox substrate:
 - b188 adds a structural refactor map and read-only checker for nine ASHL Core repository lines without moving files or changing imports
 - b189 adds an R2 compatibility alias plan and read-only checker for future line-folder refactor work without moving files, changing imports, implementing aliases, or changing runtime behavior
 - b190 adds an R3 low-risk docs folder plan and read-only checker for future documentation organization without moving docs, creating folders, changing references, changing imports, or changing runtime behavior
+- b191 adds an R3A docs authority freeze and read-only checker for 8 root authority docs without moving docs, archiving docs, changing references, changing imports, or changing runtime behavior
 
 Session and working memory substrate:
 
@@ -151,6 +152,7 @@ Representative data shapes already produced by existing modules/tests include:
 - ASHL Core structural refactor map reports
 - ASHL Core R2 compatibility alias plan reports
 - ASHL Core R3 low-risk docs folder plan reports
+- ASHL Core R3A docs authority freeze reports
 - smoke test report data
 
 ## Not Present Yet
@@ -365,5 +367,37 @@ It still must not:
 - create runtime behavior
 - create action selection or execution
 - write memory or retention
+- feed endocrine or tendency
+- claim production behavior, learning, or consciousness
+
+Current implemented R3A docs authority freeze:
+
+```text
+ASHL Core Refactor R3A Docs Authority Freeze Minimal v0
+```
+
+Plain meaning:
+
+Status:
+
+Completed at Boundary Index `2026-06-09-b191`.
+
+Adds `docs/ashl_core_refactor_r3a_docs_authority_freeze_v0.md` and a read-only CLI checker. It freezes 8 root authority docs before future documentation movement and requires a future redirect/index/lookup package plus explicit user approval before those docs can be moved.
+
+It still must not:
+
+- move docs
+- create docs folders
+- archive docs
+- delete docs
+- rename docs
+- change document path references
+- move Python modules
+- change imports
+- implement aliases
+- change runtime behavior
+- create action selection or execution
+- write memory or retention
+- use or mutate predictors
 - feed endocrine or tendency
 - claim production behavior, learning, or consciousness

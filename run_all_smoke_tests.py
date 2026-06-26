@@ -540,6 +540,9 @@ from ashl_core.refactor_r2_compatibility_alias_plan_minimal import (
 from ashl_core.refactor_r3_low_risk_docs_folder_plan_minimal import (
     run_refactor_r3_low_risk_docs_folder_plan_minimal_check,
 )
+from ashl_core.refactor_r3a_docs_authority_freeze_minimal import (
+    run_refactor_r3a_docs_authority_freeze_minimal_check,
+)
 from ashl_core.minimal_visual_grounding_trial import run_minimal_visual_grounding_trial_check
 from ashl_core.visual_prediction_error_attention_priority_preview_minimal import (
     run_visual_prediction_error_attention_priority_preview_minimal_check,
@@ -10925,9 +10928,9 @@ def smoke_current_boundary_index_docs() -> dict:
     readme = readme_path.read_text(encoding="utf-8") if readme_path.exists() else ""
     research_plan = research_plan_path.read_text(encoding="utf-8") if research_plan_path.exists() else ""
     compact_required_terms = [
-        "Boundary Index Version: 2026-06-09-b190",
-        "Last update log: ASHL Core Refactor R3 Low-Risk Docs Folder Plan Minimal v0",
-        "Previous Boundary Index Version: 2026-06-09-b189",
+        "Boundary Index Version: 2026-06-09-b191",
+        "Last update log: ASHL Core Refactor R3A Docs Authority Freeze Minimal v0",
+        "Previous Boundary Index Version: 2026-06-09-b190",
         "docs/boundary_archive/current_boundary_index_2026-06-25_b174.md",
         "docs/boundary_archive/current_boundary_index_2026-06-26_b184.md",
         "Phase0 two-cycle thought/action/working-memory mini-loop",
@@ -10943,9 +10946,14 @@ def smoke_current_boundary_index_docs() -> dict:
         "ASHL Core structural refactor map",
         "ASHL Core R2 compatibility alias plan",
         "ASHL Core R3 low-risk docs folder plan",
+        "ASHL Core R3A docs authority freeze",
         "r3_docs_folder_plan_created=True",
+        "r3a_authority_freeze_created=True",
         "source_docs_read=True",
         "root_authority_docs_listed=True",
+        "frozen_root_authority_doc_count=8",
+        "redirect_required_before_move=True",
+        "user_explicit_approval_required_before_authority_doc_move=True",
         "nine_line_docs_candidates_listed=True",
         "archive_candidates_listed=True",
         "design_only_docs_marked=True",
@@ -10961,6 +10969,7 @@ def smoke_current_boundary_index_docs() -> dict:
         "b10_self_check_passed=True",
         "boundary_audit_passed=True",
         "b0_10_counter=B0/10",
+        "b191 = B1/10",
         "reach_front_item",
         "wait_or_observe",
         "observe_or_alternative_probe",
@@ -10981,7 +10990,6 @@ def smoke_current_boundary_index_docs() -> dict:
         "docs/ashl_core_actual_capability_inventory_runtime_substrate_map_v0.md",
         "docs/phase1_to_phase5_growth_substrate_plan.md",
         "ASHL Core Refactor R4 First Tiny Docs Move With Redirect Index Plan Minimal v0",
-        "ASHL Core Refactor R3A Docs Authority Freeze Minimal v0",
         "This current index must stay under 150 lines.",
     ]
     archive_required_terms = [
@@ -11016,8 +11024,8 @@ def smoke_current_boundary_index_docs() -> dict:
         and all(term in b184_archive for term in b184_archive_required_terms)
         and all(term in legacy_archive for term in legacy_required_terms)
         and line_count <= 150
-        and "ASHL Core Refactor R3 Low-Risk Docs Folder Plan Minimal v0" in readme
-        and "ASHL Core Refactor R3 Low-Risk Docs Folder Plan Minimal v0" in research_plan
+        and "ASHL Core Refactor R3A Docs Authority Freeze Minimal v0" in readme
+        and "ASHL Core Refactor R3A Docs Authority Freeze Minimal v0" in research_plan
     )
     return _result(
         "boundary_index_current_archive",
@@ -11061,8 +11069,9 @@ def smoke_phase0_documentation_consolidation_minimal() -> dict:
         and matrix_path.exists()
         and index_path.exists()
         and plan_path.exists()
-        and "Boundary Index Version: 2026-06-09-b190" in status
+        and "Boundary Index Version: 2026-06-09-b191" in status
         and "Current Safe Capability" in status
+        and "ASHL Core Refactor R3A Docs Authority Freeze Minimal v0" in status
         and "ASHL Core Refactor R3 Low-Risk Docs Folder Plan Minimal v0" in status
         and "ASHL Core Refactor R2 Compatibility Alias Plan Minimal v0" in status
         and "ASHL Core Structural Refactor Map Minimal v0" in status
@@ -11249,6 +11258,7 @@ def smoke_phase0_documentation_inventory_and_consistency_reconciliation() -> dic
         Path("docs/phase0_versioning_policy.md"),
         Path("docs/phase1_to_phase5_growth_substrate_plan.md"),
         Path("docs/ashl_core_actual_capability_inventory_runtime_substrate_map_v0.md"),
+        Path("docs/ashl_core_refactor_r3a_docs_authority_freeze_v0.md"),
     ]
     texts = {path: path.read_text(encoding="utf-8") if path.exists() else "" for path in required_paths}
     combined = "\n".join(texts.values()).lower()
@@ -11267,7 +11277,7 @@ def smoke_phase0_documentation_inventory_and_consistency_reconciliation() -> dic
     boundary = Path("docs/current_boundary_index.md").read_text(encoding="utf-8")
     passed = (
         all(path.exists() for path in required_paths)
-        and "Boundary Index Version: 2026-06-09-b190" in texts[Path("docs/phase0_status.md")]
+        and "Boundary Index Version: 2026-06-09-b191" in texts[Path("docs/phase0_status.md")]
         and "Inventory count:" in texts[Path("docs/phase0_doc_inventory.md")]
         and "docs/phase1_to_phase5_growth_substrate_plan.md" in texts[Path("docs/phase0_doc_inventory.md")]
         and "docs/ashl_core_actual_capability_inventory_runtime_substrate_map_v0.md" in texts[
@@ -11282,6 +11292,9 @@ def smoke_phase0_documentation_inventory_and_consistency_reconciliation() -> dic
             Path("docs/ashl_core_actual_capability_inventory_runtime_substrate_map_v0.md")
         ]
         and "ASHL Core Refactor R3 Low-Risk Docs Folder Plan Minimal v0" in texts[
+            Path("docs/ashl_core_actual_capability_inventory_runtime_substrate_map_v0.md")
+        ]
+        and "ASHL Core Refactor R3A Docs Authority Freeze Minimal v0" in texts[
             Path("docs/ashl_core_actual_capability_inventory_runtime_substrate_map_v0.md")
         ]
         and "phase1 closure audit minimal" in texts[
@@ -21864,6 +21877,46 @@ def smoke_refactor_r3_low_risk_docs_folder_plan_minimal() -> dict:
     )
 
 
+def smoke_refactor_r3a_docs_authority_freeze_minimal() -> dict:
+    result = run_refactor_r3a_docs_authority_freeze_minimal_check()
+    boundary = result.get("boundary", {})
+    passed = (
+        result.get("command") == "run-refactor-r3a-docs-authority-freeze-minimal-check"
+        and result.get("flow") == "ashl_core_refactor_r3a_docs_authority_freeze_minimal_v0"
+        and result.get("status") == "ok"
+        and boundary.get("boundary_index_version_before") == "2026-06-09-b190"
+        and boundary.get("boundary_index_version_after") == "2026-06-09-b191"
+        and boundary.get("runtime_capability_change") is False
+        and boundary.get("b10_boundary_self_check_triggered") is False
+        and boundary.get("b_counter") == "B1/10"
+        and result.get("r3a_authority_freeze_created") is True
+        and result.get("r3_source_plan_read") is True
+        and result.get("frozen_root_authority_docs_listed") is True
+        and result.get("frozen_root_authority_doc_count") == 8
+        and result.get("all_required_authority_docs_present") is True
+        and result.get("future_move_preconditions_listed") is True
+        and result.get("redirect_required_before_move") is True
+        and result.get("user_explicit_approval_required_before_authority_doc_move") is True
+        and result.get("docs_moved") is False
+        and result.get("docs_deleted") is False
+        and result.get("docs_renamed") is False
+        and result.get("docs_archived") is False
+        and result.get("docs_lines_created") is False
+        and result.get("archive_created") is False
+        and result.get("path_references_changed") is False
+        and result.get("python_imports_changed") is False
+        and result.get("runtime_behavior_changed") is False
+    )
+    return _result(
+        "refactor_r3a_docs_authority_freeze_minimal",
+        passed,
+        {
+            "boundary": boundary,
+            "cli_visible_summary": result.get("cli_visible_summary"),
+        },
+    )
+
+
 def smoke_phase0_current_capability_snapshot() -> dict:
     doc_path = Path("docs/phase0_current_capability_snapshot_2026-06-10.md")
     doc = doc_path.read_text(encoding="utf-8") if doc_path.exists() else ""
@@ -24701,6 +24754,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_structural_refactor_map_minimal(),
         smoke_refactor_r2_compatibility_alias_plan_minimal(),
         smoke_refactor_r3_low_risk_docs_folder_plan_minimal(),
+        smoke_refactor_r3a_docs_authority_freeze_minimal(),
         smoke_phase0_current_capability_snapshot(),
         smoke_memory_influence_behavior_gate_design(),
         smoke_first_memory_influenced_behavior_boundary(),
