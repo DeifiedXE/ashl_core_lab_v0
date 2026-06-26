@@ -518,6 +518,7 @@ from ashl_core.phase1_session_frame_runtime_tick_handoff_minimal import (
 from ashl_core.phase1_tick1_frame_three_line_substrate_index_minimal import (
     run_phase1_tick1_frame_three_line_substrate_index_minimal_check,
 )
+from ashl_core.phase1_closure_audit_minimal import run_phase1_closure_audit_minimal_check
 from ashl_core.minimal_visual_grounding_trial import run_minimal_visual_grounding_trial_check
 from ashl_core.visual_prediction_error_attention_priority_preview_minimal import (
     run_visual_prediction_error_attention_priority_preview_minimal_check,
@@ -10901,9 +10902,9 @@ def smoke_current_boundary_index_docs() -> dict:
     readme = readme_path.read_text(encoding="utf-8") if readme_path.exists() else ""
     research_plan = research_plan_path.read_text(encoding="utf-8") if research_plan_path.exists() else ""
     compact_required_terms = [
-        "Boundary Index Version: 2026-06-09-b182",
-        "Last update log: Phase1 Tick1 Frame Three-Line Substrate Index Minimal v0",
-        "Previous Boundary Index Version: 2026-06-09-b181",
+        "Boundary Index Version: 2026-06-09-b183",
+        "Last update log: Phase1 Closure Audit Minimal v0",
+        "Previous Boundary Index Version: 2026-06-09-b182",
         "docs/boundary_archive/current_boundary_index_2026-06-25_b174.md",
         "first-cycle temporary working memory",
         "weak candidate hint",
@@ -10919,17 +10920,16 @@ def smoke_current_boundary_index_docs() -> dict:
         "Phase1 record-only same-session frame",
         "Phase1 same-session runtime tick handoff",
         "Phase1 tick1 three-line substrate index",
-        "reads_b181_tick1_frame_only=True",
-        "tick1_frame_reference_created=True",
-        "thought_line_index_created=True",
-        "action_line_index_created=True",
-        "memory_line_index_created=True",
-        "cross_line_continuity_index_created=True",
-        "all_lanes_record_only=True",
-        "frame_tick_count=9",
-        "candidate_input_created=False",
-        "selected_action_created=False",
-        "persistent_memory_write=False",
+        "Phase1 closure audit",
+        "phase1_session_trace_spine_present=True",
+        "tick_handoff_present=True",
+        "three_line_index_present=True",
+        "no_live_runtime=True",
+        "no_action_selection=True",
+        "no_memory_write=True",
+        "phase1_closure_ready=True",
+        "phase1_duplicate_packages_blocked=True",
+        "next_phase_required=Phase2",
         "b0_10_counter=B0/10",
         "reach_front_item",
         "wait_or_observe",
@@ -10943,6 +10943,7 @@ def smoke_current_boundary_index_docs() -> dict:
         "No feedback evaluation or feedback application.",
         "No candidate input creation.",
         "No candidate ordering or candidate reordering.",
+        "No duplicate Phase1 substrate package.",
         "No new selected_action, final_action, direct command, execution, or outcome observation.",
         "No new working-memory update.",
         "No production/runtime memory-influenced behavior is allowed.",
@@ -10953,7 +10954,7 @@ def smoke_current_boundary_index_docs() -> dict:
         "Memory is a warning sign, not a ban command",
         "docs/ashl_core_actual_capability_inventory_runtime_substrate_map_v0.md",
         "docs/phase1_to_phase5_growth_substrate_plan.md",
-        "Phase1 Tick1 Three-Line Candidate Input Minimal v0",
+        "Phase2 Candidate Input From Closed Phase1 Substrate Minimal v0",
         "This current index must stay under 150 lines.",
     ]
     archive_required_terms = [
@@ -10979,8 +10980,8 @@ def smoke_current_boundary_index_docs() -> dict:
         and all(term in archive for term in archive_required_terms)
         and all(term in legacy_archive for term in legacy_required_terms)
         and line_count <= 150
-        and "Phase1 Tick1 Frame Three-Line Substrate Index Minimal v0" in readme
-        and "Phase1 Tick1 Frame Three-Line Substrate Index Minimal v0" in research_plan
+        and "Phase1 Closure Audit Minimal v0" in readme
+        and "Phase1 Closure Audit Minimal v0" in research_plan
     )
     return _result(
         "boundary_index_current_archive",
@@ -11023,9 +11024,9 @@ def smoke_phase0_documentation_consolidation_minimal() -> dict:
         and matrix_path.exists()
         and index_path.exists()
         and plan_path.exists()
-        and "Boundary Index Version: 2026-06-09-b182" in status
+        and "Boundary Index Version: 2026-06-09-b183" in status
         and "Current Safe Capability" in status
-        and "Phase1 Tick1 Frame Three-Line Substrate Index Minimal v0" in status
+        and "Phase1 Closure Audit Minimal v0" in status
         and "ashl_core_actual_capability_inventory_runtime_substrate_map_v0.md" in index
         and "phase1_to_phase5_growth_substrate_plan.md" in index
         and "Thought Memory Action Parallel Mini Loop Phase0 Closure Audit Minimal v0" in status
@@ -11226,7 +11227,7 @@ def smoke_phase0_documentation_inventory_and_consistency_reconciliation() -> dic
     boundary = Path("docs/current_boundary_index.md").read_text(encoding="utf-8")
     passed = (
         all(path.exists() for path in required_paths)
-        and "Boundary Index Version: 2026-06-09-b182" in texts[Path("docs/phase0_status.md")]
+        and "Boundary Index Version: 2026-06-09-b183" in texts[Path("docs/phase0_status.md")]
         and "Inventory count:" in texts[Path("docs/phase0_doc_inventory.md")]
         and "docs/phase1_to_phase5_growth_substrate_plan.md" in texts[Path("docs/phase0_doc_inventory.md")]
         and "docs/ashl_core_actual_capability_inventory_runtime_substrate_map_v0.md" in texts[
@@ -11234,10 +11235,10 @@ def smoke_phase0_documentation_inventory_and_consistency_reconciliation() -> dic
         ]
         and "docs/phase0_versioning_policy.md" in texts[Path("docs/phase0_doc_inventory.md")]
         and "unknown_needs_review" in texts[Path("docs/phase0_doc_inventory.md")]
-        and "Phase1 Tick1 Frame Three-Line Substrate Index Minimal v0" in texts[
+        and "Phase1 Closure Audit Minimal v0" in texts[
             Path("docs/ashl_core_actual_capability_inventory_runtime_substrate_map_v0.md")
         ]
-        and "phase1 tick1 frame three-line substrate index minimal" in texts[
+        and "phase1 closure audit minimal" in texts[
             Path("docs/phase0_capability_matrix.md")
         ].lower()
         and "Conflict Resolution Rule" in texts[Path("docs/phase0_doc_index.md")]
@@ -21375,6 +21376,74 @@ def smoke_phase1_tick1_frame_three_line_substrate_index_minimal() -> dict:
     )
 
 
+def smoke_phase1_closure_audit_minimal() -> dict:
+    result = run_phase1_closure_audit_minimal_check()
+    summary = result.get("summary", {})
+    boundary = result.get("boundary", {})
+    records = result.get("valid_records", [])
+    closures = [record.get("phase1_closure_audit", {}) for record in records]
+    guards = [record.get("duplicate_package_guard", {}) for record in records]
+    containments = [record.get("closure_containment", {}) for record in records]
+    audits = [record.get("boundary_audit", {}) for record in records]
+    first_guard = guards[0] if guards else {}
+    first_containment = containments[0] if containments else {}
+    first_audit = audits[0] if audits else {}
+    passed = (
+        result.get("command") == "run-phase1-closure-audit-minimal-check"
+        and result.get("flow") == "phase1_closure_audit_minimal_v0"
+        and result.get("status") == "ok"
+        and boundary.get("boundary_index_version_before") == "2026-06-09-b182"
+        and boundary.get("boundary_index_version_after") == "2026-06-09-b183"
+        and summary.get("phase1_closure_audit_result_count") == 35
+        and summary.get("valid_phase1_closure_audit_count") == 3
+        and summary.get("invalid_phase1_closure_audit_count") == 32
+        and summary.get("phase1_session_trace_spine_present_count") == 3
+        and summary.get("tick_handoff_present_count") == 3
+        and summary.get("three_line_index_present_count") == 3
+        and summary.get("no_live_runtime_count") == 3
+        and summary.get("no_action_selection_count") == 3
+        and summary.get("no_memory_write_count") == 3
+        and summary.get("phase1_closure_ready_count") == 3
+        and summary.get("duplicate_phase1_packages_blocked_count") == 3
+        and summary.get("candidate_input_blocked_count") == 3
+        and summary.get("predictor_use_blocked_count") == 3
+        and summary.get("production_behavior_blocked_count") == 3
+        and summary.get("proof_claim_blocked_count") == 3
+        and summary.get("consciousness_claim_blocked_count") == 3
+        and all(closure.get("phase1_session_trace_spine_present") is True for closure in closures)
+        and all(closure.get("tick_handoff_present") is True for closure in closures)
+        and all(closure.get("three_line_index_present") is True for closure in closures)
+        and all(closure.get("no_live_runtime") is True for closure in closures)
+        and all(closure.get("no_action_selection") is True for closure in closures)
+        and all(closure.get("no_memory_write") is True for closure in closures)
+        and all(closure.get("phase1_closure_ready") is True for closure in closures)
+        and first_guard.get("phase1_duplicate_packages_blocked") is True
+        and first_guard.get("duplicate_session_trace_spine_package_allowed") is False
+        and first_guard.get("duplicate_tick_handoff_package_allowed") is False
+        and first_guard.get("duplicate_three_line_index_package_allowed") is False
+        and first_guard.get("next_phase_required") == "Phase2"
+        and first_containment.get("record_only_closure_audit") is True
+        and first_containment.get("duplicate_phase1_substrate_package_created_in_this_package") is False
+        and first_containment.get("selected_action_created_in_this_package") is False
+        and first_containment.get("persistent_memory_write_created_in_this_package") is False
+        and first_audit.get("boundary_number") == 183
+        and first_audit.get("live_runtime_session_started") is False
+        and first_audit.get("selected_action_created") is False
+        and first_audit.get("persistent_memory_write_created") is False
+        and first_audit.get("production_behavior_created") is False
+        and first_audit.get("proof_of_learning_claim") is False
+        and first_audit.get("consciousness_claim") is False
+    )
+    return _result(
+        "phase1_closure_audit_minimal",
+        passed,
+        {
+            "summary": summary,
+            "boundary": boundary,
+        },
+    )
+
+
 def smoke_phase0_current_capability_snapshot() -> dict:
     doc_path = Path("docs/phase0_current_capability_snapshot_2026-06-10.md")
     doc = doc_path.read_text(encoding="utf-8") if doc_path.exists() else ""
@@ -24204,6 +24273,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_phase1_session_frame_materialization_minimal(),
         smoke_phase1_session_frame_runtime_tick_handoff_minimal(),
         smoke_phase1_tick1_frame_three_line_substrate_index_minimal(),
+        smoke_phase1_closure_audit_minimal(),
         smoke_phase0_current_capability_snapshot(),
         smoke_memory_influence_behavior_gate_design(),
         smoke_first_memory_influenced_behavior_boundary(),

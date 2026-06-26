@@ -4,7 +4,7 @@ Status: docs-only actual capability inventory.
 Runtime impact: none.
 Boundary Index impact: none.
 
-This file records what the repository can actually run or produce after Boundary Index `2026-06-09-b182`.
+This file records what the repository can actually run or produce after Boundary Index `2026-06-09-b183`.
 
 It is a work-start reality check. It does not grant runtime authority and does not replace:
 
@@ -15,14 +15,14 @@ It is a work-start reality check. It does not grant runtime authority and does n
 
 ## Scan Baseline
 
-Repository scan baseline after the b182 tick1 three-line substrate index package:
+Repository scan baseline after the b183 Phase1 closure audit package:
 
-- tracked files: 805
-- `ashl_core/*.py`: 286
-- `tests/*.py`: 356
+- tracked files: 807
+- `ashl_core/*.py`: 287
+- `tests/*.py`: 357
 - top-level `docs/*.md`: 148
-- smoke functions in `run_all_smoke_tests.py`: 422
-- expected refreshed full smoke report: 422 / 422 passed
+- smoke functions in `run_all_smoke_tests.py`: 423
+- expected refreshed full smoke report: 423 / 423 passed
 
 Important caveat:
 
@@ -62,6 +62,7 @@ Action and sandbox substrate:
 - b179 creates a record-only Phase1 session trace spine over that completed mini-loop
 - b181 creates a same-session sandbox-only tick handoff from b180 frames, including tick1 context, appended frame, and tick0/tick1 continuity comparison
 - b182 creates read-only thought, action, and memory lane indexes from b181 tick1 handoff records
+- b183 closes Phase1 substrate construction and blocks duplicate Phase1 substrate packages
 
 Session and working memory substrate:
 
@@ -72,6 +73,7 @@ Session and working memory substrate:
 - b180 can materialize that spine into one record-only same-session frame with current tick, trace snapshot, temporary working-memory reference slots, and evidence source references
 - b181 can read that frame as tick0 input and append one record-only tick1 frame while preserving working-memory and evidence references
 - b182 can expose those preserved references as a read-only memory lane, alongside thought and action lanes
+- b183 confirms those Phase1 records are present without creating runtime memory or action authority
 
 Memory and retention substrate:
 
@@ -134,6 +136,7 @@ Representative data shapes already produced by existing modules/tests include:
 - Phase1 same-session frame records
 - Phase1 same-session runtime tick handoff records
 - Phase1 tick1 three-line substrate index records
+- Phase1 closure audit records
 - smoke test report data
 
 ## Not Present Yet
@@ -144,6 +147,7 @@ ASHL Core does not yet have:
 - a session frame promoted to live runtime
 - a tick handoff promoted to live runtime
 - a three-line index promoted to candidate ordering or action selection
+- Phase1 duplicate substrate packages after closure
 - a runtime tick scheduler
 - automatic runtime ticks
 - a persistent runtime session store
@@ -178,23 +182,24 @@ The next useful Phase1 engineering step should not be duplicate frame classifica
 Current implemented step:
 
 ```text
-Phase1 Tick1 Frame Three-Line Substrate Index Minimal v0
+Phase1 Closure Audit Minimal v0
 ```
 
 Plain meaning:
 
 Status:
 
-Completed at Boundary Index `2026-06-09-b182`.
+Completed at Boundary Index `2026-06-09-b183`.
 
-Reads b181 tick1 handoff records and creates read-only thought, action, and memory lane indexes plus a cross-line continuity index.
+Confirms the Phase1 session trace spine, tick handoff, and three-line substrate index are present.
 
-It lets the next sandbox step see tick1 context as three named lanes without turning those lanes into behavior authority.
+It marks Phase1 closure ready and blocks duplicate Phase1 substrate packages.
 
 It still must not:
 
 - start a live runtime loop
 - create candidate input or ordering
+- create another duplicate Phase1 substrate package
 - create a new action
 - write persistent memory
 - call external tools
@@ -207,9 +212,9 @@ It still must not:
 Better next direction:
 
 ```text
-Phase1 Tick1 Three-Line Candidate Input Minimal v0
+Phase2 Candidate Input From Closed Phase1 Substrate Minimal v0
 ```
 
 Plain meaning:
 
-Read the b182 three-line index and create a same-session sandbox candidate-input record, without ordering candidates, selecting or executing an action, writing memory, or claiming learning/consciousness.
+Read the closed Phase1 substrate and create a same-session sandbox candidate-input record, without ordering candidates, selecting or executing an action, writing memory, or claiming learning/consciousness.

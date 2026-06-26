@@ -71,6 +71,7 @@ ASHL Core Lab 是 ASHL Core／D清音 的最小 Python 實驗專案，用來驗�
 - Phase1 Session Frame Materialization Minimal v0
 - Phase1 Session Frame Runtime Tick Handoff Minimal v0
 - Phase1 Tick1 Frame Three-Line Substrate Index Minimal v0
+- Phase1 Closure Audit Minimal v0
 - ASHL Core Actual Capability Inventory / Runtime Substrate Map v0
 - v2.11c Lesson Stale Supersede Memory Freeze Notice Contract
 - Qingyin First Output v0 Contract
@@ -3117,9 +3118,16 @@ Two-Trial History Boundary:
 - Boundary Index updates from `2026-06-09-b181` to `2026-06-09-b182`.
 - Plain meaning: the next sandbox step can now see tick1 context as three named lanes, but this still does not create candidate input, candidate ordering, selected_action, final_action, direct command, execution, outcome observation, memory write, external tool use, predictor influence, production behavior, or learning/consciousness claims.
 
+## Phase1 Closure Audit Minimal v0
+
+- Adds `py -3 -m ashl_core.teaching_cli run-phase1-closure-audit-minimal-check`.
+- Phase1 Closure Audit Minimal v0 confirms the Phase1 record-only substrate is present: session trace spine, tick handoff, and three-line substrate index.
+- Boundary Index updates from `2026-06-09-b182` to `2026-06-09-b183`.
+- Plain meaning: Phase1 is closed as a checked scaffold, and duplicate Phase1 substrate packages are blocked. This still does not create candidate input, action selection, execution, memory write, production behavior, or learning/consciousness claims.
+
 ## ASHL Core Actual Capability Inventory / Runtime Substrate Map v0
 
-- Adds `docs/ashl_core_actual_capability_inventory_runtime_substrate_map_v0.md` as a docs-only reality check for current repo capabilities; it is now updated through b182.
+- Adds `docs/ashl_core_actual_capability_inventory_runtime_substrate_map_v0.md` as a docs-only reality check for current repo capabilities; it is now updated through b183.
 - Records the actual tracked-file, core-module, test-module, docs, and smoke-test baseline, then separates executable sandbox helpers, record/checker paths, controlled file helpers, and design-only documents.
 - Corrects the Phase1 next direction away from duplicate readback/classification packages; b181 now advances the b180 frame into a same-session tick handoff and continuity comparison.
 - This does not change Boundary Index version, add runtime behavior, create actions, write memory/retention, use predictors, feed endocrine/tendency directly, change production behavior, or claim learning/consciousness.

@@ -8574,21 +8574,40 @@ Plain meaning:
 Explicitly not changed:
 - No candidate input, candidate ordering, selected_action/final_action/direct_command/execution/outcome observation creation, working-memory update, persistent memory write, external tool use, predictor read/influence/mutation, direct endocrine/tendency feed, production behavior, consciousness claim, long-term learning claim, or proof-of-learning claim.
 
+## Phase1 Closure Audit Minimal v0
+
+Status: completed / Phase1 closure audit / Boundary Index b183.
+
+What changed:
+- Confirms `phase1_session_trace_spine_present=True`.
+- Confirms `tick_handoff_present=True`.
+- Confirms `three_line_index_present=True`.
+- Confirms `no_live_runtime=True`, `no_action_selection=True`, and `no_memory_write=True`.
+- Marks `phase1_closure_ready=True`.
+- Blocks duplicate Phase1 substrate packages so Phase1 does not keep growing repeat scaffolding.
+- Boundary Index updates from `2026-06-09-b182` to `2026-06-09-b183`.
+
+Plain meaning:
+- Phase1 is closed as a checked scaffold. The repo should move to Phase2 instead of making another Phase1 readback/index/handoff package.
+
+Explicitly not changed:
+- No candidate input, candidate ordering, selected_action/final_action/direct_command/execution/outcome observation creation, working-memory update, persistent memory write, external tool use, predictor read/influence/mutation, direct endocrine/tendency feed, production behavior, consciousness claim, long-term learning claim, or proof-of-learning claim.
+
 ## ASHL Core Actual Capability Inventory / Runtime Substrate Map v0
 
 Status: completed / docs-only actual capability inventory / no Boundary Index change.
 
 What changed:
-- `docs/ashl_core_actual_capability_inventory_runtime_substrate_map_v0.md` records what the repo can actually run or produce after b182.
+- `docs/ashl_core_actual_capability_inventory_runtime_substrate_map_v0.md` records what the repo can actually run or produce after b183.
 - It separates executable sandbox/helper capability, record/checker capability, controlled file helpers, and design-only capability.
-- It records the current b182 baseline: 805 tracked files, 286 core Python modules, 356 test modules, 148 top-level docs, and 422 smoke functions.
+- It records the current b183 baseline: 807 tracked files, 287 core Python modules, 357 test modules, 148 top-level docs, and 423 smoke functions.
 - It marks a readback-only b179 follow-up as redundant.
 
 Plain meaning:
 - The repo now has a compact map of real parts on the table. It should stop Codex from mistaking old docs, package names, or boundary paperwork for actual runtime progress.
 
 Recommended next direction:
-- Phase1 Tick1 Three-Line Candidate Input Minimal v0: read the b182 three-line index and create a same-session sandbox candidate-input record without ordering candidates, selecting an action, executing, writing memory, or claiming learning/consciousness.
+- Phase2 Candidate Input From Closed Phase1 Substrate Minimal v0: read the closed Phase1 substrate and create a same-session sandbox candidate-input record without ordering candidates, selecting an action, executing, writing memory, or claiming learning/consciousness.
 
 Explicitly not changed:
 - No runtime behavior, Boundary Index change, live session, action creation, memory/retention write, memory admission, predictor use/mutation, direct endocrine/tendency feed, production behavior, learning claim, or consciousness claim.

@@ -114,29 +114,29 @@ Completed at Boundary Index `2026-06-09-b179`.
 
 ## Current Phase1 Step
 
-The simple b179 readback gap is closed by b180 Session Frame Materialization. b181 reads that frame as tick0 input, creates same-session sandbox-only tick1 context, appends one record-only frame, and compares continuity. b182 reads that tick1 handoff and indexes it into read-only thought, action, and memory lanes.
+The simple b179 readback gap is closed by b180 Session Frame Materialization. b181 reads that frame as tick0 input, creates same-session sandbox-only tick1 context, appends one record-only frame, and compares continuity. b182 reads that tick1 handoff and indexes it into read-only thought, action, and memory lanes. b183 audits that Phase1 is complete and blocks duplicate Phase1 substrate packages.
 
 Current implemented step:
 
 ```text
-Phase1 Tick1 Frame Three-Line Substrate Index Minimal v0
+Phase1 Closure Audit Minimal v0
 ```
 
 Plain version:
 
-The next sandbox step can now see tick1 as three named lanes: what thought context is visible, what action history is visible, and what memory references are visible.
+Phase1 now has a checked record-only scaffold: session trace spine, tick handoff, and three-line index. The closure audit says Phase1 is ready and should not keep growing repeat substrate packages.
 
 It still avoids candidate input creation, ordering, action selection, execution, persistent memory, external tool use, predictor influence, production behavior, and learning/consciousness claims.
 
 Next useful step:
 
 ```text
-Phase1 Tick1 Three-Line Candidate Input Minimal v0
+Phase2 Candidate Input From Closed Phase1 Substrate Minimal v0
 ```
 
 Plain version:
 
-Read the b182 three-line index and create a same-session sandbox candidate-input record. Do not order candidates, select an action, execute, write memory, or claim learning/consciousness.
+Read the closed Phase1 substrate and create a same-session sandbox candidate-input record. Do not order candidates, select an action, execute, write memory, or claim learning/consciousness.
 
 ## Working Rule
 

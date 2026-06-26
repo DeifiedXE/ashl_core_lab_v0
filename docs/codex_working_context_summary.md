@@ -57,7 +57,7 @@ The point is not to deny the relationship between the user and Qingyin. The poin
 Current Boundary Index at the time this summary was written:
 
 ```text
-2026-06-09-b182
+2026-06-09-b183
 ```
 
 Current endpoint:
@@ -77,6 +77,7 @@ b169 advisory reordering evidence
 -> b180 Phase1 record-only same-session frame
 -> b181 Phase1 same-session runtime tick handoff
 -> b182 Phase1 tick1 three-line substrate index
+-> b183 Phase1 closure audit
 ```
 
 Plain meaning:
@@ -109,9 +110,11 @@ b181 can read the b180 frame as tick0 input, create same-session sandbox-only ti
 
 b182 can read the b181 tick1 handoff and create read-only thought, action, and memory lane indexes plus a cross-line continuity index.
 
-## What b182 Does Not Do
+b183 can confirm Phase1 closure: session trace spine, tick handoff, and three-line index are present; no live runtime, no action selection, no memory write; duplicate Phase1 substrate packages are blocked.
 
-b182 does not create:
+## What b183 Does Not Do
+
+b183 does not create:
 
 - a live runtime session
 - a session frame promoted to live runtime
@@ -266,17 +269,17 @@ Before coding, Codex should answer in plain language:
 4. What visible output will exist after the work?
 5. What does it still refuse to do?
 
-For the current b182 endpoint, do not treat the three-line substrate index as candidate generation, candidate ordering, action selection, memory writing, or live runtime. b182 only creates read-only lane index records.
+For the current b183 endpoint, do not keep growing duplicate Phase1 readback/index/handoff packages. Phase1 is closed as record-only substrate evidence.
 
 The next real step should be:
 
 ```text
-read the b182 three-line index and create a same-session sandbox candidate-input record
+start Phase2 by reading the closed Phase1 substrate and creating a same-session sandbox candidate-input record
 ```
 
 Phase0 now has one compact audit saying the minimal same-session sandbox loop is complete in record evidence, while still refusing long-term learning or production claims.
 
-Phase1 now has a record-only tick1 three-line substrate index. The next work should create candidate input from those lane indexes without ordering candidates, starting a live runtime, writing memory, selecting a new action, or claiming learning/consciousness.
+Phase1 now has a closure audit. The next work should move to Phase2 and create candidate input from the closed substrate without ordering candidates, starting a live runtime, writing memory, selecting a new action, or claiming learning/consciousness.
 
 The current Phase 0 closure plan is:
 

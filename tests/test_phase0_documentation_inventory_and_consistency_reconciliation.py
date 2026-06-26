@@ -56,43 +56,43 @@ class Phase0DocumentationInventoryConsistencyReconciliationTests(unittest.TestCa
     def test_current_boundary_index_has_sandbox_production_distinction(self):
         boundary = self._read("docs/current_boundary_index.md")
 
-        self.assertIn("Boundary Index Version: 2026-06-09-b182", boundary)
+        self.assertIn("Boundary Index Version: 2026-06-09-b183", boundary)
         self.assertIn("No production/runtime memory-influenced behavior is allowed.", boundary)
         self.assertIn("sandbox-only lesson application, observation, and evaluation records", boundary)
         self.assertIn("do not constitute production/runtime memory-influenced behavior", boundary)
         self.assertIn("Level 2 Sandbox Application milestone", boundary)
         self.assertIn("Level 3 Toy Minefield Multi-Step Sandbox milestone", boundary)
-        self.assertIn("Phase1 Tick1 Frame Three-Line Substrate Index Minimal v0", boundary)
+        self.assertIn("Phase1 Closure Audit Minimal v0", boundary)
         self.assertIn("B0/10", boundary)
 
     def test_actual_capability_inventory_records_repo_reality(self):
         inventory = self._read("docs/ashl_core_actual_capability_inventory_runtime_substrate_map_v0.md")
 
         for phrase in (
-            "tracked files: 805",
-            "`ashl_core/*.py`: 286",
-            "`tests/*.py`: 356",
+            "tracked files: 807",
+            "`ashl_core/*.py`: 287",
+            "`tests/*.py`: 357",
             "top-level `docs/*.md`: 148",
-            "smoke functions in `run_all_smoke_tests.py`: 422",
-            "expected refreshed full smoke report: 422 / 422 passed",
+            "smoke functions in `run_all_smoke_tests.py`: 423",
+            "expected refreshed full smoke report: 423 / 423 passed",
             "Executable sandbox/helper capability",
             "Record/checker capability",
             "Design-only capability",
             "A readback-only package after b179 would be redundant",
-            "Phase1 Tick1 Frame Three-Line Substrate Index Minimal v0",
-            "Phase1 tick1 three-line substrate index records",
+            "Phase1 Closure Audit Minimal v0",
+            "Phase1 closure audit records",
             "no unrestricted Qingyin long-term memory runtime",
         ):
             with self.subTest(phrase=phrase):
                 self.assertIn(phrase, inventory)
 
-    def test_capability_matrix_records_b182_three_line_index(self):
+    def test_capability_matrix_records_b183_phase1_closure(self):
         matrix = self._read("docs/phase0_capability_matrix.md")
 
-        self.assertIn("phase1 tick1 frame three-line substrate index minimal", matrix)
-        self.assertIn("implemented_record_only_three_line_index", matrix)
-        self.assertIn("thought, action, and memory lane indexes", matrix)
-        self.assertIn("ashl_core/phase1_tick1_frame_three_line_substrate_index_minimal.py", matrix)
+        self.assertIn("phase1 closure audit minimal", matrix)
+        self.assertIn("implemented_phase1_closure_audit", matrix)
+        self.assertIn("Phase1 closure ready", matrix)
+        self.assertIn("ashl_core/phase1_closure_audit_minimal.py", matrix)
 
     def test_long_term_memory_priority_note_exists(self):
         design = self._read("docs/five_layer_memory_design_assumption_v0_1.md")

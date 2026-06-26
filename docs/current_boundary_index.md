@@ -1,9 +1,9 @@
 # Current Boundary Index
 
-Boundary Index Version: 2026-06-09-b182
-Last update log: Phase1 Tick1 Frame Three-Line Substrate Index Minimal v0
-Previous Boundary Index Version: 2026-06-09-b181
-Previous Last update log: Phase1 Session Frame Runtime Tick Handoff Minimal v0
+Boundary Index Version: 2026-06-09-b183
+Last update log: Phase1 Closure Audit Minimal v0
+Previous Boundary Index Version: 2026-06-09-b182
+Previous Last update log: Phase1 Tick1 Frame Three-Line Substrate Index Minimal v0
 
 Archived previous current index:
 
@@ -14,11 +14,11 @@ This file is the active short index. Archive files preserve older milestone deta
 
 ## Current Safe Claim
 
-b182 reads the b181 tick1 frame handoff and creates three read-only substrate indexes: thought, action, and memory.
+b183 closes Phase1 record-only substrate construction. It confirms the session trace spine, tick handoff, and three-line index are present, and blocks more duplicate Phase1 substrate packages.
 
 Plain wording:
 
-The next sandbox step can now see tick1 as three named lanes. This is indexing only: no candidate input, no action selection, no memory write, and no live runtime.
+Phase1 now has a checked scaffold: session trace spine, tick handoff, and three-line index. This is closure evidence only: no live runtime, no action selection, no memory write, and no production behavior.
 
 The current endpoint is:
 
@@ -38,6 +38,7 @@ first-cycle temporary working memory
 -> Phase1 record-only same-session frame
 -> Phase1 same-session runtime tick handoff
 -> Phase1 tick1 three-line substrate index
+-> Phase1 closure audit
 ```
 
 The three deterministic paths remain:
@@ -64,6 +65,7 @@ b170 one-cycle thought/action/working-memory trace
 -> b180 Phase1 record-only same-session frame
 -> b181 Phase1 same-session runtime tick handoff
 -> b182 Phase1 tick1 three-line substrate index
+-> b183 Phase1 closure audit
 ```
 
 Compatibility anchor for b170 B0/10 self-check: b170 Thought Memory Action Parallel Mini Loop evidence.
@@ -72,20 +74,17 @@ Compatibility anchor for b180 B0/10 self-check: Phase1 Session Frame Materializa
 
 Compatibility field retained from b180: `b0_10_counter=B0/10`.
 
-## What b182 Adds
+## What b183 Adds
 
-- `reads_b181_tick1_frame_only=True`
-- `tick1_frame_reference_created=True`
-- `thought_line_index_created=True`
-- `action_line_index_created=True`
-- `memory_line_index_created=True`
-- `cross_line_continuity_index_created=True`
-- `lane_count=3`
-- `all_lanes_record_only=True`
-- `frame_tick_count=9`
-- `candidate_input_created=False`
-- `selected_action_created=False`
-- `persistent_memory_write=False`
+- `phase1_session_trace_spine_present=True`
+- `tick_handoff_present=True`
+- `three_line_index_present=True`
+- `no_live_runtime=True`
+- `no_action_selection=True`
+- `no_memory_write=True`
+- `phase1_closure_ready=True`
+- `phase1_duplicate_packages_blocked=True`
+- `next_phase_required=Phase2`
 
 ## Still Blocked
 
@@ -99,6 +98,7 @@ Compatibility field retained from b180: `b0_10_counter=B0/10`.
 - No feedback evaluation or feedback application.
 - No candidate input creation.
 - No candidate ordering or candidate reordering.
+- No duplicate Phase1 substrate package.
 - No candidate score mutation.
 - No new selected_action, final_action, direct command, execution, or outcome observation.
 - No new working-memory update.
@@ -137,12 +137,12 @@ Must-read planning docs:
 Next useful direction:
 
 ```text
-Phase1 Tick1 Three-Line Candidate Input Minimal v0
+Phase2 Candidate Input From Closed Phase1 Substrate Minimal v0
 ```
 
 Plain wording:
 
-The next small step should read the b182 three-line index and create a same-session sandbox candidate-input record. It should still not order candidates, select an action, execute, write memory, or claim learning/consciousness.
+The next small step should start Phase2 by reading the closed Phase1 substrate and creating a same-session sandbox candidate-input record. It should still not order candidates, select an action, execute, write memory, or claim learning/consciousness.
 
 ## Line Count Rule
 
