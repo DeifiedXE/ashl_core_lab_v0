@@ -12,6 +12,7 @@ REQUIRED_DOCS = [
     Path("docs/phase0_unresolved_doc_issues.md"),
     Path("docs/phase0_versioning_policy.md"),
     Path("docs/phase1_to_phase5_growth_substrate_plan.md"),
+    Path("docs/ashl_core_actual_capability_inventory_runtime_substrate_map_v0.md"),
 ]
 
 
@@ -31,6 +32,7 @@ class Phase0DocumentationInventoryConsistencyReconciliationTests(unittest.TestCa
         self.assertIn("| README.md | current_status_anchor | current | current_status_controls |", inventory)
         self.assertIn("| docs/current_boundary_index.md | boundary_anchor | current | boundary_controls |", inventory)
         self.assertIn("| docs/phase1_to_phase5_growth_substrate_plan.md | planning | planning_only | planning_only |", inventory)
+        self.assertIn("| docs/ashl_core_actual_capability_inventory_runtime_substrate_map_v0.md | current_status_anchor | current | current_status_controls |", inventory)
         self.assertIn("| docs/phase0_open_risk_ledger.md | risk_ledger | current | current_status_controls |", inventory)
         self.assertIn("unknown_needs_review", inventory)
         self.assertNotIn("|  |", inventory)
@@ -39,6 +41,7 @@ class Phase0DocumentationInventoryConsistencyReconciliationTests(unittest.TestCa
         index = self._read("docs/phase0_doc_index.md")
 
         self.assertIn("Conflict Resolution Rule", index)
+        self.assertIn("docs/ashl_core_actual_capability_inventory_runtime_substrate_map_v0.md", index)
         self.assertIn("newer boundary/current-status document controls", index)
         self.assertIn("Older design assumptions remain historical context", index)
         self.assertIn("does not claim every old doc is fully reconciled", index)
@@ -59,6 +62,27 @@ class Phase0DocumentationInventoryConsistencyReconciliationTests(unittest.TestCa
         self.assertIn("do not constitute production/runtime memory-influenced behavior", boundary)
         self.assertIn("Level 2 Sandbox Application milestone", boundary)
         self.assertIn("Level 3 Toy Minefield Multi-Step Sandbox milestone", boundary)
+        self.assertIn("Phase1 Session Frame Materialization Minimal v0", boundary)
+
+    def test_actual_capability_inventory_records_repo_reality(self):
+        inventory = self._read("docs/ashl_core_actual_capability_inventory_runtime_substrate_map_v0.md")
+
+        for phrase in (
+            "tracked files: 798",
+            "`ashl_core/*.py`: 283",
+            "`tests/*.py`: 353",
+            "top-level `docs/*.md`: 138",
+            "smoke functions in `run_all_smoke_tests.py`: 419",
+            "latest smoke report on disk: 419 / 419 passed",
+            "Executable sandbox/helper capability",
+            "Record/checker capability",
+            "Design-only capability",
+            "A readback-only package after b179 would be redundant",
+            "Phase1 Session Frame Materialization Minimal v0",
+            "no unrestricted Qingyin long-term memory runtime",
+        ):
+            with self.subTest(phrase=phrase):
+                self.assertIn(phrase, inventory)
 
     def test_long_term_memory_priority_note_exists(self):
         design = self._read("docs/five_layer_memory_design_assumption_v0_1.md")

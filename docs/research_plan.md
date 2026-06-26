@@ -8524,6 +8524,25 @@ Plain meaning:
 Explicitly not changed:
 - No live runtime session, runtime tick scheduler, persistent state/session store, runtime evaluator, runtime action loop, feedback evaluation/application, candidate ordering/reordering, candidate score mutation, runtime next-cycle ordering, selected_action/final_action/direct_command/execution/outcome observation creation, new working-memory update, long-term/Core/Archive/persistent memory write, retention write, memory admission, habit/skill anchor creation, predictor read/influence/mutation, direct endocrine/tendency feed, production behavior, consciousness claim, long-term learning claim, or proof-of-learning claim.
 
+## ASHL Core Actual Capability Inventory / Runtime Substrate Map v0
+
+Status: completed / docs-only actual capability inventory / no Boundary Index change.
+
+What changed:
+- `docs/ashl_core_actual_capability_inventory_runtime_substrate_map_v0.md` records what the repo can actually run or produce after b179.
+- It separates executable sandbox/helper capability, record/checker capability, controlled file helpers, and design-only capability.
+- It records the pre-inventory-file scan baseline: 798 tracked files, 283 core Python modules, 353 test modules, 138 top-level docs, and 419 smoke functions.
+- It marks a readback-only b179 follow-up as redundant.
+
+Plain meaning:
+- The repo now has a compact map of real parts on the table. It should stop Codex from mistaking old docs, package names, or boundary paperwork for actual runtime progress.
+
+Recommended next direction:
+- Phase1 Session Frame Materialization Minimal v0: create a standard same-session frame from existing trace and working-memory evidence.
+
+Explicitly not changed:
+- No runtime behavior, Boundary Index change, live session, action creation, memory/retention write, memory admission, predictor use/mutation, direct endocrine/tendency feed, production behavior, learning claim, or consciousness claim.
+
 ## Phase 1-5 Growth Substrate Plan
 
 Status: planning / construction must-read / no runtime authority.

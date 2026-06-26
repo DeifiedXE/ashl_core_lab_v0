@@ -108,6 +108,26 @@ Plain version:
 
 Take the completed Phase0 sandbox loop and give it a session timeline. Each record gets a `session_id`, ordered ticks, state snapshots, expected-vs-actual summaries, and evaluator notes. It is still paper evidence only, not a running runtime.
 
+Status:
+
+Completed at Boundary Index `2026-06-09-b179`.
+
+## Next Useful Phase1 Step
+
+Do not spend the next package on simple b179 readback. The b179 runner already returns the session trace spine and tests inspect those records.
+
+Better next step:
+
+```text
+Phase1 Session Frame Materialization Minimal v0
+```
+
+Plain version:
+
+Use the existing b179 spine and same-session working-memory evidence to create a standard same-session frame: session id, current tick list, trace snapshot, temporary working-memory slots, available evidence sources, and blocked authority flags.
+
+It must still avoid live runtime, new actions, persistent memory, predictor influence, production behavior, and learning/consciousness claims.
+
 ## Working Rule
 
 Each package should create one small observable step. Boundary checks stay strict, but packages should move the system forward instead of only saying a future package may happen.

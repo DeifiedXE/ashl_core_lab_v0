@@ -6,6 +6,7 @@
 - `docs/codex_working_context_summary.md`
 - `docs/phase0_status.md`
 - `docs/current_boundary_index.md`
+- `docs/ashl_core_actual_capability_inventory_runtime_substrate_map_v0.md`
 - `docs/level1_sandbox_outcome_evaluation_and_human_review_summary_minimal_v0.md`
 - `docs/phase0_line_document_index.md`
 - `docs/phase0_minimal_learning_action_memory_loop_plan.md`
@@ -29,12 +30,14 @@ Use this file to find documents grouped by development line: action/body-motor, 
 ## Capability / Status Matrix
 
 - `docs/phase0_capability_matrix.md`
+- `docs/ashl_core_actual_capability_inventory_runtime_substrate_map_v0.md`
 
 ## Inventory / Audit Docs
 
 - `docs/phase0_doc_inventory.md`
 - `docs/phase0_doc_consistency_audit.md`
 - `docs/phase0_b118_documentation_alignment_minimal_v0.md`
+- `docs/ashl_core_actual_capability_inventory_runtime_substrate_map_v0.md`
 
 ## Open-Gap / Risk Docs
 
@@ -83,6 +86,7 @@ Examples:
 - `docs/phase0_task_queue.md`
 - `docs/phase0_minimal_learning_action_memory_loop_plan.md`
 - `docs/phase1_to_phase5_growth_substrate_plan.md`
+- `docs/ashl_core_actual_capability_inventory_runtime_substrate_map_v0.md`
 - `docs/codex_task_queue_minimal_v0.md`
 
 Planning docs guide next work. They are not standalone proof that a capability exists.

@@ -6,12 +6,13 @@ Minimum inventory rule: every relevant markdown/documentation file found in this
 
 Allowed role/status/authority values follow the work package: `current_status_anchor`, `boundary_anchor`, `capability_matrix`, `risk_ledger`, `design_assumption`, `historical_context`, `implementation_note`, `planning`, `smoke_or_test_support`, `unknown_needs_review`; `current`, `current_with_caveats`, `historical`, `superseded`, `planning_only`, `test_support_only`, `needs_review`; `current_status_controls`, `boundary_controls`, `newer_boundary_controls`, `historical_context_only`, `planning_only`, `not_authoritative`, `needs_review`.
 
-- Inventory count: 129 markdown/documentation files.
+- Inventory count: 130 listed markdown/documentation files.
 
 | path | role | current_status | authority_level | contains_current_capability_claims | superseded_by | notes |
 | --- | --- | --- | --- | --- | --- | --- |
 | docs/action_outcome_contrast_baseline_review_v0.md | unknown_needs_review | needs_review | needs_review | maybe | docs/phase0_unresolved_doc_issues.md | Needs future human review for exact authority. |
 | docs/append_only_persistence_runtime_audit_v0_1.md | boundary_anchor | current_with_caveats | newer_boundary_controls | maybe | docs/current_boundary_index.md | Boundary/contract/audit doc; newer status docs control current capability claims. |
+| docs/ashl_core_actual_capability_inventory_runtime_substrate_map_v0.md | current_status_anchor | current | current_status_controls | yes | none | Docs-only actual capability inventory and runtime substrate map; no runtime authority. |
 | docs/boundary_index_archive_2026_06.md | boundary_anchor | current_with_caveats | newer_boundary_controls | maybe | docs/current_boundary_index.md | Boundary/contract/audit doc; newer status docs control current capability claims. |
 | docs/core_seed.md | implementation_note | current_with_caveats | newer_boundary_controls | maybe | docs/phase0_status.md | Implementation/design support; newer boundary/current docs control current claims. |
 | docs/core_seed_design_spirit_supplement_v0_1.md | design_assumption | planning_only | planning_only | no | docs/phase0_status.md | Design/planning context only unless newer boundary docs say otherwise. |

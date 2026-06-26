@@ -10927,8 +10927,9 @@ def smoke_current_boundary_index_docs() -> dict:
         "Level 2 Sandbox Application milestone",
         "Level 3 Toy Minefield Multi-Step Sandbox milestone",
         "Memory is a warning sign, not a ban command",
+        "docs/ashl_core_actual_capability_inventory_runtime_substrate_map_v0.md",
         "docs/phase1_to_phase5_growth_substrate_plan.md",
-        "Phase1 Session Trace Readback Minimal v0",
+        "Phase1 Session Frame Materialization Minimal v0",
         "This current index must stay under 150 lines.",
     ]
     archive_required_terms = [
@@ -11001,6 +11002,7 @@ def smoke_phase0_documentation_consolidation_minimal() -> dict:
         and "Boundary Index Version: 2026-06-09-b179" in status
         and "Current Safe Capability" in status
         and "Phase1 Runtime Session Trace Spine Minimal v0" in status
+        and "ashl_core_actual_capability_inventory_runtime_substrate_map_v0.md" in index
         and "phase1_to_phase5_growth_substrate_plan.md" in index
         and "Thought Memory Action Parallel Mini Loop Phase0 Closure Audit Minimal v0" in status
         and "Thought Memory Action Parallel Mini Loop Two-Cycle Influence Check Minimal v0" in status
@@ -11181,6 +11183,7 @@ def smoke_phase0_documentation_inventory_and_consistency_reconciliation() -> dic
         Path("docs/phase0_unresolved_doc_issues.md"),
         Path("docs/phase0_versioning_policy.md"),
         Path("docs/phase1_to_phase5_growth_substrate_plan.md"),
+        Path("docs/ashl_core_actual_capability_inventory_runtime_substrate_map_v0.md"),
     ]
     texts = {path: path.read_text(encoding="utf-8") if path.exists() else "" for path in required_paths}
     combined = "\n".join(texts.values()).lower()
@@ -11202,8 +11205,14 @@ def smoke_phase0_documentation_inventory_and_consistency_reconciliation() -> dic
         and "Boundary Index Version: 2026-06-09-b179" in texts[Path("docs/phase0_status.md")]
         and "Inventory count:" in texts[Path("docs/phase0_doc_inventory.md")]
         and "docs/phase1_to_phase5_growth_substrate_plan.md" in texts[Path("docs/phase0_doc_inventory.md")]
+        and "docs/ashl_core_actual_capability_inventory_runtime_substrate_map_v0.md" in texts[
+            Path("docs/phase0_doc_inventory.md")
+        ]
         and "docs/phase0_versioning_policy.md" in texts[Path("docs/phase0_doc_inventory.md")]
         and "unknown_needs_review" in texts[Path("docs/phase0_doc_inventory.md")]
+        and "Phase1 Session Frame Materialization Minimal v0" in texts[
+            Path("docs/ashl_core_actual_capability_inventory_runtime_substrate_map_v0.md")
+        ]
         and "Conflict Resolution Rule" in texts[Path("docs/phase0_doc_index.md")]
         and "newer boundary/current-status document controls" in texts[Path("docs/phase0_doc_index.md")]
         and "This audit does not prove that no documentation inconsistencies remain." in texts[

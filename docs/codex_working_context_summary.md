@@ -254,15 +254,17 @@ Before coding, Codex should answer in plain language:
 4. What visible output will exist after the work?
 5. What does it still refuse to do?
 
-For the current b179 endpoint, the next real step should be:
+For the current b179 endpoint, do not create a readback-only package. b179 already returns and tests session trace spine records.
+
+The next real step should be:
 
 ```text
-read the Phase1 session trace spine back as bounded session context
+materialize a same-session frame from existing trace and working-memory evidence
 ```
 
 Phase0 now has one compact audit saying the minimal same-session sandbox loop is complete in record evidence, while still refusing long-term learning or production claims.
 
-Phase1 now has a record-only session trace spine over that completed sandbox loop. The next work should inspect that spine as bounded session context without starting a live runtime, writing memory, selecting a new action, or claiming learning/consciousness.
+Phase1 now has a record-only session trace spine over that completed sandbox loop. The next work should give that evidence a standard same-session frame without starting a live runtime, writing memory, selecting a new action, or claiming learning/consciousness.
 
 The current Phase 0 closure plan is:
 
@@ -272,7 +274,11 @@ The current Phase 1-5 growth substrate plan is:
 
 - `docs/phase1_to_phase5_growth_substrate_plan.md`
 
-Use that plan to avoid drifting back into endless boundary-only packages.
+The current actual capability inventory / runtime substrate map is:
+
+- `docs/ashl_core_actual_capability_inventory_runtime_substrate_map_v0.md`
+
+Use those docs to avoid drifting back into endless boundary-only packages.
 
 ## Required Communication Style
 

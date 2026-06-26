@@ -114,18 +114,19 @@ Memory is a warning sign, not a ban command. Memory-influenced behavior remains 
 Must-read planning docs:
 
 - `docs/codex_working_context_summary.md`
+- `docs/ashl_core_actual_capability_inventory_runtime_substrate_map_v0.md`
 - `docs/phase0_minimal_learning_action_memory_loop_plan.md`
 - `docs/phase1_to_phase5_growth_substrate_plan.md`
 
 Next useful direction:
 
 ```text
-Phase1 Session Trace Readback Minimal v0
+Phase1 Session Frame Materialization Minimal v0
 ```
 
 Plain wording:
 
-The next small step should read the b179 session spine back as session context and verify the trace can be inspected without starting a live runtime, writing memory, selecting a new action, or claiming learning.
+The next small step should create a standard same-session frame from existing evidence: session id, ordered ticks, trace snapshot, temporary working-memory slots, available evidence sources, and blocked authority flags. Simple b179 readback is redundant because b179 already returns and tests the session trace spine records.
 
 ## Line Count Rule
 

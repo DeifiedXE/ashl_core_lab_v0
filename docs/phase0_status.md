@@ -263,6 +263,7 @@ Runtime behavior, retained JSONL write, retention write, predictor mutation, pro
 ## Current Authoritative Docs
 
 - `docs/current_boundary_index.md`: compact boundary/version index.
+- `docs/ashl_core_actual_capability_inventory_runtime_substrate_map_v0.md`: actual repo capability inventory and runtime substrate map.
 - `docs/phase0_status.md`: current human-readable status map.
 - `docs/phase0_capability_matrix.md`: current capability status table.
 - `docs/phase0_doc_index.md`: document authority and conflict-resolution rules.
@@ -278,6 +279,6 @@ Older design assumptions remain historical or planning context. When an older de
 
 ## Next Recommended Work
 
-1. Keep Level 3 runtime execution and production promotion deferred until a separate package opens that boundary.
-2. Keep memory readiness deferred until a separate package opens memory / retained JSONL behavior.
-3. Future boundary package for any runtime behavior, memory, retention, predictor, selected_action, final_action, production, or proof claim.
+1. Avoid a readback-only b179 follow-up; b179 already returns and tests session trace spine records.
+2. Next useful Phase1 direction is same-session frame materialization from existing trace and working-memory evidence.
+3. Keep Level 3 runtime execution, persistent memory, retention, predictor influence, production promotion, and proof claims deferred until separate explicit packages open those scopes.

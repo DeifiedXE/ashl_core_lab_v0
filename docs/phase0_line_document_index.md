@@ -31,6 +31,7 @@ Current capability claims remain controlled by:
 
 ```text
 docs/current_boundary_index.md
+docs/ashl_core_actual_capability_inventory_runtime_substrate_map_v0.md
 docs/phase0_status.md
 docs/phase0_capability_matrix.md
 ```
@@ -449,6 +450,7 @@ Primary docs:
 
 ```text
 docs/repo_audit_minimal_v0_2026-06-12.md
+docs/ashl_core_actual_capability_inventory_runtime_substrate_map_v0.md
 docs/phase0_doc_inventory.md
 docs/phase0_doc_consistency_audit.md
 docs/phase0_b118_documentation_alignment_minimal_v0.md
@@ -480,15 +482,16 @@ Recommended compact reading order:
 ```text
 1. docs/codex_working_context_summary.md
 2. docs/current_boundary_index.md
-3. docs/phase0_status.md
-4. docs/phase0_capability_matrix.md
-5. docs/phase0_line_document_index.md
-6. docs/body_motor_affordance_tendency_endocrine_reconciliation_design_v0.md
-7. docs/mimetic_endocrine_system_design_v0.md
-8. docs/body_motor_feedback_to_affordance_confidence_design_v0.md
-9. docs/phase0_open_risk_ledger.md
-10. docs/boundary_self_audit_policy_v0.md
-11. docs/qingyin_bridge_dual_eye_capability_perception_design_v0.md
+3. docs/ashl_core_actual_capability_inventory_runtime_substrate_map_v0.md
+4. docs/phase0_status.md
+5. docs/phase0_capability_matrix.md
+6. docs/phase0_line_document_index.md
+7. docs/body_motor_affordance_tendency_endocrine_reconciliation_design_v0.md
+8. docs/mimetic_endocrine_system_design_v0.md
+9. docs/body_motor_feedback_to_affordance_confidence_design_v0.md
+10. docs/phase0_open_risk_ledger.md
+11. docs/boundary_self_audit_policy_v0.md
+12. docs/qingyin_bridge_dual_eye_capability_perception_design_v0.md
 ```
 
 Then read line-specific docs only as needed.
