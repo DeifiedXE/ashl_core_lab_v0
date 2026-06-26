@@ -4,7 +4,7 @@ Status: docs-only actual capability inventory.
 Runtime impact: none.
 Boundary Index impact: none.
 
-This file records what the repository can actually run or produce after Boundary Index `2026-06-09-b189`.
+This file records what the repository can actually run or produce after Boundary Index `2026-06-09-b190`.
 
 It is a work-start reality check. It does not grant runtime authority and does not replace:
 
@@ -15,14 +15,14 @@ It is a work-start reality check. It does not grant runtime authority and does n
 
 ## Scan Baseline
 
-Repository scan baseline after the b189 ASHL Core R2 compatibility alias plan package:
+Repository scan baseline after the b190 ASHL Core R3 low-risk docs folder plan package:
 
-- tracked files after this package is committed: 822
-- `ashl_core/*.py`: 293
-- `tests/*.py`: 363
-- top-level `docs/*.md`: 141
-- smoke functions in `run_all_smoke_tests.py`: 429
-- expected refreshed full smoke report: 429 / 429 passed
+- tracked files after this package is committed: 825
+- `ashl_core/*.py`: 294
+- `tests/*.py`: 364
+- top-level `docs/*.md`: 142
+- smoke functions in `run_all_smoke_tests.py`: 430
+- expected refreshed full smoke report: 430 / 430 passed
 
 Important caveat:
 
@@ -69,6 +69,7 @@ Action and sandbox substrate:
 - b187 creates a docs-backed Phase2-to-Phase10 completed capability cross-check report to block duplicate rebuilds and design-only runtime claims
 - b188 adds a structural refactor map and read-only checker for nine ASHL Core repository lines without moving files or changing imports
 - b189 adds an R2 compatibility alias plan and read-only checker for future line-folder refactor work without moving files, changing imports, implementing aliases, or changing runtime behavior
+- b190 adds an R3 low-risk docs folder plan and read-only checker for future documentation organization without moving docs, creating folders, changing references, changing imports, or changing runtime behavior
 
 Session and working memory substrate:
 
@@ -149,6 +150,7 @@ Representative data shapes already produced by existing modules/tests include:
 - Phase2-to-Phase10 completed capability cross-check reports
 - ASHL Core structural refactor map reports
 - ASHL Core R2 compatibility alias plan reports
+- ASHL Core R3 low-risk docs folder plan reports
 - smoke test report data
 
 ## Not Present Yet
@@ -162,7 +164,7 @@ ASHL Core does not yet have:
 - Phase1 duplicate substrate packages after closure
 - Phase2 candidate input or action preparation
 - Phase2 semantic vision or grounded capability binding
-- structural refactor execution, file moves, import changes, module merges, compatibility alias implementation, or old-path deletion
+- structural refactor execution, docs moves, folder creation, file moves, import changes, module merges, compatibility alias implementation, or old-path deletion
 - Phase6-Phase10 runtime claims backed by an authoritative plan
 - a runtime tick scheduler
 - automatic runtime ticks
@@ -329,6 +331,37 @@ It still must not:
 - merge modules
 - delete old paths
 - implement compatibility aliases
+- create runtime behavior
+- create action selection or execution
+- write memory or retention
+- feed endocrine or tendency
+- claim production behavior, learning, or consciousness
+
+Current implemented R3 low-risk docs folder plan:
+
+```text
+ASHL Core Refactor R3 Low-Risk Docs Folder Plan Minimal v0
+```
+
+Plain meaning:
+
+Status:
+
+Completed at Boundary Index `2026-06-09-b190`.
+
+Adds `docs/ashl_core_refactor_r3_low_risk_docs_folder_plan_v0.md` and a read-only CLI checker. It identifies root authority docs, future docs layout, line docs candidates, archive candidates, design-only docs, needs-review-before-move docs, and b190 B0/10 self-check / boundary audit terms.
+
+It still must not:
+
+- move docs
+- create docs folders
+- delete docs
+- rename docs
+- change document path references
+- move Python modules
+- change imports
+- implement aliases
+- merge modules
 - create runtime behavior
 - create action selection or execution
 - write memory or retention

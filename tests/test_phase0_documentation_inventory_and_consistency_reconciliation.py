@@ -15,6 +15,7 @@ REQUIRED_DOCS = [
     Path("docs/ashl_core_actual_capability_inventory_runtime_substrate_map_v0.md"),
     Path("docs/ashl_core_structural_refactor_map_v0.md"),
     Path("docs/ashl_core_refactor_r2_compatibility_alias_plan_v0.md"),
+    Path("docs/ashl_core_refactor_r3_low_risk_docs_folder_plan_v0.md"),
 ]
 
 
@@ -58,25 +59,26 @@ class Phase0DocumentationInventoryConsistencyReconciliationTests(unittest.TestCa
     def test_current_boundary_index_has_sandbox_production_distinction(self):
         boundary = self._read("docs/current_boundary_index.md")
 
-        self.assertIn("Boundary Index Version: 2026-06-09-b189", boundary)
+        self.assertIn("Boundary Index Version: 2026-06-09-b190", boundary)
         self.assertIn("No production/runtime memory-influenced behavior is allowed.", boundary)
         self.assertIn("sandbox-only lesson application, observation, and evaluation records", boundary)
         self.assertIn("do not constitute production/runtime memory-influenced behavior", boundary)
         self.assertIn("Level 2 Sandbox Application milestone", boundary)
         self.assertIn("Level 3 Toy Minefield Multi-Step Sandbox milestone", boundary)
-        self.assertIn("ASHL Core Refactor R2 Compatibility Alias Plan Minimal v0", boundary)
+        self.assertIn("ASHL Core Refactor R3 Low-Risk Docs Folder Plan Minimal v0", boundary)
+        self.assertIn("B0/10 self-check", boundary)
         self.assertIn("B0/10", boundary)
 
     def test_actual_capability_inventory_records_repo_reality(self):
         inventory = self._read("docs/ashl_core_actual_capability_inventory_runtime_substrate_map_v0.md")
 
         for phrase in (
-            "tracked files after this package is committed: 822",
-            "`ashl_core/*.py`: 293",
-            "`tests/*.py`: 363",
-            "top-level `docs/*.md`: 141",
-            "smoke functions in `run_all_smoke_tests.py`: 429",
-            "expected refreshed full smoke report: 429 / 429 passed",
+            "tracked files after this package is committed: 825",
+            "`ashl_core/*.py`: 294",
+            "`tests/*.py`: 364",
+            "top-level `docs/*.md`: 142",
+            "smoke functions in `run_all_smoke_tests.py`: 430",
+            "expected refreshed full smoke report: 430 / 430 passed",
             "Executable sandbox/helper capability",
             "Record/checker capability",
             "Design-only capability",
@@ -85,6 +87,8 @@ class Phase0DocumentationInventoryConsistencyReconciliationTests(unittest.TestCa
             "ASHL Core structural refactor map reports",
             "ASHL Core Refactor R2 Compatibility Alias Plan Minimal v0",
             "ASHL Core R2 compatibility alias plan reports",
+            "ASHL Core Refactor R3 Low-Risk Docs Folder Plan Minimal v0",
+            "ASHL Core R3 low-risk docs folder plan reports",
             "no unrestricted Qingyin long-term memory runtime",
         ):
             with self.subTest(phrase=phrase):
@@ -170,6 +174,27 @@ class Phase0DocumentationInventoryConsistencyReconciliationTests(unittest.TestCa
         self.assertIn("R2 must not move files.", plan)
         self.assertIn("R2 must not change imports.", plan)
         self.assertIn("No runtime behavior change.", plan)
+
+    def test_capability_matrix_records_b190_r3_docs_folder_plan(self):
+        matrix = self._read("docs/phase0_capability_matrix.md")
+
+        self.assertIn("refactor r3 low-risk docs folder plan minimal", matrix)
+        self.assertIn("implemented_docs_folder_planning_map", matrix)
+        self.assertIn("root authority docs, line docs candidates, archive candidates", matrix)
+        self.assertIn("ashl_core/refactor_r3_low_risk_docs_folder_plan_minimal.py", matrix)
+        self.assertIn("docs/ashl_core_refactor_r3_low_risk_docs_folder_plan_v0.md", matrix)
+
+    def test_r3_docs_folder_plan_records_no_docs_movement(self):
+        plan = self._read("docs/ashl_core_refactor_r3_low_risk_docs_folder_plan_v0.md")
+
+        self.assertIn("R3 plans future documentation organization before any documentation movement.", plan)
+        self.assertIn("No docs are moved in this package.", plan)
+        self.assertIn("Root Authority Docs", plan)
+        self.assertIn("design_only_not_runtime_docs", plan)
+        self.assertIn("b190 requires B10/10 hallucination self-check.", plan)
+        self.assertIn("No docs moved.", plan)
+        self.assertIn("No Python import changed.", plan)
+        self.assertIn("No runtime behavior changed.", plan)
 
     def test_long_term_memory_priority_note_exists(self):
         design = self._read("docs/five_layer_memory_design_assumption_v0_1.md")

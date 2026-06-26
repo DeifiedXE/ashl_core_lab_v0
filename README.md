@@ -3169,9 +3169,17 @@ Two-Trial History Boundary:
 - Boundary Index updates from `2026-06-09-b188` to `2026-06-09-b189`.
 - Plain meaning: this is the "keep the old doors open before moving rooms" plan. It does not move files, rename modules, change imports, merge modules, delete old paths, implement aliases, create runtime behavior, or claim learning/consciousness.
 
+## ASHL Core Refactor R3 Low-Risk Docs Folder Plan Minimal v0
+
+- Adds `docs/ashl_core_refactor_r3_low_risk_docs_folder_plan_v0.md`.
+- Adds `py -3 -m ashl_core.teaching_cli run-refactor-r3-low-risk-docs-folder-plan-minimal-check`.
+- ASHL Core Refactor R3 Low-Risk Docs Folder Plan Minimal v0 plans future documentation organization for root authority docs, line docs candidates, archive candidates, design-only docs, and needs-review-before-move docs.
+- Boundary Index updates from `2026-06-09-b189` to `2026-06-09-b190`.
+- Plain meaning: this is a filing-cabinet plan, not a move. It does not move docs, create folders, delete docs, rename docs, change references, move Python modules, change imports, implement aliases, create runtime behavior, or claim learning/consciousness. It triggers and passes the b190 B0/10 self-check and boundary audit.
+
 ## ASHL Core Actual Capability Inventory / Runtime Substrate Map v0
 
-- Adds `docs/ashl_core_actual_capability_inventory_runtime_substrate_map_v0.md` as a docs-only reality check for current repo capabilities; it is now updated through b189.
+- Adds `docs/ashl_core_actual_capability_inventory_runtime_substrate_map_v0.md` as a docs-only reality check for current repo capabilities; it is now updated through b190.
 - Records the actual tracked-file, core-module, test-module, docs, and smoke-test baseline, then separates executable sandbox helpers, record/checker paths, controlled file helpers, and design-only documents.
 - Corrects the Phase1 next direction away from duplicate readback/classification packages; b181 now advances the b180 frame into a same-session tick handoff and continuity comparison.
 - This does not change Boundary Index version, add runtime behavior, create actions, write memory/retention, use predictors, feed endocrine/tendency directly, change production behavior, or claim learning/consciousness.
