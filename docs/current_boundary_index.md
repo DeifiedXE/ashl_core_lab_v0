@@ -1,9 +1,9 @@
 # Current Boundary Index
 
-Boundary Index Version: 2026-06-09-b185
-Last update log: Phase2 Perception Capability Evidence Source Link Minimal v0
-Previous Boundary Index Version: 2026-06-09-b184
-Previous Last update log: Phase2 Closed Phase1 Substrate Perception Capability Grounding Entry Minimal v0
+Boundary Index Version: 2026-06-09-b186
+Last update log: Phase2 Grounding Unknown Classification Correction Minimal v0
+Previous Boundary Index Version: 2026-06-09-b185
+Previous Last update log: Phase2 Perception Capability Evidence Source Link Minimal v0
 
 Archived previous current index:
 
@@ -15,11 +15,11 @@ This file is the active short index. Archive files preserve older milestone deta
 
 ## Current Safe Claim
 
-b185 reads the b184 Phase2 entry reports and links their evidence candidates to existing visual-spatial and Qingyin Bridge capability-map source references.
+b186 corrects two b185 unresolved operation labels: `wait_or_observe` and `observe_or_alternative_probe` are not capability bindings.
 
 Plain wording:
 
-Phase2 now knows which existing source records can be referenced for perception/capability evidence, and which items are still unknown. It does not create grounding behavior or prepare an action.
+Phase2 now defers those two settling-style cues to future Phase4 endocrine/tendency/settling work. It does not feed endocrine/tendency or prepare an action.
 
 Current endpoint:
 
@@ -32,6 +32,7 @@ Phase0 two-cycle thought/action/working-memory mini-loop
 -> Phase1 closure audit
 -> Phase2 perception/capability grounding entry report
 -> Phase2 evidence source-link report
+-> Phase2 unknown classification correction report
 ```
 
 The three deterministic paths remain:
@@ -61,28 +62,25 @@ b170 one-cycle thought/action/working-memory trace
 -> b183 Phase1 closure audit
 -> b184 Phase2 perception/capability grounding entry report
 -> b185 Phase2 perception/capability evidence source-link report
+-> b186 Phase2 grounding unknown classification correction
 ```
 
 Compatibility anchor for b170 B0/10 self-check: b170 Thought Memory Action Parallel Mini Loop evidence.
 Compatibility anchor for b180 B0/10 self-check: Phase1 Session Frame Materialization evidence.
 Compatibility field retained from b180: `b0_10_counter=B0/10`.
 
-## What b185 Adds
+## What b186 Adds
 
-- `phase2_source_link_report_created=True`
+- `deferred_source_classification_created=True`
 - `phase2_purpose=perception_and_capability_grounding`
-- `links_perception_evidence_to_existing_sources=True`
-- `links_capability_evidence_to_existing_sources=True`
-- `visual_spatial_source_reference_available=True`
-- `capability_map_source_reference_available=True`
-- `unresolved_unknowns_preserved=True`
-- `record_only_report=True`
-- `source_reference_link_only=True`
+- `wait_or_observe_marked_not_capability=True`
+- `observe_or_alternative_probe_marked_not_capability=True`
+- `phase4_deferred_reference_created=True`
+- `unknown_items_not_forced_into_capability=True`
+- `no_endocrine_feed=True`
 - `candidate_input_created=False`
 - `candidate_ordering_created=False`
 - `action_selection_created=False`
-- `semantic_vision_created=False`
-- `capability_map_mutated=False`
 - `memory_write_created=False`
 
 ## Still Blocked
@@ -134,7 +132,7 @@ Phase2 Grounding Source Availability Readback Minimal v0
 
 Plain wording:
 
-Read the b185 source-link reports and summarize which perception/capability evidence references are linked versus still unknown. Do not create semantic vision, capability bindings, candidate input, actions, memory writes, or learning/consciousness claims.
+Read the b186 correction report and b185 source-link reports, then summarize which evidence references are linked, which are truly unresolved, and which are deferred to Phase4. Do not create semantic vision, capability bindings, endocrine/tendency feed, candidate input, actions, memory writes, or learning/consciousness claims.
 
 ## Line Count Rule
 

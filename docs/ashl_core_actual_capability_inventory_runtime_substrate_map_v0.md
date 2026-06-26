@@ -4,7 +4,7 @@ Status: docs-only actual capability inventory.
 Runtime impact: none.
 Boundary Index impact: none.
 
-This file records what the repository can actually run or produce after Boundary Index `2026-06-09-b185`.
+This file records what the repository can actually run or produce after Boundary Index `2026-06-09-b186`.
 
 It is a work-start reality check. It does not grant runtime authority and does not replace:
 
@@ -15,14 +15,14 @@ It is a work-start reality check. It does not grant runtime authority and does n
 
 ## Scan Baseline
 
-Repository scan baseline after the b185 Phase2 perception/capability evidence source-link package:
+Repository scan baseline after the b186 Phase2 grounding unknown classification correction package:
 
-- tracked files: 812
-- `ashl_core/*.py`: 289
-- `tests/*.py`: 359
+- tracked files: 814
+- `ashl_core/*.py`: 290
+- `tests/*.py`: 360
 - top-level `docs/*.md`: 148
-- smoke functions in `run_all_smoke_tests.py`: 425
-- expected refreshed full smoke report: 425 / 425 passed
+- smoke functions in `run_all_smoke_tests.py`: 426
+- expected refreshed full smoke report: 426 / 426 passed
 
 Important caveat:
 
@@ -65,6 +65,7 @@ Action and sandbox substrate:
 - b183 closes Phase1 substrate construction and blocks duplicate Phase1 substrate packages
 - b184 starts Phase2 with record-only perception/capability grounding entry reports from the closed Phase1 substrate
 - b185 links those Phase2 evidence candidates to existing visual-spatial and Qingyin Bridge capability-map source references while preserving unresolved unknowns
+- b186 corrects wait/probe operation labels so they are not forced into capability and are deferred to future Phase4 settling work
 
 Session and working memory substrate:
 
@@ -141,6 +142,7 @@ Representative data shapes already produced by existing modules/tests include:
 - Phase1 closure audit records
 - Phase2 perception/capability grounding entry reports
 - Phase2 perception/capability evidence source-link reports
+- Phase2 grounding unknown classification correction reports
 - smoke test report data
 
 ## Not Present Yet
@@ -218,6 +220,25 @@ It still must not:
 - change production behavior
 - claim learning or consciousness
 
+Current implemented correction:
+
+```text
+Phase2 Grounding Unknown Classification Correction Minimal v0
+```
+
+Plain meaning:
+
+Status:
+
+Completed at Boundary Index `2026-06-09-b186`.
+
+Reads b185 source-link reports and corrects two values:
+
+- `wait_or_observe`
+- `observe_or_alternative_probe`
+
+These are marked as `not_capability_binding` and deferred to future Phase4 endocrine/tendency/settling work. This does not apply endocrine feed, tendency feed, or state settling.
+
 Better next direction:
 
 ```text
@@ -226,4 +247,4 @@ Phase2 Grounding Source Availability Readback Minimal v0
 
 Plain meaning:
 
-Read the b185 source-link reports and summarize which evidence references are linked versus still unknown. Do not create semantic vision, capability bindings, candidate input, action preparation, execution, memory writes, or learning/consciousness claims.
+Read the b186 correction report and b185 source-link reports; summarize which evidence references are linked, still unresolved, or deferred to Phase4. Do not create semantic vision, capability bindings, endocrine/tendency feed, candidate input, action preparation, execution, memory writes, or learning/consciousness claims.

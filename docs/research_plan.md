@@ -8632,21 +8632,42 @@ Plain meaning:
 Explicitly not changed:
 - No semantic vision, object recognition, active focus, capability-map creation/mutation, raw tool access, candidate input, candidate ordering/reordering, selected_action/final_action/direct_command/execution/outcome observation creation, working-memory update, persistent memory write, external tool use, predictor read/influence/mutation, direct endocrine/tendency feed, production behavior, consciousness claim, long-term learning claim, or proof-of-learning claim.
 
+## Phase2 Grounding Unknown Classification Correction Minimal v0
+
+Status: completed / Phase2 grounding unknown classification correction / Boundary Index b186.
+
+What changed:
+- Adds `ashl_core/phase2_grounding_unknown_classification_correction_minimal.py`.
+- Adds `tests/test_phase2_grounding_unknown_classification_correction_minimal.py`.
+- Adds CLI `run-phase2-grounding-unknown-classification-correction-minimal-check`.
+- Adds smoke `phase2_grounding_unknown_classification_correction_minimal`.
+- Reads b185 Phase2 source-link reports.
+- Marks `wait_or_observe` as `not_capability_binding`.
+- Marks `observe_or_alternative_probe` as `not_capability_binding`.
+- Creates record-only deferred references to future Phase4 endocrine/tendency/settling work.
+- Boundary Index updates from `2026-06-09-b185` to `2026-06-09-b186`.
+
+Plain meaning:
+- Phase2 stops pretending wait/probe settling cues are capability unknowns. They are future P4 state-settling clues, not perception sources, not capability bindings, and not actions.
+
+Explicitly not changed:
+- No endocrine feed, direct tendency feed, state settling application, semantic vision, object recognition, active focus, capability binding/map creation/mutation, candidate input, candidate ordering/reordering, selected_action/final_action/direct_command/execution/outcome observation creation, working-memory update, persistent memory write, external tool use, predictor read/influence/mutation, production behavior, consciousness claim, long-term learning claim, or proof-of-learning claim.
+
 ## ASHL Core Actual Capability Inventory / Runtime Substrate Map v0
 
 Status: completed / docs-only actual capability inventory / no Boundary Index change.
 
 What changed:
-- `docs/ashl_core_actual_capability_inventory_runtime_substrate_map_v0.md` records what the repo can actually run or produce after b185.
+- `docs/ashl_core_actual_capability_inventory_runtime_substrate_map_v0.md` records what the repo can actually run or produce after b186.
 - It separates executable sandbox/helper capability, record/checker capability, controlled file helpers, and design-only capability.
-- It records the current b185 baseline: 812 tracked files, 289 core Python modules, 359 test modules, 148 top-level docs, and 425 smoke functions.
+- It records the current b186 baseline: 814 tracked files, 290 core Python modules, 360 test modules, 148 top-level docs, and 426 smoke functions.
 - It marks a readback-only b179 follow-up as redundant.
 
 Plain meaning:
 - The repo now has a compact map of real parts on the table. It should stop Codex from mistaking old docs, package names, or boundary paperwork for actual runtime progress.
 
 Recommended next direction:
-- Phase2 Grounding Source Availability Readback Minimal v0: read the b185 source-link reports and summarize which evidence references are linked versus still unknown, while avoiding semantic vision, capability binding, candidate input, or action preparation.
+- Phase2 Grounding Source Availability Readback Minimal v0: read the b186 correction report and b185 source-link reports, then summarize which evidence references are linked, still unresolved, or deferred to Phase4 while avoiding semantic vision, capability binding, endocrine/tendency feed, candidate input, or action preparation.
 
 Explicitly not changed:
 - No runtime behavior, Boundary Index change, live session, action creation, memory/retention write, memory admission, predictor use/mutation, direct endocrine/tendency feed, production behavior, learning claim, or consciousness claim.

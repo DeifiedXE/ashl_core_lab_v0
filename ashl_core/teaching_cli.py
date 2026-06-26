@@ -498,6 +498,9 @@ from .phase2_closed_phase1_substrate_perception_capability_grounding_entry_minim
 from .phase2_perception_capability_evidence_source_link_minimal import (
     run_phase2_perception_capability_evidence_source_link_minimal_check,
 )
+from .phase2_grounding_unknown_classification_correction_minimal import (
+    run_phase2_grounding_unknown_classification_correction_minimal_check,
+)
 from .reviewed_lesson_dry_run_correction_minimal import (
     run_reviewed_lesson_dry_run_correction_minimal_check,
 )
@@ -4332,6 +4335,8 @@ def run_command(command: str) -> dict[str, Any] | str:
         return run_phase2_closed_phase1_substrate_perception_capability_grounding_entry_minimal_check()
     if command == "run-phase2-perception-capability-evidence-source-link-minimal-check":
         return run_phase2_perception_capability_evidence_source_link_minimal_check()
+    if command == "run-phase2-grounding-unknown-classification-correction-minimal-check":
+        return run_phase2_grounding_unknown_classification_correction_minimal_check()
     if command == "run-simple-retina-focus-preview-minimal-check":
         return run_simple_retina_focus_preview_minimal_check()
     if command == "run-generalized-prediction-confidence-check":
@@ -4647,6 +4652,7 @@ def main(argv: list[str] | None = None) -> int:
             "run-phase1-closure-audit-minimal-check",
             "run-phase2-closed-phase1-substrate-perception-capability-grounding-entry-minimal-check",
             "run-phase2-perception-capability-evidence-source-link-minimal-check",
+            "run-phase2-grounding-unknown-classification-correction-minimal-check",
             "run-simple-retina-focus-preview-minimal-check",
             "run-generalized-prediction-confidence-check",
             "run-generalized-candidate-from-pattern-check",
@@ -5222,6 +5228,8 @@ def main(argv: list[str] | None = None) -> int:
         result = run_phase2_closed_phase1_substrate_perception_capability_grounding_entry_minimal_check()
     elif args.command == "run-phase2-perception-capability-evidence-source-link-minimal-check":
         result = run_phase2_perception_capability_evidence_source_link_minimal_check()
+    elif args.command == "run-phase2-grounding-unknown-classification-correction-minimal-check":
+        result = run_phase2_grounding_unknown_classification_correction_minimal_check()
     elif args.command == "run-simple-retina-focus-preview-minimal-check":
         result = run_simple_retina_focus_preview_minimal_check()
     elif args.command == "run-generalized-prediction-confidence-check":

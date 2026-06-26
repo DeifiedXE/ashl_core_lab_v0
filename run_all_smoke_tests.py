@@ -525,6 +525,9 @@ from ashl_core.phase2_closed_phase1_substrate_perception_capability_grounding_en
 from ashl_core.phase2_perception_capability_evidence_source_link_minimal import (
     run_phase2_perception_capability_evidence_source_link_minimal_check,
 )
+from ashl_core.phase2_grounding_unknown_classification_correction_minimal import (
+    run_phase2_grounding_unknown_classification_correction_minimal_check,
+)
 from ashl_core.minimal_visual_grounding_trial import run_minimal_visual_grounding_trial_check
 from ashl_core.visual_prediction_error_attention_priority_preview_minimal import (
     run_visual_prediction_error_attention_priority_preview_minimal_check,
@@ -10910,9 +10913,9 @@ def smoke_current_boundary_index_docs() -> dict:
     readme = readme_path.read_text(encoding="utf-8") if readme_path.exists() else ""
     research_plan = research_plan_path.read_text(encoding="utf-8") if research_plan_path.exists() else ""
     compact_required_terms = [
-        "Boundary Index Version: 2026-06-09-b185",
-        "Last update log: Phase2 Perception Capability Evidence Source Link Minimal v0",
-        "Previous Boundary Index Version: 2026-06-09-b184",
+        "Boundary Index Version: 2026-06-09-b186",
+        "Last update log: Phase2 Grounding Unknown Classification Correction Minimal v0",
+        "Previous Boundary Index Version: 2026-06-09-b185",
         "docs/boundary_archive/current_boundary_index_2026-06-25_b174.md",
         "docs/boundary_archive/current_boundary_index_2026-06-26_b184.md",
         "Phase0 two-cycle thought/action/working-memory mini-loop",
@@ -10923,18 +10926,17 @@ def smoke_current_boundary_index_docs() -> dict:
         "Phase1 closure audit",
         "Phase2 perception/capability grounding entry report",
         "Phase2 evidence source-link report",
-        "phase2_source_link_report_created=True",
+        "Phase2 unknown classification correction report",
+        "deferred_source_classification_created=True",
         "phase2_purpose=perception_and_capability_grounding",
-        "links_perception_evidence_to_existing_sources=True",
-        "links_capability_evidence_to_existing_sources=True",
-        "unresolved_unknowns_preserved=True",
-        "record_only_report=True",
-        "source_reference_link_only=True",
+        "wait_or_observe_marked_not_capability=True",
+        "observe_or_alternative_probe_marked_not_capability=True",
+        "phase4_deferred_reference_created=True",
+        "unknown_items_not_forced_into_capability=True",
+        "no_endocrine_feed=True",
         "candidate_input_created=False",
         "candidate_ordering_created=False",
         "action_selection_created=False",
-        "semantic_vision_created=False",
-        "capability_map_mutated=False",
         "memory_write_created=False",
         "b0_10_counter=B0/10",
         "reach_front_item",
@@ -10991,8 +10993,8 @@ def smoke_current_boundary_index_docs() -> dict:
         and all(term in b184_archive for term in b184_archive_required_terms)
         and all(term in legacy_archive for term in legacy_required_terms)
         and line_count <= 150
-        and "Phase2 Perception Capability Evidence Source Link Minimal v0" in readme
-        and "Phase2 Perception Capability Evidence Source Link Minimal v0" in research_plan
+        and "Phase2 Grounding Unknown Classification Correction Minimal v0" in readme
+        and "Phase2 Grounding Unknown Classification Correction Minimal v0" in research_plan
     )
     return _result(
         "boundary_index_current_archive",
@@ -11036,9 +11038,9 @@ def smoke_phase0_documentation_consolidation_minimal() -> dict:
         and matrix_path.exists()
         and index_path.exists()
         and plan_path.exists()
-        and "Boundary Index Version: 2026-06-09-b185" in status
+        and "Boundary Index Version: 2026-06-09-b186" in status
         and "Current Safe Capability" in status
-        and "Phase2 Perception Capability Evidence Source Link Minimal v0" in status
+        and "Phase2 Grounding Unknown Classification Correction Minimal v0" in status
         and "Phase1 Closure Audit Minimal v0" in status
         and "ashl_core_actual_capability_inventory_runtime_substrate_map_v0.md" in index
         and "phase1_to_phase5_growth_substrate_plan.md" in index
@@ -11240,7 +11242,7 @@ def smoke_phase0_documentation_inventory_and_consistency_reconciliation() -> dic
     boundary = Path("docs/current_boundary_index.md").read_text(encoding="utf-8")
     passed = (
         all(path.exists() for path in required_paths)
-        and "Boundary Index Version: 2026-06-09-b185" in texts[Path("docs/phase0_status.md")]
+        and "Boundary Index Version: 2026-06-09-b186" in texts[Path("docs/phase0_status.md")]
         and "Inventory count:" in texts[Path("docs/phase0_doc_inventory.md")]
         and "docs/phase1_to_phase5_growth_substrate_plan.md" in texts[Path("docs/phase0_doc_inventory.md")]
         and "docs/ashl_core_actual_capability_inventory_runtime_substrate_map_v0.md" in texts[
@@ -11248,7 +11250,7 @@ def smoke_phase0_documentation_inventory_and_consistency_reconciliation() -> dic
         ]
         and "docs/phase0_versioning_policy.md" in texts[Path("docs/phase0_doc_inventory.md")]
         and "unknown_needs_review" in texts[Path("docs/phase0_doc_inventory.md")]
-        and "Phase2 Perception Capability Evidence Source Link Minimal v0" in texts[
+        and "Phase2 Grounding Unknown Classification Correction Minimal v0" in texts[
             Path("docs/ashl_core_actual_capability_inventory_runtime_substrate_map_v0.md")
         ]
         and "phase1 closure audit minimal" in texts[
@@ -21605,6 +21607,67 @@ def smoke_phase2_perception_capability_evidence_source_link_minimal() -> dict:
     )
 
 
+def smoke_phase2_grounding_unknown_classification_correction_minimal() -> dict:
+    result = run_phase2_grounding_unknown_classification_correction_minimal_check()
+    summary = result.get("summary", {})
+    boundary = result.get("boundary", {})
+    records = result.get("valid_records", [])
+    record = records[0] if records else {}
+    classification = record.get("deferred_source_classification", {})
+    items = classification.get("classification_items", [])
+    item_by_value = {item.get("source_value"): item for item in items if isinstance(item, dict)}
+    wait_item = item_by_value.get("wait_or_observe", {})
+    probe_item = item_by_value.get("observe_or_alternative_probe", {})
+    containment = record.get("authority_containment", {})
+    audit = record.get("boundary_audit", {})
+    passed = (
+        result.get("command") == "run-phase2-grounding-unknown-classification-correction-minimal-check"
+        and result.get("flow") == "phase2_grounding_unknown_classification_correction_minimal_v0"
+        and result.get("status") == "ok"
+        and boundary.get("boundary_index_version_before") == "2026-06-09-b185"
+        and boundary.get("boundary_index_version_after") == "2026-06-09-b186"
+        and summary.get("classification_correction_result_count") == 24
+        and summary.get("valid_classification_correction_count") == 1
+        and summary.get("invalid_classification_correction_count") == 23
+        and summary.get("deferred_source_classification_created_count") == 1
+        and summary.get("wait_or_observe_marked_not_capability_count") == 1
+        and summary.get("observe_or_alternative_probe_marked_not_capability_count") == 1
+        and summary.get("phase4_deferred_reference_created_count") == 1
+        and summary.get("unknown_items_not_forced_into_capability_count") == 1
+        and summary.get("no_endocrine_feed_count") == 1
+        and summary.get("no_candidate_input_count") == 1
+        and summary.get("no_action_selection_count") == 1
+        and summary.get("no_memory_write_count") == 1
+        and classification.get("deferred_source_classification_created") is True
+        and wait_item.get("corrected_classification") == "not_capability_binding"
+        and wait_item.get("deferred_to_phase") == "phase4_endocrine_tendency_settling"
+        and wait_item.get("forced_into_capability") is False
+        and probe_item.get("corrected_classification") == "not_capability_binding"
+        and probe_item.get("deferred_to_phase") == "phase4_endocrine_tendency_settling"
+        and probe_item.get("forced_into_capability") is False
+        and containment.get("direct_endocrine_feed_in_this_package") is False
+        and containment.get("direct_tendency_feed_in_this_package") is False
+        and containment.get("candidate_input_created_in_this_package") is False
+        and containment.get("selected_action_created_in_this_package") is False
+        and containment.get("persistent_memory_write_created_in_this_package") is False
+        and audit.get("boundary_number") == 186
+        and audit.get("endocrine_feed_created") is False
+        and audit.get("candidate_input_created") is False
+        and audit.get("selected_action_created") is False
+        and audit.get("persistent_memory_write_created") is False
+        and audit.get("proof_of_learning_claim") is False
+        and audit.get("consciousness_claim") is False
+    )
+    return _result(
+        "phase2_grounding_unknown_classification_correction_minimal",
+        passed,
+        {
+            "summary": summary,
+            "boundary": boundary,
+        },
+    )
+
+
 def smoke_phase0_current_capability_snapshot() -> dict:
     doc_path = Path("docs/phase0_current_capability_snapshot_2026-06-10.md")
     doc = doc_path.read_text(encoding="utf-8") if doc_path.exists() else ""
@@ -24437,6 +24500,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_phase1_closure_audit_minimal(),
         smoke_phase2_closed_phase1_substrate_perception_capability_grounding_entry_minimal(),
         smoke_phase2_perception_capability_evidence_source_link_minimal(),
+        smoke_phase2_grounding_unknown_classification_correction_minimal(),
         smoke_phase0_current_capability_snapshot(),
         smoke_memory_influence_behavior_gate_design(),
         smoke_first_memory_influenced_behavior_boundary(),

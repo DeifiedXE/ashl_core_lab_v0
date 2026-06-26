@@ -3139,9 +3139,16 @@ Two-Trial History Boundary:
 - Boundary Index updates from `2026-06-09-b184` to `2026-06-09-b185`.
 - Plain meaning: Phase2 can now point b184 perception evidence candidates at existing visual-spatial grounding source references, and capability evidence candidates at existing Qingyin Bridge capability-map source references. Unresolved items stay unknown. This still does not create semantic vision, object recognition, active focus, capability-map creation/mutation, raw tool access, candidate input, candidate ordering, selected_action, final_action, direct command, execution, outcome observation, memory write, predictor use, production behavior, or learning/consciousness claims.
 
+## Phase2 Grounding Unknown Classification Correction Minimal v0
+
+- Adds `py -3 -m ashl_core.teaching_cli run-phase2-grounding-unknown-classification-correction-minimal-check`.
+- Phase2 Grounding Unknown Classification Correction Minimal v0 reads b185 source-link reports and corrects `wait_or_observe` plus `observe_or_alternative_probe`.
+- Boundary Index updates from `2026-06-09-b185` to `2026-06-09-b186`.
+- Plain meaning: those two values are not capability bindings and should not be forced into the capability line. They are deferred to future Phase4 endocrine/tendency/settling work. This still does not create endocrine feed, tendency feed, state settling, candidate input, action selection, execution, memory write, production behavior, or learning/consciousness claims.
+
 ## ASHL Core Actual Capability Inventory / Runtime Substrate Map v0
 
-- Adds `docs/ashl_core_actual_capability_inventory_runtime_substrate_map_v0.md` as a docs-only reality check for current repo capabilities; it is now updated through b185.
+- Adds `docs/ashl_core_actual_capability_inventory_runtime_substrate_map_v0.md` as a docs-only reality check for current repo capabilities; it is now updated through b186.
 - Records the actual tracked-file, core-module, test-module, docs, and smoke-test baseline, then separates executable sandbox helpers, record/checker paths, controlled file helpers, and design-only documents.
 - Corrects the Phase1 next direction away from duplicate readback/classification packages; b181 now advances the b180 frame into a same-session tick handoff and continuity comparison.
 - This does not change Boundary Index version, add runtime behavior, create actions, write memory/retention, use predictors, feed endocrine/tendency directly, change production behavior, or claim learning/consciousness.
