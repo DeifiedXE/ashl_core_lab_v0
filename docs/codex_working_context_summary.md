@@ -57,7 +57,7 @@ The point is not to deny the relationship between the user and Qingyin. The poin
 Current Boundary Index at the time this summary was written:
 
 ```text
-2026-06-09-b183
+2026-06-09-b184
 ```
 
 Current endpoint:
@@ -78,6 +78,7 @@ b169 advisory reordering evidence
 -> b181 Phase1 same-session runtime tick handoff
 -> b182 Phase1 tick1 three-line substrate index
 -> b183 Phase1 closure audit
+-> b184 Phase2 perception/capability grounding entry report
 ```
 
 Plain meaning:
@@ -112,9 +113,11 @@ b182 can read the b181 tick1 handoff and create read-only thought, action, and m
 
 b183 can confirm Phase1 closure: session trace spine, tick handoff, and three-line index are present; no live runtime, no action selection, no memory write; duplicate Phase1 substrate packages are blocked.
 
-## What b183 Does Not Do
+b184 can read the closed Phase1 substrate and produce record-only Phase2 entry reports. These reports identify perception evidence candidates, capability evidence candidates, and unknown fields that must remain unknown. This starts Phase2 as Perception And Capability Grounding, not action preparation.
 
-b183 does not create:
+## What b184 Does Not Do
+
+b184 does not create:
 
 - a live runtime session
 - a session frame promoted to live runtime
@@ -131,6 +134,13 @@ b183 does not create:
 - runtime next-cycle ordering
 - new selected_action / final_action / direct_command / execution / outcome observation
 - new working-memory update
+- semantic vision
+- object recognition
+- active focus or focus application
+- new visual record
+- grounded capability binding
+- capability map creation
+- raw tool access or external tool operation
 - long-term memory write
 - retention write
 - persistent working memory
@@ -269,17 +279,17 @@ Before coding, Codex should answer in plain language:
 4. What visible output will exist after the work?
 5. What does it still refuse to do?
 
-For the current b183 endpoint, do not keep growing duplicate Phase1 readback/index/handoff packages. Phase1 is closed as record-only substrate evidence.
+For the current b184 endpoint, do not keep growing duplicate Phase1 readback/index/handoff packages. Phase1 is closed as record-only substrate evidence, and Phase2 has begun as perception/capability grounding.
 
 The next real step should be:
 
 ```text
-start Phase2 by reading the closed Phase1 substrate and creating a same-session sandbox candidate-input record
+read the b184 entry report and link its evidence candidates to existing visual-spatial grounding and Qingyin Bridge capability-map evidence where available
 ```
 
 Phase0 now has one compact audit saying the minimal same-session sandbox loop is complete in record evidence, while still refusing long-term learning or production claims.
 
-Phase1 now has a closure audit. The next work should move to Phase2 and create candidate input from the closed substrate without ordering candidates, starting a live runtime, writing memory, selecting a new action, or claiming learning/consciousness.
+Phase2 now has an entry report from the closed Phase1 substrate. The next work should connect that report to existing perception/capability evidence references where available, while preserving unknowns and still refusing candidate input, ordering, action selection, execution, memory write, or learning/consciousness claims.
 
 The current Phase 0 closure plan is:
 

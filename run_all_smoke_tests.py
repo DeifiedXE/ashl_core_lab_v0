@@ -519,6 +519,9 @@ from ashl_core.phase1_tick1_frame_three_line_substrate_index_minimal import (
     run_phase1_tick1_frame_three_line_substrate_index_minimal_check,
 )
 from ashl_core.phase1_closure_audit_minimal import run_phase1_closure_audit_minimal_check
+from ashl_core.phase2_closed_phase1_substrate_perception_capability_grounding_entry_minimal import (
+    run_phase2_closed_phase1_substrate_perception_capability_grounding_entry_minimal_check,
+)
 from ashl_core.minimal_visual_grounding_trial import run_minimal_visual_grounding_trial_check
 from ashl_core.visual_prediction_error_attention_priority_preview_minimal import (
     run_visual_prediction_error_attention_priority_preview_minimal_check,
@@ -10893,59 +10896,51 @@ def smoke_formal_lesson_candidate_creation_boundary_audit_docs() -> dict:
 def smoke_current_boundary_index_docs() -> dict:
     doc_path = Path("docs/current_boundary_index.md")
     archive_path = Path("docs/boundary_archive/current_boundary_index_2026-06-25_b174.md")
+    b184_archive_path = Path("docs/boundary_archive/current_boundary_index_2026-06-26_b184.md")
     legacy_archive_path = Path("docs/boundary_index_archive_2026_06.md")
     readme_path = Path("README.md")
     research_plan_path = Path("docs/research_plan.md")
     doc = doc_path.read_text(encoding="utf-8") if doc_path.exists() else ""
     archive = archive_path.read_text(encoding="utf-8") if archive_path.exists() else ""
+    b184_archive = b184_archive_path.read_text(encoding="utf-8") if b184_archive_path.exists() else ""
     legacy_archive = legacy_archive_path.read_text(encoding="utf-8") if legacy_archive_path.exists() else ""
     readme = readme_path.read_text(encoding="utf-8") if readme_path.exists() else ""
     research_plan = research_plan_path.read_text(encoding="utf-8") if research_plan_path.exists() else ""
     compact_required_terms = [
-        "Boundary Index Version: 2026-06-09-b183",
-        "Last update log: Phase1 Closure Audit Minimal v0",
-        "Previous Boundary Index Version: 2026-06-09-b182",
+        "Boundary Index Version: 2026-06-09-b184",
+        "Last update log: Phase2 Closed Phase1 Substrate Perception Capability Grounding Entry Minimal v0",
+        "Previous Boundary Index Version: 2026-06-09-b183",
         "docs/boundary_archive/current_boundary_index_2026-06-25_b174.md",
-        "first-cycle temporary working memory",
-        "weak candidate hint",
-        "hint-influenced advisory ordering",
-        "selected_action",
-        "final_action",
-        "direct_command",
-        "one sandbox execution",
-        "outcome observation",
-        "same-session working-memory update",
-        "Phase0 closure audit",
-        "Phase1 record-only session trace spine",
-        "Phase1 record-only same-session frame",
-        "Phase1 same-session runtime tick handoff",
-        "Phase1 tick1 three-line substrate index",
+        "docs/boundary_archive/current_boundary_index_2026-06-26_b184.md",
+        "Phase0 two-cycle thought/action/working-memory mini-loop",
+        "Phase1 session trace spine",
+        "Phase1 same-session frame",
+        "Phase1 tick handoff",
+        "Phase1 three-line substrate index",
         "Phase1 closure audit",
-        "phase1_session_trace_spine_present=True",
-        "tick_handoff_present=True",
-        "three_line_index_present=True",
-        "no_live_runtime=True",
-        "no_action_selection=True",
-        "no_memory_write=True",
-        "phase1_closure_ready=True",
-        "phase1_duplicate_packages_blocked=True",
-        "next_phase_required=Phase2",
+        "Phase2 perception/capability grounding entry report",
+        "phase2_entry_report_created=True",
+        "phase2_purpose=perception_and_capability_grounding",
+        "perception_evidence_candidates_identified=True",
+        "capability_evidence_candidates_identified=True",
+        "unknown_fields_preserved=True",
+        "record_only_report=True",
+        "candidate_input_created=False",
+        "candidate_ordering_created=False",
+        "action_selection_created=False",
+        "memory_write_created=False",
         "b0_10_counter=B0/10",
         "reach_front_item",
         "wait_or_observe",
         "observe_or_alternative_probe",
-        "No live runtime session.",
-        "No session frame promotion to live runtime.",
-        "No runtime tick scheduler.",
-        "No live runtime tick.",
-        "No persistent state store or persistent session store.",
-        "No runtime evaluator.",
+        "No live runtime session, runtime scheduler, runtime evaluator, or runtime action loop.",
         "No feedback evaluation or feedback application.",
         "No candidate input creation.",
         "No candidate ordering or candidate reordering.",
-        "No duplicate Phase1 substrate package.",
-        "No new selected_action, final_action, direct command, execution, or outcome observation.",
+        "No selected_action, final_action, direct command, execution, or outcome observation creation.",
         "No new working-memory update.",
+        "No semantic vision, object recognition, active focus, or focus application.",
+        "No grounded capability binding, capability map creation, raw tool access, or external tool operation.",
         "No production/runtime memory-influenced behavior is allowed.",
         "No proof-of-learning claim.",
         "No consciousness or awakening claim.",
@@ -10954,7 +10949,7 @@ def smoke_current_boundary_index_docs() -> dict:
         "Memory is a warning sign, not a ban command",
         "docs/ashl_core_actual_capability_inventory_runtime_substrate_map_v0.md",
         "docs/phase1_to_phase5_growth_substrate_plan.md",
-        "Phase2 Candidate Input From Closed Phase1 Substrate Minimal v0",
+        "Phase2 Perception Capability Evidence Source Link Minimal v0",
         "This current index must stay under 150 lines.",
     ]
     archive_required_terms = [
@@ -10964,6 +10959,13 @@ def smoke_current_boundary_index_docs() -> dict:
         "candidate_ordering_created=True",
         "candidate_set_preserved=True",
         "runtime_next_cycle_candidate_ordering_changed=False",
+    ]
+    b184_archive_required_terms = [
+        "Boundary Index Version: 2026-06-09-b184",
+        "Phase2 Closed Phase1 Substrate Perception Capability Grounding Entry Minimal v0",
+        "first-cycle temporary working memory",
+        "phase2_entry_report_created=True",
+        "Phase2 Perception Capability Evidence Source Link Minimal v0",
     ]
     legacy_required_terms = [
         "# Boundary Index Archive 2026-06",
@@ -10975,13 +10977,15 @@ def smoke_current_boundary_index_docs() -> dict:
     compact_passed = (
         doc_path.exists()
         and archive_path.exists()
+        and b184_archive_path.exists()
         and legacy_archive_path.exists()
         and all(term in doc for term in compact_required_terms)
         and all(term in archive for term in archive_required_terms)
+        and all(term in b184_archive for term in b184_archive_required_terms)
         and all(term in legacy_archive for term in legacy_required_terms)
         and line_count <= 150
-        and "Phase1 Closure Audit Minimal v0" in readme
-        and "Phase1 Closure Audit Minimal v0" in research_plan
+        and "Phase2 Closed Phase1 Substrate Perception Capability Grounding Entry Minimal v0" in readme
+        and "Phase2 Closed Phase1 Substrate Perception Capability Grounding Entry Minimal v0" in research_plan
     )
     return _result(
         "boundary_index_current_archive",
@@ -10989,6 +10993,7 @@ def smoke_current_boundary_index_docs() -> dict:
         {
             "doc": str(doc_path),
             "archive": str(archive_path),
+            "b184_archive": str(b184_archive_path),
             "legacy_archive": str(legacy_archive_path),
             "line_count": line_count,
         },
@@ -11024,8 +11029,9 @@ def smoke_phase0_documentation_consolidation_minimal() -> dict:
         and matrix_path.exists()
         and index_path.exists()
         and plan_path.exists()
-        and "Boundary Index Version: 2026-06-09-b183" in status
+        and "Boundary Index Version: 2026-06-09-b184" in status
         and "Current Safe Capability" in status
+        and "Phase2 Closed Phase1 Substrate Perception Capability Grounding Entry Minimal v0" in status
         and "Phase1 Closure Audit Minimal v0" in status
         and "ashl_core_actual_capability_inventory_runtime_substrate_map_v0.md" in index
         and "phase1_to_phase5_growth_substrate_plan.md" in index
@@ -11227,7 +11233,7 @@ def smoke_phase0_documentation_inventory_and_consistency_reconciliation() -> dic
     boundary = Path("docs/current_boundary_index.md").read_text(encoding="utf-8")
     passed = (
         all(path.exists() for path in required_paths)
-        and "Boundary Index Version: 2026-06-09-b183" in texts[Path("docs/phase0_status.md")]
+        and "Boundary Index Version: 2026-06-09-b184" in texts[Path("docs/phase0_status.md")]
         and "Inventory count:" in texts[Path("docs/phase0_doc_inventory.md")]
         and "docs/phase1_to_phase5_growth_substrate_plan.md" in texts[Path("docs/phase0_doc_inventory.md")]
         and "docs/ashl_core_actual_capability_inventory_runtime_substrate_map_v0.md" in texts[
@@ -11235,7 +11241,7 @@ def smoke_phase0_documentation_inventory_and_consistency_reconciliation() -> dic
         ]
         and "docs/phase0_versioning_policy.md" in texts[Path("docs/phase0_doc_inventory.md")]
         and "unknown_needs_review" in texts[Path("docs/phase0_doc_inventory.md")]
-        and "Phase1 Closure Audit Minimal v0" in texts[
+        and "Phase2 Closed Phase1 Substrate Perception Capability Grounding Entry Minimal v0" in texts[
             Path("docs/ashl_core_actual_capability_inventory_runtime_substrate_map_v0.md")
         ]
         and "phase1 closure audit minimal" in texts[
@@ -21444,6 +21450,70 @@ def smoke_phase1_closure_audit_minimal() -> dict:
     )
 
 
+def smoke_phase2_closed_phase1_substrate_perception_capability_grounding_entry_minimal() -> dict:
+    result = run_phase2_closed_phase1_substrate_perception_capability_grounding_entry_minimal_check()
+    summary = result.get("summary", {})
+    boundary = result.get("boundary", {})
+    records = result.get("valid_records", [])
+    reports = [record.get("phase2_entry_report", {}) for record in records]
+    perceptions = [record.get("perception_grounding_entry", {}) for record in records]
+    capabilities = [record.get("capability_grounding_entry", {}) for record in records]
+    unknowns = [record.get("unknown_field_preservation", {}) for record in records]
+    audits = [record.get("boundary_audit", {}) for record in records]
+    first_report = reports[0] if reports else {}
+    first_perception = perceptions[0] if perceptions else {}
+    first_capability = capabilities[0] if capabilities else {}
+    first_unknown = unknowns[0] if unknowns else {}
+    first_audit = audits[0] if audits else {}
+    passed = (
+        result.get("command")
+        == "run-phase2-closed-phase1-substrate-perception-capability-grounding-entry-minimal-check"
+        and result.get("flow") == "phase2_closed_phase1_substrate_perception_capability_grounding_entry_minimal_v0"
+        and result.get("status") == "ok"
+        and boundary.get("boundary_index_version_before") == "2026-06-09-b183"
+        and boundary.get("boundary_index_version_after") == "2026-06-09-b184"
+        and summary.get("phase2_entry_result_count") == 44
+        and summary.get("valid_phase2_entry_count") == 3
+        and summary.get("invalid_phase2_entry_count") == 41
+        and summary.get("phase2_entry_report_created_count") == 3
+        and summary.get("perception_evidence_candidates_identified_count") == 3
+        and summary.get("capability_evidence_candidates_identified_count") == 3
+        and summary.get("unknown_fields_preserved_count") == 3
+        and summary.get("candidate_input_blocked_count") == 3
+        and summary.get("candidate_ordering_blocked_count") == 3
+        and summary.get("action_selection_blocked_count") == 3
+        and summary.get("memory_write_blocked_count") == 3
+        and summary.get("semantic_vision_blocked_count") == 3
+        and summary.get("capability_authority_blocked_count") == 3
+        and summary.get("production_behavior_blocked_count") == 3
+        and summary.get("learning_claim_blocked_count") == 3
+        and summary.get("consciousness_claim_blocked_count") == 3
+        and all(report.get("phase2_entry_report_created") is True for report in reports)
+        and all(report.get("candidate_input_created") is False for report in reports)
+        and all(report.get("action_selection_created") is False for report in reports)
+        and all(report.get("memory_write_created") is False for report in reports)
+        and first_perception.get("perception_evidence_candidates_identified") is True
+        and first_perception.get("semantic_vision_created") is False
+        and first_capability.get("capability_evidence_candidates_identified") is True
+        and first_capability.get("raw_tool_access_created") is False
+        and first_unknown.get("unknown_fields_preserved") is True
+        and first_unknown.get("unknown_values_invented") is False
+        and first_report.get("record_only_report") is True
+        and first_audit.get("boundary_number") == 184
+        and first_audit.get("production_behavior_created") is False
+        and first_audit.get("proof_of_learning_claim") is False
+        and first_audit.get("consciousness_claim") is False
+    )
+    return _result(
+        "phase2_closed_phase1_substrate_perception_capability_grounding_entry_minimal",
+        passed,
+        {
+            "summary": summary,
+            "boundary": boundary,
+        },
+    )
+
+
 def smoke_phase0_current_capability_snapshot() -> dict:
     doc_path = Path("docs/phase0_current_capability_snapshot_2026-06-10.md")
     doc = doc_path.read_text(encoding="utf-8") if doc_path.exists() else ""
@@ -24274,6 +24344,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_phase1_session_frame_runtime_tick_handoff_minimal(),
         smoke_phase1_tick1_frame_three_line_substrate_index_minimal(),
         smoke_phase1_closure_audit_minimal(),
+        smoke_phase2_closed_phase1_substrate_perception_capability_grounding_entry_minimal(),
         smoke_phase0_current_capability_snapshot(),
         smoke_memory_influence_behavior_gate_design(),
         smoke_first_memory_influenced_behavior_boundary(),

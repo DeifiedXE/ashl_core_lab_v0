@@ -443,7 +443,7 @@ def _build_duplicate_package_guard() -> dict[str, Any]:
         "duplicate_phase1_closure_audit_package_allowed": False,
         "future_phase1_package_requires_human_override": True,
         "next_phase_required": "Phase2",
-        "allowed_next_direction": "Phase2 candidate input from closed Phase1 substrate",
+        "allowed_next_direction": "Phase2 perception/capability grounding entry from closed Phase1 substrate",
     }
 
 
@@ -642,7 +642,7 @@ def _validate_guard(guard: dict[str, Any], errors: list[str]) -> None:
             "duplicate_phase1_closure_audit_package_allowed": False,
             "future_phase1_package_requires_human_override": True,
             "next_phase_required": "Phase2",
-            "allowed_next_direction": "Phase2 candidate input from closed Phase1 substrate",
+            "allowed_next_direction": "Phase2 perception/capability grounding entry from closed Phase1 substrate",
         },
         errors,
         "duplicate_package_guard",
@@ -727,7 +727,8 @@ def _duplicate_phase1_packages_blocked(
         and guard.get("duplicate_three_line_index_package_allowed") is False
         and guard.get("duplicate_phase1_closure_audit_package_allowed") is False
         and guard.get("next_phase_required") == "Phase2"
-        and guard.get("allowed_next_direction") == "Phase2 candidate input from closed Phase1 substrate"
+        and guard.get("allowed_next_direction")
+        == "Phase2 perception/capability grounding entry from closed Phase1 substrate"
         and containment.get("duplicate_phase1_substrate_package_created_in_this_package") is False
         and blocked.get("duplicate_phase1_substrate_package_created") is False
     )

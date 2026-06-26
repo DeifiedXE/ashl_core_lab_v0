@@ -8593,21 +8593,39 @@ Plain meaning:
 Explicitly not changed:
 - No candidate input, candidate ordering, selected_action/final_action/direct_command/execution/outcome observation creation, working-memory update, persistent memory write, external tool use, predictor read/influence/mutation, direct endocrine/tendency feed, production behavior, consciousness claim, long-term learning claim, or proof-of-learning claim.
 
+## Phase2 Closed Phase1 Substrate Perception Capability Grounding Entry Minimal v0
+
+Status: completed / Phase2 perception and capability grounding entry / Boundary Index b184.
+
+What changed:
+- b183 Phase1 closure audit records and b182 three-line substrate index records can now be read as closed Phase1 substrate sources.
+- Each record creates a Phase2 entry report.
+- Each report identifies perception evidence candidates.
+- Each report identifies capability evidence candidates.
+- Each report preserves unknown fields instead of inventing semantic vision or capability binding.
+- Boundary Index updates from `2026-06-09-b183` to `2026-06-09-b184`.
+
+Plain meaning:
+- Phase2 starts by sorting the closed session evidence into "might help perception", "might help capability", and "still unknown". It does not prepare an action.
+
+Explicitly not changed:
+- No candidate input, candidate ordering, selected_action/final_action/direct_command/execution/outcome observation creation, semantic vision, object recognition, active focus, capability map creation, raw tool access, working-memory update, persistent memory write, external tool use, predictor read/influence/mutation, direct endocrine/tendency feed, production behavior, consciousness claim, long-term learning claim, or proof-of-learning claim.
+
 ## ASHL Core Actual Capability Inventory / Runtime Substrate Map v0
 
 Status: completed / docs-only actual capability inventory / no Boundary Index change.
 
 What changed:
-- `docs/ashl_core_actual_capability_inventory_runtime_substrate_map_v0.md` records what the repo can actually run or produce after b183.
+- `docs/ashl_core_actual_capability_inventory_runtime_substrate_map_v0.md` records what the repo can actually run or produce after b184.
 - It separates executable sandbox/helper capability, record/checker capability, controlled file helpers, and design-only capability.
-- It records the current b183 baseline: 807 tracked files, 287 core Python modules, 357 test modules, 148 top-level docs, and 423 smoke functions.
+- It records the current b184 baseline: 810 tracked files, 288 core Python modules, 358 test modules, 148 top-level docs, and 424 smoke functions.
 - It marks a readback-only b179 follow-up as redundant.
 
 Plain meaning:
 - The repo now has a compact map of real parts on the table. It should stop Codex from mistaking old docs, package names, or boundary paperwork for actual runtime progress.
 
 Recommended next direction:
-- Phase2 Candidate Input From Closed Phase1 Substrate Minimal v0: read the closed Phase1 substrate and create a same-session sandbox candidate-input record without ordering candidates, selecting an action, executing, writing memory, or claiming learning/consciousness.
+- Phase2 Perception Capability Evidence Source Link Minimal v0: read the b184 entry report and link its evidence candidates to existing visual-spatial grounding and Qingyin Bridge capability-map evidence where available, while preserving unknowns and avoiding candidate input or action preparation.
 
 Explicitly not changed:
 - No runtime behavior, Boundary Index change, live session, action creation, memory/retention write, memory admission, predictor use/mutation, direct endocrine/tendency feed, production behavior, learning claim, or consciousness claim.

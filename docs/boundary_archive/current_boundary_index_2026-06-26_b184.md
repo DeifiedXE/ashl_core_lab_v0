@@ -8,27 +8,33 @@ Previous Last update log: Phase1 Closure Audit Minimal v0
 Archived previous current index:
 
 - `docs/boundary_archive/current_boundary_index_2026-06-25_b174.md`
-- `docs/boundary_archive/current_boundary_index_2026-06-26_b184.md`
 - `docs/boundary_index_archive_2026_06.md`
 
 This file is the active short index. Archive files preserve older milestone detail.
 
 ## Current Safe Claim
 
-b184 starts Phase2 as Perception And Capability Grounding. It reads the closed Phase1 substrate and creates record-only entry reports.
+b184 starts Phase2 as Perception And Capability Grounding. It reads the closed Phase1 substrate and creates record-only Phase2 entry reports that identify perception evidence candidates, capability evidence candidates, and unknown fields that must stay unknown for now.
 
 Plain wording:
 
-Phase2 now asks what closed-session evidence might support perception, what might support capability, and what must remain unknown. It does not prepare an action.
+Phase2 now begins by asking: what evidence in the closed session might support perception, what evidence might support capability, and what must remain unknown. It does not prepare an action.
 
-Current endpoint:
+The current endpoint is:
 
 ```text
-Phase0 two-cycle thought/action/working-memory mini-loop
--> Phase1 session trace spine
--> Phase1 same-session frame
--> Phase1 tick handoff
--> Phase1 three-line substrate index
+first-cycle temporary working memory
+-> weak candidate hint
+-> hint-influenced advisory ordering
+-> selected_action / final_action / direct_command / one sandbox execution
+-> outcome observation
+-> same-session working-memory update
+-> two-cycle influence check
+-> Phase0 closure audit
+-> Phase1 record-only session trace spine
+-> Phase1 record-only same-session frame
+-> Phase1 same-session runtime tick handoff
+-> Phase1 tick1 three-line substrate index
 -> Phase1 closure audit
 -> Phase2 perception/capability grounding entry report
 ```
@@ -39,9 +45,9 @@ The three deterministic paths remain:
 - `wait_or_observe` -> `sandbox.arbitration.wait_or_observe` -> `local_context_observed`
 - `observe_or_alternative_probe` -> `sandbox.arbitration.observe_or_alternative_probe` -> `local_context_observed`
 
-This is same-session sandbox-only record evidence. It is not production behavior, long-term learning, or proof of consciousness.
+This is same-session sandbox-only record evidence. It is not production behavior, not long-term learning, and not proof of consciousness.
 
-## Recent Chain
+## Recent Phase0 / Phase1 / Phase2 Chain
 
 ```text
 b170 one-cycle thought/action/working-memory trace
@@ -62,7 +68,9 @@ b170 one-cycle thought/action/working-memory trace
 ```
 
 Compatibility anchor for b170 B0/10 self-check: b170 Thought Memory Action Parallel Mini Loop evidence.
+
 Compatibility anchor for b180 B0/10 self-check: Phase1 Session Frame Materialization evidence.
+
 Compatibility field retained from b180: `b0_10_counter=B0/10`.
 
 ## What b184 Adds
@@ -80,7 +88,10 @@ Compatibility field retained from b180: `b0_10_counter=B0/10`.
 
 ## Still Blocked
 
-- No live runtime session, runtime scheduler, runtime evaluator, or runtime action loop.
+- No live runtime session.
+- No session frame promotion to live runtime.
+- No runtime tick scheduler or live runtime tick.
+- No runtime evaluator or runtime action loop.
 - No feedback evaluation or feedback application.
 - No candidate input creation.
 - No candidate ordering or candidate reordering.
@@ -93,9 +104,11 @@ Compatibility field retained from b180: `b0_10_counter=B0/10`.
 - No production/runtime behavior.
 - No production/runtime memory-influenced behavior is allowed.
 - No long-term, Core, Archive, retained JSONL, retained working-memory, or persistent memory write.
-- No memory admission, habit, skill anchor, or retention write.
+- No memory admission, habit, or skill anchor.
+- No retention write.
 - No predictor read, influence, or mutation.
-- No direct endocrine feed or direct tendency feed.
+- No direct endocrine feed.
+- No direct tendency feed.
 - No raw weighted sum as direct decision authority.
 - No affordance used as desire.
 - No tendency override of purpose or affordance gate.
@@ -127,7 +140,7 @@ Phase2 Perception Capability Evidence Source Link Minimal v0
 
 Plain wording:
 
-Read the b184 entry report and link its evidence candidates to existing visual-spatial grounding and Qingyin Bridge capability-map evidence where available. Unknowns must stay unknown. Do not create candidate input, order candidates, select an action, execute, write memory, or claim learning/consciousness.
+The next small step should read the b184 entry report and link its evidence candidates to existing visual-spatial grounding and Qingyin Bridge capability-map evidence where available. Unknowns must stay unknown. It should still not create candidate input, order candidates, select an action, execute, write memory, or claim learning/consciousness.
 
 ## Line Count Rule
 

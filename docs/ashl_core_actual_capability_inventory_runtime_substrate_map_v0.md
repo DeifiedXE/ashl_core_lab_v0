@@ -4,7 +4,7 @@ Status: docs-only actual capability inventory.
 Runtime impact: none.
 Boundary Index impact: none.
 
-This file records what the repository can actually run or produce after Boundary Index `2026-06-09-b183`.
+This file records what the repository can actually run or produce after Boundary Index `2026-06-09-b184`.
 
 It is a work-start reality check. It does not grant runtime authority and does not replace:
 
@@ -15,14 +15,14 @@ It is a work-start reality check. It does not grant runtime authority and does n
 
 ## Scan Baseline
 
-Repository scan baseline after the b183 Phase1 closure audit package:
+Repository scan baseline after the b184 Phase2 perception/capability grounding entry package:
 
-- tracked files: 807
-- `ashl_core/*.py`: 287
-- `tests/*.py`: 357
+- tracked files: 810
+- `ashl_core/*.py`: 288
+- `tests/*.py`: 358
 - top-level `docs/*.md`: 148
-- smoke functions in `run_all_smoke_tests.py`: 423
-- expected refreshed full smoke report: 423 / 423 passed
+- smoke functions in `run_all_smoke_tests.py`: 424
+- expected refreshed full smoke report: 424 / 424 passed
 
 Important caveat:
 
@@ -63,6 +63,7 @@ Action and sandbox substrate:
 - b181 creates a same-session sandbox-only tick handoff from b180 frames, including tick1 context, appended frame, and tick0/tick1 continuity comparison
 - b182 creates read-only thought, action, and memory lane indexes from b181 tick1 handoff records
 - b183 closes Phase1 substrate construction and blocks duplicate Phase1 substrate packages
+- b184 starts Phase2 with record-only perception/capability grounding entry reports from the closed Phase1 substrate
 
 Session and working memory substrate:
 
@@ -137,6 +138,7 @@ Representative data shapes already produced by existing modules/tests include:
 - Phase1 same-session runtime tick handoff records
 - Phase1 tick1 three-line substrate index records
 - Phase1 closure audit records
+- Phase2 perception/capability grounding entry reports
 - smoke test report data
 
 ## Not Present Yet
@@ -148,6 +150,7 @@ ASHL Core does not yet have:
 - a tick handoff promoted to live runtime
 - a three-line index promoted to candidate ordering or action selection
 - Phase1 duplicate substrate packages after closure
+- Phase2 candidate input or action preparation
 - a runtime tick scheduler
 - automatic runtime ticks
 - a persistent runtime session store
@@ -175,25 +178,25 @@ Current docs are useful but uneven.
 - `docs/phase0_doc_inventory.md` is stale as a full file count; use it for navigation and authority classification, not exact coverage.
 - A readback-only package after b179 would be redundant because b179 already returns and tests session trace spine records.
 
-## Phase 1 Direction Correction
+## Phase 2 Direction Correction
 
 The next useful Phase1 engineering step should not be duplicate frame classification.
 
 Current implemented step:
 
 ```text
-Phase1 Closure Audit Minimal v0
+Phase2 Closed Phase1 Substrate Perception Capability Grounding Entry Minimal v0
 ```
 
 Plain meaning:
 
 Status:
 
-Completed at Boundary Index `2026-06-09-b183`.
+Completed at Boundary Index `2026-06-09-b184`.
 
-Confirms the Phase1 session trace spine, tick handoff, and three-line substrate index are present.
+Reads the closed Phase1 substrate and creates record-only Phase2 entry reports.
 
-It marks Phase1 closure ready and blocks duplicate Phase1 substrate packages.
+The reports identify perception evidence candidates, capability evidence candidates, and preserved unknown fields. This is Phase2 entry only, not action preparation.
 
 It still must not:
 
@@ -201,6 +204,9 @@ It still must not:
 - create candidate input or ordering
 - create another duplicate Phase1 substrate package
 - create a new action
+- create semantic vision or object recognition
+- create active focus or focus application
+- create a capability map or raw tool access
 - write persistent memory
 - call external tools
 - admit memory
@@ -212,9 +218,9 @@ It still must not:
 Better next direction:
 
 ```text
-Phase2 Candidate Input From Closed Phase1 Substrate Minimal v0
+Phase2 Perception Capability Evidence Source Link Minimal v0
 ```
 
 Plain meaning:
 
-Read the closed Phase1 substrate and create a same-session sandbox candidate-input record, without ordering candidates, selecting or executing an action, writing memory, or claiming learning/consciousness.
+Read the b184 entry report and link its evidence candidates to existing visual-spatial grounding and Qingyin Bridge capability-map evidence where available. Preserve unknowns. Do not create candidate input, action preparation, execution, memory writes, or learning/consciousness claims.

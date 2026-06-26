@@ -128,15 +128,29 @@ Phase1 now has a checked record-only scaffold: session trace spine, tick handoff
 
 It still avoids candidate input creation, ordering, action selection, execution, persistent memory, external tool use, predictor influence, production behavior, and learning/consciousness claims.
 
-Next useful step:
+Current implemented Phase2 step:
 
 ```text
-Phase2 Candidate Input From Closed Phase1 Substrate Minimal v0
+Phase2 Closed Phase1 Substrate Perception Capability Grounding Entry Minimal v0
 ```
 
 Plain version:
 
-Read the closed Phase1 substrate and create a same-session sandbox candidate-input record. Do not order candidates, select an action, execute, write memory, or claim learning/consciousness.
+Read the closed Phase1 substrate and create a record-only Phase2 entry report. The report identifies perception evidence candidates, capability evidence candidates, and unknown fields that must stay unknown. It does not create candidate input, order candidates, select an action, execute, write memory, or claim learning/consciousness.
+
+Status:
+
+Completed at Boundary Index `2026-06-09-b184`.
+
+Next useful step:
+
+```text
+Phase2 Perception Capability Evidence Source Link Minimal v0
+```
+
+Plain version:
+
+Read the b184 entry report and link its evidence candidates to existing visual-spatial grounding and Qingyin Bridge capability-map evidence where available. Preserve unknowns. Do not create candidate input, action preparation, execution, memory writes, production behavior, or learning/consciousness claims.
 
 ## Working Rule
 
