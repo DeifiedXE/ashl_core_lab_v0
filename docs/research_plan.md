@@ -8755,21 +8755,42 @@ Plain meaning:
 Explicitly not changed:
 - No docs moved, docs folder created, docs archived, docs deleted, docs renamed, path references changed, Python module moved, import changed, alias implemented, runtime behavior, memory write, endocrine feed, production behavior, learning claim, or consciousness claim.
 
+## ASHL Core Refactor R4 First Tiny Docs Move Redirect Index Plan Minimal v0
+
+Status: completed / first tiny docs move redirect-index planning / Boundary Index b192.
+
+What changed:
+- Adds `docs/ashl_core_refactor_r4_first_tiny_docs_move_redirect_index_plan_v0.md`.
+- Adds `ashl_core/refactor_r4_first_tiny_docs_move_redirect_index_plan_minimal.py`.
+- Adds `tests/test_refactor_r4_first_tiny_docs_move_redirect_index_plan_minimal.py`.
+- Adds CLI `run-refactor-r4-first-tiny-docs-move-redirect-index-plan-minimal-check`.
+- Adds smoke `refactor_r4_first_tiny_docs_move_redirect_index_plan_minimal`.
+- Selects `docs/milestone_logs/mimetic_endocrine_line_milestone_2026-06-09.md` as the first future low-risk docs move candidate.
+- Plans future path `docs/archive/milestone_logs/mimetic_endocrine_line_milestone_2026-06-09.md`.
+- Lists redirect-index shape, old/new lookup rules, frozen authority protection, and future move preconditions.
+- Boundary Index updates from `2026-06-09-b191` to `2026-06-09-b192`.
+
+Plain meaning:
+- The repo now has a checked moving permit for one historical milestone log. It says how the old door and new door should both be findable later. It does not move the file.
+
+Explicitly not changed:
+- No docs moved, docs folder created, docs archived, docs deleted, docs renamed, path references changed, Python module moved, import changed, alias implemented, runtime behavior, memory write, endocrine feed, production behavior, learning claim, or consciousness claim.
+
 ## ASHL Core Actual Capability Inventory / Runtime Substrate Map v0
 
 Status: completed / docs-only actual capability inventory / no Boundary Index change.
 
 What changed:
-- `docs/ashl_core_actual_capability_inventory_runtime_substrate_map_v0.md` records what the repo can actually run or produce after b191.
+- `docs/ashl_core_actual_capability_inventory_runtime_substrate_map_v0.md` records what the repo can actually run or produce after b192.
 - It separates executable sandbox/helper capability, record/checker capability, controlled file helpers, and design-only capability.
-- It records the current b191 baseline: 828 tracked files after this package is committed, 295 core Python modules, 365 test modules, 143 top-level docs, and 431 smoke functions.
+- It records the current b192 baseline: 831 tracked files after this package is committed, 296 core Python modules, 366 test modules, 144 top-level docs, and 432 smoke functions.
 - It marks a readback-only b179 follow-up as redundant.
 
 Plain meaning:
 - The repo now has a compact map of real parts on the table. It should stop Codex from mistaking old docs, package names, or boundary paperwork for actual runtime progress.
 
 Recommended next direction:
-- ASHL Core Refactor R4 First Tiny Docs Move With Redirect Index Plan Minimal v0. R4 should still be a plan: one tiny move candidate, redirect/index/lookup rules, and no bulk docs movement.
+- ASHL Core Refactor R4A First Tiny Docs Move Execution Minimal v0, or a user-specified alternative. R4A may only move the selected historical milestone log and must include redirect/lookup protection.
 
 Explicitly not changed:
 - No runtime behavior, Boundary Index change, live session, action creation, memory/retention write, memory admission, predictor use/mutation, direct endocrine/tendency feed, production behavior, learning claim, or consciousness claim.

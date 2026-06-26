@@ -3185,9 +3185,17 @@ Two-Trial History Boundary:
 - Boundary Index updates from `2026-06-09-b190` to `2026-06-09-b191`.
 - Plain meaning: the repo now has a CLI-visible rule that the 8 main docs stay pinned until a later redirect/index/lookup package and explicit user approval exist. No docs moved. No path references changed. No runtime behavior changed.
 
+## ASHL Core Refactor R4 First Tiny Docs Move Redirect Index Plan Minimal v0
+
+- Adds `docs/ashl_core_refactor_r4_first_tiny_docs_move_redirect_index_plan_v0.md`.
+- Adds `py -3 -m ashl_core.teaching_cli run-refactor-r4-first-tiny-docs-move-redirect-index-plan-minimal-check`.
+- R4 first tiny docs move redirect-index plan added. This is a plan for one future low-risk docs move.
+- Boundary Index updates from `2026-06-09-b191` to `2026-06-09-b192`.
+- Plain meaning: the repo now has a CLI-visible moving permit for `docs/milestone_logs/mimetic_endocrine_line_milestone_2026-06-09.md` to later move to `docs/archive/milestone_logs/mimetic_endocrine_line_milestone_2026-06-09.md` with redirect/lookup protection. No docs moved. No paths changed. No runtime behavior changed.
+
 ## ASHL Core Actual Capability Inventory / Runtime Substrate Map v0
 
-- Adds `docs/ashl_core_actual_capability_inventory_runtime_substrate_map_v0.md` as a docs-only reality check for current repo capabilities; it is now updated through b191.
+- Adds `docs/ashl_core_actual_capability_inventory_runtime_substrate_map_v0.md` as a docs-only reality check for current repo capabilities; it is now updated through b192.
 - Records the actual tracked-file, core-module, test-module, docs, and smoke-test baseline, then separates executable sandbox helpers, record/checker paths, controlled file helpers, and design-only documents.
 - Corrects the Phase1 next direction away from duplicate readback/classification packages; b181 now advances the b180 frame into a same-session tick handoff and continuity comparison.
 - This does not change Boundary Index version, add runtime behavior, create actions, write memory/retention, use predictors, feed endocrine/tendency directly, change production behavior, or claim learning/consciousness.

@@ -25,13 +25,14 @@ SOURCE_DOCS = {
 
 SOURCE_DOC_REQUIREMENTS = {
     "capability_inventory": (
-        "This file records what the repository can actually run or produce after Boundary Index `2026-06-09-b191`.",
+        "This file records what the repository can actually run or produce after Boundary Index `2026-06-09-b192`.",
         "b186 corrects wait/probe operation labels",
         "b187 creates a docs-backed Phase2-to-Phase10 completed capability cross-check report",
         "b188 adds a structural refactor map and read-only checker",
         "b189 adds an R2 compatibility alias plan and read-only checker",
         "b190 adds an R3 low-risk docs folder plan and read-only checker",
         "b191 adds an R3A docs authority freeze and read-only checker",
+        "b192 adds an R4 first tiny docs move redirect-index plan and read-only checker",
         "## Not Present Yet",
     ),
     "capability_matrix": (
@@ -43,14 +44,16 @@ SOURCE_DOC_REQUIREMENTS = {
         "refactor r2 compatibility alias plan minimal",
         "refactor r3 low-risk docs folder plan minimal",
         "refactor r3a docs authority freeze minimal",
+        "refactor r4 first tiny docs move redirect-index plan minimal",
     ),
     "status": (
-        "Current version: `Boundary Index Version: 2026-06-09-b191`",
+        "Current version: `Boundary Index Version: 2026-06-09-b192`",
         "After b188, ASHL Core can validate a nine-line structural refactor map.",
         "After b189, ASHL Core can validate an R2 compatibility alias plan.",
         "After b190, ASHL Core can validate an R3 low-risk docs folder plan.",
         "After b191, ASHL Core can validate an R3A docs authority freeze.",
-        "Next refactor direction: ASHL Core Refactor R4 First Tiny Docs Move With Redirect Index Plan Minimal v0.",
+        "After b192, ASHL Core can validate an R4 first tiny docs move redirect-index plan.",
+        "Next refactor direction: ASHL Core Refactor R4A First Tiny Docs Move Execution Minimal v0",
     ),
     "line_index": (
         "# ASHL Core Phase0 Line Document Index",
@@ -58,9 +61,9 @@ SOURCE_DOC_REQUIREMENTS = {
         "## 10. Governance / Audit / Planning Line",
     ),
     "boundary_index": (
-        "Boundary Index Version: 2026-06-09-b191",
-        "ASHL Core Refactor R3A Docs Authority Freeze Minimal v0",
-        "R3A docs authority freeze",
+        "Boundary Index Version: 2026-06-09-b192",
+        "ASHL Core Refactor R4 First Tiny Docs Move Redirect Index Plan Minimal v0",
+        "R4 first tiny docs move redirect-index plan",
         "No proof-of-learning claim.",
     ),
     "growth_plan": (

@@ -17,6 +17,7 @@ REQUIRED_DOCS = [
     Path("docs/ashl_core_refactor_r2_compatibility_alias_plan_v0.md"),
     Path("docs/ashl_core_refactor_r3_low_risk_docs_folder_plan_v0.md"),
     Path("docs/ashl_core_refactor_r3a_docs_authority_freeze_v0.md"),
+    Path("docs/ashl_core_refactor_r4_first_tiny_docs_move_redirect_index_plan_v0.md"),
 ]
 
 
@@ -60,26 +61,26 @@ class Phase0DocumentationInventoryConsistencyReconciliationTests(unittest.TestCa
     def test_current_boundary_index_has_sandbox_production_distinction(self):
         boundary = self._read("docs/current_boundary_index.md")
 
-        self.assertIn("Boundary Index Version: 2026-06-09-b191", boundary)
+        self.assertIn("Boundary Index Version: 2026-06-09-b192", boundary)
         self.assertIn("No production/runtime memory-influenced behavior is allowed.", boundary)
         self.assertIn("sandbox-only lesson application, observation, and evaluation records", boundary)
         self.assertIn("do not constitute production/runtime memory-influenced behavior", boundary)
         self.assertIn("Level 2 Sandbox Application milestone", boundary)
         self.assertIn("Level 3 Toy Minefield Multi-Step Sandbox milestone", boundary)
-        self.assertIn("ASHL Core Refactor R3A Docs Authority Freeze Minimal v0", boundary)
-        self.assertIn("R3A docs authority freeze", boundary)
-        self.assertIn("B1/10", boundary)
+        self.assertIn("ASHL Core Refactor R4 First Tiny Docs Move Redirect Index Plan Minimal v0", boundary)
+        self.assertIn("R4 first tiny docs move redirect-index plan", boundary)
+        self.assertIn("B2/10", boundary)
 
     def test_actual_capability_inventory_records_repo_reality(self):
         inventory = self._read("docs/ashl_core_actual_capability_inventory_runtime_substrate_map_v0.md")
 
         for phrase in (
-            "tracked files after this package is committed: 828",
-            "`ashl_core/*.py`: 295",
-            "`tests/*.py`: 365",
-            "top-level `docs/*.md`: 143",
-            "smoke functions in `run_all_smoke_tests.py`: 431",
-            "expected refreshed full smoke report: 431 / 431 passed",
+            "tracked files after this package is committed: 831",
+            "`ashl_core/*.py`: 296",
+            "`tests/*.py`: 366",
+            "top-level `docs/*.md`: 144",
+            "smoke functions in `run_all_smoke_tests.py`: 432",
+            "expected refreshed full smoke report: 432 / 432 passed",
             "Executable sandbox/helper capability",
             "Record/checker capability",
             "Design-only capability",
@@ -92,6 +93,8 @@ class Phase0DocumentationInventoryConsistencyReconciliationTests(unittest.TestCa
             "ASHL Core R3 low-risk docs folder plan reports",
             "ASHL Core Refactor R3A Docs Authority Freeze Minimal v0",
             "ASHL Core R3A docs authority freeze reports",
+            "ASHL Core Refactor R4 First Tiny Docs Move Redirect Index Plan Minimal v0",
+            "ASHL Core R4 first tiny docs move redirect-index plan reports",
             "no unrestricted Qingyin long-term memory runtime",
         ):
             with self.subTest(phrase=phrase):
@@ -219,6 +222,29 @@ class Phase0DocumentationInventoryConsistencyReconciliationTests(unittest.TestCa
         self.assertIn("docs_renamed=False", freeze)
         self.assertIn("path_references_changed=False", freeze)
         self.assertIn("runtime_behavior_changed=False", freeze)
+
+    def test_capability_matrix_records_b192_r4_first_tiny_docs_move_plan(self):
+        matrix = self._read("docs/phase0_capability_matrix.md")
+
+        self.assertIn("refactor r4 first tiny docs move redirect-index plan minimal", matrix)
+        self.assertIn("implemented_first_tiny_docs_move_plan", matrix)
+        self.assertIn("selected old path", matrix)
+        self.assertIn("ashl_core/refactor_r4_first_tiny_docs_move_redirect_index_plan_minimal.py", matrix)
+        self.assertIn("docs/ashl_core_refactor_r4_first_tiny_docs_move_redirect_index_plan_v0.md", matrix)
+
+    def test_r4_first_tiny_docs_move_plan_records_no_docs_movement(self):
+        plan = self._read("docs/ashl_core_refactor_r4_first_tiny_docs_move_redirect_index_plan_v0.md")
+
+        self.assertIn("R4 plans the first tiny low-risk docs move.", plan)
+        self.assertIn("No files are moved in this package.", plan)
+        self.assertIn("docs/milestone_logs/mimetic_endocrine_line_milestone_2026-06-09.md", plan)
+        self.assertIn("docs/archive/milestone_logs/mimetic_endocrine_line_milestone_2026-06-09.md", plan)
+        self.assertIn("root_authority_candidate_selected=False", plan)
+        self.assertIn("frozen_authority_docs_protected=True", plan)
+        self.assertIn("redirect_index_entry_created=True", plan)
+        self.assertIn("docs_moved=False", plan)
+        self.assertIn("path_references_changed=False", plan)
+        self.assertIn("runtime_behavior_changed=False", plan)
 
     def test_long_term_memory_priority_note_exists(self):
         design = self._read("docs/five_layer_memory_design_assumption_v0_1.md")

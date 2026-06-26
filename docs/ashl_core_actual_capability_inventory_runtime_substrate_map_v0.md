@@ -4,7 +4,7 @@ Status: docs-only actual capability inventory.
 Runtime impact: none.
 Boundary Index impact: none.
 
-This file records what the repository can actually run or produce after Boundary Index `2026-06-09-b191`.
+This file records what the repository can actually run or produce after Boundary Index `2026-06-09-b192`.
 
 It is a work-start reality check. It does not grant runtime authority and does not replace:
 
@@ -15,14 +15,14 @@ It is a work-start reality check. It does not grant runtime authority and does n
 
 ## Scan Baseline
 
-Repository scan baseline after the b191 ASHL Core R3A docs authority freeze package:
+Repository scan baseline after the b192 ASHL Core R4 first tiny docs move redirect-index plan package:
 
-- tracked files after this package is committed: 828
-- `ashl_core/*.py`: 295
-- `tests/*.py`: 365
-- top-level `docs/*.md`: 143
-- smoke functions in `run_all_smoke_tests.py`: 431
-- expected refreshed full smoke report: 431 / 431 passed
+- tracked files after this package is committed: 831
+- `ashl_core/*.py`: 296
+- `tests/*.py`: 366
+- top-level `docs/*.md`: 144
+- smoke functions in `run_all_smoke_tests.py`: 432
+- expected refreshed full smoke report: 432 / 432 passed
 
 Important caveat:
 
@@ -71,6 +71,7 @@ Action and sandbox substrate:
 - b189 adds an R2 compatibility alias plan and read-only checker for future line-folder refactor work without moving files, changing imports, implementing aliases, or changing runtime behavior
 - b190 adds an R3 low-risk docs folder plan and read-only checker for future documentation organization without moving docs, creating folders, changing references, changing imports, or changing runtime behavior
 - b191 adds an R3A docs authority freeze and read-only checker for 8 root authority docs without moving docs, archiving docs, changing references, changing imports, or changing runtime behavior
+- b192 adds an R4 first tiny docs move redirect-index plan and read-only checker for one future low-risk historical milestone log without moving docs, creating archive folders, changing references, changing imports, or changing runtime behavior
 
 Session and working memory substrate:
 
@@ -153,6 +154,7 @@ Representative data shapes already produced by existing modules/tests include:
 - ASHL Core R2 compatibility alias plan reports
 - ASHL Core R3 low-risk docs folder plan reports
 - ASHL Core R3A docs authority freeze reports
+- ASHL Core R4 first tiny docs move redirect-index plan reports
 - smoke test report data
 
 ## Not Present Yet
@@ -383,6 +385,38 @@ Status:
 Completed at Boundary Index `2026-06-09-b191`.
 
 Adds `docs/ashl_core_refactor_r3a_docs_authority_freeze_v0.md` and a read-only CLI checker. It freezes 8 root authority docs before future documentation movement and requires a future redirect/index/lookup package plus explicit user approval before those docs can be moved.
+
+It still must not:
+
+- move docs
+- create docs folders
+- archive docs
+- delete docs
+- rename docs
+- change document path references
+- move Python modules
+- change imports
+- implement aliases
+- change runtime behavior
+- create action selection or execution
+- write memory or retention
+- use or mutate predictors
+- feed endocrine or tendency
+- claim production behavior, learning, or consciousness
+
+Current implemented R4 first tiny docs move redirect-index plan:
+
+```text
+ASHL Core Refactor R4 First Tiny Docs Move Redirect Index Plan Minimal v0
+```
+
+Plain meaning:
+
+Status:
+
+Completed at Boundary Index `2026-06-09-b192`.
+
+Adds `docs/ashl_core_refactor_r4_first_tiny_docs_move_redirect_index_plan_v0.md` and a read-only CLI checker. It selects one low-risk historical milestone log for a future move, plans its archive path, and records redirect/index/lookup preconditions before any future move may happen.
 
 It still must not:
 

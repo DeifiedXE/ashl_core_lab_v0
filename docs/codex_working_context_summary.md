@@ -57,12 +57,13 @@ The point is not to deny the relationship between the user and Qingyin. The poin
 Current Boundary Index at the time this summary was written:
 
 ```text
-2026-06-09-b191
+2026-06-09-b192
 ```
 
-Previous R3 source boundary:
+Previous source boundaries:
 
 ```text
+2026-06-09-b191
 2026-06-09-b190
 ```
 
@@ -92,6 +93,7 @@ b169 advisory reordering evidence
 -> b189 ASHL Core R2 compatibility alias plan
 -> b190 ASHL Core R3 low-risk docs folder plan
 -> b191 ASHL Core R3A docs authority freeze
+-> b192 ASHL Core R4 first tiny docs move redirect-index plan
 ```
 
 Plain meaning:
@@ -142,9 +144,11 @@ b190 adds `docs/ashl_core_refactor_r3_low_risk_docs_folder_plan_v0.md` and a rea
 
 b191 adds `docs/ashl_core_refactor_r3a_docs_authority_freeze_v0.md` and a read-only checker. It freezes the 8 root authority docs before future docs movement. Future movement of those main docs requires a later redirect/index/lookup package and explicit user approval. This is a freeze rule, not docs movement.
 
-## What b191 Does Not Do
+b192 adds `docs/ashl_core_refactor_r4_first_tiny_docs_move_redirect_index_plan_v0.md` and a read-only checker. It selects `docs/milestone_logs/mimetic_endocrine_line_milestone_2026-06-09.md` as one future low-risk docs move candidate and plans its future archive path plus redirect/lookup rules. This is a moving permit, not the move.
 
-b191 does not create:
+## What b192 Does Not Do
+
+b192 does not create:
 
 - a live runtime session
 - a session frame promoted to live runtime
@@ -322,17 +326,17 @@ Before coding, Codex should answer in plain language:
 4. What visible output will exist after the work?
 5. What does it still refuse to do?
 
-For the current b191 endpoint, do not keep growing duplicate Phase1 readback/index/handoff packages. Phase1 is closed as record-only substrate evidence, and Phase2 has begun as perception/capability grounding.
+For the current b192 endpoint, do not keep growing duplicate Phase1 readback/index/handoff packages. Phase1 is closed as record-only substrate evidence, and Phase2 has begun as perception/capability grounding.
 
 The next real step should be:
 
 ```text
-ASHL Core Refactor R4 First Tiny Docs Move With Redirect Index Plan Minimal v0
+ASHL Core Refactor R4A First Tiny Docs Move Execution Minimal v0
 ```
 
 Phase0 now has one compact audit saying the minimal same-session sandbox loop is complete in record evidence, while still refusing long-term learning or production claims.
 
-Phase2 now has source-link reports plus a correction report that prevents wait/probe settling cues from being forced into capability. b187 also adds a cross-check so future work does not rebuild completed packages or treat design-only docs as runtime. b188 adds a structural map so future refactor work does not scatter files further. b189 adds the compatibility alias plan so future module moves do not break old imports. b190 adds a docs folder plan so future documentation cleanup does not move authority docs by accident. b191 adds an R3A docs authority freeze so the main docs stay pinned until a later redirect/index/lookup move plan exists.
+Phase2 now has source-link reports plus a correction report that prevents wait/probe settling cues from being forced into capability. b187 also adds a cross-check so future work does not rebuild completed packages or treat design-only docs as runtime. b188 adds a structural map so future refactor work does not scatter files further. b189 adds the compatibility alias plan so future module moves do not break old imports. b190 adds a docs folder plan so future documentation cleanup does not move authority docs by accident. b191 adds an R3A docs authority freeze so the main docs stay pinned until a later redirect/index/lookup move plan exists. b192 adds an R4 plan for the first tiny low-risk docs move, but does not move the file.
 
 The current Phase 0 closure plan is:
 

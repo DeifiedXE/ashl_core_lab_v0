@@ -516,6 +516,9 @@ from .refactor_r3_low_risk_docs_folder_plan_minimal import (
 from .refactor_r3a_docs_authority_freeze_minimal import (
     run_refactor_r3a_docs_authority_freeze_minimal_check,
 )
+from .refactor_r4_first_tiny_docs_move_redirect_index_plan_minimal import (
+    run_refactor_r4_first_tiny_docs_move_redirect_index_plan_minimal_check,
+)
 from .reviewed_lesson_dry_run_correction_minimal import (
     run_reviewed_lesson_dry_run_correction_minimal_check,
 )
@@ -4362,6 +4365,8 @@ def run_command(command: str) -> dict[str, Any] | str:
         return run_refactor_r3_low_risk_docs_folder_plan_minimal_check()
     if command == "run-refactor-r3a-docs-authority-freeze-minimal-check":
         return run_refactor_r3a_docs_authority_freeze_minimal_check()
+    if command == "run-refactor-r4-first-tiny-docs-move-redirect-index-plan-minimal-check":
+        return run_refactor_r4_first_tiny_docs_move_redirect_index_plan_minimal_check()
     if command == "run-simple-retina-focus-preview-minimal-check":
         return run_simple_retina_focus_preview_minimal_check()
     if command == "run-generalized-prediction-confidence-check":
@@ -4683,6 +4688,7 @@ def main(argv: list[str] | None = None) -> int:
             "run-refactor-r2-compatibility-alias-plan-minimal-check",
             "run-refactor-r3-low-risk-docs-folder-plan-minimal-check",
             "run-refactor-r3a-docs-authority-freeze-minimal-check",
+            "run-refactor-r4-first-tiny-docs-move-redirect-index-plan-minimal-check",
             "run-simple-retina-focus-preview-minimal-check",
             "run-generalized-prediction-confidence-check",
             "run-generalized-candidate-from-pattern-check",
@@ -5270,6 +5276,8 @@ def main(argv: list[str] | None = None) -> int:
         result = run_refactor_r3_low_risk_docs_folder_plan_minimal_check()
     elif args.command == "run-refactor-r3a-docs-authority-freeze-minimal-check":
         result = run_refactor_r3a_docs_authority_freeze_minimal_check()
+    elif args.command == "run-refactor-r4-first-tiny-docs-move-redirect-index-plan-minimal-check":
+        result = run_refactor_r4_first_tiny_docs_move_redirect_index_plan_minimal_check()
     elif args.command == "run-simple-retina-focus-preview-minimal-check":
         result = run_simple_retina_focus_preview_minimal_check()
     elif args.command == "run-generalized-prediction-confidence-check":
