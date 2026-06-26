@@ -56,31 +56,31 @@ class Phase0DocumentationInventoryConsistencyReconciliationTests(unittest.TestCa
     def test_current_boundary_index_has_sandbox_production_distinction(self):
         boundary = self._read("docs/current_boundary_index.md")
 
-        self.assertIn("Boundary Index Version: 2026-06-09-b184", boundary)
+        self.assertIn("Boundary Index Version: 2026-06-09-b185", boundary)
         self.assertIn("No production/runtime memory-influenced behavior is allowed.", boundary)
         self.assertIn("sandbox-only lesson application, observation, and evaluation records", boundary)
         self.assertIn("do not constitute production/runtime memory-influenced behavior", boundary)
         self.assertIn("Level 2 Sandbox Application milestone", boundary)
         self.assertIn("Level 3 Toy Minefield Multi-Step Sandbox milestone", boundary)
-        self.assertIn("Phase2 Closed Phase1 Substrate Perception Capability Grounding Entry Minimal v0", boundary)
+        self.assertIn("Phase2 Perception Capability Evidence Source Link Minimal v0", boundary)
         self.assertIn("B0/10", boundary)
 
     def test_actual_capability_inventory_records_repo_reality(self):
         inventory = self._read("docs/ashl_core_actual_capability_inventory_runtime_substrate_map_v0.md")
 
         for phrase in (
-            "tracked files: 810",
-            "`ashl_core/*.py`: 288",
-            "`tests/*.py`: 358",
+            "tracked files: 812",
+            "`ashl_core/*.py`: 289",
+            "`tests/*.py`: 359",
             "top-level `docs/*.md`: 148",
-            "smoke functions in `run_all_smoke_tests.py`: 424",
-            "expected refreshed full smoke report: 424 / 424 passed",
+            "smoke functions in `run_all_smoke_tests.py`: 425",
+            "expected refreshed full smoke report: 425 / 425 passed",
             "Executable sandbox/helper capability",
             "Record/checker capability",
             "Design-only capability",
             "A readback-only package after b179 would be redundant",
-            "Phase2 Closed Phase1 Substrate Perception Capability Grounding Entry Minimal v0",
-            "Phase2 perception/capability grounding entry reports",
+            "Phase2 Perception Capability Evidence Source Link Minimal v0",
+            "Phase2 perception/capability evidence source-link reports",
             "no unrestricted Qingyin long-term memory runtime",
         ):
             with self.subTest(phrase=phrase):
@@ -101,6 +101,14 @@ class Phase0DocumentationInventoryConsistencyReconciliationTests(unittest.TestCa
         self.assertIn("implemented_phase2_perception_capability_grounding_entry", matrix)
         self.assertIn("perception evidence candidates", matrix)
         self.assertIn("ashl_core/phase2_closed_phase1_substrate_perception_capability_grounding_entry_minimal.py", matrix)
+
+    def test_capability_matrix_records_b185_phase2_evidence_source_link(self):
+        matrix = self._read("docs/phase0_capability_matrix.md")
+
+        self.assertIn("phase2 perception capability evidence source link minimal", matrix)
+        self.assertIn("implemented_phase2_evidence_source_link_report", matrix)
+        self.assertIn("visual-spatial grounding", matrix)
+        self.assertIn("ashl_core/phase2_perception_capability_evidence_source_link_minimal.py", matrix)
 
     def test_long_term_memory_priority_note_exists(self):
         design = self._read("docs/five_layer_memory_design_assumption_v0_1.md")

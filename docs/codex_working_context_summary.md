@@ -57,7 +57,7 @@ The point is not to deny the relationship between the user and Qingyin. The poin
 Current Boundary Index at the time this summary was written:
 
 ```text
-2026-06-09-b184
+2026-06-09-b185
 ```
 
 Current endpoint:
@@ -79,6 +79,7 @@ b169 advisory reordering evidence
 -> b182 Phase1 tick1 three-line substrate index
 -> b183 Phase1 closure audit
 -> b184 Phase2 perception/capability grounding entry report
+-> b185 Phase2 perception/capability evidence source-link report
 ```
 
 Plain meaning:
@@ -115,9 +116,11 @@ b183 can confirm Phase1 closure: session trace spine, tick handoff, and three-li
 
 b184 can read the closed Phase1 substrate and produce record-only Phase2 entry reports. These reports identify perception evidence candidates, capability evidence candidates, and unknown fields that must remain unknown. This starts Phase2 as Perception And Capability Grounding, not action preparation.
 
-## What b184 Does Not Do
+b185 can read those b184 entry reports and link their perception/capability evidence candidates to existing visual-spatial grounding and Qingyin Bridge capability-map source references. It preserves unresolved source links as unknown instead of inventing semantic vision or capability bindings.
 
-b184 does not create:
+## What b185 Does Not Do
+
+b185 does not create:
 
 - a live runtime session
 - a session frame promoted to live runtime
@@ -140,6 +143,7 @@ b184 does not create:
 - new visual record
 - grounded capability binding
 - capability map creation
+- capability map mutation
 - raw tool access or external tool operation
 - long-term memory write
 - retention write
@@ -279,17 +283,17 @@ Before coding, Codex should answer in plain language:
 4. What visible output will exist after the work?
 5. What does it still refuse to do?
 
-For the current b184 endpoint, do not keep growing duplicate Phase1 readback/index/handoff packages. Phase1 is closed as record-only substrate evidence, and Phase2 has begun as perception/capability grounding.
+For the current b185 endpoint, do not keep growing duplicate Phase1 readback/index/handoff packages. Phase1 is closed as record-only substrate evidence, and Phase2 has begun as perception/capability grounding.
 
 The next real step should be:
 
 ```text
-read the b184 entry report and link its evidence candidates to existing visual-spatial grounding and Qingyin Bridge capability-map evidence where available
+read the b185 source-link reports and summarize which evidence references are linked versus still unknown
 ```
 
 Phase0 now has one compact audit saying the minimal same-session sandbox loop is complete in record evidence, while still refusing long-term learning or production claims.
 
-Phase2 now has an entry report from the closed Phase1 substrate. The next work should connect that report to existing perception/capability evidence references where available, while preserving unknowns and still refusing candidate input, ordering, action selection, execution, memory write, or learning/consciousness claims.
+Phase2 now has source-link reports from the b184 entry reports. The next work should read those reports back into a compact availability summary, while still refusing semantic vision, capability binding, candidate input, ordering, action selection, execution, memory write, or learning/consciousness claims.
 
 The current Phase 0 closure plan is:
 

@@ -3132,9 +3132,16 @@ Two-Trial History Boundary:
 - Boundary Index updates from `2026-06-09-b183` to `2026-06-09-b184`.
 - Plain meaning: Phase2 now starts by identifying perception evidence candidates, capability evidence candidates, and unknown fields that must stay unknown. This still does not create candidate input, candidate ordering, selected_action, final_action, direct command, execution, outcome observation, semantic vision, object recognition, active focus, capability maps, raw tool access, memory write, production behavior, or learning/consciousness claims.
 
+## Phase2 Perception Capability Evidence Source Link Minimal v0
+
+- Adds `py -3 -m ashl_core.teaching_cli run-phase2-perception-capability-evidence-source-link-minimal-check`.
+- Phase2 Perception Capability Evidence Source Link Minimal v0 reads b184 Phase2 entry reports and creates record-only source-link reports.
+- Boundary Index updates from `2026-06-09-b184` to `2026-06-09-b185`.
+- Plain meaning: Phase2 can now point b184 perception evidence candidates at existing visual-spatial grounding source references, and capability evidence candidates at existing Qingyin Bridge capability-map source references. Unresolved items stay unknown. This still does not create semantic vision, object recognition, active focus, capability-map creation/mutation, raw tool access, candidate input, candidate ordering, selected_action, final_action, direct command, execution, outcome observation, memory write, predictor use, production behavior, or learning/consciousness claims.
+
 ## ASHL Core Actual Capability Inventory / Runtime Substrate Map v0
 
-- Adds `docs/ashl_core_actual_capability_inventory_runtime_substrate_map_v0.md` as a docs-only reality check for current repo capabilities; it is now updated through b184.
+- Adds `docs/ashl_core_actual_capability_inventory_runtime_substrate_map_v0.md` as a docs-only reality check for current repo capabilities; it is now updated through b185.
 - Records the actual tracked-file, core-module, test-module, docs, and smoke-test baseline, then separates executable sandbox helpers, record/checker paths, controlled file helpers, and design-only documents.
 - Corrects the Phase1 next direction away from duplicate readback/classification packages; b181 now advances the b180 frame into a same-session tick handoff and continuity comparison.
 - This does not change Boundary Index version, add runtime behavior, create actions, write memory/retention, use predictors, feed endocrine/tendency directly, change production behavior, or claim learning/consciousness.

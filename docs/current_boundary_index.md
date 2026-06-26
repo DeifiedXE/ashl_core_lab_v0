@@ -1,9 +1,9 @@
 # Current Boundary Index
 
-Boundary Index Version: 2026-06-09-b184
-Last update log: Phase2 Closed Phase1 Substrate Perception Capability Grounding Entry Minimal v0
-Previous Boundary Index Version: 2026-06-09-b183
-Previous Last update log: Phase1 Closure Audit Minimal v0
+Boundary Index Version: 2026-06-09-b185
+Last update log: Phase2 Perception Capability Evidence Source Link Minimal v0
+Previous Boundary Index Version: 2026-06-09-b184
+Previous Last update log: Phase2 Closed Phase1 Substrate Perception Capability Grounding Entry Minimal v0
 
 Archived previous current index:
 
@@ -15,11 +15,11 @@ This file is the active short index. Archive files preserve older milestone deta
 
 ## Current Safe Claim
 
-b184 starts Phase2 as Perception And Capability Grounding. It reads the closed Phase1 substrate and creates record-only entry reports.
+b185 reads the b184 Phase2 entry reports and links their evidence candidates to existing visual-spatial and Qingyin Bridge capability-map source references.
 
 Plain wording:
 
-Phase2 now asks what closed-session evidence might support perception, what might support capability, and what must remain unknown. It does not prepare an action.
+Phase2 now knows which existing source records can be referenced for perception/capability evidence, and which items are still unknown. It does not create grounding behavior or prepare an action.
 
 Current endpoint:
 
@@ -31,6 +31,7 @@ Phase0 two-cycle thought/action/working-memory mini-loop
 -> Phase1 three-line substrate index
 -> Phase1 closure audit
 -> Phase2 perception/capability grounding entry report
+-> Phase2 evidence source-link report
 ```
 
 The three deterministic paths remain:
@@ -59,23 +60,29 @@ b170 one-cycle thought/action/working-memory trace
 -> b182 Phase1 tick1 three-line substrate index
 -> b183 Phase1 closure audit
 -> b184 Phase2 perception/capability grounding entry report
+-> b185 Phase2 perception/capability evidence source-link report
 ```
 
 Compatibility anchor for b170 B0/10 self-check: b170 Thought Memory Action Parallel Mini Loop evidence.
 Compatibility anchor for b180 B0/10 self-check: Phase1 Session Frame Materialization evidence.
 Compatibility field retained from b180: `b0_10_counter=B0/10`.
 
-## What b184 Adds
+## What b185 Adds
 
-- `phase2_entry_report_created=True`
+- `phase2_source_link_report_created=True`
 - `phase2_purpose=perception_and_capability_grounding`
-- `perception_evidence_candidates_identified=True`
-- `capability_evidence_candidates_identified=True`
-- `unknown_fields_preserved=True`
+- `links_perception_evidence_to_existing_sources=True`
+- `links_capability_evidence_to_existing_sources=True`
+- `visual_spatial_source_reference_available=True`
+- `capability_map_source_reference_available=True`
+- `unresolved_unknowns_preserved=True`
 - `record_only_report=True`
+- `source_reference_link_only=True`
 - `candidate_input_created=False`
 - `candidate_ordering_created=False`
 - `action_selection_created=False`
+- `semantic_vision_created=False`
+- `capability_map_mutated=False`
 - `memory_write_created=False`
 
 ## Still Blocked
@@ -89,7 +96,7 @@ Compatibility field retained from b180: `b0_10_counter=B0/10`.
 - No new working-memory update.
 - No semantic vision, object recognition, active focus, or focus application.
 - No new visual record.
-- No grounded capability binding, capability map creation, raw tool access, or external tool operation.
+- No grounded capability binding, capability map creation/mutation, raw tool access, or external tool operation.
 - No production/runtime behavior.
 - No production/runtime memory-influenced behavior is allowed.
 - No long-term, Core, Archive, retained JSONL, retained working-memory, or persistent memory write.
@@ -122,12 +129,12 @@ Must-read planning docs:
 Next useful direction:
 
 ```text
-Phase2 Perception Capability Evidence Source Link Minimal v0
+Phase2 Grounding Source Availability Readback Minimal v0
 ```
 
 Plain wording:
 
-Read the b184 entry report and link its evidence candidates to existing visual-spatial grounding and Qingyin Bridge capability-map evidence where available. Unknowns must stay unknown. Do not create candidate input, order candidates, select an action, execute, write memory, or claim learning/consciousness.
+Read the b185 source-link reports and summarize which perception/capability evidence references are linked versus still unknown. Do not create semantic vision, capability bindings, candidate input, actions, memory writes, or learning/consciousness claims.
 
 ## Line Count Rule
 

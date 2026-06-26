@@ -522,6 +522,9 @@ from ashl_core.phase1_closure_audit_minimal import run_phase1_closure_audit_mini
 from ashl_core.phase2_closed_phase1_substrate_perception_capability_grounding_entry_minimal import (
     run_phase2_closed_phase1_substrate_perception_capability_grounding_entry_minimal_check,
 )
+from ashl_core.phase2_perception_capability_evidence_source_link_minimal import (
+    run_phase2_perception_capability_evidence_source_link_minimal_check,
+)
 from ashl_core.minimal_visual_grounding_trial import run_minimal_visual_grounding_trial_check
 from ashl_core.visual_prediction_error_attention_priority_preview_minimal import (
     run_visual_prediction_error_attention_priority_preview_minimal_check,
@@ -10907,9 +10910,9 @@ def smoke_current_boundary_index_docs() -> dict:
     readme = readme_path.read_text(encoding="utf-8") if readme_path.exists() else ""
     research_plan = research_plan_path.read_text(encoding="utf-8") if research_plan_path.exists() else ""
     compact_required_terms = [
-        "Boundary Index Version: 2026-06-09-b184",
-        "Last update log: Phase2 Closed Phase1 Substrate Perception Capability Grounding Entry Minimal v0",
-        "Previous Boundary Index Version: 2026-06-09-b183",
+        "Boundary Index Version: 2026-06-09-b185",
+        "Last update log: Phase2 Perception Capability Evidence Source Link Minimal v0",
+        "Previous Boundary Index Version: 2026-06-09-b184",
         "docs/boundary_archive/current_boundary_index_2026-06-25_b174.md",
         "docs/boundary_archive/current_boundary_index_2026-06-26_b184.md",
         "Phase0 two-cycle thought/action/working-memory mini-loop",
@@ -10919,15 +10922,19 @@ def smoke_current_boundary_index_docs() -> dict:
         "Phase1 three-line substrate index",
         "Phase1 closure audit",
         "Phase2 perception/capability grounding entry report",
-        "phase2_entry_report_created=True",
+        "Phase2 evidence source-link report",
+        "phase2_source_link_report_created=True",
         "phase2_purpose=perception_and_capability_grounding",
-        "perception_evidence_candidates_identified=True",
-        "capability_evidence_candidates_identified=True",
-        "unknown_fields_preserved=True",
+        "links_perception_evidence_to_existing_sources=True",
+        "links_capability_evidence_to_existing_sources=True",
+        "unresolved_unknowns_preserved=True",
         "record_only_report=True",
+        "source_reference_link_only=True",
         "candidate_input_created=False",
         "candidate_ordering_created=False",
         "action_selection_created=False",
+        "semantic_vision_created=False",
+        "capability_map_mutated=False",
         "memory_write_created=False",
         "b0_10_counter=B0/10",
         "reach_front_item",
@@ -10940,7 +10947,7 @@ def smoke_current_boundary_index_docs() -> dict:
         "No selected_action, final_action, direct command, execution, or outcome observation creation.",
         "No new working-memory update.",
         "No semantic vision, object recognition, active focus, or focus application.",
-        "No grounded capability binding, capability map creation, raw tool access, or external tool operation.",
+        "No grounded capability binding, capability map creation/mutation, raw tool access, or external tool operation.",
         "No production/runtime memory-influenced behavior is allowed.",
         "No proof-of-learning claim.",
         "No consciousness or awakening claim.",
@@ -10949,7 +10956,7 @@ def smoke_current_boundary_index_docs() -> dict:
         "Memory is a warning sign, not a ban command",
         "docs/ashl_core_actual_capability_inventory_runtime_substrate_map_v0.md",
         "docs/phase1_to_phase5_growth_substrate_plan.md",
-        "Phase2 Perception Capability Evidence Source Link Minimal v0",
+        "Phase2 Grounding Source Availability Readback Minimal v0",
         "This current index must stay under 150 lines.",
     ]
     archive_required_terms = [
@@ -10984,8 +10991,8 @@ def smoke_current_boundary_index_docs() -> dict:
         and all(term in b184_archive for term in b184_archive_required_terms)
         and all(term in legacy_archive for term in legacy_required_terms)
         and line_count <= 150
-        and "Phase2 Closed Phase1 Substrate Perception Capability Grounding Entry Minimal v0" in readme
-        and "Phase2 Closed Phase1 Substrate Perception Capability Grounding Entry Minimal v0" in research_plan
+        and "Phase2 Perception Capability Evidence Source Link Minimal v0" in readme
+        and "Phase2 Perception Capability Evidence Source Link Minimal v0" in research_plan
     )
     return _result(
         "boundary_index_current_archive",
@@ -11029,9 +11036,9 @@ def smoke_phase0_documentation_consolidation_minimal() -> dict:
         and matrix_path.exists()
         and index_path.exists()
         and plan_path.exists()
-        and "Boundary Index Version: 2026-06-09-b184" in status
+        and "Boundary Index Version: 2026-06-09-b185" in status
         and "Current Safe Capability" in status
-        and "Phase2 Closed Phase1 Substrate Perception Capability Grounding Entry Minimal v0" in status
+        and "Phase2 Perception Capability Evidence Source Link Minimal v0" in status
         and "Phase1 Closure Audit Minimal v0" in status
         and "ashl_core_actual_capability_inventory_runtime_substrate_map_v0.md" in index
         and "phase1_to_phase5_growth_substrate_plan.md" in index
@@ -11233,7 +11240,7 @@ def smoke_phase0_documentation_inventory_and_consistency_reconciliation() -> dic
     boundary = Path("docs/current_boundary_index.md").read_text(encoding="utf-8")
     passed = (
         all(path.exists() for path in required_paths)
-        and "Boundary Index Version: 2026-06-09-b184" in texts[Path("docs/phase0_status.md")]
+        and "Boundary Index Version: 2026-06-09-b185" in texts[Path("docs/phase0_status.md")]
         and "Inventory count:" in texts[Path("docs/phase0_doc_inventory.md")]
         and "docs/phase1_to_phase5_growth_substrate_plan.md" in texts[Path("docs/phase0_doc_inventory.md")]
         and "docs/ashl_core_actual_capability_inventory_runtime_substrate_map_v0.md" in texts[
@@ -11241,7 +11248,7 @@ def smoke_phase0_documentation_inventory_and_consistency_reconciliation() -> dic
         ]
         and "docs/phase0_versioning_policy.md" in texts[Path("docs/phase0_doc_inventory.md")]
         and "unknown_needs_review" in texts[Path("docs/phase0_doc_inventory.md")]
-        and "Phase2 Closed Phase1 Substrate Perception Capability Grounding Entry Minimal v0" in texts[
+        and "Phase2 Perception Capability Evidence Source Link Minimal v0" in texts[
             Path("docs/ashl_core_actual_capability_inventory_runtime_substrate_map_v0.md")
         ]
         and "phase1 closure audit minimal" in texts[
@@ -21514,6 +21521,90 @@ def smoke_phase2_closed_phase1_substrate_perception_capability_grounding_entry_m
     )
 
 
+def smoke_phase2_perception_capability_evidence_source_link_minimal() -> dict:
+    result = run_phase2_perception_capability_evidence_source_link_minimal_check()
+    summary = result.get("summary", {})
+    boundary = result.get("boundary", {})
+    records = result.get("valid_records", [])
+    reports = [record.get("source_link_report", {}) for record in records]
+    catalogs = [record.get("existing_evidence_source_catalog", {}) for record in records]
+    perception_links = [record.get("perception_evidence_source_links", []) for record in records]
+    capability_links = [record.get("capability_evidence_source_links", []) for record in records]
+    unknowns = [record.get("unresolved_unknown_preservation", {}) for record in records]
+    audits = [record.get("boundary_audit", {}) for record in records]
+    first_report = reports[0] if reports else {}
+    first_catalog = catalogs[0] if catalogs else {}
+    first_perception_links = perception_links[0] if perception_links else []
+    first_capability_links = capability_links[0] if capability_links else []
+    first_unknown = unknowns[0] if unknowns else {}
+    first_audit = audits[0] if audits else {}
+    reach_links = []
+    for record in records:
+        if record.get("source_phase2_entry_report", {}).get("scenario_id") == "item_reachable_feedback_prioritizes_reach":
+            reach_links = record.get("capability_evidence_source_links", [])
+    reach_capability_link = next(
+        (
+            link
+            for link in reach_links
+            if link.get("evidence_kind") == "closed_operation_context"
+        ),
+        {},
+    )
+    passed = (
+        result.get("command") == "run-phase2-perception-capability-evidence-source-link-minimal-check"
+        and result.get("flow") == "phase2_perception_capability_evidence_source_link_minimal_v0"
+        and result.get("status") == "ok"
+        and boundary.get("boundary_index_version_before") == "2026-06-09-b184"
+        and boundary.get("boundary_index_version_after") == "2026-06-09-b185"
+        and summary.get("source_link_result_count") == 52
+        and summary.get("valid_source_link_count") == 3
+        and summary.get("invalid_source_link_count") == 49
+        and summary.get("source_link_report_created_count") == 3
+        and summary.get("perception_source_links_created_count") == 3
+        and summary.get("capability_source_links_created_count") == 3
+        and summary.get("visual_spatial_source_reference_available_count") == 3
+        and summary.get("capability_map_source_reference_available_count") == 3
+        and summary.get("unresolved_unknowns_preserved_count") == 3
+        and summary.get("reach_front_capability_reference_linked_count") == 1
+        and summary.get("candidate_input_blocked_count") == 3
+        and summary.get("action_selection_blocked_count") == 3
+        and summary.get("execution_blocked_count") == 3
+        and summary.get("outcome_observation_blocked_count") == 3
+        and summary.get("memory_write_blocked_count") == 3
+        and summary.get("semantic_vision_blocked_count") == 3
+        and summary.get("capability_map_mutation_blocked_count") == 3
+        and summary.get("raw_tool_access_blocked_count") == 3
+        and summary.get("production_behavior_blocked_count") == 3
+        and summary.get("learning_claim_blocked_count") == 3
+        and summary.get("consciousness_claim_blocked_count") == 3
+        and all(report.get("phase2_source_link_report_created") is True for report in reports)
+        and all(report.get("candidate_input_created") is False for report in reports)
+        and all(report.get("execution_created") is False for report in reports)
+        and all(report.get("memory_write_created") is False for report in reports)
+        and first_catalog.get("visual_spatial_source", {}).get("source_family") == "visual_spatial_grounding_minimal"
+        and len(first_perception_links) == 2
+        and all(link.get("resolved_grounding_created") is False for link in first_perception_links)
+        and len(first_capability_links) == 2
+        and reach_capability_link.get("linked_capability_id") == "sandbox.body.reach_front"
+        and reach_capability_link.get("linked_capability_available") is True
+        and first_unknown.get("unresolved_unknowns_preserved") is True
+        and first_unknown.get("unknown_values_invented") is False
+        and first_report.get("source_reference_link_only") is True
+        and first_audit.get("boundary_number") == 185
+        and first_audit.get("production_behavior_created") is False
+        and first_audit.get("proof_of_learning_claim") is False
+        and first_audit.get("consciousness_claim") is False
+    )
+    return _result(
+        "phase2_perception_capability_evidence_source_link_minimal",
+        passed,
+        {
+            "summary": summary,
+            "boundary": boundary,
+        },
+    )
+
+
 def smoke_phase0_current_capability_snapshot() -> dict:
     doc_path = Path("docs/phase0_current_capability_snapshot_2026-06-10.md")
     doc = doc_path.read_text(encoding="utf-8") if doc_path.exists() else ""
@@ -24345,6 +24436,7 @@ def run_smoke_tests() -> list[dict]:
         smoke_phase1_tick1_frame_three_line_substrate_index_minimal(),
         smoke_phase1_closure_audit_minimal(),
         smoke_phase2_closed_phase1_substrate_perception_capability_grounding_entry_minimal(),
+        smoke_phase2_perception_capability_evidence_source_link_minimal(),
         smoke_phase0_current_capability_snapshot(),
         smoke_memory_influence_behavior_gate_design(),
         smoke_first_memory_influenced_behavior_boundary(),

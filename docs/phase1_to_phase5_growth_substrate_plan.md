@@ -142,15 +142,25 @@ Status:
 
 Completed at Boundary Index `2026-06-09-b184`.
 
+### Phase2 Perception Capability Evidence Source Link Minimal v0
+
+Plain version:
+
+Read the b184 entry report and link its perception/capability evidence candidates to existing visual-spatial grounding and Qingyin Bridge capability-map source references. Unknowns stay unknown.
+
+Status:
+
+Completed at Boundary Index `2026-06-09-b185`.
+
 Next useful step:
 
 ```text
-Phase2 Perception Capability Evidence Source Link Minimal v0
+Phase2 Grounding Source Availability Readback Minimal v0
 ```
 
 Plain version:
 
-Read the b184 entry report and link its evidence candidates to existing visual-spatial grounding and Qingyin Bridge capability-map evidence where available. Preserve unknowns. Do not create candidate input, action preparation, execution, memory writes, production behavior, or learning/consciousness claims.
+Read the b185 source-link reports and summarize which evidence references are linked versus still unknown. Do not create semantic vision, capability bindings, candidate input, action preparation, execution, memory writes, production behavior, or learning/consciousness claims.
 
 ## Working Rule
 

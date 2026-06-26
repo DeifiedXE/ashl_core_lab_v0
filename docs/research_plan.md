@@ -8611,21 +8611,42 @@ Plain meaning:
 Explicitly not changed:
 - No candidate input, candidate ordering, selected_action/final_action/direct_command/execution/outcome observation creation, semantic vision, object recognition, active focus, capability map creation, raw tool access, working-memory update, persistent memory write, external tool use, predictor read/influence/mutation, direct endocrine/tendency feed, production behavior, consciousness claim, long-term learning claim, or proof-of-learning claim.
 
+## Phase2 Perception Capability Evidence Source Link Minimal v0
+
+Status: completed / Phase2 perception and capability evidence source-link / Boundary Index b185.
+
+What changed:
+- Adds `ashl_core/phase2_perception_capability_evidence_source_link_minimal.py`.
+- Adds `tests/test_phase2_perception_capability_evidence_source_link_minimal.py`.
+- Adds CLI `run-phase2-perception-capability-evidence-source-link-minimal-check`.
+- Adds smoke `phase2_perception_capability_evidence_source_link_minimal`.
+- Reads b184 Phase2 entry reports.
+- Links perception evidence candidates to existing `visual_spatial_grounding_minimal` source references.
+- Links capability evidence candidates to existing `qingyin_bridge_grounded_capability_map_minimal` source references.
+- Preserves unresolved source links as unknown.
+- Boundary Index updates from `2026-06-09-b184` to `2026-06-09-b185`.
+
+Plain meaning:
+- Phase2 can now say where the b184 evidence candidates should look for existing perception/capability source records. It still does not make the source reference into semantic vision, a capability binding, or an action.
+
+Explicitly not changed:
+- No semantic vision, object recognition, active focus, capability-map creation/mutation, raw tool access, candidate input, candidate ordering/reordering, selected_action/final_action/direct_command/execution/outcome observation creation, working-memory update, persistent memory write, external tool use, predictor read/influence/mutation, direct endocrine/tendency feed, production behavior, consciousness claim, long-term learning claim, or proof-of-learning claim.
+
 ## ASHL Core Actual Capability Inventory / Runtime Substrate Map v0
 
 Status: completed / docs-only actual capability inventory / no Boundary Index change.
 
 What changed:
-- `docs/ashl_core_actual_capability_inventory_runtime_substrate_map_v0.md` records what the repo can actually run or produce after b184.
+- `docs/ashl_core_actual_capability_inventory_runtime_substrate_map_v0.md` records what the repo can actually run or produce after b185.
 - It separates executable sandbox/helper capability, record/checker capability, controlled file helpers, and design-only capability.
-- It records the current b184 baseline: 810 tracked files, 288 core Python modules, 358 test modules, 148 top-level docs, and 424 smoke functions.
+- It records the current b185 baseline: 812 tracked files, 289 core Python modules, 359 test modules, 148 top-level docs, and 425 smoke functions.
 - It marks a readback-only b179 follow-up as redundant.
 
 Plain meaning:
 - The repo now has a compact map of real parts on the table. It should stop Codex from mistaking old docs, package names, or boundary paperwork for actual runtime progress.
 
 Recommended next direction:
-- Phase2 Perception Capability Evidence Source Link Minimal v0: read the b184 entry report and link its evidence candidates to existing visual-spatial grounding and Qingyin Bridge capability-map evidence where available, while preserving unknowns and avoiding candidate input or action preparation.
+- Phase2 Grounding Source Availability Readback Minimal v0: read the b185 source-link reports and summarize which evidence references are linked versus still unknown, while avoiding semantic vision, capability binding, candidate input, or action preparation.
 
 Explicitly not changed:
 - No runtime behavior, Boundary Index change, live session, action creation, memory/retention write, memory admission, predictor use/mutation, direct endocrine/tendency feed, production behavior, learning claim, or consciousness claim.
