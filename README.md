@@ -3153,9 +3153,17 @@ Two-Trial History Boundary:
 - Boundary Index updates from `2026-06-09-b186` to `2026-06-09-b187`.
 - Plain meaning: the repo can now produce a checked report listing completed work that must not be rebuilt, partial work that can only be extended, unfinished work that can enter roadmap, and design-only docs that cannot be treated as runtime. This prevents duplicate Phase1/Phase2 packages, prevents b186 wait/probe cues from being forced back into capability, and blocks Phase6-Phase10 runtime claims without an explicit plan. It still does not create candidate input, action selection, memory write, endocrine/tendency feed, production behavior, or learning/consciousness claims.
 
+## ASHL Core Structural Refactor Map Minimal v0
+
+- Adds `docs/ashl_core_structural_refactor_map_v0.md`.
+- Adds `py -3 -m ashl_core.teaching_cli run-structural-refactor-map-minimal-check`.
+- ASHL Core Structural Refactor Map Minimal v0 maps the current repo into nine structural lines and lists future folder suggestions, completed do-not-rebuild anchors, partial extend-only anchors, duplicate/merge candidates, and archive candidates.
+- Boundary Index updates from `2026-06-09-b187` to `2026-06-09-b188`.
+- Plain meaning: this is a structural map and validation check, not a refactor execution. It does not move files, delete files, rename modules, change imports, merge modules, create candidate input, select actions, execute, write memory, feed endocrine/tendency, change production behavior, or claim learning/consciousness.
+
 ## ASHL Core Actual Capability Inventory / Runtime Substrate Map v0
 
-- Adds `docs/ashl_core_actual_capability_inventory_runtime_substrate_map_v0.md` as a docs-only reality check for current repo capabilities; it is now updated through b187.
+- Adds `docs/ashl_core_actual_capability_inventory_runtime_substrate_map_v0.md` as a docs-only reality check for current repo capabilities; it is now updated through b188.
 - Records the actual tracked-file, core-module, test-module, docs, and smoke-test baseline, then separates executable sandbox helpers, record/checker paths, controlled file helpers, and design-only documents.
 - Corrects the Phase1 next direction away from duplicate readback/classification packages; b181 now advances the b180 frame into a same-session tick handoff and continuity comparison.
 - This does not change Boundary Index version, add runtime behavior, create actions, write memory/retention, use predictors, feed endocrine/tendency directly, change production behavior, or claim learning/consciousness.

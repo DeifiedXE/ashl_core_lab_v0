@@ -25,9 +25,10 @@ SOURCE_DOCS = {
 
 SOURCE_DOC_REQUIREMENTS = {
     "capability_inventory": (
-        "This file records what the repository can actually run or produce after Boundary Index `2026-06-09-b187`.",
+        "This file records what the repository can actually run or produce after Boundary Index `2026-06-09-b188`.",
         "b186 corrects wait/probe operation labels",
         "b187 creates a docs-backed Phase2-to-Phase10 completed capability cross-check report",
+        "b188 adds a structural refactor map and read-only checker",
         "## Not Present Yet",
     ),
     "capability_matrix": (
@@ -35,11 +36,12 @@ SOURCE_DOC_REQUIREMENTS = {
         "phase2 perception capability evidence source link minimal",
         "phase2 grounding unknown classification correction minimal",
         "phase2 to phase10 completed capability cross-check minimal",
+        "structural refactor map minimal",
     ),
     "status": (
-        "Current version: `Boundary Index Version: 2026-06-09-b187`",
-        "After b187, ASHL Core can create a docs-backed Phase2-to-Phase10 completed capability cross-check report.",
-        "Next useful direction is Phase2 Grounding Source Availability Readback",
+        "Current version: `Boundary Index Version: 2026-06-09-b188`",
+        "After b188, ASHL Core can validate a nine-line structural refactor map.",
+        "Next refactor direction is ASHL Core Refactor Phase R2 Compatibility Alias Plan Minimal v0",
     ),
     "line_index": (
         "# ASHL Core Phase0 Line Document Index",
@@ -47,9 +49,9 @@ SOURCE_DOC_REQUIREMENTS = {
         "## 10. Governance / Audit / Planning Line",
     ),
     "boundary_index": (
-        "Boundary Index Version: 2026-06-09-b187",
-        "Phase2-to-Phase10 Completed Capability Cross-Check Minimal v0",
-        "Phase2 Grounding Source Availability Readback Minimal v0",
+        "Boundary Index Version: 2026-06-09-b188",
+        "ASHL Core Structural Refactor Map Minimal v0",
+        "ASHL Core Refactor Phase R2 Compatibility Alias Plan Minimal v0",
         "No proof-of-learning claim.",
     ),
     "growth_plan": (

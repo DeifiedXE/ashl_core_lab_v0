@@ -8672,21 +8672,41 @@ Plain meaning:
 Explicitly not changed:
 - No candidate input, candidate ordering/reordering, selected_action/final_action/direct_command/execution/outcome observation creation, semantic vision, object recognition, active focus, capability binding/map creation/mutation, working-memory update, persistent memory write, external tool use, predictor read/influence/mutation, endocrine/tendency feed, production behavior, consciousness claim, long-term learning claim, or proof-of-learning claim.
 
+## ASHL Core Structural Refactor Map Minimal v0
+
+Status: completed / structural validation map / Boundary Index b188.
+
+What changed:
+- Adds `docs/ashl_core_structural_refactor_map_v0.md`.
+- Adds `ashl_core/structural_refactor_map_minimal.py`.
+- Adds `tests/test_structural_refactor_map_minimal.py`.
+- Adds CLI `run-structural-refactor-map-minimal-check`.
+- Adds smoke `structural_refactor_map_minimal`.
+- Maps the current repo into nine structural lines.
+- Lists future folder suggestions, completed do-not-rebuild anchors, partial extend-only anchors, duplicate/merge candidate families, historical/archive candidates, and proposed refactor phases.
+- Boundary Index updates from `2026-06-09-b187` to `2026-06-09-b188`.
+
+Plain meaning:
+- ASHL Core now has a checked refactor map. It shows where the organs are, which pieces should not be rebuilt, and which duplicate families may later be planned for merge. It does not move files or change imports.
+
+Explicitly not changed:
+- No runtime behavior change, file move, file delete, rename, import path change, module merge, boundary expansion, candidate input, action selection, execution, memory write, retention write, predictor use, endocrine feed, production behavior, learning claim, or consciousness claim.
+
 ## ASHL Core Actual Capability Inventory / Runtime Substrate Map v0
 
 Status: completed / docs-only actual capability inventory / no Boundary Index change.
 
 What changed:
-- `docs/ashl_core_actual_capability_inventory_runtime_substrate_map_v0.md` records what the repo can actually run or produce after b187.
+- `docs/ashl_core_actual_capability_inventory_runtime_substrate_map_v0.md` records what the repo can actually run or produce after b188.
 - It separates executable sandbox/helper capability, record/checker capability, controlled file helpers, and design-only capability.
-- It records the current b187 baseline: 816 tracked files, 291 core Python modules, 361 test modules, 149 top-level docs, and 427 smoke functions.
+- It records the current b188 baseline: 819 tracked files, 292 core Python modules, 362 test modules, 150 top-level docs, and 428 smoke functions.
 - It marks a readback-only b179 follow-up as redundant.
 
 Plain meaning:
 - The repo now has a compact map of real parts on the table. It should stop Codex from mistaking old docs, package names, or boundary paperwork for actual runtime progress.
 
 Recommended next direction:
-- Phase2 Grounding Source Availability Readback Minimal v0: read the b187 cross-check, b186 correction report, and b185 source-link reports, then summarize which evidence references are linked, still unresolved, or deferred to Phase4 while avoiding semantic vision, capability binding, endocrine/tendency feed, candidate input, or action preparation.
+- ASHL Core Refactor Phase R2 Compatibility Alias Plan Minimal v0: plan package aliases and wrappers before any file move, while avoiding file moves, deletes, renames, import changes, module merges, runtime behavior, memory writes, endocrine feed, production behavior, and learning/consciousness claims.
 
 Explicitly not changed:
 - No runtime behavior, Boundary Index change, live session, action creation, memory/retention write, memory admission, predictor use/mutation, direct endocrine/tendency feed, production behavior, learning claim, or consciousness claim.

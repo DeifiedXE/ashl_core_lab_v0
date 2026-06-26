@@ -57,7 +57,7 @@ The point is not to deny the relationship between the user and Qingyin. The poin
 Current Boundary Index at the time this summary was written:
 
 ```text
-2026-06-09-b187
+2026-06-09-b188
 ```
 
 Current endpoint:
@@ -82,6 +82,7 @@ b169 advisory reordering evidence
 -> b185 Phase2 perception/capability evidence source-link report
 -> b186 Phase2 grounding unknown classification correction report
 -> b187 Phase2-to-Phase10 completed capability cross-check report
+-> b188 ASHL Core structural refactor map
 ```
 
 Plain meaning:
@@ -124,9 +125,11 @@ b186 corrects two b185 unresolved operation labels. `wait_or_observe` and `obser
 
 b187 reads the current capability inventory, matrix, status, line index, boundary index, and growth plan. It produces a record-only cross-check separating completed/do-not-repeat work, partial/extend-only work, unfinished roadmap candidates, and design-only/not-runtime docs. This blocks duplicate Phase1/Phase2 packages and design-only runtime claims.
 
-## What b187 Does Not Do
+b188 adds `docs/ashl_core_structural_refactor_map_v0.md` and a read-only checker. It maps the current repo into nine structural lines, lists future folder suggestions, duplicate/merge candidates, archive candidates, and do-not-rebuild anchors. This is a map, not a file move.
 
-b187 does not create:
+## What b188 Does Not Do
+
+b188 does not create:
 
 - a live runtime session
 - a session frame promoted to live runtime
@@ -137,6 +140,11 @@ b187 does not create:
 - a runtime action loop
 - feedback evaluation
 - feedback application
+- file move
+- file delete
+- module rename
+- import path change
+- module merge
 - candidate input
 - new candidate ordering or candidate reordering
 - candidate score mutation
@@ -291,17 +299,17 @@ Before coding, Codex should answer in plain language:
 4. What visible output will exist after the work?
 5. What does it still refuse to do?
 
-For the current b187 endpoint, do not keep growing duplicate Phase1 readback/index/handoff packages. Phase1 is closed as record-only substrate evidence, and Phase2 has begun as perception/capability grounding.
+For the current b188 endpoint, do not keep growing duplicate Phase1 readback/index/handoff packages. Phase1 is closed as record-only substrate evidence, and Phase2 has begun as perception/capability grounding.
 
 The next real step should be:
 
 ```text
-read the b187 cross-check, b186 correction report, and b185 source-link reports; summarize linked, unresolved, and Phase4-deferred evidence
+ASHL Core Refactor Phase R2 Compatibility Alias Plan Minimal v0
 ```
 
 Phase0 now has one compact audit saying the minimal same-session sandbox loop is complete in record evidence, while still refusing long-term learning or production claims.
 
-Phase2 now has source-link reports plus a correction report that prevents wait/probe settling cues from being forced into capability. b187 also adds a cross-check so future work does not rebuild completed packages or treat design-only docs as runtime. The next work should read this into a compact availability summary, while still refusing semantic vision, capability binding, endocrine/tendency feed, candidate input, ordering, action selection, execution, memory write, or learning/consciousness claims.
+Phase2 now has source-link reports plus a correction report that prevents wait/probe settling cues from being forced into capability. b187 also adds a cross-check so future work does not rebuild completed packages or treat design-only docs as runtime. b188 adds a structural map so future refactor work does not scatter files further or start moving modules without a compatibility plan.
 
 The current Phase 0 closure plan is:
 

@@ -13,6 +13,7 @@ REQUIRED_DOCS = [
     Path("docs/phase0_versioning_policy.md"),
     Path("docs/phase1_to_phase5_growth_substrate_plan.md"),
     Path("docs/ashl_core_actual_capability_inventory_runtime_substrate_map_v0.md"),
+    Path("docs/ashl_core_structural_refactor_map_v0.md"),
 ]
 
 
@@ -56,31 +57,31 @@ class Phase0DocumentationInventoryConsistencyReconciliationTests(unittest.TestCa
     def test_current_boundary_index_has_sandbox_production_distinction(self):
         boundary = self._read("docs/current_boundary_index.md")
 
-        self.assertIn("Boundary Index Version: 2026-06-09-b187", boundary)
+        self.assertIn("Boundary Index Version: 2026-06-09-b188", boundary)
         self.assertIn("No production/runtime memory-influenced behavior is allowed.", boundary)
         self.assertIn("sandbox-only lesson application, observation, and evaluation records", boundary)
         self.assertIn("do not constitute production/runtime memory-influenced behavior", boundary)
         self.assertIn("Level 2 Sandbox Application milestone", boundary)
         self.assertIn("Level 3 Toy Minefield Multi-Step Sandbox milestone", boundary)
-        self.assertIn("Phase2-to-Phase10 Completed Capability Cross-Check Minimal v0", boundary)
+        self.assertIn("ASHL Core Structural Refactor Map Minimal v0", boundary)
         self.assertIn("B0/10", boundary)
 
     def test_actual_capability_inventory_records_repo_reality(self):
         inventory = self._read("docs/ashl_core_actual_capability_inventory_runtime_substrate_map_v0.md")
 
         for phrase in (
-            "tracked files: 816",
-            "`ashl_core/*.py`: 291",
-            "`tests/*.py`: 361",
-            "top-level `docs/*.md`: 149",
-            "smoke functions in `run_all_smoke_tests.py`: 427",
-            "expected refreshed full smoke report: 427 / 427 passed",
+            "tracked files: 819",
+            "`ashl_core/*.py`: 292",
+            "`tests/*.py`: 362",
+            "top-level `docs/*.md`: 150",
+            "smoke functions in `run_all_smoke_tests.py`: 428",
+            "expected refreshed full smoke report: 428 / 428 passed",
             "Executable sandbox/helper capability",
             "Record/checker capability",
             "Design-only capability",
             "A readback-only package after b179 would be redundant",
-            "Phase2-to-Phase10 Completed Capability Cross-Check Minimal v0",
-            "Phase2-to-Phase10 completed capability cross-check reports",
+            "ASHL Core Structural Refactor Map Minimal v0",
+            "ASHL Core structural refactor map reports",
             "no unrestricted Qingyin long-term memory runtime",
         ):
             with self.subTest(phrase=phrase):
@@ -125,6 +126,26 @@ class Phase0DocumentationInventoryConsistencyReconciliationTests(unittest.TestCa
         self.assertIn("implemented_docs_backed_capability_cross_check", matrix)
         self.assertIn("completed/do-not-repeat, partial/extend-only, unfinished/roadmap, and design-only/not-runtime", matrix)
         self.assertIn("ashl_core/phase2_to_phase10_completed_capability_cross_check_minimal.py", matrix)
+
+    def test_capability_matrix_records_b188_structural_refactor_map(self):
+        matrix = self._read("docs/phase0_capability_matrix.md")
+
+        self.assertIn("structural refactor map minimal", matrix)
+        self.assertIn("implemented_structural_validation_map", matrix)
+        self.assertIn("do-not-rebuild anchors, extend-only anchors, duplicate/merge candidates", matrix)
+        self.assertIn("ashl_core/structural_refactor_map_minimal.py", matrix)
+        self.assertIn("docs/ashl_core_structural_refactor_map_v0.md", matrix)
+
+    def test_structural_refactor_map_records_no_runtime_refactor_execution(self):
+        structural_map = self._read("docs/ashl_core_structural_refactor_map_v0.md")
+
+        self.assertIn("This document maps the current ASHL Core repository into nine structural lines.", structural_map)
+        self.assertIn("It does not move files or change runtime behavior.", structural_map)
+        self.assertIn("## action_body_motor", structural_map)
+        self.assertIn("## governance_audit_documentation", structural_map)
+        self.assertIn("No file move.", structural_map)
+        self.assertIn("No import path change.", structural_map)
+        self.assertIn("No runtime behavior change.", structural_map)
 
     def test_long_term_memory_priority_note_exists(self):
         design = self._read("docs/five_layer_memory_design_assumption_v0_1.md")

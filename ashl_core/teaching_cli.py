@@ -504,6 +504,9 @@ from .phase2_grounding_unknown_classification_correction_minimal import (
 from .phase2_to_phase10_completed_capability_cross_check_minimal import (
     run_phase2_to_phase10_completed_capability_cross_check_minimal_check,
 )
+from .structural_refactor_map_minimal import (
+    run_structural_refactor_map_minimal_check,
+)
 from .reviewed_lesson_dry_run_correction_minimal import (
     run_reviewed_lesson_dry_run_correction_minimal_check,
 )
@@ -4342,6 +4345,8 @@ def run_command(command: str) -> dict[str, Any] | str:
         return run_phase2_grounding_unknown_classification_correction_minimal_check()
     if command == "run-phase2-to-phase10-completed-capability-cross-check-minimal-check":
         return run_phase2_to_phase10_completed_capability_cross_check_minimal_check()
+    if command == "run-structural-refactor-map-minimal-check":
+        return run_structural_refactor_map_minimal_check()
     if command == "run-simple-retina-focus-preview-minimal-check":
         return run_simple_retina_focus_preview_minimal_check()
     if command == "run-generalized-prediction-confidence-check":
@@ -4659,6 +4664,7 @@ def main(argv: list[str] | None = None) -> int:
             "run-phase2-perception-capability-evidence-source-link-minimal-check",
             "run-phase2-grounding-unknown-classification-correction-minimal-check",
             "run-phase2-to-phase10-completed-capability-cross-check-minimal-check",
+            "run-structural-refactor-map-minimal-check",
             "run-simple-retina-focus-preview-minimal-check",
             "run-generalized-prediction-confidence-check",
             "run-generalized-candidate-from-pattern-check",
@@ -5238,6 +5244,8 @@ def main(argv: list[str] | None = None) -> int:
         result = run_phase2_grounding_unknown_classification_correction_minimal_check()
     elif args.command == "run-phase2-to-phase10-completed-capability-cross-check-minimal-check":
         result = run_phase2_to_phase10_completed_capability_cross_check_minimal_check()
+    elif args.command == "run-structural-refactor-map-minimal-check":
+        result = run_structural_refactor_map_minimal_check()
     elif args.command == "run-simple-retina-focus-preview-minimal-check":
         result = run_simple_retina_focus_preview_minimal_check()
     elif args.command == "run-generalized-prediction-confidence-check":

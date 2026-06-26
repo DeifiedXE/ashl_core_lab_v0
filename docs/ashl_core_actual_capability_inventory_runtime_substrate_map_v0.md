@@ -4,7 +4,7 @@ Status: docs-only actual capability inventory.
 Runtime impact: none.
 Boundary Index impact: none.
 
-This file records what the repository can actually run or produce after Boundary Index `2026-06-09-b187`.
+This file records what the repository can actually run or produce after Boundary Index `2026-06-09-b188`.
 
 It is a work-start reality check. It does not grant runtime authority and does not replace:
 
@@ -15,14 +15,14 @@ It is a work-start reality check. It does not grant runtime authority and does n
 
 ## Scan Baseline
 
-Repository scan baseline after the b187 Phase2-to-Phase10 completed capability cross-check package:
+Repository scan baseline after the b188 ASHL Core structural refactor map package:
 
-- tracked files: 816
-- `ashl_core/*.py`: 291
-- `tests/*.py`: 361
-- top-level `docs/*.md`: 149
-- smoke functions in `run_all_smoke_tests.py`: 427
-- expected refreshed full smoke report: 427 / 427 passed
+- tracked files: 819
+- `ashl_core/*.py`: 292
+- `tests/*.py`: 362
+- top-level `docs/*.md`: 150
+- smoke functions in `run_all_smoke_tests.py`: 428
+- expected refreshed full smoke report: 428 / 428 passed
 
 Important caveat:
 
@@ -67,6 +67,7 @@ Action and sandbox substrate:
 - b185 links those Phase2 evidence candidates to existing visual-spatial and Qingyin Bridge capability-map source references while preserving unresolved unknowns
 - b186 corrects wait/probe operation labels so they are not forced into capability and are deferred to future Phase4 settling work
 - b187 creates a docs-backed Phase2-to-Phase10 completed capability cross-check report to block duplicate rebuilds and design-only runtime claims
+- b188 adds a structural refactor map and read-only checker for nine ASHL Core repository lines without moving files or changing imports
 
 Session and working memory substrate:
 
@@ -145,6 +146,7 @@ Representative data shapes already produced by existing modules/tests include:
 - Phase2 perception/capability evidence source-link reports
 - Phase2 grounding unknown classification correction reports
 - Phase2-to-Phase10 completed capability cross-check reports
+- ASHL Core structural refactor map reports
 - smoke test report data
 
 ## Not Present Yet
@@ -158,6 +160,7 @@ ASHL Core does not yet have:
 - Phase1 duplicate substrate packages after closure
 - Phase2 candidate input or action preparation
 - Phase2 semantic vision or grounded capability binding
+- structural refactor execution, file moves, import changes, module merges, or compatibility aliases
 - Phase6-Phase10 runtime claims backed by an authoritative plan
 - a runtime tick scheduler
 - automatic runtime ticks
@@ -271,6 +274,33 @@ It still must not:
 - create candidate input or ordering
 - create selected_action / final_action / direct command / execution
 - create semantic vision, capability binding, or capability-map mutation
+- write memory or retention
+- feed endocrine or tendency
+- claim production behavior, learning, or consciousness
+
+Current implemented structural map:
+
+```text
+ASHL Core Structural Refactor Map Minimal v0
+```
+
+Plain meaning:
+
+Status:
+
+Completed at Boundary Index `2026-06-09-b188`.
+
+Adds `docs/ashl_core_structural_refactor_map_v0.md` and a read-only CLI checker. It groups existing files into nine structural lines, lists completed do-not-rebuild anchors, partial extend-only anchors, duplicate/merge candidate families, archive candidates, and future folder suggestions.
+
+It still must not:
+
+- move files
+- delete files
+- rename modules
+- change imports
+- merge modules
+- create runtime behavior
+- create action selection or execution
 - write memory or retention
 - feed endocrine or tendency
 - claim production behavior, learning, or consciousness
