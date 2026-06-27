@@ -6,6 +6,7 @@ from .cradle_cases import (
     build_cradle_case_sample,
     list_cradle_case_ids,
 )
+from .cradle_runner import load_last_cradle_run, run_all_cradle_cases, run_cradle_case
 from .manual_samples import build_blocked_manual_circulation_sample
 
 __all__ = [
@@ -13,6 +14,9 @@ __all__ = [
     "build_blocked_manual_circulation_sample",
     "build_cradle_case_sample",
     "list_cradle_case_ids",
+    "load_last_cradle_run",
+    "run_all_cradle_cases",
     "run_blocked_cycle",
+    "run_cradle_case",
     "show_last_cycle",
 ]
