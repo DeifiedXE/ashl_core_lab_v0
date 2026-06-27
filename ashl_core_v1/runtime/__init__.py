@@ -7,6 +7,11 @@ from .cradle_cases import (
     list_cradle_case_ids,
 )
 from .cradle_runner import load_last_cradle_run, run_all_cradle_cases, run_cradle_case
+from .cradle_summary import (
+    summarize_all_cradle_cases,
+    summarize_cradle_case,
+    summarize_last_run,
+)
 from .manual_samples import build_blocked_manual_circulation_sample
 
 __all__ = [
@@ -19,4 +24,7 @@ __all__ = [
     "run_blocked_cycle",
     "run_cradle_case",
     "show_last_cycle",
+    "summarize_all_cradle_cases",
+    "summarize_cradle_case",
+    "summarize_last_run",
 ]

@@ -93,6 +93,7 @@ def _case_summary_for_run(case_id: str, summary: dict[str, Any]) -> dict[str, An
         "review_status": summary["review_status"],
         "routing_status": summary["routing_status"],
         "memory_entry_allowed": summary["memory_entry_allowed"],
+        "memory_layer_target": summary["memory_layer_target"],
         "influence_visible": summary["influence_visible"],
         "body_action_signal_type": summary["body_action_signal_type"],
     }

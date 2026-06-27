@@ -114,6 +114,7 @@ class MultiCaseCradleRunnerTests(unittest.TestCase):
 
             self.assertEqual(len(list_cradle_case_ids()), payload["case_count"])
             self.assertTrue(payload["all_cases_completed"])
+            self.assertIn("memory_layer_target", payload["case_summaries"][0])
 
     def test_cli_show_last_run_returns_latest_run(self):
         with tempfile.TemporaryDirectory() as temp_dir:
