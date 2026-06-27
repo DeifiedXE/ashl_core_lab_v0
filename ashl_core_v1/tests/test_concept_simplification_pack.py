@@ -8,6 +8,7 @@ CORE_DOCS = ROOT / "ashl_core_v1" / "docs" / "core"
 ARCHIVE_ROOT = ROOT / "docs_archive" / "v1_concept_sources_2026_06_27"
 
 EXPECTED_CORE_DOCS = (
+    "v1_master_construction_blueprint.md",
     "v1_core_overview.md",
     "v1_module_requirements.md",
     "v1_learning_memory_flow.md",
@@ -46,6 +47,10 @@ class ConceptSimplificationPackTests(unittest.TestCase):
     def test_doc_authority_points_to_core_first(self):
         text = (CORE_DOCS / "v1_doc_authority.md").read_text(encoding="utf-8")
 
+        self.assertIn(
+            "ashl_core_v1/docs/core/v1_master_construction_blueprint.md",
+            text,
+        )
         self.assertIn("ashl_core_v1/docs/core/v1_core_overview.md", text)
         self.assertIn("docs_archive/v1_concept_sources_2026_06_27/**", text)
 
