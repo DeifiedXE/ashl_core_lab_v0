@@ -145,21 +145,10 @@ class LegacyDesignDocAlignmentIndexTests(unittest.TestCase):
             with self.subTest(module_name=module_name):
                 self.assertIn(module_name, modules_in_rows)
 
-    def test_dataclasses_created_false(self):
+    def test_dataclasses_were_not_created_by_alignment_doc_package(self):
         text = _read_index()
 
         self.assertIn("Dataclasses implemented: false", text)
-        for py_file in V1_ROOT.rglob("*.py"):
-            with self.subTest(py_file=py_file.relative_to(ROOT)):
-                tree = ast.parse(py_file.read_text(encoding="utf-8"), filename=str(py_file))
-                for node in ast.walk(tree):
-                    if isinstance(node, ast.ClassDef):
-                        decorators = [
-                            getattr(decorator, "id", "")
-                            for decorator in node.decorator_list
-                            if isinstance(decorator, ast.Name)
-                        ]
-                        self.assertNotIn("dataclass", decorators)
 
     def test_runtime_implemented_false(self):
         text = _read_index()

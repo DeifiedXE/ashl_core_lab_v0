@@ -1,3 +1,9 @@
 """Thought hints, purpose, and thought-context line for ASHL Core v1."""
 
-__all__: list[str] = []
+from .types import InfluenceTrace, ThoughtReadTrace, ThoughtSignal
+
+__all__ = [
+    "InfluenceTrace",
+    "ThoughtReadTrace",
+    "ThoughtSignal",
+]

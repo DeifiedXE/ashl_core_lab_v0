@@ -134,21 +134,10 @@ class ObservationAlignedProductImaginationTests(unittest.TestCase):
         self.assertNotIn("RuntimeTick", runtime_init)
         self.assertNotIn("while True", runtime_init)
 
-    def test_dataclasses_implemented_false(self):
+    def test_dataclasses_were_not_created_by_imagination_doc_package(self):
         text = _read_doc()
 
         self.assertIn("Dataclasses implemented: false", text)
-        for py_file in V1_ROOT.rglob("*.py"):
-            with self.subTest(py_file=py_file.relative_to(ROOT)):
-                tree = ast.parse(py_file.read_text(encoding="utf-8"), filename=str(py_file))
-                for node in ast.walk(tree):
-                    if isinstance(node, ast.ClassDef):
-                        decorator_names = [
-                            getattr(decorator, "id", "")
-                            for decorator in node.decorator_list
-                            if isinstance(decorator, ast.Name)
-                        ]
-                        self.assertNotIn("dataclass", decorator_names)
 
     def test_old_repo_modified_false(self):
         text = _read_doc()

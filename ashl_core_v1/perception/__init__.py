@@ -1,3 +1,5 @@
 """Symbolic viewport and visual-spatial feature line for ASHL Core v1."""
 
-__all__: list[str] = []
+from .types import PerceptionReadableData
+
+__all__ = ["PerceptionReadableData"]
