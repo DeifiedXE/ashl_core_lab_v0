@@ -1,4 +1,4 @@
-# ASHL Core / Qingyin Phase 0 Trust / Curiosity / Personality Boundary v0.1
+﻿# ASHL Core / Qingyin Phase 0 Trust / Curiosity / Personality Boundary v0.1
 
 ## Purpose
 

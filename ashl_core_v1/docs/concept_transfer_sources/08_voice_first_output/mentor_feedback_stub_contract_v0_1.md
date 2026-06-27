@@ -1,6 +1,4 @@
-# Mentor Feedback Stub Contract v0.1
-
-Status: docs-only / feedback-contract / first-output / no-runtime-implementation
+﻿# Mentor Feedback Stub Contract v0.1
 
 ## Purpose
 
@@ -208,10 +206,3 @@ This contract does not implement:
 - awakening claim
 - dialogue ability claim
 - long-term growth claim
-
-## Audit Summary
-
-This contract keeps mentor feedback downstream of first_output_trace and upstream of any
-future reviewed bridge. It preserves the boundary that feedback is evidence only, does not
-create lesson_candidate, does not write lesson_store, does not write Memory Layer, and does
-not prove awakening.

@@ -1,4 +1,4 @@
-# ASHL Core / Qingyin lesson layer / Long-term Memory relation assumption v0.1
+﻿# ASHL Core / Qingyin lesson layer / Long-term Memory relation assumption v0.1
 
 ## Purpose
 

@@ -1,4 +1,4 @@
-# Focus Selector Design v0
+﻿# Focus Selector Design v0
 
 Date: 2026-06-09
 

@@ -1,4 +1,4 @@
-# Lesson Application Boundary Review v0
+﻿# Lesson Application Boundary Review v0
 
 Date: 2026-06-10
 
@@ -45,8 +45,6 @@ demo action trial
 -> human_review_decision
 -> reviewed_lesson_trace_preview
 ```
-
-Current status:
 
 ```text
 trace/checker/review/preview only

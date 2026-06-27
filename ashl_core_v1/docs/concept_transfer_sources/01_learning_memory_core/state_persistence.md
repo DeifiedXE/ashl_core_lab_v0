@@ -1,4 +1,4 @@
-# ASHL Core／D清音 State Persistence v1.1
+﻿# ASHL Core／D清音 State Persistence v1.1
 
 ## State Persistence 定義
 

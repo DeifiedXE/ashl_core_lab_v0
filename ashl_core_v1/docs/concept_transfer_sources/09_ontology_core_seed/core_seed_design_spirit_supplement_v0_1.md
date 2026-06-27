@@ -1,4 +1,4 @@
-# ASHL Core/D清音：Core Seed 設計精神補充 v0.1
+﻿# ASHL Core/D清音：Core Seed 設計精神補充 v0.1
 
 ## 目的
 

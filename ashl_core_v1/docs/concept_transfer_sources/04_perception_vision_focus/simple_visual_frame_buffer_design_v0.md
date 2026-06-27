@@ -1,4 +1,4 @@
-# Simple Visual Frame Buffer Design v0
+﻿# Simple Visual Frame Buffer Design v0
 
 Date: 2026-06-09
 

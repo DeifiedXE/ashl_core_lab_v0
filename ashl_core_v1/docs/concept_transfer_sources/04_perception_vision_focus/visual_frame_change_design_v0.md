@@ -1,4 +1,4 @@
-# Visual Frame Change Design v0
+﻿# Visual Frame Change Design v0
 
 Date: 2026-06-09
 

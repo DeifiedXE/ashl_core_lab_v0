@@ -1,4 +1,4 @@
-# ASHL Core / Qingyin failure_reason design assumption v0.1
+﻿# ASHL Core / Qingyin failure_reason design assumption v0.1
 
 ## Definition
 

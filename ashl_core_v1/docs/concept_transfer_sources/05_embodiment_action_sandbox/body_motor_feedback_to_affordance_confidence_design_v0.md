@@ -1,9 +1,4 @@
-# Body-Motor Feedback To Affordance Confidence Design v0
-
-Status: Design Proposal Only
-Type: Docs-Only
-Runtime Impact: None
-Boundary Index Impact: None
+﻿# Body-Motor Feedback To Affordance Confidence Design v0
 
 ---
 

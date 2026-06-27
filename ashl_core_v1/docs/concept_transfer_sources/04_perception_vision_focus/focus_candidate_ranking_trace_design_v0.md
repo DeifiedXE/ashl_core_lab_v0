@@ -1,4 +1,4 @@
-# Focus Candidate Ranking Trace Design v0
+﻿# Focus Candidate Ranking Trace Design v0
 
 Date: 2026-06-09
 

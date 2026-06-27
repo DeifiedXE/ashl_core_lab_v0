@@ -1,4 +1,4 @@
-# Qingyin First Output Runtime Minimal Spec v0.1
+﻿# Qingyin First Output Runtime Minimal Spec v0.1
 
 ## 1. 目的
 

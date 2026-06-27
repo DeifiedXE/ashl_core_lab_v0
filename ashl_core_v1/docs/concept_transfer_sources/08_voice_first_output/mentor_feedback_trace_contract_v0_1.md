@@ -1,6 +1,4 @@
-# Mentor Feedback Trace Contract v0.1
-
-Status: docs-only / trace-contract / mentor-feedback / no-runtime-implementation
+﻿# Mentor Feedback Trace Contract v0.1
 
 ## Purpose
 
@@ -197,10 +195,3 @@ This contract does not implement:
 - awakening claim
 - dialogue ability claim
 - long-term growth claim
-
-## Audit Summary
-
-This contract defines `mentor_feedback_trace` as an append-only or version-preserving feedback
-record tied to exactly one `source_first_output_trace_id`. It preserves the boundaries that
-feedback traces are evidence only, do not create lesson_candidate, do not write lesson_store,
-do not write Memory Layer, and do not prove awakening.

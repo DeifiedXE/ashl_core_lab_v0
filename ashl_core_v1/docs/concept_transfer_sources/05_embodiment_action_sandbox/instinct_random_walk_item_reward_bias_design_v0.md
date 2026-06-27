@@ -1,4 +1,4 @@
-# Instinct Random Walk + Item Reward Bias Design v0
+﻿# Instinct Random Walk + Item Reward Bias Design v0
 
 ## 1. Purpose
 
@@ -190,8 +190,6 @@ Required control claim:
 ```text
 If Round 2 improves only with carried experience, the effect is likely experience-mediated.
 ```
-
-Do not claim general learning.
 
 ## 9. UI Observation
 

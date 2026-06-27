@@ -1,4 +1,4 @@
-# Phase 0 Action / Lesson Loop Return Planning v0
+﻿# Phase 0 Action / Lesson Loop Return Planning v0
 
 Date: 2026-06-10
 
@@ -180,7 +180,6 @@ Do not add persistent learning.
 ## Planning Snapshot
 
 ```text
-Boundary Index Version: 2026-06-09-b41
 latest completed commit: 32d4749 Add focus perception boundary construction log
 py -3 run_all_smoke_tests.py: PASS
 py -3 -m unittest discover: PASS, Ran 1559 tests

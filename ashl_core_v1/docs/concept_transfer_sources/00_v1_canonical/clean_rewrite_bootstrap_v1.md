@@ -1,6 +1,4 @@
-# ASHL Core Clean Rewrite Bootstrap v1
-
-Status: bootstrap skeleton
+﻿# ASHL Core Clean Rewrite Bootstrap v1
 
 This directory starts a clean ASHL Core v1 rewrite under `ashl_core_v1/`.
 It is not a refactor of the legacy package. The legacy `ashl_core/` package

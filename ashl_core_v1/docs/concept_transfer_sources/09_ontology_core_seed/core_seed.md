@@ -1,4 +1,4 @@
-# ASHL Core／D清音 Core Seed v0.9
+﻿# ASHL Core／D清音 Core Seed v0.9
 
 ## Core Seed 定義
 

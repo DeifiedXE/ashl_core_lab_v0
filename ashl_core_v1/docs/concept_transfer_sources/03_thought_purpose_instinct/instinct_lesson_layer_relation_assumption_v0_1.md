@@ -1,4 +1,4 @@
-# ASHL Core / Qingyin instinct / lesson layer relation assumption v0.1
+﻿# ASHL Core / Qingyin instinct / lesson layer relation assumption v0.1
 
 ## Definition
 

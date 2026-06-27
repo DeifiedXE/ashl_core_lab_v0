@@ -1,6 +1,5 @@
-# Phase0 Thought Memory Action Parallel Loop Plan
+﻿# Phase0 Thought Memory Action Parallel Loop Plan
 
-Status: planning document only.
 Scope: ASHL Core Phase0 thought / memory / action integration.
 Boundary note: this document is not approval, not runtime behavior, and not authorization for the next package.
 

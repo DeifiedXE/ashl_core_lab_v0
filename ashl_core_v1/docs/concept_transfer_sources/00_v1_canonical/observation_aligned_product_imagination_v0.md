@@ -1,6 +1,4 @@
-# ASHL Core v1 Observation-Aligned Product Imagination v0
-
-Status: product imagination only
+﻿# ASHL Core v1 Observation-Aligned Product Imagination v0
 
 This document describes the human-readable imagined shape of ASHL Core v1 after
 first-stage observation alignment succeeds.
@@ -134,27 +132,4 @@ First-stage imagined data circulation:
 This is product imagination, not implemented capability. It must not be written
 as Qingyin truly understanding obstruction. It is not proof of learning.
 
-## What This Is Not
-
-這不是 runtime。
-這不是清音已醒來。
-這不是語音或聊天能力。
-這不是 long-term memory runtime。
-這不是 action execution。
-這不是 semantic vision。
-這不是舊 repo 功能搬家。
-這不是 proof of learning。
-
-## Non-Implementation Statement
-
-- Runtime implemented: false
-- Dataclasses implemented: false
-- Old docs modified: false
-- Old repo imported: false
-- Files moved: false
-- Action execution created: false
-- Memory write created: false
-- Bridge implementation created: false
-- Voice implementation created: false
-- Governance implementation created: false
-- Product imagination implemented as runtime: false
+本文件只描述第一階段觀察對齊後的成品輪廓，不作為 runtime、能力完成、語音、長期記憶、行動執行或學習證明。

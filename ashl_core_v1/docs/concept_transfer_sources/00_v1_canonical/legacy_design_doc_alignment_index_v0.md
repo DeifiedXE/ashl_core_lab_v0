@@ -1,6 +1,4 @@
-# ASHL Core v1 Legacy Design Document Alignment Index v0
-
-Status: v1 design alignment index
+﻿# ASHL Core v1 Legacy Design Document Alignment Index v0
 
 This document maps legacy ASHL Core / Qingyin design and status documents onto
 the canonical ASHL Core v1 nine-line organ definition.
@@ -78,7 +76,6 @@ Legacy memory layer, working memory, retention, exact-key lookup, memory
 influence, and state persistence documents may inform v1 memory application data
 and readback surfaces.
 
-Policy: do not claim that v1 already has full five-layer memory runtime or
 directly port retained JSONL / old memory influence into persistent authority.
 
 ### 硬軟感知模組
@@ -87,7 +84,6 @@ Legacy retina decoder, visual frame buffer, visual frame change, focus selector,
 symbolic viewport, and soft/hard perception documents may inform v1 perception
 data.
 
-Policy: do not claim object recognition, semantic vision, active focus, or
 attention-control runtime.
 
 ### 無限制能力橋接及可操作結構視覺化編譯模組
@@ -141,7 +137,6 @@ reports are not human approval.
 | --- | --- | --- | --- | --- | --- |
 | `docs/body_motor_affordance_tendency_endocrine_reconciliation_design_v0.md` | body-motor action separation | 擬態具身模組 | rename_needed | reuse_with_v1_terms | Use as body signal and action signal design source only. Do not port selected_action, final_action, direct_command, or execution chain directly. |
 | `docs/body_motor_affordance_tendency_endocrine_reconciliation_design_v0.md` | endocrine and tendency reconciliation | 擬態內分泌模組 | aligned | reuse_with_v1_terms | Reuse the separation rule: endocrine signal modulates context and must not create purpose or directly choose action. |
-| `docs/focus_selector_design_v0.md` | focus selector design | 硬軟感知模組 | design_only_reference | reuse_as_design_source | Reuse low-level focus candidate shape as perception design source. Do not claim active focus, object recognition, or semantic vision. |
 | `docs/qingyin_bridge_dual_eye_capability_perception_design_v0.md` | Qingyin Bridge dual-eye capability perception | 無限制能力橋接及可操作結構視覺化編譯模組 | deferred | defer_until_later_phase | Keep as bridge design source only. No raw API access, tool access, action gateway call, or bridge implementation in v1 first stage. |
 | `docs/qingyin_thought_system_layering_design_v0.md` | thought layering | 思考運算模組 | aligned | reuse_as_design_source | Reuse instinct, specialized thought, coarse thought, and deep thought as thought architecture. Keep no-LLM runtime boundary. |
 | `docs/phase0_minimal_learning_action_memory_loop_plan.md` | sandbox learning/action/memory loop | 學習性泛化應用模組 | rename_needed | reuse_with_v1_terms | Use as loop-evidence design source for learning digestion. It remains sandbox evidence, not proof of learning or runtime consciousness. |
@@ -156,8 +151,6 @@ reports are not human approval.
 | `docs/phase0_capability_matrix.md` | capability matrix | 稽核邊界模組 | aligned | reference_only | Use for allowed/forbidden claims. It is not human approval and not v1 runtime. |
 | `docs/qingyin_vocal_organ_engine_design_v0.md` | vocal organ design | 獨立音訊模組 | deferred | defer_until_later_phase | Keep as voice design source only. No speech runtime or conversation runtime in v1 first stage. |
 | `docs/qingyin_audio_cochlea_decoder_design_v0.md` | cochlea and audio decoder design | 獨立音訊模組 | deferred | defer_until_later_phase | Keep as audio design source only. No hearing runtime or internal auditory feedback implementation now. |
-| `docs/five_layer_memory_design_assumption_v0_1.md` | five-layer memory design | 五重記憶模組 | design_only_reference | reuse_as_design_source | Use as conceptual memory-layer source only. Do not claim v1 full memory runtime. |
-| `docs/retina_decoder_design_v0.md` | retina decoder design | 硬軟感知模組 | design_only_reference | reuse_as_design_source | Use for symbolic perception data shape only. Do not claim semantic vision. |
 | `docs/simple_visual_frame_buffer_design_v0.md` | visual frame buffer design | 硬軟感知模組 | design_only_reference | reuse_as_design_source | Use for visual frame data shape only. Do not create active perception runtime. |
 
 ## v1 First-Stage Reuse Scope
@@ -177,19 +170,3 @@ The first implementation stage must not implement these three deferred modules:
 - 獨立音訊模組
 - 無限制能力橋接及可操作結構視覺化編譯模組
 - 稽核邊界模組
-
-## Non-Implementation Statement
-
-- Dataclasses implemented: false
-- Runtime implemented: false
-- Old docs modified: false
-- Docs moved: false
-- Legacy docs deleted: false
-- Legacy docs rewritten: false
-- Old repo imported: false
-- Action execution created: false
-- Memory write created: false
-- Bridge implementation created: false
-- Voice implementation created: false
-- Governance implementation created: false
-- Old docs are v1 runtime authority: false

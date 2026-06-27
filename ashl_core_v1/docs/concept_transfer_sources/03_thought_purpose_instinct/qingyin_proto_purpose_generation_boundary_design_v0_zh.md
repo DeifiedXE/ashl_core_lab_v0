@@ -1,10 +1,5 @@
 ﻿# 清音目的胚胎產生邊界設計 v0
 
-狀態：設計提案
-類型：Docs-Only
-Runtime 影響：無
-Boundary Index 影響：無
-
 ---
 
 ## 這份文檔在說什麼

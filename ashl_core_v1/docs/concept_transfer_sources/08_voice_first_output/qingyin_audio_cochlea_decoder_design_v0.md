@@ -1,9 +1,4 @@
-# Qingyin Audio Cochlea Decoder Design v0
-
-Status: Design Proposal Only
-Type: Docs-Only
-Runtime Impact: None
-Boundary Index Impact: None
+﻿# Qingyin Audio Cochlea Decoder Design v0
 
 ## Purpose
 

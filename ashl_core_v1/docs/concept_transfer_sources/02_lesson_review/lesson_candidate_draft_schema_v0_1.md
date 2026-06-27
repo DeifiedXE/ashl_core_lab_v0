@@ -1,4 +1,4 @@
-# ASHL Core / Qingyin Lesson Candidate Draft Schema v0.1
+﻿# ASHL Core / Qingyin Lesson Candidate Draft Schema v0.1
 
 ## Purpose
 

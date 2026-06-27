@@ -1,6 +1,4 @@
-# Simulated Vision Larger Sandbox Design v0
-
-Status: design-only / no runtime implementation.
+﻿# Simulated Vision Larger Sandbox Design v0
 
 ## Purpose
 

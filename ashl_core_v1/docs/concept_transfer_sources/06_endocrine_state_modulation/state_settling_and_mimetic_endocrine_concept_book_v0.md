@@ -1,8 +1,4 @@
-# State Settling and Mimetic Endocrine Concept Book v0
-
-Status: Concept / Docs-Only
-Runtime Impact: None
-Boundary Index Impact: None
+﻿# State Settling and Mimetic Endocrine Concept Book v0
 
 ## Purpose
 

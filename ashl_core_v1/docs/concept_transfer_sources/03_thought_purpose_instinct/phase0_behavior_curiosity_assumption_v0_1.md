@@ -1,4 +1,4 @@
-# ASHL Core / Qingyin Phase 0 behavior / curiosity assumption v0.1
+﻿# ASHL Core / Qingyin Phase 0 behavior / curiosity assumption v0.1
 
 ## Purpose
 

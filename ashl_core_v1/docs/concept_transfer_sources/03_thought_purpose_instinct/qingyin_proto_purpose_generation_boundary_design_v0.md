@@ -1,9 +1,4 @@
-# Qingyin Proto-Purpose Generation Boundary Design v0
-
-Status: Design Proposal Only
-Type: Docs-Only
-Runtime Impact: None
-Boundary Index Impact: None
+﻿# Qingyin Proto-Purpose Generation Boundary Design v0
 
 ---
 

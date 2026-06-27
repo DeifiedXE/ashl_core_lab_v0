@@ -1,9 +1,4 @@
-# Internal Auditory Feedback Design Supplement v0
-
-Status: Design Proposal Only
-Type: Docs-Only
-Runtime Impact: None
-Boundary Index Impact: None
+﻿# Internal Auditory Feedback Design Supplement v0
 
 ## Purpose
 

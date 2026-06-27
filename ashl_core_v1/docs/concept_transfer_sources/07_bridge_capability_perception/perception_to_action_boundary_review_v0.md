@@ -1,4 +1,4 @@
-# Perception-to-Action Boundary Review v0
+﻿# Perception-to-Action Boundary Review v0
 
 Date: 2026-06-10
 

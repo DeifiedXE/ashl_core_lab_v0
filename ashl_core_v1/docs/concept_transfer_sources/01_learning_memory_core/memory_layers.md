@@ -1,4 +1,4 @@
-# ASHL Core／D清音 Memory Layers v1.0
+﻿# ASHL Core／D清音 Memory Layers v1.0
 
 ## Memory Layers 定義
 

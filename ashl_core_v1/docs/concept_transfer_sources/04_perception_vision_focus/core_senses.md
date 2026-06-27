@@ -1,4 +1,4 @@
-# Core Senses v0.8
+﻿# Core Senses v0.8
 
 ASHL Core / 清音需要逐步建立核心感官。Screen Sense 與 Camera Sense 不是娛樂外掛，而是未來讓唯一模型理解真實世界概念的基礎。
 

@@ -1,11 +1,7 @@
-# ASHL Core v1 Nine-Line Definition Alignment v0
+﻿# ASHL Core v1 Nine-Line Definition Alignment v0
 
-Status: canonical v1 organ definition
-
-This document records the user-authored ASHL Core v1 nine-line definition.
-It is a definition alignment document only. It does not implement runtime
-behavior, move legacy files, import legacy ASHL Core modules, connect old CLI,
-or create a runtime loop.
+This document defines the canonical ASHL Core v1 nine-line organ structure.
+Future v1 modules, dataclasses, and runtime design should follow these organ definitions.
 
 Plain wording:
 
@@ -173,12 +169,3 @@ These three modules are definition-only in the first stage:
 無限制能力橋接及可操作結構視覺化編譯模組
 稽核邊界模組
 ```
-
-## Non-Implementation Statement
-
-- Runtime implemented: false
-- Old repo changed: false
-- Legacy files moved: false
-- Legacy imports added: false
-- Old CLI connected: false
-- Runtime loop created: false

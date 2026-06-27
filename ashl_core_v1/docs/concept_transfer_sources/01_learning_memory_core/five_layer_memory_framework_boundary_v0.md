@@ -1,12 +1,10 @@
-# Five-Layer Memory Framework Boundary Minimal v0
+﻿# Five-Layer Memory Framework Boundary Minimal v0
 
 ## Purpose
 
 This document turns the five-layer memory design assumption into an explicit implementation boundary map.
 
 This is boundary/design only. It does not implement Archive Memory, Anchor Layer, five-layer memory runtime, autonomous memory routing, anchor lookup, endocrine-driven memory lookup, semantic/fuzzy/vector retrieval, action influence, behavior change, predictor mutation, or proof-of-learning claims.
-
-Version-priority note: Where this boundary differs from older design assumptions, newer Boundary Index, Phase0 status, and capability matrix documents control current capability claims. The older design assumption remains historical design context and does not grant current Long-term Memory capability.
 
 ## Five-Layer Map
 
@@ -24,15 +22,6 @@ future compressed historical memory. Archive Memory is not implemented.
 
 Anchor Layer:
 future navigation/index layer. Anchor Layer stores navigation/index paths, not memory content. Anchor Layer is not implemented.
-
-## Current Implementation Status
-
-- Core Memory: partial/prototype via Core Seed assumptions.
-- Long-term Memory: partial/prototype via mentor-gated JSONL retention.
-- Working Memory: partial/prototype via session working memory.
-- Archive Memory: not implemented.
-- Anchor Layer: not implemented.
-- Five-layer memory runtime: not implemented.
 
 ## Allowed Current Claims
 

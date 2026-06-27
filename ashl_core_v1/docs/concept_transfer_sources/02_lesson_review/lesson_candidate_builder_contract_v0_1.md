@@ -1,4 +1,4 @@
-# ASHL Core / Qingyin Lesson Candidate Builder Contract v0.1
+﻿# ASHL Core / Qingyin Lesson Candidate Builder Contract v0.1
 
 ## Purpose
 

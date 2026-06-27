@@ -1,4 +1,4 @@
-# Sandbox Boundary / Capability Assumption v0.1
+﻿# Sandbox Boundary / Capability Assumption v0.1
 
 ## 1. 目的
 

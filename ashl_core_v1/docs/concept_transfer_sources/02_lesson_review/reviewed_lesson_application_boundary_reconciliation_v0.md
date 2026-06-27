@@ -1,4 +1,4 @@
-# Reviewed Lesson Application Boundary Reconciliation v0
+﻿# Reviewed Lesson Application Boundary Reconciliation v0
 
 Date: 2026-06-12
 
@@ -158,57 +158,9 @@ Required v0 rules:
 - allowed_for_predictor_mutation must remain False.
 - allowed_for_runtime_behavior_change must remain False.
 
-## Rollback / Audit Requirements
-
-Any future application gate must require:
-
-- rollback path defined
-- rollback_available recorded before application eligibility
-- audit trace required
-- source evidence IDs preserved
-- application scope defined before any application eligibility
-- rejected and needs_more_evidence decisions preserved as blocked paths
-
 ## Mentor Override Requirement
 
 mentor override preserved is mandatory.
 
 If mentor override is unavailable, the future application gate must reject.
 No application package may bypass mentor override.
-
-## Strict Forbidden Claims
-
-This reconciliation does not add:
-
-- lesson application
-- sandbox lesson application
-- runtime lesson application
-- memory write
-- retention write
-- new retention write
-- predictor mutation
-- runtime behavior change
-- production action selection
-- runtime action selection
-- selected_action creation
-- final_action creation
-- direct action command
-- real movement
-- real navigation change
-- UI behavior change
-- persistent policy write
-- generalized behavior modification
-- semantic / fuzzy / vector retrieval
-- object recognition
-- semantic vision
-- proof of learning claim
-
-## Future Package Order
-
-Recommended future order:
-
-1. Reviewed Lesson Application Gate Design Minimal v0
-2. Reviewed Lesson Sandbox Application Eligibility Preview Minimal v0
-3. Reviewed Lesson Application Boundary Implementation Review v0
-
-Each future package must keep application, memory write, retention write, predictor mutation, and runtime behavior change blocked until an explicit package authorizes exactly one boundary with rollback, audit, scope, and mentor override.

@@ -1,4 +1,4 @@
-# Retina Decoder Design v0
+﻿# Retina Decoder Design v0
 
 Date: 2026-06-09
 

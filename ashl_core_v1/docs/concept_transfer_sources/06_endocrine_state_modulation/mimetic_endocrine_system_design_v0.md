@@ -1,4 +1,4 @@
-# Mimetic Endocrine System Design v0
+﻿# Mimetic Endocrine System Design v0
 
 Date: 2026-06-09
 

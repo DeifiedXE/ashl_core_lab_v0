@@ -1,4 +1,4 @@
-# Five-Layer Memory Design Assumption v0.1
+﻿# Five-Layer Memory Design Assumption v0.1
 
 ## Purpose
 
@@ -9,10 +9,6 @@ It is design-only. It does not implement Archive Memory, Anchor Layer, four-laye
 ## Version
 
 - Document: Five-Layer Memory Design Assumption v0.1
-- Status: design assumption only
-- Current Boundary Index remains unchanged by this document.
-
-Version-priority note: Where this design assumption differs from `docs/five_layer_memory_framework_boundary_v0.md`, `docs/current_boundary_index.md`, `docs/phase0_status.md`, or `docs/phase0_capability_matrix.md`, the newer boundary/current-status document controls current capability claims. This older design assumption remains historical design context and does not grant current Long-term Memory capability.
 
 ## Five-Layer Architecture
 
@@ -31,8 +27,6 @@ Core Memory is the highest-stability identity and value layer.
 Core Memory is mentor-defined and cannot be self-modified by Qingyin.
 
 Core Memory is not a place for ordinary experience records, trial traces, or temporary observations.
-
-Current implementation status:
 
 - Core Seed exists as a prototype / assumption line.
 - Core Memory runtime is not implemented as a complete memory layer.
@@ -55,8 +49,6 @@ session_experience_record
 
 This is a minimal prototype, not a complete Long-term Memory system.
 
-Current implementation status:
-
 - mentor-gated JSONL retention exists as a minimal prototype.
 - Retained records can be appended, loaded back, previewed read-only, and listed read-only.
 - Automatic retention is not implemented.
@@ -70,8 +62,6 @@ Working Memory is session-local.
 Working Memory may help hold current session context, local trace state, and short-lived handoff data.
 
 Working Memory clears after session.
-
-Current implementation status:
 
 - session working memory exists.
 - temporary cross-session experience space is demo / fixture handoff only and is not durable memory.
@@ -90,8 +80,6 @@ Archive Memory compression must preserve these minimum fields:
 - 來源情境摘要
 - 信心等級
 - 使用次數
-
-Current implementation status:
 
 - Archive Memory: not implemented
 - No archive compression runtime exists.
@@ -112,8 +100,6 @@ Core anchors come from Core Memory and are mentor-defined.
 Specialty anchors are future self-built anchors.
 
 Specialty anchors are not open until Qingyin can recognize herself.
-
-Current implementation status:
 
 - Anchor Layer: not implemented
 - No anchor runtime exists.
@@ -155,46 +141,3 @@ No endocrine-driven anchor lookup is implemented in this package.
 No endocrine-controlled memory routing is implemented.
 
 No endocrine-controlled action selection is implemented.
-
-## Current Implementation Status
-
-Current implemented / prototype lines:
-
-- Core Memory: Core Seed exists as a prototype / assumption line.
-- Long-term Memory: mentor-gated JSONL retention exists as a minimal prototype.
-- Working Memory: session working memory exists.
-- Archive Memory: not implemented.
-- Anchor Layer: not implemented.
-
-The current system can only claim:
-
-- mentor-gated durable retention Minimal v0 exists.
-- retained JSONL records can be loaded back.
-- retained JSONL records can be shown in read-only preview.
-- retained JSONL records can be listed read-only.
-
-## Not-Allowed Claims
-
-Do not claim 五層記憶系統已完整實作.
-
-Do not claim Archive Memory exists.
-
-Do not claim Anchor Layer exists.
-
-Do not claim specialty anchors exist.
-
-Do not claim endocrine-driven anchor lookup exists.
-
-Do not claim automatic retention exists.
-
-Do not claim semantic / fuzzy / vector retrieval exists.
-
-Do not claim retained records apply lessons.
-
-Do not claim retained records influence action selection.
-
-Do not claim retained records change behavior.
-
-Do not claim retained records mutate predictors.
-
-Do not claim proof of learning from this design document.

@@ -1,9 +1,4 @@
-# Body-Motor Affordance / Tendency / Endocrine Reconciliation Design v0
-
-Status: Design Proposal Only
-Type: Docs-Only
-Runtime Impact: None
-Boundary Index Impact: None
+﻿# Body-Motor Affordance / Tendency / Endocrine Reconciliation Design v0
 
 ---
 

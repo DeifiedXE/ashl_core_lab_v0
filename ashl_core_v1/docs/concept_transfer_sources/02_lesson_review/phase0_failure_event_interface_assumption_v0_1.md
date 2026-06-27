@@ -1,4 +1,4 @@
-# ASHL Core / Qingyin Phase 0 failure_event interface assumption v0.1
+﻿# ASHL Core / Qingyin Phase 0 failure_event interface assumption v0.1
 
 ## Purpose
 
@@ -113,7 +113,6 @@ Example:
 
 ```yaml
 expected_outcome:
-  type: object_state
   target_id: cube_001
   expected_state: held
 ```
@@ -122,7 +121,6 @@ Example:
 
 ```yaml
 expected_outcome:
-  type: information_gain
   target_id: object_001
   expected_state: basic_features_recorded
 ```
@@ -137,7 +135,6 @@ Example:
 
 ```yaml
 actual_outcome:
-  type: object_state
   target_id: cube_001
   actual_state: not_moved
 ```
@@ -146,7 +143,6 @@ Example:
 
 ```yaml
 actual_outcome:
-  type: observation_result
   target_id: object_001
   actual_state: no_features_detected
 ```

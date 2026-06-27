@@ -1,9 +1,4 @@
-# Qingyin Vocal Organ Engine Design v0
-
-Status: Design Proposal Only
-Type: Docs-Only
-Runtime Impact: None
-Boundary Index Impact: None
+﻿# Qingyin Vocal Organ Engine Design v0
 
 ## Purpose
 

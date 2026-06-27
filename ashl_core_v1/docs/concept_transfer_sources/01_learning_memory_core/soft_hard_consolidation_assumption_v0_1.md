@@ -1,4 +1,4 @@
-# ASHL Core／清音唯一模型：Soft / Hard Consolidation Assumption v0.1
+﻿# ASHL Core／清音唯一模型：Soft / Hard Consolidation Assumption v0.1
 
 ## 目的
 

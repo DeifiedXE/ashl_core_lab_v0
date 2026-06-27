@@ -1,9 +1,7 @@
 ﻿# Qingyin Thought System Layering Design v0
 
-Status: design decision draft
 Scope: ASHL Core / Qingyin runtime thought architecture
 Runtime LLM policy: no LLM runtime component; LLM may only be used as an external development tool.
-Boundary Index impact: none; this is a design document only.
 
 ## 1. Design Decision
 

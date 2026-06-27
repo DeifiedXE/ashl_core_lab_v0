@@ -1,10 +1,5 @@
 ﻿# Qingyin Bridge Dual-Eye Capability Perception Design v0
 
-Status: Design Proposal Only
-Type: Docs-Only
-Runtime Impact: None
-Boundary Index Impact: None
-
 ---
 
 ## Purpose

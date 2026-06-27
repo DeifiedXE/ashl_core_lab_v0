@@ -1,4 +1,4 @@
-# Generalized Memory Loop Design v0
+﻿# Generalized Memory Loop Design v0
 
 ## Purpose
 

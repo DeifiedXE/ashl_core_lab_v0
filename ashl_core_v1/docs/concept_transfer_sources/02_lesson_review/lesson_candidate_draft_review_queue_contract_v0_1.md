@@ -1,4 +1,4 @@
-# ASHL Core / Qingyin Lesson Candidate Draft Review Queue Contract v0.1
+﻿# ASHL Core / Qingyin Lesson Candidate Draft Review Queue Contract v0.1
 
 ## Purpose
 

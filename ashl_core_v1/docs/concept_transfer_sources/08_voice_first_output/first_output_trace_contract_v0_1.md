@@ -1,6 +1,4 @@
-# First Output Trace Contract v0.1
-
-Status: docs-only / trace-contract / first-output / no-runtime-implementation
+﻿# First Output Trace Contract v0.1
 
 ## Purpose
 
@@ -294,10 +292,3 @@ This contract does not implement:
 - lesson_store write
 - Memory Layer write
 - review / lesson / selection / activation / conflict behavior changes
-
-## Audit Summary
-
-This document establishes a trace contract baseline for future first_output work. It keeps
-first_output_trace as evidence only, requires `llm_used = false`, preserves output source
-boundaries, requires append-only or version-preserving correction, and keeps mentor feedback,
-lesson_candidate input, lesson_store, and Memory Layer writes downstream or out of scope.
