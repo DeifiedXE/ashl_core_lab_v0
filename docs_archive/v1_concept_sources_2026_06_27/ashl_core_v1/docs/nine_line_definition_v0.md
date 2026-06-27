@@ -1,0 +1,184 @@
+# ASHL Core v1 Nine-Line Definition Alignment v0
+
+Status: canonical v1 organ definition
+
+This document records the user-authored ASHL Core v1 nine-line definition.
+It is a definition alignment document only. It does not implement runtime
+behavior, move legacy files, import legacy ASHL Core modules, connect old CLI,
+or create a runtime loop.
+
+Plain wording:
+
+> 先把清音 v1 的九個器官定義釘住，之後所有 v1 dataclass、module、runtime 都要照這份定義長。
+
+## Repository Folder Mapping
+
+The v1 bootstrap currently uses English folder names. The canonical organ names
+below are the authority for future implementation.
+
+| Canonical organ | Current v1 folder |
+| --- | --- |
+| 擬態具身模組 | `body/` |
+| 思考運算模組 | `thought/` |
+| 五重記憶模組 | `memory/` |
+| 硬軟感知模組 | `perception/` |
+| 無限制能力橋接及可操作結構視覺化編譯模組 | `bridge/` |
+| 擬態內分泌模組 | `endocrine/` |
+| 獨立音訊模組 | `voice/` |
+| 學習性泛化應用模組 | `lesson/` |
+| 稽核邊界模組 | `governance/` |
+
+`runtime/` is not an organ line. It is a future execution support layer.
+
+## 1. 擬態具身模組
+
+功能：訊號編譯後輸出。
+
+輸入：思考運算模組訊號。
+
+輸出：行動訊號、無限制能力橋接模組。
+
+接給：直接輸出或硬軟感知模組。
+
+## 2. 思考運算模組
+
+功能：將各類訊號資料整理成給行動模組使用的資料。
+
+輸入：記憶化應用資料、多重內分泌訊號。
+
+輸出：思考運算模組訊號。
+
+接給：擬態具身模組。
+
+## 3. 五重記憶模組
+
+功能：記憶分類路由、記憶儲存、記憶輸出。
+
+輸入：學習性泛化應用模組。
+
+輸出：記憶化應用資料。
+
+接給：思考運算模組。
+
+## 4. 硬軟感知模組
+
+功能：將看、聽、碰的回饋資料編譯成記憶可讀資料，並控制感知模組動作。
+
+輸入：複合式資料、擬態內分泌模組的去甲腎上腺素訊號、聲音訊號。
+
+輸出：可讀資料。
+
+接給：學習性泛化應用模組。
+
+## 5. 無限制能力橋接及可操作結構視覺化編譯模組
+
+功能：接收行動訊號後，用視覺眼掃描可見介面、用操作眼讀取環境宣告結構，將兩者編譯成統一能力地圖，再讓行動閘道對每個意圖做風險與權限裁決。
+
+輸入：來自擬態具身模組的行動訊號，不是原始 API 呼叫。
+
+輸出：統一能力地圖、行動閘道裁決、回饋封包。
+
+接給：能力地圖與裁決結果回傳思考運算模組；回饋封包另走追蹤記錄路徑。
+
+一句話：把環境的可見介面與宣告能力同時編譯成清音可以讀懂的能力地圖，再對每個行動意圖做閘道裁決後回傳。
+
+## 6. 擬態內分泌模組
+
+功能：用模擬的多巴胺、去甲腎上腺素、催產素、皮質醇引導或控制行動、感知或思考。
+
+此處的「控制」指狀態調控，不是替思考運算模組做決策，也不是直接輸出行動。
+
+輸入：思考運算模組。
+
+輸出：多重內分泌訊號。
+
+接給：硬軟感知模組、擬態具身模組、獨立音訊模組。
+
+一句話：用模擬激素訊號調節清音的當前狀態基調，影響感知靈敏度、行動傾向與輸出語氣。
+
+## 7. 獨立音訊模組
+
+功能：發音系統。
+
+輸入：多重內分泌訊號、行動訊號。
+
+輸出：聲音、聲音訊號。
+
+接給：無。
+
+一句話：接收行動與內分泌訊號，產出清音的聲音表達。
+
+## 8. 學習性泛化應用模組
+
+功能：將硬軟感知模組和擬態內分泌模組取得的資料轉換成記憶。
+
+輸入：感知資料和內分泌資料。
+
+輸出：記憶。
+
+接給：五重記憶模組。
+
+一句話：把感知與內分泌資料消化成可寫入記憶庫的學習結果。
+
+## 9. 稽核邊界模組
+
+功能：監督所有其他模組的行為是否在邊界內，包括行動是否超出沙盒、傾向是否滲入目的層、模擬是否被誤認為現實、記憶來源是否符合信任政策。
+
+輸入：來自擬態具身模組的行動意圖、來自思考運算模組的目的訊號、來自五重記憶模組的記憶來源標記、來自清音橋的回饋封包。
+
+輸出：稽核裁決、追蹤記錄、違規報告。
+
+接給：稽核裁決回饋給思考運算模組與擬態具身模組；追蹤記錄寫入五重記憶模組的獨立稽核層；違規報告輸出給外部監督者。
+
+一句話：稽核邊界模組是整個循環的旁路監督器，不創造主流程，但會阻止主流程越界。
+
+## Main Cycle
+
+```text
+擬態具身模組
+→ 行動訊號 / 身體輸出
+→ 硬軟感知模組 / 無限制能力橋接模組 / 獨立音訊模組
+→ 產生感知資料、能力回饋、聲音訊號、行動結果
+→ 學習性泛化應用模組
+→ 將感知資料與內分泌資料消化成記憶
+→ 五重記憶模組
+→ 分類、儲存、路由、輸出記憶化應用資料
+→ 思考運算模組
+→ 整合記憶化應用資料與多重內分泌訊號
+→ 產生思考運算模組訊號
+→ 擬態具身模組
+→ 進入下一輪循環
+```
+
+## v1 First Stage
+
+The first implementation stage may align only the minimal data flow for these
+six modules:
+
+```text
+思考運算模組
+擬態具身模組
+硬軟感知模組
+學習性泛化應用模組
+五重記憶模組
+擬態內分泌模組
+```
+
+## Deferred Definition-Only Lines
+
+These three modules are definition-only in the first stage:
+
+```text
+獨立音訊模組
+無限制能力橋接及可操作結構視覺化編譯模組
+稽核邊界模組
+```
+
+## Non-Implementation Statement
+
+- Runtime implemented: false
+- Old repo changed: false
+- Legacy files moved: false
+- Legacy imports added: false
+- Old CLI connected: false
+- Runtime loop created: false

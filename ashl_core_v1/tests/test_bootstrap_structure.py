@@ -49,6 +49,11 @@ LEGACY_SENTINELS = (
     "README.md",
 )
 
+ALLOWED_OUTSIDE_V1_STATUS_PATHS = (
+    "docs_archive/",
+    "docs_archive/v1_concept_sources_2026_06_27/",
+)
+
 
 def _git_status_paths() -> list[str]:
     result = subprocess.run(
@@ -105,7 +110,10 @@ class CleanRewriteBootstrapStructureTests(unittest.TestCase):
 
     def test_old_repo_modified_false(self):
         outside_v1 = [
-            path for path in _git_status_paths() if not path.startswith("ashl_core_v1/")
+            path
+            for path in _git_status_paths()
+            if not path.startswith("ashl_core_v1/")
+            and not path.startswith(ALLOWED_OUTSIDE_V1_STATUS_PATHS)
         ]
 
         self.assertEqual([], outside_v1)

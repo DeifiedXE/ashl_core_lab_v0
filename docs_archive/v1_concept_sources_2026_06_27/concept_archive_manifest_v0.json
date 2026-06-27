@@ -1,0 +1,672 @@
+[
+  {
+    "source_path": "ashl_core_v1/docs/clean_rewrite_bootstrap_v1.md",
+    "archive_path": "docs_archive/v1_concept_sources_2026_06_27/ashl_core_v1/docs/clean_rewrite_bootstrap_v1.md",
+    "category": "v1_bootstrap",
+    "concept_reason": "v1 地基與資料夾骨架",
+    "exists_at_archive_time": true,
+    "sha256": "69bc078821b22e82b01c7c6933939c8f02e9cc3728b0e9810baf08394680c8c1",
+    "size_bytes": 1922,
+    "line_count": 59
+  },
+  {
+    "source_path": "ashl_core_v1/docs/nine_line_definition_v0.md",
+    "archive_path": "docs_archive/v1_concept_sources_2026_06_27/ashl_core_v1/docs/nine_line_definition_v0.md",
+    "category": "v1_canonical",
+    "concept_reason": "九器官正本",
+    "exists_at_archive_time": true,
+    "sha256": "0e8a39ccc7d142da5f292ebc6f93b2b9c11231133b56026899b0e7adbb298271",
+    "size_bytes": 5770,
+    "line_count": 185
+  },
+  {
+    "source_path": "ashl_core_v1/docs/legacy_design_doc_alignment_index_v0.md",
+    "archive_path": "docs_archive/v1_concept_sources_2026_06_27/ashl_core_v1/docs/legacy_design_doc_alignment_index_v0.md",
+    "category": "v1_alignment",
+    "concept_reason": "舊文件到九器官的對齊索引",
+    "exists_at_archive_time": true,
+    "sha256": "ec95ce1f695e7039cb8a34c5b9ef4674926a94d5dbb1b325968a471f5b7f5e42",
+    "size_bytes": 10789,
+    "line_count": 196
+  },
+  {
+    "source_path": "ashl_core_v1/docs/observation_aligned_product_imagination_v0.md",
+    "archive_path": "docs_archive/v1_concept_sources_2026_06_27/ashl_core_v1/docs/observation_aligned_product_imagination_v0.md",
+    "category": "v1_product_shape",
+    "concept_reason": "第一階段觀察對齊成品輪廓",
+    "exists_at_archive_time": true,
+    "sha256": "5e9b29d11d5036f3487df2bcf6c3d69d888b54ec37e370effe971df79adfa5b9",
+    "size_bytes": 5082,
+    "line_count": 161
+  },
+  {
+    "source_path": "docs/phase0_minimal_learning_action_memory_loop_plan.md",
+    "archive_path": "docs_archive/v1_concept_sources_2026_06_27/docs/phase0_minimal_learning_action_memory_loop_plan.md",
+    "category": "learning_memory_loop",
+    "concept_reason": "學習/行動/記憶迴圈",
+    "exists_at_archive_time": true,
+    "sha256": "9066d2a66f46f0c5ed84797b977bb8586e36806e0a5b2d35d54c9f8958d031e0",
+    "size_bytes": 11255,
+    "line_count": 342
+  },
+  {
+    "source_path": "docs/phase0_thought_memory_action_parallel_loop_plan.md",
+    "archive_path": "docs_archive/v1_concept_sources_2026_06_27/docs/phase0_thought_memory_action_parallel_loop_plan.md",
+    "category": "learning_memory_loop",
+    "concept_reason": "思考/記憶/行動平行迴圈",
+    "exists_at_archive_time": true,
+    "sha256": "fbbb1aafe4fb543ce5050355663acb3a9b77be41be3b4086494667f4f5672836",
+    "size_bytes": 3839,
+    "line_count": 116
+  },
+  {
+    "source_path": "docs/generalized_memory_loop_design_v0.md",
+    "archive_path": "docs_archive/v1_concept_sources_2026_06_27/docs/generalized_memory_loop_design_v0.md",
+    "category": "memory",
+    "concept_reason": "泛化記憶迴圈",
+    "exists_at_archive_time": true,
+    "sha256": "5e53d2167dbb5b452bd1eb391d93cbfff58c3ea29e2121c5aacb2b5eba598afa",
+    "size_bytes": 8056,
+    "line_count": 284
+  },
+  {
+    "source_path": "docs/memory_layers.md",
+    "archive_path": "docs_archive/v1_concept_sources_2026_06_27/docs/memory_layers.md",
+    "category": "memory",
+    "concept_reason": "記憶層概念",
+    "exists_at_archive_time": true,
+    "sha256": "811469aeb358d14a776d486a658eb71389768d7cce4bacb92f45e1b9f70ad7f0",
+    "size_bytes": 1638,
+    "line_count": 67
+  },
+  {
+    "source_path": "docs/five_layer_memory_design_assumption_v0_1.md",
+    "archive_path": "docs_archive/v1_concept_sources_2026_06_27/docs/five_layer_memory_design_assumption_v0_1.md",
+    "category": "memory",
+    "concept_reason": "五層記憶概念",
+    "exists_at_archive_time": true,
+    "sha256": "12e9f8df9520fea7654d474e9a55307bfe3d7574107c506e652a5fb3aa02ba0c",
+    "size_bytes": 6003,
+    "line_count": 201
+  },
+  {
+    "source_path": "docs/five_layer_memory_framework_boundary_v0.md",
+    "archive_path": "docs_archive/v1_concept_sources_2026_06_27/docs/five_layer_memory_framework_boundary_v0.md",
+    "category": "memory",
+    "concept_reason": "五層記憶框架",
+    "exists_at_archive_time": true,
+    "sha256": "20fb1052b678c29d46cd4e4ffe7dca8abb065694717ac0073572aea247bfc0bf",
+    "size_bytes": 4578,
+    "line_count": 114
+  },
+  {
+    "source_path": "docs/lesson_memory_layer_relation_assumption_v0_1.md",
+    "archive_path": "docs_archive/v1_concept_sources_2026_06_27/docs/lesson_memory_layer_relation_assumption_v0_1.md",
+    "category": "learning_memory",
+    "concept_reason": "學習層與記憶層關係",
+    "exists_at_archive_time": true,
+    "sha256": "8e33c37dcc1069db05b0989c0352ccc9057fdfc06db2543151c22cb065722201",
+    "size_bytes": 5130,
+    "line_count": 160
+  },
+  {
+    "source_path": "docs/state_persistence.md",
+    "archive_path": "docs_archive/v1_concept_sources_2026_06_27/docs/state_persistence.md",
+    "category": "continuity",
+    "concept_reason": "狀態連續性支撐",
+    "exists_at_archive_time": true,
+    "sha256": "14ebd22db8f0be2816b7b6348b81b3b673c9c768b670b9be2e93d8c5665a5a7c",
+    "size_bytes": 1343,
+    "line_count": 51
+  },
+  {
+    "source_path": "docs/memory_compression_strategy_assumption_patch_v0_1.md",
+    "archive_path": "docs_archive/v1_concept_sources_2026_06_27/docs/memory_compression_strategy_assumption_patch_v0_1.md",
+    "category": "memory",
+    "concept_reason": "記憶壓縮策略",
+    "exists_at_archive_time": true,
+    "sha256": "8f4e870068924e3e1a0c2a45c6c6b53b34ea026c178d2fa204c0ab729dd5542f",
+    "size_bytes": 2738,
+    "line_count": 116
+  },
+  {
+    "source_path": "docs/soft_hard_consolidation_assumption_v0_1.md",
+    "archive_path": "docs_archive/v1_concept_sources_2026_06_27/docs/soft_hard_consolidation_assumption_v0_1.md",
+    "category": "learning_memory",
+    "concept_reason": "軟/硬固化概念",
+    "exists_at_archive_time": true,
+    "sha256": "7304e1401a29d731fb78095b6cbec9cd3c0ac85bf5dc8f177696a6c6aea7f8df",
+    "size_bytes": 3447,
+    "line_count": 149
+  },
+  {
+    "source_path": "docs/mentor_gated_experience_retention_boundary_v0.md",
+    "archive_path": "docs_archive/v1_concept_sources_2026_06_27/docs/mentor_gated_experience_retention_boundary_v0.md",
+    "category": "retention",
+    "concept_reason": "導師審查後保留",
+    "exists_at_archive_time": true,
+    "sha256": "ddc8c8f40d34273d492ee24cf5e6b728f3e9fc0d9d8ebe17dfaa95838da21e56",
+    "size_bytes": 1140,
+    "line_count": 46
+  },
+  {
+    "source_path": "docs/minimal_lesson_effect_retention_boundary_review_v0.md",
+    "archive_path": "docs_archive/v1_concept_sources_2026_06_27/docs/minimal_lesson_effect_retention_boundary_review_v0.md",
+    "category": "retention",
+    "concept_reason": "學習效果保留條件",
+    "exists_at_archive_time": true,
+    "sha256": "d1dfa68f92974db20da781ac44b3698f3c56d1dee50cca14fe28d2bb1de2d29f",
+    "size_bytes": 1936,
+    "line_count": 55
+  },
+  {
+    "source_path": "docs/action_outcome_contrast_baseline_review_v0.md",
+    "archive_path": "docs_archive/v1_concept_sources_2026_06_27/docs/action_outcome_contrast_baseline_review_v0.md",
+    "category": "learning_review",
+    "concept_reason": "行動結果前後對照",
+    "exists_at_archive_time": true,
+    "sha256": "13d4e4979c9a0984f4458d03c39d9f57ce6d1ab7e701db70a134363652cc44ab",
+    "size_bytes": 11217,
+    "line_count": 404
+  },
+  {
+    "source_path": "docs/phase0_failure_event_interface_assumption_v0_1.md",
+    "archive_path": "docs_archive/v1_concept_sources_2026_06_27/docs/phase0_failure_event_interface_assumption_v0_1.md",
+    "category": "learning_review",
+    "concept_reason": "failure_event 介面",
+    "exists_at_archive_time": true,
+    "sha256": "2919249e82fbf1dbe30f1396438365eba5d0ee677b371d858e0e958fb3e5847c",
+    "size_bytes": 8192,
+    "line_count": 330
+  },
+  {
+    "source_path": "docs/failure_reason_design_assumption_v0_1.md",
+    "archive_path": "docs_archive/v1_concept_sources_2026_06_27/docs/failure_reason_design_assumption_v0_1.md",
+    "category": "learning_review",
+    "concept_reason": "failure_reason 對照來源",
+    "exists_at_archive_time": true,
+    "sha256": "17abbd111c48d78f772bc7c72f2692c9e6268c62740979af81e149b87ec2b40f",
+    "size_bytes": 1723,
+    "line_count": 47
+  },
+  {
+    "source_path": "docs/lesson_candidate_builder_contract_v0_1.md",
+    "archive_path": "docs_archive/v1_concept_sources_2026_06_27/docs/lesson_candidate_builder_contract_v0_1.md",
+    "category": "learning_review",
+    "concept_reason": "學習草稿產生契約",
+    "exists_at_archive_time": true,
+    "sha256": "d8d312024a498d8401c49cbf54066c9472d8a67a626be4e490ec7247477aeb78",
+    "size_bytes": 5440,
+    "line_count": 243
+  },
+  {
+    "source_path": "docs/lesson_candidate_draft_schema_v0_1.md",
+    "archive_path": "docs_archive/v1_concept_sources_2026_06_27/docs/lesson_candidate_draft_schema_v0_1.md",
+    "category": "learning_review",
+    "concept_reason": "學習草稿欄位來源",
+    "exists_at_archive_time": true,
+    "sha256": "e78bbfe815ec83c5d32c8bc768fdc42b6b525343e667b63a484d48b97d3ebed4",
+    "size_bytes": 5430,
+    "line_count": 274
+  },
+  {
+    "source_path": "docs/lesson_candidate_draft_review_queue_contract_v0_1.md",
+    "archive_path": "docs_archive/v1_concept_sources_2026_06_27/docs/lesson_candidate_draft_review_queue_contract_v0_1.md",
+    "category": "learning_review",
+    "concept_reason": "審查待辦",
+    "exists_at_archive_time": true,
+    "sha256": "3ef18cfde497b271ad006239b0569e8c239c643c435d285db34d9c496fb4b941",
+    "size_bytes": 5396,
+    "line_count": 258
+  },
+  {
+    "source_path": "docs/review_task_trace_schema_v0_1.md",
+    "archive_path": "docs_archive/v1_concept_sources_2026_06_27/docs/review_task_trace_schema_v0_1.md",
+    "category": "learning_review",
+    "concept_reason": "審查任務",
+    "exists_at_archive_time": true,
+    "sha256": "6360db1e5f6e7e90d8b3cee50b6e8c0357fe2e3b1f623420735c7c4ed2869f14",
+    "size_bytes": 3604,
+    "line_count": 129
+  },
+  {
+    "source_path": "docs/review_decision_contract_v0_1.md",
+    "archive_path": "docs_archive/v1_concept_sources_2026_06_27/docs/review_decision_contract_v0_1.md",
+    "category": "learning_review",
+    "concept_reason": "審查決定",
+    "exists_at_archive_time": true,
+    "sha256": "93dfa735ffc75648c12e21e6e828350cca49ee5daef95c3e026a74eb4ecb894f",
+    "size_bytes": 5955,
+    "line_count": 210
+  },
+  {
+    "source_path": "docs/review_decision_trace_schema_v0_1.md",
+    "archive_path": "docs_archive/v1_concept_sources_2026_06_27/docs/review_decision_trace_schema_v0_1.md",
+    "category": "learning_review",
+    "concept_reason": "審查決定 trace",
+    "exists_at_archive_time": true,
+    "sha256": "be0c084eb1b31597feecaf2b0ede123e5e372307a46bdd29c8a0b045c287f06c",
+    "size_bytes": 3379,
+    "line_count": 138
+  },
+  {
+    "source_path": "docs/lesson_application_boundary_review_v0.md",
+    "archive_path": "docs_archive/v1_concept_sources_2026_06_27/docs/lesson_application_boundary_review_v0.md",
+    "category": "learning_review",
+    "concept_reason": "preview/dry-run/application 區分",
+    "exists_at_archive_time": true,
+    "sha256": "064ef82789ec9c4425545e691e92d63f5017e336ea78e3f4e59304ff49268817",
+    "size_bytes": 10665,
+    "line_count": 337
+  },
+  {
+    "source_path": "docs/reviewed_lesson_application_boundary_reconciliation_v0.md",
+    "archive_path": "docs_archive/v1_concept_sources_2026_06_27/docs/reviewed_lesson_application_boundary_reconciliation_v0.md",
+    "category": "learning_review",
+    "concept_reason": "evidence 到 application gate 的對齊",
+    "exists_at_archive_time": true,
+    "sha256": "5c8c839e67b945e87fcab9ab94bd914fdb07f02cd111df1fd817d92c6e2f0587",
+    "size_bytes": 6357,
+    "line_count": 215
+  },
+  {
+    "source_path": "docs/formal_lesson_candidate_creation_contract_v0_1.md",
+    "archive_path": "docs_archive/v1_concept_sources_2026_06_27/docs/formal_lesson_candidate_creation_contract_v0_1.md",
+    "category": "learning_review",
+    "concept_reason": "正式候選建立概念",
+    "exists_at_archive_time": true,
+    "sha256": "6d97772cc37183c431edaf0e88895808bc4f03376d430cfed5cf57343673ec2d",
+    "size_bytes": 7568,
+    "line_count": 201
+  },
+  {
+    "source_path": "docs/review_decision_trace_integration_boundary_v0_1.md",
+    "archive_path": "docs_archive/v1_concept_sources_2026_06_27/docs/review_decision_trace_integration_boundary_v0_1.md",
+    "category": "learning_review",
+    "concept_reason": "審查決定整合",
+    "exists_at_archive_time": true,
+    "sha256": "2eb9234d7ae964fbb2825d4ae37f9e72b3873c1a5d46511a564d1c118f60bb7e",
+    "size_bytes": 6357,
+    "line_count": 180
+  },
+  {
+    "source_path": "docs/rejected_deferred_proposed_fields_masking_contract_v0_1.md",
+    "archive_path": "docs_archive/v1_concept_sources_2026_06_27/docs/rejected_deferred_proposed_fields_masking_contract_v0_1.md",
+    "category": "learning_review",
+    "concept_reason": "退回/延後欄位遮蔽",
+    "exists_at_archive_time": true,
+    "sha256": "fca464f3af9cd30eca906749ebd7484f8faddae2439d9655cdae5c717ca69af3",
+    "size_bytes": 4780,
+    "line_count": 190
+  },
+  {
+    "source_path": "docs/qingyin_thought_system_layering_design_v0.md",
+    "archive_path": "docs_archive/v1_concept_sources_2026_06_27/docs/qingyin_thought_system_layering_design_v0.md",
+    "category": "thought",
+    "concept_reason": "思考分層",
+    "exists_at_archive_time": true,
+    "sha256": "834daaa74ad21fe65daa9e0cdb97fd1ce8ac54ac98f46148b0eec76ab5f725b4",
+    "size_bytes": 13231,
+    "line_count": 577
+  },
+  {
+    "source_path": "docs/qingyin_proto_purpose_generation_boundary_design_v0.md",
+    "archive_path": "docs_archive/v1_concept_sources_2026_06_27/docs/qingyin_proto_purpose_generation_boundary_design_v0.md",
+    "category": "thought",
+    "concept_reason": "proto-purpose 概念",
+    "exists_at_archive_time": true,
+    "sha256": "c6ccde53fb960958d87330c31469e7a7a918df39a4890e9f1f39b926a0cba370",
+    "size_bytes": 8836,
+    "line_count": 391
+  },
+  {
+    "source_path": "docs/qingyin_proto_purpose_generation_boundary_design_v0_zh.md",
+    "archive_path": "docs_archive/v1_concept_sources_2026_06_27/docs/qingyin_proto_purpose_generation_boundary_design_v0_zh.md",
+    "category": "thought",
+    "concept_reason": "proto-purpose 中文概念",
+    "exists_at_archive_time": true,
+    "sha256": "7ced0a46eb7e8882085c03b6ba1815400753609b11236a09d16ae09e6591cf86",
+    "size_bytes": 7298,
+    "line_count": 398
+  },
+  {
+    "source_path": "docs/instinct_lesson_layer_relation_assumption_v0_1.md",
+    "archive_path": "docs_archive/v1_concept_sources_2026_06_27/docs/instinct_lesson_layer_relation_assumption_v0_1.md",
+    "category": "thought_learning",
+    "concept_reason": "本能與學習層關係",
+    "exists_at_archive_time": true,
+    "sha256": "34079ac8d261f1a2b23078091a02207a5a4aa65f0167d1749aeb4f73e50e140f",
+    "size_bytes": 2369,
+    "line_count": 51
+  },
+  {
+    "source_path": "docs/phase0_behavior_curiosity_assumption_v0_1.md",
+    "archive_path": "docs_archive/v1_concept_sources_2026_06_27/docs/phase0_behavior_curiosity_assumption_v0_1.md",
+    "category": "thought_body",
+    "concept_reason": "行為與好奇概念",
+    "exists_at_archive_time": true,
+    "sha256": "9715e10bd9fa040fe33adfcf4ae16e67075db92c5535ae23bbdc93250022860f",
+    "size_bytes": 4777,
+    "line_count": 145
+  },
+  {
+    "source_path": "docs/voice_instinct_assumption_v0_1.md",
+    "archive_path": "docs_archive/v1_concept_sources_2026_06_27/docs/voice_instinct_assumption_v0_1.md",
+    "category": "thought_voice",
+    "concept_reason": "聲音本能概念",
+    "exists_at_archive_time": true,
+    "sha256": "52f544c7779a5358b2b3c3070ec934fb969fc7a8d63576c64bd2d46d50136772",
+    "size_bytes": 3726,
+    "line_count": 150
+  },
+  {
+    "source_path": "docs/core_senses.md",
+    "archive_path": "docs_archive/v1_concept_sources_2026_06_27/docs/core_senses.md",
+    "category": "perception",
+    "concept_reason": "核心感官概念",
+    "exists_at_archive_time": true,
+    "sha256": "cd7e243f565698fe301912c07dcbcea2bada19d5840ade3c5fca0ed07c2df965",
+    "size_bytes": 2050,
+    "line_count": 81
+  },
+  {
+    "source_path": "docs/perception_layer_design_assumption_v0_1.md",
+    "archive_path": "docs_archive/v1_concept_sources_2026_06_27/docs/perception_layer_design_assumption_v0_1.md",
+    "category": "perception",
+    "concept_reason": "感知層概念",
+    "exists_at_archive_time": true,
+    "sha256": "e2b67238ed9216aaa8b3b2e30e5f7e807209dcc618395446cf3d733a95fa60c8",
+    "size_bytes": 4008,
+    "line_count": 123
+  },
+  {
+    "source_path": "docs/retina_decoder_design_v0.md",
+    "archive_path": "docs_archive/v1_concept_sources_2026_06_27/docs/retina_decoder_design_v0.md",
+    "category": "perception",
+    "concept_reason": "retina decoder",
+    "exists_at_archive_time": true,
+    "sha256": "aa8e1941018645edf63e1ce365d8547b1de64f69f6bac7a7c9c7eee3a90a9284",
+    "size_bytes": 5763,
+    "line_count": 353
+  },
+  {
+    "source_path": "docs/simple_visual_frame_buffer_design_v0.md",
+    "archive_path": "docs_archive/v1_concept_sources_2026_06_27/docs/simple_visual_frame_buffer_design_v0.md",
+    "category": "perception",
+    "concept_reason": "visual frame buffer",
+    "exists_at_archive_time": true,
+    "sha256": "c52a1a8dbd6b5de83d6a276444e6b474d22e7295181171f918297d5eedf1813c",
+    "size_bytes": 6801,
+    "line_count": 287
+  },
+  {
+    "source_path": "docs/visual_frame_change_design_v0.md",
+    "archive_path": "docs_archive/v1_concept_sources_2026_06_27/docs/visual_frame_change_design_v0.md",
+    "category": "perception",
+    "concept_reason": "visual frame change",
+    "exists_at_archive_time": true,
+    "sha256": "0709f32b79ebe7d1e86ba6d4dbfd879b7b8a54aa41a703b1bcca22ff13cfeda8",
+    "size_bytes": 8864,
+    "line_count": 353
+  },
+  {
+    "source_path": "docs/focus_selector_design_v0.md",
+    "archive_path": "docs_archive/v1_concept_sources_2026_06_27/docs/focus_selector_design_v0.md",
+    "category": "perception",
+    "concept_reason": "focus candidate 概念",
+    "exists_at_archive_time": true,
+    "sha256": "bc31f9a7291e0ef3d88d9ec44dc02f32c9e1f44d750f78c481270d01c4c0256a",
+    "size_bytes": 11693,
+    "line_count": 468
+  },
+  {
+    "source_path": "docs/focus_candidate_ranking_trace_design_v0.md",
+    "archive_path": "docs_archive/v1_concept_sources_2026_06_27/docs/focus_candidate_ranking_trace_design_v0.md",
+    "category": "perception",
+    "concept_reason": "focus ranking trace 概念",
+    "exists_at_archive_time": true,
+    "sha256": "b373d0e24b44067a9cea1d9af7a2deb6b0180a2e16af3ae5b30d8d68d164bb1e",
+    "size_bytes": 10095,
+    "line_count": 407
+  },
+  {
+    "source_path": "docs/simulated_vision_larger_sandbox_design_v0.md",
+    "archive_path": "docs_archive/v1_concept_sources_2026_06_27/docs/simulated_vision_larger_sandbox_design_v0.md",
+    "category": "perception",
+    "concept_reason": "模擬視覺沙盒",
+    "exists_at_archive_time": true,
+    "sha256": "f722afe24ad89977b15f6ee3a620d78ad368a621ebd552f80457608c75381669",
+    "size_bytes": 4953,
+    "line_count": 226
+  },
+  {
+    "source_path": "docs/focus_application_boundary_review_v0.md",
+    "archive_path": "docs_archive/v1_concept_sources_2026_06_27/docs/focus_application_boundary_review_v0.md",
+    "category": "perception",
+    "concept_reason": "focus 應用邊界概念",
+    "exists_at_archive_time": true,
+    "sha256": "facdbca92544d8e3ce9b67b6343c7e1ae81106e5619ed0503bb7c09634a5be52",
+    "size_bytes": 7932,
+    "line_count": 280
+  },
+  {
+    "source_path": "docs/body_motor_affordance_tendency_endocrine_reconciliation_design_v0.md",
+    "archive_path": "docs_archive/v1_concept_sources_2026_06_27/docs/body_motor_affordance_tendency_endocrine_reconciliation_design_v0.md",
+    "category": "body_endocrine",
+    "concept_reason": "body/tendency/endocrine 分界",
+    "exists_at_archive_time": true,
+    "sha256": "7f2b10b3653e2257e9997f2d43e50cfc6765a73e8274e2e36d9dead09b8da56c",
+    "size_bytes": 10565,
+    "line_count": 570
+  },
+  {
+    "source_path": "docs/body_motor_feedback_to_affordance_confidence_design_v0.md",
+    "archive_path": "docs_archive/v1_concept_sources_2026_06_27/docs/body_motor_feedback_to_affordance_confidence_design_v0.md",
+    "category": "body",
+    "concept_reason": "body feedback 到 affordance confidence",
+    "exists_at_archive_time": true,
+    "sha256": "57a99794af8e040ffb1409606223ffdd2faae242907d53ac3dc6ea24b27bcbdf",
+    "size_bytes": 5849,
+    "line_count": 319
+  },
+  {
+    "source_path": "docs/phase0_action_lesson_loop_return_planning_v0.md",
+    "archive_path": "docs_archive/v1_concept_sources_2026_06_27/docs/phase0_action_lesson_loop_return_planning_v0.md",
+    "category": "body_learning",
+    "concept_reason": "action/lesson loop return",
+    "exists_at_archive_time": true,
+    "sha256": "11e5507d9d91b9948861154d0c27f573a4755107b7681d88605a98ad30aa2345",
+    "size_bytes": 5902,
+    "line_count": 231
+  },
+  {
+    "source_path": "docs/instinct_random_walk_item_reward_bias_design_v0.md",
+    "archive_path": "docs_archive/v1_concept_sources_2026_06_27/docs/instinct_random_walk_item_reward_bias_design_v0.md",
+    "category": "body_endocrine",
+    "concept_reason": "本能 random walk / reward bias",
+    "exists_at_archive_time": true,
+    "sha256": "a220f31307d5234e1371282905dd7feeadc46b4d2ac0b83c3878d75253ccfa2e",
+    "size_bytes": 7485,
+    "line_count": 277
+  },
+  {
+    "source_path": "docs/sandbox_boundary_capability_assumption_v0_1.md",
+    "archive_path": "docs_archive/v1_concept_sources_2026_06_27/docs/sandbox_boundary_capability_assumption_v0_1.md",
+    "category": "body_bridge",
+    "concept_reason": "沙盒與能力邊界概念",
+    "exists_at_archive_time": true,
+    "sha256": "ad40606b2d2a8a5c1f65adbf5d6b3bb4633ef06394e5a89801a5ffed71d1c252",
+    "size_bytes": 6099,
+    "line_count": 235
+  },
+  {
+    "source_path": "docs/sandbox_failure_trace_contract_v0_1.md",
+    "archive_path": "docs_archive/v1_concept_sources_2026_06_27/docs/sandbox_failure_trace_contract_v0_1.md",
+    "category": "body_learning",
+    "concept_reason": "沙盒 failure trace",
+    "exists_at_archive_time": true,
+    "sha256": "f637490c6ccd99672ded1e3702456a18185442d2f60b5a3b0c4a981e6043d3dd",
+    "size_bytes": 9420,
+    "line_count": 287
+  },
+  {
+    "source_path": "docs/mimetic_endocrine_system_design_v0.md",
+    "archive_path": "docs_archive/v1_concept_sources_2026_06_27/docs/mimetic_endocrine_system_design_v0.md",
+    "category": "endocrine",
+    "concept_reason": "擬態內分泌系統",
+    "exists_at_archive_time": true,
+    "sha256": "677568d3b985d9859562a6be40473f3fe0090b1b540f6237e5bd9aa252557010",
+    "size_bytes": 8997,
+    "line_count": 451
+  },
+  {
+    "source_path": "docs/state_settling_and_mimetic_endocrine_concept_book_v0.md",
+    "archive_path": "docs_archive/v1_concept_sources_2026_06_27/docs/state_settling_and_mimetic_endocrine_concept_book_v0.md",
+    "category": "endocrine",
+    "concept_reason": "狀態沉澱與內分泌概念",
+    "exists_at_archive_time": true,
+    "sha256": "49b5f1df46e7b272ffd9b5d55caab384ecd96c1e62c362d4dcf724227a503ecc",
+    "size_bytes": 4300,
+    "line_count": 181
+  },
+  {
+    "source_path": "docs/phase0_trust_curiosity_personality_boundary_v0_1.md",
+    "archive_path": "docs_archive/v1_concept_sources_2026_06_27/docs/phase0_trust_curiosity_personality_boundary_v0_1.md",
+    "category": "endocrine_thought",
+    "concept_reason": "信任/好奇/人格邊界概念",
+    "exists_at_archive_time": true,
+    "sha256": "6f2309cfcad1e10972b1bc5ae4e68a66b9540016db0b2264790c31adb53b908f",
+    "size_bytes": 6409,
+    "line_count": 273
+  },
+  {
+    "source_path": "docs/qingyin_bridge_dual_eye_capability_perception_design_v0.md",
+    "archive_path": "docs_archive/v1_concept_sources_2026_06_27/docs/qingyin_bridge_dual_eye_capability_perception_design_v0.md",
+    "category": "bridge",
+    "concept_reason": "清音橋雙眼能力感知",
+    "exists_at_archive_time": true,
+    "sha256": "8633e1dfb1c8e2babd268a8bda11091be61867d43bea11f46e8468dcf1661bc6",
+    "size_bytes": 11324,
+    "line_count": 612
+  },
+  {
+    "source_path": "docs/perception_to_action_boundary_review_v0.md",
+    "archive_path": "docs_archive/v1_concept_sources_2026_06_27/docs/perception_to_action_boundary_review_v0.md",
+    "category": "bridge_perception_body",
+    "concept_reason": "感知到行動的接口概念",
+    "exists_at_archive_time": true,
+    "sha256": "06387e18824e5858b2ddb8378f650d99abcf86b35b8e665d8157e1ad5b47ce2d",
+    "size_bytes": 10140,
+    "line_count": 339
+  },
+  {
+    "source_path": "docs/qingyin_audio_cochlea_decoder_design_v0.md",
+    "archive_path": "docs_archive/v1_concept_sources_2026_06_27/docs/qingyin_audio_cochlea_decoder_design_v0.md",
+    "category": "voice",
+    "concept_reason": "音訊耳蝸解碼",
+    "exists_at_archive_time": true,
+    "sha256": "509df65bb000b48e99fa74f621fdc076aa4869e4b9b8e32c8d6b6113e8de1d7c",
+    "size_bytes": 4848,
+    "line_count": 301
+  },
+  {
+    "source_path": "docs/qingyin_vocal_organ_engine_design_v0.md",
+    "archive_path": "docs_archive/v1_concept_sources_2026_06_27/docs/qingyin_vocal_organ_engine_design_v0.md",
+    "category": "voice",
+    "concept_reason": "發聲器官",
+    "exists_at_archive_time": true,
+    "sha256": "747b8593f1e95892a88d4c328c0b9226400df5344cf4370119c854c4a8888ae3",
+    "size_bytes": 4637,
+    "line_count": 296
+  },
+  {
+    "source_path": "docs/internal_auditory_feedback_design_supplement_v0.md",
+    "archive_path": "docs_archive/v1_concept_sources_2026_06_27/docs/internal_auditory_feedback_design_supplement_v0.md",
+    "category": "voice",
+    "concept_reason": "內部聽覺回饋",
+    "exists_at_archive_time": true,
+    "sha256": "95bff8ef1c1f83949baccba509e79441d2ebe040cd8b325906addc88929a415b",
+    "size_bytes": 4383,
+    "line_count": 242
+  },
+  {
+    "source_path": "docs/qingyin_first_output_contract_v0_1.md",
+    "archive_path": "docs_archive/v1_concept_sources_2026_06_27/docs/qingyin_first_output_contract_v0_1.md",
+    "category": "voice",
+    "concept_reason": "first output contract",
+    "exists_at_archive_time": true,
+    "sha256": "524a1530542276601681385ea2fd2ee7021b8d2102cc8e5f235717c61f9300d6",
+    "size_bytes": 7478,
+    "line_count": 264
+  },
+  {
+    "source_path": "docs/qingyin_first_output_runtime_minimal_spec_v0_1.md",
+    "archive_path": "docs_archive/v1_concept_sources_2026_06_27/docs/qingyin_first_output_runtime_minimal_spec_v0_1.md",
+    "category": "voice",
+    "concept_reason": "first output minimal spec",
+    "exists_at_archive_time": true,
+    "sha256": "bc56f9d0f82823d0d1c1e567c4604d0092deef1a40a9d78e74de96bfe41f5cfd",
+    "size_bytes": 6959,
+    "line_count": 260
+  },
+  {
+    "source_path": "docs/first_output_trace_contract_v0_1.md",
+    "archive_path": "docs_archive/v1_concept_sources_2026_06_27/docs/first_output_trace_contract_v0_1.md",
+    "category": "voice",
+    "concept_reason": "first output trace",
+    "exists_at_archive_time": true,
+    "sha256": "22352df77746d7203eb546cd44c60733ef4ad99c79e0d46b8c211365f8b4312a",
+    "size_bytes": 7357,
+    "line_count": 304
+  },
+  {
+    "source_path": "docs/mentor_feedback_stub_contract_v0_1.md",
+    "archive_path": "docs_archive/v1_concept_sources_2026_06_27/docs/mentor_feedback_stub_contract_v0_1.md",
+    "category": "voice_learning",
+    "concept_reason": "mentor feedback stub",
+    "exists_at_archive_time": true,
+    "sha256": "78d334d3d0561ee20deb91601e15403fed415a2ef0cf31afeb06664bf19ccb38",
+    "size_bytes": 5842,
+    "line_count": 218
+  },
+  {
+    "source_path": "docs/mentor_feedback_trace_contract_v0_1.md",
+    "archive_path": "docs_archive/v1_concept_sources_2026_06_27/docs/mentor_feedback_trace_contract_v0_1.md",
+    "category": "voice_learning",
+    "concept_reason": "mentor feedback trace",
+    "exists_at_archive_time": true,
+    "sha256": "3e84cdbe1fa71aaaa6cbc77e663bc8607144fe2e078f3589971e22e3852a8e06",
+    "size_bytes": 5685,
+    "line_count": 207
+  },
+  {
+    "source_path": "docs/core_seed.md",
+    "archive_path": "docs_archive/v1_concept_sources_2026_06_27/docs/core_seed.md",
+    "category": "core_seed",
+    "concept_reason": "Core Seed",
+    "exists_at_archive_time": true,
+    "sha256": "d803d62fff297a1703d1015ad462cee7b6939dee6bf789ecdc7a90f725b32418",
+    "size_bytes": 2321,
+    "line_count": 79
+  },
+  {
+    "source_path": "docs/core_seed_design_spirit_supplement_v0_1.md",
+    "archive_path": "docs_archive/v1_concept_sources_2026_06_27/docs/core_seed_design_spirit_supplement_v0_1.md",
+    "category": "core_seed",
+    "concept_reason": "Core Seed 精神補充",
+    "exists_at_archive_time": true,
+    "sha256": "22f6adec8a153de55d4525e91a4e429d5ab28ded76fc91c7b7c334049d70672a",
+    "size_bytes": 3406,
+    "line_count": 149
+  },
+  {
+    "source_path": "docs/qingyin_runtime_ontology_boundary_v0_1.md",
+    "archive_path": "docs_archive/v1_concept_sources_2026_06_27/docs/qingyin_runtime_ontology_boundary_v0_1.md",
+    "category": "ontology",
+    "concept_reason": "runtime 本體階段概念",
+    "exists_at_archive_time": true,
+    "sha256": "228996d409f00aac8539a7ae304b2b0eae5011206ded70e0505624aeb4747f2f",
+    "size_bytes": 10271,
+    "line_count": 337
+  }
+]

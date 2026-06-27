@@ -49,6 +49,11 @@ ALLOWED_REUSE_POLICY = {
     "defer_until_later_phase",
 }
 
+ALLOWED_OUTSIDE_V1_STATUS_PREFIXES = (
+    "?? docs_archive/v1_concept_sources_2026_06_27/",
+    "A  docs_archive/v1_concept_sources_2026_06_27/",
+)
+
 
 def _read_index() -> str:
     return DOC_PATH.read_text(encoding="utf-8")
@@ -171,7 +176,10 @@ class LegacyDesignDocAlignmentIndexTests(unittest.TestCase):
         self.assertIn("Old docs modified: false", text)
         self.assertIn("Docs moved: false", text)
         outside_v1 = [
-            line for line in _git_status_lines() if " ashl_core_v1/" not in line
+            line
+            for line in _git_status_lines()
+            if " ashl_core_v1/" not in line
+            and not line.startswith(ALLOWED_OUTSIDE_V1_STATUS_PREFIXES)
         ]
         renamed_or_deleted = [
             line for line in _git_status_lines() if line[:2].strip() in {"D", "R"}

@@ -52,6 +52,12 @@ def _git_status_lines() -> list[str]:
     return [line for line in result.stdout.splitlines() if line]
 
 
+ALLOWED_OUTSIDE_V1_STATUS_PREFIXES = (
+    "?? docs_archive/v1_concept_sources_2026_06_27/",
+    "A  docs_archive/v1_concept_sources_2026_06_27/",
+)
+
+
 class ObservationAlignedProductImaginationTests(unittest.TestCase):
     def test_observation_aligned_product_imagination_doc_exists(self):
         self.assertTrue(DOC_PATH.is_file())
@@ -147,7 +153,10 @@ class ObservationAlignedProductImaginationTests(unittest.TestCase):
     def test_old_repo_modified_false(self):
         text = _read_doc()
         outside_v1 = [
-            line for line in _git_status_lines() if " ashl_core_v1/" not in line
+            line
+            for line in _git_status_lines()
+            if " ashl_core_v1/" not in line
+            and not line.startswith(ALLOWED_OUTSIDE_V1_STATUS_PREFIXES)
         ]
 
         self.assertIn("Old docs modified: false", text)
