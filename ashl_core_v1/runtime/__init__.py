@@ -13,11 +13,16 @@ from .cradle_summary import (
     summarize_last_run,
 )
 from .manual_samples import build_blocked_manual_circulation_sample
+from .milestone_report import (
+    build_multi_case_cradle_milestone_report,
+    write_multi_case_cradle_milestone_report,
+)
 
 __all__ = [
     "build_all_cradle_case_samples",
     "build_blocked_manual_circulation_sample",
     "build_cradle_case_sample",
+    "build_multi_case_cradle_milestone_report",
     "list_cradle_case_ids",
     "load_last_cradle_run",
     "run_all_cradle_cases",
@@ -27,4 +32,5 @@ __all__ = [
     "summarize_all_cradle_cases",
     "summarize_cradle_case",
     "summarize_last_run",
+    "write_multi_case_cradle_milestone_report",
 ]
