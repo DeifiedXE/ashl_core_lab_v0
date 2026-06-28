@@ -193,6 +193,42 @@ def mark_learning_candidate_from_teacher_console(
     }
 
 
+def review_candidate_from_teacher_console(
+    *,
+    candidate_id: str,
+    status: str,
+    note: str,
+    base_dir: str | Path | None = None,
+) -> dict[str, Any]:
+    from ashl_core_v1.lesson.cradle_learning_candidate_review import (
+        review_cradle_learning_candidate,
+    )
+
+    review = review_cradle_learning_candidate(
+        candidate_id=candidate_id,
+        status=status,
+        note=note,
+        base_dir=base_dir,
+    )
+    return {
+        "console_action": "review_candidate",
+        "review": review,
+        "memory_write": False,
+    }
+
+
+def show_reviewed_from_teacher_console(
+    base_dir: str | Path | None = None,
+) -> dict[str, Any]:
+    from ashl_core_v1.lesson.cradle_learning_candidate_review import (
+        list_cradle_reviewed_learning_records,
+    )
+
+    return {
+        "reviewed_learning_records": list_cradle_reviewed_learning_records(base_dir)
+    }
+
+
 def load_candidate_marks(base_dir: str | Path | None = None) -> dict[str, str]:
     path = resolve_cradle_task_teacher_console_dir(base_dir) / TASK_CANDIDATE_MARKS_FILE
     if not path.exists():

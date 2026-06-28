@@ -11,10 +11,12 @@ from ashl_core_v1.runtime.cradle_task_teacher_console import (
     get_cradle_task_teacher_console_status,
     list_cases_from_teacher_console,
     mark_learning_candidate_from_teacher_console,
+    review_candidate_from_teacher_console,
     run_blocked_task_from_teacher_console,
     run_case_from_teacher_console,
     show_last_run_from_teacher_console,
     show_learning_candidates_from_teacher_console,
+    show_reviewed_from_teacher_console,
     show_suite_summary_from_teacher_console,
     show_working_memory_from_teacher_console,
 )
@@ -39,6 +41,11 @@ def build_parser() -> argparse.ArgumentParser:
     mark_parser = subparsers.add_parser("mark-candidate")
     mark_parser.add_argument("--candidate-id", required=True)
     mark_parser.add_argument("--status", required=True)
+    review_parser = subparsers.add_parser("review-candidate")
+    review_parser.add_argument("--candidate-id", required=True)
+    review_parser.add_argument("--status", required=True)
+    review_parser.add_argument("--note", default="")
+    subparsers.add_parser("show-reviewed")
     return parser
 
 
@@ -83,6 +90,17 @@ def main(argv: list[str] | None = None) -> int:
                     base_dir=args.data_dir,
                 )
             )
+        if args.command == "review-candidate":
+            return _print_json(
+                review_candidate_from_teacher_console(
+                    candidate_id=args.candidate_id,
+                    status=args.status,
+                    note=args.note,
+                    base_dir=args.data_dir,
+                )
+            )
+        if args.command == "show-reviewed":
+            return _print_json(show_reviewed_from_teacher_console(args.data_dir))
     except (FileNotFoundError, LookupError, ValueError) as error:
         print(json.dumps({"status": "error", "error": str(error)}))
         return 1
