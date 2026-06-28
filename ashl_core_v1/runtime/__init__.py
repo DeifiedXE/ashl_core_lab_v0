@@ -140,6 +140,17 @@ from .teacher_gated_third_tick_runtime_stub import (
     run_teacher_gated_third_tick_runtime_stub,
     save_third_tick_stub_record,
 )
+from .manual_teacher_gated_tick_builder import build_manual_teacher_gated_task_tick
+from .three_tick_task_pattern_audit import (
+    build_manual_teacher_gated_tick_builder_demo,
+    build_three_tick_task_pattern_audit,
+    build_three_tick_task_pattern_audit_demo,
+    build_three_tick_task_pattern_fixture,
+    load_last_three_tick_task_pattern_audit,
+    run_manual_teacher_gated_tick_builder_demo,
+    run_three_tick_task_pattern_audit,
+    save_three_tick_task_pattern_audit,
+)
 from .manual_samples import build_blocked_manual_circulation_sample
 from .milestone_report import (
     build_multi_case_cradle_milestone_report,
@@ -180,6 +191,8 @@ __all__ = [
     "build_daily_operation_audit",
     "build_last_closed_session_replay_summary",
     "build_long_term_cultivation_gap_report",
+    "build_manual_teacher_gated_task_tick",
+    "build_manual_teacher_gated_tick_builder_demo",
     "build_multi_case_cradle_milestone_report",
     "build_open_cradle_event_loop_design_gate",
     "build_open_cradle_life_design_gate",
@@ -197,6 +210,9 @@ __all__ = [
     "build_state_snapshot",
     "build_teacher_gate_for_tick_context",
     "build_teacher_gated_third_tick_runtime_stub",
+    "build_three_tick_task_pattern_audit",
+    "build_three_tick_task_pattern_audit_demo",
+    "build_three_tick_task_pattern_fixture",
     "build_tick_dry_run_audit",
     "build_tick_dry_run_record",
     "build_tick_stub_record",
@@ -239,6 +255,7 @@ __all__ = [
     "load_last_tick_stub_record",
     "load_last_third_tick_readiness_from_task_working_memory",
     "load_last_third_tick_stub_record",
+    "load_last_three_tick_task_pattern_audit",
     "load_last_second_tick_stub_record",
     "load_last_two_tick_task_working_memory_continuity_audit",
     "load_last_two_tick_runtime_stub_planning_precheck",
@@ -255,6 +272,7 @@ __all__ = [
     "run_case_in_cradle_session",
     "run_cradle_daily",
     "run_cradle_case",
+    "run_manual_teacher_gated_tick_builder_demo",
     "run_state_continuity_stress",
     "run_teacher_gated_tick_dry_run",
     "run_teacher_gated_one_tick_runtime_stub",
@@ -263,6 +281,7 @@ __all__ = [
     "run_blocked_third_tick_runtime_stub_demo",
     "run_third_tick_readiness_from_task_working_memory",
     "run_teacher_gated_third_tick_runtime_stub",
+    "run_three_tick_task_pattern_audit",
     "run_two_tick_task_working_memory_continuity_audit",
     "save_last_trace_summary",
     "save_daily_operation_audit",
@@ -273,6 +292,7 @@ __all__ = [
     "save_tick_stub_record",
     "save_third_tick_readiness_from_task_working_memory",
     "save_third_tick_stub_record",
+    "save_three_tick_task_pattern_audit",
     "save_second_tick_stub_record",
     "save_two_tick_task_working_memory_continuity_audit",
     "save_two_tick_runtime_stub_planning_precheck",
