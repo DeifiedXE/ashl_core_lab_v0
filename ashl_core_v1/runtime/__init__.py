@@ -151,6 +151,13 @@ from .three_tick_task_pattern_audit import (
     run_three_tick_task_pattern_audit,
     save_three_tick_task_pattern_audit,
 )
+from .bounded_teacher_gated_task_tick_runner import (
+    build_bounded_teacher_gated_task_tick_run,
+    list_bounded_teacher_gated_task_tick_runs,
+    load_last_bounded_teacher_gated_task_tick_run,
+    run_bounded_teacher_gated_task_tick_runner,
+    save_bounded_teacher_gated_task_tick_run,
+)
 from .manual_samples import build_blocked_manual_circulation_sample
 from .milestone_report import (
     build_multi_case_cradle_milestone_report,
@@ -185,6 +192,7 @@ __all__ = [
     "build_all_cradle_case_samples",
     "build_blocked_manual_circulation_sample",
     "build_blocked_closed_task_third_tick_readiness_demo",
+    "build_bounded_teacher_gated_task_tick_run",
     "build_controlled_growth_readiness_check",
     "build_cradle_case_sample",
     "build_current_session_replay_summary",
@@ -235,6 +243,7 @@ __all__ = [
     "inspect_v1_backup",
     "list_cradle_case_ids",
     "list_cradle_session_history",
+    "list_bounded_teacher_gated_task_tick_runs",
     "list_second_tick_stub_record_history",
     "list_two_tick_task_working_memory_continuity_audits",
     "list_open_cradle_tick_context_history",
@@ -246,6 +255,7 @@ __all__ = [
     "list_two_tick_runtime_stub_planning_prechecks",
     "list_v1_backups",
     "load_current_cradle_session",
+    "load_last_bounded_teacher_gated_task_tick_run",
     "load_last_daily_operation_audit",
     "load_last_daily_run",
     "load_last_open_cradle_tick_context",
@@ -269,6 +279,7 @@ __all__ = [
     "restore_v1_backup",
     "run_all_cradle_cases",
     "run_blocked_cycle",
+    "run_bounded_teacher_gated_task_tick_runner",
     "run_case_in_cradle_session",
     "run_cradle_daily",
     "run_cradle_case",
@@ -284,6 +295,7 @@ __all__ = [
     "run_three_tick_task_pattern_audit",
     "run_two_tick_task_working_memory_continuity_audit",
     "save_last_trace_summary",
+    "save_bounded_teacher_gated_task_tick_run",
     "save_daily_operation_audit",
     "save_open_cradle_tick_context",
     "save_open_cradle_runtime_stub_readiness_review",
