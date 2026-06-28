@@ -158,6 +158,13 @@ from .bounded_teacher_gated_task_tick_runner import (
     run_bounded_teacher_gated_task_tick_runner,
     save_bounded_teacher_gated_task_tick_run,
 )
+from .task_run_closure import (
+    build_task_run_closure,
+    close_last_task_run,
+    list_task_learning_digest_candidates,
+    load_last_task_run_closure,
+    save_task_run_closure,
+)
 from .manual_samples import build_blocked_manual_circulation_sample
 from .milestone_report import (
     build_multi_case_cradle_milestone_report,
@@ -221,6 +228,7 @@ __all__ = [
     "build_three_tick_task_pattern_audit",
     "build_three_tick_task_pattern_audit_demo",
     "build_three_tick_task_pattern_fixture",
+    "build_task_run_closure",
     "build_tick_dry_run_audit",
     "build_tick_dry_run_record",
     "build_tick_stub_record",
@@ -230,6 +238,7 @@ __all__ = [
     "build_two_tick_task_working_memory_continuity_audit",
     "build_two_tick_task_working_memory_continuity_audit_demo",
     "close_cradle_session",
+    "close_last_task_run",
     "collect_tick_context_sources",
     "collect_runtime_stub_readiness_sources",
     "collect_one_tick_stub_sources",
@@ -245,6 +254,7 @@ __all__ = [
     "list_cradle_session_history",
     "list_bounded_teacher_gated_task_tick_runs",
     "list_second_tick_stub_record_history",
+    "list_task_learning_digest_candidates",
     "list_two_tick_task_working_memory_continuity_audits",
     "list_open_cradle_tick_context_history",
     "list_open_cradle_runtime_stub_readiness_reviews",
@@ -272,6 +282,7 @@ __all__ = [
     "load_last_trace_summary",
     "load_last_cradle_run",
     "load_last_state_continuity_stress",
+    "load_last_task_run_closure",
     "load_session_summary",
     "load_state_snapshot",
     "map_tick_mode_to_stub_kind",
@@ -305,6 +316,7 @@ __all__ = [
     "save_third_tick_readiness_from_task_working_memory",
     "save_third_tick_stub_record",
     "save_three_tick_task_pattern_audit",
+    "save_task_run_closure",
     "save_second_tick_stub_record",
     "save_two_tick_task_working_memory_continuity_audit",
     "save_two_tick_runtime_stub_planning_precheck",
