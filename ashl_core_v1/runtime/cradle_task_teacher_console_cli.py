@@ -12,12 +12,14 @@ from ashl_core_v1.runtime.cradle_task_teacher_console import (
     get_cradle_task_teacher_console_status,
     list_cases_from_teacher_console,
     mark_learning_candidate_from_teacher_console,
+    preview_memory_readback_from_teacher_console,
     review_candidate_from_teacher_console,
     run_blocked_task_from_teacher_console,
     run_case_from_teacher_console,
     show_last_run_from_teacher_console,
     show_learning_candidates_from_teacher_console,
     show_memory_traces_from_teacher_console,
+    show_memory_readback_previews_from_teacher_console,
     show_reviewed_from_teacher_console,
     show_suite_summary_from_teacher_console,
     show_working_memory_from_teacher_console,
@@ -50,6 +52,8 @@ def build_parser() -> argparse.ArgumentParser:
     subparsers.add_parser("show-reviewed")
     subparsers.add_parser("build-memory-traces")
     subparsers.add_parser("show-memory-traces")
+    subparsers.add_parser("preview-memory-readback")
+    subparsers.add_parser("show-memory-readback-previews")
     return parser
 
 
@@ -109,6 +113,12 @@ def main(argv: list[str] | None = None) -> int:
             return _print_json(build_memory_traces_from_teacher_console(args.data_dir))
         if args.command == "show-memory-traces":
             return _print_json(show_memory_traces_from_teacher_console(args.data_dir))
+        if args.command == "preview-memory-readback":
+            return _print_json(preview_memory_readback_from_teacher_console(args.data_dir))
+        if args.command == "show-memory-readback-previews":
+            return _print_json(
+                show_memory_readback_previews_from_teacher_console(args.data_dir)
+            )
     except (FileNotFoundError, LookupError, ValueError) as error:
         print(json.dumps({"status": "error", "error": str(error)}))
         return 1

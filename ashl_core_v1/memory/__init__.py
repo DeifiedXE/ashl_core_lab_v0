@@ -40,6 +40,13 @@ from .reviewed_learning_to_memory_trace import (
     list_memory_learning_trace_records,
     list_memory_routing_trace_records,
 )
+from .memory_application_readback_to_task_working_memory_preview import (
+    build_memory_application_readback_preview,
+    list_memory_application_readback_previews,
+    list_task_working_memory_readback_hints,
+    preview_all_memory_application_readbacks,
+    preview_memory_application_readback,
+)
 
 __all__ = [
     "ActiveTaskFrame",
@@ -48,6 +55,7 @@ __all__ = [
     "build_all_approved_reviewed_learning_memory_traces",
     "build_and_save_memory_trace_from_reviewed_learning",
     "build_memory_trace_from_reviewed_learning",
+    "build_memory_application_readback_preview",
     "build_memory_promotion_candidate",
     "close_task_working_memory",
     "create_active_task_frame",
@@ -62,11 +70,15 @@ __all__ = [
     "list_memory_application_data_records",
     "list_memory_learning_trace_records",
     "list_memory_routing_trace_records",
+    "list_memory_application_readback_previews",
+    "list_task_working_memory_readback_hints",
     "load_last_task_working_memory_lifecycle_demo",
     "load_last_memory_promotion_candidate",
     "MemoryApplicationData",
     "MemoryLearningTrace",
     "MemoryRoutingTrace",
+    "preview_all_memory_application_readbacks",
+    "preview_memory_application_readback",
     "run_task_working_memory_lifecycle_demo",
     "SessionSummaryRef",
     "StateSnapshotRef",
