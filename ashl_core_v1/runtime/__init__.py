@@ -166,6 +166,7 @@ from .task_run_closure import (
     save_task_run_closure,
 )
 from .cradle_task_teacher_console import (
+    apply_memory_readback_from_teacher_console,
     build_memory_traces_from_teacher_console,
     close_last_run_from_teacher_console,
     get_cradle_task_teacher_console_status,
@@ -179,6 +180,7 @@ from .cradle_task_teacher_console import (
     show_learning_candidates_from_teacher_console,
     show_memory_traces_from_teacher_console,
     show_memory_readback_previews_from_teacher_console,
+    show_readback_applications_from_teacher_console,
     show_reviewed_from_teacher_console,
     show_suite_summary_from_teacher_console,
     show_working_memory_from_teacher_console,
@@ -229,6 +231,7 @@ from .state_continuity_stress import (
 
 __all__ = [
     "build_all_cradle_case_samples",
+    "apply_memory_readback_from_teacher_console",
     "build_blocked_manual_circulation_sample",
     "build_blocked_closed_task_third_tick_readiness_demo",
     "build_bounded_teacher_gated_task_tick_run",
@@ -378,6 +381,7 @@ __all__ = [
     "show_learning_candidates_from_teacher_console",
     "show_memory_traces_from_teacher_console",
     "show_memory_readback_previews_from_teacher_console",
+    "show_readback_applications_from_teacher_console",
     "show_reviewed_from_teacher_console",
     "show_suite_summary_from_teacher_console",
     "show_working_memory_from_teacher_console",

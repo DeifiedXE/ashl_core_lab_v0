@@ -286,6 +286,39 @@ def show_memory_readback_previews_from_teacher_console(
     }
 
 
+def apply_memory_readback_from_teacher_console(
+    *,
+    preview_id: str,
+    active_task_frame_id: str,
+    base_dir: str | Path | None = None,
+) -> dict[str, Any]:
+    from ashl_core_v1.memory.memory_readback_apply_to_task_working_memory import (
+        apply_memory_readback_to_task_working_memory,
+    )
+
+    application = apply_memory_readback_to_task_working_memory(
+        preview_id=preview_id,
+        active_task_frame_id=active_task_frame_id,
+        base_dir=base_dir,
+    )
+    return {
+        "console_action": "apply_memory_readback",
+        "readback_application": application,
+        "action_execution": False,
+        "memory_layer_promotion": False,
+    }
+
+
+def show_readback_applications_from_teacher_console(
+    base_dir: str | Path | None = None,
+) -> dict[str, Any]:
+    from ashl_core_v1.memory.memory_readback_apply_to_task_working_memory import (
+        list_memory_readback_applications,
+    )
+
+    return {"memory_readback_applications": list_memory_readback_applications(base_dir)}
+
+
 def load_candidate_marks(base_dir: str | Path | None = None) -> dict[str, str]:
     path = resolve_cradle_task_teacher_console_dir(base_dir) / TASK_CANDIDATE_MARKS_FILE
     if not path.exists():

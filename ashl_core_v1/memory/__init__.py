@@ -47,10 +47,16 @@ from .memory_application_readback_to_task_working_memory_preview import (
     preview_all_memory_application_readbacks,
     preview_memory_application_readback,
 )
+from .memory_readback_apply_to_task_working_memory import (
+    apply_memory_readback_to_task_working_memory,
+    list_memory_readback_applications,
+    load_last_memory_readback_application,
+)
 
 __all__ = [
     "ActiveTaskFrame",
     "apply_task_working_memory_tick_update",
+    "apply_memory_readback_to_task_working_memory",
     "build_blocked_task_working_memory_lifecycle_demo",
     "build_all_approved_reviewed_learning_memory_traces",
     "build_and_save_memory_trace_from_reviewed_learning",
@@ -71,7 +77,9 @@ __all__ = [
     "list_memory_learning_trace_records",
     "list_memory_routing_trace_records",
     "list_memory_application_readback_previews",
+    "list_memory_readback_applications",
     "list_task_working_memory_readback_hints",
+    "load_last_memory_readback_application",
     "load_last_task_working_memory_lifecycle_demo",
     "load_last_memory_promotion_candidate",
     "MemoryApplicationData",

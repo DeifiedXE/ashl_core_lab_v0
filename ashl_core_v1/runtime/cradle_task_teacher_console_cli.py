@@ -7,6 +7,7 @@ import json
 from pathlib import Path
 
 from ashl_core_v1.runtime.cradle_task_teacher_console import (
+    apply_memory_readback_from_teacher_console,
     build_memory_traces_from_teacher_console,
     close_last_run_from_teacher_console,
     get_cradle_task_teacher_console_status,
@@ -20,6 +21,7 @@ from ashl_core_v1.runtime.cradle_task_teacher_console import (
     show_learning_candidates_from_teacher_console,
     show_memory_traces_from_teacher_console,
     show_memory_readback_previews_from_teacher_console,
+    show_readback_applications_from_teacher_console,
     show_reviewed_from_teacher_console,
     show_suite_summary_from_teacher_console,
     show_working_memory_from_teacher_console,
@@ -54,6 +56,10 @@ def build_parser() -> argparse.ArgumentParser:
     subparsers.add_parser("show-memory-traces")
     subparsers.add_parser("preview-memory-readback")
     subparsers.add_parser("show-memory-readback-previews")
+    apply_readback = subparsers.add_parser("apply-memory-readback")
+    apply_readback.add_argument("--preview-id", required=True)
+    apply_readback.add_argument("--active-task-frame-id", required=True)
+    subparsers.add_parser("show-readback-applications")
     return parser
 
 
@@ -119,6 +125,16 @@ def main(argv: list[str] | None = None) -> int:
             return _print_json(
                 show_memory_readback_previews_from_teacher_console(args.data_dir)
             )
+        if args.command == "apply-memory-readback":
+            return _print_json(
+                apply_memory_readback_from_teacher_console(
+                    preview_id=args.preview_id,
+                    active_task_frame_id=args.active_task_frame_id,
+                    base_dir=args.data_dir,
+                )
+            )
+        if args.command == "show-readback-applications":
+            return _print_json(show_readback_applications_from_teacher_console(args.data_dir))
     except (FileNotFoundError, LookupError, ValueError) as error:
         print(json.dumps({"status": "error", "error": str(error)}))
         return 1
