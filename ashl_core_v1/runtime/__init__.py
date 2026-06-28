@@ -56,6 +56,19 @@ from .open_cradle_tick_context import (
     load_last_open_cradle_tick_context,
     save_open_cradle_tick_context,
 )
+from .open_cradle_tick_dry_run import (
+    build_teacher_gate_for_tick_context,
+    build_tick_dry_run_record,
+    list_tick_dry_run_history,
+    load_last_tick_dry_run,
+    run_teacher_gated_tick_dry_run,
+    save_tick_dry_run,
+)
+from .open_cradle_tick_dry_run_audit import (
+    build_tick_dry_run_audit,
+    load_last_tick_dry_run_audit,
+    save_tick_dry_run_audit,
+)
 from .manual_samples import build_blocked_manual_circulation_sample
 from .milestone_report import (
     build_multi_case_cradle_milestone_report,
@@ -104,6 +117,9 @@ __all__ = [
     "build_last_trace_summary",
     "build_session_summary",
     "build_state_snapshot",
+    "build_teacher_gate_for_tick_context",
+    "build_tick_dry_run_audit",
+    "build_tick_dry_run_record",
     "close_cradle_session",
     "collect_tick_context_sources",
     "create_v1_backup",
@@ -112,11 +128,14 @@ __all__ = [
     "list_cradle_case_ids",
     "list_cradle_session_history",
     "list_open_cradle_tick_context_history",
+    "list_tick_dry_run_history",
     "list_v1_backups",
     "load_current_cradle_session",
     "load_last_daily_operation_audit",
     "load_last_daily_run",
     "load_last_open_cradle_tick_context",
+    "load_last_tick_dry_run",
+    "load_last_tick_dry_run_audit",
     "load_last_trace_summary",
     "load_last_cradle_run",
     "load_last_state_continuity_stress",
@@ -129,9 +148,12 @@ __all__ = [
     "run_cradle_daily",
     "run_cradle_case",
     "run_state_continuity_stress",
+    "run_teacher_gated_tick_dry_run",
     "save_last_trace_summary",
     "save_daily_operation_audit",
     "save_open_cradle_tick_context",
+    "save_tick_dry_run",
+    "save_tick_dry_run_audit",
     "save_session_summary",
     "save_state_snapshot",
     "show_last_cycle",
