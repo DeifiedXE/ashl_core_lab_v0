@@ -24,6 +24,7 @@ from ashl_core_v1.runtime.cradle_task_teacher_console import (
     show_memory_readback_previews_from_teacher_console,
     show_readback_applications_from_teacher_console,
     show_readback_contrast_from_teacher_console,
+    show_growth_loop_evidence_from_teacher_console,
     show_reviewed_from_teacher_console,
     show_suite_summary_from_teacher_console,
     show_working_memory_from_teacher_console,
@@ -65,6 +66,7 @@ def build_parser() -> argparse.ArgumentParser:
     contrast = subparsers.add_parser("run-readback-contrast")
     contrast.add_argument("--case-id", default="blocked_front_obstacle")
     subparsers.add_parser("show-readback-contrast")
+    subparsers.add_parser("show-growth-loop-evidence")
     return parser
 
 
@@ -149,6 +151,8 @@ def main(argv: list[str] | None = None) -> int:
             )
         if args.command == "show-readback-contrast":
             return _print_json(show_readback_contrast_from_teacher_console(args.data_dir))
+        if args.command == "show-growth-loop-evidence":
+            return _print_json(show_growth_loop_evidence_from_teacher_console(args.data_dir))
     except (FileNotFoundError, LookupError, ValueError) as error:
         print(json.dumps({"status": "error", "error": str(error)}))
         return 1

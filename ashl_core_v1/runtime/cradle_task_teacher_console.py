@@ -353,6 +353,19 @@ def show_readback_contrast_from_teacher_console(
     return dict(contrast)
 
 
+def show_growth_loop_evidence_from_teacher_console(
+    base_dir: str | Path | None = None,
+) -> dict[str, Any]:
+    from ashl_core_v1.runtime.closed_learning_readback_loop_evidence import (
+        load_last_closed_learning_readback_loop_evidence,
+    )
+
+    evidence = load_last_closed_learning_readback_loop_evidence(base_dir)
+    if evidence is None:
+        return {"status": "not_found", "error": "last loop evidence not found"}
+    return dict(evidence)
+
+
 def load_candidate_marks(base_dir: str | Path | None = None) -> dict[str, str]:
     path = resolve_cradle_task_teacher_console_dir(base_dir) / TASK_CANDIDATE_MARKS_FILE
     if not path.exists():
