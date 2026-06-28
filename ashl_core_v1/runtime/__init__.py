@@ -132,6 +132,14 @@ from .third_tick_readiness_from_task_working_memory import (
     save_third_tick_readiness_from_task_working_memory,
     validate_third_tick_readiness_from_task_working_memory,
 )
+from .teacher_gated_third_tick_runtime_stub import (
+    build_teacher_gated_third_tick_runtime_stub,
+    list_third_tick_stub_records,
+    load_last_third_tick_stub_record,
+    run_blocked_third_tick_runtime_stub_demo,
+    run_teacher_gated_third_tick_runtime_stub,
+    save_third_tick_stub_record,
+)
 from .manual_samples import build_blocked_manual_circulation_sample
 from .milestone_report import (
     build_multi_case_cradle_milestone_report,
@@ -188,6 +196,7 @@ __all__ = [
     "build_session_summary",
     "build_state_snapshot",
     "build_teacher_gate_for_tick_context",
+    "build_teacher_gated_third_tick_runtime_stub",
     "build_tick_dry_run_audit",
     "build_tick_dry_run_record",
     "build_tick_stub_record",
@@ -217,6 +226,7 @@ __all__ = [
     "list_tick_dry_run_history",
     "list_tick_stub_record_history",
     "list_third_tick_readiness_from_task_working_memory",
+    "list_third_tick_stub_records",
     "list_two_tick_runtime_stub_planning_prechecks",
     "list_v1_backups",
     "load_current_cradle_session",
@@ -228,6 +238,7 @@ __all__ = [
     "load_last_tick_dry_run_audit",
     "load_last_tick_stub_record",
     "load_last_third_tick_readiness_from_task_working_memory",
+    "load_last_third_tick_stub_record",
     "load_last_second_tick_stub_record",
     "load_last_two_tick_task_working_memory_continuity_audit",
     "load_last_two_tick_runtime_stub_planning_precheck",
@@ -249,7 +260,9 @@ __all__ = [
     "run_teacher_gated_one_tick_runtime_stub",
     "run_teacher_gated_two_tick_runtime_stub",
     "run_closed_task_blocked_third_tick_readiness_demo",
+    "run_blocked_third_tick_runtime_stub_demo",
     "run_third_tick_readiness_from_task_working_memory",
+    "run_teacher_gated_third_tick_runtime_stub",
     "run_two_tick_task_working_memory_continuity_audit",
     "save_last_trace_summary",
     "save_daily_operation_audit",
@@ -259,6 +272,7 @@ __all__ = [
     "save_tick_dry_run_audit",
     "save_tick_stub_record",
     "save_third_tick_readiness_from_task_working_memory",
+    "save_third_tick_stub_record",
     "save_second_tick_stub_record",
     "save_two_tick_task_working_memory_continuity_audit",
     "save_two_tick_runtime_stub_planning_precheck",
