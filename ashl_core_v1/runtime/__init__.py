@@ -184,6 +184,13 @@ from .multi_case_cradle_task_suite import (
     run_all_multi_case_cradle_task_cases,
     run_multi_case_cradle_task_case,
 )
+from .multi_case_closure_candidate_audit import (
+    build_multi_case_closure_candidate_audit,
+    list_multi_case_closure_candidate_audits,
+    load_last_multi_case_closure_candidate_audit,
+    run_multi_case_closure_candidate_audit,
+    save_multi_case_closure_candidate_audit,
+)
 from .manual_samples import build_blocked_manual_circulation_sample
 from .milestone_report import (
     build_multi_case_cradle_milestone_report,
@@ -228,6 +235,7 @@ __all__ = [
     "build_manual_teacher_gated_task_tick",
     "build_manual_teacher_gated_tick_builder_demo",
     "build_multi_case_cradle_milestone_report",
+    "build_multi_case_closure_candidate_audit",
     "build_open_cradle_event_loop_design_gate",
     "build_open_cradle_life_design_gate",
     "build_open_cradle_runtime_stub_readiness_review",
@@ -276,6 +284,7 @@ __all__ = [
     "list_bounded_teacher_gated_task_tick_runs",
     "list_cases_from_teacher_console",
     "list_cradle_task_suite_cases",
+    "list_multi_case_closure_candidate_audits",
     "list_second_tick_stub_record_history",
     "list_task_learning_digest_candidates",
     "list_two_tick_task_working_memory_continuity_audits",
@@ -306,6 +315,7 @@ __all__ = [
     "load_last_cradle_run",
     "load_last_multi_case_cradle_task_case_run",
     "load_last_multi_case_cradle_task_suite_summary",
+    "load_last_multi_case_closure_candidate_audit",
     "load_last_state_continuity_stress",
     "load_last_task_run_closure",
     "load_session_summary",
@@ -324,6 +334,7 @@ __all__ = [
     "run_cradle_daily",
     "run_cradle_case",
     "run_multi_case_cradle_task_case",
+    "run_multi_case_closure_candidate_audit",
     "run_manual_teacher_gated_tick_builder_demo",
     "run_state_continuity_stress",
     "run_teacher_gated_tick_dry_run",
@@ -337,6 +348,7 @@ __all__ = [
     "run_two_tick_task_working_memory_continuity_audit",
     "save_last_trace_summary",
     "save_bounded_teacher_gated_task_tick_run",
+    "save_multi_case_closure_candidate_audit",
     "save_daily_operation_audit",
     "save_open_cradle_tick_context",
     "save_open_cradle_runtime_stub_readiness_review",
