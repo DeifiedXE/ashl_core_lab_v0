@@ -13,7 +13,6 @@ from ashl_core_v1.lesson.types import (
     LearningReviewRecord,
     ReviewedLearningDigest,
 )
-from ashl_core_v1.runtime.task_run_closure import list_task_learning_digest_candidates
 
 
 CRADLE_LEARNING_CANDIDATE_REVIEW_ENV = (
@@ -33,6 +32,10 @@ ALLOWED_REVIEW_STATUSES = LearningReviewRecord.ALLOWED_REVIEW_STATUSES
 def list_cradle_learning_candidates(
     base_dir: str | Path | None = None,
 ) -> list[dict[str, Any]]:
+    from ashl_core_v1.runtime.task_run_closure import (
+        list_task_learning_digest_candidates,
+    )
+
     return [
         candidate
         for candidate in list_task_learning_digest_candidates(base_dir)

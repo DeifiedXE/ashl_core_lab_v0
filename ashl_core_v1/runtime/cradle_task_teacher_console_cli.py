@@ -7,6 +7,7 @@ import json
 from pathlib import Path
 
 from ashl_core_v1.runtime.cradle_task_teacher_console import (
+    build_memory_traces_from_teacher_console,
     close_last_run_from_teacher_console,
     get_cradle_task_teacher_console_status,
     list_cases_from_teacher_console,
@@ -16,6 +17,7 @@ from ashl_core_v1.runtime.cradle_task_teacher_console import (
     run_case_from_teacher_console,
     show_last_run_from_teacher_console,
     show_learning_candidates_from_teacher_console,
+    show_memory_traces_from_teacher_console,
     show_reviewed_from_teacher_console,
     show_suite_summary_from_teacher_console,
     show_working_memory_from_teacher_console,
@@ -46,6 +48,8 @@ def build_parser() -> argparse.ArgumentParser:
     review_parser.add_argument("--status", required=True)
     review_parser.add_argument("--note", default="")
     subparsers.add_parser("show-reviewed")
+    subparsers.add_parser("build-memory-traces")
+    subparsers.add_parser("show-memory-traces")
     return parser
 
 
@@ -101,6 +105,10 @@ def main(argv: list[str] | None = None) -> int:
             )
         if args.command == "show-reviewed":
             return _print_json(show_reviewed_from_teacher_console(args.data_dir))
+        if args.command == "build-memory-traces":
+            return _print_json(build_memory_traces_from_teacher_console(args.data_dir))
+        if args.command == "show-memory-traces":
+            return _print_json(show_memory_traces_from_teacher_console(args.data_dir))
     except (FileNotFoundError, LookupError, ValueError) as error:
         print(json.dumps({"status": "error", "error": str(error)}))
         return 1

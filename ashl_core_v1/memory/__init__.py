@@ -32,11 +32,22 @@ from .task_working_memory_lifecycle import (
     load_last_task_working_memory_lifecycle_demo,
     run_task_working_memory_lifecycle_demo,
 )
+from .reviewed_learning_to_memory_trace import (
+    build_all_approved_reviewed_learning_memory_traces,
+    build_and_save_memory_trace_from_reviewed_learning,
+    build_memory_trace_from_reviewed_learning,
+    list_memory_application_data_records,
+    list_memory_learning_trace_records,
+    list_memory_routing_trace_records,
+)
 
 __all__ = [
     "ActiveTaskFrame",
     "apply_task_working_memory_tick_update",
     "build_blocked_task_working_memory_lifecycle_demo",
+    "build_all_approved_reviewed_learning_memory_traces",
+    "build_and_save_memory_trace_from_reviewed_learning",
+    "build_memory_trace_from_reviewed_learning",
     "build_memory_promotion_candidate",
     "close_task_working_memory",
     "create_active_task_frame",
@@ -48,6 +59,9 @@ __all__ = [
     "enqueue_memory_promotion_candidate",
     "LastTraceSummaryRef",
     "list_memory_promotion_queue",
+    "list_memory_application_data_records",
+    "list_memory_learning_trace_records",
+    "list_memory_routing_trace_records",
     "load_last_task_working_memory_lifecycle_demo",
     "load_last_memory_promotion_candidate",
     "MemoryApplicationData",

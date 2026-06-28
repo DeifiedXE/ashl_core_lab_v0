@@ -166,6 +166,7 @@ from .task_run_closure import (
     save_task_run_closure,
 )
 from .cradle_task_teacher_console import (
+    build_memory_traces_from_teacher_console,
     close_last_run_from_teacher_console,
     get_cradle_task_teacher_console_status,
     list_cases_from_teacher_console,
@@ -175,6 +176,7 @@ from .cradle_task_teacher_console import (
     run_case_from_teacher_console,
     show_last_run_from_teacher_console,
     show_learning_candidates_from_teacher_console,
+    show_memory_traces_from_teacher_console,
     show_reviewed_from_teacher_console,
     show_suite_summary_from_teacher_console,
     show_working_memory_from_teacher_console,
@@ -238,6 +240,7 @@ __all__ = [
     "build_manual_teacher_gated_tick_builder_demo",
     "build_multi_case_cradle_milestone_report",
     "build_multi_case_closure_candidate_audit",
+    "build_memory_traces_from_teacher_console",
     "build_open_cradle_event_loop_design_gate",
     "build_open_cradle_life_design_gate",
     "build_open_cradle_runtime_stub_readiness_review",
@@ -370,6 +373,7 @@ __all__ = [
     "show_last_cycle",
     "show_last_run_from_teacher_console",
     "show_learning_candidates_from_teacher_console",
+    "show_memory_traces_from_teacher_console",
     "show_reviewed_from_teacher_console",
     "show_suite_summary_from_teacher_console",
     "show_working_memory_from_teacher_console",

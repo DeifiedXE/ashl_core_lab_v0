@@ -229,6 +229,36 @@ def show_reviewed_from_teacher_console(
     }
 
 
+def build_memory_traces_from_teacher_console(
+    base_dir: str | Path | None = None,
+) -> dict[str, Any]:
+    from ashl_core_v1.memory.reviewed_learning_to_memory_trace import (
+        build_all_approved_reviewed_learning_memory_traces,
+    )
+
+    traces = build_all_approved_reviewed_learning_memory_traces(base_dir)
+    return {
+        "console_action": "build_memory_traces",
+        "memory_traces": traces,
+        "memory_write": False,
+        "direct_memory_promotion": False,
+    }
+
+
+def show_memory_traces_from_teacher_console(
+    base_dir: str | Path | None = None,
+) -> dict[str, Any]:
+    from ashl_core_v1.memory.reviewed_learning_to_memory_trace import (
+        list_memory_application_data_records,
+        list_memory_learning_trace_records,
+    )
+
+    return {
+        "memory_learning_traces": list_memory_learning_trace_records(base_dir),
+        "memory_application_data": list_memory_application_data_records(base_dir),
+    }
+
+
 def load_candidate_marks(base_dir: str | Path | None = None) -> dict[str, str]:
     path = resolve_cradle_task_teacher_console_dir(base_dir) / TASK_CANDIDATE_MARKS_FILE
     if not path.exists():
