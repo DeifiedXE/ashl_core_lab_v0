@@ -17,7 +17,9 @@ from ashl_core_v1.runtime.guided_cradle_growth_teacher_console import (
     preview_readback_from_guided_cradle_growth_console,
     review_candidate_from_guided_cradle_growth_console,
     run_case_from_guided_cradle_growth_console,
+    run_growth_readiness_audit_from_guided_cradle_growth_console,
     run_readback_contrast_from_guided_cradle_growth_console,
+    show_growth_readiness_from_guided_cradle_growth_console,
     show_loop_evidence_from_guided_cradle_growth_console,
 )
 
@@ -48,6 +50,8 @@ def build_parser() -> argparse.ArgumentParser:
     contrast.add_argument("--case-id", default="blocked_front_obstacle")
     subparsers.add_parser("build-loop-evidence")
     subparsers.add_parser("show-loop-evidence")
+    subparsers.add_parser("run-growth-readiness-audit")
+    subparsers.add_parser("show-growth-readiness")
     return parser
 
 
@@ -115,6 +119,12 @@ def main(argv: list[str] | None = None) -> int:
             return _print_json(build_loop_evidence_from_guided_cradle_growth_console(args.data_dir))
         if args.command == "show-loop-evidence":
             return _print_json(show_loop_evidence_from_guided_cradle_growth_console(args.data_dir))
+        if args.command == "run-growth-readiness-audit":
+            return _print_json(
+                run_growth_readiness_audit_from_guided_cradle_growth_console(args.data_dir)
+            )
+        if args.command == "show-growth-readiness":
+            return _print_json(show_growth_readiness_from_guided_cradle_growth_console(args.data_dir))
     except (FileNotFoundError, LookupError, ValueError) as error:
         print(json.dumps({"status": "error", "error": str(error)}))
         return 1

@@ -269,6 +269,34 @@ def show_loop_evidence_from_guided_cradle_growth_console(
     return dict(evidence)
 
 
+def run_growth_readiness_audit_from_guided_cradle_growth_console(
+    base_dir: str | Path | None = None,
+) -> dict[str, Any]:
+    from ashl_core_v1.runtime.controlled_cradle_growth_readiness_audit import (
+        run_controlled_cradle_growth_readiness_audit,
+    )
+
+    audit = run_controlled_cradle_growth_readiness_audit(base_dir)
+    return {
+        "guided_console_action": "run_growth_readiness_audit",
+        "growth_readiness_audit": audit,
+        "general_learning_claim": False,
+    }
+
+
+def show_growth_readiness_from_guided_cradle_growth_console(
+    base_dir: str | Path | None = None,
+) -> dict[str, Any]:
+    from ashl_core_v1.runtime.controlled_cradle_growth_readiness_audit import (
+        load_last_controlled_cradle_growth_readiness_audit,
+    )
+
+    audit = load_last_controlled_cradle_growth_readiness_audit(base_dir)
+    if audit is None:
+        return {"status": "not_found", "error": "last growth readiness audit not found"}
+    return dict(audit)
+
+
 def _pending_candidate_count(
     candidates: list[dict[str, Any]],
     reviewed: list[dict[str, Any]],
