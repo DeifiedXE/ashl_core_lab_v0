@@ -45,6 +45,7 @@ def build_bounded_teacher_gated_task_tick_run(
     final_task_status_hint: str | None = None,
     case_id: str | None = None,
     expected_candidate_kinds: tuple[str, ...] | list[str] = (),
+    initial_candidate_hints: tuple[str, ...] | list[str] = (),
 ) -> dict[str, Any]:
     if max_ticks < 1:
         raise ValueError("max_ticks must be at least 1")
@@ -61,6 +62,12 @@ def build_bounded_teacher_gated_task_tick_run(
         source_trace_refs=("bounded_task_tick_runner:start",),
     )
     current_frame: dict[str, Any] = frame.to_dict()
+    if initial_candidate_hints:
+        current_frame["next_candidate_hints"] = list(dict.fromkeys(initial_candidate_hints))
+        current_frame["source_trace_refs"] = [
+            *list(current_frame.get("source_trace_refs") or []),
+            "initial_candidate_hints:bounded_runner",
+        ]
     previous_tick: dict[str, Any] | None = None
     previous_update: dict[str, Any] | None = None
     tick_records: list[dict[str, Any]] = []
@@ -115,6 +122,7 @@ def build_bounded_teacher_gated_task_tick_run(
         "stop_reason": stop_reason,
         "final_task_status_hint": final_task_status_hint,
         "expected_candidate_kinds": list(expected_candidate_kinds),
+        "initial_candidate_hints": list(initial_candidate_hints),
         "teacher_gate_preserved_for_all_ticks": all(
             tick.get("teacher_gate_preserved") is True for tick in tick_records
         ),
@@ -172,6 +180,7 @@ def run_bounded_teacher_gated_task_tick_runner(
     final_task_status_hint: str | None = None,
     case_id: str | None = None,
     expected_candidate_kinds: tuple[str, ...] | list[str] = (),
+    initial_candidate_hints: tuple[str, ...] | list[str] = (),
 ) -> dict[str, Any]:
     payload = build_bounded_teacher_gated_task_tick_run(
         max_ticks=max_ticks,
@@ -181,6 +190,7 @@ def run_bounded_teacher_gated_task_tick_runner(
         final_task_status_hint=final_task_status_hint,
         case_id=case_id,
         expected_candidate_kinds=expected_candidate_kinds,
+        initial_candidate_hints=initial_candidate_hints,
     )
     return save_bounded_teacher_gated_task_tick_run(payload, base_dir)
 

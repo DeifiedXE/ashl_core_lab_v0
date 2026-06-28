@@ -17,11 +17,13 @@ from ashl_core_v1.runtime.cradle_task_teacher_console import (
     review_candidate_from_teacher_console,
     run_blocked_task_from_teacher_console,
     run_case_from_teacher_console,
+    run_readback_contrast_from_teacher_console,
     show_last_run_from_teacher_console,
     show_learning_candidates_from_teacher_console,
     show_memory_traces_from_teacher_console,
     show_memory_readback_previews_from_teacher_console,
     show_readback_applications_from_teacher_console,
+    show_readback_contrast_from_teacher_console,
     show_reviewed_from_teacher_console,
     show_suite_summary_from_teacher_console,
     show_working_memory_from_teacher_console,
@@ -60,6 +62,9 @@ def build_parser() -> argparse.ArgumentParser:
     apply_readback.add_argument("--preview-id", required=True)
     apply_readback.add_argument("--active-task-frame-id", required=True)
     subparsers.add_parser("show-readback-applications")
+    contrast = subparsers.add_parser("run-readback-contrast")
+    contrast.add_argument("--case-id", default="blocked_front_obstacle")
+    subparsers.add_parser("show-readback-contrast")
     return parser
 
 
@@ -135,6 +140,15 @@ def main(argv: list[str] | None = None) -> int:
             )
         if args.command == "show-readback-applications":
             return _print_json(show_readback_applications_from_teacher_console(args.data_dir))
+        if args.command == "run-readback-contrast":
+            return _print_json(
+                run_readback_contrast_from_teacher_console(
+                    case_id=args.case_id,
+                    base_dir=args.data_dir,
+                )
+            )
+        if args.command == "show-readback-contrast":
+            return _print_json(show_readback_contrast_from_teacher_console(args.data_dir))
     except (FileNotFoundError, LookupError, ValueError) as error:
         print(json.dumps({"status": "error", "error": str(error)}))
         return 1

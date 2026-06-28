@@ -199,6 +199,13 @@ from .multi_case_closure_candidate_audit import (
     run_multi_case_closure_candidate_audit,
     save_multi_case_closure_candidate_audit,
 )
+from .readback_influenced_bounded_task_contrast import (
+    build_readback_influenced_bounded_task_contrast,
+    list_readback_influenced_bounded_task_contrasts,
+    load_last_readback_influenced_bounded_task_contrast,
+    run_readback_influenced_bounded_task_contrast,
+    save_readback_influenced_bounded_task_contrast,
+)
 from .manual_samples import build_blocked_manual_circulation_sample
 from .milestone_report import (
     build_multi_case_cradle_milestone_report,
@@ -252,6 +259,7 @@ __all__ = [
     "build_open_cradle_tick_context",
     "build_one_tick_runtime_stub_gate",
     "build_raising_threshold_review",
+    "build_readback_influenced_bounded_task_contrast",
     "build_ready_third_tick_readiness_demo",
     "build_second_tick_context_plan",
     "build_second_tick_gate_plan",
@@ -295,6 +303,7 @@ __all__ = [
     "list_cases_from_teacher_console",
     "list_cradle_task_suite_cases",
     "list_multi_case_closure_candidate_audits",
+    "list_readback_influenced_bounded_task_contrasts",
     "list_second_tick_stub_record_history",
     "list_task_learning_digest_candidates",
     "list_two_tick_task_working_memory_continuity_audits",
@@ -326,6 +335,7 @@ __all__ = [
     "load_last_multi_case_cradle_task_case_run",
     "load_last_multi_case_cradle_task_suite_summary",
     "load_last_multi_case_closure_candidate_audit",
+    "load_last_readback_influenced_bounded_task_contrast",
     "load_last_state_continuity_stress",
     "load_last_task_run_closure",
     "load_session_summary",
@@ -347,6 +357,7 @@ __all__ = [
     "run_cradle_case",
     "run_multi_case_cradle_task_case",
     "run_multi_case_closure_candidate_audit",
+    "run_readback_influenced_bounded_task_contrast",
     "run_manual_teacher_gated_tick_builder_demo",
     "run_state_continuity_stress",
     "run_teacher_gated_tick_dry_run",
@@ -361,6 +372,7 @@ __all__ = [
     "save_last_trace_summary",
     "save_bounded_teacher_gated_task_tick_run",
     "save_multi_case_closure_candidate_audit",
+    "save_readback_influenced_bounded_task_contrast",
     "save_daily_operation_audit",
     "save_open_cradle_tick_context",
     "save_open_cradle_runtime_stub_readiness_review",

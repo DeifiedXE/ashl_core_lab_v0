@@ -319,6 +319,40 @@ def show_readback_applications_from_teacher_console(
     return {"memory_readback_applications": list_memory_readback_applications(base_dir)}
 
 
+def run_readback_contrast_from_teacher_console(
+    *,
+    case_id: str = "blocked_front_obstacle",
+    base_dir: str | Path | None = None,
+) -> dict[str, Any]:
+    from ashl_core_v1.runtime.readback_influenced_bounded_task_contrast import (
+        run_readback_influenced_bounded_task_contrast,
+    )
+
+    contrast = run_readback_influenced_bounded_task_contrast(
+        case_id=case_id,
+        base_dir=base_dir,
+    )
+    return {
+        "console_action": "run_readback_contrast",
+        "contrast": contrast,
+        "action_execution": False,
+        "scheduler_created": False,
+    }
+
+
+def show_readback_contrast_from_teacher_console(
+    base_dir: str | Path | None = None,
+) -> dict[str, Any]:
+    from ashl_core_v1.runtime.readback_influenced_bounded_task_contrast import (
+        load_last_readback_influenced_bounded_task_contrast,
+    )
+
+    contrast = load_last_readback_influenced_bounded_task_contrast(base_dir)
+    if contrast is None:
+        return {"status": "not_found", "error": "last readback contrast not found"}
+    return dict(contrast)
+
+
 def load_candidate_marks(base_dir: str | Path | None = None) -> dict[str, str]:
     path = resolve_cradle_task_teacher_console_dir(base_dir) / TASK_CANDIDATE_MARKS_FILE
     if not path.exists():
