@@ -40,6 +40,10 @@ from .long_term_cultivation_gap_report import (
     build_long_term_cultivation_gap_report,
     write_long_term_cultivation_gap_report,
 )
+from .open_cradle_life_design_gate import (
+    build_open_cradle_life_design_gate,
+    write_open_cradle_life_design_gate_report,
+)
 from .manual_samples import build_blocked_manual_circulation_sample
 from .milestone_report import (
     build_multi_case_cradle_milestone_report,
@@ -80,6 +84,7 @@ __all__ = [
     "build_last_closed_session_replay_summary",
     "build_long_term_cultivation_gap_report",
     "build_multi_case_cradle_milestone_report",
+    "build_open_cradle_life_design_gate",
     "build_raising_threshold_review",
     "build_session_history_replay_summary",
     "build_last_trace_summary",
@@ -120,5 +125,6 @@ __all__ = [
     "write_daily_report",
     "write_long_term_cultivation_gap_report",
     "write_multi_case_cradle_milestone_report",
+    "write_open_cradle_life_design_gate_report",
     "write_raising_threshold_review_report",
 ]
