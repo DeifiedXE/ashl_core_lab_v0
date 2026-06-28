@@ -9,10 +9,13 @@ from pathlib import Path
 from ashl_core_v1.runtime.cradle_task_teacher_console import (
     close_last_run_from_teacher_console,
     get_cradle_task_teacher_console_status,
+    list_cases_from_teacher_console,
     mark_learning_candidate_from_teacher_console,
     run_blocked_task_from_teacher_console,
+    run_case_from_teacher_console,
     show_last_run_from_teacher_console,
     show_learning_candidates_from_teacher_console,
+    show_suite_summary_from_teacher_console,
     show_working_memory_from_teacher_console,
 )
 
@@ -24,6 +27,11 @@ def build_parser() -> argparse.ArgumentParser:
     subparsers.add_parser("status")
     run_parser = subparsers.add_parser("run-blocked-task")
     run_parser.add_argument("--max-ticks", type=int, default=5)
+    case_parser = subparsers.add_parser("run-case")
+    case_parser.add_argument("--case-id", required=True)
+    case_parser.add_argument("--max-ticks", type=int, default=5)
+    subparsers.add_parser("list-cases")
+    subparsers.add_parser("show-suite-summary")
     subparsers.add_parser("close-last-run")
     subparsers.add_parser("show-working-memory")
     subparsers.add_parser("show-last-run")
@@ -47,6 +55,18 @@ def main(argv: list[str] | None = None) -> int:
                     base_dir=args.data_dir,
                 )
             )
+        if args.command == "run-case":
+            return _print_json(
+                run_case_from_teacher_console(
+                    case_id=args.case_id,
+                    max_ticks=args.max_ticks,
+                    base_dir=args.data_dir,
+                )
+            )
+        if args.command == "list-cases":
+            return _print_json(list_cases_from_teacher_console())
+        if args.command == "show-suite-summary":
+            return _print_json(show_suite_summary_from_teacher_console(args.data_dir))
         if args.command == "close-last-run":
             return _print_json(close_last_run_from_teacher_console(args.data_dir))
         if args.command == "show-working-memory":

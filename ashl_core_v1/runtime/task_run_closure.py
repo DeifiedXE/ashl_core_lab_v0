@@ -11,6 +11,7 @@ from typing import Any
 from ashl_core_v1.memory.task_working_memory_lifecycle import (
     ActiveTaskFrame,
     close_task_working_memory,
+    create_suspended_task_frame,
     create_task_working_memory_disposition,
 )
 from ashl_core_v1.runtime.bounded_teacher_gated_task_tick_runner import (
@@ -37,7 +38,10 @@ def build_task_run_closure(
     )
     updates = list(bounded_run_payload.get("per_tick_working_memory_updates") or [])
     ticks = list(bounded_run_payload.get("per_tick_stub_records") or [])
-    final_status = _final_status_for_stop_reason(str(run_record.get("stop_reason")))
+    final_status = _final_status_for_stop_reason(
+        str(run_record.get("stop_reason")),
+        str(run_record.get("final_task_status_hint") or ""),
+    )
     closure = close_task_working_memory(
         final_frame,
         final_task_status=final_status,
@@ -63,11 +67,21 @@ def build_task_run_closure(
             "session summary was kept, and learning candidates remain review-required."
         ),
     )
+    suspended_frame = None
+    if final_status == "suspended":
+        suspended_frame = create_suspended_task_frame(
+            final_frame,
+            closure,
+            pause_reason=str(run_record.get("stop_reason")),
+            needed_next="teacher_input",
+            resume_hint="resume_from_working_memory",
+        ).to_dict()
     task_run_closure_record = {
         "task_run_closure_record_id": "task_run_closure:" + closure.task_closure_record_id,
         "source_task_working_memory_closure_record": closure.to_dict(),
         "source_run_id": run_record["run_id"],
         "task_id": run_record["task_id"],
+        "case_id": run_record.get("case_id"),
         "final_task_status": final_status,
         "stop_reason": run_record["stop_reason"],
         "tick_count": run_record["actual_ticks"],
@@ -96,6 +110,7 @@ def build_task_run_closure(
         "task_run_disposition_record": task_run_disposition_record,
         "task_learning_digest_candidate_records": candidates,
         "task_run_session_summary_record": session_summary,
+        "suspended_task_frame": suspended_frame,
         "source_bounded_task_tick_run_record": run_record,
     }
 
@@ -185,6 +200,7 @@ def _build_session_summary(
         "task_run_session_summary_id": "task_run_session_summary:" + run_record["run_id"],
         "source_run_id": run_record["run_id"],
         "task_id": run_record["task_id"],
+        "case_id": run_record.get("case_id"),
         "tick_count": run_record["actual_ticks"],
         "stop_reason": run_record["stop_reason"],
         "final_step": final_frame.current_step,
@@ -206,7 +222,14 @@ def _extract_learning_candidates(
     ticks: list[dict[str, Any]],
 ) -> list[dict[str, Any]]:
     outcomes = [str(update.get("observed_outcome_label")) for update in updates]
+    expected_candidate_kinds = tuple(run_record.get("expected_candidate_kinds") or ())
     candidates: list[dict[str, Any]] = []
+    if "blocked_front_obstacle" in expected_candidate_kinds or (
+        run_record.get("case_id") == "blocked_front_obstacle" and "blocked" in outcomes
+    ):
+        candidates.append(
+            _candidate(run_record, updates, ticks, "blocked_front_obstacle", "Front obstacle blocked the task.")
+        )
     if outcomes.count("blocked") >= 2:
         candidates.append(
             _candidate(run_record, updates, ticks, "repeated_blocked", "Blocked more than once.")
@@ -219,9 +242,25 @@ def _extract_learning_candidates(
         candidates.append(
             _candidate(run_record, updates, ticks, "unknown_resolved", "Unknown was resolved.")
         )
+    if "needs_observe" in expected_candidate_kinds or "unknown" in outcomes:
+        candidates.append(
+            _candidate(run_record, updates, ticks, "needs_observe", "Unknown state required observation.")
+        )
+    if "successful_path" in expected_candidate_kinds or "success" in outcomes:
+        candidates.append(
+            _candidate(run_record, updates, ticks, "successful_path", "The task reached a successful path.")
+        )
     if run_record.get("stop_reason") == "teacher_stopped":
         candidates.append(
             _candidate(run_record, updates, ticks, "teacher_stopped", "Teacher stopped the task.")
+        )
+    if run_record.get("stop_reason") in {"suspended", "waiting_for_teacher"}:
+        candidates.append(
+            _candidate(run_record, updates, ticks, "suspended", "The task was suspended for teacher input.")
+        )
+    if "waiting_for_teacher" in outcomes:
+        candidates.append(
+            _candidate(run_record, updates, ticks, "waiting_for_teacher", "The task is waiting for teacher input.")
         )
     if run_record.get("stop_reason") == "budget_stop":
         candidates.append(
@@ -239,7 +278,16 @@ def _extract_learning_candidates(
                 "A blocked outcome was followed by an alternative handling hint.",
             )
         )
-    return candidates
+    if "conflict_detected" in expected_candidate_kinds or any(
+        "conflict" in outcome for outcome in outcomes
+    ):
+        candidates.append(
+            _candidate(run_record, updates, ticks, "conflict_detected", "Expected and actual task signals conflicted.")
+        )
+    deduped: dict[str, dict[str, Any]] = {}
+    for candidate in candidates:
+        deduped[candidate["candidate_kind"]] = candidate
+    return list(deduped.values())
 
 
 def _candidate(
@@ -252,6 +300,7 @@ def _candidate(
     return {
         "candidate_id": f"task_learning_candidate:{run_record['run_id']}:{candidate_kind}",
         "task_id": run_record["task_id"],
+        "case_id": run_record.get("case_id"),
         "source_run_id": run_record["run_id"],
         "source_tick_refs": [
             tick["manual_teacher_gated_tick_stub_record_id"] for tick in ticks
@@ -269,11 +318,17 @@ def _candidate(
     }
 
 
-def _final_status_for_stop_reason(stop_reason: str) -> str:
+def _final_status_for_stop_reason(stop_reason: str, hint: str = "") -> str:
+    if hint:
+        return hint
     if stop_reason == "task_closed":
         return "completed"
     if stop_reason == "teacher_stopped":
         return "teacher_stopped"
+    if stop_reason in {"suspended", "waiting_for_teacher"}:
+        return "suspended"
+    if stop_reason in {"failed", "blocked_front_obstacle", "conflict_expected_vs_actual"}:
+        return "failed"
     return "system_stopped"
 
 

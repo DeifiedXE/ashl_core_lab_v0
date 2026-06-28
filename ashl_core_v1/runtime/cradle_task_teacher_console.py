@@ -18,6 +18,11 @@ from ashl_core_v1.runtime.task_run_closure import (
     list_task_learning_digest_candidates,
     load_last_task_run_closure,
 )
+from ashl_core_v1.runtime.multi_case_cradle_task_suite import (
+    list_cradle_task_suite_cases,
+    load_last_multi_case_cradle_task_suite_summary,
+    run_multi_case_cradle_task_case,
+)
 
 
 CRADLE_TASK_TEACHER_CONSOLE_ENV = "ASHL_CORE_V1_CRADLE_TASK_TEACHER_CONSOLE_DIR"
@@ -73,6 +78,40 @@ def run_blocked_task_from_teacher_console(
         "action_execution_used": False,
         "memory_write": False,
     }
+
+
+def list_cases_from_teacher_console() -> dict[str, Any]:
+    return {"cases": list_cradle_task_suite_cases()}
+
+
+def run_case_from_teacher_console(
+    *,
+    case_id: str,
+    max_ticks: int = 5,
+    base_dir: str | Path | None = None,
+) -> dict[str, Any]:
+    case_run = run_multi_case_cradle_task_case(
+        case_id,
+        max_ticks=max_ticks,
+        base_dir=base_dir,
+    )
+    return {
+        "console_action": "run_case",
+        "case_run": case_run,
+        "status": get_cradle_task_teacher_console_status(base_dir),
+        "scheduler_created": False,
+        "action_execution_used": False,
+        "memory_write": False,
+    }
+
+
+def show_suite_summary_from_teacher_console(
+    base_dir: str | Path | None = None,
+) -> dict[str, Any]:
+    payload = load_last_multi_case_cradle_task_suite_summary(base_dir)
+    if payload is None:
+        return {"status": "not_found", "error": "suite summary not found"}
+    return dict(payload)
 
 
 def close_last_run_from_teacher_console(

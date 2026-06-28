@@ -40,6 +40,11 @@ def build_bounded_teacher_gated_task_tick_run(
     task_id: str = DEFAULT_TASK_ID,
     goal: str = DEFAULT_GOAL,
     close_after_tick: int | None = None,
+    tick_plan: tuple[tuple[str, str], ...] | list[tuple[str, str]] | None = None,
+    stop_reason_override: str | None = None,
+    final_task_status_hint: str | None = None,
+    case_id: str | None = None,
+    expected_candidate_kinds: tuple[str, ...] | list[str] = (),
 ) -> dict[str, Any]:
     if max_ticks < 1:
         raise ValueError("max_ticks must be at least 1")
@@ -61,10 +66,10 @@ def build_bounded_teacher_gated_task_tick_run(
     tick_records: list[dict[str, Any]] = []
     updates: list[dict[str, Any]] = []
 
-    for tick_number, (outcome, hint) in enumerate(
-        DETERMINISTIC_TICK_PLAN[:max_ticks],
-        start=1,
-    ):
+    plan = tuple(tick_plan or DETERMINISTIC_TICK_PLAN)
+    if not plan:
+        raise ValueError("tick_plan must not be empty")
+    for tick_number, (outcome, hint) in enumerate(plan[:max_ticks], start=1):
         built = build_manual_teacher_gated_task_tick(
             task_id=task_id,
             active_task_frame=current_frame,
@@ -93,17 +98,23 @@ def build_bounded_teacher_gated_task_tick_run(
             break
 
     actual_ticks = len(tick_records)
-    stop_reason = "task_closed" if close_after_tick and actual_ticks >= close_after_tick else "budget_stop"
+    stop_reason = (
+        stop_reason_override
+        or ("task_closed" if close_after_tick and actual_ticks >= close_after_tick else "budget_stop")
+    )
     if stop_reason == "budget_stop":
         current_frame = {**current_frame, "continue_allowed": False, "stop_reason": "budget_stop"}
 
     record = {
         "run_id": _new_run_id(),
+        "case_id": case_id,
         "task_id": task_id,
         "active_task_frame_id": frame.active_task_frame_id,
         "max_ticks": max_ticks,
         "actual_ticks": actual_ticks,
         "stop_reason": stop_reason,
+        "final_task_status_hint": final_task_status_hint,
+        "expected_candidate_kinds": list(expected_candidate_kinds),
         "teacher_gate_preserved_for_all_ticks": all(
             tick.get("teacher_gate_preserved") is True for tick in tick_records
         ),
@@ -156,10 +167,20 @@ def run_bounded_teacher_gated_task_tick_runner(
     max_ticks: int = MAX_ALLOWED_TICKS,
     base_dir: str | Path | None = None,
     close_after_tick: int | None = None,
+    tick_plan: tuple[tuple[str, str], ...] | list[tuple[str, str]] | None = None,
+    stop_reason_override: str | None = None,
+    final_task_status_hint: str | None = None,
+    case_id: str | None = None,
+    expected_candidate_kinds: tuple[str, ...] | list[str] = (),
 ) -> dict[str, Any]:
     payload = build_bounded_teacher_gated_task_tick_run(
         max_ticks=max_ticks,
         close_after_tick=close_after_tick,
+        tick_plan=tick_plan,
+        stop_reason_override=stop_reason_override,
+        final_task_status_hint=final_task_status_hint,
+        case_id=case_id,
+        expected_candidate_kinds=expected_candidate_kinds,
     )
     return save_bounded_teacher_gated_task_tick_run(payload, base_dir)
 
