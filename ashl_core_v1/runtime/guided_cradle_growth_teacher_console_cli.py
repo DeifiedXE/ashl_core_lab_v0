@@ -29,6 +29,10 @@ from ashl_core_v1.runtime.guided_cradle_growth_teacher_console import (
     list_state_resume_options_from_guided_cradle_growth_console,
     validate_state_resume_precheck_from_guided_cradle_growth_console,
     validate_state_handoff_from_guided_cradle_growth_console,
+    select_authorize_state_resume_from_guided_cradle_growth_console,
+    show_state_resume_authorization_from_guided_cradle_growth_console,
+    show_state_resume_selection_from_guided_cradle_growth_console,
+    validate_state_resume_authorization_from_guided_cradle_growth_console,
 )
 
 
@@ -69,6 +73,12 @@ def build_parser() -> argparse.ArgumentParser:
     subparsers.add_parser("state-resume-show")
     subparsers.add_parser("state-resume-options")
     subparsers.add_parser("state-resume-validate")
+    select_authorize = subparsers.add_parser("state-resume-select-authorize")
+    select_authorize.add_argument("--resume-option-id", required=True)
+    select_authorize.add_argument("--teacher-selection-text", required=True)
+    subparsers.add_parser("state-resume-show-selection")
+    subparsers.add_parser("state-resume-show-authorization")
+    subparsers.add_parser("state-resume-validate-authorization")
     return parser
 
 
@@ -198,6 +208,36 @@ def main(argv: list[str] | None = None) -> int:
             _require_state_dir(args.state_dir)
             return _print_json(
                 validate_state_resume_precheck_from_guided_cradle_growth_console(
+                    state_dir=args.state_dir,
+                )
+            )
+        if args.command == "state-resume-select-authorize":
+            _require_state_dir(args.state_dir)
+            return _print_json(
+                select_authorize_state_resume_from_guided_cradle_growth_console(
+                    state_dir=args.state_dir,
+                    resume_option_id=args.resume_option_id,
+                    teacher_selection_text=args.teacher_selection_text,
+                )
+            )
+        if args.command == "state-resume-show-selection":
+            _require_state_dir(args.state_dir)
+            return _print_json(
+                show_state_resume_selection_from_guided_cradle_growth_console(
+                    state_dir=args.state_dir,
+                )
+            )
+        if args.command == "state-resume-show-authorization":
+            _require_state_dir(args.state_dir)
+            return _print_json(
+                show_state_resume_authorization_from_guided_cradle_growth_console(
+                    state_dir=args.state_dir,
+                )
+            )
+        if args.command == "state-resume-validate-authorization":
+            _require_state_dir(args.state_dir)
+            return _print_json(
+                validate_state_resume_authorization_from_guided_cradle_growth_console(
                     state_dir=args.state_dir,
                 )
             )

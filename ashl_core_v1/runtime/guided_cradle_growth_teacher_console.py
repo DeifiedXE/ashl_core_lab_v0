@@ -439,6 +439,68 @@ def validate_state_resume_precheck_from_guided_cradle_growth_console(
     return validate_cradle_resume_precheck(precheck, options, safety)
 
 
+def select_authorize_state_resume_from_guided_cradle_growth_console(
+    *,
+    state_dir: str | Path,
+    resume_option_id: str,
+    teacher_selection_text: str,
+) -> dict[str, Any]:
+    from ashl_core_v1.state.cradle_state_resume_selection_authorization import (
+        run_resume_selection_authorization,
+    )
+
+    result = run_resume_selection_authorization(
+        state_dir=state_dir,
+        resume_option_id=resume_option_id,
+        teacher_selection_text=teacher_selection_text,
+    )
+    return {
+        "guided_console_action": "state_resume_select_authorize",
+        "resume_authorization": result,
+        "automatic_resume": False,
+        "task_resumed": False,
+        "new_tick_created": False,
+        "action_execution_created": False,
+    }
+
+
+def show_state_resume_selection_from_guided_cradle_growth_console(
+    *,
+    state_dir: str | Path,
+) -> dict[str, Any]:
+    from ashl_core_v1.state.cradle_state_resume_selection_authorization import (
+        load_resume_selection_authorization_bundle,
+    )
+
+    selected, _authorization, _safety = load_resume_selection_authorization_bundle(state_dir)
+    return selected.to_dict()
+
+
+def show_state_resume_authorization_from_guided_cradle_growth_console(
+    *,
+    state_dir: str | Path,
+) -> dict[str, Any]:
+    from ashl_core_v1.state.cradle_state_resume_selection_authorization import (
+        load_resume_selection_authorization_bundle,
+    )
+
+    _selected, authorization, _safety = load_resume_selection_authorization_bundle(state_dir)
+    return authorization.to_dict()
+
+
+def validate_state_resume_authorization_from_guided_cradle_growth_console(
+    *,
+    state_dir: str | Path,
+) -> dict[str, Any]:
+    from ashl_core_v1.state.cradle_state_resume_selection_authorization import (
+        load_resume_selection_authorization_bundle,
+        validate_teacher_resume_authorization,
+    )
+
+    selected, authorization, safety = load_resume_selection_authorization_bundle(state_dir)
+    return validate_teacher_resume_authorization(selected, authorization, safety)
+
+
 def _pending_candidate_count(
     candidates: list[dict[str, Any]],
     reviewed: list[dict[str, Any]],
@@ -508,6 +570,12 @@ def _state_handoff_status(state_dir: str | Path | None) -> dict[str, Any]:
             "recommended_resume_kind": None,
             "recommended_teacher_action": None,
             "resume_allowed": None,
+            "resume_selection_available": False,
+            "selected_resume_kind": None,
+            "resume_authorization_available": False,
+            "resume_authorization_status": None,
+            "authorized_for_future_restore_preview": None,
+            "authorized_for_future_teacher_gated_resume_execution": None,
         }
     from ashl_core_v1.state.cradle_state_persistence_handoff import (
         load_cradle_state_handoff_bundle,
@@ -525,14 +593,22 @@ def _state_handoff_status(state_dir: str | Path | None) -> dict[str, Any]:
             "recommended_resume_kind": None,
             "recommended_teacher_action": None,
             "resume_allowed": None,
+            "resume_selection_available": False,
+            "selected_resume_kind": None,
+            "resume_authorization_available": False,
+            "resume_authorization_status": None,
+            "authorized_for_future_restore_preview": None,
+            "authorized_for_future_teacher_gated_resume_execution": None,
         }
     precheck_status = _state_resume_precheck_status(state_dir)
+    authorization_status = _state_resume_authorization_status(state_dir)
     return {
         "state_handoff_available": True,
         "last_handoff_id": bundle.handoff.handoff_id,
         "safe_resume_hint": bundle.handoff.safe_resume_hint,
         "resume_requires_teacher": bundle.handoff.resume_requires_teacher,
         **precheck_status,
+        **authorization_status,
     }
 
 
@@ -556,6 +632,38 @@ def _state_resume_precheck_status(state_dir: str | Path) -> dict[str, Any]:
         "recommended_teacher_action": precheck.recommended_teacher_action,
         "resume_allowed": precheck.resume_allowed,
         "resume_requires_teacher": precheck.resume_requires_teacher,
+    }
+
+
+def _state_resume_authorization_status(state_dir: str | Path) -> dict[str, Any]:
+    from ashl_core_v1.state.cradle_state_resume_selection_authorization import (
+        load_resume_selection_authorization_bundle,
+    )
+
+    try:
+        selected, authorization, _safety = load_resume_selection_authorization_bundle(
+            state_dir
+        )
+    except FileNotFoundError:
+        return {
+            "resume_selection_available": False,
+            "selected_resume_kind": None,
+            "resume_authorization_available": False,
+            "resume_authorization_status": None,
+            "authorized_for_future_restore_preview": None,
+            "authorized_for_future_teacher_gated_resume_execution": None,
+        }
+    return {
+        "resume_selection_available": True,
+        "selected_resume_kind": selected.selected_resume_kind,
+        "resume_authorization_available": True,
+        "resume_authorization_status": authorization.authorization_status,
+        "authorized_for_future_restore_preview": (
+            authorization.authorized_for_future_restore_preview
+        ),
+        "authorized_for_future_teacher_gated_resume_execution": (
+            authorization.authorized_for_future_teacher_gated_resume_execution
+        ),
     }
 
 

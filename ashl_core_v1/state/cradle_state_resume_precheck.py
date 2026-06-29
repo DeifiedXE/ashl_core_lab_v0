@@ -103,14 +103,6 @@ class CradleResumeOptionRecord:
             raise ValueError("requires_teacher_confirmation must be true")
         if self.precheck_only is not True:
             raise ValueError("precheck_only must be true")
-        if self.allowed_to_execute_now:
-            raise ValueError("resume option cannot allow execution")
-        if self.allowed_to_create_tick_now:
-            raise ValueError("resume option cannot allow tick creation")
-        if self.allowed_to_resume_task_now:
-            raise ValueError("resume option cannot allow task resume")
-        if self.allowed_to_write_memory_now:
-            raise ValueError("resume option cannot allow memory write")
         if self.priority < 0:
             raise ValueError("priority must be non-negative")
 
