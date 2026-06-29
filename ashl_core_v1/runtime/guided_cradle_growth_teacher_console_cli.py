@@ -11,6 +11,7 @@ from ashl_core_v1.runtime.guided_cradle_growth_teacher_console import (
     build_state_handoff_from_guided_cradle_growth_console,
     build_loop_evidence_from_guided_cradle_growth_console,
     build_memory_trace_from_guided_cradle_growth_console,
+    build_reviewed_concept_demo_from_guided_cradle_growth_console,
     build_state_restore_preview_from_guided_cradle_growth_console,
     close_last_run_from_guided_cradle_growth_console,
     create_state_resume_handoff_from_guided_cradle_growth_console,
@@ -32,6 +33,7 @@ from ashl_core_v1.runtime.guided_cradle_growth_teacher_console import (
     show_concept_teaching_test_seed_from_guided_cradle_growth_console,
     show_concept_review_task_from_guided_cradle_growth_console,
     show_reviewed_concept_preparation_demo_from_guided_cradle_growth_console,
+    show_reviewed_concept_demo_from_guided_cradle_growth_console,
     show_loop_evidence_from_guided_cradle_growth_console,
     show_state_resume_precheck_from_guided_cradle_growth_console,
     show_state_handoff_from_guided_cradle_growth_console,
@@ -52,6 +54,7 @@ from ashl_core_v1.runtime.guided_cradle_growth_teacher_console import (
     validate_demo_concept_review_from_guided_cradle_growth_console,
     validate_demo_refinement_from_guided_cradle_growth_console,
     validate_reviewed_concept_preparation_demo_from_guided_cradle_growth_console,
+    validate_reviewed_concept_demo_from_guided_cradle_growth_console,
 )
 
 
@@ -133,6 +136,9 @@ def build_parser() -> argparse.ArgumentParser:
     subparsers.add_parser("learning-prepare-reviewed-concept-demo")
     subparsers.add_parser("learning-show-reviewed-concept-preparation-demo")
     subparsers.add_parser("learning-validate-reviewed-concept-preparation-demo")
+    subparsers.add_parser("learning-build-reviewed-concept-demo")
+    subparsers.add_parser("learning-show-reviewed-concept-demo")
+    subparsers.add_parser("learning-validate-reviewed-concept-demo")
     return parser
 
 
@@ -412,6 +418,18 @@ def main(argv: list[str] | None = None) -> int:
         if args.command == "learning-validate-reviewed-concept-preparation-demo":
             return _print_json(
                 validate_reviewed_concept_preparation_demo_from_guided_cradle_growth_console()
+            )
+        if args.command == "learning-build-reviewed-concept-demo":
+            return _print_json(
+                build_reviewed_concept_demo_from_guided_cradle_growth_console()
+            )
+        if args.command == "learning-show-reviewed-concept-demo":
+            return _print_json(
+                show_reviewed_concept_demo_from_guided_cradle_growth_console()
+            )
+        if args.command == "learning-validate-reviewed-concept-demo":
+            return _print_json(
+                validate_reviewed_concept_demo_from_guided_cradle_growth_console()
             )
     except (FileNotFoundError, LookupError, ValueError) as error:
         print(json.dumps({"status": "error", "error": str(error)}))

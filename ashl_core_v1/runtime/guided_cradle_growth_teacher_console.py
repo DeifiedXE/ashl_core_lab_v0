@@ -854,6 +854,41 @@ def validate_reviewed_concept_preparation_demo_from_guided_cradle_growth_console
     }
 
 
+def build_reviewed_concept_demo_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.learning.reviewed_concept_record import (
+        build_demo_reviewed_concept_record,
+    )
+
+    payload = build_demo_reviewed_concept_record()
+    return {
+        "guided_console_action": "learning_build_reviewed_concept_demo",
+        **payload,
+        "memory_write_performed": False,
+        "task_behavior_changed": False,
+        "automatic_learning_approval_created": False,
+    }
+
+
+def show_reviewed_concept_demo_from_guided_cradle_growth_console() -> dict[str, Any]:
+    return build_reviewed_concept_demo_from_guided_cradle_growth_console()
+
+
+def validate_reviewed_concept_demo_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.learning.reviewed_concept_record import (
+        build_demo_reviewed_concept_record,
+        validate_reviewed_concept_record,
+    )
+
+    payload = build_demo_reviewed_concept_record()
+    return {
+        "guided_console_action": "learning_validate_reviewed_concept_demo",
+        "validation": validate_reviewed_concept_record(payload["reviewed_concept"]),
+        "memory_write_performed": False,
+        "task_behavior_changed": False,
+        "automatic_learning_approval_created": False,
+    }
+
+
 def _pending_candidate_count(
     candidates: list[dict[str, Any]],
     reviewed: list[dict[str, Any]],
