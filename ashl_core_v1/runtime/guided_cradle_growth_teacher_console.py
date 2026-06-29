@@ -678,6 +678,102 @@ def validate_demo_concept_draft_from_guided_cradle_growth_console(
     }
 
 
+def show_concept_review_task_from_guided_cradle_growth_console(
+    *,
+    demo: str,
+) -> dict[str, Any]:
+    from ashl_core_v1.learning.concept_candidate_from_task_closure_draft import (
+        build_demo_draft,
+        build_demo_teaching_test_seed,
+    )
+    from ashl_core_v1.learning.concept_candidate_teacher_review import (
+        build_concept_candidate_teacher_review_task,
+    )
+
+    task = build_concept_candidate_teacher_review_task(
+        build_demo_draft(demo),
+        build_demo_teaching_test_seed(demo),
+    )
+    return {
+        "guided_console_action": "learning_show_concept_review_task",
+        "concept_review_task": task.to_dict(),
+        "reviewed_concept_created": False,
+        "memory_write_performed": False,
+        "task_behavior_changed": False,
+    }
+
+
+def review_demo_concept_from_guided_cradle_growth_console(
+    *,
+    demo: str,
+    decision: str,
+    teacher_note: str,
+) -> dict[str, Any]:
+    from ashl_core_v1.learning.concept_candidate_teacher_review import (
+        build_demo_review,
+    )
+
+    payload = build_demo_review(
+        demo=demo,
+        decision=decision,
+        teacher_note=teacher_note,
+        decision_reason_codes=(
+            ("insufficient_support",) if decision == "needs_more_support" else ()
+        ),
+        requested_more_evidence=(
+            ("another bounded support case",)
+            if decision == "needs_more_support"
+            else ()
+        ),
+        requested_scope_changes=(
+            ("narrow to explicit bounded context",)
+            if decision == "scope_narrowed"
+            else ()
+        ),
+        counterexample_evidence_refs_confirmed=(
+            ("teacher_counterexample:front_blocked_step_forward_success",)
+            if decision == "split_required"
+            else ()
+        ),
+        requested_split_labels=(
+            ("front_wall_blocked", "front_box_pushable")
+            if decision == "split_required"
+            else ()
+        ),
+        support_evidence_refs_confirmed=(
+            ("task_closure:unknown_needs_observe",)
+            if decision == "teacher_review_ready"
+            else ()
+        ),
+    )
+    return {
+        "guided_console_action": "learning_review_demo_concept",
+        **payload,
+        "reviewed_concept_created": False,
+        "memory_write_performed": False,
+        "task_behavior_changed": False,
+    }
+
+
+def validate_demo_concept_review_from_guided_cradle_growth_console(
+    *,
+    decision: str,
+    demo: str = "blocked",
+) -> dict[str, Any]:
+    payload = review_demo_concept_from_guided_cradle_growth_console(
+        demo=("unknown" if decision == "teacher_review_ready" else demo),
+        decision=decision,
+        teacher_note=f"Demo validation note for {decision}",
+    )
+    return {
+        "guided_console_action": "learning_validate_demo_concept_review",
+        "validation": payload["review_decision_validation"],
+        "reviewed_concept_created": False,
+        "memory_write_performed": False,
+        "task_behavior_changed": False,
+    }
+
+
 def _pending_candidate_count(
     candidates: list[dict[str, Any]],
     reviewed: list[dict[str, Any]],
