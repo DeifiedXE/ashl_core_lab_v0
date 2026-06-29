@@ -501,6 +501,85 @@ def validate_state_resume_authorization_from_guided_cradle_growth_console(
     return validate_teacher_resume_authorization(selected, authorization, safety)
 
 
+def build_state_restore_preview_from_guided_cradle_growth_console(
+    *,
+    state_dir: str | Path,
+) -> dict[str, Any]:
+    from ashl_core_v1.state.cradle_state_restore_preview_resume_handoff import (
+        run_cradle_restore_preview,
+    )
+
+    result = run_cradle_restore_preview(state_dir)
+    return {
+        "guided_console_action": "state_restore_preview",
+        "restore_preview": result,
+        "automatic_resume": False,
+        "task_resumed": False,
+        "new_tick_created": False,
+        "action_execution_created": False,
+    }
+
+
+def show_state_restore_preview_from_guided_cradle_growth_console(
+    *,
+    state_dir: str | Path,
+) -> dict[str, Any]:
+    from ashl_core_v1.state.cradle_state_restore_preview_resume_handoff import (
+        load_cradle_restore_preview,
+    )
+
+    return load_cradle_restore_preview(state_dir).to_dict()
+
+
+def create_state_resume_handoff_from_guided_cradle_growth_console(
+    *,
+    state_dir: str | Path,
+    teacher_confirmation_text: str,
+) -> dict[str, Any]:
+    from ashl_core_v1.state.cradle_state_restore_preview_resume_handoff import (
+        run_teacher_gated_resume_handoff,
+    )
+
+    result = run_teacher_gated_resume_handoff(
+        state_dir=state_dir,
+        teacher_confirmation_text=teacher_confirmation_text,
+    )
+    return {
+        "guided_console_action": "state_resume_create_handoff",
+        "resume_handoff": result,
+        "automatic_resume": False,
+        "task_resumed": False,
+        "task_runner_started": False,
+        "new_tick_created": False,
+        "action_execution_created": False,
+    }
+
+
+def show_state_resume_handoff_from_guided_cradle_growth_console(
+    *,
+    state_dir: str | Path,
+) -> dict[str, Any]:
+    from ashl_core_v1.state.cradle_state_restore_preview_resume_handoff import (
+        load_restore_resume_handoff_bundle,
+    )
+
+    _preview, handoff, _safety = load_restore_resume_handoff_bundle(state_dir)
+    return handoff.to_dict()
+
+
+def validate_state_resume_handoff_from_guided_cradle_growth_console(
+    *,
+    state_dir: str | Path,
+) -> dict[str, Any]:
+    from ashl_core_v1.state.cradle_state_restore_preview_resume_handoff import (
+        load_restore_resume_handoff_bundle,
+        validate_teacher_gated_resume_handoff,
+    )
+
+    preview, handoff, safety = load_restore_resume_handoff_bundle(state_dir)
+    return validate_teacher_gated_resume_handoff(preview, handoff, safety)
+
+
 def _pending_candidate_count(
     candidates: list[dict[str, Any]],
     reviewed: list[dict[str, Any]],
@@ -576,6 +655,12 @@ def _state_handoff_status(state_dir: str | Path | None) -> dict[str, Any]:
             "resume_authorization_status": None,
             "authorized_for_future_restore_preview": None,
             "authorized_for_future_teacher_gated_resume_execution": None,
+            "restore_preview_available": False,
+            "restore_preview_status": None,
+            "resume_handoff_available": False,
+            "resume_handoff_status": None,
+            "target_engine_entry_kind": None,
+            "allowed_next_manual_command": None,
         }
     from ashl_core_v1.state.cradle_state_persistence_handoff import (
         load_cradle_state_handoff_bundle,
@@ -599,9 +684,16 @@ def _state_handoff_status(state_dir: str | Path | None) -> dict[str, Any]:
             "resume_authorization_status": None,
             "authorized_for_future_restore_preview": None,
             "authorized_for_future_teacher_gated_resume_execution": None,
+            "restore_preview_available": False,
+            "restore_preview_status": None,
+            "resume_handoff_available": False,
+            "resume_handoff_status": None,
+            "target_engine_entry_kind": None,
+            "allowed_next_manual_command": None,
         }
     precheck_status = _state_resume_precheck_status(state_dir)
     authorization_status = _state_resume_authorization_status(state_dir)
+    restore_status = _state_restore_handoff_status(state_dir)
     return {
         "state_handoff_available": True,
         "last_handoff_id": bundle.handoff.handoff_id,
@@ -609,6 +701,7 @@ def _state_handoff_status(state_dir: str | Path | None) -> dict[str, Any]:
         "resume_requires_teacher": bundle.handoff.resume_requires_teacher,
         **precheck_status,
         **authorization_status,
+        **restore_status,
     }
 
 
@@ -664,6 +757,44 @@ def _state_resume_authorization_status(state_dir: str | Path) -> dict[str, Any]:
         "authorized_for_future_teacher_gated_resume_execution": (
             authorization.authorized_for_future_teacher_gated_resume_execution
         ),
+    }
+
+
+def _state_restore_handoff_status(state_dir: str | Path) -> dict[str, Any]:
+    from ashl_core_v1.state.cradle_state_restore_preview_resume_handoff import (
+        load_cradle_restore_preview,
+        load_restore_resume_handoff_bundle,
+    )
+
+    try:
+        preview = load_cradle_restore_preview(state_dir)
+    except FileNotFoundError:
+        return {
+            "restore_preview_available": False,
+            "restore_preview_status": None,
+            "resume_handoff_available": False,
+            "resume_handoff_status": None,
+            "target_engine_entry_kind": None,
+            "allowed_next_manual_command": None,
+        }
+    try:
+        _preview, handoff, _safety = load_restore_resume_handoff_bundle(state_dir)
+    except FileNotFoundError:
+        return {
+            "restore_preview_available": True,
+            "restore_preview_status": preview.preview_status,
+            "resume_handoff_available": False,
+            "resume_handoff_status": None,
+            "target_engine_entry_kind": preview.target_engine_entry_kind,
+            "allowed_next_manual_command": None,
+        }
+    return {
+        "restore_preview_available": True,
+        "restore_preview_status": preview.preview_status,
+        "resume_handoff_available": True,
+        "resume_handoff_status": handoff.handoff_status,
+        "target_engine_entry_kind": handoff.target_engine_entry_kind,
+        "allowed_next_manual_command": handoff.allowed_next_manual_command,
     }
 
 

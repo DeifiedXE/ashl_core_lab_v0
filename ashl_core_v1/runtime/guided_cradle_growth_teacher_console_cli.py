@@ -11,7 +11,9 @@ from ashl_core_v1.runtime.guided_cradle_growth_teacher_console import (
     build_state_handoff_from_guided_cradle_growth_console,
     build_loop_evidence_from_guided_cradle_growth_console,
     build_memory_trace_from_guided_cradle_growth_console,
+    build_state_restore_preview_from_guided_cradle_growth_console,
     close_last_run_from_guided_cradle_growth_console,
+    create_state_resume_handoff_from_guided_cradle_growth_console,
     get_guided_cradle_growth_status,
     guided_cradle_growth_next_step,
     list_state_handoff_bookmarks_from_guided_cradle_growth_console,
@@ -31,8 +33,11 @@ from ashl_core_v1.runtime.guided_cradle_growth_teacher_console import (
     validate_state_handoff_from_guided_cradle_growth_console,
     select_authorize_state_resume_from_guided_cradle_growth_console,
     show_state_resume_authorization_from_guided_cradle_growth_console,
+    show_state_restore_preview_from_guided_cradle_growth_console,
+    show_state_resume_handoff_from_guided_cradle_growth_console,
     show_state_resume_selection_from_guided_cradle_growth_console,
     validate_state_resume_authorization_from_guided_cradle_growth_console,
+    validate_state_resume_handoff_from_guided_cradle_growth_console,
 )
 
 
@@ -79,6 +84,12 @@ def build_parser() -> argparse.ArgumentParser:
     subparsers.add_parser("state-resume-show-selection")
     subparsers.add_parser("state-resume-show-authorization")
     subparsers.add_parser("state-resume-validate-authorization")
+    subparsers.add_parser("state-restore-preview")
+    subparsers.add_parser("state-restore-show-preview")
+    resume_handoff = subparsers.add_parser("state-resume-create-handoff")
+    resume_handoff.add_argument("--teacher-confirmation-text", required=True)
+    subparsers.add_parser("state-resume-show-handoff")
+    subparsers.add_parser("state-resume-validate-handoff")
     return parser
 
 
@@ -238,6 +249,42 @@ def main(argv: list[str] | None = None) -> int:
             _require_state_dir(args.state_dir)
             return _print_json(
                 validate_state_resume_authorization_from_guided_cradle_growth_console(
+                    state_dir=args.state_dir,
+                )
+            )
+        if args.command == "state-restore-preview":
+            _require_state_dir(args.state_dir)
+            return _print_json(
+                build_state_restore_preview_from_guided_cradle_growth_console(
+                    state_dir=args.state_dir,
+                )
+            )
+        if args.command == "state-restore-show-preview":
+            _require_state_dir(args.state_dir)
+            return _print_json(
+                show_state_restore_preview_from_guided_cradle_growth_console(
+                    state_dir=args.state_dir,
+                )
+            )
+        if args.command == "state-resume-create-handoff":
+            _require_state_dir(args.state_dir)
+            return _print_json(
+                create_state_resume_handoff_from_guided_cradle_growth_console(
+                    state_dir=args.state_dir,
+                    teacher_confirmation_text=args.teacher_confirmation_text,
+                )
+            )
+        if args.command == "state-resume-show-handoff":
+            _require_state_dir(args.state_dir)
+            return _print_json(
+                show_state_resume_handoff_from_guided_cradle_growth_console(
+                    state_dir=args.state_dir,
+                )
+            )
+        if args.command == "state-resume-validate-handoff":
+            _require_state_dir(args.state_dir)
+            return _print_json(
+                validate_state_resume_handoff_from_guided_cradle_growth_console(
                     state_dir=args.state_dir,
                 )
             )

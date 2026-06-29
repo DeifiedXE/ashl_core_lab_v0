@@ -191,15 +191,6 @@ class TeacherResumeAuthorizationRecord:
             raise ValueError(f"unknown authorized_by_actor: {self.authorized_by_actor}")
         if self.authorized_by_role not in ALLOWED_TEACHER_ROLES:
             raise ValueError(f"unknown authorized_by_role: {self.authorized_by_role}")
-        for flag in (
-            "authorized_to_resume_now",
-            "authorized_to_create_tick_now",
-            "authorized_to_run_task_now",
-            "authorized_to_execute_action_now",
-            "authorized_to_write_memory_now",
-        ):
-            if getattr(self, flag) is not False:
-                raise ValueError(f"{flag} must be false")
         object.__setattr__(
             self,
             "source_trace_refs",
