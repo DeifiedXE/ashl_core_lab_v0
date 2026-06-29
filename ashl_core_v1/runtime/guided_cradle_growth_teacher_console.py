@@ -580,6 +580,49 @@ def validate_state_resume_handoff_from_guided_cradle_growth_console(
     return validate_teacher_gated_resume_handoff(preview, handoff, safety)
 
 
+def run_state_resume_continuity_audit_from_guided_cradle_growth_console(
+    *,
+    state_dir: str | Path,
+) -> dict[str, Any]:
+    from ashl_core_v1.state.state_engine_resume_continuity_audit import (
+        run_state_engine_resume_continuity_audit,
+    )
+
+    result = run_state_engine_resume_continuity_audit(state_dir)
+    return {
+        "guided_console_action": "state_resume_continuity_audit",
+        "state_resume_continuity_audit": result,
+        "automatic_resume": False,
+        "task_runner_started": False,
+        "new_tick_created": False,
+        "action_execution_created": False,
+    }
+
+
+def show_state_resume_continuity_audit_from_guided_cradle_growth_console(
+    *,
+    state_dir: str | Path,
+) -> dict[str, Any]:
+    from ashl_core_v1.state.state_engine_resume_continuity_audit import (
+        load_state_engine_resume_continuity_audit,
+    )
+
+    return load_state_engine_resume_continuity_audit(state_dir).to_dict()
+
+
+def validate_state_resume_continuity_audit_from_guided_cradle_growth_console(
+    *,
+    state_dir: str | Path,
+) -> dict[str, Any]:
+    from ashl_core_v1.state.state_engine_resume_continuity_audit import (
+        load_state_engine_resume_continuity_audit,
+        validate_state_engine_resume_continuity_audit,
+    )
+
+    audit = load_state_engine_resume_continuity_audit(state_dir)
+    return validate_state_engine_resume_continuity_audit(audit)
+
+
 def _pending_candidate_count(
     candidates: list[dict[str, Any]],
     reviewed: list[dict[str, Any]],
@@ -661,6 +704,9 @@ def _state_handoff_status(state_dir: str | Path | None) -> dict[str, Any]:
             "resume_handoff_status": None,
             "target_engine_entry_kind": None,
             "allowed_next_manual_command": None,
+            "state_engine_continuity_audit_available": False,
+            "state_engine_continuity_v0_closed": None,
+            "recommended_next_engine_line": None,
         }
     from ashl_core_v1.state.cradle_state_persistence_handoff import (
         load_cradle_state_handoff_bundle,
@@ -690,10 +736,14 @@ def _state_handoff_status(state_dir: str | Path | None) -> dict[str, Any]:
             "resume_handoff_status": None,
             "target_engine_entry_kind": None,
             "allowed_next_manual_command": None,
+            "state_engine_continuity_audit_available": False,
+            "state_engine_continuity_v0_closed": None,
+            "recommended_next_engine_line": None,
         }
     precheck_status = _state_resume_precheck_status(state_dir)
     authorization_status = _state_resume_authorization_status(state_dir)
     restore_status = _state_restore_handoff_status(state_dir)
+    continuity_status = _state_resume_continuity_audit_status(state_dir)
     return {
         "state_handoff_available": True,
         "last_handoff_id": bundle.handoff.handoff_id,
@@ -702,6 +752,7 @@ def _state_handoff_status(state_dir: str | Path | None) -> dict[str, Any]:
         **precheck_status,
         **authorization_status,
         **restore_status,
+        **continuity_status,
     }
 
 
@@ -795,6 +846,26 @@ def _state_restore_handoff_status(state_dir: str | Path) -> dict[str, Any]:
         "resume_handoff_status": handoff.handoff_status,
         "target_engine_entry_kind": handoff.target_engine_entry_kind,
         "allowed_next_manual_command": handoff.allowed_next_manual_command,
+    }
+
+
+def _state_resume_continuity_audit_status(state_dir: str | Path) -> dict[str, Any]:
+    from ashl_core_v1.state.state_engine_resume_continuity_audit import (
+        load_state_engine_resume_continuity_audit,
+    )
+
+    try:
+        audit = load_state_engine_resume_continuity_audit(state_dir)
+    except FileNotFoundError:
+        return {
+            "state_engine_continuity_audit_available": False,
+            "state_engine_continuity_v0_closed": None,
+            "recommended_next_engine_line": None,
+        }
+    return {
+        "state_engine_continuity_audit_available": True,
+        "state_engine_continuity_v0_closed": audit.state_engine_continuity_v0_closed,
+        "recommended_next_engine_line": audit.recommended_next_engine_line,
     }
 
 

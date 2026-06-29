@@ -23,6 +23,7 @@ from ashl_core_v1.runtime.guided_cradle_growth_teacher_console import (
     run_case_from_guided_cradle_growth_console,
     run_growth_readiness_audit_from_guided_cradle_growth_console,
     run_readback_contrast_from_guided_cradle_growth_console,
+    run_state_resume_continuity_audit_from_guided_cradle_growth_console,
     run_state_resume_precheck_from_guided_cradle_growth_console,
     show_growth_readiness_from_guided_cradle_growth_console,
     show_loop_evidence_from_guided_cradle_growth_console,
@@ -35,8 +36,10 @@ from ashl_core_v1.runtime.guided_cradle_growth_teacher_console import (
     show_state_resume_authorization_from_guided_cradle_growth_console,
     show_state_restore_preview_from_guided_cradle_growth_console,
     show_state_resume_handoff_from_guided_cradle_growth_console,
+    show_state_resume_continuity_audit_from_guided_cradle_growth_console,
     show_state_resume_selection_from_guided_cradle_growth_console,
     validate_state_resume_authorization_from_guided_cradle_growth_console,
+    validate_state_resume_continuity_audit_from_guided_cradle_growth_console,
     validate_state_resume_handoff_from_guided_cradle_growth_console,
 )
 
@@ -90,6 +93,9 @@ def build_parser() -> argparse.ArgumentParser:
     resume_handoff.add_argument("--teacher-confirmation-text", required=True)
     subparsers.add_parser("state-resume-show-handoff")
     subparsers.add_parser("state-resume-validate-handoff")
+    subparsers.add_parser("state-resume-continuity-audit")
+    subparsers.add_parser("state-resume-continuity-show")
+    subparsers.add_parser("state-resume-continuity-validate")
     return parser
 
 
@@ -285,6 +291,27 @@ def main(argv: list[str] | None = None) -> int:
             _require_state_dir(args.state_dir)
             return _print_json(
                 validate_state_resume_handoff_from_guided_cradle_growth_console(
+                    state_dir=args.state_dir,
+                )
+            )
+        if args.command == "state-resume-continuity-audit":
+            _require_state_dir(args.state_dir)
+            return _print_json(
+                run_state_resume_continuity_audit_from_guided_cradle_growth_console(
+                    state_dir=args.state_dir,
+                )
+            )
+        if args.command == "state-resume-continuity-show":
+            _require_state_dir(args.state_dir)
+            return _print_json(
+                show_state_resume_continuity_audit_from_guided_cradle_growth_console(
+                    state_dir=args.state_dir,
+                )
+            )
+        if args.command == "state-resume-continuity-validate":
+            _require_state_dir(args.state_dir)
+            return _print_json(
+                validate_state_resume_continuity_audit_from_guided_cradle_growth_console(
                     state_dir=args.state_dir,
                 )
             )
