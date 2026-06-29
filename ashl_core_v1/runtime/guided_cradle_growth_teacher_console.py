@@ -889,6 +889,67 @@ def validate_reviewed_concept_demo_from_guided_cradle_growth_console() -> dict[s
     }
 
 
+def preview_reviewed_concept_memory_trace_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.learning.reviewed_concept_to_memory_trace_preview import (
+        build_demo_reviewed_concept_memory_trace_preview,
+    )
+
+    return {
+        "guided_console_action": "learning_preview_reviewed_concept_memory_trace",
+        "memory_trace_preview": build_demo_reviewed_concept_memory_trace_preview().to_dict(),
+        "actual_memory_learning_trace_created": False,
+        "memory_write_performed": False,
+        "task_behavior_changed": False,
+    }
+
+
+def preview_reviewed_concept_routing_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.learning.reviewed_concept_to_memory_trace_preview import (
+        build_demo_reviewed_concept_memory_routing_preview,
+    )
+
+    return {
+        "guided_console_action": "learning_preview_reviewed_concept_routing",
+        "routing_preview": build_demo_reviewed_concept_memory_routing_preview().to_dict(),
+        "actual_memory_routing_trace_created": False,
+        "memory_write_performed": False,
+    }
+
+
+def preview_reviewed_concept_application_data_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.learning.reviewed_concept_to_memory_trace_preview import (
+        build_demo_reviewed_concept_memory_application_data_preview,
+    )
+
+    return {
+        "guided_console_action": "learning_preview_reviewed_concept_application_data",
+        "application_data_preview": build_demo_reviewed_concept_memory_application_data_preview().to_dict(),
+        "actual_memory_application_data_created": False,
+        "readback_hint_created": False,
+        "working_memory_mutated": False,
+        "task_behavior_changed": False,
+    }
+
+
+def validate_reviewed_concept_memory_preview_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.learning.reviewed_concept_to_memory_trace_preview import (
+        build_demo_reviewed_concept_memory_preview_bundle,
+        validate_reviewed_concept_memory_preview_safety_audit,
+    )
+
+    payload = build_demo_reviewed_concept_memory_preview_bundle()
+    return {
+        "guided_console_action": "learning_validate_reviewed_concept_memory_preview",
+        "validation": validate_reviewed_concept_memory_preview_safety_audit(
+            payload["preview_safety_audit"]
+        ),
+        "actual_memory_application_data_created": False,
+        "readback_hint_created": False,
+        "working_memory_mutated": False,
+        "task_behavior_changed": False,
+    }
+
+
 def _pending_candidate_count(
     candidates: list[dict[str, Any]],
     reviewed: list[dict[str, Any]],

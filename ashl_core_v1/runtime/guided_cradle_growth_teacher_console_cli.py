@@ -21,6 +21,9 @@ from ashl_core_v1.runtime.guided_cradle_growth_teacher_console import (
     list_state_handoff_bookmarks_from_guided_cradle_growth_console,
     list_candidates_from_guided_cradle_growth_console,
     preview_readback_from_guided_cradle_growth_console,
+    preview_reviewed_concept_application_data_from_guided_cradle_growth_console,
+    preview_reviewed_concept_memory_trace_from_guided_cradle_growth_console,
+    preview_reviewed_concept_routing_from_guided_cradle_growth_console,
     prepare_reviewed_concept_demo_from_guided_cradle_growth_console,
     refine_demo_concept_from_guided_cradle_growth_console,
     review_candidate_from_guided_cradle_growth_console,
@@ -55,6 +58,7 @@ from ashl_core_v1.runtime.guided_cradle_growth_teacher_console import (
     validate_demo_refinement_from_guided_cradle_growth_console,
     validate_reviewed_concept_preparation_demo_from_guided_cradle_growth_console,
     validate_reviewed_concept_demo_from_guided_cradle_growth_console,
+    validate_reviewed_concept_memory_preview_from_guided_cradle_growth_console,
 )
 
 
@@ -139,6 +143,10 @@ def build_parser() -> argparse.ArgumentParser:
     subparsers.add_parser("learning-build-reviewed-concept-demo")
     subparsers.add_parser("learning-show-reviewed-concept-demo")
     subparsers.add_parser("learning-validate-reviewed-concept-demo")
+    subparsers.add_parser("learning-preview-reviewed-concept-memory-trace")
+    subparsers.add_parser("learning-preview-reviewed-concept-routing")
+    subparsers.add_parser("learning-preview-reviewed-concept-application-data")
+    subparsers.add_parser("learning-validate-reviewed-concept-memory-preview")
     return parser
 
 
@@ -430,6 +438,22 @@ def main(argv: list[str] | None = None) -> int:
         if args.command == "learning-validate-reviewed-concept-demo":
             return _print_json(
                 validate_reviewed_concept_demo_from_guided_cradle_growth_console()
+            )
+        if args.command == "learning-preview-reviewed-concept-memory-trace":
+            return _print_json(
+                preview_reviewed_concept_memory_trace_from_guided_cradle_growth_console()
+            )
+        if args.command == "learning-preview-reviewed-concept-routing":
+            return _print_json(
+                preview_reviewed_concept_routing_from_guided_cradle_growth_console()
+            )
+        if args.command == "learning-preview-reviewed-concept-application-data":
+            return _print_json(
+                preview_reviewed_concept_application_data_from_guided_cradle_growth_console()
+            )
+        if args.command == "learning-validate-reviewed-concept-memory-preview":
+            return _print_json(
+                validate_reviewed_concept_memory_preview_from_guided_cradle_growth_console()
             )
     except (FileNotFoundError, LookupError, ValueError) as error:
         print(json.dumps({"status": "error", "error": str(error)}))
