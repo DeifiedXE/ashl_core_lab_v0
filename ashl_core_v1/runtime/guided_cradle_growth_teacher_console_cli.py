@@ -14,6 +14,7 @@ from ashl_core_v1.runtime.guided_cradle_growth_teacher_console import (
     build_state_restore_preview_from_guided_cradle_growth_console,
     close_last_run_from_guided_cradle_growth_console,
     create_state_resume_handoff_from_guided_cradle_growth_console,
+    draft_demo_concept_from_guided_cradle_growth_console,
     get_guided_cradle_growth_status,
     guided_cradle_growth_next_step,
     list_state_handoff_bookmarks_from_guided_cradle_growth_console,
@@ -26,6 +27,7 @@ from ashl_core_v1.runtime.guided_cradle_growth_teacher_console import (
     run_state_resume_continuity_audit_from_guided_cradle_growth_console,
     run_state_resume_precheck_from_guided_cradle_growth_console,
     show_growth_readiness_from_guided_cradle_growth_console,
+    show_concept_teaching_test_seed_from_guided_cradle_growth_console,
     show_loop_evidence_from_guided_cradle_growth_console,
     show_state_resume_precheck_from_guided_cradle_growth_console,
     show_state_handoff_from_guided_cradle_growth_console,
@@ -41,6 +43,7 @@ from ashl_core_v1.runtime.guided_cradle_growth_teacher_console import (
     validate_state_resume_authorization_from_guided_cradle_growth_console,
     validate_state_resume_continuity_audit_from_guided_cradle_growth_console,
     validate_state_resume_handoff_from_guided_cradle_growth_console,
+    validate_demo_concept_draft_from_guided_cradle_growth_console,
 )
 
 
@@ -96,6 +99,12 @@ def build_parser() -> argparse.ArgumentParser:
     subparsers.add_parser("state-resume-continuity-audit")
     subparsers.add_parser("state-resume-continuity-show")
     subparsers.add_parser("state-resume-continuity-validate")
+    learning_draft = subparsers.add_parser("learning-draft-demo-concept")
+    learning_draft.add_argument("--demo", required=True)
+    learning_seed = subparsers.add_parser("learning-show-teaching-test-seed")
+    learning_seed.add_argument("--demo", required=True)
+    learning_validate = subparsers.add_parser("learning-validate-demo-draft")
+    learning_validate.add_argument("--demo", required=True)
     return parser
 
 
@@ -313,6 +322,22 @@ def main(argv: list[str] | None = None) -> int:
             return _print_json(
                 validate_state_resume_continuity_audit_from_guided_cradle_growth_console(
                     state_dir=args.state_dir,
+                )
+            )
+        if args.command == "learning-draft-demo-concept":
+            return _print_json(
+                draft_demo_concept_from_guided_cradle_growth_console(demo=args.demo)
+            )
+        if args.command == "learning-show-teaching-test-seed":
+            return _print_json(
+                show_concept_teaching_test_seed_from_guided_cradle_growth_console(
+                    demo=args.demo,
+                )
+            )
+        if args.command == "learning-validate-demo-draft":
+            return _print_json(
+                validate_demo_concept_draft_from_guided_cradle_growth_console(
+                    demo=args.demo,
                 )
             )
     except (FileNotFoundError, LookupError, ValueError) as error:

@@ -623,6 +623,61 @@ def validate_state_resume_continuity_audit_from_guided_cradle_growth_console(
     return validate_state_engine_resume_continuity_audit(audit)
 
 
+def draft_demo_concept_from_guided_cradle_growth_console(
+    *,
+    demo: str,
+) -> dict[str, Any]:
+    from ashl_core_v1.learning.concept_candidate_from_task_closure_draft import (
+        build_demo_draft,
+    )
+
+    draft = build_demo_draft(demo)
+    return {
+        "guided_console_action": "learning_draft_demo_concept",
+        "concept_candidate_draft": draft.to_dict(),
+        "teacher_review_decision_created": False,
+        "memory_write_performed": False,
+        "task_behavior_changed": False,
+    }
+
+
+def show_concept_teaching_test_seed_from_guided_cradle_growth_console(
+    *,
+    demo: str,
+) -> dict[str, Any]:
+    from ashl_core_v1.learning.concept_candidate_from_task_closure_draft import (
+        build_demo_teaching_test_seed,
+    )
+
+    seed = build_demo_teaching_test_seed(demo)
+    return {
+        "guided_console_action": "learning_show_teaching_test_seed",
+        "teaching_test_seed": seed.to_dict(),
+        "teacher_review_decision_created": False,
+        "memory_write_performed": False,
+        "task_behavior_changed": False,
+    }
+
+
+def validate_demo_concept_draft_from_guided_cradle_growth_console(
+    *,
+    demo: str,
+) -> dict[str, Any]:
+    from ashl_core_v1.learning.concept_candidate_from_task_closure_draft import (
+        build_demo_draft,
+        validate_concept_candidate_draft_record,
+    )
+
+    validation = validate_concept_candidate_draft_record(build_demo_draft(demo))
+    return {
+        "guided_console_action": "learning_validate_demo_draft",
+        "validation": validation,
+        "teacher_review_decision_created": False,
+        "memory_write_performed": False,
+        "task_behavior_changed": False,
+    }
+
+
 def _pending_candidate_count(
     candidates: list[dict[str, Any]],
     reviewed: list[dict[str, Any]],
