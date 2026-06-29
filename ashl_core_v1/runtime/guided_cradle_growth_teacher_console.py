@@ -47,6 +47,7 @@ from ashl_core_v1.runtime.task_run_closure import (
 
 def get_guided_cradle_growth_status(
     base_dir: str | Path | None = None,
+    state_dir: str | Path | None = None,
 ) -> dict[str, Any]:
     last_case = load_last_multi_case_cradle_task_case_run(base_dir)
     last_run = load_last_bounded_teacher_gated_task_tick_run(base_dir)
@@ -77,7 +78,11 @@ def get_guided_cradle_growth_status(
         "action_execution_used": False,
         "memory_layer_write": False,
     }
-    return {**status, "suggested_next_step": guided_cradle_growth_next_step(status)}
+    return {
+        **status,
+        **_state_handoff_status(state_dir),
+        "suggested_next_step": guided_cradle_growth_next_step(status),
+    }
 
 
 def guided_cradle_growth_next_step(
@@ -297,6 +302,87 @@ def show_growth_readiness_from_guided_cradle_growth_console(
     return dict(audit)
 
 
+def build_state_handoff_from_guided_cradle_growth_console(
+    *,
+    state_dir: str | Path,
+    base_dir: str | Path | None = None,
+) -> dict[str, Any]:
+    from ashl_core_v1.state.cradle_state_persistence_handoff import (
+        build_cradle_state_handoff_bundle,
+        validate_cradle_state_handoff,
+        write_cradle_state_handoff_bundle,
+    )
+
+    status = get_guided_cradle_growth_status(base_dir)
+    sources = _collect_state_handoff_source_ids(base_dir)
+    bundle = build_cradle_state_handoff_bundle(
+        source_ids=sources,
+        counts={
+            "pending_candidate_count": int(status.get("pending_candidate_count") or 0),
+            "reviewed_learning_count": int(status.get("reviewed_learning_count") or 0),
+            "memory_application_data_count": int(
+                status.get("memory_application_data_count") or 0
+            ),
+            "readback_preview_count": int(status.get("readback_preview_count") or 0),
+            "readback_application_count": int(status.get("readback_application_count") or 0),
+            "contrast_count": int(status.get("contrast_count") or 0),
+            "loop_evidence_count": int(status.get("loop_evidence_count") or 0),
+        },
+        teacher_console_status=status,
+        working_memory_summary=_last_working_memory_summary(base_dir),
+        last_task_status=_last_task_status_for_handoff(base_dir),
+        last_stop_reason=_last_stop_reason_for_handoff(base_dir),
+        source_trace_refs=tuple(
+            value for value in sources.values() if isinstance(value, str)
+        )
+        or ("demo_fixture:true",),
+    )
+    write_result = write_cradle_state_handoff_bundle(bundle, state_dir)
+    return {
+        "guided_console_action": "state_handoff_build",
+        "write_result": write_result,
+        "validation": validate_cradle_state_handoff(bundle),
+        "automatic_resume": False,
+        "scheduler_created": False,
+        "action_execution_created": False,
+    }
+
+
+def show_state_handoff_from_guided_cradle_growth_console(
+    *,
+    state_dir: str | Path,
+) -> dict[str, Any]:
+    from ashl_core_v1.state.cradle_state_persistence_handoff import (
+        load_cradle_state_handoff_bundle,
+    )
+
+    return load_cradle_state_handoff_bundle(state_dir).to_dict()
+
+
+def list_state_handoff_bookmarks_from_guided_cradle_growth_console(
+    *,
+    state_dir: str | Path,
+) -> dict[str, Any]:
+    from ashl_core_v1.state.cradle_state_persistence_handoff import (
+        load_cradle_state_handoff_bundle,
+    )
+
+    bundle = load_cradle_state_handoff_bundle(state_dir)
+    return {"bookmarks": [bookmark.to_dict() for bookmark in bundle.bookmarks]}
+
+
+def validate_state_handoff_from_guided_cradle_growth_console(
+    *,
+    state_dir: str | Path,
+) -> dict[str, Any]:
+    from ashl_core_v1.state.cradle_state_persistence_handoff import (
+        load_cradle_state_handoff_bundle,
+        validate_cradle_state_handoff,
+    )
+
+    return validate_cradle_state_handoff(load_cradle_state_handoff_bundle(state_dir))
+
+
 def _pending_candidate_count(
     candidates: list[dict[str, Any]],
     reviewed: list[dict[str, Any]],
@@ -353,3 +439,144 @@ def _case_id_for_memory_data(memory_data: dict[str, Any]) -> str:
     if not items:
         return "unknown_case"
     return str(items[0].get("case_id") or "blocked_front_obstacle")
+
+
+def _state_handoff_status(state_dir: str | Path | None) -> dict[str, Any]:
+    if state_dir is None:
+        return {
+            "state_handoff_available": False,
+            "last_handoff_id": None,
+            "safe_resume_hint": None,
+            "resume_requires_teacher": None,
+        }
+    from ashl_core_v1.state.cradle_state_persistence_handoff import (
+        load_cradle_state_handoff_bundle,
+    )
+
+    try:
+        bundle = load_cradle_state_handoff_bundle(state_dir)
+    except FileNotFoundError:
+        return {
+            "state_handoff_available": False,
+            "last_handoff_id": None,
+            "safe_resume_hint": None,
+            "resume_requires_teacher": None,
+        }
+    return {
+        "state_handoff_available": True,
+        "last_handoff_id": bundle.handoff.handoff_id,
+        "safe_resume_hint": bundle.handoff.safe_resume_hint,
+        "resume_requires_teacher": bundle.handoff.resume_requires_teacher,
+    }
+
+
+def _collect_state_handoff_source_ids(
+    base_dir: str | Path | None,
+) -> dict[str, str | None]:
+    from ashl_core_v1.lesson.cradle_learning_candidate_review import (
+        list_cradle_reviewed_learning_records,
+    )
+    from ashl_core_v1.memory.memory_application_readback_to_task_working_memory_preview import (
+        list_memory_application_readback_previews,
+    )
+    from ashl_core_v1.memory.memory_readback_apply_to_task_working_memory import (
+        list_memory_readback_applications,
+    )
+    from ashl_core_v1.memory.reviewed_learning_to_memory_trace import (
+        list_memory_application_data_records,
+        list_memory_learning_trace_records,
+    )
+    from ashl_core_v1.runtime.controlled_cradle_growth_readiness_audit import (
+        load_last_controlled_cradle_growth_readiness_audit,
+    )
+    from ashl_core_v1.runtime.readback_influenced_bounded_task_contrast import (
+        load_last_readback_influenced_bounded_task_contrast,
+    )
+
+    last_run = load_last_bounded_teacher_gated_task_tick_run(base_dir)
+    last_closure = load_last_task_run_closure(base_dir)
+    loop_evidence = load_last_closed_learning_readback_loop_evidence(base_dir)
+    growth_audit = load_last_controlled_cradle_growth_readiness_audit(base_dir)
+    contrast = load_last_readback_influenced_bounded_task_contrast(base_dir)
+    candidates = list_cradle_learning_candidates(base_dir)
+    reviewed = list_cradle_reviewed_learning_records(base_dir)
+    memory_traces = list_memory_learning_trace_records(base_dir)
+    memory_data = list_memory_application_data_records(base_dir)
+    previews = list_memory_application_readback_previews(base_dir)
+    applications = list_memory_readback_applications(base_dir)
+    frame = (last_run or {}).get("final_active_task_frame") or {}
+    suspended = (last_closure or {}).get("suspended_task_frame") or {}
+    ids = {
+        "last_session_id": None,
+        "last_task_id": (last_run or {}).get("bounded_task_tick_run_record", {}).get("task_id"),
+        "last_case_id": (last_run or {}).get("bounded_task_tick_run_record", {}).get("case_id"),
+        "last_run_id": (last_run or {}).get("bounded_task_tick_run_record", {}).get("run_id"),
+        "last_closure_id": (last_closure or {}).get("task_run_closure_record", {}).get(
+            "task_run_closure_record_id"
+        ),
+        "last_candidate_id": (candidates[-1] if candidates else {}).get("candidate_id"),
+        "last_reviewed_learning_id": (reviewed[-1] if reviewed else {}).get(
+            "cradle_reviewed_learning_record_id"
+        ),
+        "last_memory_trace_id": (memory_traces[-1] if memory_traces else {}).get(
+            "memory_learning_trace_id"
+        ),
+        "last_memory_application_data_id": (memory_data[-1] if memory_data else {}).get(
+            "memory_application_data_id"
+        ),
+        "last_readback_preview_id": (previews[-1] if previews else {}).get(
+            "readback_preview_id"
+        ),
+        "last_readback_application_id": (
+            (applications[-1] if applications else {})
+            .get("task_working_memory_readback_application_record", {})
+            .get("readback_application_id")
+        ),
+        "last_contrast_id": (contrast or {}).get("contrast_id"),
+        "last_loop_evidence_id": (loop_evidence or {}).get("loop_evidence_id"),
+        "last_growth_readiness_audit_id": (growth_audit or {}).get("audit_id"),
+        "active_task_frame_id": (
+            frame.get("active_task_frame_id")
+            if frame.get("continue_allowed") is True
+            else None
+        ),
+        "suspended_task_frame_id": suspended.get("suspended_task_frame_id"),
+    }
+    return {key: value for key, value in ids.items() if value is not None}
+
+
+def _last_working_memory_summary(base_dir: str | Path | None) -> dict[str, object]:
+    last_run = load_last_bounded_teacher_gated_task_tick_run(base_dir)
+    frame = (last_run or {}).get("final_active_task_frame") or {}
+    if not frame:
+        return {}
+    return {
+        "active_task_frame_id": frame.get("active_task_frame_id"),
+        "task_id": frame.get("task_id"),
+        "current_step": frame.get("current_step"),
+        "task_status": frame.get("task_status"),
+        "last_outcome_label": frame.get("last_outcome_label"),
+        "next_candidate_hints": frame.get("next_candidate_hints", []),
+        "continue_allowed": frame.get("continue_allowed"),
+        "stop_reason": frame.get("stop_reason"),
+    }
+
+
+def _last_task_status_for_handoff(base_dir: str | Path | None) -> str | None:
+    closure = load_last_task_run_closure(base_dir)
+    if closure:
+        status = closure.get("task_run_closure_record", {}).get("final_task_status")
+        if status == "system_stopped":
+            return "closed"
+        return status
+    frame = _last_working_memory_summary(base_dir)
+    return str(frame.get("task_status")) if frame else None
+
+
+def _last_stop_reason_for_handoff(base_dir: str | Path | None) -> str | None:
+    closure = load_last_task_run_closure(base_dir)
+    if closure:
+        return closure.get("task_run_closure_record", {}).get("stop_reason")
+    frame = _last_working_memory_summary(base_dir)
+    value = frame.get("stop_reason")
+    return str(value) if value else None

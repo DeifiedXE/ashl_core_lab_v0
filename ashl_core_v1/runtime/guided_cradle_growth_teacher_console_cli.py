@@ -8,11 +8,13 @@ from pathlib import Path
 
 from ashl_core_v1.runtime.guided_cradle_growth_teacher_console import (
     apply_readback_from_guided_cradle_growth_console,
+    build_state_handoff_from_guided_cradle_growth_console,
     build_loop_evidence_from_guided_cradle_growth_console,
     build_memory_trace_from_guided_cradle_growth_console,
     close_last_run_from_guided_cradle_growth_console,
     get_guided_cradle_growth_status,
     guided_cradle_growth_next_step,
+    list_state_handoff_bookmarks_from_guided_cradle_growth_console,
     list_candidates_from_guided_cradle_growth_console,
     preview_readback_from_guided_cradle_growth_console,
     review_candidate_from_guided_cradle_growth_console,
@@ -21,12 +23,15 @@ from ashl_core_v1.runtime.guided_cradle_growth_teacher_console import (
     run_readback_contrast_from_guided_cradle_growth_console,
     show_growth_readiness_from_guided_cradle_growth_console,
     show_loop_evidence_from_guided_cradle_growth_console,
+    show_state_handoff_from_guided_cradle_growth_console,
+    validate_state_handoff_from_guided_cradle_growth_console,
 )
 
 
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description="ASHL Core v1 guided growth console")
     parser.add_argument("--data-dir", type=Path, default=None)
+    parser.add_argument("--state-dir", type=Path, default=None)
     subparsers = parser.add_subparsers(dest="command", required=True)
     subparsers.add_parser("growth-status")
     subparsers.add_parser("next-step")
@@ -52,6 +57,10 @@ def build_parser() -> argparse.ArgumentParser:
     subparsers.add_parser("show-loop-evidence")
     subparsers.add_parser("run-growth-readiness-audit")
     subparsers.add_parser("show-growth-readiness")
+    subparsers.add_parser("state-handoff-build")
+    subparsers.add_parser("state-handoff-show")
+    subparsers.add_parser("state-handoff-bookmarks")
+    subparsers.add_parser("state-handoff-validate")
     return parser
 
 
@@ -60,7 +69,9 @@ def main(argv: list[str] | None = None) -> int:
     args = parser.parse_args(argv)
     try:
         if args.command == "growth-status":
-            return _print_json(get_guided_cradle_growth_status(args.data_dir))
+            return _print_json(
+                get_guided_cradle_growth_status(args.data_dir, args.state_dir)
+            )
         if args.command == "next-step":
             return _print_json(
                 {"suggested_next_step": guided_cradle_growth_next_step(base_dir=args.data_dir)}
@@ -125,6 +136,35 @@ def main(argv: list[str] | None = None) -> int:
             )
         if args.command == "show-growth-readiness":
             return _print_json(show_growth_readiness_from_guided_cradle_growth_console(args.data_dir))
+        if args.command == "state-handoff-build":
+            _require_state_dir(args.state_dir)
+            return _print_json(
+                build_state_handoff_from_guided_cradle_growth_console(
+                    state_dir=args.state_dir,
+                    base_dir=args.data_dir,
+                )
+            )
+        if args.command == "state-handoff-show":
+            _require_state_dir(args.state_dir)
+            return _print_json(
+                show_state_handoff_from_guided_cradle_growth_console(
+                    state_dir=args.state_dir,
+                )
+            )
+        if args.command == "state-handoff-bookmarks":
+            _require_state_dir(args.state_dir)
+            return _print_json(
+                list_state_handoff_bookmarks_from_guided_cradle_growth_console(
+                    state_dir=args.state_dir,
+                )
+            )
+        if args.command == "state-handoff-validate":
+            _require_state_dir(args.state_dir)
+            return _print_json(
+                validate_state_handoff_from_guided_cradle_growth_console(
+                    state_dir=args.state_dir,
+                )
+            )
     except (FileNotFoundError, LookupError, ValueError) as error:
         print(json.dumps({"status": "error", "error": str(error)}))
         return 1
@@ -135,6 +175,11 @@ def main(argv: list[str] | None = None) -> int:
 def _print_json(payload: dict) -> int:
     print(json.dumps(payload, ensure_ascii=False, sort_keys=True))
     return 0
+
+
+def _require_state_dir(state_dir: Path | None) -> None:
+    if state_dir is None:
+        raise ValueError("--state-dir is required for state handoff commands")
 
 
 if __name__ == "__main__":
