@@ -20,6 +20,7 @@ from ashl_core_v1.runtime.guided_cradle_growth_teacher_console import (
     list_state_handoff_bookmarks_from_guided_cradle_growth_console,
     list_candidates_from_guided_cradle_growth_console,
     preview_readback_from_guided_cradle_growth_console,
+    refine_demo_concept_from_guided_cradle_growth_console,
     review_candidate_from_guided_cradle_growth_console,
     run_case_from_guided_cradle_growth_console,
     run_growth_readiness_audit_from_guided_cradle_growth_console,
@@ -47,6 +48,7 @@ from ashl_core_v1.runtime.guided_cradle_growth_teacher_console import (
     validate_demo_concept_draft_from_guided_cradle_growth_console,
     review_demo_concept_from_guided_cradle_growth_console,
     validate_demo_concept_review_from_guided_cradle_growth_console,
+    validate_demo_refinement_from_guided_cradle_growth_console,
 )
 
 
@@ -119,6 +121,12 @@ def build_parser() -> argparse.ArgumentParser:
     )
     learning_review_validate.add_argument("--decision", required=True)
     learning_review_validate.add_argument("--demo", default="blocked")
+    learning_refine = subparsers.add_parser("learning-refine-demo-concept")
+    learning_refine.add_argument("--decision", required=True)
+    learning_refine_validate = subparsers.add_parser(
+        "learning-validate-demo-refinement"
+    )
+    learning_refine_validate.add_argument("--decision", required=True)
     return parser
 
 
@@ -372,6 +380,18 @@ def main(argv: list[str] | None = None) -> int:
             return _print_json(
                 validate_demo_concept_review_from_guided_cradle_growth_console(
                     demo=args.demo,
+                    decision=args.decision,
+                )
+            )
+        if args.command == "learning-refine-demo-concept":
+            return _print_json(
+                refine_demo_concept_from_guided_cradle_growth_console(
+                    decision=args.decision,
+                )
+            )
+        if args.command == "learning-validate-demo-refinement":
+            return _print_json(
+                validate_demo_refinement_from_guided_cradle_growth_console(
                     decision=args.decision,
                 )
             )
