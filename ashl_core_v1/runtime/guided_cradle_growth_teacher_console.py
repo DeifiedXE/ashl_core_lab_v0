@@ -383,6 +383,62 @@ def validate_state_handoff_from_guided_cradle_growth_console(
     return validate_cradle_state_handoff(load_cradle_state_handoff_bundle(state_dir))
 
 
+def run_state_resume_precheck_from_guided_cradle_growth_console(
+    *,
+    state_dir: str | Path,
+) -> dict[str, Any]:
+    from ashl_core_v1.state.cradle_state_resume_precheck import (
+        run_cradle_resume_precheck,
+    )
+
+    result = run_cradle_resume_precheck(state_dir)
+    return {
+        "guided_console_action": "state_resume_precheck",
+        "resume_precheck": result,
+        "automatic_resume": False,
+        "task_resumed": False,
+        "scheduler_created": False,
+        "action_execution_created": False,
+    }
+
+
+def show_state_resume_precheck_from_guided_cradle_growth_console(
+    *,
+    state_dir: str | Path,
+) -> dict[str, Any]:
+    from ashl_core_v1.state.cradle_state_resume_precheck import (
+        load_cradle_resume_precheck_bundle,
+    )
+
+    precheck, _options, _safety = load_cradle_resume_precheck_bundle(state_dir)
+    return precheck.to_dict()
+
+
+def list_state_resume_options_from_guided_cradle_growth_console(
+    *,
+    state_dir: str | Path,
+) -> dict[str, Any]:
+    from ashl_core_v1.state.cradle_state_resume_precheck import (
+        load_cradle_resume_precheck_bundle,
+    )
+
+    _precheck, options, _safety = load_cradle_resume_precheck_bundle(state_dir)
+    return {"resume_options": [option.to_dict() for option in options]}
+
+
+def validate_state_resume_precheck_from_guided_cradle_growth_console(
+    *,
+    state_dir: str | Path,
+) -> dict[str, Any]:
+    from ashl_core_v1.state.cradle_state_resume_precheck import (
+        load_cradle_resume_precheck_bundle,
+        validate_cradle_resume_precheck,
+    )
+
+    precheck, options, safety = load_cradle_resume_precheck_bundle(state_dir)
+    return validate_cradle_resume_precheck(precheck, options, safety)
+
+
 def _pending_candidate_count(
     candidates: list[dict[str, Any]],
     reviewed: list[dict[str, Any]],
@@ -448,6 +504,10 @@ def _state_handoff_status(state_dir: str | Path | None) -> dict[str, Any]:
             "last_handoff_id": None,
             "safe_resume_hint": None,
             "resume_requires_teacher": None,
+            "resume_precheck_available": False,
+            "recommended_resume_kind": None,
+            "recommended_teacher_action": None,
+            "resume_allowed": None,
         }
     from ashl_core_v1.state.cradle_state_persistence_handoff import (
         load_cradle_state_handoff_bundle,
@@ -461,12 +521,41 @@ def _state_handoff_status(state_dir: str | Path | None) -> dict[str, Any]:
             "last_handoff_id": None,
             "safe_resume_hint": None,
             "resume_requires_teacher": None,
+            "resume_precheck_available": False,
+            "recommended_resume_kind": None,
+            "recommended_teacher_action": None,
+            "resume_allowed": None,
         }
+    precheck_status = _state_resume_precheck_status(state_dir)
     return {
         "state_handoff_available": True,
         "last_handoff_id": bundle.handoff.handoff_id,
         "safe_resume_hint": bundle.handoff.safe_resume_hint,
         "resume_requires_teacher": bundle.handoff.resume_requires_teacher,
+        **precheck_status,
+    }
+
+
+def _state_resume_precheck_status(state_dir: str | Path) -> dict[str, Any]:
+    from ashl_core_v1.state.cradle_state_resume_precheck import (
+        load_cradle_resume_precheck_bundle,
+    )
+
+    try:
+        precheck, _options, _safety = load_cradle_resume_precheck_bundle(state_dir)
+    except FileNotFoundError:
+        return {
+            "resume_precheck_available": False,
+            "recommended_resume_kind": None,
+            "recommended_teacher_action": None,
+            "resume_allowed": None,
+        }
+    return {
+        "resume_precheck_available": True,
+        "recommended_resume_kind": precheck.recommended_resume_kind,
+        "recommended_teacher_action": precheck.recommended_teacher_action,
+        "resume_allowed": precheck.resume_allowed,
+        "resume_requires_teacher": precheck.resume_requires_teacher,
     }
 
 

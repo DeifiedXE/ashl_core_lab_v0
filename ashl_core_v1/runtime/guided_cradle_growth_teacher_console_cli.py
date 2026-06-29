@@ -21,9 +21,13 @@ from ashl_core_v1.runtime.guided_cradle_growth_teacher_console import (
     run_case_from_guided_cradle_growth_console,
     run_growth_readiness_audit_from_guided_cradle_growth_console,
     run_readback_contrast_from_guided_cradle_growth_console,
+    run_state_resume_precheck_from_guided_cradle_growth_console,
     show_growth_readiness_from_guided_cradle_growth_console,
     show_loop_evidence_from_guided_cradle_growth_console,
+    show_state_resume_precheck_from_guided_cradle_growth_console,
     show_state_handoff_from_guided_cradle_growth_console,
+    list_state_resume_options_from_guided_cradle_growth_console,
+    validate_state_resume_precheck_from_guided_cradle_growth_console,
     validate_state_handoff_from_guided_cradle_growth_console,
 )
 
@@ -61,6 +65,10 @@ def build_parser() -> argparse.ArgumentParser:
     subparsers.add_parser("state-handoff-show")
     subparsers.add_parser("state-handoff-bookmarks")
     subparsers.add_parser("state-handoff-validate")
+    subparsers.add_parser("state-resume-precheck")
+    subparsers.add_parser("state-resume-show")
+    subparsers.add_parser("state-resume-options")
+    subparsers.add_parser("state-resume-validate")
     return parser
 
 
@@ -162,6 +170,34 @@ def main(argv: list[str] | None = None) -> int:
             _require_state_dir(args.state_dir)
             return _print_json(
                 validate_state_handoff_from_guided_cradle_growth_console(
+                    state_dir=args.state_dir,
+                )
+            )
+        if args.command == "state-resume-precheck":
+            _require_state_dir(args.state_dir)
+            return _print_json(
+                run_state_resume_precheck_from_guided_cradle_growth_console(
+                    state_dir=args.state_dir,
+                )
+            )
+        if args.command == "state-resume-show":
+            _require_state_dir(args.state_dir)
+            return _print_json(
+                show_state_resume_precheck_from_guided_cradle_growth_console(
+                    state_dir=args.state_dir,
+                )
+            )
+        if args.command == "state-resume-options":
+            _require_state_dir(args.state_dir)
+            return _print_json(
+                list_state_resume_options_from_guided_cradle_growth_console(
+                    state_dir=args.state_dir,
+                )
+            )
+        if args.command == "state-resume-validate":
+            _require_state_dir(args.state_dir)
+            return _print_json(
+                validate_state_resume_precheck_from_guided_cradle_growth_console(
                     state_dir=args.state_dir,
                 )
             )
