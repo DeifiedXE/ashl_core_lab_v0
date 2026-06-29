@@ -20,6 +20,7 @@ from ashl_core_v1.runtime.guided_cradle_growth_teacher_console import (
     list_state_handoff_bookmarks_from_guided_cradle_growth_console,
     list_candidates_from_guided_cradle_growth_console,
     preview_readback_from_guided_cradle_growth_console,
+    prepare_reviewed_concept_demo_from_guided_cradle_growth_console,
     refine_demo_concept_from_guided_cradle_growth_console,
     review_candidate_from_guided_cradle_growth_console,
     run_case_from_guided_cradle_growth_console,
@@ -30,6 +31,7 @@ from ashl_core_v1.runtime.guided_cradle_growth_teacher_console import (
     show_growth_readiness_from_guided_cradle_growth_console,
     show_concept_teaching_test_seed_from_guided_cradle_growth_console,
     show_concept_review_task_from_guided_cradle_growth_console,
+    show_reviewed_concept_preparation_demo_from_guided_cradle_growth_console,
     show_loop_evidence_from_guided_cradle_growth_console,
     show_state_resume_precheck_from_guided_cradle_growth_console,
     show_state_handoff_from_guided_cradle_growth_console,
@@ -49,6 +51,7 @@ from ashl_core_v1.runtime.guided_cradle_growth_teacher_console import (
     review_demo_concept_from_guided_cradle_growth_console,
     validate_demo_concept_review_from_guided_cradle_growth_console,
     validate_demo_refinement_from_guided_cradle_growth_console,
+    validate_reviewed_concept_preparation_demo_from_guided_cradle_growth_console,
 )
 
 
@@ -127,6 +130,9 @@ def build_parser() -> argparse.ArgumentParser:
         "learning-validate-demo-refinement"
     )
     learning_refine_validate.add_argument("--decision", required=True)
+    subparsers.add_parser("learning-prepare-reviewed-concept-demo")
+    subparsers.add_parser("learning-show-reviewed-concept-preparation-demo")
+    subparsers.add_parser("learning-validate-reviewed-concept-preparation-demo")
     return parser
 
 
@@ -394,6 +400,18 @@ def main(argv: list[str] | None = None) -> int:
                 validate_demo_refinement_from_guided_cradle_growth_console(
                     decision=args.decision,
                 )
+            )
+        if args.command == "learning-prepare-reviewed-concept-demo":
+            return _print_json(
+                prepare_reviewed_concept_demo_from_guided_cradle_growth_console()
+            )
+        if args.command == "learning-show-reviewed-concept-preparation-demo":
+            return _print_json(
+                show_reviewed_concept_preparation_demo_from_guided_cradle_growth_console()
+            )
+        if args.command == "learning-validate-reviewed-concept-preparation-demo":
+            return _print_json(
+                validate_reviewed_concept_preparation_demo_from_guided_cradle_growth_console()
             )
     except (FileNotFoundError, LookupError, ValueError) as error:
         print(json.dumps({"status": "error", "error": str(error)}))

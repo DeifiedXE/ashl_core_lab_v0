@@ -815,6 +815,45 @@ def validate_demo_refinement_from_guided_cradle_growth_console(
     }
 
 
+def prepare_reviewed_concept_demo_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.learning.reviewed_concept_preparation import (
+        build_demo_reviewed_concept_preparation_packet,
+    )
+
+    payload = build_demo_reviewed_concept_preparation_packet()
+    return {
+        "guided_console_action": "learning_prepare_reviewed_concept_demo",
+        **payload,
+        "reviewed_concept_created": False,
+        "concept_approved": False,
+        "memory_write_performed": False,
+        "task_behavior_changed": False,
+    }
+
+
+def show_reviewed_concept_preparation_demo_from_guided_cradle_growth_console() -> dict[str, Any]:
+    return prepare_reviewed_concept_demo_from_guided_cradle_growth_console()
+
+
+def validate_reviewed_concept_preparation_demo_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.learning.reviewed_concept_preparation import (
+        build_demo_reviewed_concept_preparation_packet,
+        validate_reviewed_concept_preparation_packet,
+    )
+
+    payload = build_demo_reviewed_concept_preparation_packet()
+    return {
+        "guided_console_action": "learning_validate_reviewed_concept_preparation_demo",
+        "validation": validate_reviewed_concept_preparation_packet(
+            payload["preparation_packet"]
+        ),
+        "reviewed_concept_created": False,
+        "concept_approved": False,
+        "memory_write_performed": False,
+        "task_behavior_changed": False,
+    }
+
+
 def _pending_candidate_count(
     candidates: list[dict[str, Any]],
     reviewed: list[dict[str, Any]],
