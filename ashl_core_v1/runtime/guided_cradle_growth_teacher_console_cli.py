@@ -12,6 +12,7 @@ from ashl_core_v1.runtime.guided_cradle_growth_teacher_console import (
     build_loop_evidence_from_guided_cradle_growth_console,
     build_memory_trace_from_guided_cradle_growth_console,
     build_reviewed_concept_demo_from_guided_cradle_growth_console,
+    bridge_reviewed_concept_memory_demo_from_guided_cradle_growth_console,
     build_state_restore_preview_from_guided_cradle_growth_console,
     close_last_run_from_guided_cradle_growth_console,
     create_state_resume_handoff_from_guided_cradle_growth_console,
@@ -37,6 +38,7 @@ from ashl_core_v1.runtime.guided_cradle_growth_teacher_console import (
     show_concept_review_task_from_guided_cradle_growth_console,
     show_reviewed_concept_preparation_demo_from_guided_cradle_growth_console,
     show_reviewed_concept_demo_from_guided_cradle_growth_console,
+    show_reviewed_concept_memory_candidates_from_guided_cradle_growth_console,
     show_loop_evidence_from_guided_cradle_growth_console,
     show_state_resume_precheck_from_guided_cradle_growth_console,
     show_state_handoff_from_guided_cradle_growth_console,
@@ -59,6 +61,7 @@ from ashl_core_v1.runtime.guided_cradle_growth_teacher_console import (
     validate_reviewed_concept_preparation_demo_from_guided_cradle_growth_console,
     validate_reviewed_concept_demo_from_guided_cradle_growth_console,
     validate_reviewed_concept_memory_preview_from_guided_cradle_growth_console,
+    validate_reviewed_concept_memory_bridge_from_guided_cradle_growth_console,
 )
 
 
@@ -147,6 +150,9 @@ def build_parser() -> argparse.ArgumentParser:
     subparsers.add_parser("learning-preview-reviewed-concept-routing")
     subparsers.add_parser("learning-preview-reviewed-concept-application-data")
     subparsers.add_parser("learning-validate-reviewed-concept-memory-preview")
+    subparsers.add_parser("learning-bridge-reviewed-concept-memory-demo")
+    subparsers.add_parser("learning-show-reviewed-concept-memory-candidates")
+    subparsers.add_parser("learning-validate-reviewed-concept-memory-bridge")
     return parser
 
 
@@ -454,6 +460,18 @@ def main(argv: list[str] | None = None) -> int:
         if args.command == "learning-validate-reviewed-concept-memory-preview":
             return _print_json(
                 validate_reviewed_concept_memory_preview_from_guided_cradle_growth_console()
+            )
+        if args.command == "learning-bridge-reviewed-concept-memory-demo":
+            return _print_json(
+                bridge_reviewed_concept_memory_demo_from_guided_cradle_growth_console()
+            )
+        if args.command == "learning-show-reviewed-concept-memory-candidates":
+            return _print_json(
+                show_reviewed_concept_memory_candidates_from_guided_cradle_growth_console()
+            )
+        if args.command == "learning-validate-reviewed-concept-memory-bridge":
+            return _print_json(
+                validate_reviewed_concept_memory_bridge_from_guided_cradle_growth_console()
             )
     except (FileNotFoundError, LookupError, ValueError) as error:
         print(json.dumps({"status": "error", "error": str(error)}))

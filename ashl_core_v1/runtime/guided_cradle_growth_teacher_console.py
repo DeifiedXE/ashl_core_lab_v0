@@ -950,6 +950,55 @@ def validate_reviewed_concept_memory_preview_from_guided_cradle_growth_console()
     }
 
 
+def bridge_reviewed_concept_memory_demo_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.learning.reviewed_concept_memory_trace_bridge import (
+        build_demo_reviewed_concept_memory_trace_bridge,
+    )
+
+    payload = build_demo_reviewed_concept_memory_trace_bridge()
+    return {
+        "guided_console_action": "learning_bridge_reviewed_concept_memory_demo",
+        **payload,
+        "memory_layer_write_performed": False,
+        "readback_hint_created": False,
+        "working_memory_mutated": False,
+        "task_behavior_changed": False,
+    }
+
+
+def show_reviewed_concept_memory_candidates_from_guided_cradle_growth_console() -> dict[str, Any]:
+    payload = bridge_reviewed_concept_memory_demo_from_guided_cradle_growth_console()
+    return {
+        "guided_console_action": "learning_show_reviewed_concept_memory_candidates",
+        "memory_learning_trace_candidate": payload["memory_learning_trace_candidate"],
+        "memory_routing_trace_candidate": payload["memory_routing_trace_candidate"],
+        "memory_application_data_candidate": payload["memory_application_data_candidate"],
+        "memory_layer_write_performed": False,
+        "readback_hint_created": False,
+        "working_memory_mutated": False,
+        "task_behavior_changed": False,
+    }
+
+
+def validate_reviewed_concept_memory_bridge_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.learning.reviewed_concept_memory_trace_bridge import (
+        build_demo_reviewed_concept_memory_trace_bridge,
+        validate_reviewed_concept_memory_trace_bridge_audit,
+    )
+
+    payload = build_demo_reviewed_concept_memory_trace_bridge()
+    return {
+        "guided_console_action": "learning_validate_reviewed_concept_memory_bridge",
+        "validation": validate_reviewed_concept_memory_trace_bridge_audit(
+            payload["bridge_audit"]
+        ),
+        "memory_layer_write_performed": False,
+        "readback_hint_created": False,
+        "working_memory_mutated": False,
+        "task_behavior_changed": False,
+    }
+
+
 def _pending_candidate_count(
     candidates: list[dict[str, Any]],
     reviewed: list[dict[str, Any]],
