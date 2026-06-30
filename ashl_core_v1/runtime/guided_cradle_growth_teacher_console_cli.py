@@ -35,6 +35,7 @@ from ashl_core_v1.runtime.guided_cradle_growth_teacher_console import (
     refine_demo_concept_from_guided_cradle_growth_console,
     review_candidate_from_guided_cradle_growth_console,
     review_reviewed_concept_hint_candidates_demo_from_guided_cradle_growth_console,
+    review_reviewed_concept_hint_application_demo_from_guided_cradle_growth_console,
     run_case_from_guided_cradle_growth_console,
     run_growth_readiness_audit_from_guided_cradle_growth_console,
     run_readback_contrast_from_guided_cradle_growth_console,
@@ -53,6 +54,7 @@ from ashl_core_v1.runtime.guided_cradle_growth_teacher_console import (
     show_reviewed_concept_hint_preview_from_guided_cradle_growth_console,
     show_reviewed_concept_hint_records_from_guided_cradle_growth_console,
     show_reviewed_concept_hint_application_preview_from_guided_cradle_growth_console,
+    show_reviewed_concept_hint_application_review_from_guided_cradle_growth_console,
     show_reviewed_concept_memory_admission_from_guided_cradle_growth_console,
     show_loop_evidence_from_guided_cradle_growth_console,
     show_reviewed_concept_readback_preview_from_guided_cradle_growth_console,
@@ -84,6 +86,7 @@ from ashl_core_v1.runtime.guided_cradle_growth_teacher_console import (
     validate_reviewed_concept_hint_preparation_from_guided_cradle_growth_console,
     validate_reviewed_concept_hint_records_from_guided_cradle_growth_console,
     validate_reviewed_concept_hint_application_preview_from_guided_cradle_growth_console,
+    validate_reviewed_concept_hint_application_review_from_guided_cradle_growth_console,
     validate_reviewed_concept_readback_preview_from_guided_cradle_growth_console,
 )
 
@@ -199,6 +202,9 @@ def build_parser() -> argparse.ArgumentParser:
     subparsers.add_parser("task-preview-reviewed-concept-hint-application-demo")
     subparsers.add_parser("task-show-reviewed-concept-hint-application-preview")
     subparsers.add_parser("task-validate-reviewed-concept-hint-application-preview")
+    subparsers.add_parser("task-review-reviewed-concept-hint-application-demo")
+    subparsers.add_parser("task-show-reviewed-concept-hint-application-review")
+    subparsers.add_parser("task-validate-reviewed-concept-hint-application-review")
     return parser
 
 
@@ -610,6 +616,18 @@ def main(argv: list[str] | None = None) -> int:
         if args.command == "task-validate-reviewed-concept-hint-application-preview":
             return _print_json(
                 validate_reviewed_concept_hint_application_preview_from_guided_cradle_growth_console()
+            )
+        if args.command == "task-review-reviewed-concept-hint-application-demo":
+            return _print_json(
+                review_reviewed_concept_hint_application_demo_from_guided_cradle_growth_console()
+            )
+        if args.command == "task-show-reviewed-concept-hint-application-review":
+            return _print_json(
+                show_reviewed_concept_hint_application_review_from_guided_cradle_growth_console()
+            )
+        if args.command == "task-validate-reviewed-concept-hint-application-review":
+            return _print_json(
+                validate_reviewed_concept_hint_application_review_from_guided_cradle_growth_console()
             )
     except (FileNotFoundError, LookupError, ValueError) as error:
         print(json.dumps({"status": "error", "error": str(error)}))
