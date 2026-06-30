@@ -1064,6 +1064,63 @@ def validate_reviewed_concept_admission_from_guided_cradle_growth_console() -> d
     }
 
 
+def preview_reviewed_concept_readback_demo_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.memory.reviewed_concept_working_readback_preview import (
+        build_demo_reviewed_concept_working_readback_preview_bundle,
+    )
+
+    payload = build_demo_reviewed_concept_working_readback_preview_bundle()
+    return {
+        "guided_console_action": "memory_preview_reviewed_concept_readback_demo",
+        **payload,
+        "actual_readback_hint_created": False,
+        "working_memory_mutated": False,
+        "task_behavior_changed": False,
+        "memory_layer_write_performed": False,
+    }
+
+
+def show_reviewed_concept_readback_preview_from_guided_cradle_growth_console() -> dict[str, Any]:
+    payload = preview_reviewed_concept_readback_demo_from_guided_cradle_growth_console()
+    return {
+        "guided_console_action": "memory_show_reviewed_concept_readback_preview",
+        "working_readback_preview": payload["working_readback_preview"],
+        "actual_readback_hint_created": False,
+        "working_memory_mutated": False,
+        "task_behavior_changed": False,
+    }
+
+
+def show_reviewed_concept_hint_preview_from_guided_cradle_growth_console() -> dict[str, Any]:
+    payload = preview_reviewed_concept_readback_demo_from_guided_cradle_growth_console()
+    return {
+        "guided_console_action": "memory_show_reviewed_concept_hint_preview",
+        "working_readback_hint_preview": payload["working_readback_hint_preview"],
+        "actual_task_working_memory_hint_created": False,
+        "applied_to_working_memory": False,
+        "task_behavior_changed": False,
+    }
+
+
+def validate_reviewed_concept_readback_preview_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.memory.reviewed_concept_working_readback_preview import (
+        build_demo_reviewed_concept_working_readback_preview_bundle,
+        validate_reviewed_concept_working_readback_preview_safety_audit,
+    )
+
+    payload = build_demo_reviewed_concept_working_readback_preview_bundle()
+    return {
+        "guided_console_action": "memory_validate_reviewed_concept_readback_preview",
+        "validation": validate_reviewed_concept_working_readback_preview_safety_audit(
+            payload["working_readback_preview_safety_audit"]
+        ),
+        "actual_readback_hint_created": False,
+        "working_memory_mutated": False,
+        "task_behavior_changed": False,
+        "memory_layer_write_performed": False,
+    }
+
+
 def _pending_candidate_count(
     candidates: list[dict[str, Any]],
     reviewed: list[dict[str, Any]],
