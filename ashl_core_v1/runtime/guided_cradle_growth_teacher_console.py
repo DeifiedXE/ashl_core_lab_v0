@@ -1505,6 +1505,80 @@ def validate_reviewed_concept_hint_application_review_from_guided_cradle_growth_
     }
 
 
+def prepare_reviewed_concept_hint_application_demo_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.task.reviewed_concept_readback_hint_application_preparation import (
+        build_demo_task_working_memory_readback_hint_application_preparation_set,
+    )
+
+    payload = build_demo_task_working_memory_readback_hint_application_preparation_set()
+    return {
+        "guided_console_action": (
+            "task_prepare_reviewed_concept_hint_application_demo"
+        ),
+        **payload,
+        "applied_to_working_memory": False,
+        "working_memory_mutated": False,
+        "task_behavior_changed": False,
+        "candidate_ordering_changed": False,
+        "selected_action_changed": False,
+        "final_action_changed": False,
+        "direct_command_changed": False,
+        "execution_created": False,
+        "memory_layer_write_performed": False,
+    }
+
+
+def show_reviewed_concept_hint_application_preparation_from_guided_cradle_growth_console() -> dict[str, Any]:
+    payload = (
+        prepare_reviewed_concept_hint_application_demo_from_guided_cradle_growth_console()
+    )
+    return {
+        "guided_console_action": (
+            "task_show_reviewed_concept_hint_application_preparation"
+        ),
+        "hint_application_preparation_set": payload[
+            "hint_application_preparation_set"
+        ],
+        "hint_application_preparation_records": payload[
+            "hint_application_preparation_records"
+        ],
+        "applied_to_working_memory": False,
+        "working_memory_mutated": False,
+        "task_behavior_changed": False,
+        "candidate_ordering_changed": False,
+        "selected_action_changed": False,
+        "final_action_changed": False,
+        "direct_command_changed": False,
+        "execution_created": False,
+    }
+
+
+def validate_reviewed_concept_hint_application_preparation_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.task.reviewed_concept_readback_hint_application_preparation import (
+        build_demo_task_working_memory_readback_hint_application_preparation_set,
+        validate_task_working_memory_readback_hint_application_preparation_safety_audit,
+    )
+
+    payload = build_demo_task_working_memory_readback_hint_application_preparation_set()
+    return {
+        "guided_console_action": (
+            "task_validate_reviewed_concept_hint_application_preparation"
+        ),
+        "validation": validate_task_working_memory_readback_hint_application_preparation_safety_audit(
+            payload["hint_application_preparation_safety_audit"]
+        ),
+        "applied_to_working_memory": False,
+        "working_memory_mutated": False,
+        "task_behavior_changed": False,
+        "candidate_ordering_changed": False,
+        "selected_action_changed": False,
+        "final_action_changed": False,
+        "direct_command_changed": False,
+        "execution_created": False,
+        "memory_layer_write_performed": False,
+    }
+
+
 def _pending_candidate_count(
     candidates: list[dict[str, Any]],
     reviewed: list[dict[str, Any]],
