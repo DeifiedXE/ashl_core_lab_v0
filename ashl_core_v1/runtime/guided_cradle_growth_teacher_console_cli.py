@@ -8,6 +8,7 @@ from pathlib import Path
 
 from ashl_core_v1.runtime.guided_cradle_growth_teacher_console import (
     admit_reviewed_concept_memory_demo_from_guided_cradle_growth_console,
+    apply_reviewed_concept_readback_hints_demo_from_guided_cradle_growth_console,
     apply_readback_from_guided_cradle_growth_console,
     build_reviewed_concept_hint_candidates_demo_from_guided_cradle_growth_console,
     build_state_handoff_from_guided_cradle_growth_console,
@@ -57,6 +58,8 @@ from ashl_core_v1.runtime.guided_cradle_growth_teacher_console import (
     show_reviewed_concept_hint_application_preview_from_guided_cradle_growth_console,
     show_reviewed_concept_hint_application_review_from_guided_cradle_growth_console,
     show_reviewed_concept_hint_application_preparation_from_guided_cradle_growth_console,
+    show_reviewed_concept_readback_hint_application_from_guided_cradle_growth_console,
+    show_reviewed_concept_readback_snapshot_from_guided_cradle_growth_console,
     show_reviewed_concept_memory_admission_from_guided_cradle_growth_console,
     show_loop_evidence_from_guided_cradle_growth_console,
     show_reviewed_concept_readback_preview_from_guided_cradle_growth_console,
@@ -90,6 +93,7 @@ from ashl_core_v1.runtime.guided_cradle_growth_teacher_console import (
     validate_reviewed_concept_hint_application_preview_from_guided_cradle_growth_console,
     validate_reviewed_concept_hint_application_review_from_guided_cradle_growth_console,
     validate_reviewed_concept_hint_application_preparation_from_guided_cradle_growth_console,
+    validate_reviewed_concept_readback_hint_application_from_guided_cradle_growth_console,
     validate_reviewed_concept_readback_preview_from_guided_cradle_growth_console,
 )
 
@@ -211,6 +215,10 @@ def build_parser() -> argparse.ArgumentParser:
     subparsers.add_parser("task-prepare-reviewed-concept-hint-application-demo")
     subparsers.add_parser("task-show-reviewed-concept-hint-application-preparation")
     subparsers.add_parser("task-validate-reviewed-concept-hint-application-preparation")
+    subparsers.add_parser("task-apply-reviewed-concept-readback-hints-demo")
+    subparsers.add_parser("task-show-reviewed-concept-readback-hint-application")
+    subparsers.add_parser("task-show-reviewed-concept-readback-snapshot")
+    subparsers.add_parser("task-validate-reviewed-concept-readback-hint-application")
     return parser
 
 
@@ -646,6 +654,22 @@ def main(argv: list[str] | None = None) -> int:
         if args.command == "task-validate-reviewed-concept-hint-application-preparation":
             return _print_json(
                 validate_reviewed_concept_hint_application_preparation_from_guided_cradle_growth_console()
+            )
+        if args.command == "task-apply-reviewed-concept-readback-hints-demo":
+            return _print_json(
+                apply_reviewed_concept_readback_hints_demo_from_guided_cradle_growth_console()
+            )
+        if args.command == "task-show-reviewed-concept-readback-hint-application":
+            return _print_json(
+                show_reviewed_concept_readback_hint_application_from_guided_cradle_growth_console()
+            )
+        if args.command == "task-show-reviewed-concept-readback-snapshot":
+            return _print_json(
+                show_reviewed_concept_readback_snapshot_from_guided_cradle_growth_console()
+            )
+        if args.command == "task-validate-reviewed-concept-readback-hint-application":
+            return _print_json(
+                validate_reviewed_concept_readback_hint_application_from_guided_cradle_growth_console()
             )
     except (FileNotFoundError, LookupError, ValueError) as error:
         print(json.dumps({"status": "error", "error": str(error)}))

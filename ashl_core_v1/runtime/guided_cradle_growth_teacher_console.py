@@ -1579,6 +1579,101 @@ def validate_reviewed_concept_hint_application_preparation_from_guided_cradle_gr
     }
 
 
+def apply_reviewed_concept_readback_hints_demo_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.task.future_task_working_memory_readback_hint_application import (
+        build_demo_future_task_working_memory_readback_hint_application_set,
+    )
+
+    payload = build_demo_future_task_working_memory_readback_hint_application_set()
+    return {
+        "guided_console_action": (
+            "task_apply_reviewed_concept_readback_hints_demo"
+        ),
+        **payload,
+        "applied_to_running_task": False,
+        "candidate_ordering_changed": False,
+        "task_behavior_changed": False,
+        "selected_action_changed": False,
+        "final_action_changed": False,
+        "direct_command_changed": False,
+        "execution_created": False,
+        "memory_layer_write_performed": False,
+    }
+
+
+def show_reviewed_concept_readback_hint_application_from_guided_cradle_growth_console() -> dict[str, Any]:
+    payload = (
+        apply_reviewed_concept_readback_hints_demo_from_guided_cradle_growth_console()
+    )
+    return {
+        "guided_console_action": (
+            "task_show_reviewed_concept_readback_hint_application"
+        ),
+        "future_task_readback_hint_application_set": payload[
+            "future_task_readback_hint_application_set"
+        ],
+        "future_task_readback_hint_application_records": payload[
+            "future_task_readback_hint_application_records"
+        ],
+        "applied_to_running_task": False,
+        "candidate_ordering_changed": False,
+        "task_behavior_changed": False,
+        "selected_action_changed": False,
+        "final_action_changed": False,
+        "direct_command_changed": False,
+        "execution_created": False,
+    }
+
+
+def show_reviewed_concept_readback_snapshot_from_guided_cradle_growth_console() -> dict[str, Any]:
+    payload = (
+        apply_reviewed_concept_readback_hints_demo_from_guided_cradle_growth_console()
+    )
+    return {
+        "guided_console_action": "task_show_reviewed_concept_readback_snapshot",
+        "future_task_working_memory_initialization_readback_snapshot": payload[
+            "future_task_working_memory_initialization_readback_snapshot"
+        ],
+        "initialized_future_task_working_memory": payload[
+            "initialized_future_task_working_memory"
+        ],
+        "applied_to_running_task": False,
+        "candidate_ordering_changed": False,
+        "task_behavior_changed": False,
+        "selected_action_changed": False,
+        "final_action_changed": False,
+        "direct_command_changed": False,
+        "execution_created": False,
+    }
+
+
+def validate_reviewed_concept_readback_hint_application_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.task.future_task_working_memory_readback_hint_application import (
+        build_demo_future_task_working_memory_readback_hint_application_set,
+        validate_future_task_working_memory_readback_hint_application_safety_audit,
+    )
+
+    payload = build_demo_future_task_working_memory_readback_hint_application_set()
+    return {
+        "guided_console_action": (
+            "task_validate_reviewed_concept_readback_hint_application"
+        ),
+        "validation": validate_future_task_working_memory_readback_hint_application_safety_audit(
+            payload[
+                "future_task_working_memory_readback_hint_application_safety_audit"
+            ]
+        ),
+        "applied_to_running_task": False,
+        "candidate_ordering_changed": False,
+        "task_behavior_changed": False,
+        "selected_action_changed": False,
+        "final_action_changed": False,
+        "direct_command_changed": False,
+        "execution_created": False,
+        "memory_layer_write_performed": False,
+    }
+
+
 def _pending_candidate_count(
     candidates: list[dict[str, Any]],
     reviewed: list[dict[str, Any]],
