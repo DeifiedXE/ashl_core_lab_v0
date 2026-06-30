@@ -1782,6 +1782,109 @@ def validate_reviewed_concept_readback_hint_influence_audit_from_guided_cradle_g
     }
 
 
+def audit_reviewed_concept_readback_loop_demo_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.audit.reviewed_concept_readback_loop_milestone_audit import (
+        build_demo_reviewed_concept_readback_loop_milestone,
+    )
+
+    payload = build_demo_reviewed_concept_readback_loop_milestone()
+    return {
+        "guided_console_action": "audit_reviewed_concept_readback_loop_demo",
+        **payload,
+        "task_mutated": False,
+        "candidate_ordering_changed": False,
+        "task_behavior_changed": False,
+        "selected_action_changed": False,
+        "final_action_changed": False,
+        "direct_command_changed": False,
+        "execution_created": False,
+        "action_selection_called": False,
+        "execution_called": False,
+        "memory_layer_write_performed": False,
+    }
+
+
+def show_reviewed_concept_readback_loop_evidence_chain_from_guided_cradle_growth_console() -> dict[str, Any]:
+    payload = audit_reviewed_concept_readback_loop_demo_from_guided_cradle_growth_console()
+    return {
+        "guided_console_action": (
+            "audit_show_reviewed_concept_readback_loop_evidence_chain"
+        ),
+        "evidence_chain": payload["evidence_chain"],
+        "task_mutated": False,
+        "candidate_ordering_changed": False,
+        "task_behavior_changed": False,
+        "action_selection_called": False,
+        "execution_called": False,
+    }
+
+
+def show_reviewed_concept_readback_loop_boundary_from_guided_cradle_growth_console() -> dict[str, Any]:
+    payload = audit_reviewed_concept_readback_loop_demo_from_guided_cradle_growth_console()
+    return {
+        "guided_console_action": "audit_show_reviewed_concept_readback_loop_boundary",
+        "boundary_audit": payload["boundary_audit"],
+        "task_mutated": False,
+        "candidate_ordering_changed": False,
+        "task_behavior_changed": False,
+        "action_selection_called": False,
+        "execution_called": False,
+    }
+
+
+def show_reviewed_concept_readback_loop_milestone_from_guided_cradle_growth_console() -> dict[str, Any]:
+    payload = audit_reviewed_concept_readback_loop_demo_from_guided_cradle_growth_console()
+    return {
+        "guided_console_action": "audit_show_reviewed_concept_readback_loop_milestone",
+        "milestone_audit": payload["milestone_audit"],
+        "task_mutated": False,
+        "candidate_ordering_changed": False,
+        "task_behavior_changed": False,
+        "action_selection_called": False,
+        "execution_called": False,
+    }
+
+
+def show_reviewed_concept_readback_loop_next_stage_readiness_from_guided_cradle_growth_console() -> dict[str, Any]:
+    payload = audit_reviewed_concept_readback_loop_demo_from_guided_cradle_growth_console()
+    return {
+        "guided_console_action": (
+            "audit_show_reviewed_concept_readback_loop_next_stage_readiness"
+        ),
+        "next_stage_readiness_report": payload["next_stage_readiness_report"],
+        "task_mutated": False,
+        "candidate_ordering_changed": False,
+        "task_behavior_changed": False,
+        "action_selection_called": False,
+        "execution_called": False,
+    }
+
+
+def validate_reviewed_concept_readback_loop_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.audit.reviewed_concept_readback_loop_milestone_audit import (
+        build_demo_reviewed_concept_readback_loop_milestone,
+        validate_reviewed_concept_readback_loop_milestone_audit,
+    )
+
+    payload = build_demo_reviewed_concept_readback_loop_milestone()
+    return {
+        "guided_console_action": "audit_validate_reviewed_concept_readback_loop",
+        "validation": validate_reviewed_concept_readback_loop_milestone_audit(
+            payload["milestone_audit"]
+        ),
+        "task_mutated": False,
+        "candidate_ordering_changed": False,
+        "task_behavior_changed": False,
+        "selected_action_changed": False,
+        "final_action_changed": False,
+        "direct_command_changed": False,
+        "execution_created": False,
+        "action_selection_called": False,
+        "execution_called": False,
+        "memory_layer_write_performed": False,
+    }
+
+
 def _pending_candidate_count(
     candidates: list[dict[str, Any]],
     reviewed: list[dict[str, Any]],

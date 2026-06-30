@@ -7,6 +7,7 @@ import json
 from pathlib import Path
 
 from ashl_core_v1.runtime.guided_cradle_growth_teacher_console import (
+    audit_reviewed_concept_readback_loop_demo_from_guided_cradle_growth_console,
     admit_reviewed_concept_memory_demo_from_guided_cradle_growth_console,
     audit_reviewed_concept_readback_hint_influence_demo_from_guided_cradle_growth_console,
     apply_reviewed_concept_readback_hints_demo_from_guided_cradle_growth_console,
@@ -63,6 +64,10 @@ from ashl_core_v1.runtime.guided_cradle_growth_teacher_console import (
     show_reviewed_concept_readback_hint_influence_report_from_guided_cradle_growth_console,
     show_reviewed_concept_readback_hint_non_influence_audit_from_guided_cradle_growth_console,
     show_reviewed_concept_readback_hint_visibility_audit_from_guided_cradle_growth_console,
+    show_reviewed_concept_readback_loop_boundary_from_guided_cradle_growth_console,
+    show_reviewed_concept_readback_loop_evidence_chain_from_guided_cradle_growth_console,
+    show_reviewed_concept_readback_loop_milestone_from_guided_cradle_growth_console,
+    show_reviewed_concept_readback_loop_next_stage_readiness_from_guided_cradle_growth_console,
     show_reviewed_concept_readback_snapshot_from_guided_cradle_growth_console,
     show_reviewed_concept_memory_admission_from_guided_cradle_growth_console,
     show_loop_evidence_from_guided_cradle_growth_console,
@@ -99,6 +104,7 @@ from ashl_core_v1.runtime.guided_cradle_growth_teacher_console import (
     validate_reviewed_concept_hint_application_preparation_from_guided_cradle_growth_console,
     validate_reviewed_concept_readback_hint_application_from_guided_cradle_growth_console,
     validate_reviewed_concept_readback_hint_influence_audit_from_guided_cradle_growth_console,
+    validate_reviewed_concept_readback_loop_from_guided_cradle_growth_console,
     validate_reviewed_concept_readback_preview_from_guided_cradle_growth_console,
 )
 
@@ -229,6 +235,12 @@ def build_parser() -> argparse.ArgumentParser:
     subparsers.add_parser("task-show-reviewed-concept-readback-hint-non-influence-audit")
     subparsers.add_parser("task-show-reviewed-concept-readback-hint-influence-report")
     subparsers.add_parser("task-validate-reviewed-concept-readback-hint-influence-audit")
+    subparsers.add_parser("audit-reviewed-concept-readback-loop-demo")
+    subparsers.add_parser("audit-show-reviewed-concept-readback-loop-evidence-chain")
+    subparsers.add_parser("audit-show-reviewed-concept-readback-loop-boundary")
+    subparsers.add_parser("audit-show-reviewed-concept-readback-loop-milestone")
+    subparsers.add_parser("audit-show-reviewed-concept-readback-loop-next-stage-readiness")
+    subparsers.add_parser("audit-validate-reviewed-concept-readback-loop")
     return parser
 
 
@@ -700,6 +712,30 @@ def main(argv: list[str] | None = None) -> int:
         if args.command == "task-validate-reviewed-concept-readback-hint-influence-audit":
             return _print_json(
                 validate_reviewed_concept_readback_hint_influence_audit_from_guided_cradle_growth_console()
+            )
+        if args.command == "audit-reviewed-concept-readback-loop-demo":
+            return _print_json(
+                audit_reviewed_concept_readback_loop_demo_from_guided_cradle_growth_console()
+            )
+        if args.command == "audit-show-reviewed-concept-readback-loop-evidence-chain":
+            return _print_json(
+                show_reviewed_concept_readback_loop_evidence_chain_from_guided_cradle_growth_console()
+            )
+        if args.command == "audit-show-reviewed-concept-readback-loop-boundary":
+            return _print_json(
+                show_reviewed_concept_readback_loop_boundary_from_guided_cradle_growth_console()
+            )
+        if args.command == "audit-show-reviewed-concept-readback-loop-milestone":
+            return _print_json(
+                show_reviewed_concept_readback_loop_milestone_from_guided_cradle_growth_console()
+            )
+        if args.command == "audit-show-reviewed-concept-readback-loop-next-stage-readiness":
+            return _print_json(
+                show_reviewed_concept_readback_loop_next_stage_readiness_from_guided_cradle_growth_console()
+            )
+        if args.command == "audit-validate-reviewed-concept-readback-loop":
+            return _print_json(
+                validate_reviewed_concept_readback_loop_from_guided_cradle_growth_console()
             )
     except (FileNotFoundError, LookupError, ValueError) as error:
         print(json.dumps({"status": "error", "error": str(error)}))
