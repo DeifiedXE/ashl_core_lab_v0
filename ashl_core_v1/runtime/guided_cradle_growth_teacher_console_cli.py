@@ -17,6 +17,7 @@ from ashl_core_v1.runtime.guided_cradle_growth_teacher_console import (
     bridge_reviewed_concept_memory_demo_from_guided_cradle_growth_console,
     build_state_restore_preview_from_guided_cradle_growth_console,
     close_last_run_from_guided_cradle_growth_console,
+    create_reviewed_concept_hint_records_demo_from_guided_cradle_growth_console,
     create_state_resume_handoff_from_guided_cradle_growth_console,
     draft_demo_concept_from_guided_cradle_growth_console,
     get_guided_cradle_growth_status,
@@ -49,6 +50,7 @@ from ashl_core_v1.runtime.guided_cradle_growth_teacher_console import (
     show_reviewed_concept_hint_candidate_review_from_guided_cradle_growth_console,
     show_reviewed_concept_hint_preparation_from_guided_cradle_growth_console,
     show_reviewed_concept_hint_preview_from_guided_cradle_growth_console,
+    show_reviewed_concept_hint_records_from_guided_cradle_growth_console,
     show_reviewed_concept_memory_admission_from_guided_cradle_growth_console,
     show_loop_evidence_from_guided_cradle_growth_console,
     show_reviewed_concept_readback_preview_from_guided_cradle_growth_console,
@@ -78,6 +80,7 @@ from ashl_core_v1.runtime.guided_cradle_growth_teacher_console import (
     validate_reviewed_concept_hint_candidates_from_guided_cradle_growth_console,
     validate_reviewed_concept_hint_candidate_review_from_guided_cradle_growth_console,
     validate_reviewed_concept_hint_preparation_from_guided_cradle_growth_console,
+    validate_reviewed_concept_hint_records_from_guided_cradle_growth_console,
     validate_reviewed_concept_readback_preview_from_guided_cradle_growth_console,
 )
 
@@ -187,6 +190,9 @@ def build_parser() -> argparse.ArgumentParser:
     subparsers.add_parser("memory-prepare-reviewed-concept-hints-demo")
     subparsers.add_parser("memory-show-reviewed-concept-hint-preparation")
     subparsers.add_parser("memory-validate-reviewed-concept-hint-preparation")
+    subparsers.add_parser("task-create-reviewed-concept-hint-records-demo")
+    subparsers.add_parser("task-show-reviewed-concept-hint-records")
+    subparsers.add_parser("task-validate-reviewed-concept-hint-records")
     return parser
 
 
@@ -574,6 +580,18 @@ def main(argv: list[str] | None = None) -> int:
         if args.command == "memory-validate-reviewed-concept-hint-preparation":
             return _print_json(
                 validate_reviewed_concept_hint_preparation_from_guided_cradle_growth_console()
+            )
+        if args.command == "task-create-reviewed-concept-hint-records-demo":
+            return _print_json(
+                create_reviewed_concept_hint_records_demo_from_guided_cradle_growth_console()
+            )
+        if args.command == "task-show-reviewed-concept-hint-records":
+            return _print_json(
+                show_reviewed_concept_hint_records_from_guided_cradle_growth_console()
+            )
+        if args.command == "task-validate-reviewed-concept-hint-records":
+            return _print_json(
+                validate_reviewed_concept_hint_records_from_guided_cradle_growth_console()
             )
     except (FileNotFoundError, LookupError, ValueError) as error:
         print(json.dumps({"status": "error", "error": str(error)}))
