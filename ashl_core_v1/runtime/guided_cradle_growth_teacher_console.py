@@ -999,6 +999,71 @@ def validate_reviewed_concept_memory_bridge_from_guided_cradle_growth_console() 
     }
 
 
+def admit_reviewed_concept_memory_demo_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.memory.reviewed_concept_candidate_admission_review import (
+        build_demo_reviewed_concept_memory_admission,
+    )
+
+    payload = build_demo_reviewed_concept_memory_admission()
+    return {
+        "guided_console_action": "memory_admit_reviewed_concept_demo",
+        **payload,
+        "core_memory_write_performed": False,
+        "long_term_memory_write_performed": False,
+        "archive_memory_write_performed": False,
+        "anchor_write_performed": False,
+        "readback_hint_created": False,
+        "working_memory_mutated": False,
+        "task_behavior_changed": False,
+    }
+
+
+def show_reviewed_concept_memory_admission_from_guided_cradle_growth_console() -> dict[str, Any]:
+    payload = admit_reviewed_concept_memory_demo_from_guided_cradle_growth_console()
+    return {
+        "guided_console_action": "memory_show_reviewed_concept_admission",
+        "admission_review": payload["admission_review"],
+        "admission_safety_audit": payload["admission_safety_audit"],
+        "core_memory_write_performed": False,
+        "long_term_memory_write_performed": False,
+        "archive_memory_write_performed": False,
+        "anchor_write_performed": False,
+    }
+
+
+def show_reviewed_concept_application_data_from_guided_cradle_growth_console() -> dict[str, Any]:
+    payload = admit_reviewed_concept_memory_demo_from_guided_cradle_growth_console()
+    return {
+        "guided_console_action": "memory_show_reviewed_concept_application_data",
+        "memory_application_data": payload["memory_application_data"],
+        "actual_readback_hint_created": False,
+        "working_memory_mutated": False,
+        "task_behavior_changed": False,
+    }
+
+
+def validate_reviewed_concept_admission_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.memory.reviewed_concept_candidate_admission_review import (
+        build_demo_reviewed_concept_memory_admission,
+        validate_reviewed_concept_memory_admission_safety_audit,
+    )
+
+    payload = build_demo_reviewed_concept_memory_admission()
+    return {
+        "guided_console_action": "memory_validate_reviewed_concept_admission",
+        "validation": validate_reviewed_concept_memory_admission_safety_audit(
+            payload["admission_safety_audit"]
+        ),
+        "core_memory_write_performed": False,
+        "long_term_memory_write_performed": False,
+        "archive_memory_write_performed": False,
+        "anchor_write_performed": False,
+        "readback_hint_created": False,
+        "working_memory_mutated": False,
+        "task_behavior_changed": False,
+    }
+
+
 def _pending_candidate_count(
     candidates: list[dict[str, Any]],
     reviewed: list[dict[str, Any]],

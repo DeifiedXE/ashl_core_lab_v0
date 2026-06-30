@@ -7,6 +7,7 @@ import json
 from pathlib import Path
 
 from ashl_core_v1.runtime.guided_cradle_growth_teacher_console import (
+    admit_reviewed_concept_memory_demo_from_guided_cradle_growth_console,
     apply_readback_from_guided_cradle_growth_console,
     build_state_handoff_from_guided_cradle_growth_console,
     build_loop_evidence_from_guided_cradle_growth_console,
@@ -39,6 +40,8 @@ from ashl_core_v1.runtime.guided_cradle_growth_teacher_console import (
     show_reviewed_concept_preparation_demo_from_guided_cradle_growth_console,
     show_reviewed_concept_demo_from_guided_cradle_growth_console,
     show_reviewed_concept_memory_candidates_from_guided_cradle_growth_console,
+    show_reviewed_concept_application_data_from_guided_cradle_growth_console,
+    show_reviewed_concept_memory_admission_from_guided_cradle_growth_console,
     show_loop_evidence_from_guided_cradle_growth_console,
     show_state_resume_precheck_from_guided_cradle_growth_console,
     show_state_handoff_from_guided_cradle_growth_console,
@@ -62,6 +65,7 @@ from ashl_core_v1.runtime.guided_cradle_growth_teacher_console import (
     validate_reviewed_concept_demo_from_guided_cradle_growth_console,
     validate_reviewed_concept_memory_preview_from_guided_cradle_growth_console,
     validate_reviewed_concept_memory_bridge_from_guided_cradle_growth_console,
+    validate_reviewed_concept_admission_from_guided_cradle_growth_console,
 )
 
 
@@ -153,6 +157,10 @@ def build_parser() -> argparse.ArgumentParser:
     subparsers.add_parser("learning-bridge-reviewed-concept-memory-demo")
     subparsers.add_parser("learning-show-reviewed-concept-memory-candidates")
     subparsers.add_parser("learning-validate-reviewed-concept-memory-bridge")
+    subparsers.add_parser("memory-admit-reviewed-concept-demo")
+    subparsers.add_parser("memory-show-reviewed-concept-admission")
+    subparsers.add_parser("memory-show-reviewed-concept-application-data")
+    subparsers.add_parser("memory-validate-reviewed-concept-admission")
     return parser
 
 
@@ -472,6 +480,22 @@ def main(argv: list[str] | None = None) -> int:
         if args.command == "learning-validate-reviewed-concept-memory-bridge":
             return _print_json(
                 validate_reviewed_concept_memory_bridge_from_guided_cradle_growth_console()
+            )
+        if args.command == "memory-admit-reviewed-concept-demo":
+            return _print_json(
+                admit_reviewed_concept_memory_demo_from_guided_cradle_growth_console()
+            )
+        if args.command == "memory-show-reviewed-concept-admission":
+            return _print_json(
+                show_reviewed_concept_memory_admission_from_guided_cradle_growth_console()
+            )
+        if args.command == "memory-show-reviewed-concept-application-data":
+            return _print_json(
+                show_reviewed_concept_application_data_from_guided_cradle_growth_console()
+            )
+        if args.command == "memory-validate-reviewed-concept-admission":
+            return _print_json(
+                validate_reviewed_concept_admission_from_guided_cradle_growth_console()
             )
     except (FileNotFoundError, LookupError, ValueError) as error:
         print(json.dumps({"status": "error", "error": str(error)}))
