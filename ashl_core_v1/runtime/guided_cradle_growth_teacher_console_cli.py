@@ -7,6 +7,7 @@ import json
 from pathlib import Path
 
 from ashl_core_v1.runtime.guided_cradle_growth_teacher_console import (
+    apply_advisory_readback_ordering_demo_from_guided_cradle_growth_console,
     audit_reviewed_concept_readback_loop_demo_from_guided_cradle_growth_console,
     admit_reviewed_concept_memory_demo_from_guided_cradle_growth_console,
     audit_reviewed_concept_readback_hint_influence_demo_from_guided_cradle_growth_console,
@@ -40,6 +41,7 @@ from ashl_core_v1.runtime.guided_cradle_growth_teacher_console import (
     review_candidate_from_guided_cradle_growth_console,
     review_reviewed_concept_hint_candidates_demo_from_guided_cradle_growth_console,
     review_reviewed_concept_hint_application_demo_from_guided_cradle_growth_console,
+    rollback_advisory_readback_ordering_demo_from_guided_cradle_growth_console,
     run_case_from_guided_cradle_growth_console,
     run_growth_readiness_audit_from_guided_cradle_growth_console,
     run_readback_contrast_from_guided_cradle_growth_console,
@@ -69,6 +71,10 @@ from ashl_core_v1.runtime.guided_cradle_growth_teacher_console import (
     show_reviewed_concept_readback_loop_milestone_from_guided_cradle_growth_console,
     show_reviewed_concept_readback_loop_next_stage_readiness_from_guided_cradle_growth_console,
     show_reviewed_concept_readback_snapshot_from_guided_cradle_growth_console,
+    show_advisory_readback_ordering_application_from_guided_cradle_growth_console,
+    show_advisory_readback_ordering_audit_from_guided_cradle_growth_console,
+    show_advisory_readback_ordering_rollback_from_guided_cradle_growth_console,
+    show_advisory_readback_ordering_teacher_gate_from_guided_cradle_growth_console,
     show_reviewed_concept_memory_admission_from_guided_cradle_growth_console,
     show_loop_evidence_from_guided_cradle_growth_console,
     show_reviewed_concept_readback_preview_from_guided_cradle_growth_console,
@@ -106,6 +112,7 @@ from ashl_core_v1.runtime.guided_cradle_growth_teacher_console import (
     validate_reviewed_concept_readback_hint_influence_audit_from_guided_cradle_growth_console,
     validate_reviewed_concept_readback_loop_from_guided_cradle_growth_console,
     validate_reviewed_concept_readback_preview_from_guided_cradle_growth_console,
+    validate_advisory_readback_ordering_application_from_guided_cradle_growth_console,
 )
 
 
@@ -241,6 +248,13 @@ def build_parser() -> argparse.ArgumentParser:
     subparsers.add_parser("audit-show-reviewed-concept-readback-loop-milestone")
     subparsers.add_parser("audit-show-reviewed-concept-readback-loop-next-stage-readiness")
     subparsers.add_parser("audit-validate-reviewed-concept-readback-loop")
+    subparsers.add_parser("task-apply-advisory-readback-ordering-demo")
+    subparsers.add_parser("task-show-advisory-readback-ordering-teacher-gate")
+    subparsers.add_parser("task-show-advisory-readback-ordering-application")
+    subparsers.add_parser("task-show-advisory-readback-ordering-rollback")
+    subparsers.add_parser("task-show-advisory-readback-ordering-audit")
+    subparsers.add_parser("task-validate-advisory-readback-ordering-application")
+    subparsers.add_parser("task-rollback-advisory-readback-ordering-demo")
     return parser
 
 
@@ -736,6 +750,34 @@ def main(argv: list[str] | None = None) -> int:
         if args.command == "audit-validate-reviewed-concept-readback-loop":
             return _print_json(
                 validate_reviewed_concept_readback_loop_from_guided_cradle_growth_console()
+            )
+        if args.command == "task-apply-advisory-readback-ordering-demo":
+            return _print_json(
+                apply_advisory_readback_ordering_demo_from_guided_cradle_growth_console()
+            )
+        if args.command == "task-show-advisory-readback-ordering-teacher-gate":
+            return _print_json(
+                show_advisory_readback_ordering_teacher_gate_from_guided_cradle_growth_console()
+            )
+        if args.command == "task-show-advisory-readback-ordering-application":
+            return _print_json(
+                show_advisory_readback_ordering_application_from_guided_cradle_growth_console()
+            )
+        if args.command == "task-show-advisory-readback-ordering-rollback":
+            return _print_json(
+                show_advisory_readback_ordering_rollback_from_guided_cradle_growth_console()
+            )
+        if args.command == "task-show-advisory-readback-ordering-audit":
+            return _print_json(
+                show_advisory_readback_ordering_audit_from_guided_cradle_growth_console()
+            )
+        if args.command == "task-validate-advisory-readback-ordering-application":
+            return _print_json(
+                validate_advisory_readback_ordering_application_from_guided_cradle_growth_console()
+            )
+        if args.command == "task-rollback-advisory-readback-ordering-demo":
+            return _print_json(
+                rollback_advisory_readback_ordering_demo_from_guided_cradle_growth_console()
             )
     except (FileNotFoundError, LookupError, ValueError) as error:
         print(json.dumps({"status": "error", "error": str(error)}))

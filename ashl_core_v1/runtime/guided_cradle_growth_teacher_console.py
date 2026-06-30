@@ -1885,6 +1885,126 @@ def validate_reviewed_concept_readback_loop_from_guided_cradle_growth_console() 
     }
 
 
+def apply_advisory_readback_ordering_demo_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.task.advisory_readback_candidate_ordering_application import (
+        build_demo_teacher_gated_ordering_application,
+    )
+
+    payload = build_demo_teacher_gated_ordering_application()
+    return {
+        "guided_console_action": "task_apply_advisory_readback_ordering_demo",
+        **payload,
+        "candidate_ordering_changed": True,
+        "selected_action_changed": False,
+        "final_action_changed": False,
+        "direct_command_changed": False,
+        "execution_created": False,
+        "action_selection_called": False,
+        "execution_called": False,
+        "task_behavior_changed": False,
+        "memory_layer_write_performed": False,
+    }
+
+
+def show_advisory_readback_ordering_teacher_gate_from_guided_cradle_growth_console() -> dict[str, Any]:
+    payload = apply_advisory_readback_ordering_demo_from_guided_cradle_growth_console()
+    return {
+        "guided_console_action": "task_show_advisory_readback_ordering_teacher_gate",
+        "ordering_teacher_gate": payload["ordering_teacher_gate"],
+        "selected_action_changed": False,
+        "final_action_changed": False,
+        "direct_command_changed": False,
+        "execution_created": False,
+    }
+
+
+def show_advisory_readback_ordering_application_from_guided_cradle_growth_console() -> dict[str, Any]:
+    payload = apply_advisory_readback_ordering_demo_from_guided_cradle_growth_console()
+    return {
+        "guided_console_action": "task_show_advisory_readback_ordering_application",
+        "ordering_application": payload["ordering_application"],
+        "candidate_ordering_changed": True,
+        "selected_action_changed": False,
+        "final_action_changed": False,
+        "direct_command_changed": False,
+        "execution_created": False,
+    }
+
+
+def show_advisory_readback_ordering_rollback_from_guided_cradle_growth_console() -> dict[str, Any]:
+    payload = apply_advisory_readback_ordering_demo_from_guided_cradle_growth_console()
+    return {
+        "guided_console_action": "task_show_advisory_readback_ordering_rollback",
+        "ordering_rollback": payload["ordering_rollback"],
+        "selected_action_changed": False,
+        "final_action_changed": False,
+        "direct_command_changed": False,
+        "execution_created": False,
+    }
+
+
+def show_advisory_readback_ordering_audit_from_guided_cradle_growth_console() -> dict[str, Any]:
+    payload = apply_advisory_readback_ordering_demo_from_guided_cradle_growth_console()
+    return {
+        "guided_console_action": "task_show_advisory_readback_ordering_audit",
+        "ordering_application_audit": payload["ordering_application_audit"],
+        "candidate_ordering_changed": True,
+        "selected_action_changed": False,
+        "final_action_changed": False,
+        "direct_command_changed": False,
+        "execution_created": False,
+    }
+
+
+def validate_advisory_readback_ordering_application_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.task.advisory_readback_candidate_ordering_application import (
+        build_demo_teacher_gated_ordering_application,
+        validate_advisory_readback_candidate_ordering_application_audit,
+    )
+
+    payload = build_demo_teacher_gated_ordering_application()
+    return {
+        "guided_console_action": (
+            "task_validate_advisory_readback_ordering_application"
+        ),
+        "validation": validate_advisory_readback_candidate_ordering_application_audit(
+            payload["ordering_application_audit"]
+        ),
+        "candidate_ordering_changed": True,
+        "selected_action_changed": False,
+        "final_action_changed": False,
+        "direct_command_changed": False,
+        "execution_created": False,
+        "action_selection_called": False,
+        "execution_called": False,
+        "task_behavior_changed": False,
+        "memory_layer_write_performed": False,
+    }
+
+
+def rollback_advisory_readback_ordering_demo_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.task.advisory_readback_candidate_ordering_application import (
+        apply_advisory_readback_candidate_ordering_rollback,
+        build_demo_teacher_gated_ordering_application,
+    )
+
+    payload = build_demo_teacher_gated_ordering_application()
+    return {
+        "guided_console_action": "task_rollback_advisory_readback_ordering_demo",
+        "rollback_result": apply_advisory_readback_candidate_ordering_rollback(
+            payload["ordering_rollback"]
+        ),
+        "selected_action_changed": False,
+        "final_action_changed": False,
+        "direct_command_changed": False,
+        "execution_created": False,
+        "action_selection_called": False,
+        "execution_called": False,
+        "task_behavior_changed": False,
+        "memory_layer_write_performed": False,
+    }
+
+
 def _pending_candidate_count(
     candidates: list[dict[str, Any]],
     reviewed: list[dict[str, Any]],
