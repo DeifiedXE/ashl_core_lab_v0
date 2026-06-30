@@ -1235,6 +1235,64 @@ def validate_reviewed_concept_hint_candidate_review_from_guided_cradle_growth_co
     }
 
 
+def prepare_reviewed_concept_hints_demo_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.memory.reviewed_concept_readback_hint_preparation import (
+        build_demo_reviewed_concept_readback_hint_preparation_set,
+    )
+
+    payload = build_demo_reviewed_concept_readback_hint_preparation_set()
+    return {
+        "guided_console_action": "memory_prepare_reviewed_concept_hints_demo",
+        **payload,
+        "actual_task_working_memory_hint_created": False,
+        "applied_to_working_memory": False,
+        "working_memory_mutated": False,
+        "task_behavior_changed": False,
+        "candidate_ordering_changed": False,
+        "action_selection_created": False,
+        "action_execution_created": False,
+        "memory_layer_write_performed": False,
+    }
+
+
+def show_reviewed_concept_hint_preparation_from_guided_cradle_growth_console() -> dict[str, Any]:
+    payload = prepare_reviewed_concept_hints_demo_from_guided_cradle_growth_console()
+    return {
+        "guided_console_action": "memory_show_reviewed_concept_hint_preparation",
+        "readback_hint_preparation_set": payload["readback_hint_preparation_set"],
+        "readback_hint_preparation_records": payload[
+            "readback_hint_preparation_records"
+        ],
+        "actual_task_working_memory_hint_created": False,
+        "applied_to_working_memory": False,
+        "working_memory_mutated": False,
+        "task_behavior_changed": False,
+    }
+
+
+def validate_reviewed_concept_hint_preparation_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.memory.reviewed_concept_readback_hint_preparation import (
+        build_demo_reviewed_concept_readback_hint_preparation_set,
+        validate_reviewed_concept_readback_hint_preparation_safety_audit,
+    )
+
+    payload = build_demo_reviewed_concept_readback_hint_preparation_set()
+    return {
+        "guided_console_action": "memory_validate_reviewed_concept_hint_preparation",
+        "validation": validate_reviewed_concept_readback_hint_preparation_safety_audit(
+            payload["readback_hint_preparation_safety_audit"]
+        ),
+        "actual_task_working_memory_hint_created": False,
+        "applied_to_working_memory": False,
+        "working_memory_mutated": False,
+        "task_behavior_changed": False,
+        "candidate_ordering_changed": False,
+        "action_selection_created": False,
+        "action_execution_created": False,
+        "memory_layer_write_performed": False,
+    }
+
+
 def _pending_candidate_count(
     candidates: list[dict[str, Any]],
     reviewed: list[dict[str, Any]],
