@@ -8,6 +8,7 @@ from pathlib import Path
 
 from ashl_core_v1.runtime.guided_cradle_growth_teacher_console import (
     apply_advisory_readback_ordering_demo_from_guided_cradle_growth_console,
+    apply_selected_action_demo_from_guided_cradle_growth_console,
     audit_reviewed_concept_readback_loop_demo_from_guided_cradle_growth_console,
     admit_reviewed_concept_memory_demo_from_guided_cradle_growth_console,
     audit_reviewed_concept_readback_hint_influence_demo_from_guided_cradle_growth_console,
@@ -44,6 +45,7 @@ from ashl_core_v1.runtime.guided_cradle_growth_teacher_console import (
     review_reviewed_concept_hint_application_demo_from_guided_cradle_growth_console,
     rollback_advisory_readback_ordering_demo_from_guided_cradle_growth_console,
     rollback_selected_action_proposal_demo_from_guided_cradle_growth_console,
+    rollback_selected_action_demo_from_guided_cradle_growth_console,
     run_case_from_guided_cradle_growth_console,
     run_growth_readiness_audit_from_guided_cradle_growth_console,
     run_readback_contrast_from_guided_cradle_growth_console,
@@ -81,6 +83,10 @@ from ashl_core_v1.runtime.guided_cradle_growth_teacher_console import (
     show_selected_action_proposal_from_guided_cradle_growth_console,
     show_selected_action_proposal_rollback_from_guided_cradle_growth_console,
     show_selected_action_proposal_teacher_gate_from_guided_cradle_growth_console,
+    show_selected_action_application_audit_from_guided_cradle_growth_console,
+    show_selected_action_application_from_guided_cradle_growth_console,
+    show_selected_action_application_teacher_gate_from_guided_cradle_growth_console,
+    show_selected_action_rollback_from_guided_cradle_growth_console,
     show_reviewed_concept_memory_admission_from_guided_cradle_growth_console,
     show_loop_evidence_from_guided_cradle_growth_console,
     show_reviewed_concept_readback_preview_from_guided_cradle_growth_console,
@@ -120,6 +126,7 @@ from ashl_core_v1.runtime.guided_cradle_growth_teacher_console import (
     validate_reviewed_concept_readback_preview_from_guided_cradle_growth_console,
     validate_advisory_readback_ordering_application_from_guided_cradle_growth_console,
     validate_selected_action_proposal_from_guided_cradle_growth_console,
+    validate_selected_action_application_from_guided_cradle_growth_console,
 )
 
 
@@ -269,6 +276,13 @@ def build_parser() -> argparse.ArgumentParser:
     subparsers.add_parser("task-show-selected-action-proposal-audit")
     subparsers.add_parser("task-validate-selected-action-proposal")
     subparsers.add_parser("task-rollback-selected-action-proposal-demo")
+    subparsers.add_parser("task-apply-selected-action-demo")
+    subparsers.add_parser("task-show-selected-action-application-teacher-gate")
+    subparsers.add_parser("task-show-selected-action-application")
+    subparsers.add_parser("task-show-selected-action-rollback")
+    subparsers.add_parser("task-show-selected-action-application-audit")
+    subparsers.add_parser("task-validate-selected-action-application")
+    subparsers.add_parser("task-rollback-selected-action-demo")
     return parser
 
 
@@ -820,6 +834,34 @@ def main(argv: list[str] | None = None) -> int:
         if args.command == "task-rollback-selected-action-proposal-demo":
             return _print_json(
                 rollback_selected_action_proposal_demo_from_guided_cradle_growth_console()
+            )
+        if args.command == "task-apply-selected-action-demo":
+            return _print_json(
+                apply_selected_action_demo_from_guided_cradle_growth_console()
+            )
+        if args.command == "task-show-selected-action-application-teacher-gate":
+            return _print_json(
+                show_selected_action_application_teacher_gate_from_guided_cradle_growth_console()
+            )
+        if args.command == "task-show-selected-action-application":
+            return _print_json(
+                show_selected_action_application_from_guided_cradle_growth_console()
+            )
+        if args.command == "task-show-selected-action-rollback":
+            return _print_json(
+                show_selected_action_rollback_from_guided_cradle_growth_console()
+            )
+        if args.command == "task-show-selected-action-application-audit":
+            return _print_json(
+                show_selected_action_application_audit_from_guided_cradle_growth_console()
+            )
+        if args.command == "task-validate-selected-action-application":
+            return _print_json(
+                validate_selected_action_application_from_guided_cradle_growth_console()
+            )
+        if args.command == "task-rollback-selected-action-demo":
+            return _print_json(
+                rollback_selected_action_demo_from_guided_cradle_growth_console()
             )
     except (FileNotFoundError, LookupError, ValueError) as error:
         print(json.dumps({"status": "error", "error": str(error)}))
