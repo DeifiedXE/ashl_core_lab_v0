@@ -2005,6 +2005,129 @@ def rollback_advisory_readback_ordering_demo_from_guided_cradle_growth_console()
     }
 
 
+def propose_selected_action_demo_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.task.teacher_gated_selected_action_proposal import (
+        build_demo_selected_action_proposal,
+    )
+
+    payload = build_demo_selected_action_proposal()
+    return {
+        "guided_console_action": "task_propose_selected_action_demo",
+        **payload,
+        "selected_action_proposal_created": True,
+        "actual_selected_action_changed": False,
+        "final_action_changed": False,
+        "direct_command_created": False,
+        "execution_created": False,
+        "action_selection_called": False,
+        "execution_called": False,
+        "task_behavior_changed": False,
+        "candidate_ordering_changed_by_this_package": False,
+        "memory_layer_write_performed": False,
+    }
+
+
+def show_selected_action_proposal_teacher_gate_from_guided_cradle_growth_console() -> dict[str, Any]:
+    payload = propose_selected_action_demo_from_guided_cradle_growth_console()
+    return {
+        "guided_console_action": "task_show_selected_action_proposal_teacher_gate",
+        "selected_action_proposal_gate": payload["selected_action_proposal_gate"],
+        "actual_selected_action_changed": False,
+        "final_action_changed": False,
+        "direct_command_created": False,
+        "execution_created": False,
+    }
+
+
+def show_selected_action_proposal_from_guided_cradle_growth_console() -> dict[str, Any]:
+    payload = propose_selected_action_demo_from_guided_cradle_growth_console()
+    return {
+        "guided_console_action": "task_show_selected_action_proposal",
+        "selected_action_proposal": payload["selected_action_proposal"],
+        "selected_action_proposal_created": True,
+        "actual_selected_action_changed": False,
+        "final_action_changed": False,
+        "direct_command_created": False,
+        "execution_created": False,
+        "candidate_ordering_changed_by_this_package": False,
+    }
+
+
+def show_selected_action_proposal_rollback_from_guided_cradle_growth_console() -> dict[str, Any]:
+    payload = propose_selected_action_demo_from_guided_cradle_growth_console()
+    return {
+        "guided_console_action": "task_show_selected_action_proposal_rollback",
+        "selected_action_proposal_rollback": payload["selected_action_proposal_rollback"],
+        "actual_selected_action_changed": False,
+        "final_action_changed": False,
+        "direct_command_created": False,
+        "execution_created": False,
+    }
+
+
+def show_selected_action_proposal_audit_from_guided_cradle_growth_console() -> dict[str, Any]:
+    payload = propose_selected_action_demo_from_guided_cradle_growth_console()
+    return {
+        "guided_console_action": "task_show_selected_action_proposal_audit",
+        "selected_action_proposal_audit": payload["selected_action_proposal_audit"],
+        "selected_action_proposal_created": True,
+        "actual_selected_action_changed": False,
+        "final_action_changed": False,
+        "direct_command_created": False,
+        "execution_created": False,
+        "candidate_ordering_changed_by_this_package": False,
+    }
+
+
+def validate_selected_action_proposal_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.task.teacher_gated_selected_action_proposal import (
+        build_demo_selected_action_proposal,
+        validate_selected_action_proposal_audit,
+    )
+
+    payload = build_demo_selected_action_proposal()
+    return {
+        "guided_console_action": "task_validate_selected_action_proposal",
+        "validation": validate_selected_action_proposal_audit(
+            payload["selected_action_proposal_audit"]
+        ),
+        "selected_action_proposal_created": True,
+        "actual_selected_action_changed": False,
+        "final_action_changed": False,
+        "direct_command_created": False,
+        "execution_created": False,
+        "action_selection_called": False,
+        "execution_called": False,
+        "task_behavior_changed": False,
+        "candidate_ordering_changed_by_this_package": False,
+        "memory_layer_write_performed": False,
+    }
+
+
+def rollback_selected_action_proposal_demo_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.task.teacher_gated_selected_action_proposal import (
+        apply_selected_action_proposal_rollback,
+        build_demo_selected_action_proposal,
+    )
+
+    payload = build_demo_selected_action_proposal()
+    return {
+        "guided_console_action": "task_rollback_selected_action_proposal_demo",
+        "rollback_result": apply_selected_action_proposal_rollback(
+            payload["selected_action_proposal_rollback"]
+        ),
+        "actual_selected_action_changed": False,
+        "final_action_changed": False,
+        "direct_command_created": False,
+        "execution_created": False,
+        "action_selection_called": False,
+        "execution_called": False,
+        "task_behavior_changed": False,
+        "candidate_ordering_changed_by_this_package": False,
+        "memory_layer_write_performed": False,
+    }
+
+
 def _pending_candidate_count(
     candidates: list[dict[str, Any]],
     reviewed: list[dict[str, Any]],
