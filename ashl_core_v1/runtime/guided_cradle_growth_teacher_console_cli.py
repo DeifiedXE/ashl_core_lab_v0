@@ -47,6 +47,7 @@ from ashl_core_v1.runtime.guided_cradle_growth_teacher_console import (
     prepare_reviewed_concept_demo_from_guided_cradle_growth_console,
     refine_demo_concept_from_guided_cradle_growth_console,
     review_candidate_from_guided_cradle_growth_console,
+    replay_feedback_reviewed_concept_loop_demo_from_guided_cradle_growth_console,
     review_reviewed_concept_hint_candidates_demo_from_guided_cradle_growth_console,
     review_reviewed_concept_hint_application_demo_from_guided_cradle_growth_console,
     refine_feedback_concept_candidate_demo_from_guided_cradle_growth_console,
@@ -136,6 +137,14 @@ from ashl_core_v1.runtime.guided_cradle_growth_teacher_console import (
     show_feedback_reviewed_concept_rollback_from_guided_cradle_growth_console,
     show_feedback_reviewed_concept_safety_audit_from_guided_cradle_growth_console,
     show_feedback_reviewed_concept_working_readback_from_guided_cradle_growth_console,
+    show_feedback_replay_action_chain_from_guided_cradle_growth_console,
+    show_feedback_replay_audit_from_guided_cradle_growth_console,
+    show_feedback_replay_contrast_from_guided_cradle_growth_console,
+    show_feedback_replay_execution_from_guided_cradle_growth_console,
+    show_feedback_replay_gate_from_guided_cradle_growth_console,
+    show_feedback_replay_outcome_from_guided_cradle_growth_console,
+    show_feedback_replay_rollback_from_guided_cradle_growth_console,
+    show_feedback_replay_task_initialization_from_guided_cradle_growth_console,
     show_goal_delta_evaluation_from_guided_cradle_growth_console,
     show_outcome_evaluation_from_guided_cradle_growth_console,
     show_outcome_evaluation_safety_audit_from_guided_cradle_growth_console,
@@ -164,6 +173,7 @@ from ashl_core_v1.runtime.guided_cradle_growth_teacher_console import (
     validate_feedback_concept_candidate_from_guided_cradle_growth_console,
     validate_feedback_concept_candidate_refinement_from_guided_cradle_growth_console,
     validate_feedback_reviewed_concept_integration_from_guided_cradle_growth_console,
+    validate_feedback_reviewed_concept_replay_from_guided_cradle_growth_console,
     review_demo_concept_from_guided_cradle_growth_console,
     validate_demo_concept_review_from_guided_cradle_growth_console,
     validate_demo_refinement_from_guided_cradle_growth_console,
@@ -405,6 +415,16 @@ def build_parser() -> argparse.ArgumentParser:
     subparsers.add_parser("learning-show-feedback-reviewed-concept-rollback")
     subparsers.add_parser("learning-show-feedback-reviewed-concept-safety-audit")
     subparsers.add_parser("learning-validate-feedback-reviewed-concept-integration")
+    subparsers.add_parser("audit-replay-feedback-reviewed-concept-loop-demo")
+    subparsers.add_parser("audit-show-feedback-replay-gate")
+    subparsers.add_parser("audit-show-feedback-replay-task-initialization")
+    subparsers.add_parser("audit-show-feedback-replay-action-chain")
+    subparsers.add_parser("audit-show-feedback-replay-execution")
+    subparsers.add_parser("audit-show-feedback-replay-outcome")
+    subparsers.add_parser("audit-show-feedback-replay-contrast")
+    subparsers.add_parser("audit-show-feedback-replay-rollback")
+    subparsers.add_parser("audit-show-feedback-replay-audit")
+    subparsers.add_parser("audit-validate-feedback-reviewed-concept-replay")
     return parser
 
 
@@ -1208,6 +1228,40 @@ def main(argv: list[str] | None = None) -> int:
         if args.command == "learning-validate-feedback-reviewed-concept-integration":
             return _print_json(
                 validate_feedback_reviewed_concept_integration_from_guided_cradle_growth_console()
+            )
+        if args.command == "audit-replay-feedback-reviewed-concept-loop-demo":
+            return _print_json(
+                replay_feedback_reviewed_concept_loop_demo_from_guided_cradle_growth_console()
+            )
+        if args.command == "audit-show-feedback-replay-gate":
+            return _print_json(show_feedback_replay_gate_from_guided_cradle_growth_console())
+        if args.command == "audit-show-feedback-replay-task-initialization":
+            return _print_json(
+                show_feedback_replay_task_initialization_from_guided_cradle_growth_console()
+            )
+        if args.command == "audit-show-feedback-replay-action-chain":
+            return _print_json(
+                show_feedback_replay_action_chain_from_guided_cradle_growth_console()
+            )
+        if args.command == "audit-show-feedback-replay-execution":
+            return _print_json(
+                show_feedback_replay_execution_from_guided_cradle_growth_console()
+            )
+        if args.command == "audit-show-feedback-replay-outcome":
+            return _print_json(show_feedback_replay_outcome_from_guided_cradle_growth_console())
+        if args.command == "audit-show-feedback-replay-contrast":
+            return _print_json(
+                show_feedback_replay_contrast_from_guided_cradle_growth_console()
+            )
+        if args.command == "audit-show-feedback-replay-rollback":
+            return _print_json(
+                show_feedback_replay_rollback_from_guided_cradle_growth_console()
+            )
+        if args.command == "audit-show-feedback-replay-audit":
+            return _print_json(show_feedback_replay_audit_from_guided_cradle_growth_console())
+        if args.command == "audit-validate-feedback-reviewed-concept-replay":
+            return _print_json(
+                validate_feedback_reviewed_concept_replay_from_guided_cradle_growth_console()
             )
     except (FileNotFoundError, LookupError, ValueError) as error:
         print(json.dumps({"status": "error", "error": str(error)}))

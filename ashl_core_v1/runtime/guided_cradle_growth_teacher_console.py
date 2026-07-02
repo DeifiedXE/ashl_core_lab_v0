@@ -3526,3 +3526,116 @@ def _last_stop_reason_for_handoff(base_dir: str | Path | None) -> str | None:
     frame = _last_working_memory_summary(base_dir)
     value = frame.get("stop_reason")
     return str(value) if value else None
+
+
+def replay_feedback_reviewed_concept_loop_demo_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.audit.feedback_reviewed_concept_closed_loop_replay import (
+        build_demo_negative_affordance_closed_loop_replay,
+    )
+
+    payload = build_demo_negative_affordance_closed_loop_replay()
+    return {
+        "guided_console_action": "audit_replay_feedback_reviewed_concept_loop_demo",
+        **payload,
+        "external_execution_created": False,
+        "memory_write_performed": False,
+        "automatic_learning_approval_created": False,
+        "recursive_learning_created": False,
+    }
+
+
+def show_feedback_replay_gate_from_guided_cradle_growth_console() -> dict[str, Any]:
+    payload = replay_feedback_reviewed_concept_loop_demo_from_guided_cradle_growth_console()
+    return {
+        "guided_console_action": "audit_show_feedback_replay_gate",
+        "feedback_reviewed_concept_replay_gate": payload[
+            "feedback_reviewed_concept_replay_gate"
+        ],
+    }
+
+
+def show_feedback_replay_task_initialization_from_guided_cradle_growth_console() -> dict[str, Any]:
+    payload = replay_feedback_reviewed_concept_loop_demo_from_guided_cradle_growth_console()
+    return {
+        "guided_console_action": "audit_show_feedback_replay_task_initialization",
+        "feedback_reviewed_concept_replay_task_initialization": payload[
+            "feedback_reviewed_concept_replay_task_initialization"
+        ],
+    }
+
+
+def show_feedback_replay_action_chain_from_guided_cradle_growth_console() -> dict[str, Any]:
+    payload = replay_feedback_reviewed_concept_loop_demo_from_guided_cradle_growth_console()
+    return {
+        "guided_console_action": "audit_show_feedback_replay_action_chain",
+        "feedback_reviewed_concept_replay_action_chain": payload[
+            "feedback_reviewed_concept_replay_action_chain"
+        ],
+    }
+
+
+def show_feedback_replay_execution_from_guided_cradle_growth_console() -> dict[str, Any]:
+    payload = replay_feedback_reviewed_concept_loop_demo_from_guided_cradle_growth_console()
+    return {
+        "guided_console_action": "audit_show_feedback_replay_execution",
+        "feedback_reviewed_concept_replay_execution": payload[
+            "feedback_reviewed_concept_replay_execution"
+        ],
+    }
+
+
+def show_feedback_replay_outcome_from_guided_cradle_growth_console() -> dict[str, Any]:
+    payload = replay_feedback_reviewed_concept_loop_demo_from_guided_cradle_growth_console()
+    return {
+        "guided_console_action": "audit_show_feedback_replay_outcome",
+        "feedback_reviewed_concept_replay_outcome": payload[
+            "feedback_reviewed_concept_replay_outcome"
+        ],
+    }
+
+
+def show_feedback_replay_contrast_from_guided_cradle_growth_console() -> dict[str, Any]:
+    payload = replay_feedback_reviewed_concept_loop_demo_from_guided_cradle_growth_console()
+    return {
+        "guided_console_action": "audit_show_feedback_replay_contrast",
+        "feedback_reviewed_concept_replay_contrast": payload[
+            "feedback_reviewed_concept_replay_contrast"
+        ],
+    }
+
+
+def show_feedback_replay_rollback_from_guided_cradle_growth_console() -> dict[str, Any]:
+    payload = replay_feedback_reviewed_concept_loop_demo_from_guided_cradle_growth_console()
+    return {
+        "guided_console_action": "audit_show_feedback_replay_rollback",
+        "feedback_reviewed_concept_replay_rollback": payload[
+            "feedback_reviewed_concept_replay_rollback"
+        ],
+    }
+
+
+def show_feedback_replay_audit_from_guided_cradle_growth_console() -> dict[str, Any]:
+    payload = replay_feedback_reviewed_concept_loop_demo_from_guided_cradle_growth_console()
+    return {
+        "guided_console_action": "audit_show_feedback_replay_audit",
+        "feedback_reviewed_concept_closed_loop_replay_audit": payload[
+            "feedback_reviewed_concept_closed_loop_replay_audit"
+        ],
+    }
+
+
+def validate_feedback_reviewed_concept_replay_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.audit.feedback_reviewed_concept_closed_loop_replay import (
+        validate_feedback_reviewed_concept_closed_loop_replay_audit,
+    )
+
+    payload = replay_feedback_reviewed_concept_loop_demo_from_guided_cradle_growth_console()
+    return {
+        "guided_console_action": "audit_validate_feedback_reviewed_concept_replay",
+        "validation": validate_feedback_reviewed_concept_closed_loop_replay_audit(
+            payload["feedback_reviewed_concept_closed_loop_replay_audit"]
+        ),
+        "external_execution_created": False,
+        "memory_write_performed": False,
+        "automatic_learning_approval_created": False,
+    }
