@@ -49,6 +49,7 @@ from ashl_core_v1.runtime.guided_cradle_growth_teacher_console import (
     rollback_selected_action_proposal_demo_from_guided_cradle_growth_console,
     rollback_selected_action_demo_from_guided_cradle_growth_console,
     rollback_final_action_demo_from_guided_cradle_growth_console,
+    observe_sandbox_execution_demo_from_guided_cradle_growth_console,
     restore_sandbox_execution_demo_from_guided_cradle_growth_console,
     run_case_from_guided_cradle_growth_console,
     run_growth_readiness_audit_from_guided_cradle_growth_console,
@@ -101,6 +102,10 @@ from ashl_core_v1.runtime.guided_cradle_growth_teacher_console import (
     show_pre_execution_snapshot_from_guided_cradle_growth_console,
     show_sandbox_execution_from_guided_cradle_growth_console,
     show_sandbox_restore_from_guided_cradle_growth_console,
+    show_sandbox_observation_from_guided_cradle_growth_console,
+    show_sandbox_state_delta_from_guided_cradle_growth_console,
+    show_observation_handoff_from_guided_cradle_growth_console,
+    show_observation_safety_audit_from_guided_cradle_growth_console,
     show_reviewed_concept_memory_admission_from_guided_cradle_growth_console,
     show_loop_evidence_from_guided_cradle_growth_console,
     show_reviewed_concept_readback_preview_from_guided_cradle_growth_console,
@@ -119,6 +124,7 @@ from ashl_core_v1.runtime.guided_cradle_growth_teacher_console import (
     validate_state_resume_continuity_audit_from_guided_cradle_growth_console,
     validate_state_resume_handoff_from_guided_cradle_growth_console,
     validate_demo_concept_draft_from_guided_cradle_growth_console,
+    validate_sandbox_observation_from_guided_cradle_growth_console,
     review_demo_concept_from_guided_cradle_growth_console,
     validate_demo_concept_review_from_guided_cradle_growth_console,
     validate_demo_refinement_from_guided_cradle_growth_console,
@@ -315,6 +321,12 @@ def build_parser() -> argparse.ArgumentParser:
     subparsers.add_parser("task-show-direct-command-execution-audit")
     subparsers.add_parser("task-validate-direct-command-execution")
     subparsers.add_parser("task-restore-sandbox-execution-demo")
+    subparsers.add_parser("sense-observe-sandbox-execution-demo")
+    subparsers.add_parser("sense-show-sandbox-observation")
+    subparsers.add_parser("sense-show-sandbox-state-delta")
+    subparsers.add_parser("sense-show-observation-handoff")
+    subparsers.add_parser("sense-show-observation-safety-audit")
+    subparsers.add_parser("sense-validate-sandbox-observation")
     return parser
 
 
@@ -952,6 +964,24 @@ def main(argv: list[str] | None = None) -> int:
         if args.command == "task-restore-sandbox-execution-demo":
             return _print_json(
                 restore_sandbox_execution_demo_from_guided_cradle_growth_console()
+            )
+        if args.command == "sense-observe-sandbox-execution-demo":
+            return _print_json(
+                observe_sandbox_execution_demo_from_guided_cradle_growth_console()
+            )
+        if args.command == "sense-show-sandbox-observation":
+            return _print_json(show_sandbox_observation_from_guided_cradle_growth_console())
+        if args.command == "sense-show-sandbox-state-delta":
+            return _print_json(show_sandbox_state_delta_from_guided_cradle_growth_console())
+        if args.command == "sense-show-observation-handoff":
+            return _print_json(show_observation_handoff_from_guided_cradle_growth_console())
+        if args.command == "sense-show-observation-safety-audit":
+            return _print_json(
+                show_observation_safety_audit_from_guided_cradle_growth_console()
+            )
+        if args.command == "sense-validate-sandbox-observation":
+            return _print_json(
+                validate_sandbox_observation_from_guided_cradle_growth_console()
             )
     except (FileNotFoundError, LookupError, ValueError) as error:
         print(json.dumps({"status": "error", "error": str(error)}))

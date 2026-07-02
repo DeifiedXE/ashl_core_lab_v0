@@ -2509,6 +2509,104 @@ def restore_sandbox_execution_demo_from_guided_cradle_growth_console() -> dict[s
     }
 
 
+def observe_sandbox_execution_demo_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.sense.sandbox_execution_observation_handoff import (
+        build_demo_sense_sandbox_observation_handoff,
+    )
+
+    payload = build_demo_sense_sandbox_observation_handoff()
+    return {
+        "guided_console_action": "sense_observe_sandbox_execution_demo",
+        **payload,
+        "outcome_evaluation_created": False,
+        "task_closure_created": False,
+        "learning_feedback_created": False,
+        "memory_write_performed": False,
+        "automatic_learning_approval_created": False,
+        "candidate_ordering_changed": False,
+        "selected_action_changed": False,
+        "final_action_changed": False,
+        "direct_command_changed": False,
+        "execution_created_by_sense": False,
+    }
+
+
+def show_sandbox_observation_from_guided_cradle_growth_console() -> dict[str, Any]:
+    payload = observe_sandbox_execution_demo_from_guided_cradle_growth_console()
+    return {
+        "guided_console_action": "sense_show_sandbox_observation",
+        "sense_sandbox_execution_observation": payload[
+            "sense_sandbox_execution_observation"
+        ],
+        "outcome_evaluation_created": False,
+        "task_closure_created": False,
+        "learning_feedback_created": False,
+        "memory_write_performed": False,
+    }
+
+
+def show_sandbox_state_delta_from_guided_cradle_growth_console() -> dict[str, Any]:
+    payload = observe_sandbox_execution_demo_from_guided_cradle_growth_console()
+    return {
+        "guided_console_action": "sense_show_sandbox_state_delta",
+        "sense_sandbox_state_delta_observation": payload[
+            "sense_sandbox_state_delta_observation"
+        ],
+        "outcome_evaluation_created": False,
+        "task_closure_created": False,
+        "learning_feedback_created": False,
+        "memory_write_performed": False,
+    }
+
+
+def show_observation_handoff_from_guided_cradle_growth_console() -> dict[str, Any]:
+    payload = observe_sandbox_execution_demo_from_guided_cradle_growth_console()
+    return {
+        "guided_console_action": "sense_show_observation_handoff",
+        "sense_sandbox_observation_handoff": payload[
+            "sense_sandbox_observation_handoff"
+        ],
+        "outcome_evaluation_created": False,
+        "task_closure_created": False,
+        "learning_feedback_created": False,
+        "memory_write_performed": False,
+    }
+
+
+def show_observation_safety_audit_from_guided_cradle_growth_console() -> dict[str, Any]:
+    payload = observe_sandbox_execution_demo_from_guided_cradle_growth_console()
+    return {
+        "guided_console_action": "sense_show_observation_safety_audit",
+        "sense_sandbox_observation_safety_audit": payload[
+            "sense_sandbox_observation_safety_audit"
+        ],
+        "outcome_evaluation_created": False,
+        "task_closure_created": False,
+        "learning_feedback_created": False,
+        "memory_write_performed": False,
+    }
+
+
+def validate_sandbox_observation_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.sense.sandbox_execution_observation_handoff import (
+        build_demo_sense_sandbox_observation_handoff,
+        validate_sense_sandbox_observation_safety_audit,
+    )
+
+    payload = build_demo_sense_sandbox_observation_handoff()
+    return {
+        "guided_console_action": "sense_validate_sandbox_observation",
+        "validation": validate_sense_sandbox_observation_safety_audit(
+            payload["sense_sandbox_observation_safety_audit"]
+        ),
+        "outcome_evaluation_created": False,
+        "task_closure_created": False,
+        "learning_feedback_created": False,
+        "memory_write_performed": False,
+        "automatic_learning_approval_created": False,
+    }
+
+
 def _pending_candidate_count(
     candidates: list[dict[str, Any]],
     reviewed: list[dict[str, Any]],
