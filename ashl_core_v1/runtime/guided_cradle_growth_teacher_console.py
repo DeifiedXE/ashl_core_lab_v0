@@ -3053,6 +3053,123 @@ def validate_feedback_concept_candidate_refinement_from_guided_cradle_growth_con
     }
 
 
+def integrate_feedback_reviewed_concept_demo_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.learning.feedback_refined_concept_reviewed_readback_integration import (
+        build_demo_positive_affordance_feedback_reviewed_concept_integration,
+    )
+
+    payload = build_demo_positive_affordance_feedback_reviewed_concept_integration()
+    return {
+        "guided_console_action": "learning_integrate_feedback_reviewed_concept_demo",
+        **payload,
+        "core_memory_write_performed": False,
+        "long_term_memory_write_performed": False,
+        "archive_memory_write_performed": False,
+        "anchor_write_performed": False,
+        "automatic_learning_approval_created": False,
+        "task_behavior_changed": False,
+        "action_authority_changed": False,
+    }
+
+
+def show_feedback_reviewed_concept_gate_from_guided_cradle_growth_console() -> dict[str, Any]:
+    payload = integrate_feedback_reviewed_concept_demo_from_guided_cradle_growth_console()
+    return {
+        "guided_console_action": "learning_show_feedback_reviewed_concept_gate",
+        "feedback_reviewed_concept_gate": payload["feedback_reviewed_concept_gate"],
+        "automatic_learning_approval_created": False,
+        "action_authority_changed": False,
+    }
+
+
+def show_feedback_reviewed_concept_from_guided_cradle_growth_console() -> dict[str, Any]:
+    payload = integrate_feedback_reviewed_concept_demo_from_guided_cradle_growth_console()
+    return {
+        "guided_console_action": "learning_show_feedback_reviewed_concept",
+        "feedback_derived_reviewed_concept": payload[
+            "feedback_derived_reviewed_concept"
+        ],
+        "core_memory_write_performed": False,
+        "long_term_memory_write_performed": False,
+        "automatic_learning_approval_created": False,
+    }
+
+
+def show_feedback_reviewed_concept_working_readback_from_guided_cradle_growth_console() -> dict[str, Any]:
+    payload = integrate_feedback_reviewed_concept_demo_from_guided_cradle_growth_console()
+    return {
+        "guided_console_action": "learning_show_feedback_reviewed_concept_working_readback",
+        "feedback_derived_reviewed_concept_working_readback_integration": payload[
+            "feedback_derived_reviewed_concept_working_readback_integration"
+        ],
+        "target_memory_layer": "working_readback",
+        "core_memory_write_performed": False,
+        "long_term_memory_write_performed": False,
+        "archive_memory_write_performed": False,
+        "anchor_write_performed": False,
+    }
+
+
+def show_feedback_reviewed_concept_readback_seed_from_guided_cradle_growth_console() -> dict[str, Any]:
+    payload = integrate_feedback_reviewed_concept_demo_from_guided_cradle_growth_console()
+    return {
+        "guided_console_action": "learning_show_feedback_reviewed_concept_readback_seed",
+        "feedback_derived_reviewed_concept_readback_seed": payload[
+            "feedback_derived_reviewed_concept_readback_seed"
+        ],
+        "candidate_ordering_changed": False,
+        "selected_action_changed": False,
+        "execution_created": False,
+    }
+
+
+def show_feedback_reviewed_concept_rollback_from_guided_cradle_growth_console() -> dict[str, Any]:
+    payload = integrate_feedback_reviewed_concept_demo_from_guided_cradle_growth_console()
+    return {
+        "guided_console_action": "learning_show_feedback_reviewed_concept_rollback",
+        "feedback_derived_reviewed_concept_rollback": payload[
+            "feedback_derived_reviewed_concept_rollback"
+        ],
+        "core_memory_write_performed": False,
+        "task_behavior_changed": False,
+    }
+
+
+def show_feedback_reviewed_concept_safety_audit_from_guided_cradle_growth_console() -> dict[str, Any]:
+    payload = integrate_feedback_reviewed_concept_demo_from_guided_cradle_growth_console()
+    return {
+        "guided_console_action": "learning_show_feedback_reviewed_concept_safety_audit",
+        "feedback_derived_reviewed_concept_integration_safety_audit": payload[
+            "feedback_derived_reviewed_concept_integration_safety_audit"
+        ],
+        "core_memory_write_performed": False,
+        "automatic_learning_approval_created": False,
+        "action_authority_changed": False,
+    }
+
+
+def validate_feedback_reviewed_concept_integration_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.learning.feedback_refined_concept_reviewed_readback_integration import (
+        build_demo_positive_affordance_feedback_reviewed_concept_integration,
+        validate_feedback_derived_reviewed_concept_integration_safety_audit,
+    )
+
+    payload = build_demo_positive_affordance_feedback_reviewed_concept_integration()
+    return {
+        "guided_console_action": "learning_validate_feedback_reviewed_concept_integration",
+        "validation": validate_feedback_derived_reviewed_concept_integration_safety_audit(
+            payload["feedback_derived_reviewed_concept_integration_safety_audit"]
+        ),
+        "core_memory_write_performed": False,
+        "long_term_memory_write_performed": False,
+        "archive_memory_write_performed": False,
+        "anchor_write_performed": False,
+        "automatic_learning_approval_created": False,
+        "task_behavior_changed": False,
+        "action_authority_changed": False,
+    }
+
+
 def _pending_candidate_count(
     candidates: list[dict[str, Any]],
     reviewed: list[dict[str, Any]],

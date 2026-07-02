@@ -50,6 +50,7 @@ from ashl_core_v1.runtime.guided_cradle_growth_teacher_console import (
     review_reviewed_concept_hint_candidates_demo_from_guided_cradle_growth_console,
     review_reviewed_concept_hint_application_demo_from_guided_cradle_growth_console,
     refine_feedback_concept_candidate_demo_from_guided_cradle_growth_console,
+    integrate_feedback_reviewed_concept_demo_from_guided_cradle_growth_console,
     rollback_advisory_readback_ordering_demo_from_guided_cradle_growth_console,
     rollback_selected_action_proposal_demo_from_guided_cradle_growth_console,
     rollback_selected_action_demo_from_guided_cradle_growth_console,
@@ -129,6 +130,12 @@ from ashl_core_v1.runtime.guided_cradle_growth_teacher_console import (
     show_feedback_concept_candidate_scope_check_from_guided_cradle_growth_console,
     show_feedback_concept_candidate_safety_audit_from_guided_cradle_growth_console,
     show_feedback_teacher_review_from_guided_cradle_growth_console,
+    show_feedback_reviewed_concept_from_guided_cradle_growth_console,
+    show_feedback_reviewed_concept_gate_from_guided_cradle_growth_console,
+    show_feedback_reviewed_concept_readback_seed_from_guided_cradle_growth_console,
+    show_feedback_reviewed_concept_rollback_from_guided_cradle_growth_console,
+    show_feedback_reviewed_concept_safety_audit_from_guided_cradle_growth_console,
+    show_feedback_reviewed_concept_working_readback_from_guided_cradle_growth_console,
     show_goal_delta_evaluation_from_guided_cradle_growth_console,
     show_outcome_evaluation_from_guided_cradle_growth_console,
     show_outcome_evaluation_safety_audit_from_guided_cradle_growth_console,
@@ -156,6 +163,7 @@ from ashl_core_v1.runtime.guided_cradle_growth_teacher_console import (
     validate_feedback_candidate_from_guided_cradle_growth_console,
     validate_feedback_concept_candidate_from_guided_cradle_growth_console,
     validate_feedback_concept_candidate_refinement_from_guided_cradle_growth_console,
+    validate_feedback_reviewed_concept_integration_from_guided_cradle_growth_console,
     review_demo_concept_from_guided_cradle_growth_console,
     validate_demo_concept_review_from_guided_cradle_growth_console,
     validate_demo_refinement_from_guided_cradle_growth_console,
@@ -389,6 +397,14 @@ def build_parser() -> argparse.ArgumentParser:
     subparsers.add_parser("learning-show-feedback-concept-candidate-refinement")
     subparsers.add_parser("learning-show-feedback-concept-candidate-refinement-safety-audit")
     subparsers.add_parser("learning-validate-feedback-concept-candidate-refinement")
+    subparsers.add_parser("learning-integrate-feedback-reviewed-concept-demo")
+    subparsers.add_parser("learning-show-feedback-reviewed-concept-gate")
+    subparsers.add_parser("learning-show-feedback-reviewed-concept")
+    subparsers.add_parser("learning-show-feedback-reviewed-concept-working-readback")
+    subparsers.add_parser("learning-show-feedback-reviewed-concept-readback-seed")
+    subparsers.add_parser("learning-show-feedback-reviewed-concept-rollback")
+    subparsers.add_parser("learning-show-feedback-reviewed-concept-safety-audit")
+    subparsers.add_parser("learning-validate-feedback-reviewed-concept-integration")
     return parser
 
 
@@ -1160,6 +1176,38 @@ def main(argv: list[str] | None = None) -> int:
         if args.command == "learning-validate-feedback-concept-candidate-refinement":
             return _print_json(
                 validate_feedback_concept_candidate_refinement_from_guided_cradle_growth_console()
+            )
+        if args.command == "learning-integrate-feedback-reviewed-concept-demo":
+            return _print_json(
+                integrate_feedback_reviewed_concept_demo_from_guided_cradle_growth_console()
+            )
+        if args.command == "learning-show-feedback-reviewed-concept-gate":
+            return _print_json(
+                show_feedback_reviewed_concept_gate_from_guided_cradle_growth_console()
+            )
+        if args.command == "learning-show-feedback-reviewed-concept":
+            return _print_json(
+                show_feedback_reviewed_concept_from_guided_cradle_growth_console()
+            )
+        if args.command == "learning-show-feedback-reviewed-concept-working-readback":
+            return _print_json(
+                show_feedback_reviewed_concept_working_readback_from_guided_cradle_growth_console()
+            )
+        if args.command == "learning-show-feedback-reviewed-concept-readback-seed":
+            return _print_json(
+                show_feedback_reviewed_concept_readback_seed_from_guided_cradle_growth_console()
+            )
+        if args.command == "learning-show-feedback-reviewed-concept-rollback":
+            return _print_json(
+                show_feedback_reviewed_concept_rollback_from_guided_cradle_growth_console()
+            )
+        if args.command == "learning-show-feedback-reviewed-concept-safety-audit":
+            return _print_json(
+                show_feedback_reviewed_concept_safety_audit_from_guided_cradle_growth_console()
+            )
+        if args.command == "learning-validate-feedback-reviewed-concept-integration":
+            return _print_json(
+                validate_feedback_reviewed_concept_integration_from_guided_cradle_growth_console()
             )
     except (FileNotFoundError, LookupError, ValueError) as error:
         print(json.dumps({"status": "error", "error": str(error)}))
