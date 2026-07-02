@@ -2947,6 +2947,112 @@ def validate_feedback_concept_candidate_from_guided_cradle_growth_console() -> d
     }
 
 
+def refine_feedback_concept_candidate_demo_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.learning.feedback_concept_candidate_review_refinement import (
+        build_demo_successful_expected_effect_refinement,
+    )
+
+    payload = build_demo_successful_expected_effect_refinement()
+    return {
+        "guided_console_action": "learning_refine_feedback_concept_candidate_demo",
+        **payload,
+        "reviewed_concept_created": False,
+        "memory_write_performed": False,
+        "automatic_learning_approval_created": False,
+        "task_behavior_changed": False,
+        "action_authority_created": False,
+    }
+
+
+def show_feedback_concept_candidate_review_from_guided_cradle_growth_console() -> dict[str, Any]:
+    payload = refine_feedback_concept_candidate_demo_from_guided_cradle_growth_console()
+    return {
+        "guided_console_action": "learning_show_feedback_concept_candidate_review",
+        "feedback_concept_candidate_review": payload[
+            "feedback_concept_candidate_review"
+        ],
+        "reviewed_concept_created": False,
+        "memory_write_performed": False,
+        "task_behavior_changed": False,
+    }
+
+
+def show_feedback_concept_candidate_scope_check_from_guided_cradle_growth_console() -> dict[str, Any]:
+    payload = refine_feedback_concept_candidate_demo_from_guided_cradle_growth_console()
+    return {
+        "guided_console_action": "learning_show_feedback_concept_candidate_scope_check",
+        "feedback_concept_candidate_scope_check": payload[
+            "feedback_concept_candidate_scope_check"
+        ],
+        "reviewed_concept_created": False,
+        "memory_write_performed": False,
+        "task_behavior_changed": False,
+    }
+
+
+def show_feedback_concept_candidate_counterexample_check_from_guided_cradle_growth_console() -> dict[str, Any]:
+    payload = refine_feedback_concept_candidate_demo_from_guided_cradle_growth_console()
+    return {
+        "guided_console_action": (
+            "learning_show_feedback_concept_candidate_counterexample_check"
+        ),
+        "feedback_concept_candidate_counterexample_check": payload[
+            "feedback_concept_candidate_counterexample_check"
+        ],
+        "reviewed_concept_created": False,
+        "memory_write_performed": False,
+        "task_behavior_changed": False,
+    }
+
+
+def show_feedback_concept_candidate_refinement_from_guided_cradle_growth_console() -> dict[str, Any]:
+    payload = refine_feedback_concept_candidate_demo_from_guided_cradle_growth_console()
+    return {
+        "guided_console_action": "learning_show_feedback_concept_candidate_refinement",
+        "feedback_concept_candidate_refinement": payload[
+            "feedback_concept_candidate_refinement"
+        ],
+        "reviewed_concept_created": False,
+        "memory_write_performed": False,
+        "task_behavior_changed": False,
+    }
+
+
+def show_feedback_concept_candidate_refinement_safety_audit_from_guided_cradle_growth_console() -> dict[str, Any]:
+    payload = refine_feedback_concept_candidate_demo_from_guided_cradle_growth_console()
+    return {
+        "guided_console_action": (
+            "learning_show_feedback_concept_candidate_refinement_safety_audit"
+        ),
+        "feedback_concept_candidate_refinement_safety_audit": payload[
+            "feedback_concept_candidate_refinement_safety_audit"
+        ],
+        "reviewed_concept_created": False,
+        "memory_write_performed": False,
+        "task_behavior_changed": False,
+    }
+
+
+def validate_feedback_concept_candidate_refinement_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.learning.feedback_concept_candidate_review_refinement import (
+        build_demo_successful_expected_effect_refinement,
+        validate_feedback_concept_candidate_refinement_safety_audit,
+    )
+
+    payload = build_demo_successful_expected_effect_refinement()
+    return {
+        "guided_console_action": "learning_validate_feedback_concept_candidate_refinement",
+        "validation": validate_feedback_concept_candidate_refinement_safety_audit(
+            payload["feedback_concept_candidate_refinement_safety_audit"]
+        ),
+        "reviewed_concept_created": False,
+        "memory_write_performed": False,
+        "automatic_learning_approval_created": False,
+        "task_behavior_changed": False,
+        "action_authority_created": False,
+    }
+
+
 def _pending_candidate_count(
     candidates: list[dict[str, Any]],
     reviewed: list[dict[str, Any]],
