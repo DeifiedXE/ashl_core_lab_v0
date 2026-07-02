@@ -2695,6 +2695,87 @@ def validate_sense_outcome_evaluation_from_guided_cradle_growth_console() -> dic
     }
 
 
+def close_from_outcome_demo_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.task.task_closure_from_outcome_evaluation import (
+        build_demo_observe_task_closure,
+    )
+
+    payload = build_demo_observe_task_closure()
+    return {
+        "guided_console_action": "task_close_from_outcome_demo",
+        **payload,
+        "learning_feedback_created": False,
+        "memory_write_performed": False,
+        "automatic_learning_approval_created": False,
+        "candidate_ordering_changed": False,
+        "selected_action_changed": False,
+        "final_action_changed": False,
+        "direct_command_changed": False,
+        "execution_created_by_closure": False,
+        "task_behavior_changed": False,
+    }
+
+
+def show_outcome_task_closure_from_guided_cradle_growth_console() -> dict[str, Any]:
+    payload = close_from_outcome_demo_from_guided_cradle_growth_console()
+    return {
+        "guided_console_action": "task_show_outcome_task_closure",
+        "task_closure_from_outcome_evaluation": payload[
+            "task_closure_from_outcome_evaluation"
+        ],
+        "learning_feedback_created": False,
+        "memory_write_performed": False,
+    }
+
+
+def show_outcome_task_closure_summary_from_guided_cradle_growth_console() -> dict[str, Any]:
+    payload = close_from_outcome_demo_from_guided_cradle_growth_console()
+    return {
+        "guided_console_action": "task_show_outcome_task_closure_summary",
+        "task_closure_summary": payload["task_closure_summary"],
+        "learning_feedback_created": False,
+        "memory_write_performed": False,
+    }
+
+
+def show_outcome_task_closure_rollback_from_guided_cradle_growth_console() -> dict[str, Any]:
+    payload = close_from_outcome_demo_from_guided_cradle_growth_console()
+    return {
+        "guided_console_action": "task_show_outcome_task_closure_rollback",
+        "task_closure_rollback": payload["task_closure_rollback"],
+        "learning_feedback_created": False,
+        "memory_write_performed": False,
+    }
+
+
+def show_outcome_task_closure_safety_audit_from_guided_cradle_growth_console() -> dict[str, Any]:
+    payload = close_from_outcome_demo_from_guided_cradle_growth_console()
+    return {
+        "guided_console_action": "task_show_outcome_task_closure_safety_audit",
+        "task_closure_safety_audit": payload["task_closure_safety_audit"],
+        "learning_feedback_created": False,
+        "memory_write_performed": False,
+    }
+
+
+def validate_outcome_task_closure_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.task.task_closure_from_outcome_evaluation import (
+        build_demo_observe_task_closure,
+        validate_task_closure_safety_audit,
+    )
+
+    payload = build_demo_observe_task_closure()
+    return {
+        "guided_console_action": "task_validate_outcome_task_closure",
+        "validation": validate_task_closure_safety_audit(
+            payload["task_closure_safety_audit"]
+        ),
+        "learning_feedback_created": False,
+        "memory_write_performed": False,
+        "automatic_learning_approval_created": False,
+    }
+
+
 def _pending_candidate_count(
     candidates: list[dict[str, Any]],
     reviewed: list[dict[str, Any]],

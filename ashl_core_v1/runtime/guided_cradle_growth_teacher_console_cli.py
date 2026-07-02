@@ -22,6 +22,7 @@ from ashl_core_v1.runtime.guided_cradle_growth_teacher_console import (
     build_reviewed_concept_demo_from_guided_cradle_growth_console,
     bridge_reviewed_concept_memory_demo_from_guided_cradle_growth_console,
     build_state_restore_preview_from_guided_cradle_growth_console,
+    close_from_outcome_demo_from_guided_cradle_growth_console,
     close_last_run_from_guided_cradle_growth_console,
     create_reviewed_concept_hint_records_demo_from_guided_cradle_growth_console,
     create_state_resume_handoff_from_guided_cradle_growth_console,
@@ -107,6 +108,10 @@ from ashl_core_v1.runtime.guided_cradle_growth_teacher_console import (
     show_sandbox_state_delta_from_guided_cradle_growth_console,
     show_observation_handoff_from_guided_cradle_growth_console,
     show_observation_safety_audit_from_guided_cradle_growth_console,
+    show_outcome_task_closure_from_guided_cradle_growth_console,
+    show_outcome_task_closure_rollback_from_guided_cradle_growth_console,
+    show_outcome_task_closure_safety_audit_from_guided_cradle_growth_console,
+    show_outcome_task_closure_summary_from_guided_cradle_growth_console,
     show_expected_effect_reference_from_guided_cradle_growth_console,
     show_goal_delta_evaluation_from_guided_cradle_growth_console,
     show_outcome_evaluation_from_guided_cradle_growth_console,
@@ -131,6 +136,7 @@ from ashl_core_v1.runtime.guided_cradle_growth_teacher_console import (
     validate_demo_concept_draft_from_guided_cradle_growth_console,
     validate_sandbox_observation_from_guided_cradle_growth_console,
     validate_sense_outcome_evaluation_from_guided_cradle_growth_console,
+    validate_outcome_task_closure_from_guided_cradle_growth_console,
     review_demo_concept_from_guided_cradle_growth_console,
     validate_demo_concept_review_from_guided_cradle_growth_console,
     validate_demo_refinement_from_guided_cradle_growth_console,
@@ -339,6 +345,12 @@ def build_parser() -> argparse.ArgumentParser:
     subparsers.add_parser("task-show-goal-delta-evaluation")
     subparsers.add_parser("task-show-outcome-evaluation-safety-audit")
     subparsers.add_parser("task-validate-sense-outcome-evaluation")
+    subparsers.add_parser("task-close-from-outcome-demo")
+    subparsers.add_parser("task-show-outcome-task-closure")
+    subparsers.add_parser("task-show-outcome-task-closure-summary")
+    subparsers.add_parser("task-show-outcome-task-closure-rollback")
+    subparsers.add_parser("task-show-outcome-task-closure-safety-audit")
+    subparsers.add_parser("task-validate-outcome-task-closure")
     return parser
 
 
@@ -1014,6 +1026,30 @@ def main(argv: list[str] | None = None) -> int:
         if args.command == "task-validate-sense-outcome-evaluation":
             return _print_json(
                 validate_sense_outcome_evaluation_from_guided_cradle_growth_console()
+            )
+        if args.command == "task-close-from-outcome-demo":
+            return _print_json(
+                close_from_outcome_demo_from_guided_cradle_growth_console()
+            )
+        if args.command == "task-show-outcome-task-closure":
+            return _print_json(
+                show_outcome_task_closure_from_guided_cradle_growth_console()
+            )
+        if args.command == "task-show-outcome-task-closure-summary":
+            return _print_json(
+                show_outcome_task_closure_summary_from_guided_cradle_growth_console()
+            )
+        if args.command == "task-show-outcome-task-closure-rollback":
+            return _print_json(
+                show_outcome_task_closure_rollback_from_guided_cradle_growth_console()
+            )
+        if args.command == "task-show-outcome-task-closure-safety-audit":
+            return _print_json(
+                show_outcome_task_closure_safety_audit_from_guided_cradle_growth_console()
+            )
+        if args.command == "task-validate-outcome-task-closure":
+            return _print_json(
+                validate_outcome_task_closure_from_guided_cradle_growth_console()
             )
     except (FileNotFoundError, LookupError, ValueError) as error:
         print(json.dumps({"status": "error", "error": str(error)}))
