@@ -1885,6 +1885,126 @@ def validate_reviewed_concept_readback_loop_from_guided_cradle_growth_console() 
     }
 
 
+def audit_first_action_reviewed_concept_loop_demo_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.audit.first_action_to_reviewed_concept_loop_milestone import (
+        build_demo_first_closed_loop_milestone,
+    )
+
+    payload = build_demo_first_closed_loop_milestone()
+    return {
+        "guided_console_action": "audit_first_action_reviewed_concept_loop_demo",
+        **payload,
+        "new_runtime_authority_created": False,
+        "new_execution_authority_created": False,
+        "automatic_learning_approval_created": False,
+        "memory_layer_write_performed": False,
+        "recursive_learning_created": False,
+        "free_action_selection_created": False,
+        "external_execution_created": False,
+    }
+
+
+def show_first_action_reviewed_concept_loop_evidence_chain_from_guided_cradle_growth_console() -> dict[str, Any]:
+    payload = (
+        audit_first_action_reviewed_concept_loop_demo_from_guided_cradle_growth_console()
+    )
+    return {
+        "guided_console_action": (
+            "audit_show_first_action_reviewed_concept_loop_evidence_chain"
+        ),
+        "first_closed_loop_evidence_chain": payload[
+            "first_closed_loop_evidence_chain"
+        ],
+        "new_runtime_authority_created": False,
+        "new_execution_authority_created": False,
+        "memory_layer_write_performed": False,
+    }
+
+
+def show_first_action_reviewed_concept_loop_boundary_from_guided_cradle_growth_console() -> dict[str, Any]:
+    payload = (
+        audit_first_action_reviewed_concept_loop_demo_from_guided_cradle_growth_console()
+    )
+    return {
+        "guided_console_action": "audit_show_first_action_reviewed_concept_loop_boundary",
+        "first_closed_loop_boundary_audit": payload[
+            "first_closed_loop_boundary_audit"
+        ],
+        "new_runtime_authority_created": False,
+        "new_execution_authority_created": False,
+        "memory_layer_write_performed": False,
+    }
+
+
+def show_first_action_reviewed_concept_loop_replay_verification_from_guided_cradle_growth_console() -> dict[str, Any]:
+    payload = (
+        audit_first_action_reviewed_concept_loop_demo_from_guided_cradle_growth_console()
+    )
+    return {
+        "guided_console_action": (
+            "audit_show_first_action_reviewed_concept_loop_replay_verification"
+        ),
+        "first_closed_loop_replay_verification": payload[
+            "first_closed_loop_replay_verification"
+        ],
+        "new_runtime_authority_created": False,
+        "new_execution_authority_created": False,
+        "memory_layer_write_performed": False,
+    }
+
+
+def show_first_action_reviewed_concept_loop_milestone_from_guided_cradle_growth_console() -> dict[str, Any]:
+    payload = (
+        audit_first_action_reviewed_concept_loop_demo_from_guided_cradle_growth_console()
+    )
+    return {
+        "guided_console_action": "audit_show_first_action_reviewed_concept_loop_milestone",
+        "first_closed_loop_milestone": payload["first_closed_loop_milestone"],
+        "new_runtime_authority_created": False,
+        "new_execution_authority_created": False,
+        "memory_layer_write_performed": False,
+    }
+
+
+def show_first_action_reviewed_concept_loop_next_stage_readiness_from_guided_cradle_growth_console() -> dict[str, Any]:
+    payload = (
+        audit_first_action_reviewed_concept_loop_demo_from_guided_cradle_growth_console()
+    )
+    return {
+        "guided_console_action": (
+            "audit_show_first_action_reviewed_concept_loop_next_stage_readiness"
+        ),
+        "first_closed_loop_next_stage_readiness": payload[
+            "first_closed_loop_next_stage_readiness"
+        ],
+        "new_runtime_authority_created": False,
+        "new_execution_authority_created": False,
+        "memory_layer_write_performed": False,
+    }
+
+
+def validate_first_action_reviewed_concept_loop_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.audit.first_action_to_reviewed_concept_loop_milestone import (
+        build_demo_first_closed_loop_milestone,
+        validate_first_closed_loop_milestone_record,
+    )
+
+    payload = build_demo_first_closed_loop_milestone()
+    return {
+        "guided_console_action": "audit_validate_first_action_reviewed_concept_loop",
+        "validation": validate_first_closed_loop_milestone_record(
+            payload["first_closed_loop_milestone"]
+        ),
+        "new_runtime_authority_created": False,
+        "new_execution_authority_created": False,
+        "automatic_learning_approval_created": False,
+        "memory_layer_write_performed": False,
+        "recursive_learning_created": False,
+        "free_action_selection_created": False,
+        "external_execution_created": False,
+    }
+
+
 def apply_advisory_readback_ordering_demo_from_guided_cradle_growth_console() -> dict[str, Any]:
     from ashl_core_v1.task.advisory_readback_candidate_ordering_application import (
         build_demo_teacher_gated_ordering_application,
