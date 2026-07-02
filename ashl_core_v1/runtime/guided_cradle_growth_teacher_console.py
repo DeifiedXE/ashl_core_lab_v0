@@ -2776,6 +2776,92 @@ def validate_outcome_task_closure_from_guided_cradle_growth_console() -> dict[st
     }
 
 
+def build_feedback_candidate_from_task_closure_demo_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.learning.task_closure_learning_feedback_candidate import (
+        build_demo_progress_learning_feedback_candidate,
+    )
+
+    payload = build_demo_progress_learning_feedback_candidate()
+    return {
+        "guided_console_action": "learning_build_feedback_candidate_from_task_closure_demo",
+        **payload,
+        "learning_feedback_approved": False,
+        "learning_feedback_applied": False,
+        "concept_candidate_created": False,
+        "reviewed_concept_created": False,
+        "memory_write_performed": False,
+        "automatic_learning_approval_created": False,
+        "task_behavior_changed": False,
+    }
+
+
+def show_feedback_candidate_from_guided_cradle_growth_console() -> dict[str, Any]:
+    payload = build_feedback_candidate_from_task_closure_demo_from_guided_cradle_growth_console()
+    return {
+        "guided_console_action": "learning_show_feedback_candidate",
+        "learning_feedback_candidate": payload["learning_feedback_candidate"],
+        "learning_feedback_approved": False,
+        "memory_write_performed": False,
+    }
+
+
+def show_feedback_candidate_evidence_from_guided_cradle_growth_console() -> dict[str, Any]:
+    payload = build_feedback_candidate_from_task_closure_demo_from_guided_cradle_growth_console()
+    return {
+        "guided_console_action": "learning_show_feedback_candidate_evidence",
+        "learning_feedback_evidence_packet": payload[
+            "learning_feedback_evidence_packet"
+        ],
+        "learning_feedback_approved": False,
+        "memory_write_performed": False,
+    }
+
+
+def show_feedback_candidate_set_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.learning.task_closure_learning_feedback_candidate import (
+        build_demo_learning_feedback_candidate_set,
+    )
+
+    payload = build_demo_learning_feedback_candidate_set()
+    return {
+        "guided_console_action": "learning_show_feedback_candidate_set",
+        "learning_feedback_candidate_set": payload["learning_feedback_candidate_set"],
+        "learning_feedback_approved": False,
+        "memory_write_performed": False,
+    }
+
+
+def show_feedback_candidate_safety_audit_from_guided_cradle_growth_console() -> dict[str, Any]:
+    payload = build_feedback_candidate_from_task_closure_demo_from_guided_cradle_growth_console()
+    return {
+        "guided_console_action": "learning_show_feedback_candidate_safety_audit",
+        "learning_feedback_candidate_safety_audit": payload[
+            "learning_feedback_candidate_safety_audit"
+        ],
+        "learning_feedback_approved": False,
+        "memory_write_performed": False,
+    }
+
+
+def validate_feedback_candidate_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.learning.task_closure_learning_feedback_candidate import (
+        build_demo_progress_learning_feedback_candidate,
+        validate_learning_feedback_candidate_safety_audit,
+    )
+
+    payload = build_demo_progress_learning_feedback_candidate()
+    return {
+        "guided_console_action": "learning_validate_feedback_candidate",
+        "validation": validate_learning_feedback_candidate_safety_audit(
+            payload["learning_feedback_candidate_safety_audit"]
+        ),
+        "learning_feedback_approved": False,
+        "concept_candidate_created": False,
+        "memory_write_performed": False,
+        "automatic_learning_approval_created": False,
+    }
+
+
 def _pending_candidate_count(
     candidates: list[dict[str, Any]],
     reviewed: list[dict[str, Any]],

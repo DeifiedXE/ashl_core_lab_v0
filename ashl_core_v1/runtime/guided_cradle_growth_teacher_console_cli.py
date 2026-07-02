@@ -21,6 +21,7 @@ from ashl_core_v1.runtime.guided_cradle_growth_teacher_console import (
     build_memory_trace_from_guided_cradle_growth_console,
     build_reviewed_concept_demo_from_guided_cradle_growth_console,
     bridge_reviewed_concept_memory_demo_from_guided_cradle_growth_console,
+    build_feedback_candidate_from_task_closure_demo_from_guided_cradle_growth_console,
     build_state_restore_preview_from_guided_cradle_growth_console,
     close_from_outcome_demo_from_guided_cradle_growth_console,
     close_last_run_from_guided_cradle_growth_console,
@@ -113,6 +114,10 @@ from ashl_core_v1.runtime.guided_cradle_growth_teacher_console import (
     show_outcome_task_closure_safety_audit_from_guided_cradle_growth_console,
     show_outcome_task_closure_summary_from_guided_cradle_growth_console,
     show_expected_effect_reference_from_guided_cradle_growth_console,
+    show_feedback_candidate_evidence_from_guided_cradle_growth_console,
+    show_feedback_candidate_from_guided_cradle_growth_console,
+    show_feedback_candidate_safety_audit_from_guided_cradle_growth_console,
+    show_feedback_candidate_set_from_guided_cradle_growth_console,
     show_goal_delta_evaluation_from_guided_cradle_growth_console,
     show_outcome_evaluation_from_guided_cradle_growth_console,
     show_outcome_evaluation_safety_audit_from_guided_cradle_growth_console,
@@ -137,6 +142,7 @@ from ashl_core_v1.runtime.guided_cradle_growth_teacher_console import (
     validate_sandbox_observation_from_guided_cradle_growth_console,
     validate_sense_outcome_evaluation_from_guided_cradle_growth_console,
     validate_outcome_task_closure_from_guided_cradle_growth_console,
+    validate_feedback_candidate_from_guided_cradle_growth_console,
     review_demo_concept_from_guided_cradle_growth_console,
     validate_demo_concept_review_from_guided_cradle_growth_console,
     validate_demo_refinement_from_guided_cradle_growth_console,
@@ -351,6 +357,12 @@ def build_parser() -> argparse.ArgumentParser:
     subparsers.add_parser("task-show-outcome-task-closure-rollback")
     subparsers.add_parser("task-show-outcome-task-closure-safety-audit")
     subparsers.add_parser("task-validate-outcome-task-closure")
+    subparsers.add_parser("learning-build-feedback-candidate-from-task-closure-demo")
+    subparsers.add_parser("learning-show-feedback-candidate")
+    subparsers.add_parser("learning-show-feedback-candidate-evidence")
+    subparsers.add_parser("learning-show-feedback-candidate-set")
+    subparsers.add_parser("learning-show-feedback-candidate-safety-audit")
+    subparsers.add_parser("learning-validate-feedback-candidate")
     return parser
 
 
@@ -1050,6 +1062,26 @@ def main(argv: list[str] | None = None) -> int:
         if args.command == "task-validate-outcome-task-closure":
             return _print_json(
                 validate_outcome_task_closure_from_guided_cradle_growth_console()
+            )
+        if args.command == "learning-build-feedback-candidate-from-task-closure-demo":
+            return _print_json(
+                build_feedback_candidate_from_task_closure_demo_from_guided_cradle_growth_console()
+            )
+        if args.command == "learning-show-feedback-candidate":
+            return _print_json(show_feedback_candidate_from_guided_cradle_growth_console())
+        if args.command == "learning-show-feedback-candidate-evidence":
+            return _print_json(
+                show_feedback_candidate_evidence_from_guided_cradle_growth_console()
+            )
+        if args.command == "learning-show-feedback-candidate-set":
+            return _print_json(show_feedback_candidate_set_from_guided_cradle_growth_console())
+        if args.command == "learning-show-feedback-candidate-safety-audit":
+            return _print_json(
+                show_feedback_candidate_safety_audit_from_guided_cradle_growth_console()
+            )
+        if args.command == "learning-validate-feedback-candidate":
+            return _print_json(
+                validate_feedback_candidate_from_guided_cradle_growth_console()
             )
     except (FileNotFoundError, LookupError, ValueError) as error:
         print(json.dumps({"status": "error", "error": str(error)}))
