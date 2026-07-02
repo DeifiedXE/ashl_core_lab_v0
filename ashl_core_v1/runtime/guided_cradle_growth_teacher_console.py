@@ -2365,6 +2365,150 @@ def rollback_final_action_demo_from_guided_cradle_growth_console() -> dict[str, 
     }
 
 
+def execute_direct_command_demo_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.task.teacher_gated_direct_command_sandbox_execution import (
+        build_demo_direct_command_sandbox_execution,
+    )
+
+    payload = build_demo_direct_command_sandbox_execution()
+    return {
+        "guided_console_action": "task_execute_direct_command_demo",
+        **payload,
+        "direct_command_created": True,
+        "bounded_sandbox_execution_created": True,
+        "external_execution_created": False,
+        "unity_execution_created": False,
+        "bridge_execution_created": False,
+        "network_execution_created": False,
+        "filesystem_execution_created": False,
+        "task_behavior_learning_created": False,
+        "memory_layer_write_performed": False,
+        "automatic_learning_approval_created": False,
+    }
+
+
+def show_direct_command_execution_teacher_gate_from_guided_cradle_growth_console() -> dict[str, Any]:
+    payload = execute_direct_command_demo_from_guided_cradle_growth_console()
+    return {
+        "guided_console_action": "task_show_direct_command_execution_teacher_gate",
+        "direct_command_execution_gate": payload["direct_command_execution_gate"],
+        "external_execution_created": False,
+        "unity_execution_created": False,
+        "bridge_execution_created": False,
+    }
+
+
+def show_direct_command_from_guided_cradle_growth_console() -> dict[str, Any]:
+    payload = execute_direct_command_demo_from_guided_cradle_growth_console()
+    return {
+        "guided_console_action": "task_show_direct_command",
+        "direct_command_application": payload["direct_command_application"],
+        "direct_command_created": True,
+        "external_execution_created": False,
+        "network_execution_created": False,
+        "filesystem_execution_created": False,
+    }
+
+
+def show_pre_execution_snapshot_from_guided_cradle_growth_console() -> dict[str, Any]:
+    payload = execute_direct_command_demo_from_guided_cradle_growth_console()
+    return {
+        "guided_console_action": "task_show_pre_execution_snapshot",
+        "sandbox_pre_execution_snapshot": payload["sandbox_pre_execution_snapshot"],
+        "external_execution_created": False,
+        "memory_layer_write_performed": False,
+    }
+
+
+def show_sandbox_execution_from_guided_cradle_growth_console() -> dict[str, Any]:
+    payload = execute_direct_command_demo_from_guided_cradle_growth_console()
+    return {
+        "guided_console_action": "task_show_sandbox_execution",
+        "sandbox_execution": payload["sandbox_execution"],
+        "bounded_sandbox_execution_created": True,
+        "external_execution_created": False,
+        "unity_execution_created": False,
+        "bridge_execution_created": False,
+        "network_execution_created": False,
+        "filesystem_execution_created": False,
+        "task_behavior_learning_created": False,
+        "memory_layer_write_performed": False,
+    }
+
+
+def show_sandbox_restore_from_guided_cradle_growth_console() -> dict[str, Any]:
+    payload = execute_direct_command_demo_from_guided_cradle_growth_console()
+    return {
+        "guided_console_action": "task_show_sandbox_restore",
+        "sandbox_execution_restore": payload["sandbox_execution_restore"],
+        "execution_replayed": False,
+        "task_behavior_learning_created": False,
+        "memory_layer_write_performed": False,
+    }
+
+
+def show_direct_command_execution_audit_from_guided_cradle_growth_console() -> dict[str, Any]:
+    payload = execute_direct_command_demo_from_guided_cradle_growth_console()
+    return {
+        "guided_console_action": "task_show_direct_command_execution_audit",
+        "direct_command_sandbox_execution_audit": payload[
+            "direct_command_sandbox_execution_audit"
+        ],
+        "direct_command_created": True,
+        "bounded_sandbox_execution_created": True,
+        "external_execution_created": False,
+        "unity_execution_created": False,
+        "bridge_execution_created": False,
+        "task_behavior_learning_created": False,
+        "memory_layer_write_performed": False,
+    }
+
+
+def validate_direct_command_execution_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.task.teacher_gated_direct_command_sandbox_execution import (
+        build_demo_direct_command_sandbox_execution,
+        validate_direct_command_sandbox_execution_audit,
+    )
+
+    payload = build_demo_direct_command_sandbox_execution()
+    return {
+        "guided_console_action": "task_validate_direct_command_execution",
+        "validation": validate_direct_command_sandbox_execution_audit(
+            payload["direct_command_sandbox_execution_audit"]
+        ),
+        "direct_command_created": True,
+        "bounded_sandbox_execution_created": True,
+        "external_execution_created": False,
+        "unity_execution_created": False,
+        "bridge_execution_created": False,
+        "network_execution_created": False,
+        "filesystem_execution_created": False,
+        "task_behavior_learning_created": False,
+        "memory_layer_write_performed": False,
+    }
+
+
+def restore_sandbox_execution_demo_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.task.teacher_gated_direct_command_sandbox_execution import (
+        apply_sandbox_execution_restore,
+        build_demo_direct_command_sandbox_execution,
+    )
+
+    payload = build_demo_direct_command_sandbox_execution()
+    return {
+        "guided_console_action": "task_restore_sandbox_execution_demo",
+        "restore_result": apply_sandbox_execution_restore(
+            payload["sandbox_execution_restore"]
+        ),
+        "external_execution_created": False,
+        "unity_execution_created": False,
+        "bridge_execution_created": False,
+        "execution_replayed": False,
+        "task_behavior_learning_created": False,
+        "memory_layer_write_performed": False,
+    }
+
+
 def _pending_candidate_count(
     candidates: list[dict[str, Any]],
     reviewed: list[dict[str, Any]],

@@ -26,6 +26,7 @@ from ashl_core_v1.runtime.guided_cradle_growth_teacher_console import (
     create_reviewed_concept_hint_records_demo_from_guided_cradle_growth_console,
     create_state_resume_handoff_from_guided_cradle_growth_console,
     draft_demo_concept_from_guided_cradle_growth_console,
+    execute_direct_command_demo_from_guided_cradle_growth_console,
     get_guided_cradle_growth_status,
     guided_cradle_growth_next_step,
     list_state_handoff_bookmarks_from_guided_cradle_growth_console,
@@ -48,6 +49,7 @@ from ashl_core_v1.runtime.guided_cradle_growth_teacher_console import (
     rollback_selected_action_proposal_demo_from_guided_cradle_growth_console,
     rollback_selected_action_demo_from_guided_cradle_growth_console,
     rollback_final_action_demo_from_guided_cradle_growth_console,
+    restore_sandbox_execution_demo_from_guided_cradle_growth_console,
     run_case_from_guided_cradle_growth_console,
     run_growth_readiness_audit_from_guided_cradle_growth_console,
     run_readback_contrast_from_guided_cradle_growth_console,
@@ -93,6 +95,12 @@ from ashl_core_v1.runtime.guided_cradle_growth_teacher_console import (
     show_final_action_application_from_guided_cradle_growth_console,
     show_final_action_application_teacher_gate_from_guided_cradle_growth_console,
     show_final_action_rollback_from_guided_cradle_growth_console,
+    show_direct_command_execution_audit_from_guided_cradle_growth_console,
+    show_direct_command_execution_teacher_gate_from_guided_cradle_growth_console,
+    show_direct_command_from_guided_cradle_growth_console,
+    show_pre_execution_snapshot_from_guided_cradle_growth_console,
+    show_sandbox_execution_from_guided_cradle_growth_console,
+    show_sandbox_restore_from_guided_cradle_growth_console,
     show_reviewed_concept_memory_admission_from_guided_cradle_growth_console,
     show_loop_evidence_from_guided_cradle_growth_console,
     show_reviewed_concept_readback_preview_from_guided_cradle_growth_console,
@@ -134,6 +142,7 @@ from ashl_core_v1.runtime.guided_cradle_growth_teacher_console import (
     validate_selected_action_proposal_from_guided_cradle_growth_console,
     validate_selected_action_application_from_guided_cradle_growth_console,
     validate_final_action_application_from_guided_cradle_growth_console,
+    validate_direct_command_execution_from_guided_cradle_growth_console,
 )
 
 
@@ -297,6 +306,15 @@ def build_parser() -> argparse.ArgumentParser:
     subparsers.add_parser("task-show-final-action-application-audit")
     subparsers.add_parser("task-validate-final-action-application")
     subparsers.add_parser("task-rollback-final-action-demo")
+    subparsers.add_parser("task-execute-direct-command-demo")
+    subparsers.add_parser("task-show-direct-command-execution-teacher-gate")
+    subparsers.add_parser("task-show-direct-command")
+    subparsers.add_parser("task-show-pre-execution-snapshot")
+    subparsers.add_parser("task-show-sandbox-execution")
+    subparsers.add_parser("task-show-sandbox-restore")
+    subparsers.add_parser("task-show-direct-command-execution-audit")
+    subparsers.add_parser("task-validate-direct-command-execution")
+    subparsers.add_parser("task-restore-sandbox-execution-demo")
     return parser
 
 
@@ -904,6 +922,36 @@ def main(argv: list[str] | None = None) -> int:
         if args.command == "task-rollback-final-action-demo":
             return _print_json(
                 rollback_final_action_demo_from_guided_cradle_growth_console()
+            )
+        if args.command == "task-execute-direct-command-demo":
+            return _print_json(
+                execute_direct_command_demo_from_guided_cradle_growth_console()
+            )
+        if args.command == "task-show-direct-command-execution-teacher-gate":
+            return _print_json(
+                show_direct_command_execution_teacher_gate_from_guided_cradle_growth_console()
+            )
+        if args.command == "task-show-direct-command":
+            return _print_json(show_direct_command_from_guided_cradle_growth_console())
+        if args.command == "task-show-pre-execution-snapshot":
+            return _print_json(
+                show_pre_execution_snapshot_from_guided_cradle_growth_console()
+            )
+        if args.command == "task-show-sandbox-execution":
+            return _print_json(show_sandbox_execution_from_guided_cradle_growth_console())
+        if args.command == "task-show-sandbox-restore":
+            return _print_json(show_sandbox_restore_from_guided_cradle_growth_console())
+        if args.command == "task-show-direct-command-execution-audit":
+            return _print_json(
+                show_direct_command_execution_audit_from_guided_cradle_growth_console()
+            )
+        if args.command == "task-validate-direct-command-execution":
+            return _print_json(
+                validate_direct_command_execution_from_guided_cradle_growth_console()
+            )
+        if args.command == "task-restore-sandbox-execution-demo":
+            return _print_json(
+                restore_sandbox_execution_demo_from_guided_cradle_growth_console()
             )
     except (FileNotFoundError, LookupError, ValueError) as error:
         print(json.dumps({"status": "error", "error": str(error)}))
