@@ -26,6 +26,7 @@ from ashl_core_v1.runtime.guided_cradle_growth_teacher_console import (
     create_reviewed_concept_hint_records_demo_from_guided_cradle_growth_console,
     create_state_resume_handoff_from_guided_cradle_growth_console,
     draft_demo_concept_from_guided_cradle_growth_console,
+    evaluate_sense_outcome_demo_from_guided_cradle_growth_console,
     execute_direct_command_demo_from_guided_cradle_growth_console,
     get_guided_cradle_growth_status,
     guided_cradle_growth_next_step,
@@ -106,6 +107,10 @@ from ashl_core_v1.runtime.guided_cradle_growth_teacher_console import (
     show_sandbox_state_delta_from_guided_cradle_growth_console,
     show_observation_handoff_from_guided_cradle_growth_console,
     show_observation_safety_audit_from_guided_cradle_growth_console,
+    show_expected_effect_reference_from_guided_cradle_growth_console,
+    show_goal_delta_evaluation_from_guided_cradle_growth_console,
+    show_outcome_evaluation_from_guided_cradle_growth_console,
+    show_outcome_evaluation_safety_audit_from_guided_cradle_growth_console,
     show_reviewed_concept_memory_admission_from_guided_cradle_growth_console,
     show_loop_evidence_from_guided_cradle_growth_console,
     show_reviewed_concept_readback_preview_from_guided_cradle_growth_console,
@@ -125,6 +130,7 @@ from ashl_core_v1.runtime.guided_cradle_growth_teacher_console import (
     validate_state_resume_handoff_from_guided_cradle_growth_console,
     validate_demo_concept_draft_from_guided_cradle_growth_console,
     validate_sandbox_observation_from_guided_cradle_growth_console,
+    validate_sense_outcome_evaluation_from_guided_cradle_growth_console,
     review_demo_concept_from_guided_cradle_growth_console,
     validate_demo_concept_review_from_guided_cradle_growth_console,
     validate_demo_refinement_from_guided_cradle_growth_console,
@@ -327,6 +333,12 @@ def build_parser() -> argparse.ArgumentParser:
     subparsers.add_parser("sense-show-observation-handoff")
     subparsers.add_parser("sense-show-observation-safety-audit")
     subparsers.add_parser("sense-validate-sandbox-observation")
+    subparsers.add_parser("task-evaluate-sense-outcome-demo")
+    subparsers.add_parser("task-show-expected-effect-reference")
+    subparsers.add_parser("task-show-outcome-evaluation")
+    subparsers.add_parser("task-show-goal-delta-evaluation")
+    subparsers.add_parser("task-show-outcome-evaluation-safety-audit")
+    subparsers.add_parser("task-validate-sense-outcome-evaluation")
     return parser
 
 
@@ -982,6 +994,26 @@ def main(argv: list[str] | None = None) -> int:
         if args.command == "sense-validate-sandbox-observation":
             return _print_json(
                 validate_sandbox_observation_from_guided_cradle_growth_console()
+            )
+        if args.command == "task-evaluate-sense-outcome-demo":
+            return _print_json(
+                evaluate_sense_outcome_demo_from_guided_cradle_growth_console()
+            )
+        if args.command == "task-show-expected-effect-reference":
+            return _print_json(
+                show_expected_effect_reference_from_guided_cradle_growth_console()
+            )
+        if args.command == "task-show-outcome-evaluation":
+            return _print_json(show_outcome_evaluation_from_guided_cradle_growth_console())
+        if args.command == "task-show-goal-delta-evaluation":
+            return _print_json(show_goal_delta_evaluation_from_guided_cradle_growth_console())
+        if args.command == "task-show-outcome-evaluation-safety-audit":
+            return _print_json(
+                show_outcome_evaluation_safety_audit_from_guided_cradle_growth_console()
+            )
+        if args.command == "task-validate-sense-outcome-evaluation":
+            return _print_json(
+                validate_sense_outcome_evaluation_from_guided_cradle_growth_console()
             )
     except (FileNotFoundError, LookupError, ValueError) as error:
         print(json.dumps({"status": "error", "error": str(error)}))

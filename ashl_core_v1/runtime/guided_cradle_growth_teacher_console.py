@@ -2607,6 +2607,94 @@ def validate_sandbox_observation_from_guided_cradle_growth_console() -> dict[str
     }
 
 
+def evaluate_sense_outcome_demo_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.task.outcome_evaluation_from_sense_observation import (
+        build_demo_observe_outcome_evaluation,
+    )
+
+    payload = build_demo_observe_outcome_evaluation()
+    return {
+        "guided_console_action": "task_evaluate_sense_outcome_demo",
+        **payload,
+        "task_closure_created": False,
+        "learning_feedback_created": False,
+        "memory_write_performed": False,
+        "automatic_learning_approval_created": False,
+        "candidate_ordering_changed": False,
+        "selected_action_changed": False,
+        "final_action_changed": False,
+        "direct_command_changed": False,
+        "execution_created_by_evaluation": False,
+    }
+
+
+def show_expected_effect_reference_from_guided_cradle_growth_console() -> dict[str, Any]:
+    payload = evaluate_sense_outcome_demo_from_guided_cradle_growth_console()
+    return {
+        "guided_console_action": "task_show_expected_effect_reference",
+        "task_expected_effect_reference": payload["task_expected_effect_reference"],
+        "task_closure_created": False,
+        "learning_feedback_created": False,
+        "memory_write_performed": False,
+    }
+
+
+def show_outcome_evaluation_from_guided_cradle_growth_console() -> dict[str, Any]:
+    payload = evaluate_sense_outcome_demo_from_guided_cradle_growth_console()
+    return {
+        "guided_console_action": "task_show_outcome_evaluation",
+        "task_execution_outcome_evaluation": payload[
+            "task_execution_outcome_evaluation"
+        ],
+        "task_closure_created": False,
+        "learning_feedback_created": False,
+        "memory_write_performed": False,
+    }
+
+
+def show_goal_delta_evaluation_from_guided_cradle_growth_console() -> dict[str, Any]:
+    payload = evaluate_sense_outcome_demo_from_guided_cradle_growth_console()
+    return {
+        "guided_console_action": "task_show_goal_delta_evaluation",
+        "task_goal_delta_evaluation": payload["task_goal_delta_evaluation"],
+        "task_closure_created": False,
+        "learning_feedback_created": False,
+        "memory_write_performed": False,
+    }
+
+
+def show_outcome_evaluation_safety_audit_from_guided_cradle_growth_console() -> dict[str, Any]:
+    payload = evaluate_sense_outcome_demo_from_guided_cradle_growth_console()
+    return {
+        "guided_console_action": "task_show_outcome_evaluation_safety_audit",
+        "task_outcome_evaluation_safety_audit": payload[
+            "task_outcome_evaluation_safety_audit"
+        ],
+        "task_closure_created": False,
+        "learning_feedback_created": False,
+        "memory_write_performed": False,
+    }
+
+
+def validate_sense_outcome_evaluation_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.task.outcome_evaluation_from_sense_observation import (
+        build_demo_observe_outcome_evaluation,
+        validate_task_outcome_evaluation_safety_audit,
+    )
+
+    payload = build_demo_observe_outcome_evaluation()
+    return {
+        "guided_console_action": "task_validate_sense_outcome_evaluation",
+        "validation": validate_task_outcome_evaluation_safety_audit(
+            payload["task_outcome_evaluation_safety_audit"]
+        ),
+        "task_closure_created": False,
+        "learning_feedback_created": False,
+        "memory_write_performed": False,
+        "automatic_learning_approval_created": False,
+    }
+
+
 def _pending_candidate_count(
     candidates: list[dict[str, Any]],
     reviewed: list[dict[str, Any]],
