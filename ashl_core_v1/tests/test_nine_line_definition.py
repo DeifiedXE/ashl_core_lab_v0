@@ -104,15 +104,15 @@ class NineLineDefinitionAlignmentTests(unittest.TestCase):
             with self.subTest(module_name=module_name):
                 self.assertIn(module_name, deferred)
 
-    def test_no_runtime_implemented(self):
+    def test_no_live_runtime_implemented(self):
         text = _read_definition()
         runtime_init = (V1_ROOT / "runtime" / "__init__.py").read_text(encoding="utf-8")
 
         self.assertIn("Runtime implemented: false", text)
         self.assertIn("Runtime loop created: false", text)
         self.assertNotIn("RuntimeSession", runtime_init)
-        self.assertNotIn("RuntimeTick", runtime_init)
         self.assertNotIn("while True", runtime_init)
+        self.assertNotIn("run_forever", runtime_init)
 
     def test_no_legacy_repo_imported(self):
         for py_file in V1_ROOT.rglob("*.py"):

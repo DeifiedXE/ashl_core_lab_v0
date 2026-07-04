@@ -136,12 +136,12 @@ class CleanRewriteBootstrapStructureTests(unittest.TestCase):
                             or (node.module or "").startswith("ashl_core.")
                         )
 
-    def test_no_runtime_loop_implemented(self):
+    def test_no_live_runtime_loop_implemented(self):
         runtime_init = (V1_ROOT / "runtime" / "__init__.py").read_text(encoding="utf-8")
 
         self.assertNotIn("while True", runtime_init)
         self.assertNotIn("RuntimeSession", runtime_init)
-        self.assertNotIn("RuntimeTick", runtime_init)
+        self.assertNotIn("run_forever", runtime_init)
 
 
 if __name__ == "__main__":

@@ -124,15 +124,15 @@ class ObservationAlignedProductImaginationTests(unittest.TestCase):
             with self.subTest(term=term):
                 self.assertIn(term, text)
 
-    def test_runtime_implemented_false(self):
+    def test_live_runtime_implemented_false(self):
         text = _read_doc()
         runtime_init = (V1_ROOT / "runtime" / "__init__.py").read_text(encoding="utf-8")
 
         self.assertIn("Runtime implemented: false", text)
         self.assertIn("Product imagination implemented as runtime: false", text)
         self.assertNotIn("RuntimeSession", runtime_init)
-        self.assertNotIn("RuntimeTick", runtime_init)
         self.assertNotIn("while True", runtime_init)
+        self.assertNotIn("run_forever", runtime_init)
 
     def test_dataclasses_were_not_created_by_imagination_doc_package(self):
         text = _read_doc()

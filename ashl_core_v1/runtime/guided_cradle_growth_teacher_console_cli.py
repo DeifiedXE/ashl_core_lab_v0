@@ -16,6 +16,7 @@ from ashl_core_v1.runtime.guided_cradle_growth_teacher_console import (
     apply_reviewed_concept_readback_hints_demo_from_guided_cradle_growth_console,
     apply_readback_from_guided_cradle_growth_console,
     audit_first_action_reviewed_concept_loop_demo_from_guided_cradle_growth_console,
+    audit_continuous_event_loop_timeline_from_guided_cradle_growth_console,
     build_reviewed_concept_hint_candidates_demo_from_guided_cradle_growth_console,
     build_state_handoff_from_guided_cradle_growth_console,
     build_loop_evidence_from_guided_cradle_growth_console,
@@ -92,6 +93,10 @@ from ashl_core_v1.runtime.guided_cradle_growth_teacher_console import (
     show_first_action_reviewed_concept_loop_milestone_from_guided_cradle_growth_console,
     show_first_action_reviewed_concept_loop_next_stage_readiness_from_guided_cradle_growth_console,
     show_first_action_reviewed_concept_loop_replay_verification_from_guided_cradle_growth_console,
+    show_continuous_loop_event_tree_demo_from_guided_cradle_growth_console,
+    show_continuous_loop_idle_demo_from_guided_cradle_growth_console,
+    show_continuous_loop_nested_demo_from_guided_cradle_growth_console,
+    show_continuous_loop_power_off_demo_from_guided_cradle_growth_console,
     show_reviewed_concept_readback_snapshot_from_guided_cradle_growth_console,
     show_advisory_readback_ordering_application_from_guided_cradle_growth_console,
     show_advisory_readback_ordering_audit_from_guided_cradle_growth_console,
@@ -199,6 +204,7 @@ from ashl_core_v1.runtime.guided_cradle_growth_teacher_console import (
     validate_reviewed_concept_readback_hint_influence_audit_from_guided_cradle_growth_console,
     validate_reviewed_concept_readback_loop_from_guided_cradle_growth_console,
     validate_first_action_reviewed_concept_loop_from_guided_cradle_growth_console,
+    validate_continuous_event_loop_demo_from_guided_cradle_growth_console,
     validate_reviewed_concept_readback_preview_from_guided_cradle_growth_console,
     validate_advisory_readback_ordering_application_from_guided_cradle_growth_console,
     validate_selected_action_proposal_from_guided_cradle_growth_console,
@@ -347,6 +353,15 @@ def build_parser() -> argparse.ArgumentParser:
     subparsers.add_parser("audit-show-first-loop-milestone")
     subparsers.add_parser("audit-show-first-loop-next-stage-readiness")
     subparsers.add_parser("audit-validate-first-action-reviewed-concept-loop")
+    subparsers.add_parser("runtime-show-continuous-loop-idle-demo")
+    subparsers.add_parser("runtime-show-continuous-loop-power-off-demo")
+    subparsers.add_parser("runtime-show-continuous-loop-nested-demo")
+    subparsers.add_parser("runtime-show-continuous-loop-event-tree-demo")
+    subparsers.add_parser("runtime-validate-continuous-event-loop-demo")
+    runtime_audit_timeline = subparsers.add_parser(
+        "runtime-audit-continuous-event-loop-timeline"
+    )
+    runtime_audit_timeline.add_argument("--timeline", default=None)
     subparsers.add_parser("task-apply-advisory-readback-ordering-demo")
     subparsers.add_parser("task-show-advisory-readback-ordering-teacher-gate")
     subparsers.add_parser("task-show-advisory-readback-ordering-application")
@@ -962,6 +977,32 @@ def main(argv: list[str] | None = None) -> int:
         if args.command == "audit-validate-first-action-reviewed-concept-loop":
             return _print_json(
                 validate_first_action_reviewed_concept_loop_from_guided_cradle_growth_console()
+            )
+        if args.command == "runtime-show-continuous-loop-idle-demo":
+            return _print_json(
+                show_continuous_loop_idle_demo_from_guided_cradle_growth_console()
+            )
+        if args.command == "runtime-show-continuous-loop-power-off-demo":
+            return _print_json(
+                show_continuous_loop_power_off_demo_from_guided_cradle_growth_console()
+            )
+        if args.command == "runtime-show-continuous-loop-nested-demo":
+            return _print_json(
+                show_continuous_loop_nested_demo_from_guided_cradle_growth_console()
+            )
+        if args.command == "runtime-show-continuous-loop-event-tree-demo":
+            return _print_json(
+                show_continuous_loop_event_tree_demo_from_guided_cradle_growth_console()
+            )
+        if args.command == "runtime-validate-continuous-event-loop-demo":
+            return _print_json(
+                validate_continuous_event_loop_demo_from_guided_cradle_growth_console()
+            )
+        if args.command == "runtime-audit-continuous-event-loop-timeline":
+            return _print_json(
+                audit_continuous_event_loop_timeline_from_guided_cradle_growth_console(
+                    args.timeline
+                )
             )
         if args.command == "task-apply-advisory-readback-ordering-demo":
             return _print_json(

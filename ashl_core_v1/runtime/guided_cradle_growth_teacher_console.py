@@ -2005,6 +2005,113 @@ def validate_first_action_reviewed_concept_loop_from_guided_cradle_growth_consol
     }
 
 
+def show_continuous_loop_idle_demo_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.runtime.continuous_event_loop import (
+        build_demo_idle_only_continuous_loop,
+    )
+
+    payload = build_demo_idle_only_continuous_loop()
+    return {
+        "guided_console_action": "runtime_show_continuous_loop_idle_demo",
+        **payload,
+        "background_process_started": False,
+        "autonomous_scheduler_created": False,
+        "open_ended_loop_created": False,
+        "external_execution_created": False,
+        "memory_layer_write_performed": False,
+    }
+
+
+def show_continuous_loop_power_off_demo_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.runtime.continuous_event_loop import (
+        build_demo_power_off_gap_continuous_loop,
+    )
+
+    payload = build_demo_power_off_gap_continuous_loop()
+    return {
+        "guided_console_action": "runtime_show_continuous_loop_power_off_demo",
+        **payload,
+        "background_process_started": False,
+        "autonomous_scheduler_created": False,
+        "open_ended_loop_created": False,
+        "external_execution_created": False,
+        "memory_layer_write_performed": False,
+    }
+
+
+def show_continuous_loop_nested_demo_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.runtime.continuous_event_loop import (
+        build_demo_nested_event_continuous_loop,
+    )
+
+    payload = build_demo_nested_event_continuous_loop()
+    return {
+        "guided_console_action": "runtime_show_continuous_loop_nested_demo",
+        **payload,
+        "background_process_started": False,
+        "autonomous_scheduler_created": False,
+        "open_ended_loop_created": False,
+        "external_execution_created": False,
+        "memory_layer_write_performed": False,
+    }
+
+
+def show_continuous_loop_event_tree_demo_from_guided_cradle_growth_console() -> dict[str, Any]:
+    payload = show_continuous_loop_nested_demo_from_guided_cradle_growth_console()
+    return {
+        "guided_console_action": "runtime_show_continuous_loop_event_tree_demo",
+        "runtime_event_tree": payload["runtime_event_tree"],
+        "rendered_event_tree": payload["rendered_event_tree"],
+        "background_process_started": False,
+        "autonomous_scheduler_created": False,
+        "open_ended_loop_created": False,
+        "external_execution_created": False,
+        "memory_layer_write_performed": False,
+    }
+
+
+def validate_continuous_event_loop_demo_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.runtime.continuous_event_loop import (
+        build_demo_nested_event_continuous_loop,
+        validate_runtime_continuous_loop_audit,
+    )
+
+    payload = build_demo_nested_event_continuous_loop()
+    return {
+        "guided_console_action": "runtime_validate_continuous_event_loop_demo",
+        "validation": validate_runtime_continuous_loop_audit(
+            payload["runtime_continuous_loop_audit"]
+        ),
+        "background_process_started": False,
+        "autonomous_scheduler_created": False,
+        "open_ended_loop_created": False,
+        "external_execution_created": False,
+        "memory_layer_write_performed": False,
+    }
+
+
+def audit_continuous_event_loop_timeline_from_guided_cradle_growth_console(
+    timeline_text: str | None = None,
+) -> dict[str, Any]:
+    from ashl_core_v1.runtime.continuous_event_loop import (
+        NESTED_DEMO_TIMELINE,
+        audit_runtime_timeline,
+    )
+
+    payload = audit_runtime_timeline(
+        timeline_text=timeline_text or NESTED_DEMO_TIMELINE,
+    )
+    return {
+        "guided_console_action": "runtime_audit_continuous_event_loop_timeline",
+        **payload,
+        "background_process_started": False,
+        "autonomous_scheduler_created": False,
+        "open_ended_loop_created": False,
+        "external_execution_created": False,
+        "memory_layer_write_performed": False,
+    }
+
+
 def apply_advisory_readback_ordering_demo_from_guided_cradle_growth_console() -> dict[str, Any]:
     from ashl_core_v1.task.advisory_readback_candidate_ordering_application import (
         build_demo_teacher_gated_ordering_application,

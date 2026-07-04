@@ -150,14 +150,14 @@ class LegacyDesignDocAlignmentIndexTests(unittest.TestCase):
 
         self.assertIn("Dataclasses implemented: false", text)
 
-    def test_runtime_implemented_false(self):
+    def test_live_runtime_implemented_false(self):
         text = _read_index()
         runtime_init = (V1_ROOT / "runtime" / "__init__.py").read_text(encoding="utf-8")
 
         self.assertIn("Runtime implemented: false", text)
         self.assertNotIn("RuntimeSession", runtime_init)
-        self.assertNotIn("RuntimeTick", runtime_init)
         self.assertNotIn("while True", runtime_init)
+        self.assertNotIn("run_forever", runtime_init)
 
     def test_old_docs_modified_false_and_docs_moved_false(self):
         text = _read_index()
