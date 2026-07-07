@@ -2112,6 +2112,122 @@ def audit_continuous_event_loop_timeline_from_guided_cradle_growth_console(
     }
 
 
+def show_event_dispatch_task_demo_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.runtime.event_frame_dispatch_adapter import (
+        build_demo_task_event_dispatch,
+    )
+
+    return _event_dispatch_console_payload(
+        "runtime_show_event_dispatch_task_demo",
+        build_demo_task_event_dispatch(),
+    )
+
+
+def show_event_dispatch_sense_demo_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.runtime.event_frame_dispatch_adapter import (
+        build_demo_sense_event_dispatch,
+    )
+
+    return _event_dispatch_console_payload(
+        "runtime_show_event_dispatch_sense_demo",
+        build_demo_sense_event_dispatch(),
+    )
+
+
+def show_event_dispatch_learning_demo_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.runtime.event_frame_dispatch_adapter import (
+        build_demo_learning_event_dispatch,
+    )
+
+    return _event_dispatch_console_payload(
+        "runtime_show_event_dispatch_learning_demo",
+        build_demo_learning_event_dispatch(),
+    )
+
+
+def show_event_dispatch_memory_demo_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.runtime.event_frame_dispatch_adapter import (
+        build_demo_memory_event_dispatch,
+    )
+
+    return _event_dispatch_console_payload(
+        "runtime_show_event_dispatch_memory_demo",
+        build_demo_memory_event_dispatch(),
+    )
+
+
+def show_event_dispatch_state_demo_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.runtime.event_frame_dispatch_adapter import (
+        build_demo_state_event_dispatch,
+    )
+
+    return _event_dispatch_console_payload(
+        "runtime_show_event_dispatch_state_demo",
+        build_demo_state_event_dispatch(),
+    )
+
+
+def show_event_dispatch_output_demo_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.runtime.event_frame_dispatch_adapter import (
+        build_demo_output_event_dispatch,
+    )
+
+    return _event_dispatch_console_payload(
+        "runtime_show_event_dispatch_output_demo",
+        build_demo_output_event_dispatch(),
+    )
+
+
+def show_event_dispatch_thought_deferred_demo_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.runtime.event_frame_dispatch_adapter import (
+        build_demo_thought_event_deferred_dispatch,
+    )
+
+    return _event_dispatch_console_payload(
+        "runtime_show_event_dispatch_thought_deferred_demo",
+        build_demo_thought_event_deferred_dispatch(),
+    )
+
+
+def validate_event_dispatch_demo_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.runtime.event_frame_dispatch_adapter import (
+        build_demo_task_event_dispatch,
+        validate_runtime_event_dispatch_audit,
+    )
+
+    payload = build_demo_task_event_dispatch()
+    return {
+        "guided_console_action": "runtime_validate_event_dispatch_demo",
+        "validation": validate_runtime_event_dispatch_audit(
+            payload["runtime_event_dispatch_audit"]
+        ),
+        "background_process_started": False,
+        "autonomous_scheduler_created": False,
+        "open_ended_loop_created": False,
+        "external_execution_created": False,
+        "memory_layer_write_performed": False,
+        "automatic_learning_approval_created": False,
+        "recursive_learning_created": False,
+    }
+
+
+def _event_dispatch_console_payload(
+    action: str,
+    payload: dict[str, Any],
+) -> dict[str, Any]:
+    return {
+        "guided_console_action": action,
+        **payload,
+        "background_process_started": False,
+        "autonomous_scheduler_created": False,
+        "open_ended_loop_created": False,
+        "external_execution_created": False,
+        "memory_layer_write_performed": False,
+        "automatic_learning_approval_created": False,
+        "recursive_learning_created": False,
+    }
+
+
 def apply_advisory_readback_ordering_demo_from_guided_cradle_growth_console() -> dict[str, Any]:
     from ashl_core_v1.task.advisory_readback_candidate_ordering_application import (
         build_demo_teacher_gated_ordering_application,

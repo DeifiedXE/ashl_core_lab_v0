@@ -97,6 +97,13 @@ from ashl_core_v1.runtime.guided_cradle_growth_teacher_console import (
     show_continuous_loop_idle_demo_from_guided_cradle_growth_console,
     show_continuous_loop_nested_demo_from_guided_cradle_growth_console,
     show_continuous_loop_power_off_demo_from_guided_cradle_growth_console,
+    show_event_dispatch_learning_demo_from_guided_cradle_growth_console,
+    show_event_dispatch_memory_demo_from_guided_cradle_growth_console,
+    show_event_dispatch_output_demo_from_guided_cradle_growth_console,
+    show_event_dispatch_sense_demo_from_guided_cradle_growth_console,
+    show_event_dispatch_state_demo_from_guided_cradle_growth_console,
+    show_event_dispatch_task_demo_from_guided_cradle_growth_console,
+    show_event_dispatch_thought_deferred_demo_from_guided_cradle_growth_console,
     show_reviewed_concept_readback_snapshot_from_guided_cradle_growth_console,
     show_advisory_readback_ordering_application_from_guided_cradle_growth_console,
     show_advisory_readback_ordering_audit_from_guided_cradle_growth_console,
@@ -205,6 +212,7 @@ from ashl_core_v1.runtime.guided_cradle_growth_teacher_console import (
     validate_reviewed_concept_readback_loop_from_guided_cradle_growth_console,
     validate_first_action_reviewed_concept_loop_from_guided_cradle_growth_console,
     validate_continuous_event_loop_demo_from_guided_cradle_growth_console,
+    validate_event_dispatch_demo_from_guided_cradle_growth_console,
     validate_reviewed_concept_readback_preview_from_guided_cradle_growth_console,
     validate_advisory_readback_ordering_application_from_guided_cradle_growth_console,
     validate_selected_action_proposal_from_guided_cradle_growth_console,
@@ -362,6 +370,14 @@ def build_parser() -> argparse.ArgumentParser:
         "runtime-audit-continuous-event-loop-timeline"
     )
     runtime_audit_timeline.add_argument("--timeline", default=None)
+    subparsers.add_parser("runtime-show-event-dispatch-task-demo")
+    subparsers.add_parser("runtime-show-event-dispatch-sense-demo")
+    subparsers.add_parser("runtime-show-event-dispatch-learning-demo")
+    subparsers.add_parser("runtime-show-event-dispatch-memory-demo")
+    subparsers.add_parser("runtime-show-event-dispatch-state-demo")
+    subparsers.add_parser("runtime-show-event-dispatch-output-demo")
+    subparsers.add_parser("runtime-show-event-dispatch-thought-deferred-demo")
+    subparsers.add_parser("runtime-validate-event-dispatch-demo")
     subparsers.add_parser("task-apply-advisory-readback-ordering-demo")
     subparsers.add_parser("task-show-advisory-readback-ordering-teacher-gate")
     subparsers.add_parser("task-show-advisory-readback-ordering-application")
@@ -1003,6 +1019,38 @@ def main(argv: list[str] | None = None) -> int:
                 audit_continuous_event_loop_timeline_from_guided_cradle_growth_console(
                     args.timeline
                 )
+            )
+        if args.command == "runtime-show-event-dispatch-task-demo":
+            return _print_json(
+                show_event_dispatch_task_demo_from_guided_cradle_growth_console()
+            )
+        if args.command == "runtime-show-event-dispatch-sense-demo":
+            return _print_json(
+                show_event_dispatch_sense_demo_from_guided_cradle_growth_console()
+            )
+        if args.command == "runtime-show-event-dispatch-learning-demo":
+            return _print_json(
+                show_event_dispatch_learning_demo_from_guided_cradle_growth_console()
+            )
+        if args.command == "runtime-show-event-dispatch-memory-demo":
+            return _print_json(
+                show_event_dispatch_memory_demo_from_guided_cradle_growth_console()
+            )
+        if args.command == "runtime-show-event-dispatch-state-demo":
+            return _print_json(
+                show_event_dispatch_state_demo_from_guided_cradle_growth_console()
+            )
+        if args.command == "runtime-show-event-dispatch-output-demo":
+            return _print_json(
+                show_event_dispatch_output_demo_from_guided_cradle_growth_console()
+            )
+        if args.command == "runtime-show-event-dispatch-thought-deferred-demo":
+            return _print_json(
+                show_event_dispatch_thought_deferred_demo_from_guided_cradle_growth_console()
+            )
+        if args.command == "runtime-validate-event-dispatch-demo":
+            return _print_json(
+                validate_event_dispatch_demo_from_guided_cradle_growth_console()
             )
         if args.command == "task-apply-advisory-readback-ordering-demo":
             return _print_json(
