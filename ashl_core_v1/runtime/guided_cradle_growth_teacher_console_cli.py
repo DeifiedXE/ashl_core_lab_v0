@@ -104,6 +104,12 @@ from ashl_core_v1.runtime.guided_cradle_growth_teacher_console import (
     show_event_dispatch_state_demo_from_guided_cradle_growth_console,
     show_event_dispatch_task_demo_from_guided_cradle_growth_console,
     show_event_dispatch_thought_deferred_demo_from_guided_cradle_growth_console,
+    show_integrated_loop_four_level_demo_from_guided_cradle_growth_console,
+    show_integrated_loop_nested_sense_demo_from_guided_cradle_growth_console,
+    show_integrated_loop_readiness_demo_from_guided_cradle_growth_console,
+    show_integrated_loop_render_demo_from_guided_cradle_growth_console,
+    show_integrated_loop_simple_demo_from_guided_cradle_growth_console,
+    show_integrated_loop_thought_deferred_demo_from_guided_cradle_growth_console,
     show_nested_return_resume_demo_from_guided_cradle_growth_console,
     show_parent_resume_blocked_demo_from_guided_cradle_growth_console,
     show_parent_resume_fault_demo_from_guided_cradle_growth_console,
@@ -218,6 +224,7 @@ from ashl_core_v1.runtime.guided_cradle_growth_teacher_console import (
     validate_first_action_reviewed_concept_loop_from_guided_cradle_growth_console,
     validate_continuous_event_loop_demo_from_guided_cradle_growth_console,
     validate_event_dispatch_demo_from_guided_cradle_growth_console,
+    validate_integrated_event_loop_demo_from_guided_cradle_growth_console,
     validate_parent_frame_resume_demo_from_guided_cradle_growth_console,
     validate_reviewed_concept_readback_preview_from_guided_cradle_growth_console,
     validate_advisory_readback_ordering_application_from_guided_cradle_growth_console,
@@ -390,6 +397,13 @@ def build_parser() -> argparse.ArgumentParser:
     subparsers.add_parser("runtime-show-parent-resume-fault-demo")
     subparsers.add_parser("runtime-show-nested-return-resume-demo")
     subparsers.add_parser("runtime-validate-parent-frame-resume-demo")
+    subparsers.add_parser("runtime-show-integrated-loop-simple-demo")
+    subparsers.add_parser("runtime-show-integrated-loop-nested-sense-demo")
+    subparsers.add_parser("runtime-show-integrated-loop-four-level-demo")
+    subparsers.add_parser("runtime-show-integrated-loop-thought-deferred-demo")
+    subparsers.add_parser("runtime-show-integrated-loop-render-demo")
+    subparsers.add_parser("runtime-show-integrated-loop-readiness-demo")
+    subparsers.add_parser("runtime-validate-integrated-event-loop-demo")
     subparsers.add_parser("task-apply-advisory-readback-ordering-demo")
     subparsers.add_parser("task-show-advisory-readback-ordering-teacher-gate")
     subparsers.add_parser("task-show-advisory-readback-ordering-application")
@@ -1087,6 +1101,34 @@ def main(argv: list[str] | None = None) -> int:
         if args.command == "runtime-validate-parent-frame-resume-demo":
             return _print_json(
                 validate_parent_frame_resume_demo_from_guided_cradle_growth_console()
+            )
+        if args.command == "runtime-show-integrated-loop-simple-demo":
+            return _print_json(
+                show_integrated_loop_simple_demo_from_guided_cradle_growth_console()
+            )
+        if args.command == "runtime-show-integrated-loop-nested-sense-demo":
+            return _print_json(
+                show_integrated_loop_nested_sense_demo_from_guided_cradle_growth_console()
+            )
+        if args.command == "runtime-show-integrated-loop-four-level-demo":
+            return _print_json(
+                show_integrated_loop_four_level_demo_from_guided_cradle_growth_console()
+            )
+        if args.command == "runtime-show-integrated-loop-thought-deferred-demo":
+            return _print_json(
+                show_integrated_loop_thought_deferred_demo_from_guided_cradle_growth_console()
+            )
+        if args.command == "runtime-show-integrated-loop-render-demo":
+            return _print_json(
+                show_integrated_loop_render_demo_from_guided_cradle_growth_console()
+            )
+        if args.command == "runtime-show-integrated-loop-readiness-demo":
+            return _print_json(
+                show_integrated_loop_readiness_demo_from_guided_cradle_growth_console()
+            )
+        if args.command == "runtime-validate-integrated-event-loop-demo":
+            return _print_json(
+                validate_integrated_event_loop_demo_from_guided_cradle_growth_console()
             )
         if args.command == "task-apply-advisory-readback-ordering-demo":
             return _print_json(
