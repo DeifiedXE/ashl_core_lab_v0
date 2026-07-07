@@ -2228,6 +2228,102 @@ def _event_dispatch_console_payload(
     }
 
 
+def show_parent_resume_success_demo_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.runtime.event_return_parent_resume import (
+        build_demo_child_success_parent_continue,
+    )
+
+    return _parent_resume_console_payload(
+        "runtime_show_parent_resume_success_demo",
+        build_demo_child_success_parent_continue(),
+    )
+
+
+def show_parent_resume_blocked_demo_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.runtime.event_return_parent_resume import (
+        build_demo_child_blocked_parent_continue,
+    )
+
+    return _parent_resume_console_payload(
+        "runtime_show_parent_resume_blocked_demo",
+        build_demo_child_blocked_parent_continue(),
+    )
+
+
+def show_parent_resume_unknown_demo_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.runtime.event_return_parent_resume import (
+        build_demo_child_unknown_parent_deferred,
+    )
+
+    return _parent_resume_console_payload(
+        "runtime_show_parent_resume_unknown_demo",
+        build_demo_child_unknown_parent_deferred(),
+    )
+
+
+def show_parent_resume_fault_demo_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.runtime.event_return_parent_resume import (
+        build_demo_child_fault_parent_faulted,
+    )
+
+    return _parent_resume_console_payload(
+        "runtime_show_parent_resume_fault_demo",
+        build_demo_child_fault_parent_faulted(),
+    )
+
+
+def show_nested_return_resume_demo_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.runtime.event_return_parent_resume import (
+        build_demo_nested_4_to_3_to_2_to_1_resume,
+    )
+
+    return _parent_resume_console_payload(
+        "runtime_show_nested_return_resume_demo",
+        build_demo_nested_4_to_3_to_2_to_1_resume(),
+    )
+
+
+def validate_parent_frame_resume_demo_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.runtime.event_return_parent_resume import (
+        build_demo_child_success_parent_continue,
+        validate_runtime_parent_frame_resume_audit,
+    )
+
+    payload = build_demo_child_success_parent_continue()
+    return {
+        "guided_console_action": "runtime_validate_parent_frame_resume_demo",
+        "validation": validate_runtime_parent_frame_resume_audit(
+            payload["runtime_parent_frame_resume_audit"]
+        ),
+        "background_process_started": False,
+        "dynamic_scheduling_created": False,
+        "autonomous_scheduler_created": False,
+        "open_ended_loop_created": False,
+        "external_execution_created": False,
+        "memory_layer_write_performed": False,
+        "automatic_learning_approval_created": False,
+        "recursive_learning_created": False,
+    }
+
+
+def _parent_resume_console_payload(
+    action: str,
+    payload: dict[str, Any],
+) -> dict[str, Any]:
+    return {
+        "guided_console_action": action,
+        **payload,
+        "background_process_started": False,
+        "dynamic_scheduling_created": False,
+        "autonomous_scheduler_created": False,
+        "open_ended_loop_created": False,
+        "external_execution_created": False,
+        "memory_layer_write_performed": False,
+        "automatic_learning_approval_created": False,
+        "recursive_learning_created": False,
+    }
+
+
 def apply_advisory_readback_ordering_demo_from_guided_cradle_growth_console() -> dict[str, Any]:
     from ashl_core_v1.task.advisory_readback_candidate_ordering_application import (
         build_demo_teacher_gated_ordering_application,
