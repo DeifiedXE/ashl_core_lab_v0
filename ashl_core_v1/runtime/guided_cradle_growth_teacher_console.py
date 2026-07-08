@@ -2955,6 +2955,121 @@ def validate_host_body_runtime_bridge_from_guided_cradle_growth_console() -> dic
     )
 
 
+def show_host_body_home_surface_demo_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.host_body.qingyin_home_internal_space_surface import (
+        build_demo_qingyin_home_internal_space_surface,
+    )
+
+    return _qingyin_home_surface_console_payload(
+        "host_body_show_home_surface_demo",
+        build_demo_qingyin_home_internal_space_surface(),
+    )
+
+
+def show_host_body_home_empty_surface_demo_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.host_body.qingyin_home_internal_space_surface import (
+        build_demo_empty_qingyin_home_surface,
+    )
+
+    return _qingyin_home_surface_console_payload(
+        "host_body_show_home_empty_surface_demo",
+        build_demo_empty_qingyin_home_surface(),
+    )
+
+
+def show_host_body_home_port_surface_demo_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.host_body.qingyin_home_internal_space_surface import (
+        build_demo_qingyin_home_internal_space_surface,
+    )
+
+    payload = build_demo_qingyin_home_internal_space_surface()
+    return _qingyin_home_surface_console_payload(
+        "host_body_show_home_port_surface_demo",
+        {"home_port_surface": payload["home_port_surface"]},
+    )
+
+
+def show_host_body_home_event_surface_demo_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.host_body.qingyin_home_internal_space_surface import (
+        build_demo_qingyin_home_internal_space_surface,
+    )
+
+    payload = build_demo_qingyin_home_internal_space_surface()
+    return _qingyin_home_surface_console_payload(
+        "host_body_show_home_event_surface_demo",
+        {"home_host_event_surface": payload["home_host_event_surface"]},
+    )
+
+
+def show_host_body_home_runtime_bridge_surface_demo_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.host_body.qingyin_home_internal_space_surface import (
+        build_demo_qingyin_home_internal_space_surface,
+    )
+
+    payload = build_demo_qingyin_home_internal_space_surface()
+    return _qingyin_home_surface_console_payload(
+        "host_body_show_home_runtime_bridge_surface_demo",
+        {"home_runtime_bridge_surface": payload["home_runtime_bridge_surface"]},
+    )
+
+
+def show_host_body_home_status_lights_demo_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.host_body.qingyin_home_internal_space_surface import (
+        build_demo_qingyin_home_internal_space_surface,
+    )
+
+    payload = build_demo_qingyin_home_internal_space_surface()
+    return _qingyin_home_surface_console_payload(
+        "host_body_show_home_status_lights_demo",
+        {"home_status_lights": payload["home_status_lights"]},
+    )
+
+
+def show_host_body_home_teacher_surface_demo_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.host_body.qingyin_home_internal_space_surface import (
+        build_demo_qingyin_home_internal_space_surface,
+    )
+
+    payload = build_demo_qingyin_home_internal_space_surface()
+    return _qingyin_home_surface_console_payload(
+        "host_body_show_home_teacher_surface_demo",
+        {"home_teacher_observed_surface": payload["home_teacher_observed_surface"]},
+    )
+
+
+def show_host_body_home_surface_readiness_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.host_body.qingyin_home_internal_space_surface import (
+        build_demo_qingyin_home_internal_space_surface,
+    )
+
+    payload = build_demo_qingyin_home_internal_space_surface()
+    return _qingyin_home_surface_console_payload(
+        "host_body_show_home_surface_readiness",
+        {
+            "home_internal_space_surface_readiness": payload[
+                "home_internal_space_surface_readiness"
+            ]
+        },
+    )
+
+
+def validate_host_body_home_surface_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.host_body.qingyin_home_internal_space_surface import (
+        build_demo_qingyin_home_internal_space_surface,
+        validate_qingyin_home_internal_space_surface_audit,
+    )
+
+    payload = build_demo_qingyin_home_internal_space_surface()
+    return _qingyin_home_surface_console_payload(
+        "host_body_validate_home_surface_demo",
+        {
+            "validation": validate_qingyin_home_internal_space_surface_audit(
+                payload["home_internal_space_surface_audit"]
+            )
+        },
+    )
+
+
 def _host_body_console_payload(
     action: str,
     payload: dict[str, Any],
@@ -3021,6 +3136,31 @@ def _host_body_runtime_bridge_console_payload(
         "speech_recognition_created": False,
         "action_selection_influence_created": False,
         "external_control_created": False,
+    }
+
+
+def _qingyin_home_surface_console_payload(
+    action: str,
+    payload: dict[str, Any],
+) -> dict[str, Any]:
+    return {
+        "guided_console_action": action,
+        **payload,
+        "unity_started": False,
+        "unity_runtime_connected": False,
+        "unity_scene_mutated": False,
+        "avatar_control_created": False,
+        "game_character_control_created": False,
+        "camera_connected": False,
+        "microphone_connected": False,
+        "semantic_vision_created": False,
+        "speech_recognition_created": False,
+        "action_selection_influence_created": False,
+        "teacher_approval_created": False,
+        "first_output_created": False,
+        "external_action_executed": False,
+        "memory_layer_write_performed": False,
+        "live_runtime_session_created": False,
     }
 
 

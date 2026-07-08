@@ -71,6 +71,14 @@ from ashl_core_v1.runtime.guided_cradle_growth_teacher_console import (
     show_host_body_idle_event_demo_from_guided_cradle_growth_console,
     show_host_body_camera_runtime_bridge_demo_from_guided_cradle_growth_console,
     show_host_body_idle_runtime_bridge_demo_from_guided_cradle_growth_console,
+    show_host_body_home_empty_surface_demo_from_guided_cradle_growth_console,
+    show_host_body_home_event_surface_demo_from_guided_cradle_growth_console,
+    show_host_body_home_port_surface_demo_from_guided_cradle_growth_console,
+    show_host_body_home_runtime_bridge_surface_demo_from_guided_cradle_growth_console,
+    show_host_body_home_status_lights_demo_from_guided_cradle_growth_console,
+    show_host_body_home_surface_demo_from_guided_cradle_growth_console,
+    show_host_body_home_surface_readiness_from_guided_cradle_growth_console,
+    show_host_body_home_teacher_surface_demo_from_guided_cradle_growth_console,
     show_host_body_identity_demo_from_guided_cradle_growth_console,
     show_host_body_internal_action_demo_from_guided_cradle_growth_console,
     show_host_body_internal_space_demo_from_guided_cradle_growth_console,
@@ -259,6 +267,7 @@ from ashl_core_v1.runtime.guided_cradle_growth_teacher_console import (
     validate_host_body_port_map_from_guided_cradle_growth_console,
     validate_host_body_sensor_event_from_guided_cradle_growth_console,
     validate_host_body_runtime_bridge_from_guided_cradle_growth_console,
+    validate_host_body_home_surface_from_guided_cradle_growth_console,
     validate_parent_frame_resume_demo_from_guided_cradle_growth_console,
     validate_reviewed_concept_readback_preview_from_guided_cradle_growth_console,
     validate_advisory_readback_ordering_application_from_guided_cradle_growth_console,
@@ -474,6 +483,15 @@ def build_parser() -> argparse.ArgumentParser:
     subparsers.add_parser("host-body-show-mixed-runtime-bridge-demo")
     subparsers.add_parser("host-body-show-runtime-bridge-readiness")
     subparsers.add_parser("host-body-validate-runtime-bridge-demo")
+    subparsers.add_parser("host-body-show-home-surface-demo")
+    subparsers.add_parser("host-body-show-home-empty-surface-demo")
+    subparsers.add_parser("host-body-show-home-port-surface-demo")
+    subparsers.add_parser("host-body-show-home-event-surface-demo")
+    subparsers.add_parser("host-body-show-home-runtime-bridge-surface-demo")
+    subparsers.add_parser("host-body-show-home-status-lights-demo")
+    subparsers.add_parser("host-body-show-home-teacher-surface-demo")
+    subparsers.add_parser("host-body-show-home-surface-readiness")
+    subparsers.add_parser("host-body-validate-home-surface-demo")
     subparsers.add_parser("task-apply-advisory-readback-ordering-demo")
     subparsers.add_parser("task-show-advisory-readback-ordering-teacher-gate")
     subparsers.add_parser("task-show-advisory-readback-ordering-application")
@@ -1339,6 +1357,42 @@ def main(argv: list[str] | None = None) -> int:
         if args.command == "host-body-validate-runtime-bridge-demo":
             return _print_json(
                 validate_host_body_runtime_bridge_from_guided_cradle_growth_console()
+            )
+        if args.command == "host-body-show-home-surface-demo":
+            return _print_json(
+                show_host_body_home_surface_demo_from_guided_cradle_growth_console()
+            )
+        if args.command == "host-body-show-home-empty-surface-demo":
+            return _print_json(
+                show_host_body_home_empty_surface_demo_from_guided_cradle_growth_console()
+            )
+        if args.command == "host-body-show-home-port-surface-demo":
+            return _print_json(
+                show_host_body_home_port_surface_demo_from_guided_cradle_growth_console()
+            )
+        if args.command == "host-body-show-home-event-surface-demo":
+            return _print_json(
+                show_host_body_home_event_surface_demo_from_guided_cradle_growth_console()
+            )
+        if args.command == "host-body-show-home-runtime-bridge-surface-demo":
+            return _print_json(
+                show_host_body_home_runtime_bridge_surface_demo_from_guided_cradle_growth_console()
+            )
+        if args.command == "host-body-show-home-status-lights-demo":
+            return _print_json(
+                show_host_body_home_status_lights_demo_from_guided_cradle_growth_console()
+            )
+        if args.command == "host-body-show-home-teacher-surface-demo":
+            return _print_json(
+                show_host_body_home_teacher_surface_demo_from_guided_cradle_growth_console()
+            )
+        if args.command == "host-body-show-home-surface-readiness":
+            return _print_json(
+                show_host_body_home_surface_readiness_from_guided_cradle_growth_console()
+            )
+        if args.command == "host-body-validate-home-surface-demo":
+            return _print_json(
+                validate_host_body_home_surface_from_guided_cradle_growth_console()
             )
         if args.command == "task-apply-advisory-readback-ordering-demo":
             return _print_json(
