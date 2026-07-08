@@ -2542,6 +2542,124 @@ def _fixed_closed_loop_playback_console_payload(
     }
 
 
+def show_bounded_handler_binding_sense_demo_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.runtime.bounded_handler_binding import (
+        build_demo_sense_handler_binding,
+    )
+
+    return _bounded_handler_binding_console_payload(
+        "runtime_show_bounded_handler_binding_sense_demo",
+        build_demo_sense_handler_binding(),
+    )
+
+
+def show_bounded_handler_binding_outcome_demo_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.runtime.bounded_handler_binding import (
+        build_demo_outcome_evaluation_handler_binding,
+    )
+
+    return _bounded_handler_binding_console_payload(
+        "runtime_show_bounded_handler_binding_outcome_demo",
+        build_demo_outcome_evaluation_handler_binding(),
+    )
+
+
+def show_bounded_handler_binding_learning_demo_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.runtime.bounded_handler_binding import (
+        build_demo_learning_feedback_handler_binding,
+    )
+
+    return _bounded_handler_binding_console_payload(
+        "runtime_show_bounded_handler_binding_learning_demo",
+        build_demo_learning_feedback_handler_binding(),
+    )
+
+
+def show_bounded_handler_binding_memory_demo_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.runtime.bounded_handler_binding import (
+        build_demo_working_readback_handler_binding,
+    )
+
+    return _bounded_handler_binding_console_payload(
+        "runtime_show_bounded_handler_binding_memory_demo",
+        build_demo_working_readback_handler_binding(),
+    )
+
+
+def show_bounded_handler_binding_selected_trace_demo_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.runtime.bounded_handler_binding import (
+        build_demo_selected_handler_binding_trace,
+    )
+
+    return _bounded_handler_binding_console_payload(
+        "runtime_show_bounded_handler_binding_selected_trace_demo",
+        build_demo_selected_handler_binding_trace(),
+    )
+
+
+def show_bounded_handler_binding_readiness_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.runtime.bounded_handler_binding import (
+        build_demo_selected_handler_binding_trace,
+    )
+
+    payload = build_demo_selected_handler_binding_trace()
+    return _bounded_handler_binding_console_payload(
+        "runtime_show_bounded_handler_binding_readiness",
+        {
+            "runtime_bounded_handler_binding_readiness": payload[
+                "runtime_bounded_handler_binding_readiness"
+            ]
+        },
+    )
+
+
+def validate_bounded_handler_binding_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.runtime.bounded_handler_binding import (
+        build_demo_selected_handler_binding_trace,
+        validate_runtime_bounded_handler_binding_audit,
+    )
+
+    payload = build_demo_selected_handler_binding_trace()
+    return {
+        "guided_console_action": "runtime_validate_bounded_handler_binding",
+        "validation": validate_runtime_bounded_handler_binding_audit(
+            payload["runtime_bounded_handler_binding_audit"]
+        ),
+        "background_process_started": False,
+        "dynamic_handler_selection_created": False,
+        "dynamic_scheduling_created": False,
+        "autonomous_scheduler_created": False,
+        "open_ended_loop_created": False,
+        "external_execution_created": False,
+        "memory_layer_write_performed": False,
+        "automatic_learning_approval_created": False,
+        "recursive_learning_created": False,
+        "new_learning_artifact_created": False,
+        "new_sandbox_execution_performed": False,
+    }
+
+
+def _bounded_handler_binding_console_payload(
+    action: str,
+    payload: dict[str, Any],
+) -> dict[str, Any]:
+    return {
+        "guided_console_action": action,
+        **payload,
+        "background_process_started": False,
+        "dynamic_handler_selection_created": False,
+        "dynamic_scheduling_created": False,
+        "autonomous_scheduler_created": False,
+        "open_ended_loop_created": False,
+        "external_execution_created": False,
+        "memory_layer_write_performed": False,
+        "automatic_learning_approval_created": False,
+        "recursive_learning_created": False,
+        "new_learning_artifact_created": False,
+        "new_sandbox_execution_performed": False,
+    }
+
+
 def apply_advisory_readback_ordering_demo_from_guided_cradle_growth_console() -> dict[str, Any]:
     from ashl_core_v1.task.advisory_readback_candidate_ordering_application import (
         build_demo_teacher_gated_ordering_application,
