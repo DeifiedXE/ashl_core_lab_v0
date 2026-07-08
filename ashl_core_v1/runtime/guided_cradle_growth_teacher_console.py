@@ -2660,6 +2660,144 @@ def _bounded_handler_binding_console_payload(
     }
 
 
+def show_host_body_port_map_demo_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.host_body.host_body_port_map import (
+        build_demo_qingyin_host_body_port_map,
+    )
+
+    return _host_body_console_payload(
+        "host_body_show_port_map_demo",
+        build_demo_qingyin_host_body_port_map(),
+    )
+
+
+def show_host_body_identity_demo_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.host_body.host_body_port_map import (
+        build_demo_qingyin_host_body_port_map,
+    )
+
+    payload = build_demo_qingyin_host_body_port_map()
+    return _host_body_console_payload(
+        "host_body_show_identity_demo",
+        {"host_body_identity": payload["host_body_identity"]},
+    )
+
+
+def show_host_body_camera_port_demo_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.host_body.host_body_port_map import (
+        build_demo_qingyin_host_body_port_map,
+    )
+
+    payload = build_demo_qingyin_host_body_port_map()
+    return _host_body_console_payload(
+        "host_body_show_camera_port_demo",
+        {"host_camera_port": payload["host_camera_port"]},
+    )
+
+
+def show_host_body_mic_port_demo_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.host_body.host_body_port_map import (
+        build_demo_qingyin_host_body_port_map,
+    )
+
+    payload = build_demo_qingyin_host_body_port_map()
+    return _host_body_console_payload(
+        "host_body_show_mic_port_demo",
+        {"host_mic_port": payload["host_mic_port"]},
+    )
+
+
+def show_host_body_internal_space_demo_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.host_body.host_body_port_map import (
+        build_demo_qingyin_host_body_port_map,
+    )
+
+    payload = build_demo_qingyin_host_body_port_map()
+    return _host_body_console_payload(
+        "host_body_show_internal_space_demo",
+        {"host_internal_space_port": payload["host_internal_space_port"]},
+    )
+
+
+def show_host_body_output_surface_demo_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.host_body.host_body_port_map import (
+        build_demo_qingyin_host_body_port_map,
+    )
+
+    payload = build_demo_qingyin_host_body_port_map()
+    return _host_body_console_payload(
+        "host_body_show_output_surface_demo",
+        {"host_output_surface_port": payload["host_output_surface_port"]},
+    )
+
+
+def show_host_body_internal_action_demo_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.host_body.host_body_port_map import (
+        build_demo_qingyin_host_body_port_map,
+    )
+
+    payload = build_demo_qingyin_host_body_port_map()
+    return _host_body_console_payload(
+        "host_body_show_internal_action_demo",
+        {"host_internal_action_port": payload["host_internal_action_port"]},
+    )
+
+
+def show_host_body_readiness_demo_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.host_body.host_body_port_map import (
+        build_demo_qingyin_host_body_port_map,
+    )
+
+    payload = build_demo_qingyin_host_body_port_map()
+    return _host_body_console_payload(
+        "host_body_show_readiness_demo",
+        {"host_body_readiness": payload["host_body_readiness"]},
+    )
+
+
+def validate_host_body_port_map_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.host_body.host_body_port_map import (
+        build_demo_qingyin_host_body_port_map,
+        validate_host_body_boundary_audit,
+    )
+
+    payload = build_demo_qingyin_host_body_port_map()
+    return {
+        "guided_console_action": "host_body_validate_port_map_demo",
+        "validation": validate_host_body_boundary_audit(
+            payload["host_body_boundary_audit"]
+        ),
+        "camera_connected": False,
+        "microphone_connected": False,
+        "unity_started": False,
+        "first_output_created": False,
+        "external_action_executed": False,
+        "memory_layer_write_performed": False,
+        "semantic_vision_created": False,
+        "speech_recognition_created": False,
+        "external_control_created": False,
+    }
+
+
+def _host_body_console_payload(
+    action: str,
+    payload: dict[str, Any],
+) -> dict[str, Any]:
+    return {
+        "guided_console_action": action,
+        **payload,
+        "camera_connected": False,
+        "microphone_connected": False,
+        "unity_started": False,
+        "first_output_created": False,
+        "external_action_executed": False,
+        "memory_layer_write_performed": False,
+        "semantic_vision_created": False,
+        "speech_recognition_created": False,
+        "external_control_created": False,
+    }
+
+
 def apply_advisory_readback_ordering_demo_from_guided_cradle_growth_console() -> dict[str, Any]:
     from ashl_core_v1.task.advisory_readback_candidate_ordering_application import (
         build_demo_teacher_gated_ordering_application,

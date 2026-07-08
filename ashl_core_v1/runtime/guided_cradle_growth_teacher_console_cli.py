@@ -65,6 +65,14 @@ from ashl_core_v1.runtime.guided_cradle_growth_teacher_console import (
     run_readback_contrast_from_guided_cradle_growth_console,
     run_state_resume_continuity_audit_from_guided_cradle_growth_console,
     run_state_resume_precheck_from_guided_cradle_growth_console,
+    show_host_body_camera_port_demo_from_guided_cradle_growth_console,
+    show_host_body_identity_demo_from_guided_cradle_growth_console,
+    show_host_body_internal_action_demo_from_guided_cradle_growth_console,
+    show_host_body_internal_space_demo_from_guided_cradle_growth_console,
+    show_host_body_mic_port_demo_from_guided_cradle_growth_console,
+    show_host_body_output_surface_demo_from_guided_cradle_growth_console,
+    show_host_body_port_map_demo_from_guided_cradle_growth_console,
+    show_host_body_readiness_demo_from_guided_cradle_growth_console,
     show_growth_readiness_from_guided_cradle_growth_console,
     show_concept_teaching_test_seed_from_guided_cradle_growth_console,
     show_concept_review_task_from_guided_cradle_growth_console,
@@ -236,6 +244,7 @@ from ashl_core_v1.runtime.guided_cradle_growth_teacher_console import (
     validate_event_dispatch_demo_from_guided_cradle_growth_console,
     validate_bounded_handler_binding_from_guided_cradle_growth_console,
     validate_integrated_event_loop_demo_from_guided_cradle_growth_console,
+    validate_host_body_port_map_from_guided_cradle_growth_console,
     validate_parent_frame_resume_demo_from_guided_cradle_growth_console,
     validate_reviewed_concept_readback_preview_from_guided_cradle_growth_console,
     validate_advisory_readback_ordering_application_from_guided_cradle_growth_console,
@@ -428,6 +437,15 @@ def build_parser() -> argparse.ArgumentParser:
     subparsers.add_parser("runtime-show-bounded-handler-binding-selected-trace-demo")
     subparsers.add_parser("runtime-show-bounded-handler-binding-readiness")
     subparsers.add_parser("runtime-validate-bounded-handler-binding-demo")
+    subparsers.add_parser("host-body-show-port-map-demo")
+    subparsers.add_parser("host-body-show-identity-demo")
+    subparsers.add_parser("host-body-show-camera-port-demo")
+    subparsers.add_parser("host-body-show-mic-port-demo")
+    subparsers.add_parser("host-body-show-internal-space-demo")
+    subparsers.add_parser("host-body-show-output-surface-demo")
+    subparsers.add_parser("host-body-show-internal-action-demo")
+    subparsers.add_parser("host-body-show-readiness-demo")
+    subparsers.add_parser("host-body-validate-port-map-demo")
     subparsers.add_parser("task-apply-advisory-readback-ordering-demo")
     subparsers.add_parser("task-show-advisory-readback-ordering-teacher-gate")
     subparsers.add_parser("task-show-advisory-readback-ordering-application")
@@ -1201,6 +1219,42 @@ def main(argv: list[str] | None = None) -> int:
         if args.command == "runtime-validate-bounded-handler-binding-demo":
             return _print_json(
                 validate_bounded_handler_binding_from_guided_cradle_growth_console()
+            )
+        if args.command == "host-body-show-port-map-demo":
+            return _print_json(
+                show_host_body_port_map_demo_from_guided_cradle_growth_console()
+            )
+        if args.command == "host-body-show-identity-demo":
+            return _print_json(
+                show_host_body_identity_demo_from_guided_cradle_growth_console()
+            )
+        if args.command == "host-body-show-camera-port-demo":
+            return _print_json(
+                show_host_body_camera_port_demo_from_guided_cradle_growth_console()
+            )
+        if args.command == "host-body-show-mic-port-demo":
+            return _print_json(
+                show_host_body_mic_port_demo_from_guided_cradle_growth_console()
+            )
+        if args.command == "host-body-show-internal-space-demo":
+            return _print_json(
+                show_host_body_internal_space_demo_from_guided_cradle_growth_console()
+            )
+        if args.command == "host-body-show-output-surface-demo":
+            return _print_json(
+                show_host_body_output_surface_demo_from_guided_cradle_growth_console()
+            )
+        if args.command == "host-body-show-internal-action-demo":
+            return _print_json(
+                show_host_body_internal_action_demo_from_guided_cradle_growth_console()
+            )
+        if args.command == "host-body-show-readiness-demo":
+            return _print_json(
+                show_host_body_readiness_demo_from_guided_cradle_growth_console()
+            )
+        if args.command == "host-body-validate-port-map-demo":
+            return _print_json(
+                validate_host_body_port_map_from_guided_cradle_growth_console()
             )
         if args.command == "task-apply-advisory-readback-ordering-demo":
             return _print_json(
