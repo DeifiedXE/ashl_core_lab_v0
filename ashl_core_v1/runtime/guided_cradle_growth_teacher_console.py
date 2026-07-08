@@ -3070,6 +3070,92 @@ def validate_host_body_home_surface_from_guided_cradle_growth_console() -> dict[
     )
 
 
+def show_host_body_trace_history_full_demo_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.host_body.host_body_trace_history_lane import (
+        build_demo_full_host_body_trace_history_lane,
+    )
+
+    return _host_body_trace_history_console_payload(
+        "host_body_show_trace_history_full_demo",
+        build_demo_full_host_body_trace_history_lane(),
+    )
+
+
+def show_host_body_trace_history_empty_demo_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.host_body.host_body_trace_history_lane import (
+        build_demo_empty_host_body_trace_history_lane,
+    )
+
+    return _host_body_trace_history_console_payload(
+        "host_body_show_trace_history_empty_demo",
+        build_demo_empty_host_body_trace_history_lane(),
+    )
+
+
+def show_host_body_trace_history_recent_demo_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.host_body.host_body_trace_history_lane import (
+        build_demo_recent_n_trace_history_readback,
+    )
+
+    return _host_body_trace_history_console_payload(
+        "host_body_show_trace_history_recent_demo",
+        build_demo_recent_n_trace_history_readback(),
+    )
+
+
+def show_host_body_trace_history_index_demo_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.host_body.host_body_trace_history_lane import (
+        build_demo_full_host_body_trace_history_lane,
+    )
+
+    payload = build_demo_full_host_body_trace_history_lane()
+    return _host_body_trace_history_console_payload(
+        "host_body_show_trace_history_index_demo",
+        {"trace_history_index": payload["trace_history_index"]},
+    )
+
+
+def show_host_body_trace_history_render_demo_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.host_body.host_body_trace_history_lane import (
+        build_demo_full_host_body_trace_history_lane,
+    )
+
+    payload = build_demo_full_host_body_trace_history_lane()
+    return _host_body_trace_history_console_payload(
+        "host_body_show_trace_history_render_demo",
+        {"trace_history_render": payload["trace_history_render"]},
+    )
+
+
+def show_host_body_trace_history_readiness_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.host_body.host_body_trace_history_lane import (
+        build_demo_full_host_body_trace_history_lane,
+    )
+
+    payload = build_demo_full_host_body_trace_history_lane()
+    return _host_body_trace_history_console_payload(
+        "host_body_show_trace_history_readiness",
+        {"trace_history_readiness": payload["trace_history_readiness"]},
+    )
+
+
+def validate_host_body_trace_history_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.host_body.host_body_trace_history_lane import (
+        build_demo_full_host_body_trace_history_lane,
+        validate_host_body_trace_history_audit,
+    )
+
+    payload = build_demo_full_host_body_trace_history_lane()
+    return _host_body_trace_history_console_payload(
+        "host_body_validate_trace_history_demo",
+        {
+            "validation": validate_host_body_trace_history_audit(
+                payload["trace_history_audit"]
+            )
+        },
+    )
+
+
 def _host_body_console_payload(
     action: str,
     payload: dict[str, Any],
@@ -3161,6 +3247,31 @@ def _qingyin_home_surface_console_payload(
         "external_action_executed": False,
         "memory_layer_write_performed": False,
         "live_runtime_session_created": False,
+    }
+
+
+def _host_body_trace_history_console_payload(
+    action: str,
+    payload: dict[str, Any],
+) -> dict[str, Any]:
+    return {
+        "guided_console_action": action,
+        **payload,
+        "memory_layer_write_performed": False,
+        "core_memory_write_performed": False,
+        "long_term_memory_write_performed": False,
+        "archive_memory_write_performed": False,
+        "anchor_write_performed": False,
+        "state_persistence_write_performed": False,
+        "retained_jsonl_write_performed": False,
+        "file_written": False,
+        "learning_candidate_created": False,
+        "action_selection_influence_created": False,
+        "external_action_executed": False,
+        "first_output_created": False,
+        "live_runtime_session_created": False,
+        "unity_runtime_mutated": False,
+        "production_behavior_created": False,
     }
 
 
