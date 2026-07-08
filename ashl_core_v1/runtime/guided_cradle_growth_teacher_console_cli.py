@@ -66,13 +66,20 @@ from ashl_core_v1.runtime.guided_cradle_growth_teacher_console import (
     run_state_resume_continuity_audit_from_guided_cradle_growth_console,
     run_state_resume_precheck_from_guided_cradle_growth_console,
     show_host_body_camera_port_demo_from_guided_cradle_growth_console,
+    show_host_body_camera_change_event_demo_from_guided_cradle_growth_console,
+    show_host_body_camera_frame_event_demo_from_guided_cradle_growth_console,
+    show_host_body_idle_event_demo_from_guided_cradle_growth_console,
     show_host_body_identity_demo_from_guided_cradle_growth_console,
     show_host_body_internal_action_demo_from_guided_cradle_growth_console,
     show_host_body_internal_space_demo_from_guided_cradle_growth_console,
     show_host_body_mic_port_demo_from_guided_cradle_growth_console,
+    show_host_body_mic_level_event_demo_from_guided_cradle_growth_console,
+    show_host_body_mic_peak_event_demo_from_guided_cradle_growth_console,
+    show_host_body_mixed_sensor_event_set_demo_from_guided_cradle_growth_console,
     show_host_body_output_surface_demo_from_guided_cradle_growth_console,
     show_host_body_port_map_demo_from_guided_cradle_growth_console,
     show_host_body_readiness_demo_from_guided_cradle_growth_console,
+    show_host_body_sensor_event_readiness_from_guided_cradle_growth_console,
     show_growth_readiness_from_guided_cradle_growth_console,
     show_concept_teaching_test_seed_from_guided_cradle_growth_console,
     show_concept_review_task_from_guided_cradle_growth_console,
@@ -245,6 +252,7 @@ from ashl_core_v1.runtime.guided_cradle_growth_teacher_console import (
     validate_bounded_handler_binding_from_guided_cradle_growth_console,
     validate_integrated_event_loop_demo_from_guided_cradle_growth_console,
     validate_host_body_port_map_from_guided_cradle_growth_console,
+    validate_host_body_sensor_event_from_guided_cradle_growth_console,
     validate_parent_frame_resume_demo_from_guided_cradle_growth_console,
     validate_reviewed_concept_readback_preview_from_guided_cradle_growth_console,
     validate_advisory_readback_ordering_application_from_guided_cradle_growth_console,
@@ -446,6 +454,14 @@ def build_parser() -> argparse.ArgumentParser:
     subparsers.add_parser("host-body-show-internal-action-demo")
     subparsers.add_parser("host-body-show-readiness-demo")
     subparsers.add_parser("host-body-validate-port-map-demo")
+    subparsers.add_parser("host-body-show-camera-frame-event-demo")
+    subparsers.add_parser("host-body-show-camera-change-event-demo")
+    subparsers.add_parser("host-body-show-mic-level-event-demo")
+    subparsers.add_parser("host-body-show-mic-peak-event-demo")
+    subparsers.add_parser("host-body-show-idle-event-demo")
+    subparsers.add_parser("host-body-show-mixed-sensor-event-set-demo")
+    subparsers.add_parser("host-body-show-sensor-event-readiness")
+    subparsers.add_parser("host-body-validate-sensor-event-demo")
     subparsers.add_parser("task-apply-advisory-readback-ordering-demo")
     subparsers.add_parser("task-show-advisory-readback-ordering-teacher-gate")
     subparsers.add_parser("task-show-advisory-readback-ordering-application")
@@ -1255,6 +1271,38 @@ def main(argv: list[str] | None = None) -> int:
         if args.command == "host-body-validate-port-map-demo":
             return _print_json(
                 validate_host_body_port_map_from_guided_cradle_growth_console()
+            )
+        if args.command == "host-body-show-camera-frame-event-demo":
+            return _print_json(
+                show_host_body_camera_frame_event_demo_from_guided_cradle_growth_console()
+            )
+        if args.command == "host-body-show-camera-change-event-demo":
+            return _print_json(
+                show_host_body_camera_change_event_demo_from_guided_cradle_growth_console()
+            )
+        if args.command == "host-body-show-mic-level-event-demo":
+            return _print_json(
+                show_host_body_mic_level_event_demo_from_guided_cradle_growth_console()
+            )
+        if args.command == "host-body-show-mic-peak-event-demo":
+            return _print_json(
+                show_host_body_mic_peak_event_demo_from_guided_cradle_growth_console()
+            )
+        if args.command == "host-body-show-idle-event-demo":
+            return _print_json(
+                show_host_body_idle_event_demo_from_guided_cradle_growth_console()
+            )
+        if args.command == "host-body-show-mixed-sensor-event-set-demo":
+            return _print_json(
+                show_host_body_mixed_sensor_event_set_demo_from_guided_cradle_growth_console()
+            )
+        if args.command == "host-body-show-sensor-event-readiness":
+            return _print_json(
+                show_host_body_sensor_event_readiness_from_guided_cradle_growth_console()
+            )
+        if args.command == "host-body-validate-sensor-event-demo":
+            return _print_json(
+                validate_host_body_sensor_event_from_guided_cradle_growth_console()
             )
         if args.command == "task-apply-advisory-readback-ordering-demo":
             return _print_json(

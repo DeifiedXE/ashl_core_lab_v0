@@ -2779,6 +2779,105 @@ def validate_host_body_port_map_from_guided_cradle_growth_console() -> dict[str,
     }
 
 
+def show_host_body_camera_frame_event_demo_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.host_body.host_body_sensor_events import (
+        build_demo_camera_frame_available_event,
+    )
+
+    return _host_body_sensor_event_console_payload(
+        "host_body_show_camera_frame_event_demo",
+        build_demo_camera_frame_available_event(),
+    )
+
+
+def show_host_body_camera_change_event_demo_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.host_body.host_body_sensor_events import (
+        build_demo_camera_frame_changed_event,
+    )
+
+    return _host_body_sensor_event_console_payload(
+        "host_body_show_camera_change_event_demo",
+        build_demo_camera_frame_changed_event(),
+    )
+
+
+def show_host_body_mic_level_event_demo_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.host_body.host_body_sensor_events import (
+        build_demo_mic_level_changed_event,
+    )
+
+    return _host_body_sensor_event_console_payload(
+        "host_body_show_mic_level_event_demo",
+        build_demo_mic_level_changed_event(),
+    )
+
+
+def show_host_body_mic_peak_event_demo_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.host_body.host_body_sensor_events import (
+        build_demo_mic_peak_detected_event,
+    )
+
+    return _host_body_sensor_event_console_payload(
+        "host_body_show_mic_peak_event_demo",
+        build_demo_mic_peak_detected_event(),
+    )
+
+
+def show_host_body_idle_event_demo_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.host_body.host_body_sensor_events import (
+        build_demo_host_idle_event,
+    )
+
+    return _host_body_sensor_event_console_payload(
+        "host_body_show_idle_event_demo",
+        build_demo_host_idle_event(),
+    )
+
+
+def show_host_body_mixed_sensor_event_set_demo_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.host_body.host_body_sensor_events import (
+        build_demo_mixed_host_sensor_event_set,
+    )
+
+    return _host_body_sensor_event_console_payload(
+        "host_body_show_mixed_sensor_event_set_demo",
+        build_demo_mixed_host_sensor_event_set(),
+    )
+
+
+def show_host_body_sensor_event_readiness_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.host_body.host_body_sensor_events import (
+        build_demo_mixed_host_sensor_event_set,
+    )
+
+    payload = build_demo_mixed_host_sensor_event_set()
+    return _host_body_sensor_event_console_payload(
+        "host_body_show_sensor_event_readiness",
+        {
+            "host_body_sensor_event_readiness": payload[
+                "host_body_sensor_event_readiness"
+            ]
+        },
+    )
+
+
+def validate_host_body_sensor_event_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.host_body.host_body_sensor_events import (
+        build_demo_mixed_host_sensor_event_set,
+        validate_host_body_sensor_event_audit,
+    )
+
+    payload = build_demo_mixed_host_sensor_event_set()
+    return _host_body_sensor_event_console_payload(
+        "host_body_validate_sensor_event_demo",
+        {
+            "validation": validate_host_body_sensor_event_audit(
+                payload["host_body_sensor_event_audit"]
+            )
+        },
+    )
+
+
 def _host_body_console_payload(
     action: str,
     payload: dict[str, Any],
@@ -2795,6 +2894,30 @@ def _host_body_console_payload(
         "semantic_vision_created": False,
         "speech_recognition_created": False,
         "external_control_created": False,
+    }
+
+
+def _host_body_sensor_event_console_payload(
+    action: str,
+    payload: dict[str, Any],
+) -> dict[str, Any]:
+    return {
+        "guided_console_action": action,
+        **payload,
+        "camera_connected": False,
+        "microphone_connected": False,
+        "camera_capture_started": False,
+        "mic_stream_started": False,
+        "unity_started": False,
+        "runtime_eventframe_bridge_created": False,
+        "first_output_created": False,
+        "external_action_executed": False,
+        "memory_layer_write_performed": False,
+        "automatic_learning_approval_created": False,
+        "semantic_vision_created": False,
+        "speech_recognition_created": False,
+        "external_control_created": False,
+        "live_runtime_session_created": False,
     }
 
 
