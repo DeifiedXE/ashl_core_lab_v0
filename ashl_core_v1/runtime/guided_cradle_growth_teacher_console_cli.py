@@ -104,6 +104,10 @@ from ashl_core_v1.runtime.guided_cradle_growth_teacher_console import (
     show_event_dispatch_state_demo_from_guided_cradle_growth_console,
     show_event_dispatch_task_demo_from_guided_cradle_growth_console,
     show_event_dispatch_thought_deferred_demo_from_guided_cradle_growth_console,
+    show_fixed_closed_loop_playback_demo_from_guided_cradle_growth_console,
+    show_fixed_closed_loop_playback_grouped_demo_from_guided_cradle_growth_console,
+    show_fixed_closed_loop_playback_readiness_from_guided_cradle_growth_console,
+    show_fixed_closed_loop_playback_render_from_guided_cradle_growth_console,
     show_integrated_loop_four_level_demo_from_guided_cradle_growth_console,
     show_integrated_loop_nested_sense_demo_from_guided_cradle_growth_console,
     show_integrated_loop_readiness_demo_from_guided_cradle_growth_console,
@@ -232,6 +236,7 @@ from ashl_core_v1.runtime.guided_cradle_growth_teacher_console import (
     validate_selected_action_application_from_guided_cradle_growth_console,
     validate_final_action_application_from_guided_cradle_growth_console,
     validate_direct_command_execution_from_guided_cradle_growth_console,
+    validate_fixed_closed_loop_playback_from_guided_cradle_growth_console,
 )
 
 
@@ -404,6 +409,11 @@ def build_parser() -> argparse.ArgumentParser:
     subparsers.add_parser("runtime-show-integrated-loop-render-demo")
     subparsers.add_parser("runtime-show-integrated-loop-readiness-demo")
     subparsers.add_parser("runtime-validate-integrated-event-loop-demo")
+    subparsers.add_parser("runtime-show-fixed-closed-loop-playback-demo")
+    subparsers.add_parser("runtime-show-fixed-closed-loop-playback-grouped-demo")
+    subparsers.add_parser("runtime-show-fixed-closed-loop-playback-render")
+    subparsers.add_parser("runtime-show-fixed-closed-loop-playback-readiness")
+    subparsers.add_parser("runtime-validate-fixed-closed-loop-playback")
     subparsers.add_parser("task-apply-advisory-readback-ordering-demo")
     subparsers.add_parser("task-show-advisory-readback-ordering-teacher-gate")
     subparsers.add_parser("task-show-advisory-readback-ordering-application")
@@ -1129,6 +1139,26 @@ def main(argv: list[str] | None = None) -> int:
         if args.command == "runtime-validate-integrated-event-loop-demo":
             return _print_json(
                 validate_integrated_event_loop_demo_from_guided_cradle_growth_console()
+            )
+        if args.command == "runtime-show-fixed-closed-loop-playback-demo":
+            return _print_json(
+                show_fixed_closed_loop_playback_demo_from_guided_cradle_growth_console()
+            )
+        if args.command == "runtime-show-fixed-closed-loop-playback-grouped-demo":
+            return _print_json(
+                show_fixed_closed_loop_playback_grouped_demo_from_guided_cradle_growth_console()
+            )
+        if args.command == "runtime-show-fixed-closed-loop-playback-render":
+            return _print_json(
+                show_fixed_closed_loop_playback_render_from_guided_cradle_growth_console()
+            )
+        if args.command == "runtime-show-fixed-closed-loop-playback-readiness":
+            return _print_json(
+                show_fixed_closed_loop_playback_readiness_from_guided_cradle_growth_console()
+            )
+        if args.command == "runtime-validate-fixed-closed-loop-playback":
+            return _print_json(
+                validate_fixed_closed_loop_playback_from_guided_cradle_growth_console()
             )
         if args.command == "task-apply-advisory-readback-ordering-demo":
             return _print_json(

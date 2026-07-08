@@ -2442,6 +2442,106 @@ def _integrated_loop_console_payload(
     }
 
 
+def show_fixed_closed_loop_playback_demo_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.runtime.fixed_closed_loop_playback import (
+        build_demo_full_fixed_closed_loop_playback,
+    )
+
+    return _fixed_closed_loop_playback_console_payload(
+        "runtime_show_fixed_closed_loop_playback_demo",
+        build_demo_full_fixed_closed_loop_playback(),
+    )
+
+
+def show_fixed_closed_loop_playback_grouped_demo_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.runtime.fixed_closed_loop_playback import (
+        build_demo_grouped_stage_fixed_closed_loop_playback,
+    )
+
+    return _fixed_closed_loop_playback_console_payload(
+        "runtime_show_fixed_closed_loop_playback_grouped_demo",
+        build_demo_grouped_stage_fixed_closed_loop_playback(),
+    )
+
+
+def show_fixed_closed_loop_playback_render_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.runtime.fixed_closed_loop_playback import (
+        build_demo_full_fixed_closed_loop_playback,
+    )
+
+    payload = build_demo_full_fixed_closed_loop_playback()
+    return _fixed_closed_loop_playback_console_payload(
+        "runtime_show_fixed_closed_loop_playback_render",
+        {
+            "runtime_fixed_closed_loop_playback_render": payload[
+                "runtime_fixed_closed_loop_playback_render"
+            ],
+            "rendered_fixed_closed_loop_playback_timeline": payload[
+                "rendered_fixed_closed_loop_playback_timeline"
+            ],
+        },
+    )
+
+
+def show_fixed_closed_loop_playback_readiness_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.runtime.fixed_closed_loop_playback import (
+        build_demo_full_fixed_closed_loop_playback,
+    )
+
+    payload = build_demo_full_fixed_closed_loop_playback()
+    return _fixed_closed_loop_playback_console_payload(
+        "runtime_show_fixed_closed_loop_playback_readiness",
+        {
+            "runtime_fixed_closed_loop_playback_readiness": payload[
+                "runtime_fixed_closed_loop_playback_readiness"
+            ]
+        },
+    )
+
+
+def validate_fixed_closed_loop_playback_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.runtime.fixed_closed_loop_playback import (
+        build_demo_full_fixed_closed_loop_playback,
+        validate_runtime_fixed_closed_loop_playback_audit,
+    )
+
+    payload = build_demo_full_fixed_closed_loop_playback()
+    return {
+        "guided_console_action": "runtime_validate_fixed_closed_loop_playback",
+        "validation": validate_runtime_fixed_closed_loop_playback_audit(
+            payload["runtime_fixed_closed_loop_playback_audit"]
+        ),
+        "background_process_started": False,
+        "dynamic_scheduling_created": False,
+        "autonomous_scheduler_created": False,
+        "open_ended_loop_created": False,
+        "external_execution_created": False,
+        "memory_layer_write_performed": False,
+        "automatic_learning_approval_created": False,
+        "recursive_learning_created": False,
+        "new_learning_artifact_created": False,
+    }
+
+
+def _fixed_closed_loop_playback_console_payload(
+    action: str,
+    payload: dict[str, Any],
+) -> dict[str, Any]:
+    return {
+        "guided_console_action": action,
+        **payload,
+        "background_process_started": False,
+        "dynamic_scheduling_created": False,
+        "autonomous_scheduler_created": False,
+        "open_ended_loop_created": False,
+        "external_execution_created": False,
+        "memory_layer_write_performed": False,
+        "automatic_learning_approval_created": False,
+        "recursive_learning_created": False,
+        "new_learning_artifact_created": False,
+    }
+
+
 def apply_advisory_readback_ordering_demo_from_guided_cradle_growth_console() -> dict[str, Any]:
     from ashl_core_v1.task.advisory_readback_candidate_ordering_application import (
         build_demo_teacher_gated_ordering_application,
