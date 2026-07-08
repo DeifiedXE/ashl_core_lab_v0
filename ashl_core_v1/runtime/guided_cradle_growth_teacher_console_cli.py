@@ -85,6 +85,12 @@ from ashl_core_v1.runtime.guided_cradle_growth_teacher_console import (
     show_host_body_trace_history_readiness_from_guided_cradle_growth_console,
     show_host_body_trace_history_recent_demo_from_guided_cradle_growth_console,
     show_host_body_trace_history_render_demo_from_guided_cradle_growth_console,
+    show_host_body_internal_action_camera_interesting_demo_from_guided_cradle_growth_console,
+    show_host_body_internal_action_observe_again_demo_from_guided_cradle_growth_console,
+    show_host_body_internal_action_readiness_from_guided_cradle_growth_console,
+    show_host_body_internal_action_teacher_review_demo_from_guided_cradle_growth_console,
+    show_host_body_internal_action_uncertain_demo_from_guided_cradle_growth_console,
+    show_host_body_internal_action_update_home_status_demo_from_guided_cradle_growth_console,
     show_host_body_identity_demo_from_guided_cradle_growth_console,
     show_host_body_internal_action_demo_from_guided_cradle_growth_console,
     show_host_body_internal_space_demo_from_guided_cradle_growth_console,
@@ -275,6 +281,7 @@ from ashl_core_v1.runtime.guided_cradle_growth_teacher_console import (
     validate_host_body_runtime_bridge_from_guided_cradle_growth_console,
     validate_host_body_home_surface_from_guided_cradle_growth_console,
     validate_host_body_trace_history_from_guided_cradle_growth_console,
+    validate_host_body_internal_action_choice_from_guided_cradle_growth_console,
     validate_parent_frame_resume_demo_from_guided_cradle_growth_console,
     validate_reviewed_concept_readback_preview_from_guided_cradle_growth_console,
     validate_advisory_readback_ordering_application_from_guided_cradle_growth_console,
@@ -506,6 +513,13 @@ def build_parser() -> argparse.ArgumentParser:
     subparsers.add_parser("host-body-show-trace-history-render-demo")
     subparsers.add_parser("host-body-show-trace-history-readiness")
     subparsers.add_parser("host-body-validate-trace-history-demo")
+    subparsers.add_parser("host-body-show-internal-action-camera-interesting-demo")
+    subparsers.add_parser("host-body-show-internal-action-uncertain-demo")
+    subparsers.add_parser("host-body-show-internal-action-teacher-review-demo")
+    subparsers.add_parser("host-body-show-internal-action-observe-again-demo")
+    subparsers.add_parser("host-body-show-internal-action-update-home-status-demo")
+    subparsers.add_parser("host-body-show-internal-action-readiness")
+    subparsers.add_parser("host-body-validate-internal-action-choice-demo")
     subparsers.add_parser("task-apply-advisory-readback-ordering-demo")
     subparsers.add_parser("task-show-advisory-readback-ordering-teacher-gate")
     subparsers.add_parser("task-show-advisory-readback-ordering-application")
@@ -1435,6 +1449,34 @@ def main(argv: list[str] | None = None) -> int:
         if args.command == "host-body-validate-trace-history-demo":
             return _print_json(
                 validate_host_body_trace_history_from_guided_cradle_growth_console()
+            )
+        if args.command == "host-body-show-internal-action-camera-interesting-demo":
+            return _print_json(
+                show_host_body_internal_action_camera_interesting_demo_from_guided_cradle_growth_console()
+            )
+        if args.command == "host-body-show-internal-action-uncertain-demo":
+            return _print_json(
+                show_host_body_internal_action_uncertain_demo_from_guided_cradle_growth_console()
+            )
+        if args.command == "host-body-show-internal-action-teacher-review-demo":
+            return _print_json(
+                show_host_body_internal_action_teacher_review_demo_from_guided_cradle_growth_console()
+            )
+        if args.command == "host-body-show-internal-action-observe-again-demo":
+            return _print_json(
+                show_host_body_internal_action_observe_again_demo_from_guided_cradle_growth_console()
+            )
+        if args.command == "host-body-show-internal-action-update-home-status-demo":
+            return _print_json(
+                show_host_body_internal_action_update_home_status_demo_from_guided_cradle_growth_console()
+            )
+        if args.command == "host-body-show-internal-action-readiness":
+            return _print_json(
+                show_host_body_internal_action_readiness_from_guided_cradle_growth_console()
+            )
+        if args.command == "host-body-validate-internal-action-choice-demo":
+            return _print_json(
+                validate_host_body_internal_action_choice_from_guided_cradle_growth_console()
             )
         if args.command == "task-apply-advisory-readback-ordering-demo":
             return _print_json(

@@ -3156,6 +3156,94 @@ def validate_host_body_trace_history_from_guided_cradle_growth_console() -> dict
     )
 
 
+def show_host_body_internal_action_camera_interesting_demo_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.host_body.host_body_internal_action_choice import (
+        build_demo_camera_change_marks_interesting,
+    )
+
+    return _host_body_internal_action_console_payload(
+        "host_body_show_internal_action_camera_interesting_demo",
+        build_demo_camera_change_marks_interesting(),
+    )
+
+
+def show_host_body_internal_action_uncertain_demo_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.host_body.host_body_internal_action_choice import (
+        build_demo_unknown_event_marks_uncertain,
+    )
+
+    return _host_body_internal_action_console_payload(
+        "host_body_show_internal_action_uncertain_demo",
+        build_demo_unknown_event_marks_uncertain(),
+    )
+
+
+def show_host_body_internal_action_teacher_review_demo_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.host_body.host_body_internal_action_choice import (
+        build_demo_deferred_dispatch_requests_teacher_review,
+    )
+
+    return _host_body_internal_action_console_payload(
+        "host_body_show_internal_action_teacher_review_demo",
+        build_demo_deferred_dispatch_requests_teacher_review(),
+    )
+
+
+def show_host_body_internal_action_observe_again_demo_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.host_body.host_body_internal_action_choice import (
+        build_demo_host_idle_observe_again,
+    )
+
+    return _host_body_internal_action_console_payload(
+        "host_body_show_internal_action_observe_again_demo",
+        build_demo_host_idle_observe_again(),
+    )
+
+
+def show_host_body_internal_action_update_home_status_demo_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.host_body.host_body_internal_action_choice import (
+        build_demo_update_home_status_choice,
+    )
+
+    return _host_body_internal_action_console_payload(
+        "host_body_show_internal_action_update_home_status_demo",
+        build_demo_update_home_status_choice(),
+    )
+
+
+def show_host_body_internal_action_readiness_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.host_body.host_body_internal_action_choice import (
+        build_demo_camera_change_marks_interesting,
+    )
+
+    payload = build_demo_camera_change_marks_interesting()
+    return _host_body_internal_action_console_payload(
+        "host_body_show_internal_action_readiness",
+        {
+            "internal_action_choice_readiness": payload[
+                "internal_action_choice_readiness"
+            ]
+        },
+    )
+
+
+def validate_host_body_internal_action_choice_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.host_body.host_body_internal_action_choice import (
+        build_demo_camera_change_marks_interesting,
+        validate_host_body_internal_action_choice_audit,
+    )
+
+    payload = build_demo_camera_change_marks_interesting()
+    return _host_body_internal_action_console_payload(
+        "host_body_validate_internal_action_choice_demo",
+        {
+            "validation": validate_host_body_internal_action_choice_audit(
+                payload["internal_action_choice_audit"]
+            )
+        },
+    )
+
+
 def _host_body_console_payload(
     action: str,
     payload: dict[str, Any],
@@ -3271,6 +3359,36 @@ def _host_body_trace_history_console_payload(
         "first_output_created": False,
         "live_runtime_session_created": False,
         "unity_runtime_mutated": False,
+        "production_behavior_created": False,
+    }
+
+
+def _host_body_internal_action_console_payload(
+    action: str,
+    payload: dict[str, Any],
+) -> dict[str, Any]:
+    return {
+        "guided_console_action": action,
+        **payload,
+        "task_selected_action_created": False,
+        "final_action_created": False,
+        "direct_command_created": False,
+        "sandbox_execution_created": False,
+        "external_control_created": False,
+        "os_control_created": False,
+        "mouse_control_created": False,
+        "keyboard_control_created": False,
+        "browser_control_created": False,
+        "file_operation_created": False,
+        "network_execution_created": False,
+        "shell_execution_created": False,
+        "external_api_call_created": False,
+        "memory_layer_write_performed": False,
+        "learning_candidate_created": False,
+        "automatic_learning_approval_created": False,
+        "teacher_approval_created": False,
+        "first_output_created": False,
+        "live_runtime_session_created": False,
         "production_behavior_created": False,
     }
 
