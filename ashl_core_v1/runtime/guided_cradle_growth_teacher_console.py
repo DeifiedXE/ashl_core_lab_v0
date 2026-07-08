@@ -3244,6 +3244,94 @@ def validate_host_body_internal_action_choice_from_guided_cradle_growth_console(
     )
 
 
+def show_host_body_v0_milestone_pass_demo_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.host_body.qingyin_host_body_v0_milestone_audit import (
+        build_demo_qingyin_host_body_v0_milestone_pass,
+    )
+
+    return _host_body_v0_milestone_console_payload(
+        "host_body_show_v0_milestone_pass_demo",
+        build_demo_qingyin_host_body_v0_milestone_pass(),
+    )
+
+
+def show_host_body_v0_scope_demo_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.host_body.qingyin_host_body_v0_milestone_audit import (
+        build_demo_qingyin_host_body_v0_milestone_pass,
+    )
+
+    payload = build_demo_qingyin_host_body_v0_milestone_pass()
+    return _host_body_v0_milestone_console_payload(
+        "host_body_show_v0_scope_demo",
+        {"host_body_v0_scope": payload["host_body_v0_scope"]},
+    )
+
+
+def show_host_body_v0_capability_ledger_demo_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.host_body.qingyin_host_body_v0_milestone_audit import (
+        build_demo_qingyin_host_body_v0_milestone_pass,
+    )
+
+    payload = build_demo_qingyin_host_body_v0_milestone_pass()
+    return _host_body_v0_milestone_console_payload(
+        "host_body_show_v0_capability_ledger_demo",
+        {"host_body_v0_capability_ledger": payload["host_body_v0_capability_ledger"]},
+    )
+
+
+def show_host_body_v0_boundary_ledger_demo_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.host_body.qingyin_host_body_v0_milestone_audit import (
+        build_demo_qingyin_host_body_v0_milestone_pass,
+    )
+
+    payload = build_demo_qingyin_host_body_v0_milestone_pass()
+    return _host_body_v0_milestone_console_payload(
+        "host_body_show_v0_boundary_ledger_demo",
+        {"host_body_v0_boundary_ledger": payload["host_body_v0_boundary_ledger"]},
+    )
+
+
+def show_host_body_v0_integrated_trace_demo_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.host_body.qingyin_host_body_v0_milestone_audit import (
+        build_demo_qingyin_host_body_v0_milestone_pass,
+    )
+
+    payload = build_demo_qingyin_host_body_v0_milestone_pass()
+    return _host_body_v0_milestone_console_payload(
+        "host_body_show_v0_integrated_trace_demo",
+        {"host_body_v0_integrated_trace": payload["host_body_v0_integrated_trace"]},
+    )
+
+
+def show_host_body_v0_readiness_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.host_body.qingyin_host_body_v0_milestone_audit import (
+        build_demo_qingyin_host_body_v0_milestone_pass,
+    )
+
+    payload = build_demo_qingyin_host_body_v0_milestone_pass()
+    return _host_body_v0_milestone_console_payload(
+        "host_body_show_v0_readiness",
+        {"host_body_v0_readiness": payload["host_body_v0_readiness"]},
+    )
+
+
+def validate_host_body_v0_milestone_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.host_body.qingyin_host_body_v0_milestone_audit import (
+        build_demo_qingyin_host_body_v0_milestone_pass,
+        validate_qingyin_host_body_v0_milestone_audit,
+    )
+
+    payload = build_demo_qingyin_host_body_v0_milestone_pass()
+    return _host_body_v0_milestone_console_payload(
+        "host_body_validate_v0_milestone_demo",
+        {
+            "validation": validate_qingyin_host_body_v0_milestone_audit(
+                payload["host_body_v0_milestone_audit"]
+            )
+        },
+    )
+
+
 def _host_body_console_payload(
     action: str,
     payload: dict[str, Any],
@@ -3389,6 +3477,31 @@ def _host_body_internal_action_console_payload(
         "teacher_approval_created": False,
         "first_output_created": False,
         "live_runtime_session_created": False,
+        "production_behavior_created": False,
+    }
+
+
+def _host_body_v0_milestone_console_payload(
+    action: str,
+    payload: dict[str, Any],
+) -> dict[str, Any]:
+    return {
+        "guided_console_action": action,
+        **payload,
+        "new_host_body_capability_created": False,
+        "real_hardware_access_created": False,
+        "semantic_vision_created": False,
+        "speech_recognition_created": False,
+        "task_selected_action_created": False,
+        "external_control_created": False,
+        "unity_runtime_connected": False,
+        "memory_layer_write_performed": False,
+        "learning_candidate_created": False,
+        "automatic_learning_approval_created": False,
+        "teacher_approval_created": False,
+        "first_output_created": False,
+        "live_runtime_session_created": False,
+        "thought_engine_behavior_created": False,
         "production_behavior_created": False,
     }
 

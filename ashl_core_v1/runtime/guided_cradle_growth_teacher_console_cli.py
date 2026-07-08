@@ -91,6 +91,12 @@ from ashl_core_v1.runtime.guided_cradle_growth_teacher_console import (
     show_host_body_internal_action_teacher_review_demo_from_guided_cradle_growth_console,
     show_host_body_internal_action_uncertain_demo_from_guided_cradle_growth_console,
     show_host_body_internal_action_update_home_status_demo_from_guided_cradle_growth_console,
+    show_host_body_v0_boundary_ledger_demo_from_guided_cradle_growth_console,
+    show_host_body_v0_capability_ledger_demo_from_guided_cradle_growth_console,
+    show_host_body_v0_integrated_trace_demo_from_guided_cradle_growth_console,
+    show_host_body_v0_milestone_pass_demo_from_guided_cradle_growth_console,
+    show_host_body_v0_readiness_from_guided_cradle_growth_console,
+    show_host_body_v0_scope_demo_from_guided_cradle_growth_console,
     show_host_body_identity_demo_from_guided_cradle_growth_console,
     show_host_body_internal_action_demo_from_guided_cradle_growth_console,
     show_host_body_internal_space_demo_from_guided_cradle_growth_console,
@@ -282,6 +288,7 @@ from ashl_core_v1.runtime.guided_cradle_growth_teacher_console import (
     validate_host_body_home_surface_from_guided_cradle_growth_console,
     validate_host_body_trace_history_from_guided_cradle_growth_console,
     validate_host_body_internal_action_choice_from_guided_cradle_growth_console,
+    validate_host_body_v0_milestone_from_guided_cradle_growth_console,
     validate_parent_frame_resume_demo_from_guided_cradle_growth_console,
     validate_reviewed_concept_readback_preview_from_guided_cradle_growth_console,
     validate_advisory_readback_ordering_application_from_guided_cradle_growth_console,
@@ -520,6 +527,13 @@ def build_parser() -> argparse.ArgumentParser:
     subparsers.add_parser("host-body-show-internal-action-update-home-status-demo")
     subparsers.add_parser("host-body-show-internal-action-readiness")
     subparsers.add_parser("host-body-validate-internal-action-choice-demo")
+    subparsers.add_parser("host-body-show-v0-milestone-pass-demo")
+    subparsers.add_parser("host-body-show-v0-scope-demo")
+    subparsers.add_parser("host-body-show-v0-capability-ledger-demo")
+    subparsers.add_parser("host-body-show-v0-boundary-ledger-demo")
+    subparsers.add_parser("host-body-show-v0-integrated-trace-demo")
+    subparsers.add_parser("host-body-show-v0-readiness")
+    subparsers.add_parser("host-body-validate-v0-milestone-demo")
     subparsers.add_parser("task-apply-advisory-readback-ordering-demo")
     subparsers.add_parser("task-show-advisory-readback-ordering-teacher-gate")
     subparsers.add_parser("task-show-advisory-readback-ordering-application")
@@ -1477,6 +1491,34 @@ def main(argv: list[str] | None = None) -> int:
         if args.command == "host-body-validate-internal-action-choice-demo":
             return _print_json(
                 validate_host_body_internal_action_choice_from_guided_cradle_growth_console()
+            )
+        if args.command == "host-body-show-v0-milestone-pass-demo":
+            return _print_json(
+                show_host_body_v0_milestone_pass_demo_from_guided_cradle_growth_console()
+            )
+        if args.command == "host-body-show-v0-scope-demo":
+            return _print_json(
+                show_host_body_v0_scope_demo_from_guided_cradle_growth_console()
+            )
+        if args.command == "host-body-show-v0-capability-ledger-demo":
+            return _print_json(
+                show_host_body_v0_capability_ledger_demo_from_guided_cradle_growth_console()
+            )
+        if args.command == "host-body-show-v0-boundary-ledger-demo":
+            return _print_json(
+                show_host_body_v0_boundary_ledger_demo_from_guided_cradle_growth_console()
+            )
+        if args.command == "host-body-show-v0-integrated-trace-demo":
+            return _print_json(
+                show_host_body_v0_integrated_trace_demo_from_guided_cradle_growth_console()
+            )
+        if args.command == "host-body-show-v0-readiness":
+            return _print_json(
+                show_host_body_v0_readiness_from_guided_cradle_growth_console()
+            )
+        if args.command == "host-body-validate-v0-milestone-demo":
+            return _print_json(
+                validate_host_body_v0_milestone_from_guided_cradle_growth_console()
             )
         if args.command == "task-apply-advisory-readback-ordering-demo":
             return _print_json(
