@@ -2878,6 +2878,83 @@ def validate_host_body_sensor_event_from_guided_cradle_growth_console() -> dict[
     )
 
 
+def show_host_body_camera_runtime_bridge_demo_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.host_body.host_body_runtime_bridge import (
+        build_demo_camera_event_to_sense_eventframe_bridge,
+    )
+
+    return _host_body_runtime_bridge_console_payload(
+        "host_body_show_camera_runtime_bridge_demo",
+        build_demo_camera_event_to_sense_eventframe_bridge(),
+    )
+
+
+def show_host_body_mic_runtime_bridge_demo_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.host_body.host_body_runtime_bridge import (
+        build_demo_mic_event_to_sense_eventframe_bridge,
+    )
+
+    return _host_body_runtime_bridge_console_payload(
+        "host_body_show_mic_runtime_bridge_demo",
+        build_demo_mic_event_to_sense_eventframe_bridge(),
+    )
+
+
+def show_host_body_idle_runtime_bridge_demo_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.host_body.host_body_runtime_bridge import (
+        build_demo_idle_event_to_runtime_eventframe_bridge,
+    )
+
+    return _host_body_runtime_bridge_console_payload(
+        "host_body_show_idle_runtime_bridge_demo",
+        build_demo_idle_event_to_runtime_eventframe_bridge(),
+    )
+
+
+def show_host_body_mixed_runtime_bridge_demo_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.host_body.host_body_runtime_bridge import (
+        build_demo_mixed_host_body_runtime_bridge,
+    )
+
+    return _host_body_runtime_bridge_console_payload(
+        "host_body_show_mixed_runtime_bridge_demo",
+        build_demo_mixed_host_body_runtime_bridge(),
+    )
+
+
+def show_host_body_runtime_bridge_readiness_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.host_body.host_body_runtime_bridge import (
+        build_demo_mixed_host_body_runtime_bridge,
+    )
+
+    payload = build_demo_mixed_host_body_runtime_bridge()
+    return _host_body_runtime_bridge_console_payload(
+        "host_body_show_runtime_bridge_readiness",
+        {
+            "host_body_runtime_bridge_readiness": payload[
+                "host_body_runtime_bridge_readiness"
+            ]
+        },
+    )
+
+
+def validate_host_body_runtime_bridge_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.host_body.host_body_runtime_bridge import (
+        build_demo_mixed_host_body_runtime_bridge,
+        validate_host_body_runtime_bridge_audit,
+    )
+
+    payload = build_demo_mixed_host_body_runtime_bridge()
+    return _host_body_runtime_bridge_console_payload(
+        "host_body_validate_runtime_bridge_demo",
+        {
+            "validation": validate_host_body_runtime_bridge_audit(
+                payload["host_body_runtime_bridge_audit"]
+            )
+        },
+    )
+
+
 def _host_body_console_payload(
     action: str,
     payload: dict[str, Any],
@@ -2918,6 +2995,32 @@ def _host_body_sensor_event_console_payload(
         "speech_recognition_created": False,
         "external_control_created": False,
         "live_runtime_session_created": False,
+    }
+
+
+def _host_body_runtime_bridge_console_payload(
+    action: str,
+    payload: dict[str, Any],
+) -> dict[str, Any]:
+    return {
+        "guided_console_action": action,
+        **payload,
+        "camera_connected": False,
+        "microphone_connected": False,
+        "camera_capture_started": False,
+        "mic_stream_started": False,
+        "unity_started": False,
+        "live_runtime_session_created": False,
+        "live_engine_invocation_created": False,
+        "dynamic_scheduling_created": False,
+        "first_output_created": False,
+        "external_action_executed": False,
+        "memory_layer_write_performed": False,
+        "automatic_learning_approval_created": False,
+        "semantic_vision_created": False,
+        "speech_recognition_created": False,
+        "action_selection_influence_created": False,
+        "external_control_created": False,
     }
 
 
