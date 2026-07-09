@@ -961,3 +961,25 @@ __all__ += [
     "validate_host_body_readback_internal_action_influence_trace",
     "validate_host_body_readback_internal_action_signal",
 ]
+
+from .host_body_embodied_learning_closed_loop_audit import (
+    CURRENT_SAFE_LOOP_STEPS,
+    CURRENT_STATUS_REPORT_PATH,
+    FORBIDDEN_CAPABILITY_FLAGS,
+    NEXT_RECOMMENDED_PACKAGES,
+    PACKAGE_113_MILESTONE_AUDIT_RESULT,
+    build_current_ashl_core_v1_status_after_package_113_report,
+    get_current_status_report_markdown,
+    validate_current_status_report_text,
+)
+
+__all__ += [
+    "CURRENT_SAFE_LOOP_STEPS",
+    "CURRENT_STATUS_REPORT_PATH",
+    "FORBIDDEN_CAPABILITY_FLAGS",
+    "NEXT_RECOMMENDED_PACKAGES",
+    "PACKAGE_113_MILESTONE_AUDIT_RESULT",
+    "build_current_ashl_core_v1_status_after_package_113_report",
+    "get_current_status_report_markdown",
+    "validate_current_status_report_text",
+]

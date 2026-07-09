@@ -3779,6 +3779,21 @@ def validate_host_body_readback_influence_from_guided_cradle_growth_console() ->
     )
 
 
+def show_host_body_current_status_after_113_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.host_body.host_body_embodied_learning_closed_loop_audit import (
+        build_current_ashl_core_v1_status_after_package_113_report,
+    )
+
+    return _host_body_current_status_console_payload(
+        "host_body_show_current_status_after_113",
+        {
+            "current_status_report": (
+                build_current_ashl_core_v1_status_after_package_113_report()
+            )
+        },
+    )
+
+
 def _host_body_console_payload(
     action: str,
     payload: dict[str, Any],
@@ -4111,6 +4126,45 @@ def _host_body_readback_influence_console_payload(
         "live_runtime_session_created": False,
         "thought_engine_behavior_created": False,
         "production_behavior_created": False,
+    }
+
+
+def _host_body_current_status_console_payload(
+    action: str,
+    payload: dict[str, Any],
+) -> dict[str, Any]:
+    return {
+        "guided_console_action": action,
+        **payload,
+        "real_camera_access_created": False,
+        "real_microphone_access_created": False,
+        "semantic_vision_created": False,
+        "speech_recognition_created": False,
+        "task_engine_selected_action_from_host_body_readback_created": False,
+        "final_action_created": False,
+        "direct_command_created": False,
+        "sandbox_execution_created": False,
+        "external_control_created": False,
+        "os_operation_created": False,
+        "mouse_operation_created": False,
+        "keyboard_operation_created": False,
+        "browser_operation_created": False,
+        "file_operation_created": False,
+        "network_operation_created": False,
+        "shell_operation_created": False,
+        "api_operation_created": False,
+        "long_term_memory_write_created": False,
+        "core_memory_write_created": False,
+        "automatic_learning_approval_created": False,
+        "teacher_approval_creation_created": False,
+        "first_output_created": False,
+        "live_qingyin_runtime_session_created": False,
+        "thought_engine_behavior_created": False,
+        "production_behavior_created": False,
+        "gcmc_runtime_implemented": False,
+        "cl_token_created": False,
+        "concept_compiler_created": False,
+        "pattern_miner_created": False,
     }
 
 

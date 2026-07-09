@@ -128,6 +128,7 @@ from ashl_core_v1.runtime.guided_cradle_growth_teacher_console import (
     show_host_body_readback_influence_runtime_bridge_demo_from_guided_cradle_growth_console,
     show_host_body_readback_influence_teacher_review_demo_from_guided_cradle_growth_console,
     show_host_body_readback_influence_uncertainty_demo_from_guided_cradle_growth_console,
+    show_host_body_current_status_after_113_from_guided_cradle_growth_console,
     show_host_body_identity_demo_from_guided_cradle_growth_console,
     show_host_body_internal_action_demo_from_guided_cradle_growth_console,
     show_host_body_internal_space_demo_from_guided_cradle_growth_console,
@@ -606,6 +607,7 @@ def build_parser() -> argparse.ArgumentParser:
     subparsers.add_parser("host-body-show-readback-influence-mixed-demo")
     subparsers.add_parser("host-body-show-readback-influence-readiness")
     subparsers.add_parser("host-body-validate-readback-influence-demo")
+    subparsers.add_parser("host-body-show-current-status-after-113")
     subparsers.add_parser("task-apply-advisory-readback-ordering-demo")
     subparsers.add_parser("task-show-advisory-readback-ordering-teacher-gate")
     subparsers.add_parser("task-show-advisory-readback-ordering-application")
@@ -1735,6 +1737,10 @@ def main(argv: list[str] | None = None) -> int:
         if args.command == "host-body-validate-readback-influence-demo":
             return _print_json(
                 validate_host_body_readback_influence_from_guided_cradle_growth_console()
+            )
+        if args.command == "host-body-show-current-status-after-113":
+            return _print_json(
+                show_host_body_current_status_after_113_from_guided_cradle_growth_console()
             )
         if args.command == "task-apply-advisory-readback-ordering-demo":
             return _print_json(
