@@ -3794,6 +3794,114 @@ def show_host_body_current_status_after_113_from_guided_cradle_growth_console() 
     )
 
 
+def show_host_body_closed_loop_pass_demo_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.host_body.host_body_embodied_learning_closed_loop_audit import (
+        build_demo_host_body_embodied_learning_closed_loop_pass,
+    )
+
+    return _host_body_closed_loop_console_payload(
+        "host_body_show_closed_loop_pass_demo",
+        build_demo_host_body_embodied_learning_closed_loop_pass(),
+    )
+
+
+def show_host_body_closed_loop_scope_demo_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.host_body.host_body_embodied_learning_closed_loop_audit import (
+        build_demo_host_body_embodied_learning_closed_loop_pass,
+    )
+
+    payload = build_demo_host_body_embodied_learning_closed_loop_pass()
+    return _host_body_closed_loop_console_payload(
+        "host_body_show_closed_loop_scope_demo",
+        {
+            "host_body_embodied_learning_closed_loop_scope": payload[
+                "host_body_embodied_learning_closed_loop_scope"
+            ]
+        },
+    )
+
+
+def show_host_body_closed_loop_capability_ledger_demo_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.host_body.host_body_embodied_learning_closed_loop_audit import (
+        build_demo_host_body_embodied_learning_closed_loop_pass,
+    )
+
+    payload = build_demo_host_body_embodied_learning_closed_loop_pass()
+    return _host_body_closed_loop_console_payload(
+        "host_body_show_closed_loop_capability_ledger_demo",
+        {
+            "host_body_embodied_learning_closed_loop_capability_ledger": payload[
+                "host_body_embodied_learning_closed_loop_capability_ledger"
+            ]
+        },
+    )
+
+
+def show_host_body_closed_loop_boundary_ledger_demo_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.host_body.host_body_embodied_learning_closed_loop_audit import (
+        build_demo_host_body_embodied_learning_closed_loop_pass,
+    )
+
+    payload = build_demo_host_body_embodied_learning_closed_loop_pass()
+    return _host_body_closed_loop_console_payload(
+        "host_body_show_closed_loop_boundary_ledger_demo",
+        {
+            "host_body_embodied_learning_closed_loop_boundary_ledger": payload[
+                "host_body_embodied_learning_closed_loop_boundary_ledger"
+            ]
+        },
+    )
+
+
+def show_host_body_closed_loop_integrated_trace_demo_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.host_body.host_body_embodied_learning_closed_loop_audit import (
+        build_demo_host_body_embodied_learning_closed_loop_pass,
+    )
+
+    payload = build_demo_host_body_embodied_learning_closed_loop_pass()
+    return _host_body_closed_loop_console_payload(
+        "host_body_show_closed_loop_integrated_trace_demo",
+        {
+            "host_body_embodied_learning_closed_loop_integrated_trace": payload[
+                "host_body_embodied_learning_closed_loop_integrated_trace"
+            ]
+        },
+    )
+
+
+def show_host_body_closed_loop_readiness_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.host_body.host_body_embodied_learning_closed_loop_audit import (
+        build_demo_host_body_embodied_learning_closed_loop_pass,
+    )
+
+    payload = build_demo_host_body_embodied_learning_closed_loop_pass()
+    return _host_body_closed_loop_console_payload(
+        "host_body_show_closed_loop_readiness",
+        {
+            "host_body_embodied_learning_closed_loop_readiness": payload[
+                "host_body_embodied_learning_closed_loop_readiness"
+            ]
+        },
+    )
+
+
+def validate_host_body_closed_loop_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.host_body.host_body_embodied_learning_closed_loop_audit import (
+        build_demo_host_body_embodied_learning_closed_loop_pass,
+        validate_host_body_embodied_learning_closed_loop_milestone_audit,
+    )
+
+    payload = build_demo_host_body_embodied_learning_closed_loop_pass()
+    return _host_body_closed_loop_console_payload(
+        "host_body_validate_closed_loop_demo",
+        {
+            "validation": validate_host_body_embodied_learning_closed_loop_milestone_audit(
+                payload["host_body_embodied_learning_closed_loop_milestone_audit"]
+            )
+        },
+    )
+
+
 def _host_body_console_payload(
     action: str,
     payload: dict[str, Any],
@@ -4165,6 +4273,40 @@ def _host_body_current_status_console_payload(
         "cl_token_created": False,
         "concept_compiler_created": False,
         "pattern_miner_created": False,
+    }
+
+
+def _host_body_closed_loop_console_payload(
+    action: str,
+    payload: dict[str, Any],
+) -> dict[str, Any]:
+    return {
+        "guided_console_action": action,
+        **payload,
+        "closed_loop_milestone_audit_created": True,
+        "new_behavior_created": False,
+        "new_learning_behavior_created": False,
+        "new_memory_behavior_created": False,
+        "task_engine_selected_action_created": False,
+        "final_action_created": False,
+        "direct_command_created": False,
+        "sandbox_execution_created": False,
+        "external_control_created": False,
+        "memory_layer_write_performed": False,
+        "long_term_memory_write_performed": False,
+        "core_memory_write_performed": False,
+        "raw_trace_summarized": False,
+        "raw_trace_mutated": False,
+        "concept_id_embedded_into_raw_history": False,
+        "learning_candidate_created": False,
+        "concept_candidate_created": False,
+        "reviewed_concept_created": False,
+        "automatic_learning_approval_created": False,
+        "teacher_approval_created": False,
+        "first_output_created": False,
+        "live_runtime_session_created": False,
+        "thought_engine_behavior_created": False,
+        "production_behavior_created": False,
     }
 
 
