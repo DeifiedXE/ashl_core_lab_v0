@@ -3680,6 +3680,105 @@ def validate_host_body_working_readback_from_guided_cradle_growth_console() -> d
     )
 
 
+def show_host_body_readback_influence_uncertainty_demo_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.host_body.host_body_readback_internal_action_influence import (
+        build_demo_prior_uncertainty_boosts_mark_uncertain,
+    )
+
+    return _host_body_readback_influence_console_payload(
+        "host_body_show_readback_influence_uncertainty_demo",
+        build_demo_prior_uncertainty_boosts_mark_uncertain(),
+    )
+
+
+def show_host_body_readback_influence_teacher_review_demo_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.host_body.host_body_readback_internal_action_influence import (
+        build_demo_prior_teacher_review_boosts_request_teacher_review,
+    )
+
+    return _host_body_readback_influence_console_payload(
+        "host_body_show_readback_influence_teacher_review_demo",
+        build_demo_prior_teacher_review_boosts_request_teacher_review(),
+    )
+
+
+def show_host_body_readback_influence_observe_again_demo_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.host_body.host_body_readback_internal_action_influence import (
+        build_demo_prior_observe_again_boosts_observe_again,
+    )
+
+    return _host_body_readback_influence_console_payload(
+        "host_body_show_readback_influence_observe_again_demo",
+        build_demo_prior_observe_again_boosts_observe_again(),
+    )
+
+
+def show_host_body_readback_influence_runtime_bridge_demo_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.host_body.host_body_readback_internal_action_influence import (
+        build_demo_runtime_bridge_deferred_boosts_pause_or_review,
+    )
+
+    return _host_body_readback_influence_console_payload(
+        "host_body_show_readback_influence_runtime_bridge_demo",
+        build_demo_runtime_bridge_deferred_boosts_pause_or_review(),
+    )
+
+
+def show_host_body_readback_influence_no_change_demo_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.host_body.host_body_readback_internal_action_influence import (
+        build_demo_no_matching_readback_signal_no_change,
+    )
+
+    return _host_body_readback_influence_console_payload(
+        "host_body_show_readback_influence_no_change_demo",
+        build_demo_no_matching_readback_signal_no_change(),
+    )
+
+
+def show_host_body_readback_influence_mixed_demo_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.host_body.host_body_readback_internal_action_influence import (
+        build_demo_mixed_readback_internal_action_influence,
+    )
+
+    return _host_body_readback_influence_console_payload(
+        "host_body_show_readback_influence_mixed_demo",
+        build_demo_mixed_readback_internal_action_influence(),
+    )
+
+
+def show_host_body_readback_influence_readiness_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.host_body.host_body_readback_internal_action_influence import (
+        build_demo_prior_uncertainty_boosts_mark_uncertain,
+    )
+
+    payload = build_demo_prior_uncertainty_boosts_mark_uncertain()
+    return _host_body_readback_influence_console_payload(
+        "host_body_show_readback_influence_readiness",
+        {
+            "readback_internal_action_influence_readiness": payload[
+                "readback_internal_action_influence_readiness"
+            ]
+        },
+    )
+
+
+def validate_host_body_readback_influence_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.host_body.host_body_readback_internal_action_influence import (
+        build_demo_prior_uncertainty_boosts_mark_uncertain,
+        validate_host_body_readback_internal_action_influence_audit,
+    )
+
+    payload = build_demo_prior_uncertainty_boosts_mark_uncertain()
+    return _host_body_readback_influence_console_payload(
+        "host_body_validate_readback_influence_demo",
+        {
+            "validation": validate_host_body_readback_internal_action_influence_audit(
+                payload["readback_internal_action_influence_audit"]
+            )
+        },
+    )
+
+
 def _host_body_console_payload(
     action: str,
     payload: dict[str, Any],
@@ -3970,6 +4069,44 @@ def _host_body_working_readback_console_payload(
         "real_hardware_access_created": False,
         "semantic_vision_created": False,
         "speech_recognition_created": False,
+        "first_output_created": False,
+        "live_runtime_session_created": False,
+        "thought_engine_behavior_created": False,
+        "production_behavior_created": False,
+    }
+
+
+def _host_body_readback_influence_console_payload(
+    action: str,
+    payload: dict[str, Any],
+) -> dict[str, Any]:
+    return {
+        "guided_console_action": action,
+        **payload,
+        "host_body_internal_action_ordering_influenced": True,
+        "task_action_selection_influence_created": False,
+        "task_selected_action_created": False,
+        "final_action_created": False,
+        "direct_command_created": False,
+        "sandbox_execution_created": False,
+        "external_control_created": False,
+        "os_control_created": False,
+        "mouse_control_created": False,
+        "keyboard_control_created": False,
+        "browser_control_created": False,
+        "file_operation_created": False,
+        "network_execution_created": False,
+        "shell_execution_created": False,
+        "external_api_call_created": False,
+        "memory_layer_write_performed": False,
+        "long_term_memory_write_performed": False,
+        "core_memory_write_performed": False,
+        "learning_candidate_created": False,
+        "automatic_learning_approval_created": False,
+        "teacher_approval_created": False,
+        "raw_trace_mutated": False,
+        "raw_trace_summarized": False,
+        "concept_id_embedded_into_raw_history": False,
         "first_output_created": False,
         "live_runtime_session_created": False,
         "thought_engine_behavior_created": False,

@@ -121,6 +121,13 @@ from ashl_core_v1.runtime.guided_cradle_growth_teacher_console import (
     show_host_body_working_readback_readiness_from_guided_cradle_growth_console,
     show_host_body_working_readback_runtime_bridge_demo_from_guided_cradle_growth_console,
     show_host_body_working_readback_uncertainty_demo_from_guided_cradle_growth_console,
+    show_host_body_readback_influence_mixed_demo_from_guided_cradle_growth_console,
+    show_host_body_readback_influence_no_change_demo_from_guided_cradle_growth_console,
+    show_host_body_readback_influence_observe_again_demo_from_guided_cradle_growth_console,
+    show_host_body_readback_influence_readiness_from_guided_cradle_growth_console,
+    show_host_body_readback_influence_runtime_bridge_demo_from_guided_cradle_growth_console,
+    show_host_body_readback_influence_teacher_review_demo_from_guided_cradle_growth_console,
+    show_host_body_readback_influence_uncertainty_demo_from_guided_cradle_growth_console,
     show_host_body_identity_demo_from_guided_cradle_growth_console,
     show_host_body_internal_action_demo_from_guided_cradle_growth_console,
     show_host_body_internal_space_demo_from_guided_cradle_growth_console,
@@ -317,6 +324,7 @@ from ashl_core_v1.runtime.guided_cradle_growth_teacher_console import (
     validate_host_body_existing_learning_pipeline_from_guided_cradle_growth_console,
     validate_host_body_reviewed_concept_replay_from_guided_cradle_growth_console,
     validate_host_body_working_readback_from_guided_cradle_growth_console,
+    validate_host_body_readback_influence_from_guided_cradle_growth_console,
     validate_parent_frame_resume_demo_from_guided_cradle_growth_console,
     validate_reviewed_concept_readback_preview_from_guided_cradle_growth_console,
     validate_advisory_readback_ordering_application_from_guided_cradle_growth_console,
@@ -590,6 +598,14 @@ def build_parser() -> argparse.ArgumentParser:
     subparsers.add_parser("host-body-show-gcmc-docs-only-demo")
     subparsers.add_parser("host-body-show-working-readback-readiness")
     subparsers.add_parser("host-body-validate-working-readback-demo")
+    subparsers.add_parser("host-body-show-readback-influence-uncertainty-demo")
+    subparsers.add_parser("host-body-show-readback-influence-teacher-review-demo")
+    subparsers.add_parser("host-body-show-readback-influence-observe-again-demo")
+    subparsers.add_parser("host-body-show-readback-influence-runtime-bridge-demo")
+    subparsers.add_parser("host-body-show-readback-influence-no-change-demo")
+    subparsers.add_parser("host-body-show-readback-influence-mixed-demo")
+    subparsers.add_parser("host-body-show-readback-influence-readiness")
+    subparsers.add_parser("host-body-validate-readback-influence-demo")
     subparsers.add_parser("task-apply-advisory-readback-ordering-demo")
     subparsers.add_parser("task-show-advisory-readback-ordering-teacher-gate")
     subparsers.add_parser("task-show-advisory-readback-ordering-application")
@@ -1687,6 +1703,38 @@ def main(argv: list[str] | None = None) -> int:
         if args.command == "host-body-validate-working-readback-demo":
             return _print_json(
                 validate_host_body_working_readback_from_guided_cradle_growth_console()
+            )
+        if args.command == "host-body-show-readback-influence-uncertainty-demo":
+            return _print_json(
+                show_host_body_readback_influence_uncertainty_demo_from_guided_cradle_growth_console()
+            )
+        if args.command == "host-body-show-readback-influence-teacher-review-demo":
+            return _print_json(
+                show_host_body_readback_influence_teacher_review_demo_from_guided_cradle_growth_console()
+            )
+        if args.command == "host-body-show-readback-influence-observe-again-demo":
+            return _print_json(
+                show_host_body_readback_influence_observe_again_demo_from_guided_cradle_growth_console()
+            )
+        if args.command == "host-body-show-readback-influence-runtime-bridge-demo":
+            return _print_json(
+                show_host_body_readback_influence_runtime_bridge_demo_from_guided_cradle_growth_console()
+            )
+        if args.command == "host-body-show-readback-influence-no-change-demo":
+            return _print_json(
+                show_host_body_readback_influence_no_change_demo_from_guided_cradle_growth_console()
+            )
+        if args.command == "host-body-show-readback-influence-mixed-demo":
+            return _print_json(
+                show_host_body_readback_influence_mixed_demo_from_guided_cradle_growth_console()
+            )
+        if args.command == "host-body-show-readback-influence-readiness":
+            return _print_json(
+                show_host_body_readback_influence_readiness_from_guided_cradle_growth_console()
+            )
+        if args.command == "host-body-validate-readback-influence-demo":
+            return _print_json(
+                validate_host_body_readback_influence_from_guided_cradle_growth_console()
             )
         if args.command == "task-apply-advisory-readback-ordering-demo":
             return _print_json(
