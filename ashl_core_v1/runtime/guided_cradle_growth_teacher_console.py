@@ -3581,6 +3581,105 @@ def validate_host_body_reviewed_concept_replay_from_guided_cradle_growth_console
     )
 
 
+def show_host_body_working_readback_uncertainty_demo_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.host_body.host_body_working_readback_integration import (
+        build_demo_uncertainty_reviewed_concept_working_readback,
+    )
+
+    return _host_body_working_readback_console_payload(
+        "host_body_show_working_readback_uncertainty_demo",
+        build_demo_uncertainty_reviewed_concept_working_readback(),
+    )
+
+
+def show_host_body_working_readback_interesting_demo_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.host_body.host_body_working_readback_integration import (
+        build_demo_interesting_event_reviewed_concept_working_readback,
+    )
+
+    return _host_body_working_readback_console_payload(
+        "host_body_show_working_readback_interesting_demo",
+        build_demo_interesting_event_reviewed_concept_working_readback(),
+    )
+
+
+def show_host_body_working_readback_runtime_bridge_demo_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.host_body.host_body_working_readback_integration import (
+        build_demo_runtime_bridge_reviewed_concept_working_readback,
+    )
+
+    return _host_body_working_readback_console_payload(
+        "host_body_show_working_readback_runtime_bridge_demo",
+        build_demo_runtime_bridge_reviewed_concept_working_readback(),
+    )
+
+
+def show_host_body_working_readback_mixed_demo_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.host_body.host_body_working_readback_integration import (
+        build_demo_mixed_reviewed_concept_working_readback,
+    )
+
+    return _host_body_working_readback_console_payload(
+        "host_body_show_working_readback_mixed_demo",
+        build_demo_mixed_reviewed_concept_working_readback(),
+    )
+
+
+def show_host_body_trace_spine_boundary_demo_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.host_body.host_body_working_readback_integration import (
+        build_demo_trace_spine_raw_evidence_boundary,
+    )
+
+    return _host_body_working_readback_console_payload(
+        "host_body_show_trace_spine_boundary_demo",
+        build_demo_trace_spine_raw_evidence_boundary(),
+    )
+
+
+def show_host_body_gcmc_docs_only_demo_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.host_body.host_body_working_readback_integration import (
+        build_demo_gcmc_docs_only_future_architecture,
+    )
+
+    return _host_body_working_readback_console_payload(
+        "host_body_show_gcmc_docs_only_demo",
+        build_demo_gcmc_docs_only_future_architecture(),
+    )
+
+
+def show_host_body_working_readback_readiness_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.host_body.host_body_working_readback_integration import (
+        build_demo_uncertainty_reviewed_concept_working_readback,
+    )
+
+    payload = build_demo_uncertainty_reviewed_concept_working_readback()
+    return _host_body_working_readback_console_payload(
+        "host_body_show_working_readback_readiness",
+        {
+            "host_body_working_readback_integration_readiness": payload[
+                "host_body_working_readback_integration_readiness"
+            ]
+        },
+    )
+
+
+def validate_host_body_working_readback_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.host_body.host_body_working_readback_integration import (
+        build_demo_uncertainty_reviewed_concept_working_readback,
+        validate_host_body_working_readback_integration_audit,
+    )
+
+    payload = build_demo_uncertainty_reviewed_concept_working_readback()
+    return _host_body_working_readback_console_payload(
+        "host_body_validate_working_readback_demo",
+        {
+            "validation": validate_host_body_working_readback_integration_audit(
+                payload["host_body_working_readback_integration_audit"]
+            )
+        },
+    )
+
+
 def _host_body_console_payload(
     action: str,
     payload: dict[str, Any],
@@ -3831,6 +3930,42 @@ def _host_body_reviewed_concept_replay_console_payload(
         "task_action_selection_influence_created": False,
         "task_selected_action_created": False,
         "host_body_internal_action_influence_created": False,
+        "external_control_created": False,
+        "real_hardware_access_created": False,
+        "semantic_vision_created": False,
+        "speech_recognition_created": False,
+        "first_output_created": False,
+        "live_runtime_session_created": False,
+        "thought_engine_behavior_created": False,
+        "production_behavior_created": False,
+    }
+
+
+def _host_body_working_readback_console_payload(
+    action: str,
+    payload: dict[str, Any],
+) -> dict[str, Any]:
+    return {
+        "guided_console_action": action,
+        **payload,
+        "working_readback_visible": True,
+        "internal_action_choice_influence_created": False,
+        "task_action_selection_influence_created": False,
+        "task_selected_action_created": False,
+        "selected_action_created": False,
+        "candidate_ordering_changed": False,
+        "long_term_memory_write_performed": False,
+        "core_memory_write_performed": False,
+        "archive_memory_write_performed": False,
+        "anchor_write_performed": False,
+        "state_persistence_write_performed": False,
+        "raw_trace_summarized_during_service_period": False,
+        "raw_trace_dumped_into_memory_learning_trace": False,
+        "concept_id_embedded_into_raw_history": False,
+        "gcmc_runtime_implemented": False,
+        "cl_token_created": False,
+        "concept_compiler_created": False,
+        "pattern_miner_created": False,
         "external_control_created": False,
         "real_hardware_access_created": False,
         "semantic_vision_created": False,
