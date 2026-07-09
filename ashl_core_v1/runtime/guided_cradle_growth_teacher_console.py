@@ -3504,6 +3504,83 @@ def validate_host_body_existing_learning_pipeline_from_guided_cradle_growth_cons
     )
 
 
+def show_host_body_reviewed_concept_replay_uncertainty_demo_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.host_body.host_body_reviewed_concept_replay import (
+        build_demo_uncertainty_feedback_reviewed_concept_replay,
+    )
+
+    return _host_body_reviewed_concept_replay_console_payload(
+        "host_body_show_reviewed_concept_replay_uncertainty_demo",
+        build_demo_uncertainty_feedback_reviewed_concept_replay(),
+    )
+
+
+def show_host_body_reviewed_concept_replay_interesting_demo_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.host_body.host_body_reviewed_concept_replay import (
+        build_demo_interesting_event_feedback_reviewed_concept_replay,
+    )
+
+    return _host_body_reviewed_concept_replay_console_payload(
+        "host_body_show_reviewed_concept_replay_interesting_demo",
+        build_demo_interesting_event_feedback_reviewed_concept_replay(),
+    )
+
+
+def show_host_body_reviewed_concept_replay_runtime_bridge_demo_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.host_body.host_body_reviewed_concept_replay import (
+        build_demo_runtime_bridge_feedback_reviewed_concept_replay,
+    )
+
+    return _host_body_reviewed_concept_replay_console_payload(
+        "host_body_show_reviewed_concept_replay_runtime_bridge_demo",
+        build_demo_runtime_bridge_feedback_reviewed_concept_replay(),
+    )
+
+
+def show_host_body_reviewed_concept_replay_mixed_demo_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.host_body.host_body_reviewed_concept_replay import (
+        build_demo_mixed_feedback_reviewed_concept_replay,
+    )
+
+    return _host_body_reviewed_concept_replay_console_payload(
+        "host_body_show_reviewed_concept_replay_mixed_demo",
+        build_demo_mixed_feedback_reviewed_concept_replay(),
+    )
+
+
+def show_host_body_reviewed_concept_replay_readiness_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.host_body.host_body_reviewed_concept_replay import (
+        build_demo_uncertainty_feedback_reviewed_concept_replay,
+    )
+
+    payload = build_demo_uncertainty_feedback_reviewed_concept_replay()
+    return _host_body_reviewed_concept_replay_console_payload(
+        "host_body_show_reviewed_concept_replay_readiness",
+        {
+            "host_body_reviewed_concept_replay_readiness": payload[
+                "host_body_reviewed_concept_replay_readiness"
+            ]
+        },
+    )
+
+
+def validate_host_body_reviewed_concept_replay_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.host_body.host_body_reviewed_concept_replay import (
+        build_demo_uncertainty_feedback_reviewed_concept_replay,
+        validate_host_body_reviewed_concept_replay_audit,
+    )
+
+    payload = build_demo_uncertainty_feedback_reviewed_concept_replay()
+    return _host_body_reviewed_concept_replay_console_payload(
+        "host_body_validate_reviewed_concept_replay_demo",
+        {
+            "validation": validate_host_body_reviewed_concept_replay_audit(
+                payload["host_body_reviewed_concept_replay_audit"]
+            )
+        },
+    )
+
+
 def _host_body_console_payload(
     action: str,
     payload: dict[str, Any],
@@ -3721,6 +3798,39 @@ def _host_body_existing_learning_pipeline_console_payload(
         "teacher_approval_created": False,
         "task_action_selection_influence_created": False,
         "task_selected_action_created": False,
+        "external_control_created": False,
+        "real_hardware_access_created": False,
+        "semantic_vision_created": False,
+        "speech_recognition_created": False,
+        "first_output_created": False,
+        "live_runtime_session_created": False,
+        "thought_engine_behavior_created": False,
+        "production_behavior_created": False,
+    }
+
+
+def _host_body_reviewed_concept_replay_console_payload(
+    action: str,
+    payload: dict[str, Any],
+) -> dict[str, Any]:
+    return {
+        "guided_console_action": action,
+        **payload,
+        "new_teacher_review_system_created": False,
+        "parallel_teacher_review_created": False,
+        "new_concept_system_created": False,
+        "parallel_concept_system_created": False,
+        "parallel_refinement_system_created": False,
+        "parallel_reviewed_concept_system_created": False,
+        "reviewed_concept_created_by_this_package": False,
+        "working_readback_created": False,
+        "memory_application_data_created": False,
+        "memory_layer_write_performed": False,
+        "automatic_learning_approval_created": False,
+        "teacher_approval_created": False,
+        "task_action_selection_influence_created": False,
+        "task_selected_action_created": False,
+        "host_body_internal_action_influence_created": False,
         "external_control_created": False,
         "real_hardware_access_created": False,
         "semantic_vision_created": False,
