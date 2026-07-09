@@ -3332,6 +3332,90 @@ def validate_host_body_v0_milestone_from_guided_cradle_growth_console() -> dict[
     )
 
 
+def show_host_body_learning_bridge_uncertainty_demo_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.host_body.host_body_learning_feedback_bridge import (
+        build_demo_uncertainty_to_learning_feedback_candidate,
+    )
+
+    return _host_body_learning_bridge_console_payload(
+        "host_body_show_learning_bridge_uncertainty_demo",
+        build_demo_uncertainty_to_learning_feedback_candidate(),
+    )
+
+
+def show_host_body_learning_bridge_interesting_demo_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.host_body.host_body_learning_feedback_bridge import (
+        build_demo_interesting_event_to_learning_feedback_candidate,
+    )
+
+    return _host_body_learning_bridge_console_payload(
+        "host_body_show_learning_bridge_interesting_demo",
+        build_demo_interesting_event_to_learning_feedback_candidate(),
+    )
+
+
+def show_host_body_learning_bridge_teacher_review_demo_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.host_body.host_body_learning_feedback_bridge import (
+        build_demo_teacher_review_request_to_learning_feedback_candidate,
+    )
+
+    return _host_body_learning_bridge_console_payload(
+        "host_body_show_learning_bridge_teacher_review_demo",
+        build_demo_teacher_review_request_to_learning_feedback_candidate(),
+    )
+
+
+def show_host_body_learning_bridge_deferred_runtime_demo_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.host_body.host_body_learning_feedback_bridge import (
+        build_demo_deferred_runtime_bridge_to_learning_feedback_candidate,
+    )
+
+    return _host_body_learning_bridge_console_payload(
+        "host_body_show_learning_bridge_deferred_runtime_demo",
+        build_demo_deferred_runtime_bridge_to_learning_feedback_candidate(),
+    )
+
+
+def show_host_body_learning_bridge_candidate_set_demo_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.host_body.host_body_learning_feedback_bridge import (
+        build_demo_host_body_learning_feedback_candidate_set,
+    )
+
+    return _host_body_learning_bridge_console_payload(
+        "host_body_show_learning_bridge_candidate_set_demo",
+        build_demo_host_body_learning_feedback_candidate_set(),
+    )
+
+
+def show_host_body_learning_bridge_readiness_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.host_body.host_body_learning_feedback_bridge import (
+        build_demo_uncertainty_to_learning_feedback_candidate,
+    )
+
+    payload = build_demo_uncertainty_to_learning_feedback_candidate()
+    return _host_body_learning_bridge_console_payload(
+        "host_body_show_learning_bridge_readiness",
+        {"host_body_learning_bridge_readiness": payload["host_body_learning_bridge_readiness"]},
+    )
+
+
+def validate_host_body_learning_bridge_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.host_body.host_body_learning_feedback_bridge import (
+        build_demo_uncertainty_to_learning_feedback_candidate,
+        validate_host_body_learning_bridge_audit,
+    )
+
+    payload = build_demo_uncertainty_to_learning_feedback_candidate()
+    return _host_body_learning_bridge_console_payload(
+        "host_body_validate_learning_bridge_demo",
+        {
+            "validation": validate_host_body_learning_bridge_audit(
+                payload["host_body_learning_bridge_audit"]
+            )
+        },
+    )
+
+
 def _host_body_console_payload(
     action: str,
     payload: dict[str, Any],
@@ -3499,6 +3583,31 @@ def _host_body_v0_milestone_console_payload(
         "learning_candidate_created": False,
         "automatic_learning_approval_created": False,
         "teacher_approval_created": False,
+        "first_output_created": False,
+        "live_runtime_session_created": False,
+        "thought_engine_behavior_created": False,
+        "production_behavior_created": False,
+    }
+
+
+def _host_body_learning_bridge_console_payload(
+    action: str,
+    payload: dict[str, Any],
+) -> dict[str, Any]:
+    return {
+        "guided_console_action": action,
+        **payload,
+        "concept_candidate_created": False,
+        "reviewed_concept_created": False,
+        "memory_layer_write_performed": False,
+        "automatic_learning_approval_created": False,
+        "teacher_approval_created": False,
+        "task_action_selection_influence_created": False,
+        "task_selected_action_created": False,
+        "external_control_created": False,
+        "real_hardware_access_created": False,
+        "semantic_vision_created": False,
+        "speech_recognition_created": False,
         "first_output_created": False,
         "live_runtime_session_created": False,
         "thought_engine_behavior_created": False,

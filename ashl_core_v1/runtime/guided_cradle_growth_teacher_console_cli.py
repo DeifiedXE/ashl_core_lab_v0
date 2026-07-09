@@ -97,6 +97,12 @@ from ashl_core_v1.runtime.guided_cradle_growth_teacher_console import (
     show_host_body_v0_milestone_pass_demo_from_guided_cradle_growth_console,
     show_host_body_v0_readiness_from_guided_cradle_growth_console,
     show_host_body_v0_scope_demo_from_guided_cradle_growth_console,
+    show_host_body_learning_bridge_candidate_set_demo_from_guided_cradle_growth_console,
+    show_host_body_learning_bridge_deferred_runtime_demo_from_guided_cradle_growth_console,
+    show_host_body_learning_bridge_interesting_demo_from_guided_cradle_growth_console,
+    show_host_body_learning_bridge_readiness_from_guided_cradle_growth_console,
+    show_host_body_learning_bridge_teacher_review_demo_from_guided_cradle_growth_console,
+    show_host_body_learning_bridge_uncertainty_demo_from_guided_cradle_growth_console,
     show_host_body_identity_demo_from_guided_cradle_growth_console,
     show_host_body_internal_action_demo_from_guided_cradle_growth_console,
     show_host_body_internal_space_demo_from_guided_cradle_growth_console,
@@ -289,6 +295,7 @@ from ashl_core_v1.runtime.guided_cradle_growth_teacher_console import (
     validate_host_body_trace_history_from_guided_cradle_growth_console,
     validate_host_body_internal_action_choice_from_guided_cradle_growth_console,
     validate_host_body_v0_milestone_from_guided_cradle_growth_console,
+    validate_host_body_learning_bridge_from_guided_cradle_growth_console,
     validate_parent_frame_resume_demo_from_guided_cradle_growth_console,
     validate_reviewed_concept_readback_preview_from_guided_cradle_growth_console,
     validate_advisory_readback_ordering_application_from_guided_cradle_growth_console,
@@ -534,6 +541,13 @@ def build_parser() -> argparse.ArgumentParser:
     subparsers.add_parser("host-body-show-v0-integrated-trace-demo")
     subparsers.add_parser("host-body-show-v0-readiness")
     subparsers.add_parser("host-body-validate-v0-milestone-demo")
+    subparsers.add_parser("host-body-show-learning-bridge-uncertainty-demo")
+    subparsers.add_parser("host-body-show-learning-bridge-interesting-demo")
+    subparsers.add_parser("host-body-show-learning-bridge-teacher-review-demo")
+    subparsers.add_parser("host-body-show-learning-bridge-deferred-runtime-demo")
+    subparsers.add_parser("host-body-show-learning-bridge-candidate-set-demo")
+    subparsers.add_parser("host-body-show-learning-bridge-readiness")
+    subparsers.add_parser("host-body-validate-learning-bridge-demo")
     subparsers.add_parser("task-apply-advisory-readback-ordering-demo")
     subparsers.add_parser("task-show-advisory-readback-ordering-teacher-gate")
     subparsers.add_parser("task-show-advisory-readback-ordering-application")
@@ -1519,6 +1533,34 @@ def main(argv: list[str] | None = None) -> int:
         if args.command == "host-body-validate-v0-milestone-demo":
             return _print_json(
                 validate_host_body_v0_milestone_from_guided_cradle_growth_console()
+            )
+        if args.command == "host-body-show-learning-bridge-uncertainty-demo":
+            return _print_json(
+                show_host_body_learning_bridge_uncertainty_demo_from_guided_cradle_growth_console()
+            )
+        if args.command == "host-body-show-learning-bridge-interesting-demo":
+            return _print_json(
+                show_host_body_learning_bridge_interesting_demo_from_guided_cradle_growth_console()
+            )
+        if args.command == "host-body-show-learning-bridge-teacher-review-demo":
+            return _print_json(
+                show_host_body_learning_bridge_teacher_review_demo_from_guided_cradle_growth_console()
+            )
+        if args.command == "host-body-show-learning-bridge-deferred-runtime-demo":
+            return _print_json(
+                show_host_body_learning_bridge_deferred_runtime_demo_from_guided_cradle_growth_console()
+            )
+        if args.command == "host-body-show-learning-bridge-candidate-set-demo":
+            return _print_json(
+                show_host_body_learning_bridge_candidate_set_demo_from_guided_cradle_growth_console()
+            )
+        if args.command == "host-body-show-learning-bridge-readiness":
+            return _print_json(
+                show_host_body_learning_bridge_readiness_from_guided_cradle_growth_console()
+            )
+        if args.command == "host-body-validate-learning-bridge-demo":
+            return _print_json(
+                validate_host_body_learning_bridge_from_guided_cradle_growth_console()
             )
         if args.command == "task-apply-advisory-readback-ordering-demo":
             return _print_json(
