@@ -3902,6 +3902,116 @@ def validate_host_body_closed_loop_from_guided_cradle_growth_console() -> dict[s
     )
 
 
+def show_host_body_home_surface_link_uncertainty_demo_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.host_body.internal_action_home_surface_link import (
+        build_demo_mark_uncertain_home_surface_link,
+    )
+
+    return _host_body_home_surface_link_console_payload(
+        "host_body_show_home_surface_link_uncertainty_demo",
+        build_demo_mark_uncertain_home_surface_link(),
+    )
+
+
+def show_host_body_home_surface_link_teacher_review_demo_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.host_body.internal_action_home_surface_link import (
+        build_demo_request_teacher_review_home_surface_link,
+    )
+
+    return _host_body_home_surface_link_console_payload(
+        "host_body_show_home_surface_link_teacher_review_demo",
+        build_demo_request_teacher_review_home_surface_link(),
+    )
+
+
+def show_host_body_home_surface_link_observe_again_demo_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.host_body.internal_action_home_surface_link import (
+        build_demo_observe_again_home_surface_link,
+    )
+
+    return _host_body_home_surface_link_console_payload(
+        "host_body_show_home_surface_link_observe_again_demo",
+        build_demo_observe_again_home_surface_link(),
+    )
+
+
+def show_host_body_home_surface_link_interesting_demo_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.host_body.internal_action_home_surface_link import (
+        build_demo_mark_interesting_home_surface_link,
+    )
+
+    return _host_body_home_surface_link_console_payload(
+        "host_body_show_home_surface_link_interesting_demo",
+        build_demo_mark_interesting_home_surface_link(),
+    )
+
+
+def show_host_body_home_surface_link_pause_demo_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.host_body.internal_action_home_surface_link import (
+        build_demo_pause_event_processing_home_surface_link,
+    )
+
+    return _host_body_home_surface_link_console_payload(
+        "host_body_show_home_surface_link_pause_demo",
+        build_demo_pause_event_processing_home_surface_link(),
+    )
+
+
+def show_host_body_home_surface_link_update_status_demo_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.host_body.internal_action_home_surface_link import (
+        build_demo_update_home_status_surface_link,
+    )
+
+    return _host_body_home_surface_link_console_payload(
+        "host_body_show_home_surface_link_update_status_demo",
+        build_demo_update_home_status_surface_link(),
+    )
+
+
+def show_host_body_home_surface_link_mixed_demo_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.host_body.internal_action_home_surface_link import (
+        build_demo_mixed_internal_action_home_surface_link,
+    )
+
+    return _host_body_home_surface_link_console_payload(
+        "host_body_show_home_surface_link_mixed_demo",
+        build_demo_mixed_internal_action_home_surface_link(),
+    )
+
+
+def show_host_body_home_surface_link_readiness_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.host_body.internal_action_home_surface_link import (
+        build_demo_mark_uncertain_home_surface_link,
+    )
+
+    payload = build_demo_mark_uncertain_home_surface_link()
+    return _host_body_home_surface_link_console_payload(
+        "host_body_show_home_surface_link_readiness",
+        {
+            "internal_action_home_surface_link_readiness": payload[
+                "internal_action_home_surface_link_readiness"
+            ]
+        },
+    )
+
+
+def validate_host_body_home_surface_link_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.host_body.internal_action_home_surface_link import (
+        build_demo_mark_uncertain_home_surface_link,
+        validate_internal_action_home_surface_link_audit,
+    )
+
+    payload = build_demo_mark_uncertain_home_surface_link()
+    return _host_body_home_surface_link_console_payload(
+        "host_body_validate_home_surface_link_demo",
+        {
+            "validation": validate_internal_action_home_surface_link_audit(
+                payload["internal_action_home_surface_link_audit"]
+            )
+        },
+    )
+
+
 def _host_body_console_payload(
     action: str,
     payload: dict[str, Any],
@@ -4288,6 +4398,47 @@ def _host_body_closed_loop_console_payload(
         "new_learning_behavior_created": False,
         "new_memory_behavior_created": False,
         "task_engine_selected_action_created": False,
+        "final_action_created": False,
+        "direct_command_created": False,
+        "sandbox_execution_created": False,
+        "external_control_created": False,
+        "memory_layer_write_performed": False,
+        "long_term_memory_write_performed": False,
+        "core_memory_write_performed": False,
+        "raw_trace_summarized": False,
+        "raw_trace_mutated": False,
+        "concept_id_embedded_into_raw_history": False,
+        "learning_candidate_created": False,
+        "concept_candidate_created": False,
+        "reviewed_concept_created": False,
+        "automatic_learning_approval_created": False,
+        "teacher_approval_created": False,
+        "first_output_created": False,
+        "live_runtime_session_created": False,
+        "thought_engine_behavior_created": False,
+        "production_behavior_created": False,
+    }
+
+
+def _host_body_home_surface_link_console_payload(
+    action: str,
+    payload: dict[str, Any],
+) -> dict[str, Any]:
+    return {
+        "guided_console_action": action,
+        **payload,
+        "read_only_surface_link_created": True,
+        "record_only_surface_link_created": True,
+        "unity_runtime_started": False,
+        "unity_runtime_mutated": False,
+        "unity_scene_mutated": False,
+        "avatar_control_created": False,
+        "actual_screen_mutated": False,
+        "actual_sound_output_created": False,
+        "external_message_created": False,
+        "file_written": False,
+        "network_output_created": False,
+        "task_selected_action_created": False,
         "final_action_created": False,
         "direct_command_created": False,
         "sandbox_execution_created": False,

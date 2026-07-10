@@ -135,6 +135,14 @@ from ashl_core_v1.runtime.guided_cradle_growth_teacher_console import (
     show_host_body_closed_loop_readiness_from_guided_cradle_growth_console,
     show_host_body_closed_loop_scope_demo_from_guided_cradle_growth_console,
     show_host_body_current_status_after_113_from_guided_cradle_growth_console,
+    show_host_body_home_surface_link_interesting_demo_from_guided_cradle_growth_console,
+    show_host_body_home_surface_link_mixed_demo_from_guided_cradle_growth_console,
+    show_host_body_home_surface_link_observe_again_demo_from_guided_cradle_growth_console,
+    show_host_body_home_surface_link_pause_demo_from_guided_cradle_growth_console,
+    show_host_body_home_surface_link_readiness_from_guided_cradle_growth_console,
+    show_host_body_home_surface_link_teacher_review_demo_from_guided_cradle_growth_console,
+    show_host_body_home_surface_link_uncertainty_demo_from_guided_cradle_growth_console,
+    show_host_body_home_surface_link_update_status_demo_from_guided_cradle_growth_console,
     show_host_body_identity_demo_from_guided_cradle_growth_console,
     show_host_body_internal_action_demo_from_guided_cradle_growth_console,
     show_host_body_internal_space_demo_from_guided_cradle_growth_console,
@@ -333,6 +341,7 @@ from ashl_core_v1.runtime.guided_cradle_growth_teacher_console import (
     validate_host_body_working_readback_from_guided_cradle_growth_console,
     validate_host_body_readback_influence_from_guided_cradle_growth_console,
     validate_host_body_closed_loop_from_guided_cradle_growth_console,
+    validate_host_body_home_surface_link_from_guided_cradle_growth_console,
     validate_parent_frame_resume_demo_from_guided_cradle_growth_console,
     validate_reviewed_concept_readback_preview_from_guided_cradle_growth_console,
     validate_advisory_readback_ordering_application_from_guided_cradle_growth_console,
@@ -622,6 +631,15 @@ def build_parser() -> argparse.ArgumentParser:
     subparsers.add_parser("host-body-show-closed-loop-readiness")
     subparsers.add_parser("host-body-validate-closed-loop-demo")
     subparsers.add_parser("host-body-show-current-status-after-113")
+    subparsers.add_parser("host-body-show-home-surface-link-uncertainty-demo")
+    subparsers.add_parser("host-body-show-home-surface-link-teacher-review-demo")
+    subparsers.add_parser("host-body-show-home-surface-link-observe-again-demo")
+    subparsers.add_parser("host-body-show-home-surface-link-interesting-demo")
+    subparsers.add_parser("host-body-show-home-surface-link-pause-demo")
+    subparsers.add_parser("host-body-show-home-surface-link-update-status-demo")
+    subparsers.add_parser("host-body-show-home-surface-link-mixed-demo")
+    subparsers.add_parser("host-body-show-home-surface-link-readiness")
+    subparsers.add_parser("host-body-validate-home-surface-link-demo")
     subparsers.add_parser("task-apply-advisory-readback-ordering-demo")
     subparsers.add_parser("task-show-advisory-readback-ordering-teacher-gate")
     subparsers.add_parser("task-show-advisory-readback-ordering-application")
@@ -1783,6 +1801,42 @@ def main(argv: list[str] | None = None) -> int:
         if args.command == "host-body-show-current-status-after-113":
             return _print_json(
                 show_host_body_current_status_after_113_from_guided_cradle_growth_console()
+            )
+        if args.command == "host-body-show-home-surface-link-uncertainty-demo":
+            return _print_json(
+                show_host_body_home_surface_link_uncertainty_demo_from_guided_cradle_growth_console()
+            )
+        if args.command == "host-body-show-home-surface-link-teacher-review-demo":
+            return _print_json(
+                show_host_body_home_surface_link_teacher_review_demo_from_guided_cradle_growth_console()
+            )
+        if args.command == "host-body-show-home-surface-link-observe-again-demo":
+            return _print_json(
+                show_host_body_home_surface_link_observe_again_demo_from_guided_cradle_growth_console()
+            )
+        if args.command == "host-body-show-home-surface-link-interesting-demo":
+            return _print_json(
+                show_host_body_home_surface_link_interesting_demo_from_guided_cradle_growth_console()
+            )
+        if args.command == "host-body-show-home-surface-link-pause-demo":
+            return _print_json(
+                show_host_body_home_surface_link_pause_demo_from_guided_cradle_growth_console()
+            )
+        if args.command == "host-body-show-home-surface-link-update-status-demo":
+            return _print_json(
+                show_host_body_home_surface_link_update_status_demo_from_guided_cradle_growth_console()
+            )
+        if args.command == "host-body-show-home-surface-link-mixed-demo":
+            return _print_json(
+                show_host_body_home_surface_link_mixed_demo_from_guided_cradle_growth_console()
+            )
+        if args.command == "host-body-show-home-surface-link-readiness":
+            return _print_json(
+                show_host_body_home_surface_link_readiness_from_guided_cradle_growth_console()
+            )
+        if args.command == "host-body-validate-home-surface-link-demo":
+            return _print_json(
+                validate_host_body_home_surface_link_from_guided_cradle_growth_console()
             )
         if args.command == "task-apply-advisory-readback-ordering-demo":
             return _print_json(
