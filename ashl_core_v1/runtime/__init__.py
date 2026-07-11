@@ -633,6 +633,13 @@ from .state_continuity_stress import (
     load_last_state_continuity_stress,
     run_state_continuity_stress,
 )
+from .trace_envelope import (
+    TraceEnvelope,
+    TraceEnvelopeStore,
+    build_trace_envelope,
+    validate_trace_envelope,
+    validate_trace_envelope_store,
+)
 
 __all__ = [
     "build_all_cradle_case_samples",
@@ -648,6 +655,7 @@ __all__ = [
     "build_blocked_manual_circulation_sample",
     "build_blocked_closed_task_third_tick_readiness_demo",
     "build_bounded_teacher_gated_task_tick_run",
+    "build_trace_envelope",
     "build_closed_learning_readback_loop_evidence_from_existing",
     "build_closed_learning_readback_loop_evidence_record",
     "build_controlled_cradle_growth_readiness_audit_from_existing",
@@ -1193,4 +1201,8 @@ __all__ = [
     "write_open_cradle_runtime_stub_readiness_report",
     "write_raising_threshold_review_report",
     "write_two_tick_runtime_stub_planning_precheck_report",
+    "TraceEnvelope",
+    "TraceEnvelopeStore",
+    "validate_trace_envelope",
+    "validate_trace_envelope_store",
 ]

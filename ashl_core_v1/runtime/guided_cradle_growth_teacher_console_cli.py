@@ -143,6 +143,15 @@ from ashl_core_v1.runtime.guided_cradle_growth_teacher_console import (
     show_host_body_home_surface_link_teacher_review_demo_from_guided_cradle_growth_console,
     show_host_body_home_surface_link_uncertainty_demo_from_guided_cradle_growth_console,
     show_host_body_home_surface_link_update_status_demo_from_guided_cradle_growth_console,
+    session_abort_from_guided_cradle_growth_console,
+    session_create_bounded_demo_from_guided_cradle_growth_console,
+    session_run_deferred_bridge_until_review_from_guided_cradle_growth_console,
+    session_run_unknown_camera_until_review_from_guided_cradle_growth_console,
+    session_show_pending_reviews_from_guided_cradle_growth_console,
+    session_show_state_from_guided_cradle_growth_console,
+    session_show_summary_from_guided_cradle_growth_console,
+    session_show_trace_from_guided_cradle_growth_console,
+    session_validate_from_guided_cradle_growth_console,
     show_host_body_identity_demo_from_guided_cradle_growth_console,
     show_host_body_internal_action_demo_from_guided_cradle_growth_console,
     show_host_body_internal_space_demo_from_guided_cradle_growth_console,
@@ -640,6 +649,15 @@ def build_parser() -> argparse.ArgumentParser:
     subparsers.add_parser("host-body-show-home-surface-link-mixed-demo")
     subparsers.add_parser("host-body-show-home-surface-link-readiness")
     subparsers.add_parser("host-body-validate-home-surface-link-demo")
+    subparsers.add_parser("session-create-bounded-demo")
+    subparsers.add_parser("session-run-unknown-camera-until-review")
+    subparsers.add_parser("session-run-deferred-bridge-until-review")
+    subparsers.add_parser("session-show-state")
+    subparsers.add_parser("session-show-trace")
+    subparsers.add_parser("session-show-pending-reviews")
+    subparsers.add_parser("session-show-summary")
+    subparsers.add_parser("session-abort")
+    subparsers.add_parser("session-validate")
     subparsers.add_parser("task-apply-advisory-readback-ordering-demo")
     subparsers.add_parser("task-show-advisory-readback-ordering-teacher-gate")
     subparsers.add_parser("task-show-advisory-readback-ordering-application")
@@ -1838,6 +1856,32 @@ def main(argv: list[str] | None = None) -> int:
             return _print_json(
                 validate_host_body_home_surface_link_from_guided_cradle_growth_console()
             )
+        if args.command == "session-create-bounded-demo":
+            return _print_json(
+                session_create_bounded_demo_from_guided_cradle_growth_console()
+            )
+        if args.command == "session-run-unknown-camera-until-review":
+            return _print_json(
+                session_run_unknown_camera_until_review_from_guided_cradle_growth_console()
+            )
+        if args.command == "session-run-deferred-bridge-until-review":
+            return _print_json(
+                session_run_deferred_bridge_until_review_from_guided_cradle_growth_console()
+            )
+        if args.command == "session-show-state":
+            return _print_json(session_show_state_from_guided_cradle_growth_console())
+        if args.command == "session-show-trace":
+            return _print_json(session_show_trace_from_guided_cradle_growth_console())
+        if args.command == "session-show-pending-reviews":
+            return _print_json(
+                session_show_pending_reviews_from_guided_cradle_growth_console()
+            )
+        if args.command == "session-show-summary":
+            return _print_json(session_show_summary_from_guided_cradle_growth_console())
+        if args.command == "session-abort":
+            return _print_json(session_abort_from_guided_cradle_growth_console())
+        if args.command == "session-validate":
+            return _print_json(session_validate_from_guided_cradle_growth_console())
         if args.command == "task-apply-advisory-readback-ordering-demo":
             return _print_json(
                 apply_advisory_readback_ordering_demo_from_guided_cradle_growth_console()

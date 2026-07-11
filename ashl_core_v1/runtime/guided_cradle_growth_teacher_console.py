@@ -4012,6 +4012,103 @@ def validate_host_body_home_surface_link_from_guided_cradle_growth_console() -> 
     )
 
 
+def session_create_bounded_demo_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.runtime.bounded_embodied_session_runtime import (
+        BoundedEmbodiedSessionRuntime,
+    )
+
+    runtime = BoundedEmbodiedSessionRuntime()
+    state = runtime.create_session()
+    return _bounded_session_console_payload(
+        "session_create_bounded_demo",
+        {"session_state": state.to_dict(), "session_trace": tuple(item.to_dict() for item in runtime.get_session_trace(state.session_id))},
+    )
+
+
+def session_run_unknown_camera_until_review_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.runtime.bounded_embodied_session_runtime import (
+        build_demo_unknown_camera_to_review_runtime,
+    )
+
+    return _bounded_session_console_payload(
+        "session_run_unknown_camera_until_review",
+        build_demo_unknown_camera_to_review_runtime(),
+    )
+
+
+def session_run_deferred_bridge_until_review_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.runtime.bounded_embodied_session_runtime import (
+        build_demo_deferred_bridge_to_review_runtime,
+    )
+
+    return _bounded_session_console_payload(
+        "session_run_deferred_bridge_until_review",
+        build_demo_deferred_bridge_to_review_runtime(),
+    )
+
+
+def session_show_state_from_guided_cradle_growth_console() -> dict[str, Any]:
+    payload = session_run_unknown_camera_until_review_from_guided_cradle_growth_console()
+    return _bounded_session_console_payload(
+        "session_show_state",
+        {"session_state": payload["session_state"]},
+    )
+
+
+def session_show_trace_from_guided_cradle_growth_console() -> dict[str, Any]:
+    payload = session_run_unknown_camera_until_review_from_guided_cradle_growth_console()
+    return _bounded_session_console_payload(
+        "session_show_trace",
+        {"session_trace": payload["session_trace"]},
+    )
+
+
+def session_show_pending_reviews_from_guided_cradle_growth_console() -> dict[str, Any]:
+    payload = session_run_unknown_camera_until_review_from_guided_cradle_growth_console()
+    return _bounded_session_console_payload(
+        "session_show_pending_reviews",
+        {"pending_teacher_reviews": payload["pending_teacher_reviews"]},
+    )
+
+
+def session_show_summary_from_guided_cradle_growth_console() -> dict[str, Any]:
+    payload = session_run_unknown_camera_until_review_from_guided_cradle_growth_console()
+    return _bounded_session_console_payload(
+        "session_show_summary",
+        {"rendered_session_summary": payload["rendered_session_summary"]},
+    )
+
+
+def session_abort_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.runtime.bounded_embodied_session_runtime import (
+        build_demo_aborted_session_runtime,
+    )
+
+    return _bounded_session_console_payload(
+        "session_abort",
+        build_demo_aborted_session_runtime(),
+    )
+
+
+def session_validate_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.runtime.bounded_embodied_session_runtime import (
+        build_demo_unknown_camera_to_review_runtime,
+    )
+
+    payload = build_demo_unknown_camera_to_review_runtime()
+    return _bounded_session_console_payload(
+        "session_validate",
+        {
+            "validation": {
+                "valid": payload["session_runtime_audit"]["audit_status"].startswith("passed_"),
+                "status": payload["session_runtime_audit"]["audit_status"],
+                "final_status": payload["session_state"]["status"],
+                "pending_teacher_review_count": len(payload["pending_teacher_reviews"]),
+            }
+        },
+    )
+
+
 def _host_body_console_payload(
     action: str,
     payload: dict[str, Any],
@@ -4028,6 +4125,34 @@ def _host_body_console_payload(
         "semantic_vision_created": False,
         "speech_recognition_created": False,
         "external_control_created": False,
+    }
+
+
+def _bounded_session_console_payload(
+    action: str,
+    payload: dict[str, Any],
+) -> dict[str, Any]:
+    clean_payload = {key: value for key, value in payload.items() if key != "_runtime"}
+    return {
+        "guided_console_action": action,
+        **clean_payload,
+        "bounded_session_runtime_created": True,
+        "in_memory_only": True,
+        "teacher_gate_required": True,
+        "teacher_decision_created": False,
+        "session_resume_created": False,
+        "reviewed_concept_created": False,
+        "memory_commit_performed": False,
+        "long_term_memory_write_performed": False,
+        "core_memory_write_performed": False,
+        "real_hardware_accessed": False,
+        "external_control_created": False,
+        "file_persistence_created": False,
+        "first_output_created": False,
+        "live_scheduler_created": False,
+        "open_ended_loop_created": False,
+        "thought_engine_behavior_created": False,
+        "production_behavior_created": False,
     }
 
 
