@@ -145,13 +145,23 @@ from ashl_core_v1.runtime.guided_cradle_growth_teacher_console import (
     show_host_body_home_surface_link_update_status_demo_from_guided_cradle_growth_console,
     session_abort_from_guided_cradle_growth_console,
     session_create_bounded_demo_from_guided_cradle_growth_console,
+    session_list_pending_reviews_from_guided_cradle_growth_console,
+    session_list_persisted_from_guided_cradle_growth_console,
+    session_load_from_guided_cradle_growth_console,
+    session_persist_waiting_from_guided_cradle_growth_console,
+    session_resume_and_commit_from_guided_cradle_growth_console,
+    session_review_decision_from_guided_cradle_growth_console,
+    session_rollback_from_guided_cradle_growth_console,
     session_run_deferred_bridge_until_review_from_guided_cradle_growth_console,
     session_run_unknown_camera_until_review_from_guided_cradle_growth_console,
+    session_show_active_readback_from_guided_cradle_growth_console,
     session_show_pending_reviews_from_guided_cradle_growth_console,
+    session_show_persistence_summary_from_guided_cradle_growth_console,
     session_show_state_from_guided_cradle_growth_console,
     session_show_summary_from_guided_cradle_growth_console,
     session_show_trace_from_guided_cradle_growth_console,
     session_validate_from_guided_cradle_growth_console,
+    session_validate_resume_commit_from_guided_cradle_growth_console,
     show_host_body_identity_demo_from_guided_cradle_growth_console,
     show_host_body_internal_action_demo_from_guided_cradle_growth_console,
     show_host_body_internal_space_demo_from_guided_cradle_growth_console,
@@ -658,6 +668,35 @@ def build_parser() -> argparse.ArgumentParser:
     subparsers.add_parser("session-show-summary")
     subparsers.add_parser("session-abort")
     subparsers.add_parser("session-validate")
+    subparsers.add_parser("session-persist-waiting")
+    subparsers.add_parser("session-list-persisted")
+    persisted_load = subparsers.add_parser("session-load")
+    persisted_load.add_argument("--session-id", required=True)
+    persisted_pending = subparsers.add_parser("session-list-pending-reviews")
+    persisted_pending.add_argument("--session-id", required=True)
+    for command_name, decision in (
+        ("session-review-approve", "approved"),
+        ("session-review-reject", "rejected"),
+        ("session-review-defer", "deferred"),
+        ("session-review-needs-more-evidence", "needs_more_evidence"),
+        ("session-review-conflict", "conflict_detected"),
+    ):
+        review_parser = subparsers.add_parser(command_name)
+        review_parser.set_defaults(teacher_decision=decision)
+        review_parser.add_argument("--session-id", required=True)
+        review_parser.add_argument("--review-id", required=True)
+        review_parser.add_argument("--reason-code", action="append", default=[])
+        review_parser.add_argument("--teacher-note", required=True)
+    persisted_commit = subparsers.add_parser("session-resume-and-commit")
+    persisted_commit.add_argument("--session-id", required=True)
+    persisted_commit.add_argument("--teacher-decision-id", default=None)
+    persisted_rollback = subparsers.add_parser("session-rollback")
+    persisted_rollback.add_argument("--session-id", required=True)
+    persisted_rollback.add_argument("--teacher-decision-id", default=None)
+    subparsers.add_parser("session-show-active-readback")
+    persisted_summary = subparsers.add_parser("session-show-persistence-summary")
+    persisted_summary.add_argument("--session-id", required=True)
+    subparsers.add_parser("session-validate-resume-commit")
     subparsers.add_parser("task-apply-advisory-readback-ordering-demo")
     subparsers.add_parser("task-show-advisory-readback-ordering-teacher-gate")
     subparsers.add_parser("task-show-advisory-readback-ordering-application")
@@ -1882,6 +1921,87 @@ def main(argv: list[str] | None = None) -> int:
             return _print_json(session_abort_from_guided_cradle_growth_console())
         if args.command == "session-validate":
             return _print_json(session_validate_from_guided_cradle_growth_console())
+        if args.command == "session-persist-waiting":
+            _require_state_dir(args.state_dir)
+            return _print_json(
+                session_persist_waiting_from_guided_cradle_growth_console(args.state_dir)
+            )
+        if args.command == "session-list-persisted":
+            _require_state_dir(args.state_dir)
+            return _print_json(
+                session_list_persisted_from_guided_cradle_growth_console(args.state_dir)
+            )
+        if args.command == "session-load":
+            _require_state_dir(args.state_dir)
+            return _print_json(
+                session_load_from_guided_cradle_growth_console(
+                    args.state_dir,
+                    args.session_id,
+                )
+            )
+        if args.command == "session-list-pending-reviews":
+            _require_state_dir(args.state_dir)
+            return _print_json(
+                session_list_pending_reviews_from_guided_cradle_growth_console(
+                    args.state_dir,
+                    args.session_id,
+                )
+            )
+        if args.command in {
+            "session-review-approve",
+            "session-review-reject",
+            "session-review-defer",
+            "session-review-needs-more-evidence",
+            "session-review-conflict",
+        }:
+            _require_state_dir(args.state_dir)
+            return _print_json(
+                session_review_decision_from_guided_cradle_growth_console(
+                    args.state_dir,
+                    args.session_id,
+                    args.review_id,
+                    args.teacher_decision,
+                    tuple(args.reason_code),
+                    args.teacher_note,
+                )
+            )
+        if args.command == "session-resume-and-commit":
+            _require_state_dir(args.state_dir)
+            return _print_json(
+                session_resume_and_commit_from_guided_cradle_growth_console(
+                    args.state_dir,
+                    args.session_id,
+                    teacher_decision_id=args.teacher_decision_id,
+                )
+            )
+        if args.command == "session-rollback":
+            _require_state_dir(args.state_dir)
+            return _print_json(
+                session_rollback_from_guided_cradle_growth_console(
+                    args.state_dir,
+                    args.session_id,
+                    teacher_decision_id=args.teacher_decision_id,
+                )
+            )
+        if args.command == "session-show-active-readback":
+            _require_state_dir(args.state_dir)
+            return _print_json(
+                session_show_active_readback_from_guided_cradle_growth_console(
+                    args.state_dir
+                )
+            )
+        if args.command == "session-show-persistence-summary":
+            _require_state_dir(args.state_dir)
+            return _print_json(
+                session_show_persistence_summary_from_guided_cradle_growth_console(
+                    args.state_dir,
+                    args.session_id,
+                )
+            )
+        if args.command == "session-validate-resume-commit":
+            return _print_json(
+                session_validate_resume_commit_from_guided_cradle_growth_console()
+            )
         if args.command == "task-apply-advisory-readback-ordering-demo":
             return _print_json(
                 apply_advisory_readback_ordering_demo_from_guided_cradle_growth_console()

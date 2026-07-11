@@ -6340,3 +6340,178 @@ def validate_feedback_reviewed_concept_replay_from_guided_cradle_growth_console(
         "memory_write_performed": False,
         "automatic_learning_approval_created": False,
     }
+
+
+def session_persist_waiting_from_guided_cradle_growth_console(state_dir: str | Path) -> dict[str, Any]:
+    from ashl_core_v1.runtime.teacher_gated_session_resume_commit import build_demo_persisted_waiting_session
+
+    payload = build_demo_persisted_waiting_session(Path(state_dir))
+    return {
+        "guided_console_action": "session_persist_waiting",
+        **payload,
+        "implicit_approval_created": False,
+        "automatic_teacher_decision_created": False,
+    }
+
+
+def session_list_persisted_from_guided_cradle_growth_console(state_dir: str | Path) -> dict[str, Any]:
+    from ashl_core_v1.runtime.teacher_gated_session_store import TeacherGatedSessionStore
+
+    store = TeacherGatedSessionStore(Path(state_dir))
+    return {
+        "guided_console_action": "session_list_persisted",
+        "sessions": store.list_sessions(),
+        "store_validation": store.validate_schema(),
+    }
+
+
+def session_load_from_guided_cradle_growth_console(state_dir: str | Path, session_id: str) -> dict[str, Any]:
+    from ashl_core_v1.runtime.teacher_gated_session_resume_commit import TeacherGatedSessionResumeCommitRuntime
+    from ashl_core_v1.runtime.teacher_gated_session_store import TeacherGatedSessionStore
+
+    store = TeacherGatedSessionStore(Path(state_dir))
+    return {
+        "guided_console_action": "session_load",
+        "session_state": store.load_session_state(session_id).to_dict(),
+        "pending_teacher_reviews": tuple(item.to_dict() for item in store.list_pending_reviews(session_id)),
+        "teacher_decisions": store.list_teacher_decisions(session_id),
+        "summary": TeacherGatedSessionResumeCommitRuntime().render_persisted_session_summary(session_id, Path(state_dir)),
+    }
+
+
+def session_list_pending_reviews_from_guided_cradle_growth_console(state_dir: str | Path, session_id: str) -> dict[str, Any]:
+    from ashl_core_v1.runtime.teacher_gated_session_store import TeacherGatedSessionStore
+
+    store = TeacherGatedSessionStore(Path(state_dir))
+    return {
+        "guided_console_action": "session_list_pending_reviews",
+        "pending_teacher_reviews": tuple(item.to_dict() for item in store.list_pending_reviews(session_id)),
+    }
+
+
+def session_review_decision_from_guided_cradle_growth_console(
+    state_dir: str | Path,
+    session_id: str,
+    review_id: str,
+    decision: str,
+    reason_codes: tuple[str, ...],
+    teacher_note: str,
+) -> dict[str, Any]:
+    from ashl_core_v1.runtime.teacher_gated_session_resume_commit import TeacherGatedSessionResumeCommitRuntime
+
+    record = TeacherGatedSessionResumeCommitRuntime().apply_teacher_decision(
+        session_id,
+        review_id,
+        decision,
+        reason_codes,
+        teacher_note,
+        Path(state_dir),
+    )
+    return {
+        "guided_console_action": f"session_review_{decision}",
+        "teacher_decision": record.to_dict(),
+        "implicit_approval_created": False,
+        "automatic_teacher_decision_created": False,
+        "automatic_learning_approval_created": False,
+    }
+
+
+def session_resume_and_commit_from_guided_cradle_growth_console(
+    state_dir: str | Path,
+    session_id: str,
+    teacher_decision_id: str | None = None,
+) -> dict[str, Any]:
+    from ashl_core_v1.runtime.teacher_gated_session_resume_commit import (
+        TeacherGatedSessionResumeCommitRuntime,
+        build_teacher_gated_session_resume_commit_audit,
+        build_teacher_gated_session_resume_commit_readiness,
+    )
+    from ashl_core_v1.runtime.teacher_gated_session_store import TeacherGatedSessionStore
+
+    store = TeacherGatedSessionStore(Path(state_dir))
+    if teacher_decision_id is None:
+        approved = tuple(item for item in store.list_teacher_decisions(session_id) if item["decision"] == "approved")
+        if not approved:
+            raise ValueError("approved teacher decision is required before resume")
+        teacher_decision_id = str(approved[-1]["teacher_decision_id"])
+    runtime = TeacherGatedSessionResumeCommitRuntime()
+    result = runtime.resume_after_approval(session_id, teacher_decision_id, Path(state_dir))
+    audit = build_teacher_gated_session_resume_commit_audit(store=store, session_id=session_id, run_result=result)
+    readiness = build_teacher_gated_session_resume_commit_readiness(audit)
+    return {
+        "guided_console_action": "session_resume_and_commit",
+        "run_result": result.to_dict(),
+        "resume_commit_audit": audit.to_dict(),
+        "resume_commit_readiness": readiness.to_dict(),
+        "active_working_readback": store.load_active_working_readback(),
+        "external_control_created": False,
+        "first_output_created": False,
+        "live_scheduler_created": False,
+    }
+
+
+def session_rollback_from_guided_cradle_growth_console(
+    state_dir: str | Path,
+    session_id: str,
+    teacher_decision_id: str | None = None,
+) -> dict[str, Any]:
+    from ashl_core_v1.runtime.teacher_gated_session_resume_commit import (
+        TeacherGatedSessionResumeCommitRuntime,
+        build_teacher_gated_session_resume_commit_audit,
+        build_teacher_gated_session_resume_commit_readiness,
+    )
+    from ashl_core_v1.runtime.teacher_gated_session_store import TeacherGatedSessionStore
+
+    store = TeacherGatedSessionStore(Path(state_dir))
+    if teacher_decision_id is None:
+        rejected = tuple(item for item in store.list_teacher_decisions(session_id) if item["decision"] == "rejected")
+        if not rejected:
+            raise ValueError("rejected teacher decision is required before rollback")
+        teacher_decision_id = str(rejected[-1]["teacher_decision_id"])
+    runtime = TeacherGatedSessionResumeCommitRuntime()
+    result = runtime.close_rejected_session(session_id, teacher_decision_id, Path(state_dir))
+    audit = build_teacher_gated_session_resume_commit_audit(store=store, session_id=session_id, run_result=result)
+    readiness = build_teacher_gated_session_resume_commit_readiness(audit)
+    return {
+        "guided_console_action": "session_rollback",
+        "run_result": result.to_dict(),
+        "resume_commit_audit": audit.to_dict(),
+        "resume_commit_readiness": readiness.to_dict(),
+    }
+
+
+def session_show_active_readback_from_guided_cradle_growth_console(state_dir: str | Path) -> dict[str, Any]:
+    from ashl_core_v1.runtime.teacher_gated_session_resume_commit import TeacherGatedSessionResumeCommitRuntime
+
+    return {
+        "guided_console_action": "session_show_active_readback",
+        "active_working_readback": TeacherGatedSessionResumeCommitRuntime().load_active_working_readback(Path(state_dir)),
+    }
+
+
+def session_show_persistence_summary_from_guided_cradle_growth_console(state_dir: str | Path, session_id: str) -> dict[str, Any]:
+    from ashl_core_v1.runtime.teacher_gated_session_resume_commit import TeacherGatedSessionResumeCommitRuntime
+
+    return {
+        "guided_console_action": "session_show_persistence_summary",
+        "summary": TeacherGatedSessionResumeCommitRuntime().render_persisted_session_summary(session_id, Path(state_dir)),
+    }
+
+
+def session_validate_resume_commit_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from tempfile import TemporaryDirectory
+    from ashl_core_v1.runtime.teacher_gated_session_resume_commit import build_demo_approved_commit
+
+    with TemporaryDirectory() as directory:
+        payload = build_demo_approved_commit(Path(directory))
+        return {
+            "guided_console_action": "session_validate_resume_commit",
+            "validation": {
+                "valid": payload["resume_commit_audit"]["audit_status"] == "passed_approved_session_commit",
+                "audit_status": payload["resume_commit_audit"]["audit_status"],
+                "final_status": payload["run_result"]["final_status"],
+                "active_readback_count": len(payload["active_working_readback"]),
+            },
+            "implicit_approval_created": False,
+            "automatic_teacher_decision_created": False,
+        }
