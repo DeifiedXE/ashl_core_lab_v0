@@ -6396,6 +6396,8 @@ def session_review_decision_from_guided_cradle_growth_console(
     decision: str,
     reason_codes: tuple[str, ...],
     teacher_note: str,
+    approval_scope: str | None = None,
+    expected_evidence_hash: str | None = None,
 ) -> dict[str, Any]:
     from ashl_core_v1.runtime.teacher_gated_session_resume_commit import TeacherGatedSessionResumeCommitRuntime
 
@@ -6406,6 +6408,8 @@ def session_review_decision_from_guided_cradle_growth_console(
         reason_codes,
         teacher_note,
         Path(state_dir),
+        approval_scope=approval_scope,
+        expected_evidence_hash=expected_evidence_hash,
     )
     return {
         "guided_console_action": f"session_review_{decision}",
@@ -6413,6 +6417,185 @@ def session_review_decision_from_guided_cradle_growth_console(
         "implicit_approval_created": False,
         "automatic_teacher_decision_created": False,
         "automatic_learning_approval_created": False,
+    }
+
+
+def session_show_review_evidence_from_guided_cradle_growth_console(
+    state_dir: str | Path,
+    session_id: str,
+    review_id: str,
+) -> dict[str, Any]:
+    from ashl_core_v1.runtime.teacher_gated_session_store import TeacherGatedSessionStore
+
+    store = TeacherGatedSessionStore(Path(state_dir))
+    reviews = tuple(item for item in store.list_pending_reviews(session_id) if item.pending_teacher_review_id == review_id)
+    if not reviews:
+        raise ValueError(f"pending review not found: {review_id}")
+    review = reviews[0]
+    snapshot = store.load_evidence_snapshot(review.evidence_snapshot_id)
+    return {
+        "guided_console_action": "session_show_review_evidence",
+        "evidence_kind": snapshot.evidence_kind,
+        "evidence_theme": snapshot.evidence_theme,
+        "evidence_summary": snapshot.evidence_summary,
+        "session_id": snapshot.session_id,
+        "source_event_id": snapshot.source_event_id,
+        "source_trace_refs": snapshot.source_trace_refs,
+        "evidence_identity_sha256": snapshot.evidence_identity_sha256,
+        "requested_approval_scope": review.required_commit_scope,
+        "downstream_effect": "full scope allows Package 90-92, interpreted commit, and working readback commit; narrower scope cannot commit.",
+        "pending_teacher_review": review.to_dict(),
+        "evidence_snapshot": snapshot.to_dict(),
+        "hidden_scope_escalation_created": False,
+    }
+
+
+def session_show_review_evidence_hash_from_guided_cradle_growth_console(
+    state_dir: str | Path,
+    session_id: str,
+    review_id: str,
+) -> dict[str, Any]:
+    payload = session_show_review_evidence_from_guided_cradle_growth_console(state_dir, session_id, review_id)
+    return {
+        "guided_console_action": "session_show_review_evidence_hash",
+        "session_id": payload["session_id"],
+        "review_id": review_id,
+        "evidence_identity_sha256": payload["evidence_identity_sha256"],
+        "source_trace_refs": payload["source_trace_refs"],
+    }
+
+
+def session_show_approval_scopes_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.runtime.session_learning_evidence_identity import ALLOWED_APPROVAL_SCOPES, FULL_COMMIT_APPROVAL_SCOPE
+
+    return {
+        "guided_console_action": "session_show_approval_scopes",
+        "approval_scopes": ALLOWED_APPROVAL_SCOPES,
+        "required_for_resume_and_commit": FULL_COMMIT_APPROVAL_SCOPE,
+        "scope_rule": "No approved decision is widened from the word approved.",
+    }
+
+
+def session_review_exact_approve_from_guided_cradle_growth_console(
+    state_dir: str | Path,
+    session_id: str,
+    review_id: str,
+    expected_evidence_hash: str,
+    reason_codes: tuple[str, ...] = ("teacher_verified_exact_evidence",),
+    teacher_note: str = "Teacher explicitly approves the exact evidence for reviewed concept and working readback commit.",
+) -> dict[str, Any]:
+    from ashl_core_v1.runtime.session_learning_evidence_identity import FULL_COMMIT_APPROVAL_SCOPE
+
+    return session_review_decision_from_guided_cradle_growth_console(
+        state_dir,
+        session_id,
+        review_id,
+        "approved",
+        reason_codes,
+        teacher_note,
+        approval_scope=FULL_COMMIT_APPROVAL_SCOPE,
+        expected_evidence_hash=expected_evidence_hash,
+    )
+
+
+def session_review_exact_reject_from_guided_cradle_growth_console(
+    state_dir: str | Path,
+    session_id: str,
+    review_id: str,
+    expected_evidence_hash: str,
+    reason_codes: tuple[str, ...] = ("teacher_rejected_exact_evidence",),
+    teacher_note: str = "Teacher explicitly rejects the exact evidence.",
+) -> dict[str, Any]:
+    return session_review_decision_from_guided_cradle_growth_console(
+        state_dir,
+        session_id,
+        review_id,
+        "rejected",
+        reason_codes,
+        teacher_note,
+        approval_scope="feedback_candidate_only",
+        expected_evidence_hash=expected_evidence_hash,
+    )
+
+
+def session_review_exact_defer_from_guided_cradle_growth_console(
+    state_dir: str | Path,
+    session_id: str,
+    review_id: str,
+    expected_evidence_hash: str,
+    reason_codes: tuple[str, ...] = ("teacher_deferred_exact_evidence",),
+    teacher_note: str = "Teacher explicitly defers the exact evidence.",
+) -> dict[str, Any]:
+    return session_review_decision_from_guided_cradle_growth_console(
+        state_dir,
+        session_id,
+        review_id,
+        "deferred",
+        reason_codes,
+        teacher_note,
+        approval_scope="feedback_candidate_only",
+        expected_evidence_hash=expected_evidence_hash,
+    )
+
+
+def session_validate_evidence_target_from_guided_cradle_growth_console(
+    state_dir: str | Path,
+    session_id: str,
+    review_id: str,
+) -> dict[str, Any]:
+    from ashl_core_v1.runtime.session_learning_evidence_identity import validate_session_learning_evidence_snapshot
+    from ashl_core_v1.runtime.teacher_gated_session_store import TeacherGatedSessionStore
+
+    store = TeacherGatedSessionStore(Path(state_dir))
+    review = tuple(item for item in store.list_pending_reviews(session_id) if item.pending_teacher_review_id == review_id)[0]
+    snapshot = store.load_evidence_snapshot(review.evidence_snapshot_id)
+    validation = validate_session_learning_evidence_snapshot(snapshot)
+    return {
+        "guided_console_action": "session_validate_evidence_target",
+        "validation": validation,
+        "evidence_identity_matches_review": snapshot.evidence_identity_sha256 == review.evidence_identity_sha256,
+        "canonical_payload_matches_review": snapshot.canonical_payload_sha256 == review.canonical_payload_sha256,
+    }
+
+
+def session_validate_learning_lineage_from_guided_cradle_growth_console(
+    state_dir: str | Path,
+    session_id: str,
+) -> dict[str, Any]:
+    from ashl_core_v1.runtime.session_evidence_identity_approval_scope_repair import (
+        build_session_evidence_identity_approval_scope_audit,
+        build_session_evidence_identity_approval_scope_readiness,
+    )
+    from ashl_core_v1.runtime.teacher_gated_session_store import TeacherGatedSessionStore
+
+    store = TeacherGatedSessionStore(Path(state_dir))
+    audit = build_session_evidence_identity_approval_scope_audit(store=store, session_id=session_id)
+    readiness = build_session_evidence_identity_approval_scope_readiness(audit)
+    return {
+        "guided_console_action": "session_validate_learning_lineage",
+        "identity_repair_audit": audit.to_dict(),
+        "identity_repair_readiness": readiness.to_dict(),
+        "learning_pipeline_identity_bindings": store.list_learning_pipeline_identity_bindings(session_id),
+    }
+
+
+def session_migrate_store_v1_from_guided_cradle_growth_console(state_dir: str | Path) -> dict[str, Any]:
+    from ashl_core_v1.runtime.teacher_gated_session_store import TeacherGatedSessionStore
+
+    store = TeacherGatedSessionStore(Path(state_dir))
+    return {
+        "guided_console_action": "session_migrate_store_v1",
+        "store_validation": store.validate_schema(),
+        "store_path": str(store.store_path),
+    }
+
+
+def session_validate_identity_repair_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.runtime.session_evidence_identity_approval_scope_repair import validate_demo_repair
+
+    return {
+        "guided_console_action": "session_validate_identity_repair",
+        "validation": validate_demo_repair(),
     }
 
 

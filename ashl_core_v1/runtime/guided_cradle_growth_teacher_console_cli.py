@@ -151,16 +151,26 @@ from ashl_core_v1.runtime.guided_cradle_growth_teacher_console import (
     session_persist_waiting_from_guided_cradle_growth_console,
     session_resume_and_commit_from_guided_cradle_growth_console,
     session_review_decision_from_guided_cradle_growth_console,
+    session_review_exact_approve_from_guided_cradle_growth_console,
+    session_review_exact_defer_from_guided_cradle_growth_console,
+    session_review_exact_reject_from_guided_cradle_growth_console,
     session_rollback_from_guided_cradle_growth_console,
     session_run_deferred_bridge_until_review_from_guided_cradle_growth_console,
     session_run_unknown_camera_until_review_from_guided_cradle_growth_console,
     session_show_active_readback_from_guided_cradle_growth_console,
+    session_show_approval_scopes_from_guided_cradle_growth_console,
     session_show_pending_reviews_from_guided_cradle_growth_console,
     session_show_persistence_summary_from_guided_cradle_growth_console,
+    session_show_review_evidence_from_guided_cradle_growth_console,
+    session_show_review_evidence_hash_from_guided_cradle_growth_console,
     session_show_state_from_guided_cradle_growth_console,
     session_show_summary_from_guided_cradle_growth_console,
     session_show_trace_from_guided_cradle_growth_console,
+    session_migrate_store_v1_from_guided_cradle_growth_console,
+    session_validate_evidence_target_from_guided_cradle_growth_console,
     session_validate_from_guided_cradle_growth_console,
+    session_validate_identity_repair_from_guided_cradle_growth_console,
+    session_validate_learning_lineage_from_guided_cradle_growth_console,
     session_validate_resume_commit_from_guided_cradle_growth_console,
     show_host_body_identity_demo_from_guided_cradle_growth_console,
     show_host_body_internal_action_demo_from_guided_cradle_growth_console,
@@ -674,6 +684,13 @@ def build_parser() -> argparse.ArgumentParser:
     persisted_load.add_argument("--session-id", required=True)
     persisted_pending = subparsers.add_parser("session-list-pending-reviews")
     persisted_pending.add_argument("--session-id", required=True)
+    review_evidence = subparsers.add_parser("session-show-review-evidence")
+    review_evidence.add_argument("--session-id", required=True)
+    review_evidence.add_argument("--review-id", required=True)
+    review_hash = subparsers.add_parser("session-show-review-evidence-hash")
+    review_hash.add_argument("--session-id", required=True)
+    review_hash.add_argument("--review-id", required=True)
+    subparsers.add_parser("session-show-approval-scopes")
     for command_name, decision in (
         ("session-review-approve", "approved"),
         ("session-review-reject", "rejected"),
@@ -687,6 +704,24 @@ def build_parser() -> argparse.ArgumentParser:
         review_parser.add_argument("--review-id", required=True)
         review_parser.add_argument("--reason-code", action="append", default=[])
         review_parser.add_argument("--teacher-note", required=True)
+    for command_name in (
+        "session-review-exact-approve",
+        "session-review-exact-reject",
+        "session-review-exact-defer",
+    ):
+        exact_parser = subparsers.add_parser(command_name)
+        exact_parser.add_argument("--session-id", required=True)
+        exact_parser.add_argument("--review-id", required=True)
+        exact_parser.add_argument("--expected-evidence-hash", required=True)
+        exact_parser.add_argument("--reason-code", action="append", default=[])
+        exact_parser.add_argument("--teacher-note")
+    validate_target = subparsers.add_parser("session-validate-evidence-target")
+    validate_target.add_argument("--session-id", required=True)
+    validate_target.add_argument("--review-id", required=True)
+    validate_lineage = subparsers.add_parser("session-validate-learning-lineage")
+    validate_lineage.add_argument("--session-id", required=True)
+    subparsers.add_parser("session-migrate-store-v1")
+    subparsers.add_parser("session-validate-identity-repair")
     persisted_commit = subparsers.add_parser("session-resume-and-commit")
     persisted_commit.add_argument("--session-id", required=True)
     persisted_commit.add_argument("--teacher-decision-id", default=None)
@@ -1947,6 +1982,26 @@ def main(argv: list[str] | None = None) -> int:
                     args.session_id,
                 )
             )
+        if args.command == "session-show-review-evidence":
+            _require_state_dir(args.state_dir)
+            return _print_json(
+                session_show_review_evidence_from_guided_cradle_growth_console(
+                    args.state_dir,
+                    args.session_id,
+                    args.review_id,
+                )
+            )
+        if args.command == "session-show-review-evidence-hash":
+            _require_state_dir(args.state_dir)
+            return _print_json(
+                session_show_review_evidence_hash_from_guided_cradle_growth_console(
+                    args.state_dir,
+                    args.session_id,
+                    args.review_id,
+                )
+            )
+        if args.command == "session-show-approval-scopes":
+            return _print_json(session_show_approval_scopes_from_guided_cradle_growth_console())
         if args.command in {
             "session-review-approve",
             "session-review-reject",
@@ -1965,6 +2020,65 @@ def main(argv: list[str] | None = None) -> int:
                     args.teacher_note,
                 )
             )
+        if args.command == "session-review-exact-approve":
+            _require_state_dir(args.state_dir)
+            return _print_json(
+                session_review_exact_approve_from_guided_cradle_growth_console(
+                    args.state_dir,
+                    args.session_id,
+                    args.review_id,
+                    args.expected_evidence_hash,
+                    tuple(args.reason_code) or ("teacher_verified_exact_evidence",),
+                    args.teacher_note
+                    or "Teacher explicitly approves the exact evidence for reviewed concept and working readback commit.",
+                )
+            )
+        if args.command == "session-review-exact-reject":
+            _require_state_dir(args.state_dir)
+            return _print_json(
+                session_review_exact_reject_from_guided_cradle_growth_console(
+                    args.state_dir,
+                    args.session_id,
+                    args.review_id,
+                    args.expected_evidence_hash,
+                    tuple(args.reason_code) or ("teacher_rejected_exact_evidence",),
+                    args.teacher_note or "Teacher explicitly rejects the exact evidence.",
+                )
+            )
+        if args.command == "session-review-exact-defer":
+            _require_state_dir(args.state_dir)
+            return _print_json(
+                session_review_exact_defer_from_guided_cradle_growth_console(
+                    args.state_dir,
+                    args.session_id,
+                    args.review_id,
+                    args.expected_evidence_hash,
+                    tuple(args.reason_code) or ("teacher_deferred_exact_evidence",),
+                    args.teacher_note or "Teacher explicitly defers the exact evidence.",
+                )
+            )
+        if args.command == "session-validate-evidence-target":
+            _require_state_dir(args.state_dir)
+            return _print_json(
+                session_validate_evidence_target_from_guided_cradle_growth_console(
+                    args.state_dir,
+                    args.session_id,
+                    args.review_id,
+                )
+            )
+        if args.command == "session-validate-learning-lineage":
+            _require_state_dir(args.state_dir)
+            return _print_json(
+                session_validate_learning_lineage_from_guided_cradle_growth_console(
+                    args.state_dir,
+                    args.session_id,
+                )
+            )
+        if args.command == "session-migrate-store-v1":
+            _require_state_dir(args.state_dir)
+            return _print_json(session_migrate_store_v1_from_guided_cradle_growth_console(args.state_dir))
+        if args.command == "session-validate-identity-repair":
+            return _print_json(session_validate_identity_repair_from_guided_cradle_growth_console())
         if args.command == "session-resume-and-commit":
             _require_state_dir(args.state_dir)
             return _print_json(

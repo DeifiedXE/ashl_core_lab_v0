@@ -11,12 +11,14 @@ from ashl_core_v1.runtime.guided_cradle_growth_teacher_console import (
     session_persist_waiting_from_guided_cradle_growth_console,
     session_resume_and_commit_from_guided_cradle_growth_console,
     session_review_decision_from_guided_cradle_growth_console,
+    session_review_exact_approve_from_guided_cradle_growth_console,
     session_rollback_from_guided_cradle_growth_console,
     session_show_active_readback_from_guided_cradle_growth_console,
     session_show_persistence_summary_from_guided_cradle_growth_console,
     session_validate_resume_commit_from_guided_cradle_growth_console,
 )
 from ashl_core_v1.runtime.teacher_gated_session_resume_commit import (
+    FULL_COMMIT_APPROVAL_SCOPE,
     REQUIRED_APPROVED_BINDINGS,
     TeacherGatedSessionResumeCommitRuntime,
     build_demo_approved_commit,
@@ -106,7 +108,8 @@ class TeacherGatedSessionResumeCommitTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             persisted = build_demo_persisted_waiting_session(Path(directory))
             session_id = str(persisted["session_id"])
-            review_id = str(persisted["pending_teacher_reviews"][0]["pending_teacher_review_id"])
+            pending_review = persisted["pending_teacher_reviews"][0]
+            review_id = str(pending_review["pending_teacher_review_id"])
             store = TeacherGatedSessionStore(Path(directory))
             before = store.raw_trace_payload_hashes(session_id)
             runtime = TeacherGatedSessionResumeCommitRuntime()
@@ -117,6 +120,8 @@ class TeacherGatedSessionResumeCommitTests(unittest.TestCase):
                 ("teacher_verified",),
                 "Approved.",
                 Path(directory),
+                approval_scope=FULL_COMMIT_APPROVAL_SCOPE,
+                expected_evidence_hash=str(pending_review["evidence_identity_sha256"]),
             )
             runtime.resume_after_approval(session_id, decision.teacher_decision_id, Path(directory))
             self.assertEqual(before, store.raw_trace_payload_hashes(session_id))
@@ -124,7 +129,8 @@ class TeacherGatedSessionResumeCommitTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             persisted = build_demo_persisted_waiting_session(Path(directory))
             session_id = str(persisted["session_id"])
-            review_id = str(persisted["pending_teacher_reviews"][0]["pending_teacher_review_id"])
+            pending_review = persisted["pending_teacher_reviews"][0]
+            review_id = str(pending_review["pending_teacher_review_id"])
             store = TeacherGatedSessionStore(Path(directory))
             before = store.raw_trace_payload_hashes(session_id)
             runtime = TeacherGatedSessionResumeCommitRuntime()
@@ -135,6 +141,8 @@ class TeacherGatedSessionResumeCommitTests(unittest.TestCase):
                 ("teacher_rejected",),
                 "Rejected.",
                 Path(directory),
+                approval_scope="feedback_candidate_only",
+                expected_evidence_hash=str(pending_review["evidence_identity_sha256"]),
             )
             runtime.close_rejected_session(session_id, decision.teacher_decision_id, Path(directory))
             self.assertEqual(before, store.raw_trace_payload_hashes(session_id))
@@ -143,7 +151,8 @@ class TeacherGatedSessionResumeCommitTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             persisted = build_demo_persisted_waiting_session(Path(directory))
             session_id = str(persisted["session_id"])
-            review_id = str(persisted["pending_teacher_reviews"][0]["pending_teacher_review_id"])
+            pending_review = persisted["pending_teacher_reviews"][0]
+            review_id = str(pending_review["pending_teacher_review_id"])
             store = TeacherGatedSessionStore(Path(directory))
             runtime = TeacherGatedSessionResumeCommitRuntime()
             decision = runtime.apply_teacher_decision(
@@ -153,6 +162,8 @@ class TeacherGatedSessionResumeCommitTests(unittest.TestCase):
                 ("teacher_verified",),
                 "Approved.",
                 Path(directory),
+                approval_scope=FULL_COMMIT_APPROVAL_SCOPE,
+                expected_evidence_hash=str(pending_review["evidence_identity_sha256"]),
             )
             result = runtime.resume_after_approval(
                 session_id,
@@ -305,7 +316,8 @@ class TeacherGatedSessionResumeCommitTests(unittest.TestCase):
                 )
             store = TeacherGatedSessionStore(Path(directory))
             session_id = store.list_sessions()[0]["session_id"]
-            review_id = store.list_pending_reviews(str(session_id))[0].pending_teacher_review_id
+            pending_review = store.list_pending_reviews(str(session_id))[0]
+            review_id = pending_review.pending_teacher_review_id
             persistent_commands = (
                 ["list-sessions", "--state-dir", directory],
                 ["show-session", "--state-dir", directory, "--session-id", str(session_id)],
@@ -320,6 +332,10 @@ class TeacherGatedSessionResumeCommitTests(unittest.TestCase):
                     review_id,
                     "--decision",
                     "approved",
+                    "--approval-scope",
+                    FULL_COMMIT_APPROVAL_SCOPE,
+                    "--expected-evidence-hash",
+                    pending_review.evidence_identity_sha256,
                     "--reason-code",
                     "teacher_verified",
                     "--teacher-note",
@@ -338,18 +354,19 @@ class TeacherGatedSessionResumeCommitTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             persisted = session_persist_waiting_from_guided_cradle_growth_console(Path(directory))
             session_id = str(persisted["session_id"])
-            review_id = str(persisted["pending_teacher_reviews"][0]["pending_teacher_review_id"])
+            pending_review = persisted["pending_teacher_reviews"][0]
+            review_id = str(pending_review["pending_teacher_review_id"])
             self.assertEqual(
                 session_list_persisted_from_guided_cradle_growth_console(Path(directory))["sessions"][0]["session_id"],
                 session_id,
             )
             pending = session_list_pending_reviews_from_guided_cradle_growth_console(Path(directory), session_id)
             self.assertEqual(len(pending["pending_teacher_reviews"]), 1)
-            decision = session_review_decision_from_guided_cradle_growth_console(
+            decision = session_review_exact_approve_from_guided_cradle_growth_console(
                 Path(directory),
                 session_id,
                 review_id,
-                "approved",
+                str(pending_review["evidence_identity_sha256"]),
                 ("teacher_verified",),
                 "Approved from guided console.",
             )

@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import shutil
 import sqlite3
 from contextlib import contextmanager
 from dataclasses import dataclass
@@ -19,10 +20,23 @@ from ashl_core_v1.runtime.bounded_embodied_session_runtime import (
     PendingTeacherReviewRecord,
 )
 from ashl_core_v1.runtime.trace_envelope import TraceEnvelope
+from ashl_core_v1.runtime.trace_envelope import (
+    TraceIdentityCollisionError,
+    trace_identity_matches,
+)
+from ashl_core_v1.runtime.session_learning_evidence_identity import (
+    ALLOWED_APPROVAL_SCOPES,
+    FULL_COMMIT_APPROVAL_SCOPE,
+    SessionLearningEvidenceSnapshot,
+    calculate_evidence_identity_sha256,
+    calculate_sha256,
+    validate_session_learning_evidence_snapshot,
+)
 
 
 STORE_SCHEMA_NAME = "ashl_teacher_gated_session_store"
-STORE_SCHEMA_VERSION = "v0"
+STORE_SCHEMA_VERSION = "v1"
+LEGACY_STORE_SCHEMA_VERSION = "v0"
 STORE_FILENAME = "ashl_bounded_session_v1.sqlite3"
 
 ALLOWED_JOURNAL_KINDS = {
@@ -153,6 +167,11 @@ class TeacherGatedSessionStore:
             "working_readback_commits",
             "session_commit_records",
             "session_rollback_records",
+            "learning_evidence_snapshots",
+            "teacher_decision_target_bindings",
+            "learning_pipeline_identity_bindings",
+            "interpretation_provenance_bindings",
+            "runtime_capability_profiles",
         }
         valid = (
             row is not None
@@ -193,14 +212,26 @@ class TeacherGatedSessionStore:
             try:
                 for trace in traces:
                     self._insert_trace(connection, trace)
-                for review in pending_reviews:
-                    self._insert_pending_review(connection, review)
+                snapshot = runtime_records.get("session_learning_evidence_snapshot")
+                if snapshot is not None:
+                    self._insert_evidence_snapshot(connection, snapshot)
+                profile = runtime_records.get("runtime_capability_profile")
+                if profile is not None:
+                    self._insert_runtime_capability_profile(connection, profile)
                 self._append_checkpoint(
                     connection,
                     checkpoint_id=checkpoint_id,
                     state=state,
                     runtime_records=runtime_records,
                 )
+                checkpoint_version = self._checkpoint_version(connection, checkpoint_id)
+                for review in pending_reviews:
+                    self._insert_pending_review(
+                        connection,
+                        review,
+                        checkpoint_id=checkpoint_id,
+                        checkpoint_version=checkpoint_version,
+                    )
                 self._upsert_session_head(
                     connection,
                     session_id=state.session_id,
@@ -284,6 +315,49 @@ class TeacherGatedSessionStore:
             ).fetchall()
         return tuple(self._pending_review_from_row(row) for row in rows)
 
+    def load_evidence_snapshot(self, evidence_snapshot_id: str) -> SessionLearningEvidenceSnapshot:
+        with self.connection() as connection:
+            row = connection.execute(
+                "SELECT * FROM learning_evidence_snapshots WHERE evidence_snapshot_id = ?",
+                (evidence_snapshot_id,),
+            ).fetchone()
+        if row is None:
+            raise KeyError(f"evidence snapshot not found: {evidence_snapshot_id}")
+        return SessionLearningEvidenceSnapshot(
+            evidence_snapshot_id=row["evidence_snapshot_id"],
+            schema_version="ashl_session_learning_evidence_snapshot_v0",
+            created_at=row["created_at"],
+            session_id=row["session_id"],
+            root_event_id=row["root_event_id"],
+            source_event_id=row["source_event_id"],
+            source_learning_evidence_packet_id=_json_loads(row["canonical_payload_json"], {}).get("source_learning_evidence_packet_id", ""),
+            source_learning_feedback_mapping_id=_json_loads(row["canonical_payload_json"], {}).get("source_learning_feedback_mapping_id", ""),
+            source_learning_feedback_bridge_id=_json_loads(row["canonical_payload_json"], {}).get("source_learning_feedback_bridge_id", ""),
+            source_existing_review_adapter_id=_json_loads(row["canonical_payload_json"], {}).get("source_existing_review_adapter_id", ""),
+            evidence_kind=row["evidence_kind"],
+            evidence_theme=row["evidence_theme"],
+            feedback_candidate_kind=row["feedback_candidate_kind"],
+            feedback_candidate_scope=row["feedback_candidate_scope"],
+            evidence_summary=str(_json_loads(row["canonical_payload_json"], {}).get("evidence_summary", "")),
+            canonical_evidence_payload=dict(_json_loads(row["canonical_payload_json"], {})),
+            source_record_refs=tuple(_json_loads(row["source_record_refs_json"], [])),
+            source_trace_refs=tuple(_json_loads(row["source_trace_refs_json"], [])),
+            canonical_payload_sha256=row["canonical_payload_sha256"],
+            evidence_identity_sha256=row["evidence_identity_sha256"],
+            immutable_snapshot=bool(row["immutable_snapshot"]),
+            teacher_review_required=True,
+            contains_raw_sensor_payload=False,
+            contains_interpreted_memory=False,
+        )
+
+    def list_evidence_snapshots(self, session_id: str) -> tuple[SessionLearningEvidenceSnapshot, ...]:
+        with self.connection() as connection:
+            rows = connection.execute(
+                "SELECT evidence_snapshot_id FROM learning_evidence_snapshots WHERE session_id = ? ORDER BY created_at",
+                (session_id,),
+            ).fetchall()
+        return tuple(self.load_evidence_snapshot(row["evidence_snapshot_id"]) for row in rows)
+
     def get_pending_review(self, pending_review_id: str) -> PendingTeacherReviewRecord:
         with self.connection() as connection:
             row = connection.execute(
@@ -305,16 +379,42 @@ class TeacherGatedSessionStore:
         teacher_note: str,
         decision_source: str,
         source_trace_refs: tuple[str, ...],
+        approval_scope: str,
+        expected_evidence_identity_sha256: str | None = None,
+        explicit_target_binding: bool = True,
+        scope_sufficient_for_requested_operation: bool = False,
+        resolve_review: bool = False,
     ) -> None:
         if decision not in ALLOWED_DECISIONS:
             raise ValueError(f"unknown teacher decision: {decision}")
         if decision_source != "teacher_interface":
             raise ValueError("decision_source must be teacher_interface")
+        if approval_scope not in ALLOWED_APPROVAL_SCOPES:
+            raise ValueError(f"unknown approval_scope: {approval_scope}")
         review = self.get_pending_review(pending_teacher_review_id)
         if review.session_id != session_id:
             raise ValueError("teacher decision targets a review from another session")
-        if decision in FINAL_DECISIONS and self.final_decision_exists(pending_teacher_review_id):
+        if decision in FINAL_DECISIONS and scope_sufficient_for_requested_operation and self.final_decision_exists(pending_teacher_review_id):
             raise ValueError("duplicate final decision")
+        if review.resolved:
+            raise ValueError("teacher decision targets a resolved review")
+        if not review.evidence_snapshot_id:
+            raise ValueError("pending review is missing evidence snapshot binding")
+        snapshot = self.load_evidence_snapshot(review.evidence_snapshot_id)
+        validation = validate_session_learning_evidence_snapshot(snapshot)
+        if not validation["valid"]:
+            raise ValueError(f"invalid evidence snapshot: {validation['reasons']}")
+        if expected_evidence_identity_sha256 and expected_evidence_identity_sha256 != snapshot.evidence_identity_sha256:
+            raise ValueError("expected evidence hash does not match persisted evidence snapshot")
+        if snapshot.evidence_identity_sha256 != review.evidence_identity_sha256:
+            raise ValueError("pending review evidence identity does not match snapshot")
+        if snapshot.canonical_payload_sha256 != review.canonical_payload_sha256:
+            raise ValueError("pending review canonical payload hash does not match snapshot")
+        checkpoint = self.load_latest_checkpoint(session_id)
+        if review.target_session_checkpoint_id != checkpoint.checkpoint_id:
+            raise ValueError("teacher decision targets a stale checkpoint")
+        if review.target_checkpoint_version != self._checkpoint_version_by_id(checkpoint.checkpoint_id):
+            raise ValueError("teacher decision targets a stale checkpoint version")
         payload = {
             "teacher_decision_id": teacher_decision_id,
             "session_id": session_id,
@@ -324,6 +424,15 @@ class TeacherGatedSessionStore:
             "teacher_note": teacher_note,
             "decision_source": decision_source,
             "source_trace_refs": list(source_trace_refs),
+            "approval_scope": approval_scope,
+            "target_evidence_snapshot_id": snapshot.evidence_snapshot_id,
+            "target_evidence_identity_sha256": snapshot.evidence_identity_sha256,
+            "target_canonical_payload_sha256": snapshot.canonical_payload_sha256,
+            "target_review_nonce": review.review_nonce,
+            "target_checkpoint_id": checkpoint.checkpoint_id,
+            "target_checkpoint_version": review.target_checkpoint_version,
+            "explicit_target_binding": explicit_target_binding,
+            "scope_sufficient_for_requested_operation": scope_sufficient_for_requested_operation,
         }
         with self.connection() as connection:
             connection.execute("BEGIN")
@@ -333,8 +442,12 @@ class TeacherGatedSessionStore:
                     INSERT INTO teacher_decisions (
                         teacher_decision_id, session_id, pending_teacher_review_id,
                         decision, reason_codes_json, teacher_note, decision_source,
-                        created_at, source_trace_refs_json, payload_sha256
-                    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                        created_at, source_trace_refs_json, payload_sha256,
+                        approval_scope, target_evidence_snapshot_id,
+                        target_evidence_identity_sha256, target_canonical_payload_sha256,
+                        target_review_nonce, target_checkpoint_id, target_checkpoint_version,
+                        explicit_target_binding, scope_sufficient_for_requested_operation
+                    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                     """,
                     (
                         teacher_decision_id,
@@ -347,9 +460,49 @@ class TeacherGatedSessionStore:
                         _now(),
                         canonical_json(source_trace_refs),
                         payload_sha256(payload),
+                        approval_scope,
+                        snapshot.evidence_snapshot_id,
+                        snapshot.evidence_identity_sha256,
+                        snapshot.canonical_payload_sha256,
+                        review.review_nonce,
+                        checkpoint.checkpoint_id,
+                        int(review.target_checkpoint_version or 0),
+                        1 if explicit_target_binding else 0,
+                        1 if scope_sufficient_for_requested_operation else 0,
                     ),
                 )
-                self._update_pending_review_status(connection, pending_teacher_review_id, decision)
+                binding = {
+                    "binding_id": f"teacher_decision_target_binding:{teacher_decision_id}",
+                    **payload,
+                    "created_at": _now(),
+                }
+                connection.execute(
+                    """
+                    INSERT INTO teacher_decision_target_bindings (
+                        binding_id, teacher_decision_id, pending_teacher_review_id,
+                        session_id, evidence_snapshot_id, evidence_identity_sha256,
+                        canonical_payload_sha256, review_nonce, checkpoint_id,
+                        checkpoint_version, approval_scope, created_at, payload_sha256
+                    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                    """,
+                    (
+                        binding["binding_id"],
+                        teacher_decision_id,
+                        pending_teacher_review_id,
+                        session_id,
+                        snapshot.evidence_snapshot_id,
+                        snapshot.evidence_identity_sha256,
+                        snapshot.canonical_payload_sha256,
+                        review.review_nonce,
+                        checkpoint.checkpoint_id,
+                        int(review.target_checkpoint_version or 0),
+                        approval_scope,
+                        binding["created_at"],
+                        payload_sha256(binding),
+                    ),
+                )
+                if resolve_review:
+                    self._update_pending_review_status(connection, pending_teacher_review_id, decision)
                 self._append_journal(
                     connection,
                     session_id=session_id,
@@ -380,6 +533,15 @@ class TeacherGatedSessionStore:
             "created_at": row["created_at"],
             "source_trace_refs": tuple(_json_loads(row["source_trace_refs_json"], [])),
             "payload_sha256": row["payload_sha256"],
+            "approval_scope": row["approval_scope"],
+            "target_evidence_snapshot_id": row["target_evidence_snapshot_id"],
+            "target_evidence_identity_sha256": row["target_evidence_identity_sha256"],
+            "target_canonical_payload_sha256": row["target_canonical_payload_sha256"],
+            "target_review_nonce": row["target_review_nonce"],
+            "target_checkpoint_id": row["target_checkpoint_id"],
+            "target_checkpoint_version": row["target_checkpoint_version"],
+            "explicit_target_binding": bool(row["explicit_target_binding"]),
+            "scope_sufficient_for_requested_operation": bool(row["scope_sufficient_for_requested_operation"]),
         }
 
     def list_teacher_decisions(self, session_id: str) -> tuple[dict[str, object], ...]:
@@ -400,6 +562,15 @@ class TeacherGatedSessionStore:
                 "created_at": row["created_at"],
                 "source_trace_refs": tuple(_json_loads(row["source_trace_refs_json"], [])),
                 "payload_sha256": row["payload_sha256"],
+                "approval_scope": row["approval_scope"],
+                "target_evidence_snapshot_id": row["target_evidence_snapshot_id"],
+                "target_evidence_identity_sha256": row["target_evidence_identity_sha256"],
+                "target_canonical_payload_sha256": row["target_canonical_payload_sha256"],
+                "target_review_nonce": row["target_review_nonce"],
+                "target_checkpoint_id": row["target_checkpoint_id"],
+                "target_checkpoint_version": row["target_checkpoint_version"],
+                "explicit_target_binding": bool(row["explicit_target_binding"]),
+                "scope_sufficient_for_requested_operation": bool(row["scope_sufficient_for_requested_operation"]),
             }
             for row in rows
         )
@@ -408,16 +579,101 @@ class TeacherGatedSessionStore:
         with self.connection() as connection:
             row = connection.execute(
                 "SELECT 1 FROM teacher_decisions WHERE pending_teacher_review_id = ? "
-                "AND decision IN ('approved', 'rejected') LIMIT 1",
+                "AND decision IN ('approved', 'rejected') "
+                "AND scope_sufficient_for_requested_operation = 1 LIMIT 1",
                 (pending_teacher_review_id,),
             ).fetchone()
         return row is not None
+
+    def list_teacher_decision_target_bindings(self, session_id: str) -> tuple[dict[str, Any], ...]:
+        with self.connection() as connection:
+            rows = connection.execute(
+                "SELECT * FROM teacher_decision_target_bindings WHERE session_id = ? ORDER BY created_at",
+                (session_id,),
+            ).fetchall()
+        return tuple(
+            {
+                "binding_id": row["binding_id"],
+                "teacher_decision_id": row["teacher_decision_id"],
+                "pending_teacher_review_id": row["pending_teacher_review_id"],
+                "session_id": row["session_id"],
+                "evidence_snapshot_id": row["evidence_snapshot_id"],
+                "evidence_identity_sha256": row["evidence_identity_sha256"],
+                "canonical_payload_sha256": row["canonical_payload_sha256"],
+                "review_nonce": row["review_nonce"],
+                "checkpoint_id": row["checkpoint_id"],
+                "checkpoint_version": row["checkpoint_version"],
+                "approval_scope": row["approval_scope"],
+                "created_at": row["created_at"],
+                "payload_sha256": row["payload_sha256"],
+            }
+            for row in rows
+        )
+
+    def list_learning_pipeline_identity_bindings(self, session_id: str) -> tuple[dict[str, Any], ...]:
+        with self.connection() as connection:
+            rows = connection.execute(
+                "SELECT * FROM learning_pipeline_identity_bindings WHERE session_id = ? ORDER BY created_at",
+                (session_id,),
+            ).fetchall()
+        return tuple(
+            {
+                "binding_id": row["binding_id"],
+                "session_id": row["session_id"],
+                "evidence_snapshot_id": row["evidence_snapshot_id"],
+                "evidence_identity_sha256": row["evidence_identity_sha256"],
+                "pipeline_stage": row["pipeline_stage"],
+                "target_record_kind": row["target_record_kind"],
+                "target_record_id": row["target_record_id"],
+                "source_binding_id": row["source_binding_id"],
+                "source_trace_refs": tuple(_json_loads(row["source_trace_refs_json"], [])),
+                "identity_preserved": True,
+                "validator_passed": bool(row["validator_passed"]),
+                "created_at": row["created_at"],
+                "payload_sha256": row["payload_sha256"],
+            }
+            for row in rows
+        )
+
+    def list_interpretation_provenance_bindings(self, session_id: str) -> tuple[dict[str, Any], ...]:
+        with self.connection() as connection:
+            rows = connection.execute(
+                "SELECT * FROM interpretation_provenance_bindings WHERE session_id = ? ORDER BY created_at",
+                (session_id,),
+            ).fetchall()
+        return tuple(
+            {
+                "provenance_binding_id": row["provenance_binding_id"],
+                "session_id": row["session_id"],
+                "reviewed_interpretation_commit_id": row["interpretation_commit_id"],
+                "working_readback_commit_id": None,
+                "evidence_snapshot_id": row["evidence_snapshot_id"],
+                "evidence_identity_sha256": row["evidence_identity_sha256"],
+                "teacher_approval_scope": None,
+                "pipeline_identity_binding_ids": tuple(_json_loads(row["pipeline_binding_ids_json"], [])),
+                "identity_chain_complete": bool(row["identity_chain_complete"]),
+                "identity_chain_valid": bool(row["identity_chain_valid"]),
+                "source_trace_refs": tuple(),
+                "created_at": row["created_at"],
+                "payload_sha256": row["payload_sha256"],
+            }
+            for row in rows
+        )
 
     def append_trace_envelope(self, envelope: TraceEnvelope) -> TraceEnvelope:
         with self.connection() as connection:
             connection.execute("BEGIN")
             try:
                 stored = self._insert_trace(connection, envelope)
+            except TraceIdentityCollisionError:
+                connection.rollback()
+                self.append_failure_journal(
+                    envelope.session_id,
+                    "unknown",
+                    _now(),
+                    "blocked_trace_identity_collision",
+                )
+                raise
             except Exception:
                 connection.rollback()
                 raise
@@ -480,12 +736,21 @@ class TeacherGatedSessionStore:
                     self._insert_trace(connection, envelope)
                     if fail_after == envelope.record_kind:
                         raise RuntimeError(f"forced atomic failure after {envelope.record_kind}")
+                self._insert_pipeline_identity_bindings(
+                    connection,
+                    tuple(interpretation_commit.get("pipeline_identity_bindings", ())),
+                )
+                if fail_after == "learning_pipeline_identity_bindings":
+                    raise RuntimeError("forced atomic failure after pipeline identity bindings")
                 self._insert_interpretation_commit(connection, interpretation_commit)
                 if fail_after == "reviewed_interpretation_commits":
                     raise RuntimeError("forced atomic failure after interpretation commit")
                 self._insert_working_readback_commit(connection, working_readback_commit)
                 if fail_after == "working_readback_commits":
                     raise RuntimeError("forced atomic failure after working readback commit")
+                provenance_binding = interpretation_commit.get("interpretation_provenance_binding")
+                if provenance_binding:
+                    self._insert_interpretation_provenance_binding(connection, provenance_binding)
                 connection.execute(
                     """
                     INSERT INTO session_commit_records (
@@ -694,7 +959,9 @@ class TeacherGatedSessionStore:
             rows = connection.execute(
                 """
                 SELECT wr.working_readback_commit_id, wr.interpretation_commit_id,
-                       wr.readback_payload_json, wr.source_trace_refs_json
+                       wr.readback_payload_json, wr.source_trace_refs_json,
+                       wr.source_evidence_snapshot_id, wr.evidence_identity_sha256,
+                       wr.source_reviewed_interpretation_commit_id
                 FROM working_readback_commits wr
                 JOIN reviewed_interpretation_commits ic
                   ON ic.interpretation_commit_id = wr.interpretation_commit_id
@@ -709,6 +976,9 @@ class TeacherGatedSessionStore:
             payload["working_readback_commit_id"] = row["working_readback_commit_id"]
             payload["interpretation_commit_id"] = row["interpretation_commit_id"]
             payload["source_trace_refs"] = tuple(_json_loads(row["source_trace_refs_json"], []))
+            payload["source_evidence_snapshot_id"] = row["source_evidence_snapshot_id"]
+            payload["evidence_identity_sha256"] = row["evidence_identity_sha256"]
+            payload["source_reviewed_interpretation_commit_id"] = row["source_reviewed_interpretation_commit_id"]
             readback.append(payload)
         return tuple(readback)
 
@@ -732,6 +1002,11 @@ class TeacherGatedSessionStore:
             "working_readback_commits",
             "session_commit_records",
             "session_rollback_records",
+            "learning_evidence_snapshots",
+            "teacher_decision_target_bindings",
+            "learning_pipeline_identity_bindings",
+            "interpretation_provenance_bindings",
+            "runtime_capability_profiles",
         }:
             raise ValueError(f"unsupported table: {table_name}")
         query = f"SELECT COUNT(*) AS count FROM {table_name}"
@@ -761,7 +1036,18 @@ class TeacherGatedSessionStore:
         }
 
     def _initialize(self) -> None:
+        existing_version = self._existing_schema_version()
+        if existing_version == LEGACY_STORE_SCHEMA_VERSION:
+            backup_path = self.db_path.with_suffix(
+                self.db_path.suffix + f".{LEGACY_STORE_SCHEMA_VERSION}.bak"
+            )
+            if not backup_path.exists():
+                shutil.copy2(self.db_path, backup_path)
+        elif existing_version not in (None, STORE_SCHEMA_VERSION):
+            raise RuntimeError(f"unsupported store schema version: {existing_version}")
         with self.connection() as connection:
+            if existing_version == LEGACY_STORE_SCHEMA_VERSION:
+                connection.execute("BEGIN EXCLUSIVE")
             connection.executescript(
                 """
                 CREATE TABLE IF NOT EXISTS store_metadata (
@@ -914,8 +1200,102 @@ class TeacherGatedSessionStore:
                     created_at TEXT NOT NULL,
                     payload_sha256 TEXT NOT NULL
                 );
+                CREATE TABLE IF NOT EXISTS learning_evidence_snapshots (
+                    evidence_snapshot_id TEXT PRIMARY KEY,
+                    session_id TEXT NOT NULL,
+                    root_event_id TEXT NOT NULL,
+                    source_event_id TEXT NOT NULL,
+                    evidence_kind TEXT NOT NULL,
+                    evidence_theme TEXT NOT NULL,
+                    feedback_candidate_kind TEXT NOT NULL,
+                    feedback_candidate_scope TEXT NOT NULL,
+                    canonical_payload_json TEXT NOT NULL,
+                    canonical_payload_sha256 TEXT NOT NULL,
+                    evidence_identity_sha256 TEXT NOT NULL,
+                    source_record_refs_json TEXT NOT NULL,
+                    source_trace_refs_json TEXT NOT NULL,
+                    created_at TEXT NOT NULL,
+                    immutable_snapshot INTEGER NOT NULL,
+                    payload_sha256 TEXT NOT NULL,
+                    UNIQUE(session_id, evidence_identity_sha256)
+                );
+                CREATE TABLE IF NOT EXISTS teacher_decision_target_bindings (
+                    binding_id TEXT PRIMARY KEY,
+                    teacher_decision_id TEXT UNIQUE NOT NULL,
+                    pending_teacher_review_id TEXT NOT NULL,
+                    session_id TEXT NOT NULL,
+                    evidence_snapshot_id TEXT NOT NULL,
+                    evidence_identity_sha256 TEXT NOT NULL,
+                    canonical_payload_sha256 TEXT NOT NULL,
+                    review_nonce TEXT NOT NULL,
+                    checkpoint_id TEXT NOT NULL,
+                    checkpoint_version INTEGER NOT NULL,
+                    approval_scope TEXT NOT NULL,
+                    created_at TEXT NOT NULL,
+                    payload_sha256 TEXT NOT NULL
+                );
+                CREATE TABLE IF NOT EXISTS learning_pipeline_identity_bindings (
+                    binding_id TEXT PRIMARY KEY,
+                    session_id TEXT NOT NULL,
+                    evidence_snapshot_id TEXT NOT NULL,
+                    evidence_identity_sha256 TEXT NOT NULL,
+                    pipeline_stage TEXT NOT NULL,
+                    target_record_kind TEXT NOT NULL,
+                    target_record_id TEXT NOT NULL,
+                    source_binding_id TEXT,
+                    validator_passed INTEGER NOT NULL,
+                    source_trace_refs_json TEXT NOT NULL,
+                    created_at TEXT NOT NULL,
+                    payload_sha256 TEXT NOT NULL,
+                    UNIQUE(pipeline_stage, target_record_id)
+                );
+                CREATE TABLE IF NOT EXISTS interpretation_provenance_bindings (
+                    provenance_binding_id TEXT PRIMARY KEY,
+                    session_id TEXT NOT NULL,
+                    interpretation_commit_id TEXT NOT NULL,
+                    evidence_snapshot_id TEXT NOT NULL,
+                    evidence_identity_sha256 TEXT NOT NULL,
+                    pipeline_binding_ids_json TEXT NOT NULL,
+                    identity_chain_complete INTEGER NOT NULL,
+                    identity_chain_valid INTEGER NOT NULL,
+                    created_at TEXT NOT NULL,
+                    payload_sha256 TEXT NOT NULL
+                );
+                CREATE TABLE IF NOT EXISTS runtime_capability_profiles (
+                    profile_id TEXT PRIMARY KEY,
+                    profile_version TEXT NOT NULL,
+                    profile_json TEXT NOT NULL,
+                    profile_sha256 TEXT NOT NULL,
+                    created_at TEXT NOT NULL
+                );
                 """
             )
+            self._ensure_column(connection, "pending_teacher_reviews", "evidence_snapshot_id", "TEXT")
+            self._ensure_column(connection, "pending_teacher_reviews", "evidence_identity_sha256", "TEXT")
+            self._ensure_column(connection, "pending_teacher_reviews", "canonical_payload_sha256", "TEXT")
+            self._ensure_column(connection, "pending_teacher_reviews", "target_session_checkpoint_id", "TEXT")
+            self._ensure_column(connection, "pending_teacher_reviews", "target_checkpoint_version", "INTEGER")
+            self._ensure_column(connection, "pending_teacher_reviews", "review_nonce", "TEXT")
+            self._ensure_column(connection, "pending_teacher_reviews", "allowed_approval_scopes_json", "TEXT")
+            self._ensure_column(connection, "pending_teacher_reviews", "required_commit_scope", "TEXT")
+            self._ensure_column(connection, "teacher_decisions", "approval_scope", "TEXT")
+            self._ensure_column(connection, "teacher_decisions", "target_evidence_snapshot_id", "TEXT")
+            self._ensure_column(connection, "teacher_decisions", "target_evidence_identity_sha256", "TEXT")
+            self._ensure_column(connection, "teacher_decisions", "target_canonical_payload_sha256", "TEXT")
+            self._ensure_column(connection, "teacher_decisions", "target_review_nonce", "TEXT")
+            self._ensure_column(connection, "teacher_decisions", "target_checkpoint_id", "TEXT")
+            self._ensure_column(connection, "teacher_decisions", "target_checkpoint_version", "INTEGER")
+            self._ensure_column(connection, "teacher_decisions", "explicit_target_binding", "INTEGER DEFAULT 0")
+            self._ensure_column(connection, "teacher_decisions", "scope_sufficient_for_requested_operation", "INTEGER DEFAULT 0")
+            self._ensure_column(connection, "reviewed_interpretation_commits", "source_evidence_snapshot_id", "TEXT")
+            self._ensure_column(connection, "reviewed_interpretation_commits", "evidence_identity_sha256", "TEXT")
+            self._ensure_column(connection, "reviewed_interpretation_commits", "teacher_approval_scope", "TEXT")
+            self._ensure_column(connection, "reviewed_interpretation_commits", "pipeline_identity_binding_ids_json", "TEXT")
+            self._ensure_column(connection, "reviewed_interpretation_commits", "identity_chain_complete", "INTEGER DEFAULT 0")
+            self._ensure_column(connection, "reviewed_interpretation_commits", "identity_chain_valid", "INTEGER DEFAULT 0")
+            self._ensure_column(connection, "working_readback_commits", "source_evidence_snapshot_id", "TEXT")
+            self._ensure_column(connection, "working_readback_commits", "evidence_identity_sha256", "TEXT")
+            self._ensure_column(connection, "working_readback_commits", "source_reviewed_interpretation_commit_id", "TEXT")
             connection.execute(
                 """
                 INSERT OR IGNORE INTO store_metadata (schema_name, schema_version, created_at)
@@ -923,14 +1303,57 @@ class TeacherGatedSessionStore:
                 """,
                 (STORE_SCHEMA_NAME, STORE_SCHEMA_VERSION, _now()),
             )
+            connection.execute(
+                "UPDATE store_metadata SET schema_version = ? WHERE schema_name = ?",
+                (STORE_SCHEMA_VERSION, STORE_SCHEMA_NAME),
+            )
+            if existing_version == LEGACY_STORE_SCHEMA_VERSION:
+                connection.commit()
+
+    def _existing_schema_version(self) -> str | None:
+        if not self.db_path.exists():
+            return None
+        connection = sqlite3.connect(str(self.db_path))
+        try:
+            table = connection.execute(
+                "SELECT name FROM sqlite_master WHERE type='table' AND name='store_metadata'"
+            ).fetchone()
+            if table is None:
+                return None
+            row = connection.execute(
+                "SELECT schema_version FROM store_metadata WHERE schema_name = ?",
+                (STORE_SCHEMA_NAME,),
+            ).fetchone()
+            return None if row is None else str(row[0])
+        finally:
+            connection.close()
+
+    def _ensure_column(
+        self,
+        connection: sqlite3.Connection,
+        table_name: str,
+        column_name: str,
+        column_spec: str,
+    ) -> None:
+        existing = {
+            str(row["name"])
+            for row in connection.execute(f"PRAGMA table_info({table_name})").fetchall()
+        }
+        if column_name not in existing:
+            connection.execute(f"ALTER TABLE {table_name} ADD COLUMN {column_name} {column_spec}")
 
     def _insert_trace(self, connection: sqlite3.Connection, envelope: TraceEnvelope) -> TraceEnvelope:
         duplicate = connection.execute(
-            "SELECT trace_id FROM trace_envelopes WHERE trace_id = ?",
+            "SELECT * FROM trace_envelopes WHERE trace_id = ?",
             (envelope.trace_id,),
         ).fetchone()
         if duplicate is not None:
-            return envelope
+            existing = self._trace_from_row(duplicate)
+            if trace_identity_matches(existing, envelope):
+                return existing
+            raise TraceIdentityCollisionError(
+                f"blocked_trace_identity_collision: {envelope.trace_id}"
+            )
         existing_rows = connection.execute(
             "SELECT trace_id, session_id, sequence_index, monotonic_tick "
             "FROM trace_envelopes WHERE session_id = ? ORDER BY sequence_index",
@@ -1071,22 +1494,156 @@ class TeacherGatedSessionStore:
         )
         return journal_id
 
+    def _insert_evidence_snapshot(
+        self,
+        connection: sqlite3.Connection,
+        snapshot: SessionLearningEvidenceSnapshot | dict[str, Any],
+    ) -> None:
+        item = snapshot if isinstance(snapshot, SessionLearningEvidenceSnapshot) else SessionLearningEvidenceSnapshot.from_dict(dict(snapshot))
+        validation = validate_session_learning_evidence_snapshot(item)
+        if not validation["valid"]:
+            raise ValueError(f"invalid evidence snapshot: {validation['reasons']}")
+        payload = item.to_dict()
+        connection.execute(
+            """
+            INSERT OR IGNORE INTO learning_evidence_snapshots (
+                evidence_snapshot_id, session_id, root_event_id, source_event_id,
+                evidence_kind, evidence_theme, feedback_candidate_kind,
+                feedback_candidate_scope, canonical_payload_json,
+                canonical_payload_sha256, evidence_identity_sha256,
+                source_record_refs_json, source_trace_refs_json, created_at,
+                immutable_snapshot, payload_sha256
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            """,
+            (
+                item.evidence_snapshot_id,
+                item.session_id,
+                item.root_event_id,
+                item.source_event_id,
+                item.evidence_kind,
+                item.evidence_theme,
+                item.feedback_candidate_kind,
+                item.feedback_candidate_scope,
+                canonical_json(item.canonical_evidence_payload),
+                item.canonical_payload_sha256,
+                item.evidence_identity_sha256,
+                canonical_json(item.source_record_refs),
+                canonical_json(item.source_trace_refs),
+                item.created_at,
+                1 if item.immutable_snapshot else 0,
+                payload_sha256(payload),
+            ),
+        )
+
+    def _insert_runtime_capability_profile(
+        self,
+        connection: sqlite3.Connection,
+        profile: Any,
+    ) -> None:
+        data = profile.to_dict() if hasattr(profile, "to_dict") else dict(profile)
+        connection.execute(
+            """
+            INSERT OR IGNORE INTO runtime_capability_profiles (
+                profile_id, profile_version, profile_json, profile_sha256, created_at
+            ) VALUES (?, ?, ?, ?, ?)
+            """,
+            (
+                data["profile_id"],
+                data["profile_version"],
+                canonical_json(data),
+                data["profile_sha256"],
+                data["created_at"],
+            ),
+        )
+
+    def _insert_pipeline_identity_bindings(
+        self,
+        connection: sqlite3.Connection,
+        bindings: tuple[dict[str, Any], ...] | list[dict[str, Any]],
+    ) -> None:
+        for raw_binding in bindings:
+            binding = raw_binding.to_dict() if hasattr(raw_binding, "to_dict") else dict(raw_binding)
+            connection.execute(
+                """
+                INSERT OR IGNORE INTO learning_pipeline_identity_bindings (
+                    binding_id, session_id, evidence_snapshot_id,
+                    evidence_identity_sha256, pipeline_stage, target_record_kind,
+                    target_record_id, source_binding_id, validator_passed,
+                    source_trace_refs_json, created_at, payload_sha256
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                """,
+                (
+                    binding["binding_id"],
+                    binding["session_id"],
+                    binding["evidence_snapshot_id"],
+                    binding["evidence_identity_sha256"],
+                    binding["pipeline_stage"],
+                    binding["target_record_kind"],
+                    binding["target_record_id"],
+                    binding.get("source_binding_id"),
+                    1 if binding["validator_passed"] else 0,
+                    canonical_json(binding["source_trace_refs"]),
+                    binding["created_at"],
+                    payload_sha256(binding),
+                ),
+            )
+
+    def _insert_interpretation_provenance_binding(
+        self,
+        connection: sqlite3.Connection,
+        binding: dict[str, Any],
+    ) -> None:
+        commit_id = binding.get("interpretation_commit_id") or binding.get("reviewed_interpretation_commit_id")
+        pipeline_binding_ids = binding.get("pipeline_binding_ids") or binding.get("pipeline_identity_binding_ids") or tuple()
+        identity_chain_complete = bool(binding.get("identity_chain_complete", binding.get("identity_chain_valid", False)))
+        connection.execute(
+            """
+            INSERT INTO interpretation_provenance_bindings (
+                provenance_binding_id, session_id, interpretation_commit_id,
+                evidence_snapshot_id, evidence_identity_sha256,
+                pipeline_binding_ids_json, identity_chain_complete,
+                identity_chain_valid, created_at, payload_sha256
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            """,
+            (
+                binding["provenance_binding_id"],
+                binding["session_id"],
+                commit_id,
+                binding["evidence_snapshot_id"],
+                binding["evidence_identity_sha256"],
+                canonical_json(pipeline_binding_ids),
+                1 if identity_chain_complete else 0,
+                1 if binding["identity_chain_valid"] else 0,
+                binding["created_at"],
+                payload_sha256(binding),
+            ),
+        )
+
     def _insert_pending_review(
         self,
         connection: sqlite3.Connection,
         review: PendingTeacherReviewRecord,
+        *,
+        checkpoint_id: str | None = None,
+        checkpoint_version: int | None = None,
     ) -> None:
         status = "session_aborted" if review.session_aborted else "pending"
         if status not in ALLOWED_REVIEW_STATUSES:
             raise ValueError(f"invalid review status: {status}")
+        target_checkpoint_id = review.target_session_checkpoint_id or checkpoint_id
+        target_version = review.target_checkpoint_version if review.target_checkpoint_version is not None else checkpoint_version
         connection.execute(
             """
             INSERT OR IGNORE INTO pending_teacher_reviews (
                 pending_teacher_review_id, session_id,
                 source_learning_feedback_candidate_ref,
                 source_learning_evidence_packet_ref, source_trace_refs_json,
-                review_kind, current_review_status, resolved, created_at, updated_at
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                review_kind, current_review_status, resolved, created_at, updated_at,
+                evidence_snapshot_id, evidence_identity_sha256,
+                canonical_payload_sha256, target_session_checkpoint_id,
+                target_checkpoint_version, review_nonce,
+                allowed_approval_scopes_json, required_commit_scope
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             """,
             (
                 review.pending_teacher_review_id,
@@ -1099,6 +1656,14 @@ class TeacherGatedSessionStore:
                 1 if review.resolved else 0,
                 review.created_at,
                 _now(),
+                review.evidence_snapshot_id,
+                review.evidence_identity_sha256,
+                review.canonical_payload_sha256,
+                target_checkpoint_id,
+                target_version,
+                review.review_nonce,
+                canonical_json(review.allowed_approval_scopes),
+                review.required_commit_scope,
             ),
         )
 
@@ -1171,8 +1736,11 @@ class TeacherGatedSessionStore:
                 reviewed_concept_ref, memory_learning_trace_ref,
                 memory_routing_trace_ref, memory_application_data_ref,
                 interpretation_payload_json, source_trace_refs_json, commit_status,
-                created_at, payload_sha256
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                created_at, payload_sha256, source_evidence_snapshot_id,
+                evidence_identity_sha256, teacher_approval_scope,
+                pipeline_identity_binding_ids_json, identity_chain_complete,
+                identity_chain_valid
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             """,
             (
                 commit["reviewed_interpretation_commit_id"],
@@ -1187,6 +1755,12 @@ class TeacherGatedSessionStore:
                 commit["commit_status"],
                 commit["created_at"],
                 payload_sha256(commit),
+                commit["source_evidence_snapshot_id"],
+                commit["evidence_identity_sha256"],
+                commit["teacher_approval_scope"],
+                canonical_json(commit["pipeline_identity_binding_ids"]),
+                1 if commit["identity_chain_complete"] else 0,
+                1 if commit["identity_chain_valid"] else 0,
             ),
         )
 
@@ -1200,8 +1774,10 @@ class TeacherGatedSessionStore:
             INSERT INTO working_readback_commits (
                 working_readback_commit_id, session_id, interpretation_commit_id,
                 readback_payload_json, source_trace_refs_json,
-                active_for_future_sessions, created_at, payload_sha256
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+                active_for_future_sessions, created_at, payload_sha256,
+                source_evidence_snapshot_id, evidence_identity_sha256,
+                source_reviewed_interpretation_commit_id
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             """,
             (
                 commit["working_readback_commit_id"],
@@ -1212,6 +1788,9 @@ class TeacherGatedSessionStore:
                 1 if commit["active_for_future_sessions"] else 0,
                 commit["created_at"],
                 payload_sha256(commit),
+                commit["source_evidence_snapshot_id"],
+                commit["evidence_identity_sha256"],
+                commit["source_reviewed_interpretation_commit_id"],
             ),
         )
 
@@ -1240,6 +1819,19 @@ class TeacherGatedSessionStore:
         if row is None:
             raise KeyError(f"checkpoint not found: {session_id}")
         return str(row["checkpoint_id"])
+
+    def _checkpoint_version(self, connection: sqlite3.Connection, checkpoint_id: str) -> int:
+        row = connection.execute(
+            "SELECT checkpoint_version FROM session_checkpoints WHERE checkpoint_id = ?",
+            (checkpoint_id,),
+        ).fetchone()
+        if row is None:
+            raise KeyError(f"checkpoint not found: {checkpoint_id}")
+        return int(row["checkpoint_version"])
+
+    def _checkpoint_version_by_id(self, checkpoint_id: str) -> int:
+        with self.connection() as connection:
+            return self._checkpoint_version(connection, checkpoint_id)
 
     def _checkpoint_id(self, session_id: str) -> str:
         return f"session_checkpoint:{session_id}:{uuid4().hex[:12]}"
@@ -1270,6 +1862,7 @@ class TeacherGatedSessionStore:
         )
 
     def _pending_review_from_row(self, row: sqlite3.Row) -> PendingTeacherReviewRecord:
+        data = dict(row)
         status = str(row["current_review_status"])
         return PendingTeacherReviewRecord(
             pending_teacher_review_id=row["pending_teacher_review_id"],
@@ -1287,4 +1880,14 @@ class TeacherGatedSessionStore:
             teacher_reason_codes=tuple(),
             resolved=bool(row["resolved"]),
             session_aborted=status == "session_aborted",
+            evidence_snapshot_id=str(data.get("evidence_snapshot_id") or ""),
+            evidence_identity_sha256=str(data.get("evidence_identity_sha256") or ""),
+            canonical_payload_sha256=str(data.get("canonical_payload_sha256") or ""),
+            target_session_checkpoint_id=data.get("target_session_checkpoint_id"),
+            target_checkpoint_version=data.get("target_checkpoint_version"),
+            review_nonce=str(data.get("review_nonce") or ""),
+            allowed_approval_scopes=tuple(
+                _json_loads(data.get("allowed_approval_scopes_json"), list(ALLOWED_APPROVAL_SCOPES))
+            ),
+            required_commit_scope=str(data.get("required_commit_scope") or FULL_COMMIT_APPROVAL_SCOPE),
         )

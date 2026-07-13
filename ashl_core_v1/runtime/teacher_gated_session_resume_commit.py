@@ -67,6 +67,18 @@ from ashl_core_v1.runtime.bounded_embodied_session_runtime import (
     PendingTeacherReviewRecord,
     build_demo_unknown_camera_to_review_runtime,
 )
+from ashl_core_v1.runtime.session_learning_evidence_adapter import (
+    build_learning_feedback_candidate_from_session_evidence,
+)
+from ashl_core_v1.runtime.session_learning_evidence_identity import (
+    FULL_COMMIT_APPROVAL_SCOPE,
+    LearningPipelineEvidenceIdentityBindingRecord,
+    SessionLearningEvidenceSnapshot,
+    approval_scope_sufficient,
+    build_learning_pipeline_evidence_identity_binding,
+    validate_learning_pipeline_identity_chain,
+    validate_session_learning_evidence_snapshot,
+)
 from ashl_core_v1.runtime.teacher_gated_session_store import (
     ALLOWED_DECISIONS,
     FINAL_DECISIONS,
@@ -159,6 +171,15 @@ class TeacherDecisionRecord:
     source_trace_refs: tuple[str, ...]
     automatic_decision_created: bool
     automatic_learning_approval_created: bool
+    approval_scope: str = "feedback_candidate_only"
+    target_evidence_snapshot_id: str = ""
+    target_evidence_identity_sha256: str = ""
+    target_canonical_payload_sha256: str = ""
+    target_review_nonce: str = ""
+    target_checkpoint_id: str = ""
+    target_checkpoint_version: int = 0
+    explicit_target_binding: bool = True
+    scope_sufficient_for_requested_operation: bool = False
 
     def to_dict(self) -> dict[str, object]:
         return {field.name: _plain(getattr(self, field.name)) for field in fields(self)}
@@ -212,6 +233,12 @@ class ReviewedInterpretationCommitRecord:
     teacher_approved: bool
     automatic_approval_created: bool
     commit_status: str
+    source_evidence_snapshot_id: str = ""
+    evidence_identity_sha256: str = ""
+    teacher_approval_scope: str = "feedback_candidate_only"
+    pipeline_identity_binding_ids: tuple[str, ...] = tuple()
+    identity_chain_complete: bool = False
+    identity_chain_valid: bool = False
 
     def to_dict(self) -> dict[str, object]:
         return {field.name: _plain(getattr(self, field.name)) for field in fields(self)}
@@ -398,6 +425,9 @@ class TeacherGatedSessionResumeCommitRuntime:
         reason_codes: tuple[str, ...],
         teacher_note: str,
         state_dir: Path,
+        *,
+        approval_scope: str | None = None,
+        expected_evidence_hash: str | None = None,
     ) -> TeacherDecisionRecord:
         store = TeacherGatedSessionStore(state_dir)
         if decision not in ALLOWED_DECISIONS:
@@ -411,6 +441,22 @@ class TeacherGatedSessionResumeCommitRuntime:
         review = store.get_pending_review(pending_review_id)
         if review.session_id != session_id:
             raise ValueError("pending review belongs to another session")
+        if approval_scope is None:
+            if decision == "approved":
+                raise ValueError("approved teacher decision requires explicit approval_scope")
+            approval_scope = "feedback_candidate_only"
+        snapshot = store.load_evidence_snapshot(review.evidence_snapshot_id)
+        snapshot_validation = validate_session_learning_evidence_snapshot(snapshot)
+        if not snapshot_validation["valid"]:
+            raise ValueError(f"invalid evidence snapshot: {snapshot_validation['reasons']}")
+        if expected_evidence_hash is not None and expected_evidence_hash != snapshot.evidence_identity_sha256:
+            raise ValueError("expected evidence hash does not match persisted evidence")
+        scope_sufficient = (
+            decision == "approved"
+            and approval_scope_sufficient(approval_scope, FULL_COMMIT_APPROVAL_SCOPE)
+        )
+        resolve_review = decision == "rejected" or scope_sufficient
+        checkpoint = store.load_latest_checkpoint(session_id)
         decision_record = TeacherDecisionRecord(
             teacher_decision_id=f"teacher_decision:{session_id}:{pending_review_id}:{uuid4().hex[:10]}",
             schema_version=TEACHER_DECISION_SCHEMA_VERSION,
@@ -425,6 +471,15 @@ class TeacherGatedSessionResumeCommitRuntime:
             source_trace_refs=review.source_trace_refs,
             automatic_decision_created=False,
             automatic_learning_approval_created=False,
+            approval_scope=approval_scope,
+            target_evidence_snapshot_id=snapshot.evidence_snapshot_id,
+            target_evidence_identity_sha256=snapshot.evidence_identity_sha256,
+            target_canonical_payload_sha256=snapshot.canonical_payload_sha256,
+            target_review_nonce=review.review_nonce,
+            target_checkpoint_id=checkpoint.checkpoint_id,
+            target_checkpoint_version=int(review.target_checkpoint_version or 0),
+            explicit_target_binding=True,
+            scope_sufficient_for_requested_operation=scope_sufficient,
         )
         validation = validate_teacher_decision_record(decision_record, pending_review=review)
         if not validation["valid"]:
@@ -438,6 +493,11 @@ class TeacherGatedSessionResumeCommitRuntime:
             teacher_note=teacher_note,
             decision_source="teacher_interface",
             source_trace_refs=decision_record.source_trace_refs,
+            approval_scope=approval_scope,
+            expected_evidence_identity_sha256=expected_evidence_hash,
+            explicit_target_binding=True,
+            scope_sufficient_for_requested_operation=scope_sufficient,
+            resolve_review=resolve_review,
         )
         store.append_trace_envelope(
             _envelope_for_state(
@@ -466,6 +526,56 @@ class TeacherGatedSessionResumeCommitRuntime:
         decision = store.get_teacher_decision(teacher_decision_id)
         if decision["decision"] != "approved":
             raise ValueError("resume_after_approval requires an approved teacher decision")
+        if not decision.get("scope_sufficient_for_requested_operation"):
+            checkpoint = store.load_latest_checkpoint(session_id)
+            state = store.load_session_state(session_id)
+            decision_trace = _latest_trace_id(store, session_id)
+            paused_state = replace(
+                state,
+                status=BoundedEmbodiedSessionStatus.PAUSED,
+                updated_at=_now(),
+                session_summary="Approved teacher decision had insufficient scope for working readback commit.",
+            )
+            pause_payload = {
+                "session_id": session_id,
+                "teacher_decision_id": teacher_decision_id,
+                "approval_scope": decision.get("approval_scope"),
+                "required_scope": FULL_COMMIT_APPROVAL_SCOPE,
+                "pause_reason": "approval_scope_insufficient",
+            }
+            pause_trace = _envelope_for_state(
+                store,
+                state,
+                record_kind="session_paused",
+                record_id=f"session_paused_scope_insufficient:{session_id}:{teacher_decision_id}",
+                trace_layer="runtime_control",
+                payload=pause_payload,
+                source_trace_refs=(decision_trace,),
+                source_module="ashl_core_v1.runtime.teacher_gated_session_resume_commit",
+            )
+            store.pause_session(
+                state=paused_state,
+                runtime_records=checkpoint.runtime_records,
+                trace_envelopes=(pause_trace,),
+                pause_payload=pause_payload,
+            )
+            return TeacherGatedSessionRunResult(
+                session_id=session_id,
+                schema_version=RUN_RESULT_SCHEMA_VERSION,
+                initial_status=state.status.value,
+                final_status=BoundedEmbodiedSessionStatus.PAUSED.value,
+                teacher_decision_id=teacher_decision_id,
+                decision="approved",
+                reviewed_concept_count=0,
+                reviewed_interpretation_commit_count=0,
+                working_readback_commit_count=0,
+                raw_trace_deleted_count=0,
+                raw_trace_modified_count=0,
+                stop_reason="approval_scope_insufficient",
+                run_summary="Approved teacher decision was narrower than the requested working readback commit.",
+                source_trace_refs=(decision_trace, pause_trace.trace_id),
+                binding_audit_entries=tuple(),
+            )
         checkpoint = store.load_latest_checkpoint(session_id)
         state = store.load_session_state(session_id)
         if state.status != BoundedEmbodiedSessionStatus.WAITING_TEACHER_REVIEW:
@@ -516,10 +626,18 @@ class TeacherGatedSessionResumeCommitRuntime:
             journal_kind="session_resumed",
             journal_payload=resume_record.to_dict(),
         )
+        pending_review = store.get_pending_review(str(decision["pending_teacher_review_id"]))
+        evidence_snapshot = store.load_evidence_snapshot(pending_review.evidence_snapshot_id)
+        snapshot_validation = validate_session_learning_evidence_snapshot(evidence_snapshot)
+        if not snapshot_validation["valid"]:
+            raise ValueError(f"invalid evidence snapshot: {snapshot_validation['reasons']}")
+        if evidence_snapshot.evidence_identity_sha256 != str(decision["target_evidence_identity_sha256"]):
+            raise ValueError("teacher decision evidence identity mismatch")
         pipeline = _run_existing_learning_pipeline(
             session_id=session_id,
             teacher_decision=decision,
-            pending_review=store.get_pending_review(str(decision["pending_teacher_review_id"])),
+            pending_review=pending_review,
+            evidence_snapshot=evidence_snapshot,
             source_trace_refs=(resume_trace.trace_id,),
         )
         runtime_records.update(pipeline["records"])
@@ -579,6 +697,8 @@ class TeacherGatedSessionResumeCommitRuntime:
                     **interpretation_record.to_dict(),
                     "interpretation_commit_id": interpretation_record.reviewed_interpretation_commit_id,
                     "interpretation_payload": pipeline["interpretation_payload"],
+                    "pipeline_identity_bindings": pipeline["pipeline_identity_bindings"],
+                    "interpretation_provenance_binding": pipeline["interpretation_provenance_binding"],
                 },
                 working_readback_commit=pipeline["working_readback_commit"],
                 session_commit_record=commit_record.to_dict(),
@@ -813,8 +933,33 @@ def validate_teacher_decision_record(
         reasons.append("missing_pending_review")
     if pending_review is not None and pending_review.session_id != item.session_id:
         reasons.append("decision_for_another_session")
+    if pending_review is not None:
+        if pending_review.evidence_snapshot_id != item.target_evidence_snapshot_id:
+            reasons.append("evidence_snapshot_mismatch")
+        if pending_review.evidence_identity_sha256 != item.target_evidence_identity_sha256:
+            reasons.append("evidence_identity_mismatch")
+        if pending_review.canonical_payload_sha256 != item.target_canonical_payload_sha256:
+            reasons.append("canonical_payload_mismatch")
+        if pending_review.review_nonce != item.target_review_nonce:
+            reasons.append("review_nonce_mismatch")
+        if pending_review.target_session_checkpoint_id != item.target_checkpoint_id:
+            reasons.append("checkpoint_mismatch")
+        if int(pending_review.target_checkpoint_version or 0) != int(item.target_checkpoint_version):
+            reasons.append("checkpoint_version_mismatch")
     if item.decision_source != "teacher_interface" or not item.explicit_teacher_action:
         reasons.append("decision_generated_by_runtime")
+    if not item.explicit_target_binding:
+        reasons.append("missing_explicit_target_binding")
+    if item.approval_scope not in {
+        "feedback_candidate_only",
+        "through_concept_candidate",
+        "through_reviewed_concept",
+        "through_reviewed_concept_and_working_readback",
+    }:
+        reasons.append("invalid_approval_scope")
+    if item.decision == "approved" and item.scope_sufficient_for_requested_operation:
+        if item.approval_scope != FULL_COMMIT_APPROVAL_SCOPE:
+            reasons.append("scope_escalation_or_insufficient_scope")
     if item.automatic_decision_created or item.automatic_learning_approval_created:
         reasons.append("automatic_decision_or_learning_approval")
     return {"valid": not reasons, "status": "teacher_decision_valid" if not reasons else "blocked_invalid_teacher_decision", "reasons": tuple(reasons)}
@@ -835,6 +980,18 @@ def validate_reviewed_interpretation_commit_record(
         reasons.append("approval_boundary_failure")
     if item.commit_status != "active":
         reasons.append("invalid_commit_status")
+    if not item.source_evidence_snapshot_id:
+        reasons.append("missing_source_evidence_snapshot_id")
+    if not item.evidence_identity_sha256:
+        reasons.append("missing_evidence_identity_sha256")
+    if item.teacher_approval_scope != FULL_COMMIT_APPROVAL_SCOPE:
+        reasons.append("approval_scope_not_sufficient_for_working_readback")
+    if not item.pipeline_identity_binding_ids:
+        reasons.append("missing_pipeline_identity_bindings")
+    if not item.identity_chain_complete:
+        reasons.append("identity_chain_incomplete")
+    if not item.identity_chain_valid:
+        reasons.append("identity_chain_invalid")
     return {"valid": not reasons, "status": "reviewed_interpretation_commit_valid" if not reasons else "blocked_unreviewed_interpretation_commit", "reasons": tuple(reasons)}
 
 
@@ -1024,7 +1181,8 @@ def build_demo_persisted_waiting_session(state_dir: Path) -> dict[str, object]:
 def build_demo_approved_commit(state_dir: Path) -> dict[str, object]:
     payload = build_demo_persisted_waiting_session(state_dir)
     session_id = str(payload["session_id"])
-    review_id = str(payload["pending_teacher_reviews"][0]["pending_teacher_review_id"])
+    pending_review = payload["pending_teacher_reviews"][0]
+    review_id = str(pending_review["pending_teacher_review_id"])
     runtime = TeacherGatedSessionResumeCommitRuntime()
     decision = runtime.apply_teacher_decision(
         session_id,
@@ -1033,6 +1191,8 @@ def build_demo_approved_commit(state_dir: Path) -> dict[str, object]:
         ("teacher_verified",),
         "Teacher explicitly approves Host Body uncertainty interpretation.",
         state_dir,
+        approval_scope=FULL_COMMIT_APPROVAL_SCOPE,
+        expected_evidence_hash=str(pending_review["evidence_identity_sha256"]),
     )
     result = runtime.resume_after_approval(session_id, decision.teacher_decision_id, state_dir)
     store = TeacherGatedSessionStore(state_dir)
@@ -1044,7 +1204,8 @@ def build_demo_approved_commit(state_dir: Path) -> dict[str, object]:
 def build_demo_rejected_rollback(state_dir: Path) -> dict[str, object]:
     payload = build_demo_persisted_waiting_session(state_dir)
     session_id = str(payload["session_id"])
-    review_id = str(payload["pending_teacher_reviews"][0]["pending_teacher_review_id"])
+    pending_review = payload["pending_teacher_reviews"][0]
+    review_id = str(pending_review["pending_teacher_review_id"])
     runtime = TeacherGatedSessionResumeCommitRuntime()
     decision = runtime.apply_teacher_decision(
         session_id,
@@ -1053,6 +1214,8 @@ def build_demo_rejected_rollback(state_dir: Path) -> dict[str, object]:
         ("evidence_not_sufficient",),
         "Teacher explicitly rejects this interpretation.",
         state_dir,
+        approval_scope="feedback_candidate_only",
+        expected_evidence_hash=str(pending_review["evidence_identity_sha256"]),
     )
     result = runtime.close_rejected_session(session_id, decision.teacher_decision_id, state_dir)
     store = TeacherGatedSessionStore(state_dir)
@@ -1064,7 +1227,8 @@ def build_demo_rejected_rollback(state_dir: Path) -> dict[str, object]:
 def build_demo_nonfinal_pause(state_dir: Path, decision: str = "needs_more_evidence") -> dict[str, object]:
     payload = build_demo_persisted_waiting_session(state_dir)
     session_id = str(payload["session_id"])
-    review_id = str(payload["pending_teacher_reviews"][0]["pending_teacher_review_id"])
+    pending_review = payload["pending_teacher_reviews"][0]
+    review_id = str(pending_review["pending_teacher_review_id"])
     runtime = TeacherGatedSessionResumeCommitRuntime()
     record = runtime.apply_teacher_decision(
         session_id,
@@ -1073,6 +1237,8 @@ def build_demo_nonfinal_pause(state_dir: Path, decision: str = "needs_more_evide
         (decision,),
         f"Teacher explicitly marks review as {decision}.",
         state_dir,
+        approval_scope="feedback_candidate_only",
+        expected_evidence_hash=str(pending_review["evidence_identity_sha256"]),
     )
     result = runtime.pause_nonfinal_review(session_id, record.teacher_decision_id, state_dir)
     store = TeacherGatedSessionStore(state_dir)
@@ -1098,61 +1264,38 @@ def _run_existing_learning_pipeline(
     session_id: str,
     teacher_decision: dict[str, object],
     pending_review: PendingTeacherReviewRecord,
+    evidence_snapshot: SessionLearningEvidenceSnapshot,
     source_trace_refs: tuple[str, ...],
 ) -> dict[str, object]:
     bindings: list[dict[str, object]] = []
     records: dict[str, Any] = {}
-    candidate = LearningFeedbackCandidateRecord(
-        learning_feedback_candidate_id=f"learning_feedback_candidate:host_body:{session_id}",
-        schema_version="learning_engine_task_closure_learning_feedback_candidate_v0",
-        created_at=_now(),
-        source_engine="learning_engine",
-        source_task_closure_id=f"host_body_session_closure:{session_id}",
-        source_task_closure_summary_id=None,
-        source_task_closure_safety_audit_id=None,
-        source_outcome_evaluation_id=f"host_body_outcome:{session_id}",
-        source_goal_delta_evaluation_id=f"host_body_goal_delta:{session_id}",
-        source_expected_effect_reference_id=f"host_body_expected_effect:{session_id}",
-        source_sense_observation_id=pending_review.source_learning_evidence_packet_ref,
-        source_state_delta_observation_id=None,
-        source_sense_handoff_id=pending_review.source_learning_evidence_packet_ref,
-        source_sandbox_execution_id=None,
-        source_direct_command_application_id=None,
-        task_working_memory_id=None,
-        task_initialization_id=None,
-        direct_command=None,
-        expected_effect="observe Host Body uncertainty before acting",
-        outcome_class="observation_only",
-        goal_delta_class="no_goal_delta",
-        closure_status="task_closed_observation_only",
-        closure_class="observation_only",
-        feedback_candidate_kind="observation_only_candidate",
-        learning_signal_class="observation_context_signal",
-        review_priority="low",
-        candidate_summary="Host Body uncertainty evidence reviewed as observation-context learning.",
-        candidate_reason="Explicit teacher approval allows concept candidate draft from Host Body evidence.",
-        candidate_evidence_labels=("host_body_uncertainty", "teacher_gate_approved"),
-        candidate_risk_warnings=("fixture_only", "teacher_gated"),
-        counterexample_relevance_notes=("Scope remains Host Body fixture event only.",),
-        available_for_teacher_review=True,
-        requires_teacher_review_before_learning=True,
-        requires_concept_candidate_package=True,
-        requires_memory_write_gate=True,
-        learning_feedback_approved=False,
-        learning_feedback_applied=False,
-        concept_candidate_created=False,
-        reviewed_concept_created=False,
-        memory_write_performed=False,
-        automatic_learning_approval_created=False,
-        candidate_ordering_changed=False,
-        selected_action_changed=False,
-        final_action_changed=False,
-        direct_command_created=False,
-        execution_created=False,
-        task_behavior_changed=False,
-        source_trace_refs=source_trace_refs,
+    if pending_review.evidence_identity_sha256 != evidence_snapshot.evidence_identity_sha256:
+        raise ValueError("pending review evidence identity does not match snapshot")
+    candidate = build_learning_feedback_candidate_from_session_evidence(
+        evidence_snapshot,
+        pending_review,
+        teacher_decision,
     )
     _bind(bindings, validate_learning_feedback_candidate_record, candidate, "ashl_core_v1.learning.task_closure_learning_feedback_candidate", "LearningFeedbackCandidateRecord")
+    identity_bindings: list[LearningPipelineEvidenceIdentityBindingRecord] = []
+
+    def add_identity_binding(stage: str, record_kind: str, record_id: str, validator_passed: bool = True) -> None:
+        source_binding_id = identity_bindings[-1].binding_id if identity_bindings else None
+        identity_bindings.append(
+            build_learning_pipeline_evidence_identity_binding(
+                session_id=session_id,
+                evidence_snapshot_id=evidence_snapshot.evidence_snapshot_id,
+                evidence_identity_sha256=evidence_snapshot.evidence_identity_sha256,
+                pipeline_stage=stage,
+                target_record_kind=record_kind,
+                target_record_id=record_id,
+                source_binding_id=source_binding_id,
+                source_trace_refs=source_trace_refs,
+                validator_passed=validator_passed,
+            )
+        )
+
+    add_identity_binding("learning_feedback_candidate", "LearningFeedbackCandidateRecord", candidate.learning_feedback_candidate_id)
     packet = LearningFeedbackCandidateEvidencePacket(
         learning_feedback_evidence_packet_id=f"learning_feedback_evidence_packet:{candidate.learning_feedback_candidate_id}",
         schema_version="learning_engine_task_closure_learning_feedback_evidence_packet_v0",
@@ -1171,11 +1314,11 @@ def _run_existing_learning_pipeline(
         direct_command_ref=None,
         expected_effect=candidate.expected_effect,
         direct_command=None,
-        observed_delta_labels=("host_body_uncertainty",),
+        observed_delta_labels=(evidence_snapshot.evidence_theme,),
         outcome_class=candidate.outcome_class,
         goal_delta_class=candidate.goal_delta_class,
         closure_status=candidate.closure_status,
-        evidence_summary="Teacher-approved Host Body evidence packet for existing learning path.",
+        evidence_summary=f"Teacher-approved Host Body evidence packet for {evidence_snapshot.evidence_theme}.",
         missing_evidence_refs=tuple(),
         evidence_packet_status="evidence_packet_complete",
         learning_feedback_approved=False,
@@ -1197,10 +1340,12 @@ def _run_existing_learning_pipeline(
         review_source="explicit_teacher_review",
     )
     _bind(bindings, validate_learning_feedback_teacher_review_record, review, "ashl_core_v1.learning.learning_feedback_to_concept_candidate", "build_learning_feedback_teacher_review_record", inputs=(candidate.learning_feedback_candidate_id,), output=review.learning_feedback_teacher_review_id)
+    add_identity_binding("teacher_review_application", "LearningFeedbackTeacherReviewRecord", review.learning_feedback_teacher_review_id)
     review_set = build_learning_feedback_teacher_review_set(reviews=(review,), candidate_set=candidate_set)
     _bind(bindings, validate_learning_feedback_teacher_review_set, review_set, "ashl_core_v1.learning.learning_feedback_to_concept_candidate", "build_learning_feedback_teacher_review_set", inputs=(review.learning_feedback_teacher_review_id,), output=review_set.learning_feedback_teacher_review_set_id)
     draft = build_learning_feedback_to_concept_candidate_draft_record(candidate=candidate, evidence_packet=packet, teacher_review=review, teacher_review_set=review_set)
     _bind(bindings, validate_learning_feedback_to_concept_candidate_draft_record, draft, "ashl_core_v1.learning.learning_feedback_to_concept_candidate", "build_learning_feedback_to_concept_candidate_draft_record", inputs=(review.learning_feedback_teacher_review_id,), output=draft.concept_candidate_draft_id)
+    add_identity_binding("concept_candidate_draft", "LearningFeedbackToConceptCandidateDraftRecord", draft.concept_candidate_draft_id)
     rollback = build_learning_feedback_to_concept_candidate_rollback_record(draft=draft)
     _bind(bindings, validate_learning_feedback_to_concept_candidate_rollback_record, rollback, "ashl_core_v1.learning.learning_feedback_to_concept_candidate", "build_learning_feedback_to_concept_candidate_rollback_record")
     package90_audit = build_learning_feedback_to_concept_candidate_safety_audit(teacher_review_set=review_set, drafts=(draft,), rollbacks=(rollback,))
@@ -1221,6 +1366,7 @@ def _run_existing_learning_pipeline(
     _bind(bindings, validate_feedback_concept_candidate_counterexample_check_record, counterexample, "ashl_core_v1.learning.feedback_concept_candidate_review_refinement", "build_feedback_concept_candidate_counterexample_check_record")
     refinement = build_feedback_concept_candidate_refinement_record(draft=draft, review=package91_review, scope_check=scope, counterexample_check=counterexample)
     _bind(bindings, validate_feedback_concept_candidate_refinement_record, refinement, "ashl_core_v1.learning.feedback_concept_candidate_review_refinement", "build_feedback_concept_candidate_refinement_record", output=refinement.feedback_concept_candidate_refinement_id)
+    add_identity_binding("concept_candidate_refinement", "FeedbackConceptCandidateRefinementRecord", refinement.feedback_concept_candidate_refinement_id)
     package91_set = build_feedback_concept_candidate_review_set(reviews=(package91_review,), scope_checks=(scope,), counterexample_checks=(counterexample,), refinements=(refinement,))
     _bind(bindings, validate_feedback_concept_candidate_review_set, package91_set, "ashl_core_v1.learning.feedback_concept_candidate_review_refinement", "build_feedback_concept_candidate_review_set")
     package91_audit = build_feedback_concept_candidate_refinement_safety_audit(review_set=package91_set)
@@ -1239,6 +1385,7 @@ def _run_existing_learning_pipeline(
     _bind(bindings, validate_feedback_refined_concept_reviewed_concept_gate, gate, "ashl_core_v1.learning.feedback_refined_concept_reviewed_readback_integration", "build_feedback_refined_concept_reviewed_concept_gate")
     reviewed = build_feedback_derived_reviewed_concept_record(gate=gate, refinement=refinement, review=package91_review, scope_check=scope, counterexample_check=counterexample)
     _bind(bindings, validate_feedback_derived_reviewed_concept_record, reviewed, "ashl_core_v1.learning.feedback_refined_concept_reviewed_readback_integration", "build_feedback_derived_reviewed_concept_record", output=reviewed.feedback_derived_reviewed_concept_id)
+    add_identity_binding("reviewed_concept", "FeedbackDerivedReviewedConceptRecord", reviewed.feedback_derived_reviewed_concept_id)
     integration = build_feedback_derived_reviewed_concept_working_readback_integration_record(reviewed_concept=reviewed, gate=gate)
     _bind(bindings, validate_feedback_derived_reviewed_concept_working_readback_integration_record, integration, "ashl_core_v1.learning.feedback_refined_concept_reviewed_readback_integration", "build_feedback_derived_reviewed_concept_working_readback_integration_record")
     seed = build_feedback_derived_reviewed_concept_readback_seed_record(integration=integration, reviewed_concept=reviewed)
@@ -1269,6 +1416,7 @@ def _run_existing_learning_pipeline(
         trace_notes=("teacher_approved_interpretation", "working_readback_only"),
     )
     _bind(bindings, lambda item: {"valid": True, "memory_learning_trace_id": item.memory_learning_trace_id}, memory_learning_trace, "ashl_core_v1.memory.types", "MemoryLearningTrace")
+    add_identity_binding("memory_learning_trace", "MemoryLearningTrace", memory_learning_trace.memory_learning_trace_id)
     memory_routing_trace = MemoryRoutingTrace(
         memory_routing_trace_id=f"memory_routing_trace:{reviewed.feedback_derived_reviewed_concept_id}",
         source_memory_learning_trace_id=memory_learning_trace.memory_learning_trace_id,
@@ -1278,11 +1426,15 @@ def _run_existing_learning_pipeline(
         confidence=0.8,
     )
     _bind(bindings, lambda item: {"valid": True, "memory_routing_trace_id": item.memory_routing_trace_id}, memory_routing_trace, "ashl_core_v1.memory.types", "MemoryRoutingTrace")
+    add_identity_binding("memory_routing_trace", "MemoryRoutingTrace", memory_routing_trace.memory_routing_trace_id)
     interpretation_payload = {
         "reviewed_interpretation": reviewed.reviewed_concept_summary,
         "scope": reviewed.reviewed_concept_scope,
         "counterexample_boundary": reviewed.counterexample_handling_notes,
         "reviewed_concept_ref": reviewed.feedback_derived_reviewed_concept_id,
+        "source_evidence_snapshot_id": evidence_snapshot.evidence_snapshot_id,
+        "evidence_identity_sha256": evidence_snapshot.evidence_identity_sha256,
+        "evidence_theme": evidence_snapshot.evidence_theme,
         "source_trace_refs": list(source_trace_refs),
     }
     memory_application_data = MemoryApplicationData(
@@ -1294,7 +1446,10 @@ def _run_existing_learning_pipeline(
         routing_notes=("source_trace_refs_required", "raw_payload_excluded"),
     )
     _bind(bindings, lambda item: {"valid": True, "memory_application_data_id": item.memory_application_data_id}, memory_application_data, "ashl_core_v1.memory.types", "MemoryApplicationData")
+    add_identity_binding("memory_application_data", "MemoryApplicationData", memory_application_data.memory_application_data_id)
     working_readback_commit_id = f"working_readback_commit:{reviewed.feedback_derived_reviewed_concept_id}"
+    add_identity_binding("working_readback_commit", "WorkingReadbackCommit", working_readback_commit_id)
+    identity_chain_validation = validate_learning_pipeline_identity_chain(tuple(identity_bindings))
     interpretation_record = ReviewedInterpretationCommitRecord(
         reviewed_interpretation_commit_id=f"reviewed_interpretation_commit:{reviewed.feedback_derived_reviewed_concept_id}",
         schema_version=INTERPRETATION_COMMIT_SCHEMA_VERSION,
@@ -1319,15 +1474,49 @@ def _run_existing_learning_pipeline(
         teacher_approved=True,
         automatic_approval_created=False,
         commit_status="active",
+        source_evidence_snapshot_id=evidence_snapshot.evidence_snapshot_id,
+        evidence_identity_sha256=evidence_snapshot.evidence_identity_sha256,
+        teacher_approval_scope=str(teacher_decision["approval_scope"]),
+        pipeline_identity_binding_ids=tuple(item.binding_id for item in identity_bindings),
+        identity_chain_complete=bool(identity_chain_validation["valid"]),
+        identity_chain_valid=bool(identity_chain_validation["valid"]),
+    )
+    add_identity_binding("reviewed_interpretation_commit", "ReviewedInterpretationCommitRecord", interpretation_record.reviewed_interpretation_commit_id)
+    identity_chain_validation = validate_learning_pipeline_identity_chain(tuple(identity_bindings))
+    if not identity_chain_validation["valid"]:
+        raise ValueError(f"identity chain invalid: {identity_chain_validation['reasons']}")
+    interpretation_record = ReviewedInterpretationCommitRecord(
+        **{
+            **interpretation_record.to_dict(),
+            "pipeline_identity_binding_ids": tuple(item.binding_id for item in identity_bindings),
+            "identity_chain_complete": True,
+            "identity_chain_valid": True,
+        }
     )
     validate_reviewed_interpretation_commit_record(interpretation_record)
     working_readback_commit = {
         "working_readback_commit_id": working_readback_commit_id,
         "session_id": session_id,
         "interpretation_commit_id": interpretation_record.reviewed_interpretation_commit_id,
+        "source_reviewed_interpretation_commit_id": interpretation_record.reviewed_interpretation_commit_id,
+        "source_evidence_snapshot_id": evidence_snapshot.evidence_snapshot_id,
+        "evidence_identity_sha256": evidence_snapshot.evidence_identity_sha256,
         "readback_payload": interpretation_payload,
         "source_trace_refs": source_trace_refs,
         "active_for_future_sessions": True,
+        "created_at": _now(),
+    }
+    provenance_binding = {
+        "provenance_binding_id": f"interpretation_provenance_binding:{interpretation_record.reviewed_interpretation_commit_id}",
+        "session_id": session_id,
+        "reviewed_interpretation_commit_id": interpretation_record.reviewed_interpretation_commit_id,
+        "working_readback_commit_id": working_readback_commit_id,
+        "evidence_snapshot_id": evidence_snapshot.evidence_snapshot_id,
+        "evidence_identity_sha256": evidence_snapshot.evidence_identity_sha256,
+        "teacher_approval_scope": str(teacher_decision["approval_scope"]),
+        "pipeline_identity_binding_ids": tuple(item.binding_id for item in identity_bindings),
+        "identity_chain_valid": True,
+        "source_trace_refs": source_trace_refs,
         "created_at": _now(),
     }
     records.update(
@@ -1416,6 +1605,8 @@ def _run_existing_learning_pipeline(
         "records": records,
         "reviewed_interpretation_commit_record": interpretation_record,
         "working_readback_commit": working_readback_commit,
+        "pipeline_identity_bindings": tuple(identity_bindings),
+        "interpretation_provenance_binding": provenance_binding,
         "interpretation_payload": interpretation_payload,
         "trace_envelopes": tuple(traces),
         "binding_audit_entries": tuple(bindings),

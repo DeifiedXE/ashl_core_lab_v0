@@ -111,14 +111,15 @@ from ashl_core_v1.host_body.internal_action_home_surface_link import (
 from ashl_core_v1.host_body.qingyin_home_internal_space_surface import (
     build_demo_qingyin_home_internal_space_surface,
 )
-from ashl_core_v1.host_body.qingyin_host_body_v0_milestone_audit import (
-    build_demo_qingyin_host_body_v0_milestone_pass,
+from ashl_core_v1.runtime.runtime_capability_profile import (
+    RuntimeCapabilityProfile,
+    build_verified_runtime_capability_profile,
+    validate_runtime_capability_profile,
 )
-from ashl_core_v1.host_body.host_body_embodied_learning_closed_loop_audit import (
-    build_demo_host_body_embodied_learning_closed_loop_pass,
-)
-from ashl_core_v1.host_body.host_body_working_readback_integration import (
-    build_demo_trace_spine_raw_evidence_boundary,
+from ashl_core_v1.runtime.session_learning_evidence_identity import (
+    ALLOWED_APPROVAL_SCOPES,
+    FULL_COMMIT_APPROVAL_SCOPE,
+    build_session_learning_evidence_snapshot,
 )
 from ashl_core_v1.runtime.trace_envelope import (
     TraceEnvelope,
@@ -325,6 +326,8 @@ class BoundedEmbodiedSessionState:
     boundary_failure_codes: tuple[str, ...]
     runtime_failure_codes: tuple[str, ...]
     session_summary: str
+    runtime_capability_profile_id: str | None = None
+    runtime_capability_profile_sha256: str | None = None
 
     def to_dict(self) -> dict[str, object]:
         return {field.name: _plain(getattr(self, field.name)) for field in fields(self)}
@@ -347,6 +350,14 @@ class PendingTeacherReviewRecord:
     teacher_reason_codes: tuple[str, ...]
     resolved: bool
     session_aborted: bool = False
+    evidence_snapshot_id: str = ""
+    evidence_identity_sha256: str = ""
+    canonical_payload_sha256: str = ""
+    target_session_checkpoint_id: str | None = None
+    target_checkpoint_version: int | None = None
+    review_nonce: str = ""
+    allowed_approval_scopes: tuple[str, ...] = ALLOWED_APPROVAL_SCOPES
+    required_commit_scope: str = FULL_COMMIT_APPROVAL_SCOPE
 
     def to_dict(self) -> dict[str, object]:
         return {field.name: _plain(getattr(self, field.name)) for field in fields(self)}
@@ -471,7 +482,11 @@ class BoundedEmbodiedSessionRuntimeReadinessRecord:
 
 
 class BoundedEmbodiedSessionRuntime:
-    def __init__(self) -> None:
+    def __init__(self, capability_profile: RuntimeCapabilityProfile | None = None) -> None:
+        self.capability_profile = capability_profile or build_verified_runtime_capability_profile()
+        profile_validation = validate_runtime_capability_profile(self.capability_profile)
+        if not profile_validation["valid"]:
+            raise ValueError(f"invalid runtime capability profile: {profile_validation['reasons']}")
         self.trace_store = TraceEnvelopeStore()
         self._configs: dict[str, BoundedEmbodiedSessionConfig] = {}
         self._states: dict[str, BoundedEmbodiedSessionState] = {}
@@ -511,10 +526,12 @@ class BoundedEmbodiedSessionRuntime:
             boundary_failure_codes=tuple(),
             runtime_failure_codes=tuple(),
             session_summary="Bounded embodied session created.",
+            runtime_capability_profile_id=self.capability_profile.profile_id,
+            runtime_capability_profile_sha256=self.capability_profile.profile_sha256,
         )
         self._configs[session_id] = config
         self._states[session_id] = state
-        self._records[session_id] = {}
+        self._records[session_id] = {"runtime_capability_profile": self.capability_profile}
         self._pending_reviews[session_id] = []
         self._binding_log[session_id] = []
         self._transition_failures[session_id] = []
@@ -1063,10 +1080,8 @@ class BoundedEmbodiedSessionRuntime:
     def _step_home_surface(self, session_id: str) -> BoundedEmbodiedSessionStepRecord:
         before = self._state(session_id)
         records = self._records[session_id]
-        closed_payload = build_demo_host_body_embodied_learning_closed_loop_pass()
-        boundary_payload = build_demo_trace_spine_raw_evidence_boundary()
-        closed_loop_audit = closed_payload["host_body_embodied_learning_closed_loop_milestone_audit"]
-        trace_spine_boundary = boundary_payload["trace_spine_raw_evidence_boundary"]
+        closed_loop_audit = self.capability_profile.record("closed_loop_milestone_audit")
+        trace_spine_boundary = self.capability_profile.record("trace_spine_raw_evidence_boundary")
         plan = self._call(session_id, "build_internal_action_home_surface_link_plan", build_internal_action_home_surface_link_plan, closed_loop_milestone_audit=closed_loop_audit, home_surface_audit=records["home_audit"], trace_spine_boundary=trace_spine_boundary)
         result = records["internal_action_result"]
         mapping = self._call(session_id, "build_internal_action_home_surface_mapping", build_internal_action_home_surface_mapping, home_surface_link_plan=plan, selected_internal_action_kind=result.selected_internal_action_kind or "shift_internal_focus", source_internal_action_result_id=result.internal_action_result_id, source_readback_influenced_result_id=None, readback_reason_refs=result.source_trace_refs, source_trace_refs=(self._latest_trace_id(session_id),))
@@ -1094,12 +1109,12 @@ class BoundedEmbodiedSessionRuntime:
     def _step_learning_evidence(self, session_id: str) -> BoundedEmbodiedSessionStepRecord:
         before = self._state(session_id)
         records = self._records[session_id]
-        v0_payload = build_demo_qingyin_host_body_v0_milestone_pass()
+        host_body_v0_audit = self.capability_profile.record("host_body_v0_audit")
         plan = self._call(
             session_id,
             "build_host_body_learning_bridge_plan",
             build_host_body_learning_bridge_plan,
-            host_body_v0_audit=v0_payload["host_body_v0_milestone_audit"],
+            host_body_v0_audit=host_body_v0_audit,
             trace_history_audit=records["trace_history_audit"].to_dict(),
             internal_action_choice_audit=records["internal_action_choice_audit"].to_dict(),
         )
@@ -1144,6 +1159,17 @@ class BoundedEmbodiedSessionRuntime:
         records = self._records[session_id]
         packet = records["learning_evidence_packet"]
         adapter = records["existing_review_adapter"]
+        snapshot = build_session_learning_evidence_snapshot(
+            session_id=session_id,
+            root_event_id=self._state(session_id).root_event_id or records["host_body_event"].host_body_event_id,
+            source_event_id=records["host_body_event"].host_body_event_id,
+            evidence_packet=packet,
+            mapping=records["learning_feedback_mapping"],
+            bridge=records["learning_feedback_bridge"],
+            existing_review_adapter=adapter,
+            source_trace_refs=(self._latest_trace_id(session_id),),
+        )
+        records["session_learning_evidence_snapshot"] = snapshot
         review = PendingTeacherReviewRecord(
             pending_teacher_review_id=f"pending_teacher_review:{session_id}:{len(self._pending_reviews[session_id]) + 1}",
             schema_version=PENDING_REVIEW_SCHEMA_VERSION,
@@ -1159,6 +1185,14 @@ class BoundedEmbodiedSessionRuntime:
             teacher_decision=None,
             teacher_reason_codes=tuple(),
             resolved=False,
+            evidence_snapshot_id=snapshot.evidence_snapshot_id,
+            evidence_identity_sha256=snapshot.evidence_identity_sha256,
+            canonical_payload_sha256=snapshot.canonical_payload_sha256,
+            target_session_checkpoint_id=None,
+            target_checkpoint_version=None,
+            review_nonce=f"review_nonce:{uuid4().hex[:16]}",
+            allowed_approval_scopes=ALLOWED_APPROVAL_SCOPES,
+            required_commit_scope=FULL_COMMIT_APPROVAL_SCOPE,
         )
         if len(self._pending_reviews[session_id]) >= self._configs[session_id].max_pending_teacher_reviews:
             return self._fail_limit(session_id, "pending_review_limit_reached")
@@ -1173,7 +1207,14 @@ class BoundedEmbodiedSessionRuntime:
             record_id=review.pending_teacher_review_id,
             trace_layer="runtime_control",
             payload_schema=PENDING_REVIEW_SCHEMA_VERSION,
-            payload_snapshot={"review_status": review.review_status, "resolved": review.resolved, "teacher_decision": review.teacher_decision},
+            payload_snapshot={
+                "review_status": review.review_status,
+                "resolved": review.resolved,
+                "teacher_decision": review.teacher_decision,
+                "evidence_snapshot_id": review.evidence_snapshot_id,
+                "evidence_identity_sha256": review.evidence_identity_sha256,
+                "required_commit_scope": review.required_commit_scope,
+            },
             source_trace_refs=(self._latest_trace_id(session_id),),
             source_record_refs=(review.pending_teacher_review_id, adapter.existing_review_adapter_id),
         )

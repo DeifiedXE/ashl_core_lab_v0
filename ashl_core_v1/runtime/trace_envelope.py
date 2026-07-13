@@ -3,6 +3,8 @@
 from __future__ import annotations
 
 import copy
+import hashlib
+import json
 from dataclasses import dataclass, fields, replace
 from datetime import datetime, timezone
 from typing import Any
@@ -42,6 +44,10 @@ RAW_TRACE_FORBIDDEN_KEYS = {
 }
 
 
+class TraceIdentityCollisionError(ValueError):
+    pass
+
+
 def _now() -> str:
     return datetime.now(timezone.utc).isoformat()
 
@@ -58,6 +64,43 @@ def _plain(value: Any) -> Any:
     if isinstance(value, (list, tuple)):
         return [_plain(item) for item in value]
     return value
+
+
+def canonical_trace_json(value: Any) -> str:
+    return json.dumps(
+        _plain(value),
+        ensure_ascii=True,
+        sort_keys=True,
+        separators=(",", ":"),
+        allow_nan=False,
+    )
+
+
+def trace_identity_payload(envelope: TraceEnvelope) -> dict[str, object]:
+    return {
+        "trace_id": envelope.trace_id,
+        "session_id": envelope.session_id,
+        "sequence_index": envelope.sequence_index,
+        "monotonic_tick": envelope.monotonic_tick,
+        "record_kind": envelope.record_kind,
+        "record_id": envelope.record_id,
+        "payload_schema": envelope.payload_schema,
+        "payload_snapshot": envelope.payload_snapshot,
+        "source_trace_refs": envelope.source_trace_refs,
+        "source_record_refs": envelope.source_record_refs,
+        "append_only": envelope.append_only,
+        "time_aligned": envelope.time_aligned,
+    }
+
+
+def trace_identity_sha256(envelope: TraceEnvelope) -> str:
+    return hashlib.sha256(
+        canonical_trace_json(trace_identity_payload(envelope)).encode("utf-8")
+    ).hexdigest()
+
+
+def trace_identity_matches(left: TraceEnvelope, right: TraceEnvelope) -> bool:
+    return trace_identity_sha256(left) == trace_identity_sha256(right)
 
 
 def _contains_forbidden_key(value: Any, forbidden_keys: set[str]) -> bool:
@@ -198,7 +241,12 @@ class TraceEnvelopeStore:
 
     def append(self, envelope: TraceEnvelope) -> TraceEnvelope:
         if envelope.trace_id in self._by_id:
-            raise ValueError(f"duplicate trace_id: {envelope.trace_id}")
+            existing = self._by_id[envelope.trace_id]
+            if trace_identity_matches(existing, envelope):
+                return existing
+            raise TraceIdentityCollisionError(
+                f"blocked_trace_identity_collision: {envelope.trace_id}"
+            )
         next_sequence = len(self._envelopes)
         existing_ids = set(self._by_id)
         for ref in envelope.source_trace_refs:
@@ -277,4 +325,3 @@ def validate_trace_envelope_store(store: TraceEnvelopeStore) -> dict[str, object
         "trace_source_refs_valid": refs_valid,
         "reasons": [] if monotonic and refs_valid else ["trace_sequence_or_refs_invalid"],
     }
-

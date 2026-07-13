@@ -3,6 +3,7 @@ import unittest
 from pathlib import Path
 
 from ashl_core_v1.runtime.teacher_gated_session_resume_commit import (
+    FULL_COMMIT_APPROVAL_SCOPE,
     TeacherGatedSessionResumeCommitRuntime,
     build_demo_persisted_waiting_session,
 )
@@ -107,7 +108,8 @@ class TeacherGatedSessionStoreTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             payload = build_demo_persisted_waiting_session(Path(directory))
             session_id = str(payload["session_id"])
-            review_id = str(payload["pending_teacher_reviews"][0]["pending_teacher_review_id"])
+            pending_review = payload["pending_teacher_reviews"][0]
+            review_id = str(pending_review["pending_teacher_review_id"])
             runtime = TeacherGatedSessionResumeCommitRuntime()
             first = runtime.apply_teacher_decision(
                 session_id,
@@ -116,6 +118,8 @@ class TeacherGatedSessionStoreTests(unittest.TestCase):
                 ("teacher_verified",),
                 "Explicit approval.",
                 Path(directory),
+                approval_scope=FULL_COMMIT_APPROVAL_SCOPE,
+                expected_evidence_hash=str(pending_review["evidence_identity_sha256"]),
             )
             self.assertEqual(first.decision, "approved")
             with self.assertRaises(ValueError):
@@ -126,6 +130,8 @@ class TeacherGatedSessionStoreTests(unittest.TestCase):
                     ("duplicate",),
                     "Duplicate approval.",
                     Path(directory),
+                    approval_scope=FULL_COMMIT_APPROVAL_SCOPE,
+                    expected_evidence_hash=str(pending_review["evidence_identity_sha256"]),
                 )
             with self.assertRaises(ValueError):
                 runtime.apply_teacher_decision(

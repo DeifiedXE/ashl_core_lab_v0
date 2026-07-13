@@ -81,6 +81,8 @@ def _list_pending(args: argparse.Namespace) -> None:
 
 
 def _decide(args: argparse.Namespace) -> None:
+    if args.decision == "approved" and not args.approval_scope:
+        raise SystemExit("--approval-scope is required for approved decisions")
     runtime = TeacherGatedSessionResumeCommitRuntime()
     decision = runtime.apply_teacher_decision(
         args.session_id,
@@ -89,6 +91,8 @@ def _decide(args: argparse.Namespace) -> None:
         tuple(args.reason_code or ()),
         args.teacher_note or f"Explicit teacher decision: {args.decision}.",
         _state_dir(args),
+        approval_scope=args.approval_scope,
+        expected_evidence_hash=args.expected_evidence_hash,
     )
     _print_json({"teacher_decision": decision.to_dict()})
 
@@ -202,6 +206,8 @@ def build_parser() -> argparse.ArgumentParser:
     p.add_argument("--session-id", required=True)
     p.add_argument("--review-id", required=True)
     p.add_argument("--decision", required=True, choices=("approved", "rejected", "deferred", "needs_more_evidence", "conflict_detected"))
+    p.add_argument("--approval-scope", choices=("feedback_candidate_only", "through_concept_candidate", "through_reviewed_concept", "through_reviewed_concept_and_working_readback"))
+    p.add_argument("--expected-evidence-hash")
     p.add_argument("--reason-code", action="append", default=[])
     p.add_argument("--teacher-note")
     p.set_defaults(func=_decide)
