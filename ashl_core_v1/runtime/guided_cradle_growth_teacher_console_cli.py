@@ -380,6 +380,20 @@ from ashl_core_v1.runtime.guided_cradle_growth_teacher_console import (
     validate_direct_command_execution_from_guided_cradle_growth_console,
     validate_fixed_closed_loop_playback_from_guided_cradle_growth_console,
 )
+from ashl_core_v1.runtime.guided_cradle_growth_teacher_console import (
+    growth_approve_cycle_one_exact_from_guided_cradle_growth_console,
+    growth_create_two_cycle_run_from_guided_cradle_growth_console,
+    growth_run_cycle_one_from_guided_cradle_growth_console,
+    growth_run_cycle_two_from_guided_cradle_growth_console,
+    growth_show_cross_session_lineage_from_guided_cradle_growth_console,
+    growth_show_cycle_one_commit_from_guided_cradle_growth_console,
+    growth_show_cycle_one_evidence_from_guided_cradle_growth_console,
+    growth_show_loaded_readback_from_guided_cradle_growth_console,
+    growth_show_readback_consumption_from_guided_cradle_growth_console,
+    growth_show_readback_evaluation_from_guided_cradle_growth_console,
+    growth_show_two_cycle_run_from_guided_cradle_growth_console,
+    growth_validate_two_cycle_run_from_guided_cradle_growth_console,
+)
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -732,6 +746,34 @@ def build_parser() -> argparse.ArgumentParser:
     persisted_summary = subparsers.add_parser("session-show-persistence-summary")
     persisted_summary.add_argument("--session-id", required=True)
     subparsers.add_parser("session-validate-resume-commit")
+    growth_create = subparsers.add_parser("growth-create-two-cycle-run")
+    growth_create.add_argument("--fixture", default="camera_unknown_low_level_event")
+    growth_cycle_one = subparsers.add_parser("growth-run-cycle-one")
+    growth_cycle_one.add_argument("--run-id", required=True)
+    growth_cycle_one.add_argument("--teacher-decision", required=True)
+    growth_cycle_one.add_argument("--approval-scope", required=True)
+    growth_cycle_one.add_argument("--teacher-approval-text", required=True)
+    growth_cycle_one.add_argument("--reason-code", required=True)
+    growth_show_evidence = subparsers.add_parser("growth-show-cycle-one-evidence")
+    growth_show_evidence.add_argument("--run-id", required=True)
+    growth_approve = subparsers.add_parser("growth-approve-cycle-one-exact")
+    growth_approve.add_argument("--run-id", required=True)
+    growth_approve.add_argument("--teacher-approval-text", required=True)
+    growth_approve.add_argument("--reason-code", default="teacher_verified_exact_evidence")
+    growth_show_commit = subparsers.add_parser("growth-show-cycle-one-commit")
+    growth_show_commit.add_argument("--run-id", required=True)
+    growth_cycle_two = subparsers.add_parser("growth-run-cycle-two")
+    growth_cycle_two.add_argument("--run-id", required=True)
+    for command_name in (
+        "growth-show-loaded-readback",
+        "growth-show-readback-evaluation",
+        "growth-show-readback-consumption",
+        "growth-show-cross-session-lineage",
+        "growth-show-two-cycle-run",
+        "growth-validate-two-cycle-run",
+    ):
+        growth_parser = subparsers.add_parser(command_name)
+        growth_parser.add_argument("--run-id", required=True)
     subparsers.add_parser("task-apply-advisory-readback-ordering-demo")
     subparsers.add_parser("task-show-advisory-readback-ordering-teacher-gate")
     subparsers.add_parser("task-show-advisory-readback-ordering-application")
@@ -2115,6 +2157,108 @@ def main(argv: list[str] | None = None) -> int:
         if args.command == "session-validate-resume-commit":
             return _print_json(
                 session_validate_resume_commit_from_guided_cradle_growth_console()
+            )
+        if args.command == "growth-create-two-cycle-run":
+            _require_state_dir(args.state_dir)
+            return _print_json(
+                growth_create_two_cycle_run_from_guided_cradle_growth_console(
+                    args.state_dir,
+                    args.fixture,
+                )
+            )
+        if args.command == "growth-run-cycle-one":
+            _require_state_dir(args.state_dir)
+            return _print_json(
+                growth_run_cycle_one_from_guided_cradle_growth_console(
+                    args.state_dir,
+                    args.run_id,
+                    args.teacher_decision,
+                    args.approval_scope,
+                    args.teacher_approval_text,
+                    args.reason_code,
+                )
+            )
+        if args.command == "growth-show-cycle-one-evidence":
+            _require_state_dir(args.state_dir)
+            return _print_json(
+                growth_show_cycle_one_evidence_from_guided_cradle_growth_console(
+                    args.state_dir,
+                    args.run_id,
+                )
+            )
+        if args.command == "growth-approve-cycle-one-exact":
+            _require_state_dir(args.state_dir)
+            return _print_json(
+                growth_approve_cycle_one_exact_from_guided_cradle_growth_console(
+                    args.state_dir,
+                    args.run_id,
+                    args.teacher_approval_text,
+                    args.reason_code,
+                )
+            )
+        if args.command == "growth-show-cycle-one-commit":
+            _require_state_dir(args.state_dir)
+            return _print_json(
+                growth_show_cycle_one_commit_from_guided_cradle_growth_console(
+                    args.state_dir,
+                    args.run_id,
+                )
+            )
+        if args.command == "growth-run-cycle-two":
+            _require_state_dir(args.state_dir)
+            return _print_json(
+                growth_run_cycle_two_from_guided_cradle_growth_console(
+                    args.state_dir,
+                    args.run_id,
+                )
+            )
+        if args.command == "growth-show-loaded-readback":
+            _require_state_dir(args.state_dir)
+            return _print_json(
+                growth_show_loaded_readback_from_guided_cradle_growth_console(
+                    args.state_dir,
+                    args.run_id,
+                )
+            )
+        if args.command == "growth-show-readback-evaluation":
+            _require_state_dir(args.state_dir)
+            return _print_json(
+                growth_show_readback_evaluation_from_guided_cradle_growth_console(
+                    args.state_dir,
+                    args.run_id,
+                )
+            )
+        if args.command == "growth-show-readback-consumption":
+            _require_state_dir(args.state_dir)
+            return _print_json(
+                growth_show_readback_consumption_from_guided_cradle_growth_console(
+                    args.state_dir,
+                    args.run_id,
+                )
+            )
+        if args.command == "growth-show-cross-session-lineage":
+            _require_state_dir(args.state_dir)
+            return _print_json(
+                growth_show_cross_session_lineage_from_guided_cradle_growth_console(
+                    args.state_dir,
+                    args.run_id,
+                )
+            )
+        if args.command == "growth-show-two-cycle-run":
+            _require_state_dir(args.state_dir)
+            return _print_json(
+                growth_show_two_cycle_run_from_guided_cradle_growth_console(
+                    args.state_dir,
+                    args.run_id,
+                )
+            )
+        if args.command == "growth-validate-two-cycle-run":
+            _require_state_dir(args.state_dir)
+            return _print_json(
+                growth_validate_two_cycle_run_from_guided_cradle_growth_console(
+                    args.state_dir,
+                    args.run_id,
+                )
             )
         if args.command == "task-apply-advisory-readback-ordering-demo":
             return _print_json(

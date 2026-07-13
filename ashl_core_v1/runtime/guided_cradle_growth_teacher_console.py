@@ -6698,3 +6698,183 @@ def session_validate_resume_commit_from_guided_cradle_growth_console() -> dict[s
             "implicit_approval_created": False,
             "automatic_teacher_decision_created": False,
         }
+
+
+def growth_create_two_cycle_run_from_guided_cradle_growth_console(
+    state_dir: str | Path,
+    fixture: str = "camera_unknown_low_level_event",
+) -> dict[str, Any]:
+    from ashl_core_v1.runtime.no_codex_two_cycle_fixture_growth_run import create_two_cycle_fixture_growth_run
+
+    record = create_two_cycle_fixture_growth_run(state_dir=Path(state_dir), fixture_kind=fixture)
+    return {
+        "guided_console_action": "growth_create_two_cycle_run",
+        "two_cycle_run": record.to_dict(),
+        "codex_runtime_used": False,
+        "automatic_teacher_approval_created": False,
+    }
+
+
+def growth_run_cycle_one_from_guided_cradle_growth_console(
+    state_dir: str | Path,
+    run_id: str,
+    teacher_decision: str,
+    approval_scope: str,
+    teacher_approval_text: str,
+    reason_code: str,
+) -> dict[str, Any]:
+    from ashl_core_v1.runtime.no_codex_two_cycle_fixture_growth_run import run_worker_process
+
+    return {
+        "guided_console_action": "growth_run_cycle_one",
+        "cycle_one_worker_result": run_worker_process(
+            mode="cycle-one",
+            state_dir=Path(state_dir),
+            run_id=run_id,
+            teacher_decision=teacher_decision,
+            approval_scope=approval_scope,
+            teacher_approval_text=teacher_approval_text,
+            reason_code=reason_code,
+        ),
+        "cycle_two_automatically_approved": False,
+    }
+
+
+def growth_show_cycle_one_evidence_from_guided_cradle_growth_console(
+    state_dir: str | Path,
+    run_id: str,
+) -> dict[str, Any]:
+    from ashl_core_v1.runtime.teacher_gated_session_store import TeacherGatedSessionStore
+
+    store = TeacherGatedSessionStore(Path(state_dir))
+    receipt = store.get_cycle_one_growth_commit_receipt(run_id)
+    snapshot = store.load_evidence_snapshot(str(receipt["evidence_snapshot_id"]))
+    return {
+        "guided_console_action": "growth_show_cycle_one_evidence",
+        "cycle_one_commit_receipt": receipt,
+        "evidence_snapshot": snapshot.to_dict(),
+        "evidence_identity_sha256": snapshot.evidence_identity_sha256,
+    }
+
+
+def growth_approve_cycle_one_exact_from_guided_cradle_growth_console(
+    state_dir: str | Path,
+    run_id: str,
+    teacher_approval_text: str,
+    reason_code: str = "teacher_verified_exact_evidence",
+) -> dict[str, Any]:
+    from ashl_core_v1.runtime.session_learning_evidence_identity import FULL_COMMIT_APPROVAL_SCOPE
+
+    return growth_run_cycle_one_from_guided_cradle_growth_console(
+        state_dir,
+        run_id,
+        "approved",
+        FULL_COMMIT_APPROVAL_SCOPE,
+        teacher_approval_text,
+        reason_code,
+    )
+
+
+def growth_show_cycle_one_commit_from_guided_cradle_growth_console(
+    state_dir: str | Path,
+    run_id: str,
+) -> dict[str, Any]:
+    from ashl_core_v1.runtime.teacher_gated_session_store import TeacherGatedSessionStore
+
+    return {
+        "guided_console_action": "growth_show_cycle_one_commit",
+        "cycle_one_commit_receipt": TeacherGatedSessionStore(Path(state_dir)).get_cycle_one_growth_commit_receipt(run_id),
+    }
+
+
+def growth_run_cycle_two_from_guided_cradle_growth_console(
+    state_dir: str | Path,
+    run_id: str,
+) -> dict[str, Any]:
+    from ashl_core_v1.runtime.no_codex_two_cycle_fixture_growth_run import run_worker_process
+
+    return {
+        "guided_console_action": "growth_run_cycle_two",
+        "cycle_two_worker_result": run_worker_process(
+            mode="cycle-two",
+            state_dir=Path(state_dir),
+            run_id=run_id,
+        ),
+        "cycle_two_automatically_approved": False,
+    }
+
+
+def growth_show_loaded_readback_from_guided_cradle_growth_console(
+    state_dir: str | Path,
+    run_id: str,
+) -> dict[str, Any]:
+    from ashl_core_v1.runtime.teacher_gated_session_store import TeacherGatedSessionStore
+
+    store = TeacherGatedSessionStore(Path(state_dir))
+    receipt = store.get_cycle_two_readback_consumption_receipt(run_id)
+    return {
+        "guided_console_action": "growth_show_loaded_readback",
+        "loaded_working_readback_commit_ids": receipt["loaded_working_readback_commit_ids"],
+        "loaded_evidence_identity_hashes": receipt["loaded_evidence_identity_hashes"],
+        "loaded_before_event_processing": receipt["loaded_before_event_processing"],
+    }
+
+
+def growth_show_readback_evaluation_from_guided_cradle_growth_console(
+    state_dir: str | Path,
+    run_id: str,
+) -> dict[str, Any]:
+    return growth_show_readback_consumption_from_guided_cradle_growth_console(state_dir, run_id)
+
+
+def growth_show_readback_consumption_from_guided_cradle_growth_console(
+    state_dir: str | Path,
+    run_id: str,
+) -> dict[str, Any]:
+    from ashl_core_v1.runtime.teacher_gated_session_store import TeacherGatedSessionStore
+
+    return {
+        "guided_console_action": "growth_show_readback_consumption",
+        "cycle_two_readback_consumption_receipt": TeacherGatedSessionStore(Path(state_dir)).get_cycle_two_readback_consumption_receipt(run_id),
+    }
+
+
+def growth_show_cross_session_lineage_from_guided_cradle_growth_console(
+    state_dir: str | Path,
+    run_id: str,
+) -> dict[str, Any]:
+    from ashl_core_v1.runtime.no_codex_two_cycle_fixture_growth_run import validate_two_cycle_growth_lineage
+
+    return {
+        "guided_console_action": "growth_show_cross_session_lineage",
+        "lineage": validate_two_cycle_growth_lineage(Path(state_dir), run_id).to_dict(),
+    }
+
+
+def growth_show_two_cycle_run_from_guided_cradle_growth_console(
+    state_dir: str | Path,
+    run_id: str,
+) -> dict[str, Any]:
+    from ashl_core_v1.runtime.no_codex_two_cycle_fixture_growth_run import load_two_cycle_fixture_growth_run
+    from ashl_core_v1.runtime.teacher_gated_session_store import TeacherGatedSessionStore
+
+    store = TeacherGatedSessionStore(Path(state_dir))
+    return {
+        "guided_console_action": "growth_show_two_cycle_run",
+        "two_cycle_run": load_two_cycle_fixture_growth_run(Path(state_dir), run_id).to_dict(),
+        "cycle_process_receipts": store.list_cycle_process_receipts(run_id),
+    }
+
+
+def growth_validate_two_cycle_run_from_guided_cradle_growth_console(
+    state_dir: str | Path,
+    run_id: str,
+) -> dict[str, Any]:
+    from ashl_core_v1.runtime.no_codex_two_cycle_fixture_growth_run import validate_two_cycle_growth_lineage
+
+    lineage = validate_two_cycle_growth_lineage(Path(state_dir), run_id)
+    return {
+        "guided_console_action": "growth_validate_two_cycle_run",
+        "validation": {"valid": lineage.valid, "status": lineage.status},
+        "lineage": lineage.to_dict(),
+    }

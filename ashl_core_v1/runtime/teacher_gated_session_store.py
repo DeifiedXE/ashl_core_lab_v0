@@ -172,6 +172,10 @@ class TeacherGatedSessionStore:
             "learning_pipeline_identity_bindings",
             "interpretation_provenance_bindings",
             "runtime_capability_profiles",
+            "two_cycle_fixture_growth_runs",
+            "cycle_process_receipts",
+            "cycle_one_growth_commit_receipts",
+            "cycle_two_readback_consumption_receipts",
         }
         valid = (
             row is not None
@@ -982,6 +986,225 @@ class TeacherGatedSessionStore:
             readback.append(payload)
         return tuple(readback)
 
+    def upsert_two_cycle_run(self, record: dict[str, Any]) -> None:
+        payload = dict(record)
+        with self.connection() as connection:
+            connection.execute(
+                """
+                INSERT INTO two_cycle_fixture_growth_runs (
+                    run_id, state_dir, fixture_kind, fixture_payload_sha256,
+                    base_candidate_set_sha256, runtime_config_sha256,
+                    cycle_one_session_id, cycle_two_session_id,
+                    cycle_one_process_instance_id, cycle_two_process_instance_id,
+                    cycle_one_runtime_instance_id, cycle_two_runtime_instance_id,
+                    cycle_one_status, cycle_two_status, run_status, created_at,
+                    payload_json, payload_sha256
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                ON CONFLICT(run_id) DO UPDATE SET
+                    state_dir=excluded.state_dir,
+                    fixture_kind=excluded.fixture_kind,
+                    fixture_payload_sha256=excluded.fixture_payload_sha256,
+                    base_candidate_set_sha256=excluded.base_candidate_set_sha256,
+                    runtime_config_sha256=excluded.runtime_config_sha256,
+                    cycle_one_session_id=excluded.cycle_one_session_id,
+                    cycle_two_session_id=excluded.cycle_two_session_id,
+                    cycle_one_process_instance_id=excluded.cycle_one_process_instance_id,
+                    cycle_two_process_instance_id=excluded.cycle_two_process_instance_id,
+                    cycle_one_runtime_instance_id=excluded.cycle_one_runtime_instance_id,
+                    cycle_two_runtime_instance_id=excluded.cycle_two_runtime_instance_id,
+                    cycle_one_status=excluded.cycle_one_status,
+                    cycle_two_status=excluded.cycle_two_status,
+                    run_status=excluded.run_status,
+                    payload_json=excluded.payload_json,
+                    payload_sha256=excluded.payload_sha256
+                """,
+                (
+                    payload["run_id"],
+                    payload["state_dir"],
+                    payload["fixture_kind"],
+                    payload["fixture_payload_sha256"],
+                    payload["base_candidate_set_sha256"],
+                    payload["runtime_config_sha256"],
+                    payload.get("cycle_one_session_id"),
+                    payload.get("cycle_two_session_id"),
+                    payload.get("cycle_one_process_instance_id"),
+                    payload.get("cycle_two_process_instance_id"),
+                    payload.get("cycle_one_runtime_instance_id"),
+                    payload.get("cycle_two_runtime_instance_id"),
+                    payload["cycle_one_status"],
+                    payload["cycle_two_status"],
+                    payload["run_status"],
+                    payload["created_at"],
+                    canonical_json(payload),
+                    payload_sha256(payload),
+                ),
+            )
+
+    def get_two_cycle_run(self, run_id: str) -> dict[str, Any]:
+        with self.connection() as connection:
+            row = connection.execute(
+                "SELECT payload_json FROM two_cycle_fixture_growth_runs WHERE run_id = ?",
+                (run_id,),
+            ).fetchone()
+        if row is None:
+            raise KeyError(f"unknown two-cycle run: {run_id}")
+        return dict(_json_loads(row["payload_json"], {}))
+
+    def insert_cycle_process_receipt(self, record: dict[str, Any]) -> None:
+        payload = dict(record)
+        with self.connection() as connection:
+            connection.execute(
+                """
+                INSERT OR REPLACE INTO cycle_process_receipts (
+                    cycle_process_receipt_id, run_id, cycle_index,
+                    process_instance_id, operating_system_pid, runtime_instance_id,
+                    store_connection_id, session_id, worker_mode, worker_started_at,
+                    worker_closed_at, store_opened, store_closed,
+                    process_exit_requested, process_exit_status, created_at,
+                    payload_json, payload_sha256
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                """,
+                (
+                    payload["cycle_process_receipt_id"],
+                    payload["run_id"],
+                    int(payload["cycle_index"]),
+                    payload["process_instance_id"],
+                    int(payload["operating_system_pid"]),
+                    payload["runtime_instance_id"],
+                    payload["store_connection_id"],
+                    payload["session_id"],
+                    payload["worker_mode"],
+                    payload["worker_started_at"],
+                    payload.get("worker_closed_at"),
+                    1 if payload["store_opened"] else 0,
+                    1 if payload["store_closed"] else 0,
+                    1 if payload["process_exit_requested"] else 0,
+                    payload.get("process_exit_status"),
+                    payload["created_at"],
+                    canonical_json(payload),
+                    payload_sha256(payload),
+                ),
+            )
+
+    def list_cycle_process_receipts(self, run_id: str) -> tuple[dict[str, Any], ...]:
+        with self.connection() as connection:
+            rows = connection.execute(
+                "SELECT payload_json FROM cycle_process_receipts WHERE run_id = ? ORDER BY cycle_index",
+                (run_id,),
+            ).fetchall()
+        return tuple(dict(_json_loads(row["payload_json"], {})) for row in rows)
+
+    def insert_cycle_one_growth_commit_receipt(self, record: dict[str, Any]) -> None:
+        payload = dict(record)
+        with self.connection() as connection:
+            connection.execute(
+                """
+                INSERT OR REPLACE INTO cycle_one_growth_commit_receipts (
+                    cycle_one_commit_receipt_id, run_id, session_id,
+                    pending_teacher_review_id, evidence_snapshot_id,
+                    evidence_identity_sha256, teacher_decision_id,
+                    teacher_approval_scope, reviewed_interpretation_commit_id,
+                    working_readback_commit_id,
+                    package_90_to_92_identity_chain_valid,
+                    commit_provenance_valid, session_committed, created_at,
+                    payload_json, payload_sha256
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                """,
+                (
+                    payload["cycle_one_commit_receipt_id"],
+                    payload["run_id"],
+                    payload["session_id"],
+                    payload["pending_teacher_review_id"],
+                    payload["evidence_snapshot_id"],
+                    payload["evidence_identity_sha256"],
+                    payload["teacher_decision_id"],
+                    payload["teacher_approval_scope"],
+                    payload["reviewed_interpretation_commit_id"],
+                    payload["working_readback_commit_id"],
+                    1 if payload["package_90_to_92_identity_chain_valid"] else 0,
+                    1 if payload["commit_provenance_valid"] else 0,
+                    1 if payload["session_committed"] else 0,
+                    payload["created_at"],
+                    canonical_json(payload),
+                    payload_sha256(payload),
+                ),
+            )
+
+    def get_cycle_one_growth_commit_receipt(self, run_id: str) -> dict[str, Any]:
+        with self.connection() as connection:
+            row = connection.execute(
+                "SELECT payload_json FROM cycle_one_growth_commit_receipts WHERE run_id = ?",
+                (run_id,),
+            ).fetchone()
+        if row is None:
+            raise KeyError(f"missing Cycle 1 commit receipt for run: {run_id}")
+        return dict(_json_loads(row["payload_json"], {}))
+
+    def insert_cycle_two_readback_consumption_receipt(self, record: dict[str, Any]) -> None:
+        payload = dict(record)
+        with self.connection() as connection:
+            connection.execute(
+                """
+                INSERT OR REPLACE INTO cycle_two_readback_consumption_receipts (
+                    cycle_two_consumption_receipt_id, run_id, session_id,
+                    source_cycle_one_session_id, loaded_before_event_processing,
+                    loaded_working_readback_commit_ids_json,
+                    loaded_interpretation_commit_ids_json,
+                    loaded_evidence_identity_hashes_json, current_event_id,
+                    current_fixture_kind, evaluated_readback_item_ids_json,
+                    matched_readback_item_ids_json, unmatched_readback_item_ids_json,
+                    readback_signal_ids_json, candidate_score_record_ids_json,
+                    ordering_record_ids_json, internal_action_choice_ids_json,
+                    nonzero_delta_count, ordering_changed,
+                    selected_action_changed_from_baseline, readback_loaded,
+                    readback_evaluated, matching_rule_found,
+                    candidate_delta_applied, readback_consumed,
+                    source_trace_refs_json, created_at, payload_json, payload_sha256
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                """,
+                (
+                    payload["cycle_two_consumption_receipt_id"],
+                    payload["run_id"],
+                    payload["session_id"],
+                    payload["source_cycle_one_session_id"],
+                    1 if payload["loaded_before_event_processing"] else 0,
+                    canonical_json(payload["loaded_working_readback_commit_ids"]),
+                    canonical_json(payload["loaded_interpretation_commit_ids"]),
+                    canonical_json(payload["loaded_evidence_identity_hashes"]),
+                    payload["current_event_id"],
+                    payload["current_fixture_kind"],
+                    canonical_json(payload["evaluated_readback_item_ids"]),
+                    canonical_json(payload["matched_readback_item_ids"]),
+                    canonical_json(payload["unmatched_readback_item_ids"]),
+                    canonical_json(payload["readback_signal_ids"]),
+                    canonical_json(payload["candidate_score_record_ids"]),
+                    canonical_json(payload["ordering_record_ids"]),
+                    canonical_json(payload["internal_action_choice_ids"]),
+                    int(payload["nonzero_delta_count"]),
+                    1 if payload["ordering_changed"] else 0,
+                    1 if payload["selected_action_changed_from_baseline"] else 0,
+                    1 if payload["readback_loaded"] else 0,
+                    1 if payload["readback_evaluated"] else 0,
+                    1 if payload["matching_rule_found"] else 0,
+                    1 if payload["candidate_delta_applied"] else 0,
+                    1 if payload["readback_consumed"] else 0,
+                    canonical_json(payload["source_trace_refs"]),
+                    payload["created_at"],
+                    canonical_json(payload),
+                    payload_sha256(payload),
+                ),
+            )
+
+    def get_cycle_two_readback_consumption_receipt(self, run_id: str) -> dict[str, Any]:
+        with self.connection() as connection:
+            row = connection.execute(
+                "SELECT payload_json FROM cycle_two_readback_consumption_receipts WHERE run_id = ?",
+                (run_id,),
+            ).fetchone()
+        if row is None:
+            raise KeyError(f"missing Cycle 2 readback consumption receipt for run: {run_id}")
+        return dict(_json_loads(row["payload_json"], {}))
+
     def raw_trace_payload_hashes(self, session_id: str) -> tuple[tuple[str, str], ...]:
         with self.connection() as connection:
             rows = connection.execute(
@@ -1007,6 +1230,10 @@ class TeacherGatedSessionStore:
             "learning_pipeline_identity_bindings",
             "interpretation_provenance_bindings",
             "runtime_capability_profiles",
+            "two_cycle_fixture_growth_runs",
+            "cycle_process_receipts",
+            "cycle_one_growth_commit_receipts",
+            "cycle_two_readback_consumption_receipts",
         }:
             raise ValueError(f"unsupported table: {table_name}")
         query = f"SELECT COUNT(*) AS count FROM {table_name}"
@@ -1267,6 +1494,95 @@ class TeacherGatedSessionStore:
                     profile_json TEXT NOT NULL,
                     profile_sha256 TEXT NOT NULL,
                     created_at TEXT NOT NULL
+                );
+                CREATE TABLE IF NOT EXISTS two_cycle_fixture_growth_runs (
+                    run_id TEXT PRIMARY KEY,
+                    state_dir TEXT NOT NULL,
+                    fixture_kind TEXT NOT NULL,
+                    fixture_payload_sha256 TEXT NOT NULL,
+                    base_candidate_set_sha256 TEXT NOT NULL,
+                    runtime_config_sha256 TEXT NOT NULL,
+                    cycle_one_session_id TEXT,
+                    cycle_two_session_id TEXT,
+                    cycle_one_process_instance_id TEXT,
+                    cycle_two_process_instance_id TEXT,
+                    cycle_one_runtime_instance_id TEXT,
+                    cycle_two_runtime_instance_id TEXT,
+                    cycle_one_status TEXT NOT NULL,
+                    cycle_two_status TEXT NOT NULL,
+                    run_status TEXT NOT NULL,
+                    created_at TEXT NOT NULL,
+                    payload_json TEXT NOT NULL,
+                    payload_sha256 TEXT NOT NULL
+                );
+                CREATE TABLE IF NOT EXISTS cycle_process_receipts (
+                    cycle_process_receipt_id TEXT PRIMARY KEY,
+                    run_id TEXT NOT NULL,
+                    cycle_index INTEGER NOT NULL,
+                    process_instance_id TEXT NOT NULL,
+                    operating_system_pid INTEGER NOT NULL,
+                    runtime_instance_id TEXT NOT NULL,
+                    store_connection_id TEXT NOT NULL,
+                    session_id TEXT NOT NULL,
+                    worker_mode TEXT NOT NULL,
+                    worker_started_at TEXT NOT NULL,
+                    worker_closed_at TEXT,
+                    store_opened INTEGER NOT NULL,
+                    store_closed INTEGER NOT NULL,
+                    process_exit_requested INTEGER NOT NULL,
+                    process_exit_status TEXT,
+                    created_at TEXT NOT NULL,
+                    payload_json TEXT NOT NULL,
+                    payload_sha256 TEXT NOT NULL
+                );
+                CREATE TABLE IF NOT EXISTS cycle_one_growth_commit_receipts (
+                    cycle_one_commit_receipt_id TEXT PRIMARY KEY,
+                    run_id TEXT UNIQUE NOT NULL,
+                    session_id TEXT NOT NULL,
+                    pending_teacher_review_id TEXT NOT NULL,
+                    evidence_snapshot_id TEXT NOT NULL,
+                    evidence_identity_sha256 TEXT NOT NULL,
+                    teacher_decision_id TEXT NOT NULL,
+                    teacher_approval_scope TEXT NOT NULL,
+                    reviewed_interpretation_commit_id TEXT NOT NULL,
+                    working_readback_commit_id TEXT NOT NULL,
+                    package_90_to_92_identity_chain_valid INTEGER NOT NULL,
+                    commit_provenance_valid INTEGER NOT NULL,
+                    session_committed INTEGER NOT NULL,
+                    created_at TEXT NOT NULL,
+                    payload_json TEXT NOT NULL,
+                    payload_sha256 TEXT NOT NULL
+                );
+                CREATE TABLE IF NOT EXISTS cycle_two_readback_consumption_receipts (
+                    cycle_two_consumption_receipt_id TEXT PRIMARY KEY,
+                    run_id TEXT UNIQUE NOT NULL,
+                    session_id TEXT NOT NULL,
+                    source_cycle_one_session_id TEXT NOT NULL,
+                    loaded_before_event_processing INTEGER NOT NULL,
+                    loaded_working_readback_commit_ids_json TEXT NOT NULL,
+                    loaded_interpretation_commit_ids_json TEXT NOT NULL,
+                    loaded_evidence_identity_hashes_json TEXT NOT NULL,
+                    current_event_id TEXT NOT NULL,
+                    current_fixture_kind TEXT NOT NULL,
+                    evaluated_readback_item_ids_json TEXT NOT NULL,
+                    matched_readback_item_ids_json TEXT NOT NULL,
+                    unmatched_readback_item_ids_json TEXT NOT NULL,
+                    readback_signal_ids_json TEXT NOT NULL,
+                    candidate_score_record_ids_json TEXT NOT NULL,
+                    ordering_record_ids_json TEXT NOT NULL,
+                    internal_action_choice_ids_json TEXT NOT NULL,
+                    nonzero_delta_count INTEGER NOT NULL,
+                    ordering_changed INTEGER NOT NULL,
+                    selected_action_changed_from_baseline INTEGER NOT NULL,
+                    readback_loaded INTEGER NOT NULL,
+                    readback_evaluated INTEGER NOT NULL,
+                    matching_rule_found INTEGER NOT NULL,
+                    candidate_delta_applied INTEGER NOT NULL,
+                    readback_consumed INTEGER NOT NULL,
+                    source_trace_refs_json TEXT NOT NULL,
+                    created_at TEXT NOT NULL,
+                    payload_json TEXT NOT NULL,
+                    payload_sha256 TEXT NOT NULL
                 );
                 """
             )

@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import copy
 from dataclasses import dataclass, fields, replace
 from datetime import datetime, timezone
 from enum import Enum
@@ -107,6 +108,23 @@ from ashl_core_v1.host_body.internal_action_home_surface_link import (
     validate_internal_action_home_surface_link_trace,
     validate_internal_action_home_surface_mapping,
     validate_internal_action_home_teacher_observed_link,
+)
+from ashl_core_v1.host_body.host_body_working_readback_integration import (
+    HostBodyWorkingReadbackVisibilityRecord,
+)
+from ashl_core_v1.host_body.host_body_readback_internal_action_influence import (
+    build_host_body_internal_action_candidate_readback_score,
+    build_host_body_readback_influenced_internal_action_choice,
+    build_host_body_readback_influenced_internal_action_ordering,
+    build_host_body_readback_influenced_internal_action_result,
+    build_host_body_readback_internal_action_influence_plan,
+    build_host_body_readback_internal_action_signal,
+    validate_host_body_internal_action_candidate_readback_score,
+    validate_host_body_readback_influenced_internal_action_choice,
+    validate_host_body_readback_influenced_internal_action_ordering,
+    validate_host_body_readback_influenced_internal_action_result,
+    validate_host_body_readback_internal_action_influence_plan,
+    validate_host_body_readback_internal_action_signal,
 )
 from ashl_core_v1.host_body.qingyin_home_internal_space_surface import (
     build_demo_qingyin_home_internal_space_surface,
@@ -626,6 +644,42 @@ class BoundedEmbodiedSessionRuntime:
         )
         return envelope
 
+    def attach_working_readback_snapshot(
+        self,
+        session_id: str,
+        readback_items: tuple[dict[str, Any], ...] | list[dict[str, Any]],
+    ) -> TraceEnvelope:
+        state = self._state(session_id)
+        if state.current_stage != BoundedEmbodiedSessionStage.SESSION_CREATED:
+            raise ValueError("working readback must be attached before fixture event handling")
+        snapshot = tuple(copy.deepcopy(_plain(item)) for item in readback_items)
+        commit_ids = tuple(
+            str(item.get("working_readback_commit_id"))
+            for item in snapshot
+            if item.get("working_readback_commit_id")
+        )
+        self._records[session_id]["loaded_working_readback_snapshot"] = snapshot
+        envelope = self._append_runtime_control(
+            session_id,
+            "WorkingReadbackSnapshotLoaded",
+            f"working_readback_snapshot_loaded:{session_id}",
+            {
+                "loaded_before_event_processing": True,
+                "loaded_working_readback_commit_ids": commit_ids,
+                "readback_item_count": len(snapshot),
+                "reviewed_interpretation_only": True,
+                "raw_trace_payload_copied": False,
+            },
+        )
+        self._update_state(
+            session_id,
+            working_readback_snapshot_refs=commit_ids,
+            trace_envelope_count=len(self.trace_store.list_by_session(session_id)),
+            raw_trace_cursor=envelope.sequence_index,
+            session_summary="Committed working readback snapshot attached before fixture event handling.",
+        )
+        return envelope
+
     def step(self, session_id: str) -> BoundedEmbodiedSessionStepRecord:
         state = self._state(session_id)
         config = self._configs[session_id]
@@ -1015,7 +1069,9 @@ class BoundedEmbodiedSessionRuntime:
         self._update_state(
             session_id,
             current_stage=BoundedEmbodiedSessionStage.TRACE_HISTORY_UPDATED,
-            working_readback_snapshot_refs=(readback.trace_history_readback_id,),
+            working_readback_snapshot_refs=tuple(
+                dict.fromkeys(before.working_readback_snapshot_refs + (readback.trace_history_readback_id,))
+            ),
             trace_envelope_count=len(self.trace_store.list_by_session(session_id)),
             raw_trace_cursor=envelope.sequence_index,
             session_summary="Host Body trace history lane updated.",
@@ -1048,9 +1104,152 @@ class BoundedEmbodiedSessionRuntime:
         self._update_state(session_id, current_stage=BoundedEmbodiedSessionStage.INTERNAL_ACTION_CANDIDATES_CREATED, trace_envelope_count=len(self.trace_store.list_by_session(session_id)), raw_trace_cursor=envelope.sequence_index, session_summary="Internal action candidates created.")
         return self._completed_step(before, self._state(session_id), (records["trace_history_readback"].trace_history_readback_id,), (candidate.internal_action_candidate_id,), (envelope.trace_id,))
 
+    def _apply_loaded_working_readback_influence(self, session_id: str) -> None:
+        records = self._records[session_id]
+        snapshot = tuple(records.get("loaded_working_readback_snapshot", ()) or ())
+        if not snapshot:
+            records["readback_consumption_evaluation"] = {
+                "readback_loaded": False,
+                "readback_evaluated": False,
+                "matching_rule_found": False,
+                "candidate_delta_applied": False,
+                "readback_consumed": False,
+                "reason": "no_active_working_readback_loaded",
+            }
+            return
+        candidates = tuple(records.get("internal_action_candidates", ()) or ())
+        if not candidates:
+            records["readback_consumption_evaluation"] = {
+                "readback_loaded": True,
+                "readback_evaluated": False,
+                "matching_rule_found": False,
+                "candidate_delta_applied": False,
+                "readback_consumed": False,
+                "reason": "no_internal_action_candidates_available",
+            }
+            return
+        boundary = self.capability_profile.record("trace_spine_raw_evidence_boundary")
+        current_refs = (self._latest_trace_id(session_id),)
+        plan = self._call(
+            session_id,
+            "build_host_body_readback_internal_action_influence_plan",
+            build_host_body_readback_internal_action_influence_plan,
+            working_readback_integration_audit={
+                "working_readback_integration_audit_id": f"runtime_loaded_working_readback:{session_id}",
+                "source_trace_refs": tuple(
+                    ref
+                    for item in snapshot
+                    for ref in tuple(item.get("source_trace_refs", ()) or ())
+                ) or current_refs,
+            },
+            internal_action_choice_audit={
+                "internal_action_choice_audit_id": f"runtime_internal_action_candidates_ready:{session_id}",
+                "source_trace_refs": current_refs,
+            },
+            trace_spine_boundary=boundary,
+        )
+        _ensure_valid(validate_host_body_readback_internal_action_influence_plan(plan))
+        signals = []
+        scores = []
+        matched_ids: list[str] = []
+        unmatched_ids: list[str] = []
+        for item in snapshot:
+            theme = _readback_signal_theme_for_item(item)
+            visibility = _working_readback_visibility_from_loaded_item(item, theme)
+            signal = self._call(
+                session_id,
+                "build_host_body_readback_internal_action_signal",
+                build_host_body_readback_internal_action_signal,
+                influence_plan=plan,
+                working_readback_visibility=visibility,
+                signal_theme=theme,
+            )
+            _ensure_valid(validate_host_body_readback_internal_action_signal(signal))
+            signals.append(signal)
+            if theme == "none":
+                unmatched_ids.append(str(item.get("working_readback_commit_id")))
+            else:
+                matched_ids.append(str(item.get("working_readback_commit_id")))
+            for candidate in candidates:
+                score = self._call(
+                    session_id,
+                    "build_host_body_internal_action_candidate_readback_score",
+                    build_host_body_internal_action_candidate_readback_score,
+                    readback_signal=signal,
+                    internal_action_candidate=candidate,
+                )
+                _ensure_valid(validate_host_body_internal_action_candidate_readback_score(score))
+                scores.append(score)
+        ordering = self._call(
+            session_id,
+            "build_host_body_readback_influenced_internal_action_ordering",
+            build_host_body_readback_influenced_internal_action_ordering,
+            influence_plan=plan,
+            candidate_readback_scores=tuple(scores),
+        )
+        _ensure_valid(validate_host_body_readback_influenced_internal_action_ordering(ordering))
+        choice = self._call(
+            session_id,
+            "build_host_body_readback_influenced_internal_action_choice",
+            build_host_body_readback_influenced_internal_action_choice,
+            readback_influenced_ordering=ordering,
+        )
+        _ensure_valid(validate_host_body_readback_influenced_internal_action_choice(choice))
+        result = self._call(
+            session_id,
+            "build_host_body_readback_influenced_internal_action_result",
+            build_host_body_readback_influenced_internal_action_result,
+            readback_influenced_choice=choice,
+        )
+        _ensure_valid(validate_host_body_readback_influenced_internal_action_result(result))
+        nonzero_delta_count = sum(1 for score in scores if int(score.readback_delta) != 0)
+        records.update(
+            {
+                "readback_internal_action_influence_plan": plan,
+                "readback_internal_action_signals": tuple(signals),
+                "readback_candidate_scores": tuple(scores),
+                "readback_influenced_ordering": ordering,
+                "readback_influenced_choice": choice,
+                "readback_influenced_result": result,
+                "readback_consumption_evaluation": {
+                    "readback_loaded": True,
+                    "readback_evaluated": True,
+                    "matching_rule_found": bool(matched_ids),
+                    "candidate_delta_applied": nonzero_delta_count > 0,
+                    "readback_consumed": nonzero_delta_count > 0,
+                    "matched_readback_item_ids": tuple(matched_ids),
+                    "unmatched_readback_item_ids": tuple(unmatched_ids),
+                    "nonzero_delta_count": nonzero_delta_count,
+                    "ordering_changed": bool(ordering.internal_action_ordering_changed),
+                    "selected_action_preview": choice.selected_internal_action_kind,
+                },
+            }
+        )
+        envelope = self._append_derived(
+            session_id=session_id,
+            event_id=records["host_body_event"].host_body_event_id,
+            record_kind="HostBodyReadbackInfluencedInternalActionOrderingRecord",
+            record=ordering,
+            source_module="host_body_readback_internal_action_influence",
+            payload_schema=ordering.schema_version,
+            payload_snapshot={
+                "candidate_score_count": len(scores),
+                "readback_consumed": nonzero_delta_count > 0,
+                "matched_readback_item_ids": matched_ids,
+                "nonzero_delta_count": nonzero_delta_count,
+            },
+            source_trace_refs=(self._latest_trace_id(session_id),),
+        )
+        self._update_state(
+            session_id,
+            trace_envelope_count=len(self.trace_store.list_by_session(session_id)),
+            raw_trace_cursor=envelope.sequence_index,
+        )
+
     def _step_internal_action_choice(self, session_id: str) -> BoundedEmbodiedSessionStepRecord:
         before = self._state(session_id)
         records = self._records[session_id]
+        self._apply_loaded_working_readback_influence(session_id)
         choice = self._call(session_id, "build_host_body_internal_action_choice", build_host_body_internal_action_choice, choice_plan=records["internal_action_choice_plan"], candidates=records["internal_action_candidates"])
         _ensure_valid(validate_host_body_internal_action_choice(choice))
         records["internal_action_choice"] = choice
@@ -1371,6 +1570,82 @@ def _limits_preserved(state: BoundedEmbodiedSessionState, config: BoundedEmbodie
         and state.event_frame_count <= config.max_event_frames
         and state.trace_envelope_count <= config.max_trace_envelopes
         and len(state.pending_teacher_review_ids) <= config.max_pending_teacher_reviews
+    )
+
+
+def _readback_signal_theme_for_item(item: dict[str, Any]) -> str:
+    evidence_theme = str(item.get("evidence_theme") or "")
+    if evidence_theme == "uncertainty_detected":
+        return "prior_uncertainty"
+    if evidence_theme == "interesting_event_marked":
+        return "prior_interesting_event"
+    if evidence_theme == "teacher_review_requested":
+        return "prior_teacher_review_needed"
+    if evidence_theme == "runtime_bridge_deferred":
+        return "prior_runtime_bridge_deferred"
+    if evidence_theme == "observe_again_requested":
+        return "prior_observe_again_helped"
+    if evidence_theme == "event_processing_paused":
+        return "prior_event_processing_paused"
+    if evidence_theme == "home_status_updated":
+        return "prior_home_status_update"
+    if evidence_theme == "unknown_event_seen":
+        return "prior_unknown_event"
+    return "none"
+
+
+def _working_readback_visibility_from_loaded_item(
+    item: dict[str, Any],
+    signal_theme: str,
+) -> HostBodyWorkingReadbackVisibilityRecord:
+    commit_id = str(item.get("working_readback_commit_id") or "loaded_working_readback")
+    refs = tuple(str(ref) for ref in (item.get("source_trace_refs") or ())) or (commit_id,)
+    visibility_kind = "host_body_reviewed_concept_working_readback_visibility"
+    if signal_theme == "prior_uncertainty":
+        visibility_kind = "host_body_uncertainty_working_readback_visibility"
+    elif signal_theme == "prior_interesting_event":
+        visibility_kind = "host_body_interesting_event_working_readback_visibility"
+    elif signal_theme == "prior_runtime_bridge_deferred":
+        visibility_kind = "host_body_runtime_bridge_working_readback_visibility"
+    return HostBodyWorkingReadbackVisibilityRecord(
+        working_readback_visibility_id=f"runtime_loaded_working_readback_visibility:{commit_id}",
+        schema_version="qingyin_host_body_working_readback_visibility_v0",
+        created_at=_now(),
+        source_engine="host_body",
+        source_memory_application_data_bridge_id=str(
+            item.get("memory_application_data_ref")
+            or item.get("interpretation_commit_id")
+            or commit_id
+        ),
+        visibility_kind=visibility_kind,
+        visibility_status="working_readback_visibility_created_for_future_host_body_context",
+        visibility_summary="Committed working readback loaded for future Host Body context.",
+        working_readback_visible=True,
+        visible_to_future_host_body_context=True,
+        visible_to_future_task_context=False,
+        readback_payload={
+            "interpretation": str(item.get("reviewed_interpretation") or item.get("scope") or ""),
+            "evidence_theme": item.get("evidence_theme"),
+            "evidence_identity_sha256": item.get("evidence_identity_sha256"),
+            "source_trace_refs": list(refs),
+            "raw_trace": None,
+            "visible_to_future_host_body_context": True,
+            "visible_to_future_task_context": False,
+        },
+        readback_text="Committed reviewed learning is visible as interpretation-only Host Body working readback.",
+        source_trace_refs=refs,
+        source_memory_application_data_refs=(str(item.get("interpretation_commit_id") or commit_id),),
+        readback_payload_contains_raw_trace=False,
+        readback_payload_contains_source_refs=True,
+        readback_payload_contains_interpretation=True,
+        concept_id_embedded_into_raw_history=False,
+        internal_action_choice_influence_created=False,
+        task_action_selection_influence_created=False,
+        candidate_ordering_changed=False,
+        selected_action_created=False,
+        external_control_created=False,
+        first_output_created=False,
+        live_runtime_session_created=False,
     )
 
 
