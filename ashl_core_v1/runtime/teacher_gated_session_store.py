@@ -1060,9 +1060,12 @@ class TeacherGatedSessionStore:
                     process_instance_id, operating_system_pid, runtime_instance_id,
                     store_connection_id, session_id, worker_mode, worker_started_at,
                     worker_closed_at, store_opened, store_closed,
-                    process_exit_requested, process_exit_status, created_at,
+                    process_exit_requested, process_exit_status,
+                    codex_runtime_call_count, llm_runtime_call_count,
+                    network_model_call_count, arbitrary_runtime_subprocess_call_count,
+                    dynamic_code_execution_attempt_count, created_at,
                     payload_json, payload_sha256
-                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                 """,
                 (
                     payload["cycle_process_receipt_id"],
@@ -1080,6 +1083,11 @@ class TeacherGatedSessionStore:
                     1 if payload["store_closed"] else 0,
                     1 if payload["process_exit_requested"] else 0,
                     payload.get("process_exit_status"),
+                    int(payload.get("codex_runtime_call_count", 0)),
+                    int(payload.get("llm_runtime_call_count", 0)),
+                    int(payload.get("network_model_call_count", 0)),
+                    int(payload.get("arbitrary_runtime_subprocess_call_count", 0)),
+                    int(payload.get("dynamic_code_execution_attempt_count", 0)),
                     payload["created_at"],
                     canonical_json(payload),
                     payload_sha256(payload),
@@ -1151,7 +1159,9 @@ class TeacherGatedSessionStore:
                     loaded_working_readback_commit_ids_json,
                     loaded_interpretation_commit_ids_json,
                     loaded_evidence_identity_hashes_json, current_event_id,
-                    current_fixture_kind, evaluated_readback_item_ids_json,
+                    current_fixture_kind, current_fixture_payload_sha256,
+                    current_base_candidate_set_sha256, current_runtime_config_sha256,
+                    evaluated_readback_item_ids_json,
                     matched_readback_item_ids_json, unmatched_readback_item_ids_json,
                     readback_signal_ids_json, candidate_score_record_ids_json,
                     ordering_record_ids_json, internal_action_choice_ids_json,
@@ -1160,7 +1170,7 @@ class TeacherGatedSessionStore:
                     readback_evaluated, matching_rule_found,
                     candidate_delta_applied, readback_consumed,
                     source_trace_refs_json, created_at, payload_json, payload_sha256
-                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                 """,
                 (
                     payload["cycle_two_consumption_receipt_id"],
@@ -1173,6 +1183,9 @@ class TeacherGatedSessionStore:
                     canonical_json(payload["loaded_evidence_identity_hashes"]),
                     payload["current_event_id"],
                     payload["current_fixture_kind"],
+                    payload.get("current_fixture_payload_sha256", ""),
+                    payload.get("current_base_candidate_set_sha256", ""),
+                    payload.get("current_runtime_config_sha256", ""),
                     canonical_json(payload["evaluated_readback_item_ids"]),
                     canonical_json(payload["matched_readback_item_ids"]),
                     canonical_json(payload["unmatched_readback_item_ids"]),
@@ -1531,6 +1544,11 @@ class TeacherGatedSessionStore:
                     store_closed INTEGER NOT NULL,
                     process_exit_requested INTEGER NOT NULL,
                     process_exit_status TEXT,
+                    codex_runtime_call_count INTEGER DEFAULT 0,
+                    llm_runtime_call_count INTEGER DEFAULT 0,
+                    network_model_call_count INTEGER DEFAULT 0,
+                    arbitrary_runtime_subprocess_call_count INTEGER DEFAULT 0,
+                    dynamic_code_execution_attempt_count INTEGER DEFAULT 0,
                     created_at TEXT NOT NULL,
                     payload_json TEXT NOT NULL,
                     payload_sha256 TEXT NOT NULL
@@ -1564,6 +1582,9 @@ class TeacherGatedSessionStore:
                     loaded_evidence_identity_hashes_json TEXT NOT NULL,
                     current_event_id TEXT NOT NULL,
                     current_fixture_kind TEXT NOT NULL,
+                    current_fixture_payload_sha256 TEXT DEFAULT '',
+                    current_base_candidate_set_sha256 TEXT DEFAULT '',
+                    current_runtime_config_sha256 TEXT DEFAULT '',
                     evaluated_readback_item_ids_json TEXT NOT NULL,
                     matched_readback_item_ids_json TEXT NOT NULL,
                     unmatched_readback_item_ids_json TEXT NOT NULL,
@@ -1612,6 +1633,14 @@ class TeacherGatedSessionStore:
             self._ensure_column(connection, "working_readback_commits", "source_evidence_snapshot_id", "TEXT")
             self._ensure_column(connection, "working_readback_commits", "evidence_identity_sha256", "TEXT")
             self._ensure_column(connection, "working_readback_commits", "source_reviewed_interpretation_commit_id", "TEXT")
+            self._ensure_column(connection, "cycle_process_receipts", "codex_runtime_call_count", "INTEGER DEFAULT 0")
+            self._ensure_column(connection, "cycle_process_receipts", "llm_runtime_call_count", "INTEGER DEFAULT 0")
+            self._ensure_column(connection, "cycle_process_receipts", "network_model_call_count", "INTEGER DEFAULT 0")
+            self._ensure_column(connection, "cycle_process_receipts", "arbitrary_runtime_subprocess_call_count", "INTEGER DEFAULT 0")
+            self._ensure_column(connection, "cycle_process_receipts", "dynamic_code_execution_attempt_count", "INTEGER DEFAULT 0")
+            self._ensure_column(connection, "cycle_two_readback_consumption_receipts", "current_fixture_payload_sha256", "TEXT DEFAULT ''")
+            self._ensure_column(connection, "cycle_two_readback_consumption_receipts", "current_base_candidate_set_sha256", "TEXT DEFAULT ''")
+            self._ensure_column(connection, "cycle_two_readback_consumption_receipts", "current_runtime_config_sha256", "TEXT DEFAULT ''")
             connection.execute(
                 """
                 INSERT OR IGNORE INTO store_metadata (schema_name, schema_version, created_at)

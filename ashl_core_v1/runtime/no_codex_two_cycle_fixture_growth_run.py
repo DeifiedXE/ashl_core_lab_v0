@@ -137,6 +137,11 @@ class CycleProcessReceipt:
     store_closed: bool
     process_exit_requested: bool
     process_exit_status: str | None
+    codex_runtime_call_count: int = 0
+    llm_runtime_call_count: int = 0
+    network_model_call_count: int = 0
+    arbitrary_runtime_subprocess_call_count: int = 0
+    dynamic_code_execution_attempt_count: int = 0
 
     def to_dict(self) -> dict[str, object]:
         return {field.name: _plain(getattr(self, field.name)) for field in fields(self)}
@@ -178,6 +183,9 @@ class CycleTwoReadbackConsumptionReceipt:
     loaded_evidence_identity_hashes: tuple[str, ...]
     current_event_id: str
     current_fixture_kind: str
+    current_fixture_payload_sha256: str
+    current_base_candidate_set_sha256: str
+    current_runtime_config_sha256: str
     evaluated_readback_item_ids: tuple[str, ...]
     matched_readback_item_ids: tuple[str, ...]
     unmatched_readback_item_ids: tuple[str, ...]
@@ -426,6 +434,11 @@ def execute_cycle_one_worker(
             store_closed=True,
             process_exit_requested=True,
             process_exit_status="normal_exit_requested",
+            codex_runtime_call_count=guard.counters().codex_runtime_call_count,
+            llm_runtime_call_count=guard.counters().llm_runtime_call_count,
+            network_model_call_count=guard.counters().network_connection_attempt_count,
+            arbitrary_runtime_subprocess_call_count=guard.counters().arbitrary_subprocess_attempt_count,
+            dynamic_code_execution_attempt_count=guard.counters().dynamic_code_execution_attempt_count,
         )
         store.insert_cycle_process_receipt(receipt.to_dict())
         return {
@@ -495,6 +508,9 @@ def execute_cycle_two_worker(
             loaded_evidence_identity_hashes=tuple(str(item["evidence_identity_sha256"]) for item in readback),
             current_event_id=str(records["host_body_event"].host_body_event_id),
             current_fixture_kind=fixture_kind,
+            current_fixture_payload_sha256=_hash(fixture_payload_for_kind(fixture_kind)),
+            current_base_candidate_set_sha256=base_hash,
+            current_runtime_config_sha256=runtime_config_sha256(),
             evaluated_readback_item_ids=tuple(str(item["working_readback_commit_id"]) for item in readback),
             matched_readback_item_ids=tuple(evaluation.get("matched_readback_item_ids", ())),
             unmatched_readback_item_ids=tuple(evaluation.get("unmatched_readback_item_ids", ())),
@@ -550,6 +566,11 @@ def execute_cycle_two_worker(
             store_closed=True,
             process_exit_requested=True,
             process_exit_status="normal_exit_requested",
+            codex_runtime_call_count=guard.counters().codex_runtime_call_count,
+            llm_runtime_call_count=guard.counters().llm_runtime_call_count,
+            network_model_call_count=guard.counters().network_connection_attempt_count,
+            arbitrary_runtime_subprocess_call_count=guard.counters().arbitrary_subprocess_attempt_count,
+            dynamic_code_execution_attempt_count=guard.counters().dynamic_code_execution_attempt_count,
         )
         store.insert_cycle_process_receipt(receipt_process.to_dict())
         updated_run = replace(

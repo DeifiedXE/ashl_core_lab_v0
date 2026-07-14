@@ -6878,3 +6878,108 @@ def growth_validate_two_cycle_run_from_guided_cradle_growth_console(
         "validation": {"valid": lineage.valid, "status": lineage.status},
         "lineage": lineage.to_dict(),
     }
+
+
+def growth_audit_fixture_loop_from_guided_cradle_growth_console(
+    state_dir: str | Path,
+    run_id: str,
+) -> dict[str, Any]:
+    from ashl_core_v1.runtime.no_codex_fixture_growth_loop_milestone_audit import (
+        build_no_codex_fixture_growth_loop_milestone_audit,
+    )
+
+    audit = build_no_codex_fixture_growth_loop_milestone_audit(
+        state_dir=Path(state_dir),
+        run_id=run_id,
+    )
+    return {
+        "guided_console_action": "growth_audit_fixture_loop",
+        "this_audit_adds_no_new_qingyin_runtime_capability": True,
+        "milestone_audit": audit.to_dict(),
+    }
+
+
+def growth_show_fixture_loop_audit_from_guided_cradle_growth_console(
+    state_dir: str | Path,
+    run_id: str,
+) -> dict[str, Any]:
+    return growth_audit_fixture_loop_from_guided_cradle_growth_console(state_dir, run_id)
+
+
+def growth_show_fixture_loop_evidence_from_guided_cradle_growth_console(
+    state_dir: str | Path,
+    run_id: str,
+) -> dict[str, Any]:
+    from ashl_core_v1.runtime.no_codex_fixture_growth_loop_milestone_audit import (
+        show_no_codex_fixture_growth_loop_evidence,
+    )
+
+    return {
+        "guided_console_action": "growth_show_fixture_loop_evidence",
+        "this_audit_adds_no_new_qingyin_runtime_capability": True,
+        "evidence": show_no_codex_fixture_growth_loop_evidence(Path(state_dir), run_id),
+    }
+
+
+def growth_show_fixture_loop_lineage_from_guided_cradle_growth_console(
+    state_dir: str | Path,
+    run_id: str,
+) -> dict[str, Any]:
+    from ashl_core_v1.runtime.no_codex_fixture_growth_loop_milestone_audit import (
+        show_no_codex_fixture_growth_loop_lineage,
+    )
+
+    return {
+        "guided_console_action": "growth_show_fixture_loop_lineage",
+        "this_audit_adds_no_new_qingyin_runtime_capability": True,
+        "lineage": show_no_codex_fixture_growth_loop_lineage(Path(state_dir), run_id),
+    }
+
+
+def growth_issue_fixture_loop_certificate_from_guided_cradle_growth_console(
+    state_dir: str | Path,
+    run_id: str,
+    output: str | Path,
+) -> dict[str, Any]:
+    from ashl_core_v1.runtime.no_codex_fixture_growth_loop_milestone_audit import (
+        build_no_codex_fixture_growth_loop_milestone_audit,
+        issue_no_codex_fixture_growth_loop_milestone_certificate,
+    )
+
+    audit = build_no_codex_fixture_growth_loop_milestone_audit(
+        state_dir=Path(state_dir),
+        run_id=run_id,
+    )
+    certificate = issue_no_codex_fixture_growth_loop_milestone_certificate(
+        audit=audit,
+        output_path=Path(output),
+    )
+    return {
+        "guided_console_action": "growth_issue_fixture_loop_certificate",
+        "this_audit_adds_no_new_qingyin_runtime_capability": True,
+        "certificate": certificate.to_dict(),
+    }
+
+
+def growth_show_fixture_loop_safe_claim_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.runtime.no_codex_fixture_growth_loop_milestone_audit import SAFE_CLAIM
+
+    return {
+        "guided_console_action": "growth_show_fixture_loop_safe_claim",
+        "this_audit_adds_no_new_qingyin_runtime_capability": True,
+        "safe_claim": SAFE_CLAIM,
+    }
+
+
+def growth_show_fixture_loop_scope_limits_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.runtime.no_codex_fixture_growth_loop_milestone_audit import (
+        FORBIDDEN_CLAIMS,
+        SCOPE_LIMITS,
+    )
+
+    return {
+        "guided_console_action": "growth_show_fixture_loop_scope_limits",
+        "this_audit_adds_no_new_qingyin_runtime_capability": True,
+        "scope_limits": SCOPE_LIMITS,
+        "forbidden_claims": FORBIDDEN_CLAIMS,
+    }

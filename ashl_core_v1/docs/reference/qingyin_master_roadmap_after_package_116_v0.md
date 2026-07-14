@@ -3,6 +3,7 @@
 Status: Reference
 Runtime Impact: None
 Created For: Package 117 repair baseline
+Updated Through: Package 119 milestone audit implementation
 
 ## Current Baseline
 
@@ -12,7 +13,11 @@ Package 116 created teacher-gated session resume and commit:
 
 Host Body evidence awaiting review -> explicit teacher decision -> Package 90-92 learning path -> reviewed interpretation commit -> persisted working readback.
 
-Package 117 repairs the identity and approval-scope boundaries around that path before the no-Codex two-cycle fixture growth run.
+Package 117 completed the identity and approval-scope repair around that path before the no-Codex two-cycle fixture growth run.
+
+Package 118 completed the first no-Codex, fixture-only, teacher-gated, cross-process two-cycle growth run.
+
+Package 119 is complete only when the stored Package 118 run audits as `passed_no_codex_fixture_growth_loop_milestone`.
 
 ## Current Safe Chain
 
@@ -29,13 +34,13 @@ Fixture Host Body event
 
 ## Immediate Schedule
 
-- Package 117 / Session Evidence Identity And Teacher Approval Scope Repair
-- Package 118 / No-Codex Two-Cycle Fixture Growth Run
+- Package 117 / Session Evidence Identity And Teacher Approval Scope Repair - completed
+- Package 118 / No-Codex Two-Cycle Fixture Growth Run - completed
+- Package 119 / No-Codex Fixture Growth Loop Milestone Audit - completed only when audit passes
+- Package 120 / Real Host Sensor Ingress And Raw Artifact Store - next
 
 ## Later Milestones
 
-- Cross-session readback consumption hardening
-- Fixture growth milestone audit
 - Real low-level sensor ingress only after fixture milestones
 - Real camera and microphone adapters only as read-only low-level adapters
 - Real sensor safety and noise audit before semantic perception work
@@ -62,4 +67,3 @@ Still not created:
 - CL token
 - Concept Compiler
 - Pattern Miner
-

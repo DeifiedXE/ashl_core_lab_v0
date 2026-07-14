@@ -382,12 +382,19 @@ from ashl_core_v1.runtime.guided_cradle_growth_teacher_console import (
 )
 from ashl_core_v1.runtime.guided_cradle_growth_teacher_console import (
     growth_approve_cycle_one_exact_from_guided_cradle_growth_console,
+    growth_audit_fixture_loop_from_guided_cradle_growth_console,
     growth_create_two_cycle_run_from_guided_cradle_growth_console,
+    growth_issue_fixture_loop_certificate_from_guided_cradle_growth_console,
     growth_run_cycle_one_from_guided_cradle_growth_console,
     growth_run_cycle_two_from_guided_cradle_growth_console,
     growth_show_cross_session_lineage_from_guided_cradle_growth_console,
     growth_show_cycle_one_commit_from_guided_cradle_growth_console,
     growth_show_cycle_one_evidence_from_guided_cradle_growth_console,
+    growth_show_fixture_loop_audit_from_guided_cradle_growth_console,
+    growth_show_fixture_loop_evidence_from_guided_cradle_growth_console,
+    growth_show_fixture_loop_lineage_from_guided_cradle_growth_console,
+    growth_show_fixture_loop_safe_claim_from_guided_cradle_growth_console,
+    growth_show_fixture_loop_scope_limits_from_guided_cradle_growth_console,
     growth_show_loaded_readback_from_guided_cradle_growth_console,
     growth_show_readback_consumption_from_guided_cradle_growth_console,
     growth_show_readback_evaluation_from_guided_cradle_growth_console,
@@ -771,9 +778,18 @@ def build_parser() -> argparse.ArgumentParser:
         "growth-show-cross-session-lineage",
         "growth-show-two-cycle-run",
         "growth-validate-two-cycle-run",
+        "growth-audit-fixture-loop",
+        "growth-show-fixture-loop-audit",
+        "growth-show-fixture-loop-evidence",
+        "growth-show-fixture-loop-lineage",
     ):
         growth_parser = subparsers.add_parser(command_name)
         growth_parser.add_argument("--run-id", required=True)
+    growth_certificate = subparsers.add_parser("growth-issue-fixture-loop-certificate")
+    growth_certificate.add_argument("--run-id", required=True)
+    growth_certificate.add_argument("--output", required=True)
+    subparsers.add_parser("growth-show-fixture-loop-safe-claim")
+    subparsers.add_parser("growth-show-fixture-loop-scope-limits")
     subparsers.add_parser("task-apply-advisory-readback-ordering-demo")
     subparsers.add_parser("task-show-advisory-readback-ordering-teacher-gate")
     subparsers.add_parser("task-show-advisory-readback-ordering-application")
@@ -2260,6 +2276,51 @@ def main(argv: list[str] | None = None) -> int:
                     args.run_id,
                 )
             )
+        if args.command == "growth-audit-fixture-loop":
+            _require_state_dir(args.state_dir)
+            return _print_json(
+                growth_audit_fixture_loop_from_guided_cradle_growth_console(
+                    args.state_dir,
+                    args.run_id,
+                )
+            )
+        if args.command == "growth-show-fixture-loop-audit":
+            _require_state_dir(args.state_dir)
+            return _print_json(
+                growth_show_fixture_loop_audit_from_guided_cradle_growth_console(
+                    args.state_dir,
+                    args.run_id,
+                )
+            )
+        if args.command == "growth-show-fixture-loop-evidence":
+            _require_state_dir(args.state_dir)
+            return _print_json(
+                growth_show_fixture_loop_evidence_from_guided_cradle_growth_console(
+                    args.state_dir,
+                    args.run_id,
+                )
+            )
+        if args.command == "growth-show-fixture-loop-lineage":
+            _require_state_dir(args.state_dir)
+            return _print_json(
+                growth_show_fixture_loop_lineage_from_guided_cradle_growth_console(
+                    args.state_dir,
+                    args.run_id,
+                )
+            )
+        if args.command == "growth-issue-fixture-loop-certificate":
+            _require_state_dir(args.state_dir)
+            return _print_json(
+                growth_issue_fixture_loop_certificate_from_guided_cradle_growth_console(
+                    args.state_dir,
+                    args.run_id,
+                    args.output,
+                )
+            )
+        if args.command == "growth-show-fixture-loop-safe-claim":
+            return _print_json(growth_show_fixture_loop_safe_claim_from_guided_cradle_growth_console())
+        if args.command == "growth-show-fixture-loop-scope-limits":
+            return _print_json(growth_show_fixture_loop_scope_limits_from_guided_cradle_growth_console())
         if args.command == "task-apply-advisory-readback-ordering-demo":
             return _print_json(
                 apply_advisory_readback_ordering_demo_from_guided_cradle_growth_console()
