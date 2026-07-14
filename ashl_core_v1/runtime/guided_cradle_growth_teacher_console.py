@@ -6983,3 +6983,201 @@ def growth_show_fixture_loop_scope_limits_from_guided_cradle_growth_console() ->
         "scope_limits": SCOPE_LIMITS,
         "forbidden_claims": FORBIDDEN_CLAIMS,
     }
+
+
+def sensor_list_backends_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.runtime.bounded_host_sensor_ingress_runtime import list_sensor_backends
+
+    return {
+        "guided_console_action": "sensor_list_backends",
+        "sensor_backends": list_sensor_backends(),
+        "sensor_artifacts_enter_learning_queue": False,
+    }
+
+
+def sensor_list_devices_from_guided_cradle_growth_console(source: str) -> dict[str, Any]:
+    from ashl_core_v1.runtime.bounded_host_sensor_ingress_runtime import adapter_for_source
+
+    return {
+        "guided_console_action": "sensor_list_devices",
+        "source_kind": source,
+        "devices": tuple(item.to_dict() for item in adapter_for_source(source).enumerate_devices()),
+        "sensor_opened": False,
+    }
+
+
+def sensor_list_displays_from_guided_cradle_growth_console() -> dict[str, Any]:
+    return sensor_list_devices_from_guided_cradle_growth_console("screen")
+
+
+def sensor_capture_camera_once_from_guided_cradle_growth_console(
+    *,
+    state_dir: str | Path,
+    device_index: int,
+    confirm_local_capture: bool,
+) -> dict[str, Any]:
+    _require_sensor_capture_confirmation(confirm_local_capture)
+    from ashl_core_v1.runtime.bounded_host_sensor_ingress_runtime import capture_once
+
+    result = capture_once(
+        state_dir=Path(state_dir),
+        source_kind="camera",
+        device_index=device_index,
+    )
+    return _sensor_capture_console_payload("sensor_capture_camera_once", result)
+
+
+def sensor_capture_screen_once_from_guided_cradle_growth_console(
+    *,
+    state_dir: str | Path,
+    monitor_index: int | None = None,
+    region: tuple[int, int, int, int] | None = None,
+    confirm_local_capture: bool,
+) -> dict[str, Any]:
+    _require_sensor_capture_confirmation(confirm_local_capture)
+    from ashl_core_v1.runtime.bounded_host_sensor_ingress_runtime import capture_once
+
+    result = capture_once(
+        state_dir=Path(state_dir),
+        source_kind="screen",
+        monitor_index=monitor_index,
+        region=region,
+    )
+    return _sensor_capture_console_payload("sensor_capture_screen_once", result)
+
+
+def sensor_capture_microphone_window_from_guided_cradle_growth_console(
+    *,
+    state_dir: str | Path,
+    device_index: int,
+    duration_ms: int,
+    confirm_local_capture: bool,
+) -> dict[str, Any]:
+    _require_sensor_capture_confirmation(confirm_local_capture)
+    from ashl_core_v1.runtime.bounded_host_sensor_ingress_runtime import capture_once
+
+    result = capture_once(
+        state_dir=Path(state_dir),
+        source_kind="microphone",
+        device_index=device_index,
+        duration_ms=duration_ms,
+    )
+    return _sensor_capture_console_payload("sensor_capture_microphone_window", result)
+
+
+def sensor_capture_host_state_once_from_guided_cradle_growth_console(
+    *,
+    state_dir: str | Path,
+    confirm_local_capture: bool,
+) -> dict[str, Any]:
+    _require_sensor_capture_confirmation(confirm_local_capture)
+    from ashl_core_v1.runtime.bounded_host_sensor_ingress_runtime import capture_once
+
+    result = capture_once(
+        state_dir=Path(state_dir),
+        source_kind="host_state",
+        duration_ms=1000,
+    )
+    return _sensor_capture_console_payload("sensor_capture_host_state_once", result)
+
+
+def sensor_list_capture_sessions_from_guided_cradle_growth_console(
+    *,
+    state_dir: str | Path,
+) -> dict[str, Any]:
+    from ashl_core_v1.runtime.content_addressed_sensor_artifact_store import (
+        ContentAddressedSensorArtifactStore,
+    )
+
+    return {
+        "guided_console_action": "sensor_list_capture_sessions",
+        "capture_sessions": ContentAddressedSensorArtifactStore(Path(state_dir)).list_capture_sessions(),
+    }
+
+
+def sensor_list_artifacts_from_guided_cradle_growth_console(
+    *,
+    state_dir: str | Path,
+    capture_session_id: str | None = None,
+) -> dict[str, Any]:
+    from ashl_core_v1.runtime.content_addressed_sensor_artifact_store import (
+        ContentAddressedSensorArtifactStore,
+    )
+
+    return {
+        "guided_console_action": "sensor_list_artifacts",
+        "artifacts": ContentAddressedSensorArtifactStore(Path(state_dir)).list_artifacts(
+            capture_session_id
+        ),
+        "raw_bytes_displayed": False,
+    }
+
+
+def sensor_show_artifact_metadata_from_guided_cradle_growth_console(
+    *,
+    state_dir: str | Path,
+    artifact_id: str,
+) -> dict[str, Any]:
+    from ashl_core_v1.runtime.content_addressed_sensor_artifact_store import (
+        ContentAddressedSensorArtifactStore,
+    )
+
+    artifact = ContentAddressedSensorArtifactStore(Path(state_dir)).get_artifact(artifact_id)
+    return {
+        "guided_console_action": "sensor_show_artifact_metadata",
+        "artifact": artifact,
+        "raw_bytes_displayed": False,
+    }
+
+
+def sensor_verify_artifact_from_guided_cradle_growth_console(
+    *,
+    state_dir: str | Path,
+    artifact_id: str,
+) -> dict[str, Any]:
+    from ashl_core_v1.runtime.content_addressed_sensor_artifact_store import (
+        ContentAddressedSensorArtifactStore,
+    )
+
+    return {
+        "guided_console_action": "sensor_verify_artifact",
+        "verification": ContentAddressedSensorArtifactStore(Path(state_dir)).verify_artifact(
+            artifact_id
+        ),
+    }
+
+
+def sensor_audit_store_from_guided_cradle_growth_console(
+    *,
+    state_dir: str | Path,
+) -> dict[str, Any]:
+    from ashl_core_v1.runtime.content_addressed_sensor_artifact_store import (
+        ContentAddressedSensorArtifactStore,
+    )
+
+    return {
+        "guided_console_action": "sensor_audit_store",
+        "store_audit": ContentAddressedSensorArtifactStore(Path(state_dir)).audit_store().to_dict(),
+        "sensor_artifacts_enter_learning_queue": False,
+    }
+
+
+def _require_sensor_capture_confirmation(confirm_local_capture: bool) -> None:
+    if not confirm_local_capture:
+        raise ValueError(
+            "This command will capture local camera, screen, microphone, or host-state "
+            "data into the selected state directory; pass confirm_local_capture=True."
+        )
+
+
+def _sensor_capture_console_payload(action: str, result: Any) -> dict[str, Any]:
+    return {
+        "guided_console_action": action,
+        "capture_result": result.to_dict(),
+        "sensor_artifacts_entered_package_115": False,
+        "sensor_artifacts_enter_learning_queue": False,
+        "automatic_teacher_review_created": False,
+        "memory_write_created": False,
+        "first_output_created": False,
+        "external_control_created": False,
+    }

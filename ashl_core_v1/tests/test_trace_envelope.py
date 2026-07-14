@@ -110,6 +110,22 @@ class TraceEnvelopeTests(unittest.TestCase):
                         payload_snapshot={key: "forbidden"},
                     )
 
+    def test_raw_sensor_trace_rejects_interpreted_identifiers(self):
+        with self.assertRaises(ValueError):
+            build_trace_envelope(
+                trace_id="trace:bad:sensor",
+                session_id="session:demo",
+                event_id="sensor_raw_artifact:demo",
+                root_event_id="sensor_root_event:demo",
+                source_line="host_sensor_ingress",
+                source_module="ashl_core_v1.runtime.camera_sensor_adapter",
+                record_kind="sensor_raw_artifact",
+                record_id="sensor_raw_artifact:demo",
+                trace_layer="raw_sensor_trace",
+                payload_schema="ashl_sensor_raw_artifact_v0",
+                payload_snapshot={"concept_id": "forbidden"},
+            )
+
     def test_interpreted_trace_requires_source_refs(self):
         with self.assertRaises(ValueError):
             build_trace_envelope(
@@ -216,4 +232,3 @@ class TraceEnvelopeTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
-

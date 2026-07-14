@@ -24,6 +24,7 @@ ALLOWED_SOURCE_LINES = (
     "output",
     "audit",
     "host_body",
+    "host_sensor_ingress",
 )
 
 ALLOWED_TRACE_LAYERS = (
@@ -32,6 +33,7 @@ ALLOWED_TRACE_LAYERS = (
     "reviewed_interpretation",
     "runtime_control",
     "audit",
+    "raw_sensor_trace",
 )
 
 RAW_TRACE_FORBIDDEN_KEYS = {
@@ -156,7 +158,7 @@ class TraceEnvelope:
             raise ValueError("TraceEnvelope must be append_only")
         if not self.time_aligned:
             raise ValueError("TraceEnvelope must be time_aligned")
-        if self.trace_layer == "raw" and _contains_forbidden_key(self.payload_snapshot, RAW_TRACE_FORBIDDEN_KEYS):
+        if self.trace_layer in {"raw", "raw_sensor_trace"} and _contains_forbidden_key(self.payload_snapshot, RAW_TRACE_FORBIDDEN_KEYS):
             raise ValueError("raw TraceEnvelope payload contains interpreted or memory identifiers")
         if self.trace_layer in {"derived_evidence", "reviewed_interpretation", "audit"} and not self.source_trace_refs:
             raise ValueError("interpreted or audit TraceEnvelope requires source_trace_refs")

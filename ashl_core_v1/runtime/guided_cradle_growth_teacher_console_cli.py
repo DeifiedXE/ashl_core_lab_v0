@@ -790,6 +790,31 @@ def build_parser() -> argparse.ArgumentParser:
     growth_certificate.add_argument("--output", required=True)
     subparsers.add_parser("growth-show-fixture-loop-safe-claim")
     subparsers.add_parser("growth-show-fixture-loop-scope-limits")
+    subparsers.add_parser("sensor-list-backends")
+    sensor_devices = subparsers.add_parser("sensor-list-devices")
+    sensor_devices.add_argument("--source", choices=("camera", "microphone", "screen", "host_state"), required=True)
+    subparsers.add_parser("sensor-list-displays")
+    sensor_camera = subparsers.add_parser("sensor-capture-camera-once")
+    sensor_camera.add_argument("--device-index", type=int, required=True)
+    sensor_camera.add_argument("--confirm-local-capture", action="store_true")
+    sensor_screen = subparsers.add_parser("sensor-capture-screen-once")
+    sensor_screen.add_argument("--monitor-index", type=int, default=None)
+    sensor_screen.add_argument("--region", default=None)
+    sensor_screen.add_argument("--confirm-local-capture", action="store_true")
+    sensor_microphone = subparsers.add_parser("sensor-capture-microphone-window")
+    sensor_microphone.add_argument("--device-index", type=int, required=True)
+    sensor_microphone.add_argument("--duration-ms", type=int, default=500)
+    sensor_microphone.add_argument("--confirm-local-capture", action="store_true")
+    sensor_host_state = subparsers.add_parser("sensor-capture-host-state-once")
+    sensor_host_state.add_argument("--confirm-local-capture", action="store_true")
+    subparsers.add_parser("sensor-list-capture-sessions")
+    sensor_artifacts = subparsers.add_parser("sensor-list-artifacts")
+    sensor_artifacts.add_argument("--capture-session-id", default=None)
+    sensor_show_artifact = subparsers.add_parser("sensor-show-artifact-metadata")
+    sensor_show_artifact.add_argument("--artifact-id", required=True)
+    sensor_verify_artifact = subparsers.add_parser("sensor-verify-artifact")
+    sensor_verify_artifact.add_argument("--artifact-id", required=True)
+    subparsers.add_parser("sensor-audit-store")
     subparsers.add_parser("task-apply-advisory-readback-ordering-demo")
     subparsers.add_parser("task-show-advisory-readback-ordering-teacher-gate")
     subparsers.add_parser("task-show-advisory-readback-ordering-application")
@@ -2321,6 +2346,135 @@ def main(argv: list[str] | None = None) -> int:
             return _print_json(growth_show_fixture_loop_safe_claim_from_guided_cradle_growth_console())
         if args.command == "growth-show-fixture-loop-scope-limits":
             return _print_json(growth_show_fixture_loop_scope_limits_from_guided_cradle_growth_console())
+        if args.command == "sensor-list-backends":
+            from ashl_core_v1.runtime.guided_cradle_growth_teacher_console import (
+                sensor_list_backends_from_guided_cradle_growth_console,
+            )
+
+            return _print_json(sensor_list_backends_from_guided_cradle_growth_console())
+        if args.command == "sensor-list-devices":
+            from ashl_core_v1.runtime.guided_cradle_growth_teacher_console import (
+                sensor_list_devices_from_guided_cradle_growth_console,
+            )
+
+            return _print_json(sensor_list_devices_from_guided_cradle_growth_console(args.source))
+        if args.command == "sensor-list-displays":
+            from ashl_core_v1.runtime.guided_cradle_growth_teacher_console import (
+                sensor_list_displays_from_guided_cradle_growth_console,
+            )
+
+            return _print_json(sensor_list_displays_from_guided_cradle_growth_console())
+        if args.command == "sensor-capture-camera-once":
+            _require_state_dir(args.state_dir)
+            from ashl_core_v1.runtime.guided_cradle_growth_teacher_console import (
+                sensor_capture_camera_once_from_guided_cradle_growth_console,
+            )
+
+            return _print_json(
+                sensor_capture_camera_once_from_guided_cradle_growth_console(
+                    state_dir=args.state_dir,
+                    device_index=args.device_index,
+                    confirm_local_capture=args.confirm_local_capture,
+                )
+            )
+        if args.command == "sensor-capture-screen-once":
+            _require_state_dir(args.state_dir)
+            from ashl_core_v1.runtime.guided_cradle_growth_teacher_console import (
+                sensor_capture_screen_once_from_guided_cradle_growth_console,
+            )
+
+            return _print_json(
+                sensor_capture_screen_once_from_guided_cradle_growth_console(
+                    state_dir=args.state_dir,
+                    monitor_index=args.monitor_index,
+                    region=_parse_sensor_region(args.region),
+                    confirm_local_capture=args.confirm_local_capture,
+                )
+            )
+        if args.command == "sensor-capture-microphone-window":
+            _require_state_dir(args.state_dir)
+            from ashl_core_v1.runtime.guided_cradle_growth_teacher_console import (
+                sensor_capture_microphone_window_from_guided_cradle_growth_console,
+            )
+
+            return _print_json(
+                sensor_capture_microphone_window_from_guided_cradle_growth_console(
+                    state_dir=args.state_dir,
+                    device_index=args.device_index,
+                    duration_ms=args.duration_ms,
+                    confirm_local_capture=args.confirm_local_capture,
+                )
+            )
+        if args.command == "sensor-capture-host-state-once":
+            _require_state_dir(args.state_dir)
+            from ashl_core_v1.runtime.guided_cradle_growth_teacher_console import (
+                sensor_capture_host_state_once_from_guided_cradle_growth_console,
+            )
+
+            return _print_json(
+                sensor_capture_host_state_once_from_guided_cradle_growth_console(
+                    state_dir=args.state_dir,
+                    confirm_local_capture=args.confirm_local_capture,
+                )
+            )
+        if args.command == "sensor-list-capture-sessions":
+            _require_state_dir(args.state_dir)
+            from ashl_core_v1.runtime.guided_cradle_growth_teacher_console import (
+                sensor_list_capture_sessions_from_guided_cradle_growth_console,
+            )
+
+            return _print_json(
+                sensor_list_capture_sessions_from_guided_cradle_growth_console(
+                    state_dir=args.state_dir,
+                )
+            )
+        if args.command == "sensor-list-artifacts":
+            _require_state_dir(args.state_dir)
+            from ashl_core_v1.runtime.guided_cradle_growth_teacher_console import (
+                sensor_list_artifacts_from_guided_cradle_growth_console,
+            )
+
+            return _print_json(
+                sensor_list_artifacts_from_guided_cradle_growth_console(
+                    state_dir=args.state_dir,
+                    capture_session_id=args.capture_session_id,
+                )
+            )
+        if args.command == "sensor-show-artifact-metadata":
+            _require_state_dir(args.state_dir)
+            from ashl_core_v1.runtime.guided_cradle_growth_teacher_console import (
+                sensor_show_artifact_metadata_from_guided_cradle_growth_console,
+            )
+
+            return _print_json(
+                sensor_show_artifact_metadata_from_guided_cradle_growth_console(
+                    state_dir=args.state_dir,
+                    artifact_id=args.artifact_id,
+                )
+            )
+        if args.command == "sensor-verify-artifact":
+            _require_state_dir(args.state_dir)
+            from ashl_core_v1.runtime.guided_cradle_growth_teacher_console import (
+                sensor_verify_artifact_from_guided_cradle_growth_console,
+            )
+
+            return _print_json(
+                sensor_verify_artifact_from_guided_cradle_growth_console(
+                    state_dir=args.state_dir,
+                    artifact_id=args.artifact_id,
+                )
+            )
+        if args.command == "sensor-audit-store":
+            _require_state_dir(args.state_dir)
+            from ashl_core_v1.runtime.guided_cradle_growth_teacher_console import (
+                sensor_audit_store_from_guided_cradle_growth_console,
+            )
+
+            return _print_json(
+                sensor_audit_store_from_guided_cradle_growth_console(
+                    state_dir=args.state_dir,
+                )
+            )
         if args.command == "task-apply-advisory-readback-ordering-demo":
             return _print_json(
                 apply_advisory_readback_ordering_demo_from_guided_cradle_growth_console()
@@ -2678,6 +2832,15 @@ def _print_json(payload: dict) -> int:
 def _require_state_dir(state_dir: Path | None) -> None:
     if state_dir is None:
         raise ValueError("--state-dir is required for state handoff commands")
+
+
+def _parse_sensor_region(value: str | None) -> tuple[int, int, int, int] | None:
+    if value is None:
+        return None
+    parts = [int(item.strip()) for item in value.split(",")]
+    if len(parts) != 4:
+        raise ValueError("--region must be left,top,width,height")
+    return tuple(parts)  # type: ignore[return-value]
 
 
 if __name__ == "__main__":

@@ -640,6 +640,25 @@ from .trace_envelope import (
     validate_trace_envelope,
     validate_trace_envelope_store,
 )
+from .host_sensor_types import (
+    HostSensorArtifactStoreAuditRecord,
+    SensorCaptureConfig,
+    SensorCaptureFailureRecord,
+    SensorCaptureLifecycleEvent,
+    SensorCaptureSessionRecord,
+    SensorDeviceDescriptor,
+    SensorRawArtifact,
+    build_sensor_capture_config,
+)
+from .content_addressed_sensor_artifact_store import ContentAddressedSensorArtifactStore
+from .bounded_host_sensor_ingress_runtime import (
+    BoundedHostSensorIngressRuntime,
+    HostSensorCaptureRunResult,
+    adapter_for_source,
+    build_default_config_for_source,
+    capture_once,
+    list_sensor_backends,
+)
 
 __all__ = [
     "build_all_cradle_case_samples",
@@ -1203,6 +1222,21 @@ __all__ = [
     "write_two_tick_runtime_stub_planning_precheck_report",
     "TraceEnvelope",
     "TraceEnvelopeStore",
+    "BoundedHostSensorIngressRuntime",
+    "ContentAddressedSensorArtifactStore",
+    "HostSensorArtifactStoreAuditRecord",
+    "HostSensorCaptureRunResult",
+    "SensorCaptureConfig",
+    "SensorCaptureFailureRecord",
+    "SensorCaptureLifecycleEvent",
+    "SensorCaptureSessionRecord",
+    "SensorDeviceDescriptor",
+    "SensorRawArtifact",
+    "adapter_for_source",
+    "build_default_config_for_source",
+    "build_sensor_capture_config",
+    "capture_once",
+    "list_sensor_backends",
     "validate_trace_envelope",
     "validate_trace_envelope_store",
 ]
