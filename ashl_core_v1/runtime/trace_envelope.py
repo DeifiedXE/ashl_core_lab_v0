@@ -26,6 +26,7 @@ ALLOWED_SOURCE_LINES = (
     "host_body",
     "host_sensor_ingress",
     "hard_soft_perception",
+    "bounded_multimodal_perception_session",
 )
 
 ALLOWED_TRACE_LAYERS = (
@@ -38,6 +39,7 @@ ALLOWED_TRACE_LAYERS = (
     "audio_ingress_control_trace",
     "audio_retention_governance_trace",
     "perception_primitive_trace",
+    "multimodal_perception_session_trace",
 )
 
 RAW_TRACE_FORBIDDEN_KEYS = {

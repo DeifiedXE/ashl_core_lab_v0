@@ -28,6 +28,7 @@ from .host_state_primitive_schema import (
     HOST_STATE_PRIMITIVE_SCHEMA_VERSION,
     HostStatePrimitiveRecord,
 )
+from .hard_soft_perception_primitive_compiler import HardSoftPerceptionPrimitiveCompiler
 
 __all__ = [
     "AUDIO_CAPTURE_PRIVACY_POLICY_SCHEMA_VERSION",
@@ -39,6 +40,7 @@ __all__ = [
     "AudioCapturePrivacyPolicy",
     "AudioPrimitiveRecord",
     "HostStatePrimitiveRecord",
+    "HardSoftPerceptionPrimitiveCompiler",
     "PerceptionReadableData",
     "PerceptionSourceBuffer",
     "VisualChangePrimitiveRecord",

@@ -1293,6 +1293,29 @@ __all__ = [
     "request_manual_audio_excerpt",
     "start_ephemeral_audio_session",
     "validate_artifact_deletion",
+    "BoundedMultimodalPerceptionSessionRuntime",
+    "MultimodalPerceptionSessionStore",
+    "audit_bounded_multimodal_perception_session",
     "validate_trace_envelope",
     "validate_trace_envelope_store",
 ]
+
+
+def __getattr__(name: str):
+    if name in {
+        "BoundedMultimodalPerceptionSessionRuntime",
+        "MultimodalPerceptionSessionStore",
+        "audit_bounded_multimodal_perception_session",
+    }:
+        from .bounded_multimodal_perception_session_runtime import (
+            BoundedMultimodalPerceptionSessionRuntime,
+            MultimodalPerceptionSessionStore,
+            audit_bounded_multimodal_perception_session,
+        )
+
+        return {
+            "BoundedMultimodalPerceptionSessionRuntime": BoundedMultimodalPerceptionSessionRuntime,
+            "MultimodalPerceptionSessionStore": MultimodalPerceptionSessionStore,
+            "audit_bounded_multimodal_perception_session": audit_bounded_multimodal_perception_session,
+        }[name]
+    raise AttributeError(name)

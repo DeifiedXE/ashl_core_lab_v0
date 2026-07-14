@@ -3,7 +3,7 @@
 Status: Reference
 Runtime Impact: None
 Created For: Package 117 repair baseline
-Updated Through: Package 121 hard-soft perception primitive compiler
+Updated Through: Package 122 bounded multimodal perception session runtime
 
 ## Current Baseline
 
@@ -24,6 +24,8 @@ Package 120 added bounded foreground real host sensor ingress for camera, screen
 Package 120A added the audio-specific foundation: recognition-mode microphone PCM can remain in a bounded RAM-only ring buffer without intentional raw disk persistence, while explicit grounding/evidence excerpts can be materialized with consent and later deleted through hash-bound append-only deletion records.
 
 Package 121 added deterministic low-level perception primitive compilation for stored camera/screen/microphone/host-state artifacts and ephemeral microphone source buffers. It creates visual, audio, and host-state primitives plus `PerceptionReadableData`, but still creates no semantic vision, speech understanding, speaker identity, learning, memory write, or action influence.
+
+Package 122 added a bounded multimodal perception session runtime. It can replay real Package 120 artifacts on an explicit deterministic integration timeline, compile them through Package 121, assemble nonsemantic alignment windows, convert one low-level window into the existing Host Body event format, and run the actual Package 115 bounded embodied session path to `WAITING_TEACHER_REVIEW`. The required completion path is artifact-backed integration replay and does not claim simultaneous real-world experience.
 
 ## Current Safe Chain
 
@@ -46,8 +48,8 @@ Fixture Host Body event
 - Package 120 / Real Host Sensor Ingress And Raw Artifact Store - completed
 - Package 120A / Ephemeral Audio And Auditable Deletion Foundation - completed
 - Package 121 / Hard-Soft Perception Primitive Compiler - completed
-- Package 122 / Bounded Multimodal Perception Session Runtime - next
-- Package 123 / No-Codex Real Perception Two-Cycle Growth Run - later
+- Package 122 / Bounded Multimodal Perception Session Runtime - completed
+- Package 123 / No-Codex Real Perception Two-Cycle Growth Run - next
 - Package 124 / Real Host Perception Growth Loop Milestone - later
 
 ## Later Milestones
@@ -58,6 +60,7 @@ Fixture Host Body event
 - Manual audio evidence excerpts remain nonsemantic and deletable with append-only deletion provenance
 - Real sensor safety and noise audit before semantic perception work
 - Real sensor bytes are now readable only as low-level deterministic primitives, not semantic objects or speech content
+- Real low-level perception records can now enter a bounded Host Body session through a nonsemantic multimodal alignment window
 
 ## Boundaries
 
@@ -65,7 +68,8 @@ Still not created:
 
 - automatic teacher decisions
 - unrestricted memory promotion
-- sensor-driven HostBodyEvent creation
+- teacher-approved real perception commit
+- cross-session real perception readback
 - real sensor semantic perception
 - semantic vision
 - speech recognition

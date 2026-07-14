@@ -866,6 +866,34 @@ def build_parser() -> argparse.ArgumentParser:
     perception_replay = subparsers.add_parser("perception-replay-validate")
     perception_replay.add_argument("--compilation-record-id", required=True)
     subparsers.add_parser("perception-audit-store")
+    perception_session_manifest = subparsers.add_parser("perception-session-create-replay-manifest")
+    perception_session_manifest.add_argument("--camera-artifact", action="append", default=[])
+    perception_session_manifest.add_argument("--screen-artifact", action="append", default=[])
+    perception_session_manifest.add_argument("--microphone-artifact", action="append", default=[])
+    perception_session_manifest.add_argument("--host-state-artifact", action="append", default=[])
+    perception_session_manifest.add_argument("--output", required=True)
+    perception_session_replay = subparsers.add_parser("perception-session-run-replay")
+    perception_session_replay.add_argument("--manifest", required=True)
+    perception_session_replay.add_argument("--alignment-window-ms", type=int, default=250)
+    perception_session_live = subparsers.add_parser("perception-session-run-live-bounded")
+    perception_session_live.add_argument("--camera-device", type=int, required=True)
+    perception_session_live.add_argument("--screen-region", required=True)
+    perception_session_live.add_argument("--microphone-device", type=int, required=True)
+    perception_session_live.add_argument("--duration-ms", type=int, default=3000)
+    perception_session_live.add_argument("--confirm-local-capture", action="store_true")
+    for command_name in (
+        "perception-session-show",
+        "perception-session-show-timeline",
+        "perception-session-show-host-body-event",
+        "perception-session-show-learning-evidence",
+        "perception-session-show-pending-review",
+        "perception-session-show-lineage",
+        "perception-session-audit",
+    ):
+        session_command = subparsers.add_parser(command_name)
+        session_command.add_argument("--session-id", required=True)
+    perception_session_window = subparsers.add_parser("perception-session-show-window")
+    perception_session_window.add_argument("--window-id", required=True)
     subparsers.add_parser("task-apply-advisory-readback-ordering-demo")
     subparsers.add_parser("task-show-advisory-readback-ordering-teacher-gate")
     subparsers.add_parser("task-show-advisory-readback-ordering-application")
@@ -2767,6 +2795,107 @@ def main(argv: list[str] | None = None) -> int:
             )
 
             return _print_json(perception_audit_store_from_guided_cradle_growth_console(state_dir=args.state_dir))
+        if args.command == "perception-session-create-replay-manifest":
+            _require_state_dir(args.state_dir)
+            from ashl_core_v1.runtime.guided_cradle_growth_teacher_console import (
+                perception_session_create_replay_manifest_from_guided_cradle_growth_console,
+            )
+
+            return _print_json(
+                perception_session_create_replay_manifest_from_guided_cradle_growth_console(
+                    state_dir=args.state_dir,
+                    camera_artifacts=args.camera_artifact,
+                    screen_artifacts=args.screen_artifact,
+                    microphone_artifacts=args.microphone_artifact,
+                    host_state_artifacts=args.host_state_artifact,
+                    output=args.output,
+                )
+            )
+        if args.command == "perception-session-run-replay":
+            _require_state_dir(args.state_dir)
+            from ashl_core_v1.runtime.guided_cradle_growth_teacher_console import (
+                perception_session_run_replay_from_guided_cradle_growth_console,
+            )
+
+            return _print_json(
+                perception_session_run_replay_from_guided_cradle_growth_console(
+                    state_dir=args.state_dir,
+                    manifest=args.manifest,
+                    alignment_window_ms=args.alignment_window_ms,
+                )
+            )
+        if args.command == "perception-session-run-live-bounded":
+            _require_state_dir(args.state_dir)
+            from ashl_core_v1.runtime.guided_cradle_growth_teacher_console import (
+                perception_session_run_live_bounded_from_guided_cradle_growth_console,
+            )
+
+            return _print_json(
+                perception_session_run_live_bounded_from_guided_cradle_growth_console(
+                    state_dir=args.state_dir,
+                    camera_device=args.camera_device,
+                    screen_region=args.screen_region,
+                    microphone_device=args.microphone_device,
+                    duration_ms=args.duration_ms,
+                    confirm_local_capture=args.confirm_local_capture,
+                )
+            )
+        if args.command == "perception-session-show":
+            _require_state_dir(args.state_dir)
+            from ashl_core_v1.runtime.guided_cradle_growth_teacher_console import (
+                perception_session_show_from_guided_cradle_growth_console,
+            )
+
+            return _print_json(perception_session_show_from_guided_cradle_growth_console(state_dir=args.state_dir, session_id=args.session_id))
+        if args.command == "perception-session-show-timeline":
+            _require_state_dir(args.state_dir)
+            from ashl_core_v1.runtime.guided_cradle_growth_teacher_console import (
+                perception_session_show_timeline_from_guided_cradle_growth_console,
+            )
+
+            return _print_json(perception_session_show_timeline_from_guided_cradle_growth_console(state_dir=args.state_dir, session_id=args.session_id))
+        if args.command == "perception-session-show-window":
+            _require_state_dir(args.state_dir)
+            from ashl_core_v1.runtime.guided_cradle_growth_teacher_console import (
+                perception_session_show_window_from_guided_cradle_growth_console,
+            )
+
+            return _print_json(perception_session_show_window_from_guided_cradle_growth_console(state_dir=args.state_dir, window_id=args.window_id))
+        if args.command == "perception-session-show-host-body-event":
+            _require_state_dir(args.state_dir)
+            from ashl_core_v1.runtime.guided_cradle_growth_teacher_console import (
+                perception_session_show_host_body_event_from_guided_cradle_growth_console,
+            )
+
+            return _print_json(perception_session_show_host_body_event_from_guided_cradle_growth_console(state_dir=args.state_dir, session_id=args.session_id))
+        if args.command == "perception-session-show-learning-evidence":
+            _require_state_dir(args.state_dir)
+            from ashl_core_v1.runtime.guided_cradle_growth_teacher_console import (
+                perception_session_show_learning_evidence_from_guided_cradle_growth_console,
+            )
+
+            return _print_json(perception_session_show_learning_evidence_from_guided_cradle_growth_console(state_dir=args.state_dir, session_id=args.session_id))
+        if args.command == "perception-session-show-pending-review":
+            _require_state_dir(args.state_dir)
+            from ashl_core_v1.runtime.guided_cradle_growth_teacher_console import (
+                perception_session_show_pending_review_from_guided_cradle_growth_console,
+            )
+
+            return _print_json(perception_session_show_pending_review_from_guided_cradle_growth_console(state_dir=args.state_dir, session_id=args.session_id))
+        if args.command == "perception-session-show-lineage":
+            _require_state_dir(args.state_dir)
+            from ashl_core_v1.runtime.guided_cradle_growth_teacher_console import (
+                perception_session_show_lineage_from_guided_cradle_growth_console,
+            )
+
+            return _print_json(perception_session_show_lineage_from_guided_cradle_growth_console(state_dir=args.state_dir, session_id=args.session_id))
+        if args.command == "perception-session-audit":
+            _require_state_dir(args.state_dir)
+            from ashl_core_v1.runtime.guided_cradle_growth_teacher_console import (
+                perception_session_audit_from_guided_cradle_growth_console,
+            )
+
+            return _print_json(perception_session_audit_from_guided_cradle_growth_console(state_dir=args.state_dir, session_id=args.session_id))
         if args.command == "task-apply-advisory-readback-ordering-demo":
             return _print_json(
                 apply_advisory_readback_ordering_demo_from_guided_cradle_growth_console()

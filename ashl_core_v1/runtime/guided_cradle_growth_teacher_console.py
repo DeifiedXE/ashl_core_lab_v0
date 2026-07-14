@@ -7566,6 +7566,210 @@ def perception_audit_store_from_guided_cradle_growth_console(
     }
 
 
+def perception_session_create_replay_manifest_from_guided_cradle_growth_console(
+    *,
+    state_dir: str | Path,
+    camera_artifacts: list[str],
+    screen_artifacts: list[str],
+    microphone_artifacts: list[str],
+    host_state_artifacts: list[str],
+    output: str | Path,
+) -> dict[str, Any]:
+    import json
+
+    from ashl_core_v1.runtime.bounded_multimodal_perception_session_cli import create_replay_manifest
+
+    manifest = create_replay_manifest(
+        state_dir=Path(state_dir),
+        camera_artifacts=camera_artifacts,
+        screen_artifacts=screen_artifacts,
+        microphone_artifacts=microphone_artifacts,
+        host_state_artifacts=host_state_artifacts,
+    )
+    path = Path(output)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps(manifest.to_dict(), indent=2, sort_keys=True), encoding="utf-8")
+    return _perception_session_console_payload(
+        "perception_session_create_replay_manifest",
+        {
+            "manifest_id": manifest.manifest_id,
+            "output": str(path),
+            "artifact_backed_integration_replay": True,
+            "sources_captured_simultaneously": False,
+            "real_life_experience_claimed": False,
+        },
+    )
+
+
+def perception_session_run_replay_from_guided_cradle_growth_console(
+    *,
+    state_dir: str | Path,
+    manifest: str | Path,
+    alignment_window_ms: int = 250,
+) -> dict[str, Any]:
+    import json
+
+    from ashl_core_v1.runtime.bounded_multimodal_perception_session_runtime import (
+        BoundedMultimodalPerceptionSessionRuntime,
+    )
+    from ashl_core_v1.runtime.multimodal_perception_session_types import (
+        ArtifactBackedPerceptionTimelineManifest,
+        build_default_multimodal_session_config,
+    )
+
+    manifest_record = ArtifactBackedPerceptionTimelineManifest.from_dict(
+        json.loads(Path(manifest).read_text(encoding="utf-8"))
+    )
+    result = BoundedMultimodalPerceptionSessionRuntime(Path(state_dir)).run_artifact_backed_alignment_replay(
+        manifest_record,
+        config=build_default_multimodal_session_config(
+            state_dir=Path(state_dir),
+            alignment_window_ms=alignment_window_ms,
+        ),
+    )
+    return _perception_session_console_payload("perception_session_run_replay", result.to_dict())
+
+
+def perception_session_run_live_bounded_from_guided_cradle_growth_console(
+    *,
+    state_dir: str | Path,
+    camera_device: int,
+    screen_region: str,
+    microphone_device: int,
+    duration_ms: int = 3000,
+    confirm_local_capture: bool = False,
+) -> dict[str, Any]:
+    _require_sensor_capture_confirmation(confirm_local_capture)
+    return _perception_session_console_payload(
+        "perception_session_run_live_bounded",
+        {
+            "status": "blocked_live_verification_deferred_to_package_123",
+            "foreground_only": True,
+            "state_dir": str(Path(state_dir)),
+            "camera_device": camera_device,
+            "screen_region": screen_region,
+            "microphone_device": microphone_device,
+            "duration_ms": duration_ms,
+            "scheduler_created": False,
+        },
+    )
+
+
+def perception_session_show_from_guided_cradle_growth_console(
+    *,
+    state_dir: str | Path,
+    session_id: str,
+) -> dict[str, Any]:
+    from ashl_core_v1.runtime.bounded_multimodal_perception_session_runtime import MultimodalPerceptionSessionStore
+
+    store = MultimodalPerceptionSessionStore(Path(state_dir))
+    results = [item for item in store.list_payloads("multimodal_session_results") if item.get("session_id") == session_id]
+    return _perception_session_console_payload("perception_session_show", results[-1] if results else {"session_id": session_id, "found": False})
+
+
+def perception_session_show_timeline_from_guided_cradle_growth_console(
+    *,
+    state_dir: str | Path,
+    session_id: str,
+) -> dict[str, Any]:
+    from ashl_core_v1.runtime.bounded_multimodal_perception_session_runtime import MultimodalPerceptionSessionStore
+
+    store = MultimodalPerceptionSessionStore(Path(state_dir))
+    results = [item for item in store.list_payloads("multimodal_session_results") if item.get("session_id") == session_id]
+    if not results:
+        return _perception_session_console_payload("perception_session_show_timeline", {"session_id": session_id, "found": False})
+    timeline = store.get_payload("multimodal_timelines", "timeline_id", str(results[-1]["timeline_id"]))
+    return _perception_session_console_payload("perception_session_show_timeline", timeline)
+
+
+def perception_session_show_window_from_guided_cradle_growth_console(
+    *,
+    state_dir: str | Path,
+    window_id: str,
+) -> dict[str, Any]:
+    from ashl_core_v1.runtime.bounded_multimodal_perception_session_runtime import MultimodalPerceptionSessionStore
+
+    window = MultimodalPerceptionSessionStore(Path(state_dir)).get_payload(
+        "multimodal_alignment_windows",
+        "alignment_window_id",
+        window_id,
+    )
+    return _perception_session_console_payload("perception_session_show_window", window)
+
+
+def perception_session_show_host_body_event_from_guided_cradle_growth_console(
+    *,
+    state_dir: str | Path,
+    session_id: str,
+) -> dict[str, Any]:
+    from ashl_core_v1.runtime.bounded_multimodal_perception_session_runtime import MultimodalPerceptionSessionStore
+
+    store = MultimodalPerceptionSessionStore(Path(state_dir))
+    bridges = [item for item in store.list_payloads("perception_host_body_event_bridges") if item.get("session_id") == session_id]
+    return _perception_session_console_payload("perception_session_show_host_body_event", {"bridges": bridges})
+
+
+def perception_session_show_learning_evidence_from_guided_cradle_growth_console(
+    *,
+    state_dir: str | Path,
+    session_id: str,
+) -> dict[str, Any]:
+    payload = perception_session_show_from_guided_cradle_growth_console(state_dir=state_dir, session_id=session_id)
+    return _perception_session_console_payload(
+        "perception_session_show_learning_evidence",
+        {
+            "pending_teacher_review_ids": payload["perception_session_result"].get("pending_teacher_review_ids", ()),
+            "package_115_session_id": payload["perception_session_result"].get("package_115_session_id"),
+            "learning_evidence_created_by_package_115": bool(payload["perception_session_result"].get("pending_teacher_review_ids")),
+        },
+    )
+
+
+def perception_session_show_pending_review_from_guided_cradle_growth_console(
+    *,
+    state_dir: str | Path,
+    session_id: str,
+) -> dict[str, Any]:
+    return perception_session_show_learning_evidence_from_guided_cradle_growth_console(
+        state_dir=state_dir,
+        session_id=session_id,
+    )
+
+
+def perception_session_show_lineage_from_guided_cradle_growth_console(
+    *,
+    state_dir: str | Path,
+    session_id: str,
+) -> dict[str, Any]:
+    from ashl_core_v1.runtime.bounded_multimodal_perception_session_runtime import MultimodalPerceptionSessionStore
+
+    store = MultimodalPerceptionSessionStore(Path(state_dir))
+    results = [item for item in store.list_payloads("multimodal_session_results") if item.get("session_id") == session_id]
+    bridges = [item for item in store.list_payloads("perception_host_body_event_bridges") if item.get("session_id") == session_id]
+    return _perception_session_console_payload(
+        "perception_session_show_lineage",
+        {
+            "result": results[-1] if results else None,
+            "bridges": bridges,
+            "lineage": "SensorRawArtifact -> Package121 primitive -> PerceptionReadableData -> alignment window -> HostBodyEvent -> Package115 teacher gate",
+            "lineage_reconstructed_from_summary": False,
+        },
+    )
+
+
+def perception_session_audit_from_guided_cradle_growth_console(
+    *,
+    state_dir: str | Path,
+    session_id: str,
+) -> dict[str, Any]:
+    from ashl_core_v1.runtime.bounded_multimodal_perception_session_runtime import audit_bounded_multimodal_perception_session
+
+    return _perception_session_console_payload(
+        "perception_session_audit",
+        audit_bounded_multimodal_perception_session(Path(state_dir), session_id).to_dict(),
+    )
+
+
 def _require_sensor_capture_confirmation(confirm_local_capture: bool) -> None:
     if not confirm_local_capture:
         raise ValueError(
@@ -7607,4 +7811,20 @@ def _perception_console_payload(action: str, payload: dict[str, Any]) -> dict[st
         "action_influence_created": False,
         "external_control_created": False,
         "first_output_created": False,
+    }
+
+
+def _perception_session_console_payload(action: str, payload: dict[str, Any]) -> dict[str, Any]:
+    return {
+        "guided_console_action": action,
+        "perception_session_result": payload,
+        "artifact_backed_integration_replay": True,
+        "simultaneous_real_world_experience_claimed": False,
+        "raw_media_displayed": False,
+        "semantic_binding_created": False,
+        "automatic_teacher_decision_created": False,
+        "memory_commit_created": False,
+        "external_control_created": False,
+        "first_output_created": False,
+        "this_audit_adds_runtime_capability": False,
     }

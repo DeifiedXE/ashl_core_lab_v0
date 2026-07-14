@@ -348,10 +348,10 @@ class ContentAddressedSensorArtifactStore:
             return 0
         with self.connection() as connection:
             row = connection.execute(
-                "SELECT COUNT(*) AS count FROM sensor_trace_envelopes WHERE session_id = ?",
+                "SELECT COALESCE(MAX(sequence_index), -1) + 1 AS next_sequence FROM sensor_trace_envelopes WHERE session_id = ?",
                 (session_id,),
             ).fetchone()
-        return int(row["count"])
+        return int(row["next_sequence"])
 
     def list_capture_sessions(self) -> tuple[dict[str, Any], ...]:
         return self._payloads("sensor_capture_sessions", "created_at")

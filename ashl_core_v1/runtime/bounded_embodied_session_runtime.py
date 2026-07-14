@@ -14,6 +14,7 @@ from ashl_core_v1.host_body.host_body_port_map import (
     build_demo_qingyin_host_body_port_map,
 )
 from ashl_core_v1.host_body.host_body_sensor_events import (
+    HostBodyEventRecord,
     build_host_body_camera_event_record,
     build_host_body_event_record,
     build_host_body_sensor_event_audit,
@@ -610,6 +611,9 @@ class BoundedEmbodiedSessionRuntime:
                 "port_map": port_map,
                 "host_body_event": event,
                 "camera_event": camera_event,
+                "camera_events": (camera_event,),
+                "mic_events": tuple(),
+                "idle_events": tuple(),
             }
         )
         envelope = self._append_trace(
@@ -641,6 +645,86 @@ class BoundedEmbodiedSessionRuntime:
             raw_trace_cursor=envelope.sequence_index,
             trace_envelope_count=len(self.trace_store.list_by_session(session_id)),
             session_summary=f"Fixture HostBodyEvent accepted: {fixture_kind}.",
+        )
+        return envelope
+
+    def inject_host_body_event_record(
+        self,
+        session_id: str,
+        host_body_event: HostBodyEventRecord | dict[str, Any],
+        *,
+        fixture_kind: str = "multimodal_perception_low_level_event",
+        source_record_refs: tuple[str, ...] = tuple(),
+    ) -> TraceEnvelope:
+        state = self._state(session_id)
+        if state.current_stage != BoundedEmbodiedSessionStage.SESSION_CREATED:
+            raise ValueError("HostBodyEvent must be injected before event handling")
+        event = host_body_event if isinstance(host_body_event, HostBodyEventRecord) else HostBodyEventRecord.from_dict(dict(host_body_event))
+        event_validation = validate_host_body_event_record(event)
+        if not event_validation["valid"]:
+            raise ValueError(f"invalid HostBodyEvent: {event_validation}")
+        port_payload = build_demo_qingyin_host_body_port_map()
+        port_map = HostBodyPortMapRecord.from_dict(port_payload["host_body_port_map"])
+        camera_port_id = str(port_payload["host_camera_port"]["host_camera_port_id"])
+        camera_event = self._call(
+            session_id,
+            "build_host_body_camera_event_record",
+            build_host_body_camera_event_record,
+            host_body_event=event,
+            source_camera_port_id=camera_port_id,
+            camera_event_type="camera_unknown_low_level_event",
+            fixture_frame_id=f"perception_window:{event.host_body_event_id}",
+            brightness_bucket="unknown",
+            motion_proxy_bucket="unknown",
+            change_bucket="unknown",
+            source_trace_refs=event.source_trace_refs,
+        )
+        camera_validation = validate_host_body_camera_event_record(camera_event)
+        if not camera_validation["valid"]:
+            raise ValueError(f"invalid HostBodyCameraEvent compatibility shell: {camera_validation}")
+        self._records[session_id].update(
+            {
+                "fixture_kind": fixture_kind,
+                "port_payload": port_payload,
+                "port_map": port_map,
+                "host_body_event": event,
+                "camera_event": camera_event,
+                "camera_events": (camera_event,),
+                "mic_events": tuple(),
+                "idle_events": tuple(),
+            }
+        )
+        envelope = self._append_trace(
+            session_id=session_id,
+            event_id=event.host_body_event_id,
+            root_event_id=event.host_body_event_id,
+            source_line="host_body",
+            source_module="host_body_sensor_events",
+            record_kind="HostBodyEventRecord",
+            record_id=event.host_body_event_id,
+            trace_layer="raw",
+            payload_schema=event.schema_version,
+            payload_snapshot={
+                "event_type": event.event_type,
+                "event_family": event.event_family,
+                "source_port_kind": event.source_port_kind,
+                "event_payload": dict(event.event_payload),
+                "fixture_only": event.fixture_only,
+                "read_only_event": event.read_only_event,
+                "real_hardware_event": event.real_hardware_event,
+            },
+            source_trace_refs=(self._latest_trace_id(session_id),),
+            source_record_refs=tuple(dict.fromkeys((event.host_body_event_id, camera_event.host_camera_event_id) + tuple(source_record_refs))),
+        )
+        self._records[session_id]["host_event_trace_id"] = envelope.trace_id
+        self._update_state(
+            session_id,
+            current_stage=BoundedEmbodiedSessionStage.HOST_EVENT_ACCEPTED,
+            root_event_id=event.host_body_event_id,
+            current_event_id=event.host_body_event_id,
+            raw_trace_cursor=envelope.sequence_index,
+            trace_envelope_count=len(self.trace_store.list_by_session(session_id)),
+            session_summary=f"HostBodyEvent accepted: {fixture_kind}.",
         )
         return envelope
 
@@ -861,15 +945,19 @@ class BoundedEmbodiedSessionRuntime:
         before = self._state(session_id)
         records = self._records[session_id]
         event = records["host_body_event"]
-        camera_event = records["camera_event"]
         port_map = records["port_map"]
+        camera_events = tuple(records.get("camera_events", tuple()))
+        mic_events = tuple(records.get("mic_events", tuple()))
+        idle_events = tuple(records.get("idle_events", tuple()))
         event_set = self._call(
             session_id,
             "build_host_body_sensor_event_set_record",
             build_host_body_sensor_event_set_record,
             source_host_body_port_map_id=port_map.host_body_port_map_id,
             host_body_events=(event,),
-            camera_events=(camera_event,),
+            camera_events=camera_events,
+            mic_events=mic_events,
+            idle_events=idle_events,
             source_trace_refs=(records["host_event_trace_id"],),
         )
         summary = self._call(
@@ -886,7 +974,9 @@ class BoundedEmbodiedSessionRuntime:
             host_sensor_event_summary=summary,
             host_body_port_map=port_map,
             host_body_events=(event,),
-            camera_events=(camera_event,),
+            camera_events=camera_events,
+            mic_events=mic_events,
+            idle_events=idle_events,
         )
         _ensure_valid(validate_host_body_sensor_event_set_record(event_set))
         _ensure_valid(validate_host_body_sensor_event_summary_record(summary))
@@ -1317,7 +1407,10 @@ class BoundedEmbodiedSessionRuntime:
             trace_history_audit=records["trace_history_audit"].to_dict(),
             internal_action_choice_audit=records["internal_action_choice_audit"].to_dict(),
         )
-        packet = self._call(session_id, "build_host_body_learning_evidence_packet", build_host_body_learning_evidence_packet, bridge_plan=plan, trace_history_readback=records["trace_history_readback"].to_dict(), internal_action_choice=records["internal_action_choice"].to_dict(), internal_action_result=records["internal_action_result"].to_dict(), runtime_bridge_trace=records["runtime_bridge_trace"].to_dict())
+        evidence_kwargs: dict[str, object] = {}
+        if records.get("fixture_kind") == "artifact_backed_multimodal_perception_replay":
+            evidence_kwargs["evidence_theme"] = "teacher_review_requested"
+        packet = self._call(session_id, "build_host_body_learning_evidence_packet", build_host_body_learning_evidence_packet, bridge_plan=plan, trace_history_readback=records["trace_history_readback"].to_dict(), internal_action_choice=records["internal_action_choice"].to_dict(), internal_action_result=records["internal_action_result"].to_dict(), runtime_bridge_trace=records["runtime_bridge_trace"].to_dict(), **evidence_kwargs)
         mapping = self._call(session_id, "map_host_body_evidence_to_learning_feedback_candidate", map_host_body_evidence_to_learning_feedback_candidate, evidence_packet=packet)
         bridge = self._call(session_id, "build_host_body_learning_feedback_candidate_bridge", build_host_body_learning_feedback_candidate_bridge, bridge_plan=plan, evidence_packet=packet, mapping=mapping)
         candidate_set = self._call(session_id, "build_host_body_learning_feedback_candidate_set", build_host_body_learning_feedback_candidate_set, bridge_plan=plan, evidence_packets=(packet,), mappings=(mapping,), bridges=(bridge,))
