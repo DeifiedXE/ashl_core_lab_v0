@@ -3,7 +3,7 @@
 Status: Reference
 Runtime Impact: None
 Created For: Package 117 repair baseline
-Updated Through: Package 120 real host sensor ingress implementation
+Updated Through: Package 120A ephemeral audio and auditable deletion foundation
 
 ## Current Baseline
 
@@ -20,6 +20,8 @@ Package 118 completed the first no-Codex, fixture-only, teacher-gated, cross-pro
 Package 119 sealed the stored Package 118 run as the no-Codex fixture embodied growth-loop milestone.
 
 Package 120 added bounded foreground real host sensor ingress for camera, screen, microphone, and restricted host-state adapter-output samples, with immutable content-addressed raw artifact storage and `raw_sensor_trace` TraceEnvelope metadata.
+
+Package 120A added the audio-specific foundation: recognition-mode microphone PCM can remain in a bounded RAM-only ring buffer without intentional raw disk persistence, while explicit grounding/evidence excerpts can be materialized with consent and later deleted through hash-bound append-only deletion records.
 
 ## Current Safe Chain
 
@@ -40,12 +42,18 @@ Fixture Host Body event
 - Package 118 / No-Codex Two-Cycle Fixture Growth Run - completed
 - Package 119 / No-Codex Fixture Growth Loop Milestone Audit - completed
 - Package 120 / Real Host Sensor Ingress And Raw Artifact Store - completed
+- Package 120A / Ephemeral Audio And Auditable Deletion Foundation - completed
 - Package 121 / Hard-Soft Perception Primitive Compiler - next
+- Package 122 / Bounded Multimodal Perception Session Runtime - later
+- Package 123 / No-Codex Real Perception Two-Cycle Growth Run - later
+- Package 124 / Real Host Perception Growth Loop Milestone - later
 
 ## Later Milestones
 
 - Real low-level sensor ingress is now bounded, foreground-only, read-only raw adapter-output capture
 - Real camera and microphone adapters remain raw-capture only and do not create semantic perception
+- Daily recognition audio no longer needs to become a stored waveform artifact
+- Manual audio evidence excerpts remain nonsemantic and deletable with append-only deletion provenance
 - Real sensor safety and noise audit before semantic perception work
 
 ## Boundaries
@@ -58,6 +66,9 @@ Still not created:
 - real sensor semantic perception
 - semantic vision
 - speech recognition
+- speaker identification
+- speech understanding
+- automatic audio retention
 - Task Engine external action influence
 - external control
 - OS, mouse, keyboard, browser, file, network, shell, or API operation

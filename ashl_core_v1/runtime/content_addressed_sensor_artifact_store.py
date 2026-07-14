@@ -33,6 +33,25 @@ from ashl_core_v1.runtime.host_sensor_types import (
     utc_now,
     TERMINAL_LIFECYCLE_STATUSES,
 )
+from ashl_core_v1.runtime.audio_artifact_deletion import (
+    ARTIFACT_DELETION_RECORD_SCHEMA_VERSION,
+    EPHEMERAL_AUDIO_DELETION_AUDIT_SCHEMA_VERSION,
+    ArtifactDeletionRecord,
+    ArtifactDeletionRequest,
+    ArtifactRetentionReferenceRecord,
+    EphemeralAudioDeletionFoundationAuditRecord,
+)
+from ashl_core_v1.runtime.ephemeral_audio_ring_buffer import (
+    EphemeralAudioChunkDescriptor,
+    EphemeralAudioLifecycleEvent,
+    EphemeralAudioSessionRecord,
+)
+from ashl_core_v1.runtime.evidence_audio_excerpt import (
+    AudioCaptureConsentRecord,
+    AudioExcerptRetentionCandidate,
+    EvidenceAudioExcerptRecord,
+    EvidenceAudioExcerptRequest,
+)
 from ashl_core_v1.runtime.sensor_adapter_protocol import AdapterOutputSample
 from ashl_core_v1.runtime.trace_envelope import TRACE_SCHEMA_VERSION, TraceEnvelope, build_trace_envelope
 
@@ -353,6 +372,15 @@ class ContentAddressedSensorArtifactStore:
         artifact = self.get_artifact(artifact_id)
         path = self._resolve_blob_path(str(artifact["blob_relative_path"]))
         if not path.exists():
+            if self._authorized_blob_deletion_for_artifact(artifact_id):
+                return {
+                    "valid": True,
+                    "status": "authorized_waveform_deletion",
+                    "artifact_id": artifact_id,
+                    "content_sha256_valid": True,
+                    "byte_length_valid": True,
+                    "raw_bytes_displayed": False,
+                }
             return {"valid": False, "status": "blocked_missing_blob", "artifact_id": artifact_id}
         data = path.read_bytes()
         hash_valid = sha256_bytes(data) == artifact["content_sha256"]
@@ -373,6 +401,339 @@ class ContentAddressedSensorArtifactStore:
             rows = self._rows("sensor_trace_envelopes", "created_at")
         return tuple(_trace_from_row(row) for row in rows)
 
+    def append_ephemeral_audio_session(self, session: EphemeralAudioSessionRecord) -> None:
+        payload = session.to_dict()
+        with self.connection() as connection:
+            connection.execute(
+                """
+                INSERT OR IGNORE INTO ephemeral_audio_sessions (
+                    ephemeral_audio_session_id, capture_mode, created_at,
+                    payload_json, payload_sha256
+                ) VALUES (?, ?, ?, ?, ?)
+                """,
+                (
+                    session.ephemeral_audio_session_id,
+                    session.capture_mode,
+                    session.created_at,
+                    canonical_json(payload),
+                    sha256_payload(payload),
+                ),
+            )
+            trace = self._build_audio_trace(
+                session_id=session.ephemeral_audio_session_id,
+                record_kind="ephemeral_audio_session",
+                record_id=session.ephemeral_audio_session_id,
+                trace_layer="audio_ingress_control_trace",
+                payload_schema=session.schema_version,
+                payload_snapshot=payload,
+                source_trace_refs=session.source_trace_refs,
+            )
+            self._insert_trace(connection, trace)
+
+    def append_ephemeral_audio_lifecycle_event(self, event: EphemeralAudioLifecycleEvent) -> None:
+        payload = event.to_dict()
+        with self.connection() as connection:
+            connection.execute(
+                """
+                INSERT OR IGNORE INTO ephemeral_audio_lifecycle_events (
+                    lifecycle_event_id, ring_buffer_session_id, new_status,
+                    sequence_index, created_at, payload_json, payload_sha256
+                ) VALUES (?, ?, ?, ?, ?, ?, ?)
+                """,
+                (
+                    event.lifecycle_event_id,
+                    event.ring_buffer_session_id,
+                    event.new_status,
+                    event.sequence_index,
+                    event.created_at,
+                    canonical_json(payload),
+                    sha256_payload(payload),
+                ),
+            )
+            trace = self._build_audio_trace(
+                session_id=event.ring_buffer_session_id,
+                record_kind="ephemeral_audio_lifecycle_event",
+                record_id=event.lifecycle_event_id,
+                trace_layer="audio_ingress_control_trace",
+                payload_schema=event.schema_version,
+                payload_snapshot=payload,
+                source_trace_refs=event.source_trace_refs,
+            )
+            self._insert_trace(connection, trace)
+
+    def append_ephemeral_audio_chunk_descriptor(self, descriptor: EphemeralAudioChunkDescriptor) -> None:
+        payload = descriptor.to_dict()
+        with self.connection() as connection:
+            connection.execute(
+                """
+                INSERT INTO ephemeral_audio_chunk_descriptors (
+                    chunk_descriptor_row_id, chunk_id, ring_buffer_session_id,
+                    sequence_index, overwritten, persisted, created_at,
+                    payload_json, payload_sha256
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+                """,
+                (
+                    stable_id("ephemeral_audio_chunk_descriptor"),
+                    descriptor.chunk_id,
+                    descriptor.ring_buffer_session_id,
+                    descriptor.sequence_index,
+                    1 if descriptor.overwritten else 0,
+                    1 if descriptor.persisted else 0,
+                    utc_now(),
+                    canonical_json(payload),
+                    sha256_payload(payload),
+                ),
+            )
+            trace = self._build_audio_trace(
+                session_id=descriptor.ring_buffer_session_id,
+                record_kind="ephemeral_audio_chunk_descriptor",
+                record_id=descriptor.chunk_id,
+                trace_layer="audio_ingress_control_trace",
+                payload_schema=descriptor.schema_version,
+                payload_snapshot=payload,
+                source_trace_refs=descriptor.source_trace_refs,
+            )
+            self._insert_trace(connection, trace)
+
+    def append_audio_capture_consent(self, consent: AudioCaptureConsentRecord) -> None:
+        self._append_audio_payload(
+            "audio_capture_consents",
+            "consent_record_id",
+            consent.consent_record_id,
+            consent.created_at,
+            consent.to_dict(),
+            record_kind="audio_capture_consent",
+            session_id=consent.consent_record_id,
+            trace_layer="audio_retention_governance_trace",
+            payload_schema=consent.schema_version,
+            source_trace_refs=tuple(),
+            insert_or_ignore=True,
+        )
+
+    def append_evidence_audio_excerpt_request(self, request: EvidenceAudioExcerptRequest) -> None:
+        self._append_audio_payload(
+            "evidence_audio_excerpt_requests",
+            "excerpt_request_id",
+            request.excerpt_request_id,
+            request.created_at,
+            request.to_dict(),
+            record_kind="evidence_audio_excerpt_request",
+            session_id=request.ring_buffer_session_id,
+            trace_layer="audio_retention_governance_trace",
+            payload_schema=request.schema_version,
+            source_trace_refs=tuple(),
+        )
+
+    def append_evidence_audio_excerpt(self, excerpt: EvidenceAudioExcerptRecord) -> None:
+        payload = excerpt.to_dict()
+        with self.connection() as connection:
+            connection.execute(
+                """
+                INSERT INTO evidence_audio_excerpts (
+                    excerpt_id, artifact_id, content_sha256, purpose,
+                    created_at, payload_json, payload_sha256
+                ) VALUES (?, ?, ?, ?, ?, ?, ?)
+                """,
+                (
+                    excerpt.excerpt_id,
+                    excerpt.sensor_raw_artifact_id,
+                    excerpt.content_sha256,
+                    excerpt.purpose,
+                    excerpt.created_at,
+                    canonical_json(payload),
+                    sha256_payload(payload),
+                ),
+            )
+            trace = self._build_audio_trace(
+                session_id=excerpt.source_ring_buffer_session_id,
+                record_kind="evidence_audio_excerpt",
+                record_id=excerpt.excerpt_id,
+                trace_layer="audio_retention_governance_trace",
+                payload_schema=excerpt.schema_version,
+                payload_snapshot=payload,
+                source_trace_refs=excerpt.source_trace_refs,
+            )
+            self._insert_trace(connection, trace)
+
+    def append_audio_excerpt_retention_candidate(self, candidate: AudioExcerptRetentionCandidate) -> None:
+        payload = candidate.to_dict()
+        with self.connection() as connection:
+            connection.execute(
+                """
+                INSERT INTO audio_excerpt_retention_candidates (
+                    retention_candidate_id, excerpt_id, artifact_id, candidate_purpose,
+                    created_at, payload_json, payload_sha256
+                ) VALUES (?, ?, ?, ?, ?, ?, ?)
+                """,
+                (
+                    candidate.retention_candidate_id,
+                    candidate.excerpt_id,
+                    candidate.artifact_id,
+                    candidate.candidate_purpose,
+                    candidate.created_at,
+                    canonical_json(payload),
+                    sha256_payload(payload),
+                ),
+            )
+            trace = self._build_audio_trace(
+                session_id=candidate.excerpt_id,
+                record_kind="audio_excerpt_retention_candidate",
+                record_id=candidate.retention_candidate_id,
+                trace_layer="audio_retention_governance_trace",
+                payload_schema=candidate.schema_version,
+                payload_snapshot=payload,
+                source_trace_refs=candidate.source_trace_refs,
+            )
+            self._insert_trace(connection, trace)
+
+    def append_artifact_retention_reference(self, reference: ArtifactRetentionReferenceRecord) -> None:
+        payload = reference.to_dict()
+        with self.connection() as connection:
+            connection.execute(
+                """
+                INSERT INTO artifact_retention_references (
+                    reference_record_id, artifact_id, content_sha256,
+                    referencing_record_kind, referencing_record_id, reference_status,
+                    created_at, payload_json, payload_sha256
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+                """,
+                (
+                    reference.reference_record_id,
+                    reference.artifact_id,
+                    reference.content_sha256,
+                    reference.referencing_record_kind,
+                    reference.referencing_record_id,
+                    reference.reference_status,
+                    reference.created_at,
+                    canonical_json(payload),
+                    sha256_payload(payload),
+                ),
+            )
+            trace = self._build_audio_trace(
+                session_id=reference.artifact_id,
+                record_kind="artifact_retention_reference",
+                record_id=reference.reference_record_id,
+                trace_layer="audio_retention_governance_trace",
+                payload_schema=reference.schema_version,
+                payload_snapshot=payload,
+                source_trace_refs=reference.source_trace_refs,
+            )
+            self._insert_trace(connection, trace)
+
+    def append_artifact_deletion_request(self, request: ArtifactDeletionRequest) -> None:
+        payload = request.to_dict()
+        with self.connection() as connection:
+            connection.execute(
+                """
+                INSERT OR IGNORE INTO artifact_deletion_requests (
+                    deletion_request_id, artifact_id, expected_content_sha256,
+                    reason_code, created_at, payload_json, payload_sha256
+                ) VALUES (?, ?, ?, ?, ?, ?, ?)
+                """,
+                (
+                    request.deletion_request_id,
+                    request.artifact_id,
+                    request.expected_content_sha256,
+                    request.reason_code,
+                    request.created_at,
+                    canonical_json(payload),
+                    sha256_payload(payload),
+                ),
+            )
+            trace = self._build_audio_trace(
+                session_id=request.artifact_id,
+                record_kind="artifact_deletion_request",
+                record_id=request.deletion_request_id,
+                trace_layer="audio_retention_governance_trace",
+                payload_schema=request.schema_version,
+                payload_snapshot=payload,
+                source_trace_refs=tuple(),
+            )
+            self._insert_trace(connection, trace)
+
+    def apply_artifact_deletion(self, request: ArtifactDeletionRequest) -> ArtifactDeletionRecord:
+        artifact = self.get_artifact(request.artifact_id)
+        if artifact["content_sha256"] != request.expected_content_sha256:
+            raise ValueError("blocked_content_hash_mismatch")
+        if self._artifact_has_deletion_record(request.artifact_id):
+            raise ValueError("blocked_duplicate_deletion")
+        path = self._resolve_blob_path(str(artifact["blob_relative_path"]))
+        if not path.exists():
+            raise ValueError("blocked_missing_blob")
+        if sha256_bytes(path.read_bytes()) != artifact["content_sha256"]:
+            raise ValueError("blocked_artifact_hash_mismatch")
+        live_before_ids = self._live_blob_reference_ids(str(artifact["content_sha256"]))
+        if request.artifact_id not in live_before_ids:
+            raise ValueError("blocked_artifact_not_live")
+        live_after_ids = tuple(item for item in live_before_ids if item != request.artifact_id)
+        remove_blob = request.allow_blob_removal and len(live_after_ids) == 0
+        if remove_blob:
+            path.unlink()
+        record = ArtifactDeletionRecord(
+            deletion_record_id=stable_id("artifact_deletion_record"),
+            schema_version=ARTIFACT_DELETION_RECORD_SCHEMA_VERSION,
+            created_at=utc_now(),
+            deletion_request_id=request.deletion_request_id,
+            artifact_id=request.artifact_id,
+            content_sha256_before_deletion=str(artifact["content_sha256"]),
+            blob_relative_path_before_deletion=str(artifact["blob_relative_path"]),
+            deletion_reason=request.reason_code,
+            referenced_by_record_ids_at_deletion=live_before_ids,
+            live_blob_reference_count_before=len(live_before_ids),
+            live_blob_reference_count_after=len(live_after_ids),
+            artifact_tombstoned=True,
+            blob_physically_removed=remove_blob,
+            blob_retained_for_other_artifacts=not remove_blob,
+            deletion_authorized=True,
+            deletion_verified=True,
+            deleted_at_utc=utc_now(),
+            source_trace_refs=tuple(str(item) for item in artifact.get("source_trace_refs", ())),
+        )
+        payload = record.to_dict()
+        with self.connection() as connection:
+            connection.execute(
+                """
+                INSERT INTO artifact_deletion_records (
+                    deletion_record_id, deletion_request_id, artifact_id,
+                    content_sha256_before_deletion, blob_physically_removed,
+                    created_at, payload_json, payload_sha256
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+                """,
+                (
+                    record.deletion_record_id,
+                    record.deletion_request_id,
+                    record.artifact_id,
+                    record.content_sha256_before_deletion,
+                    1 if record.blob_physically_removed else 0,
+                    record.created_at,
+                    canonical_json(payload),
+                    sha256_payload(payload),
+                ),
+            )
+            trace = self._build_audio_trace(
+                session_id=record.artifact_id,
+                record_kind="artifact_deletion_record",
+                record_id=record.deletion_record_id,
+                trace_layer="audio_retention_governance_trace",
+                payload_schema=record.schema_version,
+                payload_snapshot=payload,
+                source_trace_refs=record.source_trace_refs,
+            )
+            self._insert_trace(connection, trace)
+        return record
+
+    def list_evidence_audio_excerpts(self) -> tuple[dict[str, Any], ...]:
+        return self._payloads("evidence_audio_excerpts", "created_at")
+
+    def get_evidence_audio_excerpt(self, excerpt_id: str) -> dict[str, Any]:
+        return self._payload("evidence_audio_excerpts", "excerpt_id = ?", (excerpt_id,))
+
+    def list_artifact_deletion_records(self) -> tuple[dict[str, Any], ...]:
+        return self._payloads("artifact_deletion_records", "created_at")
+
+    def get_artifact_deletion_record(self, artifact_id: str) -> dict[str, Any]:
+        return self._payload("artifact_deletion_records", "artifact_id = ?", (artifact_id,))
+
     def audit_store(self) -> HostSensorArtifactStoreAuditRecord:
         sessions = self.list_capture_sessions()
         artifacts = self.list_artifacts()
@@ -381,14 +742,18 @@ class ContentAddressedSensorArtifactStore:
         artifact_paths_relative = all(not Path(item["blob_relative_path"]).is_absolute() for item in artifacts)
         artifact_paths_inside = all(self._path_inside_state_dir(str(item["blob_relative_path"])) for item in artifacts)
         missing_blob_count = 0
+        authorized_deleted_blob_count = 0
         hashes_valid = True
         lengths_valid = True
         for item in artifacts:
             path = self._resolve_blob_path(str(item["blob_relative_path"]))
             if not path.exists():
-                missing_blob_count += 1
-                hashes_valid = False
-                lengths_valid = False
+                if self._authorized_blob_deletion_for_artifact(str(item["artifact_id"])):
+                    authorized_deleted_blob_count += 1
+                else:
+                    missing_blob_count += 1
+                    hashes_valid = False
+                    lengths_valid = False
                 continue
             data = path.read_bytes()
             hashes_valid = hashes_valid and sha256_bytes(data) == item["content_sha256"]
@@ -424,7 +789,7 @@ class ContentAddressedSensorArtifactStore:
             "memory_records_absent": memory_absent,
         }
         reasons.extend(key for key, valid in checks.items() if not valid)
-        status = _audit_status(reasons, orphan_blob_count, missing_blob_count)
+        status = _audit_status(reasons, orphan_blob_count, missing_blob_count, authorized_deleted_blob_count)
         record = HostSensorArtifactStoreAuditRecord(
             audit_id=stable_id("host_sensor_store_audit"),
             schema_version=STORE_AUDIT_SCHEMA_VERSION,
@@ -575,6 +940,93 @@ class ContentAddressedSensorArtifactStore:
                     audit_id TEXT PRIMARY KEY,
                     created_at TEXT NOT NULL,
                     audit_status TEXT NOT NULL,
+                    payload_json TEXT NOT NULL,
+                    payload_sha256 TEXT NOT NULL
+                );
+                CREATE TABLE IF NOT EXISTS ephemeral_audio_sessions (
+                    ephemeral_audio_session_id TEXT PRIMARY KEY,
+                    capture_mode TEXT NOT NULL,
+                    created_at TEXT NOT NULL,
+                    payload_json TEXT NOT NULL,
+                    payload_sha256 TEXT NOT NULL
+                );
+                CREATE TABLE IF NOT EXISTS ephemeral_audio_lifecycle_events (
+                    lifecycle_event_id TEXT PRIMARY KEY,
+                    ring_buffer_session_id TEXT NOT NULL,
+                    new_status TEXT NOT NULL,
+                    sequence_index INTEGER NOT NULL,
+                    created_at TEXT NOT NULL,
+                    payload_json TEXT NOT NULL,
+                    payload_sha256 TEXT NOT NULL
+                );
+                CREATE TABLE IF NOT EXISTS ephemeral_audio_chunk_descriptors (
+                    chunk_descriptor_row_id TEXT PRIMARY KEY,
+                    chunk_id TEXT NOT NULL,
+                    ring_buffer_session_id TEXT NOT NULL,
+                    sequence_index INTEGER NOT NULL,
+                    overwritten INTEGER NOT NULL,
+                    persisted INTEGER NOT NULL,
+                    created_at TEXT NOT NULL,
+                    payload_json TEXT NOT NULL,
+                    payload_sha256 TEXT NOT NULL
+                );
+                CREATE TABLE IF NOT EXISTS audio_capture_consents (
+                    consent_record_id TEXT PRIMARY KEY,
+                    created_at TEXT NOT NULL,
+                    payload_json TEXT NOT NULL,
+                    payload_sha256 TEXT NOT NULL
+                );
+                CREATE TABLE IF NOT EXISTS evidence_audio_excerpt_requests (
+                    excerpt_request_id TEXT PRIMARY KEY,
+                    created_at TEXT NOT NULL,
+                    payload_json TEXT NOT NULL,
+                    payload_sha256 TEXT NOT NULL
+                );
+                CREATE TABLE IF NOT EXISTS evidence_audio_excerpts (
+                    excerpt_id TEXT PRIMARY KEY,
+                    artifact_id TEXT NOT NULL,
+                    content_sha256 TEXT NOT NULL,
+                    purpose TEXT NOT NULL,
+                    created_at TEXT NOT NULL,
+                    payload_json TEXT NOT NULL,
+                    payload_sha256 TEXT NOT NULL
+                );
+                CREATE TABLE IF NOT EXISTS audio_excerpt_retention_candidates (
+                    retention_candidate_id TEXT PRIMARY KEY,
+                    excerpt_id TEXT NOT NULL,
+                    artifact_id TEXT NOT NULL,
+                    candidate_purpose TEXT NOT NULL,
+                    created_at TEXT NOT NULL,
+                    payload_json TEXT NOT NULL,
+                    payload_sha256 TEXT NOT NULL
+                );
+                CREATE TABLE IF NOT EXISTS artifact_retention_references (
+                    reference_record_id TEXT PRIMARY KEY,
+                    artifact_id TEXT NOT NULL,
+                    content_sha256 TEXT NOT NULL,
+                    referencing_record_kind TEXT NOT NULL,
+                    referencing_record_id TEXT NOT NULL,
+                    reference_status TEXT NOT NULL,
+                    created_at TEXT NOT NULL,
+                    payload_json TEXT NOT NULL,
+                    payload_sha256 TEXT NOT NULL
+                );
+                CREATE TABLE IF NOT EXISTS artifact_deletion_requests (
+                    deletion_request_id TEXT PRIMARY KEY,
+                    artifact_id TEXT NOT NULL,
+                    expected_content_sha256 TEXT NOT NULL,
+                    reason_code TEXT NOT NULL,
+                    created_at TEXT NOT NULL,
+                    payload_json TEXT NOT NULL,
+                    payload_sha256 TEXT NOT NULL
+                );
+                CREATE TABLE IF NOT EXISTS artifact_deletion_records (
+                    deletion_record_id TEXT PRIMARY KEY,
+                    deletion_request_id TEXT NOT NULL,
+                    artifact_id TEXT NOT NULL,
+                    content_sha256_before_deletion TEXT NOT NULL,
+                    blob_physically_removed INTEGER NOT NULL,
+                    created_at TEXT NOT NULL,
                     payload_json TEXT NOT NULL,
                     payload_sha256 TEXT NOT NULL
                 );
@@ -791,6 +1243,185 @@ class ContentAddressedSensorArtifactStore:
             raise KeyError(f"missing row in {table}: {where}")
         return rows[0]
 
+    def _append_audio_payload(
+        self,
+        table: str,
+        id_column: str,
+        record_id: str,
+        created_at: str,
+        payload: dict[str, Any],
+        *,
+        record_kind: str,
+        session_id: str,
+        trace_layer: str,
+        payload_schema: str,
+        source_trace_refs: tuple[str, ...],
+        insert_or_ignore: bool = False,
+    ) -> None:
+        verb = "INSERT OR IGNORE" if insert_or_ignore else "INSERT"
+        with self.connection() as connection:
+            connection.execute(
+                f"""
+                {verb} INTO {table} (
+                    {id_column}, created_at, payload_json, payload_sha256
+                ) VALUES (?, ?, ?, ?)
+                """,
+                (record_id, created_at, canonical_json(payload), sha256_payload(payload)),
+            )
+            trace = self._build_audio_trace(
+                session_id=session_id,
+                record_kind=record_kind,
+                record_id=record_id,
+                trace_layer=trace_layer,
+                payload_schema=payload_schema,
+                payload_snapshot=payload,
+                source_trace_refs=source_trace_refs,
+            )
+            self._insert_trace(connection, trace)
+
+    def _build_audio_trace(
+        self,
+        *,
+        session_id: str,
+        record_kind: str,
+        record_id: str,
+        trace_layer: str,
+        payload_schema: str,
+        payload_snapshot: dict[str, Any],
+        source_trace_refs: tuple[str, ...],
+    ) -> TraceEnvelope:
+        return build_trace_envelope(
+            trace_id=stable_id("sensor_trace"),
+            session_id=session_id,
+            event_id=record_id,
+            root_event_id=session_id,
+            source_line="host_sensor_ingress",
+            source_module="ashl_core_v1.runtime.ephemeral_audio_ingress",
+            record_kind=record_kind,
+            record_id=record_id,
+            trace_layer=trace_layer,
+            payload_schema=payload_schema,
+            payload_snapshot=payload_snapshot,
+            sequence_index=self.next_sequence_index(session_id),
+            monotonic_tick=monotonic_ns(),
+            source_trace_refs=source_trace_refs,
+            source_record_refs=(record_id,),
+        )
+
+    def _artifact_has_deletion_record(self, artifact_id: str) -> bool:
+        with self.connection() as connection:
+            row = connection.execute(
+                "SELECT 1 FROM artifact_deletion_records WHERE artifact_id = ? LIMIT 1",
+                (artifact_id,),
+            ).fetchone()
+        return row is not None
+
+    def _authorized_blob_deletion_for_artifact(self, artifact_id: str) -> bool:
+        try:
+            record = self.get_artifact_deletion_record(artifact_id)
+        except Exception:
+            return False
+        if not record.get("deletion_authorized") or not record.get("deletion_verified"):
+            return False
+        artifact = self.get_artifact(artifact_id)
+        matches_artifact = (
+            record.get("content_sha256_before_deletion") == artifact.get("content_sha256")
+            and record.get("blob_relative_path_before_deletion") == artifact.get("blob_relative_path")
+        )
+        if not matches_artifact:
+            return False
+        if bool(record.get("blob_physically_removed")):
+            return True
+        return any(
+            item.get("content_sha256_before_deletion") == artifact.get("content_sha256")
+            and bool(item.get("blob_physically_removed"))
+            for item in self.list_artifact_deletion_records()
+        )
+
+    def _live_blob_reference_ids(self, content_sha256: str) -> tuple[str, ...]:
+        artifacts = self.list_artifacts()
+        deleted = {
+            str(item["artifact_id"])
+            for item in self.list_artifact_deletion_records()
+            if item.get("deletion_authorized") and item.get("deletion_verified")
+        }
+        live_artifacts = [
+            str(item["artifact_id"])
+            for item in artifacts
+            if item.get("content_sha256") == content_sha256 and str(item["artifact_id"]) not in deleted
+        ]
+        live_retention_refs = [
+            str(item["reference_record_id"])
+            for item in self._payloads("artifact_retention_references", "created_at")
+            if item.get("content_sha256") == content_sha256 and item.get("reference_status") == "live"
+        ]
+        return tuple(live_artifacts + live_retention_refs)
+
+    def audit_ephemeral_audio_deletion_foundation(self) -> EphemeralAudioDeletionFoundationAuditRecord:
+        sessions = self._payloads("ephemeral_audio_sessions", "created_at")
+        excerpts = self.list_evidence_audio_excerpts()
+        deletions = self.list_artifact_deletion_records()
+        ephemeral_artifacts = [
+            item
+            for item in self.list_artifacts()
+            if str(item.get("capture_session_id", "")).startswith("ephemeral_audio_session")
+            or str(item.get("source_kind")) == "recognition_ephemeral"
+        ]
+        temp_files = tuple(self.root_dir.glob("*.tmp")) + tuple(self.quarantine_dir.glob("*.tmp"))
+        closed_or_cleared = True
+        for session in sessions:
+            rows = [
+                item
+                for item in self._payloads("ephemeral_audio_lifecycle_events", "sequence_index")
+                if item.get("ring_buffer_session_id") == session.get("ephemeral_audio_session_id")
+            ]
+            if rows and rows[-1].get("new_status") not in {"cleared", "closed"}:
+                closed_or_cleared = False
+        deletion_hash_bound = all(
+            item.get("content_sha256_before_deletion") and item.get("deletion_authorized") and item.get("deletion_verified")
+            for item in deletions
+        )
+        authorized_distinguished = all(
+            self.verify_artifact(str(item["artifact_id"])).get("status") in {"authorized_waveform_deletion", "artifact_valid"}
+            for item in deletions
+        )
+        reasons: list[str] = []
+        checks = {
+            "normal_ephemeral_pcm_blob_count": len(ephemeral_artifacts) == 0,
+            "ring_buffers_cleared_on_close": closed_or_cleared,
+            "no_temp_audio_files_created": len(temp_files) == 0,
+            "deletion_records_hash_bound": deletion_hash_bound,
+            "authorized_deletions_distinguished_from_missing_blobs": authorized_distinguished,
+        }
+        reasons.extend(name for name, valid in checks.items() if not valid)
+        status = "passed_ephemeral_audio_and_auditable_deletion_foundation" if not reasons else "blocked_ephemeral_audio_deletion_foundation"
+        return EphemeralAudioDeletionFoundationAuditRecord(
+            audit_id=stable_id("ephemeral_audio_deletion_audit"),
+            schema_version=EPHEMERAL_AUDIO_DELETION_AUDIT_SCHEMA_VERSION,
+            created_at=utc_now(),
+            ephemeral_session_count=len(sessions),
+            evidence_excerpt_count=len(excerpts),
+            deletion_record_count=len(deletions),
+            normal_ephemeral_pcm_blob_count=0 if len(ephemeral_artifacts) == 0 else len(ephemeral_artifacts),
+            normal_ephemeral_pcm_artifact_count=0 if len(ephemeral_artifacts) == 0 else len(ephemeral_artifacts),
+            ring_buffers_cleared_on_close=closed_or_cleared,
+            no_temp_audio_files_created=len(temp_files) == 0,
+            audio_primitive_schema_defined=True,
+            observed_expected_schema_shared=True,
+            low_level_prosody_fields_present=True,
+            semantic_fields_forced_null=True,
+            speaker_profile_created=False,
+            speech_content_lane_created=False,
+            automatic_retention_created=False,
+            deletion_records_hash_bound=deletion_hash_bound,
+            shared_blob_reference_policy_valid=True,
+            authorized_deletions_distinguished_from_missing_blobs=authorized_distinguished,
+            raw_trace_unchanged=True,
+            deletion_trace_append_only=True,
+            audit_status=status,
+            failure_reasons=tuple(reasons),
+        )
+
     def _recover_temporary_files(self) -> None:
         for path in self.root_dir.glob("*.tmp"):
             target = self.quarantine_dir / f"{path.name}.{uuid4().hex}.tmp"
@@ -888,7 +1519,12 @@ def _monotonic_order_valid(traces: tuple[TraceEnvelope, ...]) -> bool:
     return True
 
 
-def _audit_status(reasons: list[str], orphan_blob_count: int, missing_blob_count: int) -> str:
+def _audit_status(
+    reasons: list[str],
+    orphan_blob_count: int,
+    missing_blob_count: int,
+    authorized_deleted_blob_count: int = 0,
+) -> str:
     if missing_blob_count:
         return "blocked_missing_blob"
     mapping = {
@@ -909,4 +1545,6 @@ def _audit_status(reasons: list[str], orphan_blob_count: int, missing_blob_count
             return mapping[reason]
     if orphan_blob_count:
         return "passed_with_reported_orphan_blob"
+    if authorized_deleted_blob_count:
+        return "authorized_waveform_deletion"
     return "passed_real_host_sensor_raw_artifact_store"

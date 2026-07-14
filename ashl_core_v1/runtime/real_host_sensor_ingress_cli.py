@@ -19,7 +19,8 @@ from ashl_core_v1.runtime.content_addressed_sensor_artifact_store import Content
 
 CAPTURE_WARNING = (
     "This command will capture local camera, screen, microphone, or host-state data "
-    "into the selected state directory."
+    "into the selected state directory. For RAM-only daily audio, use "
+    "ephemeral_audio_ingress_cli recognition_ephemeral mode instead."
 )
 
 

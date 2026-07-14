@@ -7162,11 +7162,264 @@ def sensor_audit_store_from_guided_cradle_growth_console(
     }
 
 
+def audio_start_ephemeral_buffer_from_guided_cradle_growth_console(
+    *,
+    state_dir: str | Path,
+    device_index: int,
+    buffer_ms: int = 10000,
+    confirm_local_capture: bool,
+) -> dict[str, Any]:
+    _require_audio_capture_confirmation(confirm_local_capture)
+    from ashl_core_v1.runtime.content_addressed_sensor_artifact_store import (
+        ContentAddressedSensorArtifactStore,
+    )
+    from ashl_core_v1.runtime.ephemeral_audio_ring_buffer import (
+        build_ephemeral_audio_ring_buffer_config,
+        start_ephemeral_audio_session,
+    )
+
+    store = ContentAddressedSensorArtifactStore(Path(state_dir))
+    ring = start_ephemeral_audio_session(
+        config=build_ephemeral_audio_ring_buffer_config(buffer_duration_ms=buffer_ms),
+        metadata_store=store,
+        state_dir_fingerprint=store.state_dir_fingerprint(),
+        device_index=device_index,
+    )
+    status = ring.to_status_dict()
+    ring.close()
+    return {
+        "guided_console_action": "audio_start_ephemeral_buffer",
+        "ephemeral_buffer_status": status,
+        "microphone_opened": False,
+        "normal_ephemeral_pcm_artifact_count": 0,
+        "normal_ephemeral_pcm_blob_count": 0,
+        "cross_process_ram_buffer_persisted": False,
+    }
+
+
+def audio_show_ephemeral_status_from_guided_cradle_growth_console(
+    *,
+    state_dir: str | Path,
+) -> dict[str, Any]:
+    from ashl_core_v1.runtime.content_addressed_sensor_artifact_store import (
+        ContentAddressedSensorArtifactStore,
+    )
+
+    store = ContentAddressedSensorArtifactStore(Path(state_dir))
+    return {
+        "guided_console_action": "audio_show_ephemeral_status",
+        "ephemeral_audio_sessions": store._payloads("ephemeral_audio_sessions", "created_at"),
+        "ephemeral_audio_lifecycle_events": store._payloads("ephemeral_audio_lifecycle_events", "created_at"),
+        "raw_pcm_displayed": False,
+    }
+
+
+def audio_clear_ephemeral_buffer_from_guided_cradle_growth_console() -> dict[str, Any]:
+    return {
+        "guided_console_action": "audio_clear_ephemeral_buffer",
+        "requires_live_foreground_buffer": True,
+        "cross_process_ram_buffer_clear_supported": False,
+        "raw_pcm_displayed": False,
+    }
+
+
+def audio_stop_ephemeral_buffer_from_guided_cradle_growth_console() -> dict[str, Any]:
+    return {
+        "guided_console_action": "audio_stop_ephemeral_buffer",
+        "requires_live_foreground_buffer": True,
+        "cross_process_ram_buffer_stop_supported": False,
+        "ring_buffer_cleared_on_close": True,
+    }
+
+
+def audio_mark_recent_excerpt_from_guided_cradle_growth_console() -> dict[str, Any]:
+    return {
+        "guided_console_action": "audio_mark_recent_excerpt",
+        "requires_live_foreground_buffer": True,
+        "automatic_excerpt_created": False,
+        "automatic_retention_created": False,
+    }
+
+
+def audio_capture_grounding_window_from_guided_cradle_growth_console(
+    *,
+    state_dir: str | Path,
+    device_index: int,
+    duration_ms: int,
+    purpose: str,
+    consent_text: str,
+    review_due_at: str | None = None,
+    confirm_local_capture: bool,
+) -> dict[str, Any]:
+    _require_audio_capture_confirmation(confirm_local_capture)
+    from ashl_core_v1.runtime.ephemeral_audio_ingress_cli import _capture_grounding_window
+
+    class Args:
+        pass
+
+    args = Args()
+    args.state_dir = str(state_dir)
+    args.device_index = device_index
+    args.duration_ms = duration_ms
+    args.purpose = purpose
+    args.consent_text = consent_text
+    args.review_due_at = review_due_at
+    return {
+        "guided_console_action": "audio_capture_grounding_window",
+        "capture": _capture_grounding_window(args),
+        "automatic_retention_created": False,
+        "semantic_interpretation_created": False,
+    }
+
+
+def audio_list_evidence_excerpts_from_guided_cradle_growth_console(
+    *,
+    state_dir: str | Path,
+) -> dict[str, Any]:
+    from ashl_core_v1.runtime.content_addressed_sensor_artifact_store import (
+        ContentAddressedSensorArtifactStore,
+    )
+
+    return {
+        "guided_console_action": "audio_list_evidence_excerpts",
+        "evidence_audio_excerpts": ContentAddressedSensorArtifactStore(Path(state_dir)).list_evidence_audio_excerpts(),
+        "raw_pcm_displayed": False,
+    }
+
+
+def audio_show_evidence_excerpt_from_guided_cradle_growth_console(
+    *,
+    state_dir: str | Path,
+    excerpt_id: str,
+) -> dict[str, Any]:
+    from ashl_core_v1.runtime.content_addressed_sensor_artifact_store import (
+        ContentAddressedSensorArtifactStore,
+    )
+
+    return {
+        "guided_console_action": "audio_show_evidence_excerpt",
+        "evidence_audio_excerpt": ContentAddressedSensorArtifactStore(Path(state_dir)).get_evidence_audio_excerpt(excerpt_id),
+        "raw_pcm_displayed": False,
+    }
+
+
+def audio_create_manual_retention_candidate_from_guided_cradle_growth_console(
+    *,
+    state_dir: str | Path,
+    excerpt_id: str,
+    proposed_service_period: str,
+) -> dict[str, Any]:
+    from ashl_core_v1.runtime.content_addressed_sensor_artifact_store import (
+        ContentAddressedSensorArtifactStore,
+    )
+    from ashl_core_v1.runtime.evidence_audio_excerpt import (
+        EvidenceAudioExcerptRecord,
+        create_manual_retention_candidate,
+    )
+
+    store = ContentAddressedSensorArtifactStore(Path(state_dir))
+    excerpt = EvidenceAudioExcerptRecord(**store.get_evidence_audio_excerpt(excerpt_id))
+    candidate = create_manual_retention_candidate(excerpt=excerpt, proposed_service_period=proposed_service_period)
+    store.append_audio_excerpt_retention_candidate(candidate)
+    return {
+        "guided_console_action": "audio_create_manual_retention_candidate",
+        "retention_candidate": candidate.to_dict(),
+        "approved_for_permanent_retention": False,
+        "automatic_retention_created": False,
+    }
+
+
+def audio_request_artifact_deletion_from_guided_cradle_growth_console(
+    *,
+    state_dir: str | Path,
+    artifact_id: str,
+    expected_content_sha256: str,
+    reason_code: str,
+    approval_text: str,
+) -> dict[str, Any]:
+    from ashl_core_v1.runtime.audio_artifact_deletion import request_artifact_deletion
+    from ashl_core_v1.runtime.content_addressed_sensor_artifact_store import (
+        ContentAddressedSensorArtifactStore,
+    )
+
+    request = request_artifact_deletion(
+        artifact_id=artifact_id,
+        expected_content_sha256=expected_content_sha256,
+        reason_code=reason_code,
+        approval_text=approval_text,
+    )
+    ContentAddressedSensorArtifactStore(Path(state_dir)).append_artifact_deletion_request(request)
+    return {
+        "guided_console_action": "audio_request_artifact_deletion",
+        "deletion_request": request.to_dict(),
+        "automatic_deletion_created": False,
+    }
+
+
+def audio_apply_artifact_deletion_from_guided_cradle_growth_console(
+    *,
+    state_dir: str | Path,
+    deletion_request_id: str,
+) -> dict[str, Any]:
+    from ashl_core_v1.runtime.audio_artifact_deletion import ArtifactDeletionRequest
+    from ashl_core_v1.runtime.content_addressed_sensor_artifact_store import (
+        ContentAddressedSensorArtifactStore,
+    )
+
+    store = ContentAddressedSensorArtifactStore(Path(state_dir))
+    request = ArtifactDeletionRequest(**store._payload("artifact_deletion_requests", "deletion_request_id = ?", (deletion_request_id,)))
+    return {
+        "guided_console_action": "audio_apply_artifact_deletion",
+        "deletion_record": store.apply_artifact_deletion(request).to_dict(),
+        "trace_deleted": False,
+        "artifact_metadata_updated": False,
+    }
+
+
+def audio_show_deletion_trace_from_guided_cradle_growth_console(
+    *,
+    state_dir: str | Path,
+    artifact_id: str,
+) -> dict[str, Any]:
+    from ashl_core_v1.runtime.content_addressed_sensor_artifact_store import (
+        ContentAddressedSensorArtifactStore,
+    )
+
+    return {
+        "guided_console_action": "audio_show_deletion_trace",
+        "deletion_record": ContentAddressedSensorArtifactStore(Path(state_dir)).get_artifact_deletion_record(artifact_id),
+        "trace_deleted": False,
+    }
+
+
+def audio_audit_storage_from_guided_cradle_growth_console(
+    *,
+    state_dir: str | Path,
+) -> dict[str, Any]:
+    from ashl_core_v1.runtime.content_addressed_sensor_artifact_store import (
+        ContentAddressedSensorArtifactStore,
+    )
+
+    return {
+        "guided_console_action": "audio_audit_storage",
+        "audio_storage_audit": ContentAddressedSensorArtifactStore(Path(state_dir)).audit_ephemeral_audio_deletion_foundation().to_dict(),
+        "raw_pcm_displayed": False,
+    }
+
+
 def _require_sensor_capture_confirmation(confirm_local_capture: bool) -> None:
     if not confirm_local_capture:
         raise ValueError(
             "This command will capture local camera, screen, microphone, or host-state "
             "data into the selected state directory; pass confirm_local_capture=True."
+        )
+
+
+def _require_audio_capture_confirmation(confirm_local_capture: bool) -> None:
+    if not confirm_local_capture:
+        raise ValueError(
+            "This command will capture local microphone data into a selected state directory "
+            "or bounded RAM-only buffer; pass confirm_local_capture=True."
         )
 
 

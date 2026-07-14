@@ -34,6 +34,8 @@ ALLOWED_TRACE_LAYERS = (
     "runtime_control",
     "audit",
     "raw_sensor_trace",
+    "audio_ingress_control_trace",
+    "audio_retention_governance_trace",
 )
 
 RAW_TRACE_FORBIDDEN_KEYS = {

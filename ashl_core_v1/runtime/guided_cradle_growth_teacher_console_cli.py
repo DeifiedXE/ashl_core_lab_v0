@@ -815,6 +815,37 @@ def build_parser() -> argparse.ArgumentParser:
     sensor_verify_artifact = subparsers.add_parser("sensor-verify-artifact")
     sensor_verify_artifact.add_argument("--artifact-id", required=True)
     subparsers.add_parser("sensor-audit-store")
+    audio_start = subparsers.add_parser("audio-start-ephemeral-buffer")
+    audio_start.add_argument("--device-index", type=int, required=True)
+    audio_start.add_argument("--buffer-ms", type=int, default=10000)
+    audio_start.add_argument("--confirm-local-capture", action="store_true")
+    subparsers.add_parser("audio-show-ephemeral-status")
+    subparsers.add_parser("audio-mark-recent-excerpt")
+    subparsers.add_parser("audio-clear-ephemeral-buffer")
+    subparsers.add_parser("audio-stop-ephemeral-buffer")
+    audio_grounding = subparsers.add_parser("audio-capture-grounding-window")
+    audio_grounding.add_argument("--device-index", type=int, required=True)
+    audio_grounding.add_argument("--duration-ms", type=int, required=True)
+    audio_grounding.add_argument("--purpose", required=True)
+    audio_grounding.add_argument("--consent-text", required=True)
+    audio_grounding.add_argument("--review-due-at", default=None)
+    audio_grounding.add_argument("--confirm-local-capture", action="store_true")
+    subparsers.add_parser("audio-list-evidence-excerpts")
+    audio_excerpt = subparsers.add_parser("audio-show-evidence-excerpt")
+    audio_excerpt.add_argument("--excerpt-id", required=True)
+    audio_retention = subparsers.add_parser("audio-create-manual-retention-candidate")
+    audio_retention.add_argument("--excerpt-id", required=True)
+    audio_retention.add_argument("--proposed-service-period", required=True)
+    audio_delete_request = subparsers.add_parser("audio-request-artifact-deletion")
+    audio_delete_request.add_argument("--artifact-id", required=True)
+    audio_delete_request.add_argument("--expected-content-sha256", required=True)
+    audio_delete_request.add_argument("--reason-code", required=True)
+    audio_delete_request.add_argument("--approval-text", required=True)
+    audio_delete_apply = subparsers.add_parser("audio-apply-artifact-deletion")
+    audio_delete_apply.add_argument("--deletion-request-id", required=True)
+    audio_delete_show = subparsers.add_parser("audio-show-deletion-trace")
+    audio_delete_show.add_argument("--artifact-id", required=True)
+    subparsers.add_parser("audio-audit-storage")
     subparsers.add_parser("task-apply-advisory-readback-ordering-demo")
     subparsers.add_parser("task-show-advisory-readback-ordering-teacher-gate")
     subparsers.add_parser("task-show-advisory-readback-ordering-application")
@@ -2475,6 +2506,140 @@ def main(argv: list[str] | None = None) -> int:
                     state_dir=args.state_dir,
                 )
             )
+        if args.command == "audio-start-ephemeral-buffer":
+            _require_state_dir(args.state_dir)
+            from ashl_core_v1.runtime.guided_cradle_growth_teacher_console import (
+                audio_start_ephemeral_buffer_from_guided_cradle_growth_console,
+            )
+
+            return _print_json(
+                audio_start_ephemeral_buffer_from_guided_cradle_growth_console(
+                    state_dir=args.state_dir,
+                    device_index=args.device_index,
+                    buffer_ms=args.buffer_ms,
+                    confirm_local_capture=args.confirm_local_capture,
+                )
+            )
+        if args.command == "audio-show-ephemeral-status":
+            _require_state_dir(args.state_dir)
+            from ashl_core_v1.runtime.guided_cradle_growth_teacher_console import (
+                audio_show_ephemeral_status_from_guided_cradle_growth_console,
+            )
+
+            return _print_json(audio_show_ephemeral_status_from_guided_cradle_growth_console(state_dir=args.state_dir))
+        if args.command == "audio-mark-recent-excerpt":
+            from ashl_core_v1.runtime.guided_cradle_growth_teacher_console import (
+                audio_mark_recent_excerpt_from_guided_cradle_growth_console,
+            )
+
+            return _print_json(audio_mark_recent_excerpt_from_guided_cradle_growth_console())
+        if args.command == "audio-clear-ephemeral-buffer":
+            from ashl_core_v1.runtime.guided_cradle_growth_teacher_console import (
+                audio_clear_ephemeral_buffer_from_guided_cradle_growth_console,
+            )
+
+            return _print_json(audio_clear_ephemeral_buffer_from_guided_cradle_growth_console())
+        if args.command == "audio-stop-ephemeral-buffer":
+            from ashl_core_v1.runtime.guided_cradle_growth_teacher_console import (
+                audio_stop_ephemeral_buffer_from_guided_cradle_growth_console,
+            )
+
+            return _print_json(audio_stop_ephemeral_buffer_from_guided_cradle_growth_console())
+        if args.command == "audio-capture-grounding-window":
+            _require_state_dir(args.state_dir)
+            from ashl_core_v1.runtime.guided_cradle_growth_teacher_console import (
+                audio_capture_grounding_window_from_guided_cradle_growth_console,
+            )
+
+            return _print_json(
+                audio_capture_grounding_window_from_guided_cradle_growth_console(
+                    state_dir=args.state_dir,
+                    device_index=args.device_index,
+                    duration_ms=args.duration_ms,
+                    purpose=args.purpose,
+                    consent_text=args.consent_text,
+                    review_due_at=args.review_due_at,
+                    confirm_local_capture=args.confirm_local_capture,
+                )
+            )
+        if args.command == "audio-list-evidence-excerpts":
+            _require_state_dir(args.state_dir)
+            from ashl_core_v1.runtime.guided_cradle_growth_teacher_console import (
+                audio_list_evidence_excerpts_from_guided_cradle_growth_console,
+            )
+
+            return _print_json(audio_list_evidence_excerpts_from_guided_cradle_growth_console(state_dir=args.state_dir))
+        if args.command == "audio-show-evidence-excerpt":
+            _require_state_dir(args.state_dir)
+            from ashl_core_v1.runtime.guided_cradle_growth_teacher_console import (
+                audio_show_evidence_excerpt_from_guided_cradle_growth_console,
+            )
+
+            return _print_json(
+                audio_show_evidence_excerpt_from_guided_cradle_growth_console(
+                    state_dir=args.state_dir,
+                    excerpt_id=args.excerpt_id,
+                )
+            )
+        if args.command == "audio-create-manual-retention-candidate":
+            _require_state_dir(args.state_dir)
+            from ashl_core_v1.runtime.guided_cradle_growth_teacher_console import (
+                audio_create_manual_retention_candidate_from_guided_cradle_growth_console,
+            )
+
+            return _print_json(
+                audio_create_manual_retention_candidate_from_guided_cradle_growth_console(
+                    state_dir=args.state_dir,
+                    excerpt_id=args.excerpt_id,
+                    proposed_service_period=args.proposed_service_period,
+                )
+            )
+        if args.command == "audio-request-artifact-deletion":
+            _require_state_dir(args.state_dir)
+            from ashl_core_v1.runtime.guided_cradle_growth_teacher_console import (
+                audio_request_artifact_deletion_from_guided_cradle_growth_console,
+            )
+
+            return _print_json(
+                audio_request_artifact_deletion_from_guided_cradle_growth_console(
+                    state_dir=args.state_dir,
+                    artifact_id=args.artifact_id,
+                    expected_content_sha256=args.expected_content_sha256,
+                    reason_code=args.reason_code,
+                    approval_text=args.approval_text,
+                )
+            )
+        if args.command == "audio-apply-artifact-deletion":
+            _require_state_dir(args.state_dir)
+            from ashl_core_v1.runtime.guided_cradle_growth_teacher_console import (
+                audio_apply_artifact_deletion_from_guided_cradle_growth_console,
+            )
+
+            return _print_json(
+                audio_apply_artifact_deletion_from_guided_cradle_growth_console(
+                    state_dir=args.state_dir,
+                    deletion_request_id=args.deletion_request_id,
+                )
+            )
+        if args.command == "audio-show-deletion-trace":
+            _require_state_dir(args.state_dir)
+            from ashl_core_v1.runtime.guided_cradle_growth_teacher_console import (
+                audio_show_deletion_trace_from_guided_cradle_growth_console,
+            )
+
+            return _print_json(
+                audio_show_deletion_trace_from_guided_cradle_growth_console(
+                    state_dir=args.state_dir,
+                    artifact_id=args.artifact_id,
+                )
+            )
+        if args.command == "audio-audit-storage":
+            _require_state_dir(args.state_dir)
+            from ashl_core_v1.runtime.guided_cradle_growth_teacher_console import (
+                audio_audit_storage_from_guided_cradle_growth_console,
+            )
+
+            return _print_json(audio_audit_storage_from_guided_cradle_growth_console(state_dir=args.state_dir))
         if args.command == "task-apply-advisory-readback-ordering-demo":
             return _print_json(
                 apply_advisory_readback_ordering_demo_from_guided_cradle_growth_console()
