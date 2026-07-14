@@ -1,4 +1,4 @@
-"""Runtime-only perception source buffers for Package 120A."""
+"""Runtime-only perception source buffers for Package 120A/121."""
 
 from __future__ import annotations
 
@@ -12,6 +12,11 @@ EPHEMERAL_SECURITY_SCOPE = "application_no_persistent_write_best_effort_memory_o
 
 def _tuple_of_str(value: tuple[str, ...] | list[str] | tuple[object, ...] | list[object]) -> tuple[str, ...]:
     return tuple(str(item) for item in value)
+
+
+ALLOWED_SOURCE_KINDS = ("camera", "screen", "microphone", "host_state")
+ALLOWED_STORAGE_MODES = ("recognition_ephemeral", "grounding_artifact", "stored_artifact")
+ALLOWED_MEDIA_TYPES = ("image/raw", "audio/pcm", "application/json")
 
 
 @dataclass
@@ -37,27 +42,59 @@ class PerceptionSourceBuffer:
     ephemeral: bool
     persistence_allowed: bool
     ephemeral_security_scope: str = EPHEMERAL_SECURITY_SCOPE
+    width: int | None = None
+    height: int | None = None
+    row_stride_bytes: int | None = None
+    capture_rectangle: dict[str, int] | None = None
+    source_content_sha256: str | None = None
+    source_metadata: dict[str, object] | None = None
 
     def __post_init__(self) -> None:
         if self.schema_version != PERCEPTION_SOURCE_BUFFER_SCHEMA_VERSION:
             raise ValueError("invalid PerceptionSourceBuffer schema_version")
-        if self.source_kind != "microphone":
-            raise ValueError("Package 120A PerceptionSourceBuffer supports microphone input only")
-        if self.media_type != "audio/pcm":
-            raise ValueError("Package 120A audio source buffers must be audio/pcm")
-        if self.storage_mode not in {"recognition_ephemeral", "grounding_artifact"}:
+        if self.source_kind not in ALLOWED_SOURCE_KINDS:
+            raise ValueError("invalid perception source buffer source_kind")
+        if self.media_type not in ALLOWED_MEDIA_TYPES:
+            raise ValueError("invalid perception source buffer media_type")
+        if self.storage_mode not in ALLOWED_STORAGE_MODES:
             raise ValueError("invalid perception source buffer storage_mode")
         if self.byte_length != len(self.readonly_bytes):
             raise ValueError("byte_length must match readonly_bytes")
         if self.ephemeral:
+            if self.source_kind != "microphone" or self.media_type != "audio/pcm":
+                raise ValueError("ephemeral source buffer is currently microphone audio only")
             if self.source_artifact_id is not None:
                 raise ValueError("ephemeral source buffer must not reference a stored artifact")
             if self.persistence_allowed:
                 raise ValueError("ephemeral source buffer cannot allow persistence")
+            if self.source_content_sha256 is not None:
+                raise ValueError("ephemeral source buffer must not store source content hash")
         else:
             if self.source_artifact_id is None:
-                raise ValueError("stored grounding source buffer requires source_artifact_id")
+                raise ValueError("stored source buffer requires source_artifact_id")
+            if not self.persistence_allowed:
+                raise ValueError("stored source buffer must allow replay persistence")
+            if not self.source_content_sha256:
+                raise ValueError("stored source buffer requires source_content_sha256")
+        if self.source_kind in {"camera", "screen"}:
+            if self.media_type != "image/raw":
+                raise ValueError("visual source buffer must use image/raw")
+            if self.media_format not in {"BGR8", "BGRA8"}:
+                raise ValueError("visual source buffer must use BGR8 or BGRA8")
+            if not self.width or not self.height or not self.row_stride_bytes:
+                raise ValueError("visual source buffer requires width, height, and row_stride_bytes")
+        if self.source_kind == "microphone":
+            if self.media_type != "audio/pcm":
+                raise ValueError("microphone source buffer must use audio/pcm")
+            if self.media_format not in {"PCM_S16LE", "pcm_s16le", "int16"}:
+                raise ValueError("microphone source buffer must use PCM_S16LE")
+            if self.sample_rate is None or self.channels is None or self.frame_count is None:
+                raise ValueError("microphone source buffer requires sample_rate, channels, and frame_count")
+        if self.source_kind == "host_state":
+            if self.media_type != "application/json" or self.media_format != "canonical_json_utf8":
+                raise ValueError("host_state source buffer must use canonical JSON")
         self.source_trace_refs = _tuple_of_str(self.source_trace_refs)
+        self.source_metadata = dict(self.source_metadata or {})
         if not self.readonly_bytes.readonly:
             self.readonly_bytes = memoryview(bytes(self.readonly_bytes))
 

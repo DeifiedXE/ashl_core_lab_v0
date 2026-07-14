@@ -846,6 +846,26 @@ def build_parser() -> argparse.ArgumentParser:
     audio_delete_show = subparsers.add_parser("audio-show-deletion-trace")
     audio_delete_show.add_argument("--artifact-id", required=True)
     subparsers.add_parser("audio-audit-storage")
+    subparsers.add_parser("perception-list-compilers")
+    perception_artifact = subparsers.add_parser("perception-compile-artifact")
+    perception_artifact.add_argument("--artifact-id", required=True)
+    perception_pair = subparsers.add_parser("perception-compile-visual-pair")
+    perception_pair.add_argument("--previous-artifact-id", required=True)
+    perception_pair.add_argument("--current-artifact-id", required=True)
+    perception_ephemeral = subparsers.add_parser("perception-compile-ephemeral-audio")
+    perception_ephemeral.add_argument("--ring-buffer-session-id", required=True)
+    perception_ephemeral.add_argument("--window-ms", type=int, default=1000)
+    perception_ephemeral.add_argument("--privacy-policy", default="recognition_ephemeral_v0")
+    subparsers.add_parser("perception-list-primitives")
+    perception_primitive = subparsers.add_parser("perception-show-primitive")
+    perception_primitive.add_argument("--primitive-id", required=True)
+    perception_data = subparsers.add_parser("perception-show-readable-data")
+    perception_data.add_argument("--perception-id", required=True)
+    perception_lineage = subparsers.add_parser("perception-show-lineage")
+    perception_lineage.add_argument("--perception-id", required=True)
+    perception_replay = subparsers.add_parser("perception-replay-validate")
+    perception_replay.add_argument("--compilation-record-id", required=True)
+    subparsers.add_parser("perception-audit-store")
     subparsers.add_parser("task-apply-advisory-readback-ordering-demo")
     subparsers.add_parser("task-show-advisory-readback-ordering-teacher-gate")
     subparsers.add_parser("task-show-advisory-readback-ordering-application")
@@ -2640,6 +2660,113 @@ def main(argv: list[str] | None = None) -> int:
             )
 
             return _print_json(audio_audit_storage_from_guided_cradle_growth_console(state_dir=args.state_dir))
+        if args.command == "perception-list-compilers":
+            from ashl_core_v1.runtime.guided_cradle_growth_teacher_console import (
+                perception_list_compilers_from_guided_cradle_growth_console,
+            )
+
+            return _print_json(perception_list_compilers_from_guided_cradle_growth_console())
+        if args.command == "perception-compile-artifact":
+            _require_state_dir(args.state_dir)
+            from ashl_core_v1.runtime.guided_cradle_growth_teacher_console import (
+                perception_compile_artifact_from_guided_cradle_growth_console,
+            )
+
+            return _print_json(
+                perception_compile_artifact_from_guided_cradle_growth_console(
+                    state_dir=args.state_dir,
+                    artifact_id=args.artifact_id,
+                )
+            )
+        if args.command == "perception-compile-visual-pair":
+            _require_state_dir(args.state_dir)
+            from ashl_core_v1.runtime.guided_cradle_growth_teacher_console import (
+                perception_compile_visual_pair_from_guided_cradle_growth_console,
+            )
+
+            return _print_json(
+                perception_compile_visual_pair_from_guided_cradle_growth_console(
+                    state_dir=args.state_dir,
+                    previous_artifact_id=args.previous_artifact_id,
+                    current_artifact_id=args.current_artifact_id,
+                )
+            )
+        if args.command == "perception-compile-ephemeral-audio":
+            _require_state_dir(args.state_dir)
+            from ashl_core_v1.runtime.guided_cradle_growth_teacher_console import (
+                perception_compile_ephemeral_audio_from_guided_cradle_growth_console,
+            )
+
+            return _print_json(
+                perception_compile_ephemeral_audio_from_guided_cradle_growth_console(
+                    state_dir=args.state_dir,
+                    ring_buffer_session_id=args.ring_buffer_session_id,
+                    window_ms=args.window_ms,
+                    privacy_policy=args.privacy_policy,
+                )
+            )
+        if args.command == "perception-list-primitives":
+            _require_state_dir(args.state_dir)
+            from ashl_core_v1.runtime.guided_cradle_growth_teacher_console import (
+                perception_list_primitives_from_guided_cradle_growth_console,
+            )
+
+            return _print_json(perception_list_primitives_from_guided_cradle_growth_console(state_dir=args.state_dir))
+        if args.command == "perception-show-primitive":
+            _require_state_dir(args.state_dir)
+            from ashl_core_v1.runtime.guided_cradle_growth_teacher_console import (
+                perception_show_primitive_from_guided_cradle_growth_console,
+            )
+
+            return _print_json(
+                perception_show_primitive_from_guided_cradle_growth_console(
+                    state_dir=args.state_dir,
+                    primitive_id=args.primitive_id,
+                )
+            )
+        if args.command == "perception-show-readable-data":
+            _require_state_dir(args.state_dir)
+            from ashl_core_v1.runtime.guided_cradle_growth_teacher_console import (
+                perception_show_readable_data_from_guided_cradle_growth_console,
+            )
+
+            return _print_json(
+                perception_show_readable_data_from_guided_cradle_growth_console(
+                    state_dir=args.state_dir,
+                    perception_id=args.perception_id,
+                )
+            )
+        if args.command == "perception-show-lineage":
+            _require_state_dir(args.state_dir)
+            from ashl_core_v1.runtime.guided_cradle_growth_teacher_console import (
+                perception_show_lineage_from_guided_cradle_growth_console,
+            )
+
+            return _print_json(
+                perception_show_lineage_from_guided_cradle_growth_console(
+                    state_dir=args.state_dir,
+                    perception_id=args.perception_id,
+                )
+            )
+        if args.command == "perception-replay-validate":
+            _require_state_dir(args.state_dir)
+            from ashl_core_v1.runtime.guided_cradle_growth_teacher_console import (
+                perception_replay_validate_from_guided_cradle_growth_console,
+            )
+
+            return _print_json(
+                perception_replay_validate_from_guided_cradle_growth_console(
+                    state_dir=args.state_dir,
+                    compilation_record_id=args.compilation_record_id,
+                )
+            )
+        if args.command == "perception-audit-store":
+            _require_state_dir(args.state_dir)
+            from ashl_core_v1.runtime.guided_cradle_growth_teacher_console import (
+                perception_audit_store_from_guided_cradle_growth_console,
+            )
+
+            return _print_json(perception_audit_store_from_guided_cradle_growth_console(state_dir=args.state_dir))
         if args.command == "task-apply-advisory-readback-ordering-demo":
             return _print_json(
                 apply_advisory_readback_ordering_demo_from_guided_cradle_growth_console()

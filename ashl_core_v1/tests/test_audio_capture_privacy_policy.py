@@ -3,6 +3,7 @@ import unittest
 from ashl_core_v1.perception.audio_capture_privacy_policy import (
     AUDIO_CAPTURE_PRIVACY_POLICY_SCHEMA_VERSION,
     AudioCapturePrivacyPolicy,
+    build_grounding_conservative_audio_privacy_policy,
     build_recognition_ephemeral_audio_privacy_policy,
     validate_audio_capture_privacy_policy,
 )
@@ -30,6 +31,15 @@ class AudioCapturePrivacyPolicyTests(unittest.TestCase):
                     "exact_speaker_embedding_allowed": True,
                 }
             )
+
+    def test_grounding_conservative_policy_still_blocks_semantic_audio(self) -> None:
+        policy = build_grounding_conservative_audio_privacy_policy()
+        self.assertEqual(policy.policy_version, "grounding_conservative_v0")
+        self.assertEqual(policy.capture_mode, "grounding_capture")
+        self.assertFalse(policy.raw_disk_persistence_allowed)
+        self.assertFalse(policy.exact_speaker_embedding_allowed)
+        self.assertFalse(policy.speech_content_interpretation_allowed)
+        self.assertTrue(validate_audio_capture_privacy_policy(policy)["valid"])
 
 
 if __name__ == "__main__":

@@ -3,7 +3,7 @@
 Status: Reference
 Runtime Impact: None
 Created For: Package 117 repair baseline
-Updated Through: Package 120A ephemeral audio and auditable deletion foundation
+Updated Through: Package 121 hard-soft perception primitive compiler
 
 ## Current Baseline
 
@@ -22,6 +22,8 @@ Package 119 sealed the stored Package 118 run as the no-Codex fixture embodied g
 Package 120 added bounded foreground real host sensor ingress for camera, screen, microphone, and restricted host-state adapter-output samples, with immutable content-addressed raw artifact storage and `raw_sensor_trace` TraceEnvelope metadata.
 
 Package 120A added the audio-specific foundation: recognition-mode microphone PCM can remain in a bounded RAM-only ring buffer without intentional raw disk persistence, while explicit grounding/evidence excerpts can be materialized with consent and later deleted through hash-bound append-only deletion records.
+
+Package 121 added deterministic low-level perception primitive compilation for stored camera/screen/microphone/host-state artifacts and ephemeral microphone source buffers. It creates visual, audio, and host-state primitives plus `PerceptionReadableData`, but still creates no semantic vision, speech understanding, speaker identity, learning, memory write, or action influence.
 
 ## Current Safe Chain
 
@@ -43,8 +45,8 @@ Fixture Host Body event
 - Package 119 / No-Codex Fixture Growth Loop Milestone Audit - completed
 - Package 120 / Real Host Sensor Ingress And Raw Artifact Store - completed
 - Package 120A / Ephemeral Audio And Auditable Deletion Foundation - completed
-- Package 121 / Hard-Soft Perception Primitive Compiler - next
-- Package 122 / Bounded Multimodal Perception Session Runtime - later
+- Package 121 / Hard-Soft Perception Primitive Compiler - completed
+- Package 122 / Bounded Multimodal Perception Session Runtime - next
 - Package 123 / No-Codex Real Perception Two-Cycle Growth Run - later
 - Package 124 / Real Host Perception Growth Loop Milestone - later
 
@@ -55,6 +57,7 @@ Fixture Host Body event
 - Daily recognition audio no longer needs to become a stored waveform artifact
 - Manual audio evidence excerpts remain nonsemantic and deletable with append-only deletion provenance
 - Real sensor safety and noise audit before semantic perception work
+- Real sensor bytes are now readable only as low-level deterministic primitives, not semantic objects or speech content
 
 ## Boundaries
 

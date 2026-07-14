@@ -25,6 +25,7 @@ ALLOWED_SOURCE_LINES = (
     "audit",
     "host_body",
     "host_sensor_ingress",
+    "hard_soft_perception",
 )
 
 ALLOWED_TRACE_LAYERS = (
@@ -36,6 +37,7 @@ ALLOWED_TRACE_LAYERS = (
     "raw_sensor_trace",
     "audio_ingress_control_trace",
     "audio_retention_governance_trace",
+    "perception_primitive_trace",
 )
 
 RAW_TRACE_FORBIDDEN_KEYS = {

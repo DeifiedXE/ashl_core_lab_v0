@@ -7407,6 +7407,165 @@ def audio_audit_storage_from_guided_cradle_growth_console(
     }
 
 
+def perception_list_compilers_from_guided_cradle_growth_console() -> dict[str, Any]:
+    from ashl_core_v1.perception.hard_soft_perception_primitive_compiler import (
+        build_all_compiler_descriptors,
+    )
+
+    return {
+        "guided_console_action": "perception_list_compilers",
+        "compilers": tuple(item.to_dict() for item in build_all_compiler_descriptors()),
+        "learning_approval_created": False,
+        "memory_write_created": False,
+    }
+
+
+def perception_compile_artifact_from_guided_cradle_growth_console(
+    *,
+    state_dir: str | Path,
+    artifact_id: str,
+) -> dict[str, Any]:
+    from ashl_core_v1.perception.hard_soft_perception_primitive_compiler import (
+        HardSoftPerceptionPrimitiveCompiler,
+    )
+
+    bundle = HardSoftPerceptionPrimitiveCompiler(Path(state_dir)).compile_artifact(artifact_id)
+    return _perception_console_payload("perception_compile_artifact", bundle.to_dict())
+
+
+def perception_compile_visual_pair_from_guided_cradle_growth_console(
+    *,
+    state_dir: str | Path,
+    previous_artifact_id: str,
+    current_artifact_id: str,
+) -> dict[str, Any]:
+    from ashl_core_v1.perception.hard_soft_perception_primitive_compiler import (
+        HardSoftPerceptionPrimitiveCompiler,
+    )
+
+    bundle = HardSoftPerceptionPrimitiveCompiler(Path(state_dir)).compile_visual_pair(
+        previous_artifact_id=previous_artifact_id,
+        current_artifact_id=current_artifact_id,
+    )
+    return _perception_console_payload("perception_compile_visual_pair", bundle.to_dict())
+
+
+def perception_compile_ephemeral_audio_from_guided_cradle_growth_console(
+    *,
+    state_dir: str | Path,
+    ring_buffer_session_id: str,
+    window_ms: int = 1000,
+    privacy_policy: str = "recognition_ephemeral_v0",
+) -> dict[str, Any]:
+    from ashl_core_v1.perception.hard_soft_perception_primitive_compiler import (
+        HardSoftPerceptionPrimitiveCompiler,
+    )
+    from ashl_core_v1.perception.perception_primitive_compiler_cli import (
+        _build_cli_ephemeral_source_buffer,
+    )
+
+    source = _build_cli_ephemeral_source_buffer(
+        ring_buffer_session_id=ring_buffer_session_id,
+        window_ms=window_ms,
+    )
+    bundle = HardSoftPerceptionPrimitiveCompiler(Path(state_dir)).compile_ephemeral_audio(
+        source,
+        privacy_policy_id=privacy_policy,
+    )
+    return _perception_console_payload("perception_compile_ephemeral_audio", bundle.to_dict())
+
+
+def perception_list_primitives_from_guided_cradle_growth_console(
+    *,
+    state_dir: str | Path,
+) -> dict[str, Any]:
+    from ashl_core_v1.perception.perception_primitive_store import PerceptionPrimitiveStore
+
+    return {
+        "guided_console_action": "perception_list_primitives",
+        "primitives": PerceptionPrimitiveStore(Path(state_dir)).list_primitives(),
+        "raw_media_displayed": False,
+    }
+
+
+def perception_show_primitive_from_guided_cradle_growth_console(
+    *,
+    state_dir: str | Path,
+    primitive_id: str,
+) -> dict[str, Any]:
+    from ashl_core_v1.perception.perception_primitive_store import PerceptionPrimitiveStore
+
+    return {
+        "guided_console_action": "perception_show_primitive",
+        "primitive": PerceptionPrimitiveStore(Path(state_dir)).get_primitive(primitive_id),
+        "raw_media_displayed": False,
+        "semantic_interpretation_created": False,
+    }
+
+
+def perception_show_readable_data_from_guided_cradle_growth_console(
+    *,
+    state_dir: str | Path,
+    perception_id: str,
+) -> dict[str, Any]:
+    from ashl_core_v1.perception.perception_primitive_store import PerceptionPrimitiveStore
+
+    return {
+        "guided_console_action": "perception_show_readable_data",
+        "perception_readable_data": PerceptionPrimitiveStore(Path(state_dir)).get_perception_readable_data(perception_id),
+        "raw_media_displayed": False,
+        "action_recommendation_created": False,
+    }
+
+
+def perception_show_lineage_from_guided_cradle_growth_console(
+    *,
+    state_dir: str | Path,
+    perception_id: str,
+) -> dict[str, Any]:
+    from ashl_core_v1.perception.perception_primitive_store import PerceptionPrimitiveStore
+
+    return {
+        "guided_console_action": "perception_show_lineage",
+        "lineage": PerceptionPrimitiveStore(Path(state_dir)).show_lineage_for_perception(perception_id),
+        "lineage_reconstructed_from_summary": False,
+    }
+
+
+def perception_replay_validate_from_guided_cradle_growth_console(
+    *,
+    state_dir: str | Path,
+    compilation_record_id: str,
+) -> dict[str, Any]:
+    from ashl_core_v1.perception.perception_deterministic_replay import (
+        replay_stored_artifact_compilation,
+    )
+
+    return {
+        "guided_console_action": "perception_replay_validate",
+        "replay_validation": replay_stored_artifact_compilation(
+            state_dir=Path(state_dir),
+            compilation_record_id=compilation_record_id,
+        ).to_dict(),
+        "missing_media_reconstructed": False,
+    }
+
+
+def perception_audit_store_from_guided_cradle_growth_console(
+    *,
+    state_dir: str | Path,
+) -> dict[str, Any]:
+    from ashl_core_v1.perception.perception_primitive_store import PerceptionPrimitiveStore
+
+    return {
+        "guided_console_action": "perception_audit_store",
+        "perception_audit": PerceptionPrimitiveStore(Path(state_dir)).audit_store().to_dict(),
+        "learning_approval_created": False,
+        "memory_write_created": False,
+        "external_control_created": False,
+    }
+
+
 def _require_sensor_capture_confirmation(confirm_local_capture: bool) -> None:
     if not confirm_local_capture:
         raise ValueError(
@@ -7433,4 +7592,19 @@ def _sensor_capture_console_payload(action: str, result: Any) -> dict[str, Any]:
         "memory_write_created": False,
         "first_output_created": False,
         "external_control_created": False,
+    }
+
+
+def _perception_console_payload(action: str, payload: dict[str, Any]) -> dict[str, Any]:
+    return {
+        "guided_console_action": action,
+        "perception_result": payload,
+        "raw_media_displayed": False,
+        "semantic_perception_created": False,
+        "sensor_driven_learning_created": False,
+        "teacher_review_created": False,
+        "memory_write_created": False,
+        "action_influence_created": False,
+        "external_control_created": False,
+        "first_output_created": False,
     }

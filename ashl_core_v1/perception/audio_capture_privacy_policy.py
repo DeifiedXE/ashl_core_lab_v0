@@ -35,8 +35,8 @@ class AudioCapturePrivacyPolicy:
     def __post_init__(self) -> None:
         if self.schema_version != AUDIO_CAPTURE_PRIVACY_POLICY_SCHEMA_VERSION:
             raise ValueError("invalid audio capture privacy policy schema_version")
-        if self.capture_mode != "recognition_ephemeral":
-            raise ValueError("Package 120A defines recognition_ephemeral_v0 policy only")
+        if self.capture_mode not in {"recognition_ephemeral", "grounding_capture"}:
+            raise ValueError("unknown audio capture privacy policy mode")
         blocked = {
             "raw_disk_persistence_allowed": self.raw_disk_persistence_allowed,
             "exact_speaker_embedding_allowed": self.exact_speaker_embedding_allowed,
@@ -46,9 +46,9 @@ class AudioCapturePrivacyPolicy:
         }
         enabled_forbidden = [name for name, value in blocked.items() if value]
         if enabled_forbidden:
-            raise ValueError(f"recognition ephemeral policy enables forbidden fields: {enabled_forbidden}")
+            raise ValueError(f"audio privacy policy enables forbidden fields: {enabled_forbidden}")
         if not self.primitive_persistence_allowed:
-            raise ValueError("recognition ephemeral policy allows future primitive persistence")
+            raise ValueError("audio privacy policy must allow low-level primitive persistence")
         required_low_level = (
             self.relative_pitch_contour_allowed,
             self.amplitude_envelope_allowed,
@@ -58,7 +58,7 @@ class AudioCapturePrivacyPolicy:
             self.pause_structure_allowed,
         )
         if not all(required_low_level):
-            raise ValueError("recognition ephemeral policy must allow low-level auditory primitives")
+            raise ValueError("audio privacy policy must allow low-level auditory primitives")
         if not self.provisional_policy:
             raise ValueError("Package 120A privacy policy remains provisional")
 
@@ -88,6 +88,33 @@ def build_recognition_ephemeral_audio_privacy_policy() -> AudioCapturePrivacyPol
         policy_claim=(
             "Recognition audio avoids ASHL raw disk persistence and permits only future "
             "low-level auditory primitive persistence under a provisional policy."
+        ),
+    )
+
+
+def build_grounding_conservative_audio_privacy_policy() -> AudioCapturePrivacyPolicy:
+    return AudioCapturePrivacyPolicy(
+        policy_id=stable_id("audio_capture_privacy_policy"),
+        schema_version=AUDIO_CAPTURE_PRIVACY_POLICY_SCHEMA_VERSION,
+        policy_version="grounding_conservative_v0",
+        capture_mode="grounding_capture",
+        raw_disk_persistence_allowed=False,
+        primitive_persistence_allowed=True,
+        exact_speaker_embedding_allowed=False,
+        absolute_pitch_storage_allowed=False,
+        spectral_fine_structure_storage_allowed=False,
+        speech_content_interpretation_allowed=False,
+        relative_pitch_contour_allowed=True,
+        amplitude_envelope_allowed=True,
+        relative_band_energy_allowed=True,
+        onset_offset_allowed=True,
+        rhythm_proxy_allowed=True,
+        pause_structure_allowed=True,
+        provisional_policy=True,
+        policy_claim=(
+            "Grounding audio may use finer low-level primitive resolution, but still "
+            "blocks raw waveform persistence inside primitives, speaker embeddings, "
+            "speech content, and semantic labels."
         ),
     )
 
