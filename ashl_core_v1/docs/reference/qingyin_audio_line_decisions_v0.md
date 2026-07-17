@@ -3,6 +3,7 @@
 Status: Reference
 Runtime Impact: None
 Created For: Package 120A
+Reconciled By: Package 122A
 
 ## Locked Decisions
 
@@ -42,3 +43,21 @@ Speech content remains reserved for a later package with a separate privacy and 
 Package 120A creates no speaker identity, probable mentor label, person recognition, speaker profile, or voice embedding.
 
 Future weak inputs may include coarse pitch band, relative pitch contour, appearance regularity, session context, and relationship context, but Package 120A only defines the schema surface and does not perform recognition.
+
+## Package Number Reconciliation
+
+The older auditory planning lane used Package 125-129 as a placeholder range.
+Package 122A supersedes that numbering to avoid collision with the active
+perception route.
+
+Authoritative placement after Package 124:
+
+- Package 130 / Grounded Auditory Event Concept Formation
+- Package 131 / Auditory Predictive Recognition
+- Package 173 / Selective Audio Retention Governance
+- Package 174 / Speaker Profile Necessity Decision
+- Package 175+ / Speech Content, Commitment, And Expression Memory
+
+These are package-number placements only. They do not create speech
+understanding, speaker identity, automatic retention, or commitment memory in
+Package 120A, 121, 122, or 122A.

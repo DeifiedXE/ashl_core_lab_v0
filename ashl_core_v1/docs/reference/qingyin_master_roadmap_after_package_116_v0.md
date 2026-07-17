@@ -3,7 +3,7 @@
 Status: Reference
 Runtime Impact: None
 Created For: Package 117 repair baseline
-Updated Through: Package 122 bounded multimodal perception session runtime
+Updated Through: Package 122A architecture, module and roadmap gap reconciliation
 
 ## Current Baseline
 
@@ -27,6 +27,8 @@ Package 121 added deterministic low-level perception primitive compilation for s
 
 Package 122 added a bounded multimodal perception session runtime. It can replay real Package 120 artifacts on an explicit deterministic integration timeline, compile them through Package 121, assemble nonsemantic alignment windows, convert one low-level window into the existing Host Body event format, and run the actual Package 115 bounded embodied session path to `WAITING_TEACHER_REVIEW`. The required completion path is artifact-backed integration replay and does not claim simultaneous real-world experience.
 
+Package 122A added an executable repo architecture scanner, module capability ledger, interface graph, store/CLI/test inventory, gap and bottleneck analysis, and conflict-free Package 123+ route. It changed no Qingyin runtime behavior.
+
 ## Current Safe Chain
 
 Fixture Host Body event
@@ -49,8 +51,24 @@ Fixture Host Body event
 - Package 120A / Ephemeral Audio And Auditable Deletion Foundation - completed
 - Package 121 / Hard-Soft Perception Primitive Compiler - completed
 - Package 122 / Bounded Multimodal Perception Session Runtime - completed
+- Package 122A / Architecture, Module And Roadmap Gap Reconciliation - completed
 - Package 123 / No-Codex Real Perception Two-Cycle Growth Run - next
 - Package 124 / Real Host Perception Growth Loop Milestone - later
+
+## Authoritative Route After Package 124
+
+The Package 122A generated registry supersedes conflicting placeholder routes
+that reused Package 125-129 for both active perception and auditory work.
+
+- 125-132: Active Perception And Attention, including visual/audio temporal continuity, focus state, recapture/relisten actions, novelty/uncertainty integration, grounded auditory event concepts, and auditory predictive recognition.
+- 133-140: Persistent Self-State And Drive.
+- 141-148: Bounded Thought Engine.
+- 149-156: Self-Proposed Verification.
+- 157-164: First Non-LLM Output.
+- 165-172: Daily No-Codex Runtime.
+- 173+: Selective audio retention governance, optional Speaker Profile decision, and speech content / commitment / expression memory.
+
+For the detailed generated route, see `package_123_to_daily_runtime_revised_route_v0.md`.
 
 ## Later Milestones
 
