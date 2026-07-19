@@ -894,6 +894,26 @@ def build_parser() -> argparse.ArgumentParser:
         session_command.add_argument("--session-id", required=True)
     perception_session_window = subparsers.add_parser("perception-session-show-window")
     perception_session_window.add_argument("--window-id", required=True)
+    subparsers.add_parser("home-console-show")
+    subparsers.add_parser("home-console-show-state")
+    subparsers.add_parser("home-console-show-hardware")
+    home_camera_preference = subparsers.add_parser("home-console-set-camera-preference")
+    home_camera_preference.add_argument("--enabled", choices=("true", "false"), required=True)
+    home_microphone_preference = subparsers.add_parser("home-console-set-microphone-preference")
+    home_microphone_preference.add_argument("--enabled", choices=("true", "false"), required=True)
+    home_output_volume = subparsers.add_parser("home-console-set-output-volume")
+    home_output_volume.add_argument("--gain", type=float, required=True)
+    home_text = subparsers.add_parser("home-console-submit-text")
+    home_text.add_argument("--text", required=True)
+    subparsers.add_parser("home-console-show-text-timeline")
+    home_fixture = subparsers.add_parser("home-console-dispatch-fixture-token")
+    home_fixture.add_argument("--tokens", required=True)
+    home_cancel = subparsers.add_parser("home-console-cancel-output")
+    home_cancel.add_argument("--intent-id", required=True)
+    home_muted = subparsers.add_parser("home-console-set-muted")
+    home_muted.add_argument("--muted", choices=("true", "false"), required=True)
+    subparsers.add_parser("home-console-show-status-log")
+    subparsers.add_parser("home-console-stream-events")
     subparsers.add_parser("task-apply-advisory-readback-ordering-demo")
     subparsers.add_parser("task-show-advisory-readback-ordering-teacher-gate")
     subparsers.add_parser("task-show-advisory-readback-ordering-application")
@@ -2896,6 +2916,128 @@ def main(argv: list[str] | None = None) -> int:
             )
 
             return _print_json(perception_session_audit_from_guided_cradle_growth_console(state_dir=args.state_dir, session_id=args.session_id))
+        if args.command == "home-console-show":
+            _require_state_dir(args.state_dir)
+            from ashl_core_v1.runtime.guided_cradle_growth_teacher_console import (
+                home_console_show_from_guided_cradle_growth_console,
+            )
+
+            return _print_json(home_console_show_from_guided_cradle_growth_console(state_dir=args.state_dir))
+        if args.command == "home-console-show-state":
+            _require_state_dir(args.state_dir)
+            from ashl_core_v1.runtime.guided_cradle_growth_teacher_console import (
+                home_console_show_state_from_guided_cradle_growth_console,
+            )
+
+            return _print_json(home_console_show_state_from_guided_cradle_growth_console(state_dir=args.state_dir))
+        if args.command == "home-console-show-hardware":
+            _require_state_dir(args.state_dir)
+            from ashl_core_v1.runtime.guided_cradle_growth_teacher_console import (
+                home_console_show_hardware_from_guided_cradle_growth_console,
+            )
+
+            return _print_json(home_console_show_hardware_from_guided_cradle_growth_console(state_dir=args.state_dir))
+        if args.command == "home-console-set-camera-preference":
+            _require_state_dir(args.state_dir)
+            from ashl_core_v1.runtime.guided_cradle_growth_teacher_console import (
+                home_console_set_camera_preference_from_guided_cradle_growth_console,
+            )
+
+            return _print_json(
+                home_console_set_camera_preference_from_guided_cradle_growth_console(
+                    state_dir=args.state_dir,
+                    enabled=args.enabled == "true",
+                )
+            )
+        if args.command == "home-console-set-microphone-preference":
+            _require_state_dir(args.state_dir)
+            from ashl_core_v1.runtime.guided_cradle_growth_teacher_console import (
+                home_console_set_microphone_preference_from_guided_cradle_growth_console,
+            )
+
+            return _print_json(
+                home_console_set_microphone_preference_from_guided_cradle_growth_console(
+                    state_dir=args.state_dir,
+                    enabled=args.enabled == "true",
+                )
+            )
+        if args.command == "home-console-set-output-volume":
+            _require_state_dir(args.state_dir)
+            from ashl_core_v1.runtime.guided_cradle_growth_teacher_console import (
+                home_console_set_output_volume_from_guided_cradle_growth_console,
+            )
+
+            return _print_json(
+                home_console_set_output_volume_from_guided_cradle_growth_console(
+                    state_dir=args.state_dir,
+                    gain=args.gain,
+                )
+            )
+        if args.command == "home-console-submit-text":
+            _require_state_dir(args.state_dir)
+            from ashl_core_v1.runtime.guided_cradle_growth_teacher_console import (
+                home_console_submit_text_from_guided_cradle_growth_console,
+            )
+
+            return _print_json(home_console_submit_text_from_guided_cradle_growth_console(state_dir=args.state_dir, text=args.text))
+        if args.command == "home-console-show-text-timeline":
+            _require_state_dir(args.state_dir)
+            from ashl_core_v1.runtime.guided_cradle_growth_teacher_console import (
+                home_console_show_text_timeline_from_guided_cradle_growth_console,
+            )
+
+            return _print_json(home_console_show_text_timeline_from_guided_cradle_growth_console(state_dir=args.state_dir))
+        if args.command == "home-console-dispatch-fixture-token":
+            _require_state_dir(args.state_dir)
+            from ashl_core_v1.runtime.guided_cradle_growth_teacher_console import (
+                home_console_dispatch_fixture_token_from_guided_cradle_growth_console,
+            )
+
+            tokens = tuple(token.strip() for token in args.tokens.split(",") if token.strip())
+            return _print_json(
+                home_console_dispatch_fixture_token_from_guided_cradle_growth_console(
+                    state_dir=args.state_dir,
+                    tokens=tokens,
+                )
+            )
+        if args.command == "home-console-cancel-output":
+            _require_state_dir(args.state_dir)
+            from ashl_core_v1.runtime.guided_cradle_growth_teacher_console import (
+                home_console_cancel_output_from_guided_cradle_growth_console,
+            )
+
+            return _print_json(
+                home_console_cancel_output_from_guided_cradle_growth_console(
+                    state_dir=args.state_dir,
+                    intent_id=args.intent_id,
+                )
+            )
+        if args.command == "home-console-set-muted":
+            _require_state_dir(args.state_dir)
+            from ashl_core_v1.runtime.guided_cradle_growth_teacher_console import (
+                home_console_set_muted_from_guided_cradle_growth_console,
+            )
+
+            return _print_json(
+                home_console_set_muted_from_guided_cradle_growth_console(
+                    state_dir=args.state_dir,
+                    muted=args.muted == "true",
+                )
+            )
+        if args.command == "home-console-show-status-log":
+            _require_state_dir(args.state_dir)
+            from ashl_core_v1.runtime.guided_cradle_growth_teacher_console import (
+                home_console_show_status_log_from_guided_cradle_growth_console,
+            )
+
+            return _print_json(home_console_show_status_log_from_guided_cradle_growth_console(state_dir=args.state_dir))
+        if args.command == "home-console-stream-events":
+            _require_state_dir(args.state_dir)
+            from ashl_core_v1.runtime.guided_cradle_growth_teacher_console import (
+                home_console_stream_events_from_guided_cradle_growth_console,
+            )
+
+            return _print_json(home_console_stream_events_from_guided_cradle_growth_console(state_dir=args.state_dir))
         if args.command == "task-apply-advisory-readback-ordering-demo":
             return _print_json(
                 apply_advisory_readback_ordering_demo_from_guided_cradle_growth_console()

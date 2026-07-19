@@ -1296,6 +1296,21 @@ __all__ = [
     "BoundedMultimodalPerceptionSessionRuntime",
     "MultimodalPerceptionSessionStore",
     "audit_bounded_multimodal_perception_session",
+    "LocalNonLLMOutputDispatcher",
+    "LocalOperatorConsoleStore",
+    "NonLLMLocalOutputSurfaceAuditRecord",
+    "OutputRateLimitPolicy",
+    "QingyinHomeUpperConsoleViewModel",
+    "QingyinTotalRuntimeState",
+    "RawOutputSequence",
+    "RawOutputToken",
+    "ReservedSoundPatternDescriptor",
+    "TextTimelineEntry",
+    "build_raw_output_token_registry",
+    "build_reserved_sound_pattern_registry",
+    "build_upper_console_view_model",
+    "audit_non_llm_local_output_surface",
+    "submit_local_text_input",
     "validate_trace_envelope",
     "validate_trace_envelope_store",
 ]
@@ -1317,5 +1332,59 @@ def __getattr__(name: str):
             "BoundedMultimodalPerceptionSessionRuntime": BoundedMultimodalPerceptionSessionRuntime,
             "MultimodalPerceptionSessionStore": MultimodalPerceptionSessionStore,
             "audit_bounded_multimodal_perception_session": audit_bounded_multimodal_perception_session,
+        }[name]
+    if name in {
+        "LocalNonLLMOutputDispatcher",
+        "LocalOperatorConsoleStore",
+        "NonLLMLocalOutputSurfaceAuditRecord",
+        "OutputRateLimitPolicy",
+        "QingyinHomeUpperConsoleViewModel",
+        "QingyinTotalRuntimeState",
+        "RawOutputSequence",
+        "RawOutputToken",
+        "ReservedSoundPatternDescriptor",
+        "TextTimelineEntry",
+        "build_raw_output_token_registry",
+        "build_reserved_sound_pattern_registry",
+        "build_upper_console_view_model",
+        "audit_non_llm_local_output_surface",
+        "submit_local_text_input",
+    }:
+        from .local_non_llm_output_dispatcher import LocalNonLLMOutputDispatcher
+        from .local_operator_console_store import LocalOperatorConsoleStore
+        from .operator_console_state_reader import (
+            audit_non_llm_local_output_surface,
+            build_upper_console_view_model,
+        )
+        from .operator_console_types import (
+            NonLLMLocalOutputSurfaceAuditRecord,
+            OutputRateLimitPolicy,
+            QingyinHomeUpperConsoleViewModel,
+            QingyinTotalRuntimeState,
+            RawOutputSequence,
+            RawOutputToken,
+            ReservedSoundPatternDescriptor,
+            TextTimelineEntry,
+        )
+        from .operator_text_timeline import submit_local_text_input
+        from .raw_output_token_registry import build_raw_output_token_registry
+        from .reserved_sound_pattern_registry import build_reserved_sound_pattern_registry
+
+        return {
+            "LocalNonLLMOutputDispatcher": LocalNonLLMOutputDispatcher,
+            "LocalOperatorConsoleStore": LocalOperatorConsoleStore,
+            "NonLLMLocalOutputSurfaceAuditRecord": NonLLMLocalOutputSurfaceAuditRecord,
+            "OutputRateLimitPolicy": OutputRateLimitPolicy,
+            "QingyinHomeUpperConsoleViewModel": QingyinHomeUpperConsoleViewModel,
+            "QingyinTotalRuntimeState": QingyinTotalRuntimeState,
+            "RawOutputSequence": RawOutputSequence,
+            "RawOutputToken": RawOutputToken,
+            "ReservedSoundPatternDescriptor": ReservedSoundPatternDescriptor,
+            "TextTimelineEntry": TextTimelineEntry,
+            "build_raw_output_token_registry": build_raw_output_token_registry,
+            "build_reserved_sound_pattern_registry": build_reserved_sound_pattern_registry,
+            "build_upper_console_view_model": build_upper_console_view_model,
+            "audit_non_llm_local_output_surface": audit_non_llm_local_output_surface,
+            "submit_local_text_input": submit_local_text_input,
         }[name]
     raise AttributeError(name)

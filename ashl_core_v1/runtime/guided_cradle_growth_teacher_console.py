@@ -7828,3 +7828,204 @@ def _perception_session_console_payload(action: str, payload: dict[str, Any]) ->
         "first_output_created": False,
         "this_audit_adds_runtime_capability": False,
     }
+
+
+def home_console_show_from_guided_cradle_growth_console(*, state_dir: str | Path) -> dict[str, Any]:
+    from ashl_core_v1.runtime.operator_console_state_reader import build_upper_console_view_model
+
+    return _home_console_payload("home_console_show", build_upper_console_view_model(state_dir=state_dir).to_dict())
+
+
+def home_console_show_state_from_guided_cradle_growth_console(*, state_dir: str | Path) -> dict[str, Any]:
+    from ashl_core_v1.runtime.operator_console_state_reader import build_total_state_snapshot
+
+    return _home_console_payload("home_console_show_state", build_total_state_snapshot(state_dir=state_dir).to_dict())
+
+
+def home_console_show_hardware_from_guided_cradle_growth_console(*, state_dir: str | Path) -> dict[str, Any]:
+    from ashl_core_v1.runtime.local_operator_console_store import build_default_console_store
+    from ashl_core_v1.runtime.operator_hardware_status import build_hardware_settings_snapshot
+
+    store = build_default_console_store(state_dir)
+    return _home_console_payload(
+        "home_console_show_hardware",
+        build_hardware_settings_snapshot(state_dir=state_dir, store=store).to_dict(),
+    )
+
+
+def home_console_set_camera_preference_from_guided_cradle_growth_console(
+    *,
+    state_dir: str | Path,
+    enabled: bool,
+) -> dict[str, Any]:
+    return _home_console_set_hardware_preference(state_dir=state_dir, device_kind="camera", enabled=enabled)
+
+
+def home_console_set_microphone_preference_from_guided_cradle_growth_console(
+    *,
+    state_dir: str | Path,
+    enabled: bool,
+) -> dict[str, Any]:
+    return _home_console_set_hardware_preference(state_dir=state_dir, device_kind="microphone", enabled=enabled)
+
+
+def home_console_set_output_volume_from_guided_cradle_growth_console(
+    *,
+    state_dir: str | Path,
+    gain: float,
+) -> dict[str, Any]:
+    from ashl_core_v1.runtime.local_operator_console_store import build_default_console_store
+    from ashl_core_v1.runtime.operator_hardware_status import set_output_volume_state
+
+    store = build_default_console_store(state_dir)
+    return _home_console_payload(
+        "home_console_set_output_volume",
+        set_output_volume_state(store, gain=gain).to_dict(),
+    )
+
+
+def home_console_submit_text_from_guided_cradle_growth_console(
+    *,
+    state_dir: str | Path,
+    text: str,
+) -> dict[str, Any]:
+    from ashl_core_v1.runtime.local_operator_console_store import build_default_console_store
+    from ashl_core_v1.runtime.operator_text_timeline import submit_local_text_input
+
+    store = build_default_console_store(state_dir)
+    record, entry = submit_local_text_input(store, text)
+    return _home_console_payload(
+        "home_console_submit_text",
+        {
+            "text_input": record.to_dict(),
+            "timeline_entry": entry.to_dict(),
+        },
+    )
+
+
+def home_console_show_text_timeline_from_guided_cradle_growth_console(*, state_dir: str | Path) -> dict[str, Any]:
+    from ashl_core_v1.runtime.local_operator_console_store import build_default_console_store
+
+    entries = build_default_console_store(state_dir).list_payloads("text_timeline_entries")
+    return _home_console_payload("home_console_show_text_timeline", {"text_timeline_entries": entries})
+
+
+def home_console_dispatch_fixture_token_from_guided_cradle_growth_console(
+    *,
+    state_dir: str | Path,
+    tokens: tuple[str, ...] | list[str],
+) -> dict[str, Any]:
+    from ashl_core_v1.runtime.local_non_llm_output_dispatcher import LocalNonLLMOutputDispatcher
+    from ashl_core_v1.runtime.local_operator_console_store import build_default_console_store
+    from ashl_core_v1.runtime.operator_text_timeline import build_fixture_raw_output_sequence
+
+    store = build_default_console_store(state_dir)
+    sequence = build_fixture_raw_output_sequence(token_codes=tuple(tokens))
+    store.append_raw_output_sequence(sequence)
+    dispatcher = LocalNonLLMOutputDispatcher(store)
+    intent = dispatcher.create_raw_output_intent(
+        raw_output_sequence_id=sequence.raw_output_sequence_id,
+        source_kind="fixture",
+        source_record_refs=(sequence.raw_output_sequence_id,),
+        fixture_only=True,
+        qingyin_authored=False,
+    )
+    result = dispatcher.dispatch_intent(intent.output_intent_id)
+    return _home_console_payload(
+        "home_console_dispatch_fixture_token",
+        {
+            "raw_output_sequence": sequence.to_dict(),
+            "output_intent": intent.to_dict(),
+            "dispatch_result": result.to_dict(),
+            "fixture_only": True,
+            "qingyin_authored": False,
+        },
+    )
+
+
+def home_console_cancel_output_from_guided_cradle_growth_console(
+    *,
+    state_dir: str | Path,
+    intent_id: str,
+) -> dict[str, Any]:
+    from ashl_core_v1.runtime.local_non_llm_output_dispatcher import LocalNonLLMOutputDispatcher
+    from ashl_core_v1.runtime.local_operator_console_store import build_default_console_store
+
+    cancellation = LocalNonLLMOutputDispatcher(build_default_console_store(state_dir)).cancel_output(
+        output_intent_id=intent_id
+    )
+    return _home_console_payload("home_console_cancel_output", cancellation.to_dict())
+
+
+def home_console_set_muted_from_guided_cradle_growth_console(
+    *,
+    state_dir: str | Path,
+    muted: bool,
+) -> dict[str, Any]:
+    from ashl_core_v1.runtime.local_operator_console_store import build_default_console_store
+    from ashl_core_v1.runtime.operator_hardware_status import set_output_volume_state
+
+    store = build_default_console_store(state_dir)
+    return _home_console_payload(
+        "home_console_set_muted",
+        set_output_volume_state(store, muted=muted).to_dict(),
+    )
+
+
+def home_console_show_status_log_from_guided_cradle_growth_console(*, state_dir: str | Path) -> dict[str, Any]:
+    from ashl_core_v1.runtime.local_operator_console_store import build_default_console_store
+
+    entries = build_default_console_store(state_dir).list_payloads("status_log_entries")
+    return _home_console_payload("home_console_show_status_log", {"status_log_entries": entries})
+
+
+def home_console_stream_events_from_guided_cradle_growth_console(*, state_dir: str | Path) -> dict[str, Any]:
+    from ashl_core_v1.runtime.local_operator_console_store import build_default_console_store
+    from ashl_core_v1.runtime.local_operator_event_stream import LocalOperatorEventStream
+
+    events = LocalOperatorEventStream(build_default_console_store(state_dir)).list_events()
+    return _home_console_payload("home_console_stream_events", {"operator_json_events": events})
+
+
+def _home_console_set_hardware_preference(
+    *,
+    state_dir: str | Path,
+    device_kind: str,
+    enabled: bool,
+) -> dict[str, Any]:
+    from ashl_core_v1.runtime.local_operator_console_store import build_default_console_store
+    from ashl_core_v1.runtime.local_operator_event_stream import LocalOperatorEventStream
+    from ashl_core_v1.runtime.operator_status_log import build_operator_status_log_entry
+
+    store = build_default_console_store(state_dir)
+    preference = store.set_hardware_preference(device_kind=device_kind, enabled=enabled)
+    store.append_status_log(
+        build_operator_status_log_entry(
+            level="notice",
+            event_kind="hardware_preference_changed",
+            operator_message=f"{device_kind.title()} preference {'enabled' if enabled else 'disabled'}.",
+            source_module="ashl_core_v1.runtime.guided_cradle_growth_teacher_console",
+            source_record_refs=(str(preference["preference_id"]),),
+        )
+    )
+    LocalOperatorEventStream(store).append_event(
+        event_kind="hardware_preference_changed",
+        source_record_refs=(str(preference["preference_id"]),),
+    )
+    return _home_console_payload(f"home_console_set_{device_kind}_preference", preference)
+
+
+def _home_console_payload(action: str, payload: dict[str, Any]) -> dict[str, Any]:
+    return {
+        "guided_console_action": action,
+        "home_console_result": payload,
+        "creates_teacher_approval": False,
+        "creates_learning_decision": False,
+        "user_text_forwarded_to_qingyin_cognition": False,
+        "qingyin_authored_output_created": False,
+        "first_output_created": False,
+        "sensor_auto_start_created": False,
+        "memory_write_created": False,
+        "external_control_created": False,
+        "runtime_behavior_changed": False,
+    }

@@ -3,7 +3,7 @@
 Status: Reference
 Runtime Impact: None
 Created For: Package 117 repair baseline
-Updated Through: Package 122A architecture, module and roadmap gap reconciliation
+Updated Through: Package 122B non-LLM local output surface and operator console foundation
 
 ## Current Baseline
 
@@ -29,6 +29,8 @@ Package 122 added a bounded multimodal perception session runtime. It can replay
 
 Package 122A added an executable repo architecture scanner, module capability ledger, interface graph, store/CLI/test inventory, gap and bottleneck analysis, and conflict-free Package 123+ route. It changed no Qingyin runtime behavior.
 
+Package 122B added a supporting-path local operator console foundation for Qingyin Home. It exposes actual runtime and hardware status, local text input records, fixture/future raw output-token display, cancellation, mute, output-volume preference, rate limiting, failure reporting, status logs, and JSON events. It creates no Qingyin-authored output and does not change Package 123 go/no-go.
+
 ## Current Safe Chain
 
 Fixture Host Body event
@@ -52,6 +54,7 @@ Fixture Host Body event
 - Package 121 / Hard-Soft Perception Primitive Compiler - completed
 - Package 122 / Bounded Multimodal Perception Session Runtime - completed
 - Package 122A / Architecture, Module And Roadmap Gap Reconciliation - completed
+- Package 122B / Non-LLM Local Output Surface And Operator Console Foundation - completed supporting path
 - Package 123 / No-Codex Real Perception Two-Cycle Growth Run - next
 - Package 124 / Real Host Perception Growth Loop Milestone - later
 
@@ -79,6 +82,7 @@ For the detailed generated route, see `package_123_to_daily_runtime_revised_rout
 - Real sensor safety and noise audit before semantic perception work
 - Real sensor bytes are now readable only as low-level deterministic primitives, not semantic objects or speech content
 - Real low-level perception records can now enter a bounded Host Body session through a nonsemantic multimodal alignment window
+- The upper local operator console and neutral output-token transport are ready as a supporting path, without creating first output
 
 ## Boundaries
 
@@ -98,6 +102,9 @@ Still not created:
 - external control
 - OS, mouse, keyboard, browser, file, network, shell, or API operation
 - first_output
+- Qingyin-authored output
+- natural-language generation
+- token or sound semantics
 - voice output
 - live scheduler
 - open-ended loop
