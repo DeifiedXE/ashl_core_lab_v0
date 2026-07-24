@@ -238,6 +238,9 @@ class PerceptionPrimitiveStore:
     def list_perception_readable_data(self) -> tuple[dict[str, Any], ...]:
         return self._payloads("perception_readable_data", "created_at")
 
+    def list_compilation_failures(self) -> tuple[dict[str, Any], ...]:
+        return self._payloads("perception_compilation_failures", "created_at")
+
     def list_source_primitive_links(self) -> tuple[dict[str, Any], ...]:
         return self._payloads("source_primitive_links", "created_at")
 

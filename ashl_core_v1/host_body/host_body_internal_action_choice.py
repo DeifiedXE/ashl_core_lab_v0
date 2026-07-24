@@ -1607,6 +1607,18 @@ def _infer_candidate_action(
         if light.status_light_kind == "sensor_event_seen":
             return {"kind": "update_home_status", "priority": 50, "reasons": ("sensor_event_seen_status_light",)}
     event_type = entry.source_event_type if entry else None
+    base_event_type = str(event_type).split(":", 1)[0] if event_type else None
+    if base_event_type in {
+        "multimodal_low_level_change_event",
+        "visual_low_level_change_event",
+        "audio_low_level_activity_event",
+        "host_state_low_level_delta_event",
+        "perception_window_incomplete_event",
+        "perception_compilation_failure_event",
+    }:
+        return {"kind": "request_teacher_review", "priority": 90, "reasons": (f"{base_event_type}_teacher_review",)}
+    if base_event_type == "multimodal_low_level_observation_event":
+        return {"kind": "observe_again", "priority": 30, "reasons": ("multimodal_low_level_observation",)}
     if event_type in {"camera_frame_changed", "mic_peak_detected"}:
         return {"kind": "mark_event_interesting", "priority": 70, "reasons": (f"{event_type}_interesting",)}
     if event_type in {"camera_unknown_low_level_event", "mic_unknown_low_level_event"}:

@@ -5,6 +5,7 @@ from __future__ import annotations
 import json
 import sqlite3
 from contextlib import contextmanager
+from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
@@ -47,6 +48,19 @@ from ashl_core_v1.runtime.trace_envelope import TraceEnvelope, build_trace_envel
 
 MULTIMODAL_STORE_DIRNAME = "bounded_multimodal_perception_sessions_v0"
 MULTIMODAL_STORE_FILENAME = "multimodal_sessions.sqlite3"
+
+
+@dataclass(frozen=True)
+class PreparedArtifactReplayTransport:
+    session_id: str
+    manifest: ArtifactBackedPerceptionTimelineManifest
+    config: MultimodalPerceptionSessionConfig
+    lane_items: tuple[PerceptionLaneItem, ...]
+    backpressure_records: tuple[PerceptionBackpressureRecord, ...]
+    dropped_records: tuple[PerceptionDroppedSampleRecord, ...]
+    windows: tuple[Any, ...]
+    timeline: Any
+    source_trace_refs: tuple[str, ...]
 
 
 class MultimodalPerceptionSessionStore:
@@ -261,11 +275,27 @@ class BoundedMultimodalPerceptionSessionRuntime:
         manifest: ArtifactBackedPerceptionTimelineManifest,
         *,
         config: MultimodalPerceptionSessionConfig | None = None,
+        working_readback_snapshot: tuple[dict[str, Any], ...] | list[dict[str, Any]] | None = None,
     ) -> BoundedMultimodalPerceptionSessionResult:
+        prepared = self.prepare_artifact_backed_alignment_replay_transport(
+            manifest,
+            config=config,
+        )
+        return self.run_prepared_artifact_replay_to_teacher_gate(
+            prepared,
+            working_readback_snapshot=working_readback_snapshot,
+        )
+
+    def prepare_artifact_backed_alignment_replay_transport(
+        self,
+        manifest: ArtifactBackedPerceptionTimelineManifest,
+        *,
+        config: MultimodalPerceptionSessionConfig | None = None,
+    ) -> PreparedArtifactReplayTransport:
         config = config or build_default_multimodal_session_config(state_dir=self.state_dir)
         if config.mode != MultimodalPerceptionSessionMode.ARTIFACT_BACKED_ALIGNMENT_REPLAY.value:
             raise ValueError("artifact replay requires artifact_backed_alignment_replay mode")
-        self._validate_manifest_sources(manifest)
+        self._validate_manifest_sources(manifest, config)
         multimodal_session_id = stable_id("bounded_multimodal_perception_session")
         self._traces[multimodal_session_id] = []
         self.store.append_payload("multimodal_session_configs", "config_id", config.config_id, config.to_dict())
@@ -315,8 +345,36 @@ class BoundedMultimodalPerceptionSessionRuntime:
             payload_snapshot=timeline.to_dict(),
             source_trace_refs=timeline.source_trace_refs,
         )
+        return PreparedArtifactReplayTransport(
+            session_id=multimodal_session_id,
+            manifest=manifest,
+            config=config,
+            lane_items=lane_items,
+            backpressure_records=backpressure_records,
+            dropped_records=dropped_records,
+            windows=windows,
+            timeline=timeline,
+            source_trace_refs=tuple(dict.fromkeys(timeline.source_trace_refs + tuple(self._traces.get(multimodal_session_id, ())))),
+        )
+
+    def run_prepared_artifact_replay_to_teacher_gate(
+        self,
+        prepared: PreparedArtifactReplayTransport,
+        *,
+        working_readback_snapshot: tuple[dict[str, Any], ...] | list[dict[str, Any]] | None = None,
+    ) -> BoundedMultimodalPerceptionSessionResult:
+        multimodal_session_id = prepared.session_id
+        config = prepared.config
+        lane_items = prepared.lane_items
+        windows = prepared.windows
+        timeline = prepared.timeline
         package_115_state = self.embodied_runtime.create_session()
         package_115_session_id = package_115_state.session_id
+        if working_readback_snapshot:
+            self.embodied_runtime.attach_working_readback_snapshot(
+                package_115_session_id,
+                tuple(working_readback_snapshot),
+            )
         bridge_ids: list[str] = []
         host_event_ids: list[str] = []
         pending_review_ids: tuple[str, ...] = tuple()
@@ -379,8 +437,8 @@ class BoundedMultimodalPerceptionSessionRuntime:
             alignment_window_ids=tuple(window.alignment_window_id for window in windows),
             bridge_record_ids=tuple(bridge_ids),
             host_body_event_ids=tuple(host_event_ids),
-            backpressure_record_ids=tuple(item.backpressure_record_id for item in backpressure_records),
-            dropped_sample_record_ids=tuple(item.dropped_sample_record_id for item in dropped_records),
+            backpressure_record_ids=tuple(item.backpressure_record_id for item in prepared.backpressure_records),
+            dropped_sample_record_ids=tuple(item.dropped_sample_record_id for item in prepared.dropped_records),
             compilation_failure_ids=tuple(),
             package_115_session_id=package_115_session_id,
             pending_teacher_review_ids=pending_review_ids,
@@ -388,7 +446,7 @@ class BoundedMultimodalPerceptionSessionRuntime:
             automatic_teacher_decision_created=False,
             bounded_stop_reason="teacher_review_boundary" if stopped_at_teacher_gate else "completed_without_teacher_gate",
             result_status="completed_artifact_backed_replay" if stopped_at_teacher_gate else "completed_no_eventful_window",
-            source_trace_refs=tuple(dict.fromkeys(timeline.source_trace_refs + tuple(self._traces.get(multimodal_session_id, ())))),
+            source_trace_refs=prepared.source_trace_refs,
         )
         self.store.append_payload("multimodal_session_results", "result_id", result.result_id, result.to_dict())
         self._append_trace(
@@ -491,9 +549,18 @@ class BoundedMultimodalPerceptionSessionRuntime:
             source_trace_refs=bundle.source_trace_refs,
         )
 
-    def _validate_manifest_sources(self, manifest: ArtifactBackedPerceptionTimelineManifest) -> None:
+    def _validate_manifest_sources(
+        self,
+        manifest: ArtifactBackedPerceptionTimelineManifest,
+        config: MultimodalPerceptionSessionConfig,
+    ) -> None:
         kinds = {item.source_kind for item in manifest.input_refs}
-        missing = {"camera", "screen", "microphone", "host_state"} - kinds
+        enabled = set(config.enabled_source_kinds)
+        required = set(config.required_source_kinds)
+        unexpected = kinds - enabled
+        if unexpected:
+            raise ValueError(f"artifact replay manifest contains disabled sources: {sorted(unexpected)}")
+        missing = required - kinds
         if missing:
             raise ValueError(f"artifact replay manifest missing required sources: {sorted(missing)}")
         for input_ref in manifest.input_refs:

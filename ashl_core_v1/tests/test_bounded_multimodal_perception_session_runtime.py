@@ -163,6 +163,41 @@ class BoundedMultimodalPerceptionSessionRuntimeTests(unittest.TestCase):
             with self.assertRaises(ValueError):
                 ArtifactBackedPerceptionTimelineManifest.from_dict(payload)
 
+    def test_artifact_replay_allows_camera_excluded_by_config(self):
+        with TemporaryDirectory() as state_dir:
+            manifest = build_manifest_without_camera(state_dir)
+            runtime = BoundedMultimodalPerceptionSessionRuntime(state_dir)
+            config = package_123_like_config(state_dir)
+            result = runtime.run_artifact_backed_alignment_replay(manifest, config=config)
+            self.assertTrue(result.stopped_at_teacher_gate)
+            self.assertTrue(result.pending_teacher_review_ids)
+            self.assertFalse(any("camera" in item for item in result.compiled_primitive_ids))
+
+    def test_artifact_replay_attaches_readback_before_event_and_scores_it(self):
+        with TemporaryDirectory() as state_dir:
+            manifest = build_manifest_without_camera(state_dir)
+            runtime = BoundedMultimodalPerceptionSessionRuntime(state_dir)
+            result = runtime.run_artifact_backed_alignment_replay(
+                manifest,
+                config=package_123_like_config(state_dir),
+                working_readback_snapshot=(
+                    {
+                        "working_readback_commit_id": "working_readback_commit:test",
+                        "interpretation_commit_id": "interpretation_commit:test",
+                        "evidence_theme": "teacher_review_requested",
+                        "reviewed_interpretation": "Low-level perception evidence previously required teacher review.",
+                        "source_trace_refs": ("trace:test",),
+                    },
+                ),
+            )
+            records = runtime.embodied_runtime._records[str(result.package_115_session_id)]
+            evaluation = records["readback_consumption_evaluation"]
+            self.assertTrue(evaluation["readback_loaded"])
+            self.assertTrue(evaluation["readback_evaluated"])
+            self.assertTrue(evaluation["matching_rule_found"])
+            self.assertTrue(evaluation["candidate_delta_applied"])
+            self.assertTrue(evaluation["readback_consumed"])
+
 
 def _source_config(source_kind: str) -> dict[str, object]:
     if source_kind == "camera":
@@ -190,6 +225,72 @@ def _metadata(source_kind: str) -> dict[str, object]:
     if source_kind == "microphone":
         return {"actual_sample_rate": 16000, "audio_channels": 1, "audio_sample_format": "int16", "audio_frame_count": 1600}
     return {}
+
+
+def build_manifest_without_camera(state_dir: str) -> ArtifactBackedPerceptionTimelineManifest:
+    screen_a = create_artifact(state_dir, "screen", bytes([0, 0, 0, 255] * 16), 100)
+    audio = b"".join(struct.pack("<h", int(8000 * math.sin(2 * math.pi * 220 * index / 16000))) for index in range(1600))
+    microphone = create_artifact(state_dir, "microphone", audio, 150)
+    host_state = create_artifact(
+        state_dir,
+        "host_state",
+        canonical_json(
+            {
+                "sample_monotonic_ns": 1,
+                "process_uptime_ns": 2,
+                "power_source": "unknown",
+                "battery_percent": 80,
+                "cpu_utilization_percent": 12,
+                "memory_total_bytes": 1000,
+                "memory_available_bytes": 500,
+                "display_count": 1,
+                "camera_adapter_available": True,
+                "microphone_adapter_available": True,
+                "screen_adapter_available": True,
+            }
+        ).encode("utf-8"),
+        0,
+    )
+    refs = tuple(
+        PerceptionTimelineInputRef(
+            input_ref_id=stable_id("perception_timeline_input_ref"),
+            schema_version=TIMELINE_INPUT_REF_SCHEMA_VERSION,
+            source_kind=kind,
+            source_artifact_id=artifact_id,
+            source_ephemeral_buffer_id=None,
+            replay_relative_offset_ms=offset,
+            compiler_id="canonical",
+            compiler_config_id="canonical",
+            privacy_policy_id="grounding_conservative_v0" if kind == "microphone" else None,
+            source_trace_refs=tuple(),
+        )
+        for kind, artifact_id, offset in (
+            ("host_state", host_state, 0),
+            ("screen", screen_a, 100),
+            ("microphone", microphone, 150),
+        )
+    )
+    return ArtifactBackedPerceptionTimelineManifest(
+        manifest_id=stable_id("artifact_backed_perception_manifest"),
+        schema_version=ARTIFACT_REPLAY_MANIFEST_SCHEMA_VERSION,
+        created_at=utc_now(),
+        input_refs=refs,
+        source_artifacts_are_real=True,
+        sources_captured_simultaneously=False,
+        deterministic_replay=True,
+        manifest_sha256="",
+    )
+
+
+def package_123_like_config(state_dir: str):
+    config = build_default_multimodal_session_config(state_dir=state_dir, alignment_window_ms=500)
+    payload = config.to_dict()
+    payload["config_id"] = stable_id("multimodal_session_config")
+    payload["enabled_source_kinds"] = ("screen", "microphone", "host_state")
+    payload["required_source_kinds"] = ("screen", "microphone", "host_state")
+    payload["optional_source_kinds"] = tuple()
+    payload["config_sha256"] = ""
+    return type(config)(**payload)
 
 
 if __name__ == "__main__":
