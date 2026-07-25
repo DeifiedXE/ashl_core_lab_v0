@@ -34,10 +34,26 @@ class LocalPulseStimulusRuntime:
     passes these transition records into perception, learning, memory, or scoring.
     """
 
-    def __init__(self, *, experiment_run_id: str, render_endpoint_id: str = "default") -> None:
+    def __init__(
+        self,
+        *,
+        experiment_run_id: str,
+        render_endpoint_id: str = "default",
+        schedule: tuple[tuple[int, str, str], ...] | None = None,
+        window_title_prefix: str = "ASHL Package 123 Stimulus",
+        tone_duration_ms: int = TONE_DURATION_MS,
+        client_width: int = WINDOW_CLIENT_WIDTH,
+        client_height: int = WINDOW_CLIENT_HEIGHT,
+    ) -> None:
         self.experiment_run_id = experiment_run_id
         self.render_endpoint_id = render_endpoint_id
-        self.window_title = f"ASHL Package 123 Stimulus {experiment_run_id}"
+        self.window_title = f"{window_title_prefix} {experiment_run_id}"
+        self._schedule = tuple(schedule or STIMULUS_SCHEDULE)
+        self._tone_duration_ms = int(tone_duration_ms)
+        self._client_width = int(client_width)
+        self._client_height = int(client_height)
+        if self._client_width <= 0 or self._client_height <= 0:
+            raise ValueError("stimulus client dimensions must be positive")
         self._root: Any | None = None
         self._canvas: Any | None = None
         self._started_monotonic_ns: int | None = None
@@ -54,6 +70,21 @@ class LocalPulseStimulusRuntime:
         except Exception:
             return 0
 
+    @property
+    def started_monotonic_ns(self) -> int | None:
+        return self._started_monotonic_ns
+
+    @property
+    def finished_monotonic_ns(self) -> int | None:
+        return self._finished_monotonic_ns
+
+    @property
+    def transition_records(self) -> tuple[StimulusTransitionRecord, ...]:
+        return tuple(self._transitions)
+
+    def mark_finished(self) -> None:
+        self._finished_monotonic_ns = monotonic_ns()
+
     def open(self) -> None:
         if self.render_endpoint_id != "default":
             raise ValueError("Package 123 v0 stimulus tone supports the default render endpoint only")
@@ -62,14 +93,20 @@ class LocalPulseStimulusRuntime:
         root = tk.Tk()
         root.title(self.window_title)
         root.resizable(False, False)
-        root.geometry(f"{WINDOW_CLIENT_WIDTH}x{WINDOW_CLIENT_HEIGHT}+80+80")
+        root.geometry(f"{self._client_width}x{self._client_height}+80+80")
         try:
             root.attributes("-topmost", True)
             root.lift()
             root.focus_force()
         except Exception:
             pass
-        canvas = tk.Canvas(root, width=WINDOW_CLIENT_WIDTH, height=WINDOW_CLIENT_HEIGHT, highlightthickness=0, bg="black")
+        canvas = tk.Canvas(
+            root,
+            width=self._client_width,
+            height=self._client_height,
+            highlightthickness=0,
+            bg="black",
+        )
         canvas.pack(fill="both", expand=True)
         root.update_idletasks()
         root.update()
@@ -82,14 +119,14 @@ class LocalPulseStimulusRuntime:
         if self._started_monotonic_ns is None:
             self._started_monotonic_ns = monotonic_ns()
         elapsed_ms = (monotonic_ns() - self._started_monotonic_ns) // 1_000_000
-        while self._next_transition_index < len(STIMULUS_SCHEDULE):
-            offset_ms, visual_state, audio_state = STIMULUS_SCHEDULE[self._next_transition_index]
+        while self._next_transition_index < len(self._schedule):
+            offset_ms, visual_state, audio_state = self._schedule[self._next_transition_index]
             if elapsed_ms < offset_ms:
                 break
             issued = monotonic_ns()
             self._canvas.configure(bg="white" if visual_state == "white" else "black")
             if audio_state == "tone":
-                _play_tone_default_endpoint_nonblocking()
+                _play_tone_default_endpoint_nonblocking(duration_ms=self._tone_duration_ms)
             self._transitions.append(
                 build_stimulus_transition(
                     experiment_run_id=self.experiment_run_id,
@@ -162,7 +199,7 @@ def build_planned_stimulus_transitions(experiment_run_id: str) -> tuple[Stimulus
     )
 
 
-def _play_tone_default_endpoint_nonblocking() -> None:
+def _play_tone_default_endpoint_nonblocking(*, duration_ms: int = TONE_DURATION_MS) -> None:
     if os.name != "nt":
         return
 
@@ -170,7 +207,7 @@ def _play_tone_default_endpoint_nonblocking() -> None:
         try:
             from ashl_core_v1.runtime.windows_wasapi_loopback_source import play_default_endpoint_sine_tone
 
-            play_default_endpoint_sine_tone()
+            play_default_endpoint_sine_tone(duration_ms=duration_ms)
         except Exception:
             return
 

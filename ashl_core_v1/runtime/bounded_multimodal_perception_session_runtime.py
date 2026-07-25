@@ -291,12 +291,17 @@ class BoundedMultimodalPerceptionSessionRuntime:
         manifest: ArtifactBackedPerceptionTimelineManifest,
         *,
         config: MultimodalPerceptionSessionConfig | None = None,
+        session_id: str | None = None,
     ) -> PreparedArtifactReplayTransport:
         config = config or build_default_multimodal_session_config(state_dir=self.state_dir)
         if config.mode != MultimodalPerceptionSessionMode.ARTIFACT_BACKED_ALIGNMENT_REPLAY.value:
             raise ValueError("artifact replay requires artifact_backed_alignment_replay mode")
         self._validate_manifest_sources(manifest, config)
-        multimodal_session_id = stable_id("bounded_multimodal_perception_session")
+        multimodal_session_id = session_id or stable_id("bounded_multimodal_perception_session")
+        if session_id:
+            existing_timelines = self.store.list_payloads("multimodal_timelines")
+            if any(item.get("session_id") == session_id for item in existing_timelines):
+                raise ValueError("perception session_id already exists")
         self._traces[multimodal_session_id] = []
         self.store.append_payload("multimodal_session_configs", "config_id", config.config_id, config.to_dict())
         self.store.append_payload("artifact_replay_manifests", "manifest_id", manifest.manifest_id, manifest.to_dict())

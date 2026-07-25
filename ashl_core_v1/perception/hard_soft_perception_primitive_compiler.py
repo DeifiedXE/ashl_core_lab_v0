@@ -57,12 +57,21 @@ from ashl_core_v1.perception.visual_frame_primitive_compiler import (
     compile_visual_frame_primitive,
 )
 from ashl_core_v1.runtime.host_sensor_types import stable_id, utc_now
+from ashl_core_v1.runtime.content_addressed_sensor_artifact_store import (
+    ContentAddressedSensorArtifactStore,
+)
 
 
 class HardSoftPerceptionPrimitiveCompiler:
-    def __init__(self, state_dir: str | Path) -> None:
+    def __init__(
+        self,
+        state_dir: str | Path,
+        *,
+        sensor_store: ContentAddressedSensorArtifactStore | None = None,
+    ) -> None:
         self.state_dir = Path(state_dir)
         self.store = PerceptionPrimitiveStore(self.state_dir)
+        self.sensor_store = sensor_store
 
     def list_compilers(self) -> tuple[dict[str, object], ...]:
         descriptors = build_all_compiler_descriptors()
@@ -71,7 +80,11 @@ class HardSoftPerceptionPrimitiveCompiler:
         return tuple(descriptor.to_dict() for descriptor in descriptors)
 
     def compile_artifact(self, artifact_id: str) -> PerceptionCompilationBundle:
-        resolved = resolve_stored_sensor_artifact(state_dir=self.state_dir, artifact_id=artifact_id)
+        resolved = resolve_stored_sensor_artifact(
+            state_dir=self.state_dir,
+            artifact_id=artifact_id,
+            sensor_store=self.sensor_store,
+        )
         if resolved.buffer.source_kind in {"camera", "screen"}:
             config = build_visual_frame_compiler_config(source_kind=resolved.buffer.source_kind)
             descriptor = build_visual_frame_compiler_descriptor()

@@ -13,13 +13,13 @@
     "122B",
     "123",
     "124",
-    "124A"
+    "124A",
+    "125"
   ],
   "created_at": "2026-07-19T00:00:00+00:00",
-  "current_package_id": "124A",
+  "current_package_id": "125",
   "duplicate_package_ids": [],
   "future_package_ids": [
-    "125",
     "126",
     "127",
     "128",
@@ -82,17 +82,19 @@
     "123": "critical_path",
     "124": "critical_path",
     "124A": "critical_path",
-    "125": "critical_path"
+    "125": "critical_path",
+    "126": "critical_path"
   },
   "package_status": {
     "123": "completed",
     "124": "completed",
     "124A": "completed",
-    "125": "next_critical_path"
+    "125": "completed",
+    "126": "next_critical_path"
   },
-  "registry_id": "package_number_registry:package_124_real_host_perception_milestone",
+  "registry_id": "package_number_registry:package_125_bounded_observation_window_extension",
   "registry_valid": true,
   "reserved_package_ids": [],
   "schema_version": "ashl_package_number_registry_v0",
-  "registry_sha256": "83f77d269c34537c9a9352869d946740526bf5d00e9e12415bdd5301c877808e"
+  "registry_sha256": "5ef3b627dc453556c0f4a348b9601d3899c021749e9adeb8f021ce08c5b9a7c6"
 }

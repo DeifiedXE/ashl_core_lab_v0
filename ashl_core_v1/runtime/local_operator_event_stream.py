@@ -17,6 +17,9 @@ class LocalOperatorEventStream:
         event_kind: str,
         source_record_refs: tuple[str, ...] = tuple(),
         source_trace_refs: tuple[str, ...] = tuple(),
+        runtime_session_id: str | None = None,
+        perception_session_id: str | None = None,
+        observation_window_id: str | None = None,
     ) -> LocalOperatorJsonEvent:
         event = LocalOperatorJsonEvent(
             event_id=stable_id("local_operator_event"),
@@ -28,6 +31,9 @@ class LocalOperatorEventStream:
             source_trace_refs=source_trace_refs,
             llm_used=False,
             codex_used=False,
+            runtime_session_id=runtime_session_id,
+            perception_session_id=perception_session_id,
+            observation_window_id=observation_window_id,
         )
         self.store.append_json_event(event)
         return event

@@ -8,6 +8,7 @@ import os
 import struct
 import time
 import wave
+from collections.abc import Callable
 from io import BytesIO
 from typing import Any
 
@@ -174,47 +175,106 @@ class WindowsWasapiLoopbackSource:
                 continue
             frame_count = len(chunk) // bytes_per_frame
             samples.append(
-                AdapterOutputSample(
-                    sample_id=stable_id("package_123_loopback_sample"),
-                    source_kind="microphone",
-                    adapter_id=self.adapter_id,
-                    adapter_version=self.adapter_version,
-                    device_descriptor_id=self._descriptor.device_descriptor_id,
-                    captured_at_utc=utc_now(),
+                self._build_sample(
+                    chunk=chunk,
+                    actual=actual,
                     captured_at_monotonic_ns=base_time + int(index * chunk_duration_ms * 1_000_000),
-                    capture_duration_ns=int(frame_count / sample_rate * 1_000_000_000),
-                    raw_level="adapter_output",
-                    media_type="audio/pcm",
-                    storage_format="PCM_S16LE",
-                    data=chunk,
-                    metadata={
-                        "package_123_audio_lane": "system_audio_loopback",
-                        "capture_mode": "grounding_capture",
-                        "retention_classification": "bounded_package_123_experiment_evidence",
-                        "loopback_scope": "selected_render_endpoint",
-                        "endpoint_id": self.endpoint_id,
-                        "endpoint_name": self._source_descriptor.endpoint_name,
-                        "actual_sample_rate": sample_rate,
-                        "audio_channels": channels,
-                        "audio_sample_format": "int16",
-                        "audio_frame_count": frame_count,
-                        "chunk_duration_ms": chunk_duration_ms,
-                        "backend_name": "windows_wasapi_loopback",
-                        "original_format": actual.get("original_format"),
-                        "output_format": "PCM_S16LE",
-                        "channel_mapping": actual.get("channel_mapping"),
-                        "resampling_performed": False,
-                        "silence_fill_performed": bool(actual.get("silence_fill_performed")),
-                        "inserted_silence_frame_count": int(actual.get("inserted_silence_frame_count") or 0),
-                        "conversion_implementation": "ashl_core_v1.runtime.windows_wasapi_loopback_source",
-                        "speech_recognition_created": False,
-                        "speaker_recognition_created": False,
-                        "semantic_audio_model_used": False,
-                    },
-                    real_device_capture=True,
+                    chunk_duration_ms=chunk_duration_ms,
                 )
             )
         return tuple(samples)
+
+    def capture_samples_until_deadline(
+        self,
+        *,
+        deadline_ns_getter: Callable[[], int],
+        on_sample: Callable[[AdapterOutputSample], None] | None = None,
+        chunk_duration_ms: int = LOOPBACK_CHUNK_DURATION_MS,
+    ) -> tuple[AdapterOutputSample, ...]:
+        """Capture through a shared mutable deadline without reopening WASAPI."""
+
+        if not self._source_descriptor.available:
+            raise SensorCaptureError(
+                "backend_missing",
+                self._source_descriptor.failure_reason or "WASAPI loopback unavailable",
+            )
+        started_ns = monotonic_ns()
+        initial_deadline_ns = int(deadline_ns_getter())
+        if initial_deadline_ns <= started_ns:
+            raise SensorCaptureError("unsupported_format", "shared deadline must be in the future")
+        if initial_deadline_ns - started_ns > MAX_CAPTURE_DURATION_MS * 1_000_000:
+            raise SensorCaptureError("unsupported_format", "shared deadline exceeds Package 123 bounds")
+        samples: list[AdapterOutputSample] = []
+
+        def emit(pcm: bytes, actual: dict[str, object], captured_at_monotonic_ns: int) -> None:
+            sample = self._build_sample(
+                chunk=pcm,
+                actual=actual,
+                captured_at_monotonic_ns=captured_at_monotonic_ns,
+                chunk_duration_ms=chunk_duration_ms,
+            )
+            samples.append(sample)
+            if on_sample is not None:
+                on_sample(sample)
+
+        _capture_wasapi_loopback_pcm_s16le(
+            duration_ms=None,
+            deadline_ns_getter=deadline_ns_getter,
+            pcm_chunk_callback=emit,
+            chunk_duration_ms=chunk_duration_ms,
+        )
+        return tuple(samples)
+
+    def _build_sample(
+        self,
+        *,
+        chunk: bytes,
+        actual: dict[str, object],
+        captured_at_monotonic_ns: int,
+        chunk_duration_ms: int,
+    ) -> AdapterOutputSample:
+        sample_rate = int(actual["sample_rate"])
+        channels = int(actual["channels"])
+        frame_count = len(chunk) // (2 * channels)
+        return AdapterOutputSample(
+            sample_id=stable_id("package_123_loopback_sample"),
+            source_kind="microphone",
+            adapter_id=self.adapter_id,
+            adapter_version=self.adapter_version,
+            device_descriptor_id=self._descriptor.device_descriptor_id,
+            captured_at_utc=utc_now(),
+            captured_at_monotonic_ns=int(captured_at_monotonic_ns),
+            capture_duration_ns=int(frame_count / sample_rate * 1_000_000_000),
+            raw_level="adapter_output",
+            media_type="audio/pcm",
+            storage_format="PCM_S16LE",
+            data=chunk,
+            metadata={
+                "package_123_audio_lane": "system_audio_loopback",
+                "capture_mode": "grounding_capture",
+                "retention_classification": "bounded_package_123_experiment_evidence",
+                "loopback_scope": "selected_render_endpoint",
+                "endpoint_id": self.endpoint_id,
+                "endpoint_name": self._source_descriptor.endpoint_name,
+                "actual_sample_rate": sample_rate,
+                "audio_channels": channels,
+                "audio_sample_format": "int16",
+                "audio_frame_count": frame_count,
+                "chunk_duration_ms": chunk_duration_ms,
+                "backend_name": "windows_wasapi_loopback",
+                "original_format": actual.get("original_format"),
+                "output_format": "PCM_S16LE",
+                "channel_mapping": actual.get("channel_mapping"),
+                "resampling_performed": False,
+                "silence_fill_performed": bool(actual.get("silence_fill_performed")),
+                "inserted_silence_frame_count": int(actual.get("inserted_silence_frame_count") or 0),
+                "conversion_implementation": "ashl_core_v1.runtime.windows_wasapi_loopback_source",
+                "speech_recognition_created": False,
+                "speaker_recognition_created": False,
+                "semantic_audio_model_used": False,
+            },
+            real_device_capture=True,
+        )
 
 
 def list_loopback_sources() -> tuple[SystemAudioLoopbackSourceDescriptor, ...]:
@@ -254,12 +314,12 @@ def generate_sine_wave_wav_bytes(
     return output.getvalue()
 
 
-def play_default_endpoint_sine_tone() -> None:
+def play_default_endpoint_sine_tone(*, duration_ms: int = 350) -> None:
     if os.name != "nt":
         return
     import winsound
 
-    tone = generate_sine_wave_wav_bytes()
+    tone = generate_sine_wave_wav_bytes(duration_ms=duration_ms)
     winsound.PlaySound(tone, winsound.SND_MEMORY)
 
 
@@ -319,7 +379,15 @@ def _probe_default_endpoint_format() -> dict[str, object] | None:
         return None
 
 
-def _capture_wasapi_loopback_pcm_s16le(*, duration_ms: int) -> tuple[bytes, dict[str, object]]:
+def _capture_wasapi_loopback_pcm_s16le(
+    *,
+    duration_ms: int | None,
+    deadline_ns_getter: Callable[[], int] | None = None,
+    pcm_chunk_callback: Callable[[bytes, dict[str, object], int], None] | None = None,
+    chunk_duration_ms: int = LOOPBACK_CHUNK_DURATION_MS,
+) -> tuple[bytes, dict[str, object]]:
+    if duration_ms is None and deadline_ns_getter is None:
+        raise ValueError("duration_ms or deadline_ns_getter is required")
     handles: dict[str, Any] = {}
     fmt_ptr = ctypes.c_void_p()
     try:
@@ -328,7 +396,7 @@ def _capture_wasapi_loopback_pcm_s16le(*, duration_ms: int) -> tuple[bytes, dict
         hr = _call(audio_client, 8, ctypes.c_long, [ctypes.POINTER(ctypes.c_void_p)])(audio_client, ctypes.byref(fmt_ptr))
         _check_hr(hr, "IAudioClient.GetMixFormat")
         fmt = _format_from_waveformatex_pointer(fmt_ptr)
-        hns_duration = int(max(1000, duration_ms) * 10_000)
+        hns_duration = int(max(1000, duration_ms or MAX_CAPTURE_DURATION_MS) * 10_000)
         hr = _call(
             audio_client,
             3,
@@ -347,31 +415,74 @@ def _capture_wasapi_loopback_pcm_s16le(*, duration_ms: int) -> tuple[bytes, dict
         handles["capture_client"] = capture_client
         hr = _call(audio_client, 10, ctypes.c_long, [])(audio_client)
         _check_hr(hr, "IAudioClient.Start")
-        started = time.monotonic()
+        started_ns = monotonic_ns()
+        fixed_deadline_ns = (
+            started_ns + int(duration_ms) * 1_000_000 if duration_ms is not None else None
+        )
         raw = bytearray()
         packet = ctypes.c_uint32(0)
         sample_rate = int(fmt["sample_rate"])
         block_align = int(fmt["block_align"])
-        expected_frames = int(duration_ms * sample_rate / 1000)
         inserted_silence_frames = 0
+        emitted_frames = 0
+        frames_per_chunk = max(1, int(sample_rate * int(chunk_duration_ms) / 1000))
 
-        def pad_to_elapsed() -> None:
+        def current_deadline_ns() -> int:
+            deadline = (
+                int(deadline_ns_getter())
+                if deadline_ns_getter is not None
+                else int(fixed_deadline_ns or started_ns)
+            )
+            if deadline - started_ns > MAX_CAPTURE_DURATION_MS * 1_000_000:
+                raise SensorCaptureError(
+                    "unsupported_format",
+                    "shared deadline exceeds Package 123 bounded maximum",
+                )
+            return deadline
+
+        def expected_frames_at_deadline() -> int:
+            return max(
+                0,
+                int((current_deadline_ns() - started_ns) * sample_rate / 1_000_000_000),
+            )
+
+        def pad_to_elapsed(pending_frames: int = 0) -> None:
             nonlocal inserted_silence_frames
             if sample_rate <= 0 or block_align <= 0:
                 return
-            elapsed_frames = min(expected_frames, int((time.monotonic() - started) * sample_rate))
+            elapsed_ns = max(0, min(monotonic_ns(), current_deadline_ns()) - started_ns)
+            elapsed_frames = int(elapsed_ns * sample_rate / 1_000_000_000)
             current_frames = len(raw) // block_align
-            missing_frames = elapsed_frames - current_frames
+            missing_frames = elapsed_frames - current_frames - int(pending_frames)
             if missing_frames > 0:
                 raw.extend(b"\x00" * missing_frames * block_align)
                 inserted_silence_frames += missing_frames
 
-        while (time.monotonic() - started) * 1000 < duration_ms:
+        def emit_ready_chunks() -> None:
+            nonlocal emitted_frames
+            if pcm_chunk_callback is None:
+                return
+            available_frames = len(raw) // block_align
+            while available_frames - emitted_frames >= frames_per_chunk:
+                start = emitted_frames * block_align
+                end = start + frames_per_chunk * block_align
+                pcm_chunk, converted_chunk = _convert_to_pcm_s16le(bytes(raw[start:end]), fmt)
+                converted_chunk["silence_fill_performed"] = inserted_silence_frames > 0
+                converted_chunk["inserted_silence_frame_count"] = inserted_silence_frames
+                pcm_chunk_callback(
+                    pcm_chunk,
+                    converted_chunk,
+                    started_ns + int(emitted_frames * 1_000_000_000 / sample_rate),
+                )
+                emitted_frames += frames_per_chunk
+
+        while monotonic_ns() < current_deadline_ns():
             hr = _call(capture_client, 5, ctypes.c_long, [ctypes.POINTER(ctypes.c_uint32)])(capture_client, ctypes.byref(packet))
             _check_hr(hr, "IAudioCaptureClient.GetNextPacketSize")
             if packet.value == 0:
                 time.sleep(0.01)
                 pad_to_elapsed()
+                emit_ready_chunks()
                 continue
             while packet.value:
                 data_ptr = ctypes.POINTER(ctypes.c_ubyte)()
@@ -399,24 +510,27 @@ def _capture_wasapi_loopback_pcm_s16le(*, duration_ms: int) -> tuple[bytes, dict
                     ctypes.byref(qpc_position),
                 )
                 _check_hr(hr, "IAudioCaptureClient.GetBuffer")
-                pad_to_elapsed()
+                pad_to_elapsed(int(frame_count.value))
                 byte_count = int(frame_count.value) * int(fmt["block_align"])
                 if flags.value & AUDCLNT_BUFFERFLAGS_SILENT:
                     raw.extend(b"\x00" * byte_count)
                 else:
                     raw.extend(ctypes.string_at(data_ptr, byte_count))
+                emit_ready_chunks()
                 hr = _call(capture_client, 4, ctypes.c_long, [ctypes.c_uint32])(capture_client, frame_count.value)
                 _check_hr(hr, "IAudioCaptureClient.ReleaseBuffer")
                 hr = _call(capture_client, 5, ctypes.c_long, [ctypes.POINTER(ctypes.c_uint32)])(capture_client, ctypes.byref(packet))
                 _check_hr(hr, "IAudioCaptureClient.GetNextPacketSize")
         _call(audio_client, 11, ctypes.c_long, [])(audio_client)
         if block_align > 0:
+            expected_frames = expected_frames_at_deadline()
             current_frames = len(raw) // block_align
             if current_frames < expected_frames:
                 missing_frames = expected_frames - current_frames
                 raw.extend(b"\x00" * missing_frames * block_align)
                 inserted_silence_frames += missing_frames
             raw = raw[: expected_frames * block_align]
+            emit_ready_chunks()
         pcm, converted = _convert_to_pcm_s16le(bytes(raw), fmt)
         converted["silence_fill_performed"] = inserted_silence_frames > 0
         converted["inserted_silence_frame_count"] = inserted_silence_frames

@@ -1,5 +1,5 @@
 {
-  "ledger_id": "architecture_capability_ledger:package_124_update",
+  "ledger_id": "architecture_capability_ledger:package_125_update",
   "schema_version": "ashl_architecture_capability_ledger_v0",
   "runtime_behavior_changed_by_package_124": false,
   "capabilities": [
@@ -30,6 +30,19 @@
     {
       "package": "125",
       "name": "Bounded Observation Window Extension",
+      "status": "completed",
+      "runtime_delta": "one explicitly authorized fixed extension of the same active observation window",
+      "source_restart_delta": "none",
+      "focus_delta": "none",
+      "semantic_delta": "none",
+      "scoring_delta": "none",
+      "memory_delta": "none",
+      "output_delta": "none",
+      "external_control_delta": "none"
+    },
+    {
+      "package": "126",
+      "name": "Bounded Re-Sampling And Listen-Again Internal Action",
       "status": "next_critical_path",
       "runtime_delta": "planned"
     }

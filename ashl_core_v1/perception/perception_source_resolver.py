@@ -30,8 +30,9 @@ def resolve_stored_sensor_artifact(
     *,
     state_dir: str | Path,
     artifact_id: str,
+    sensor_store: ContentAddressedSensorArtifactStore | None = None,
 ) -> ResolvedPerceptionSource:
-    store = ContentAddressedSensorArtifactStore(Path(state_dir))
+    store = sensor_store or ContentAddressedSensorArtifactStore(Path(state_dir))
     artifact = store.get_artifact(artifact_id)
     verification = store.verify_artifact(artifact_id)
     if verification.get("status") == "authorized_waveform_deletion":

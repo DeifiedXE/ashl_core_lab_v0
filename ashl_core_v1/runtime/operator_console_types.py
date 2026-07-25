@@ -115,6 +115,30 @@ VALID_EVENT_KINDS = (
     "temporal_sidecar_attached",
     "temporal_calibration_completed",
     "temporal_audit_failed",
+    "observation_window_started",
+    "temporal_tail_evidence_created",
+    "observation_extension_candidate_created",
+    "observation_extension_policy_allowed",
+    "observation_extension_policy_blocked",
+    "observation_extension_action_created",
+    "observation_deadline_extended",
+    "observation_extension_cancelled",
+    "observation_window_operator_interrupted",
+    "observation_extension_outcome_created",
+    "observation_extension_audit_failed",
+)
+PACKAGE_125_OBSERVATION_EVENT_KINDS = (
+    "observation_window_started",
+    "temporal_tail_evidence_created",
+    "observation_extension_candidate_created",
+    "observation_extension_policy_allowed",
+    "observation_extension_policy_blocked",
+    "observation_extension_action_created",
+    "observation_deadline_extended",
+    "observation_extension_cancelled",
+    "observation_window_operator_interrupted",
+    "observation_extension_outcome_created",
+    "observation_extension_audit_failed",
 )
 
 
@@ -619,6 +643,9 @@ class LocalOperatorJsonEvent:
     llm_used: bool
     codex_used: bool
     network_used: bool = False
+    runtime_session_id: str | None = None
+    perception_session_id: str | None = None
+    observation_window_id: str | None = None
 
     def __post_init__(self) -> None:
         if self.schema_version != JSON_EVENT_SCHEMA_VERSION:
@@ -629,6 +656,10 @@ class LocalOperatorJsonEvent:
             raise ValueError("invalid local operator event kind")
         if self.llm_used or self.codex_used or self.network_used:
             raise ValueError("operator event stream must report no LLM/Codex/network use")
+        if self.event_kind in PACKAGE_125_OBSERVATION_EVENT_KINDS and not (
+            self.runtime_session_id and self.perception_session_id and self.observation_window_id
+        ):
+            raise ValueError("Package 125 observation events require runtime, perception, and observation window ids")
         object.__setattr__(self, "source_record_refs", _tuple_of_str(self.source_record_refs))
         object.__setattr__(self, "source_trace_refs", _tuple_of_str(self.source_trace_refs))
 

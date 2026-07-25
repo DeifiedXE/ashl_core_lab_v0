@@ -9,7 +9,8 @@ Updated By: Package 122B local operator console insertion
 Package 122B Classification: `supporting_path`
 Updated By: Package 124 real host perception milestone audit and archive
 Updated By: Package 124A grounded temporal primitive foundation
-Critical Path Note: Package 123, Package 124 and Package 124A are completed. Package 125 is the next critical-path item.
+Updated By: Package 125 bounded observation window extension
+Critical Path Note: Package 123 through Package 125 are completed. Package 126 is the next critical-path item.
 
 | Package | Name | Classification | Milestone Dependency | Route Note |
 | --- | --- | --- | --- | --- |
@@ -17,8 +18,8 @@ Critical Path Note: Package 123, Package 124 and Package 124A are completed. Pac
 | 123 | No-Codex Real Perception Two-Cycle Growth Run | critical_path | Package 124 | Completed the first real perception two-cycle growth run. |
 | 124 | Real Host Perception Growth Loop Milestone Audit And Evidence Archive | critical_path | Package 124 | Completed independent audit, certificate, and durable evidence archive for the Package 123 run. |
 | 124A | Grounded Temporal Primitive Foundation | critical_path | Package 132 | Completed: grounded temporal anchors, spans, intervals, relations, continuity and external-gap records without subjective time or rhythm semantics. |
-| 125 | Bounded Observation Window Extension | critical_path | Package 132 | Next: consume temporal sidecars to request bounded observation extension without creating open-ended sensing. |
-| 126 | Bounded Re-Sampling And Listen-Again Internal Action | critical_path | Package 132 | Connect observe-again/listen-again as internal actions only. |
+| 125 | Bounded Observation Window Extension | critical_path | Package 132 | Completed: use grounded temporal-tail evidence to extend the same active screen, system-audio and host-state capture sessions once, with a fixed bound and no restart, focus, semantics, memory, output or external control. |
+| 126 | Bounded Re-Sampling And Listen-Again Internal Action | critical_path | Package 132 | Next: connect bounded observe-again/listen-again as internal actions only. |
 | 127 | Internal Perception Focus Shift | critical_path | Package 132 | Add bounded internal focus state separate from external control. |
 | 128 | Evidence Sufficiency And Observation Stop Policy | critical_path | Package 132 | Decide when bounded observation evidence is sufficient to stop. |
 | 129 | Active Perception Real Two-Cycle Growth Run | critical_path | Package 132 | Run active perception growth without semantic vision, speech or external control. |
