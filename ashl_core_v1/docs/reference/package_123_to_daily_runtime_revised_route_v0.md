@@ -8,19 +8,20 @@ Scanned Commit: `00e76c9`
 Updated By: Package 122B local operator console insertion
 Package 122B Classification: `supporting_path`
 Updated By: Package 124 real host perception milestone audit and archive
-Critical Path Note: Package 123 and Package 124 are completed. Package 124A is the next critical-path item.
+Updated By: Package 124A grounded temporal primitive foundation
+Critical Path Note: Package 123, Package 124 and Package 124A are completed. Package 125 is the next critical-path item.
 
 | Package | Name | Classification | Milestone Dependency | Route Note |
 | --- | --- | --- | --- | --- |
 | 122B | Non-LLM Local Output Surface And Operator Console Foundation | supporting_path | none | Adds the local operator console and neutral output transport foundation without creating first output or changing Package 123 go/no-go. |
 | 123 | No-Codex Real Perception Two-Cycle Growth Run | critical_path | Package 124 | Completed the first real perception two-cycle growth run. |
 | 124 | Real Host Perception Growth Loop Milestone Audit And Evidence Archive | critical_path | Package 124 | Completed independent audit, certificate, and durable evidence archive for the Package 123 run. |
-| 124A | Grounded Temporal Primitive Foundation | critical_path | Package 132 | Next: add grounded temporal primitives without creating time perception or rhythm semantics. |
-| 125 | Visual Temporal Continuity | critical_path | Package 132 | Preserve low-level visual continuity before attention decisions. |
-| 126 | Audio Temporal Continuity | supporting_path | Package 132 | Preserve low-level auditory continuity without speech semantics. |
-| 127 | Runtime Focus And Attention State | critical_path | Package 132 | Add bounded internal focus state separate from external control. |
-| 128 | Bounded Recapture And Relisten Internal Actions | critical_path | Package 132 | Connect observe-again/listen-again as internal actions only. |
-| 129 | Novelty And Uncertainty Signal Integration | critical_path | Package 132 | Unify low-level novelty and uncertainty signals for active perception. |
+| 124A | Grounded Temporal Primitive Foundation | critical_path | Package 132 | Completed: grounded temporal anchors, spans, intervals, relations, continuity and external-gap records without subjective time or rhythm semantics. |
+| 125 | Bounded Observation Window Extension | critical_path | Package 132 | Next: consume temporal sidecars to request bounded observation extension without creating open-ended sensing. |
+| 126 | Bounded Re-Sampling And Listen-Again Internal Action | critical_path | Package 132 | Connect observe-again/listen-again as internal actions only. |
+| 127 | Internal Perception Focus Shift | critical_path | Package 132 | Add bounded internal focus state separate from external control. |
+| 128 | Evidence Sufficiency And Observation Stop Policy | critical_path | Package 132 | Decide when bounded observation evidence is sufficient to stop. |
+| 129 | Active Perception Real Two-Cycle Growth Run | critical_path | Package 132 | Run active perception growth without semantic vision, speech or external control. |
 | 130 | Grounded Auditory Event Concept Formation | supporting_path | Package 132 | Begin auditory event concepts, not speech or speaker identity. |
 | 131 | Auditory Predictive Recognition | supporting_path | Package 132 | Compare observed and expected AudioPrimitive records. |
 | 132 | Active Perception And Attention Milestone | critical_path | Package 132 | Seal bounded active perception and attention. |

@@ -103,6 +103,18 @@ VALID_EVENT_KINDS = (
     "output_failed",
     "teacher_gate_changed",
     "status_log_appended",
+    "temporal_clock_domain_created",
+    "temporal_clock_quality_verified",
+    "temporal_anchor_created",
+    "temporal_span_created",
+    "temporal_interval_created",
+    "temporal_relation_created",
+    "temporal_continuity_created",
+    "external_gap_discovered",
+    "temporal_bundle_compiled",
+    "temporal_sidecar_attached",
+    "temporal_calibration_completed",
+    "temporal_audit_failed",
 )
 
 
@@ -606,6 +618,7 @@ class LocalOperatorJsonEvent:
     source_trace_refs: tuple[str, ...]
     llm_used: bool
     codex_used: bool
+    network_used: bool = False
 
     def __post_init__(self) -> None:
         if self.schema_version != JSON_EVENT_SCHEMA_VERSION:
@@ -614,8 +627,8 @@ class LocalOperatorJsonEvent:
             raise ValueError("sequence_index cannot be negative")
         if self.event_kind not in VALID_EVENT_KINDS:
             raise ValueError("invalid local operator event kind")
-        if self.llm_used or self.codex_used:
-            raise ValueError("operator event stream must report no LLM/Codex use")
+        if self.llm_used or self.codex_used or self.network_used:
+            raise ValueError("operator event stream must report no LLM/Codex/network use")
         object.__setattr__(self, "source_record_refs", _tuple_of_str(self.source_record_refs))
         object.__setattr__(self, "source_trace_refs", _tuple_of_str(self.source_trace_refs))
 

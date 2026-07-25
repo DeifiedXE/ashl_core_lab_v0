@@ -21,6 +21,15 @@
     {
       "package": "124A",
       "name": "Grounded Temporal Primitive Foundation",
+      "status": "completed",
+      "runtime_delta": "grounded temporal primitive foundation",
+      "scoring_delta": "none",
+      "memory_delta": "none",
+      "output_delta": "none"
+    },
+    {
+      "package": "125",
+      "name": "Bounded Observation Window Extension",
       "status": "next_critical_path",
       "runtime_delta": "planned"
     }
