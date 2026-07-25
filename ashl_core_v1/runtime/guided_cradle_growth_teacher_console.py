@@ -8029,3 +8029,38 @@ def _home_console_payload(action: str, payload: dict[str, Any]) -> dict[str, Any
         "external_control_created": False,
         "runtime_behavior_changed": False,
     }
+
+
+def package124_inspect_source_from_guided_cradle_growth_console(*, state_dir: str | Path) -> dict[str, object]:
+    from ashl_core_v1.runtime.package_124_source_audit import inspect_package_124_source
+
+    return inspect_package_124_source(state_dir)
+
+
+def package124_audit_source_from_guided_cradle_growth_console(*, state_dir: str | Path) -> dict[str, object]:
+    from ashl_core_v1.runtime.package_124_source_audit import audit_package_124_source
+
+    return audit_package_124_source(state_dir)
+
+
+def package124_audit_archive_and_certify_from_guided_cradle_growth_console(
+    *,
+    state_dir: str | Path,
+    archive_root: str | Path,
+    expected_commit: str = "8c38918",
+    confirm: bool = False,
+) -> dict[str, object]:
+    from ashl_core_v1.runtime.package_124_archive import create_package_124_archive
+
+    return create_package_124_archive(
+        state_dir=state_dir,
+        archive_root=archive_root,
+        expected_commit=expected_commit,
+        confirm=confirm,
+    )
+
+
+def package124_verify_archive_from_guided_cradle_growth_console(*, archive_dir: str | Path) -> dict[str, object]:
+    from ashl_core_v1.runtime.package_124_archive import verify_package_124_archive
+
+    return verify_package_124_archive(archive_dir)

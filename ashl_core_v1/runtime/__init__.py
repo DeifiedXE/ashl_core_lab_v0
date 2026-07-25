@@ -217,6 +217,13 @@ from .package_123_transport_integrity import (
     Package123TransportSoakRecord,
     TimestampPacedPerceptionReplay,
 )
+from .package_124_source_audit import audit_package_124_source, inspect_package_124_source
+from .package_124_archive import create_package_124_archive, verify_package_124_archive
+from .package_124_types import (
+    Package124RealHostPerceptionMilestoneAuditRecord,
+    Package124MilestoneCertificate,
+    RealHostPerceptionGrowthMilestoneIdentity,
+)
 from .event_return_parent_resume import (
     RuntimeNestedReturnResumeTrace,
     RuntimeParentFrameResumeAudit,
@@ -1325,6 +1332,13 @@ __all__ = [
     "build_upper_console_view_model",
     "audit_non_llm_local_output_surface",
     "submit_local_text_input",
+    "RealHostPerceptionGrowthMilestoneIdentity",
+    "Package124RealHostPerceptionMilestoneAuditRecord",
+    "Package124MilestoneCertificate",
+    "inspect_package_124_source",
+    "audit_package_124_source",
+    "create_package_124_archive",
+    "verify_package_124_archive",
     "validate_trace_envelope",
     "validate_trace_envelope_store",
 ]

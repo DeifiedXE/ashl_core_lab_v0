@@ -1,0 +1,28 @@
+{
+  "ledger_id": "architecture_capability_ledger:package_124_update",
+  "schema_version": "ashl_architecture_capability_ledger_v0",
+  "runtime_behavior_changed_by_package_124": false,
+  "capabilities": [
+    {
+      "package": "123",
+      "name": "No-Codex Real Perception Two-Cycle Growth Run",
+      "status": "completed",
+      "runtime_delta": "real perception two-cycle growth run",
+      "source_commit": "8c38918"
+    },
+    {
+      "package": "124",
+      "name": "Real Host Perception Growth Loop Milestone Audit And Evidence Archive",
+      "status": "completed",
+      "runtime_delta": "none",
+      "audit_delta": "independent Package 123 milestone certification",
+      "archive_delta": "durable content-verified evidence archive"
+    },
+    {
+      "package": "124A",
+      "name": "Grounded Temporal Primitive Foundation",
+      "status": "next_critical_path",
+      "runtime_delta": "planned"
+    }
+  ]
+}

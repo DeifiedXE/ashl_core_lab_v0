@@ -7,13 +7,15 @@ Source Scan: `architecture_repo_scan:86058ffd3c3b9d64`
 Scanned Commit: `00e76c9`
 Updated By: Package 122B local operator console insertion
 Package 122B Classification: `supporting_path`
-Critical Path Note: Package 123 remains the next critical-path package and is still blocked only by live home experience data.
+Updated By: Package 124 real host perception milestone audit and archive
+Critical Path Note: Package 123 and Package 124 are completed. Package 124A is the next critical-path item.
 
 | Package | Name | Classification | Milestone Dependency | Route Note |
 | --- | --- | --- | --- | --- |
 | 122B | Non-LLM Local Output Surface And Operator Console Foundation | supporting_path | none | Adds the local operator console and neutral output transport foundation without creating first output or changing Package 123 go/no-go. |
-| 123 | No-Codex Real Perception Two-Cycle Growth Run | critical_path | Package 124 | Run the first real perception two-cycle flow when live experience data exists. |
-| 124 | Real Host Perception Growth Loop Milestone | critical_path | Package 124 | Audit and seal the real perception growth-loop milestone. |
+| 123 | No-Codex Real Perception Two-Cycle Growth Run | critical_path | Package 124 | Completed the first real perception two-cycle growth run. |
+| 124 | Real Host Perception Growth Loop Milestone Audit And Evidence Archive | critical_path | Package 124 | Completed independent audit, certificate, and durable evidence archive for the Package 123 run. |
+| 124A | Grounded Temporal Primitive Foundation | critical_path | Package 132 | Next: add grounded temporal primitives without creating time perception or rhythm semantics. |
 | 125 | Visual Temporal Continuity | critical_path | Package 132 | Preserve low-level visual continuity before attention decisions. |
 | 126 | Audio Temporal Continuity | supporting_path | Package 132 | Preserve low-level auditory continuity without speech semantics. |
 | 127 | Runtime Focus And Attention State | critical_path | Package 132 | Add bounded internal focus state separate from external control. |

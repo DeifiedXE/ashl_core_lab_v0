@@ -914,6 +914,20 @@ def build_parser() -> argparse.ArgumentParser:
     home_muted.add_argument("--muted", choices=("true", "false"), required=True)
     subparsers.add_parser("home-console-show-status-log")
     subparsers.add_parser("home-console-stream-events")
+    package124_archive = subparsers.add_parser("package124-audit-archive-and-certify")
+    package124_archive.add_argument("--archive-root", required=True)
+    package124_archive.add_argument("--expected-commit", default="8c38918")
+    package124_archive.add_argument("--confirm", action="store_true")
+    package124_verify = subparsers.add_parser("package124-verify-archive")
+    package124_verify.add_argument("--archive-dir", required=True)
+    package124_certificate = subparsers.add_parser("package124-show-certificate")
+    package124_certificate.add_argument("--archive-dir", required=True)
+    package124_provenance = subparsers.add_parser("package124-show-provenance")
+    package124_provenance.add_argument("--archive-dir", required=True)
+    package124_boundaries = subparsers.add_parser("package124-show-boundaries")
+    package124_boundaries.add_argument("--archive-dir", required=True)
+    subparsers.add_parser("package124-inspect-source")
+    subparsers.add_parser("package124-audit-source")
     subparsers.add_parser("task-apply-advisory-readback-ordering-demo")
     subparsers.add_parser("task-show-advisory-readback-ordering-teacher-gate")
     subparsers.add_parser("task-show-advisory-readback-ordering-application")
@@ -3038,6 +3052,54 @@ def main(argv: list[str] | None = None) -> int:
             )
 
             return _print_json(home_console_stream_events_from_guided_cradle_growth_console(state_dir=args.state_dir))
+        if args.command == "package124-inspect-source":
+            _require_state_dir(args.state_dir)
+            from ashl_core_v1.runtime.package_124_source_audit import inspect_package_124_source
+
+            return _print_json(inspect_package_124_source(args.state_dir))
+        if args.command == "package124-audit-source":
+            _require_state_dir(args.state_dir)
+            from ashl_core_v1.runtime.package_124_source_audit import audit_package_124_source
+
+            return _print_json(audit_package_124_source(args.state_dir))
+        if args.command == "package124-audit-archive-and-certify":
+            _require_state_dir(args.state_dir)
+            from ashl_core_v1.runtime.package_124_archive import create_package_124_archive
+
+            return _print_json(
+                create_package_124_archive(
+                    state_dir=args.state_dir,
+                    archive_root=args.archive_root,
+                    expected_commit=args.expected_commit,
+                    confirm=args.confirm,
+                )
+            )
+        if args.command == "package124-verify-archive":
+            from ashl_core_v1.runtime.package_124_archive import verify_package_124_archive
+
+            return _print_json(verify_package_124_archive(args.archive_dir))
+        if args.command == "package124-show-certificate":
+            from ashl_core_v1.runtime.package_124_milestone_certificate import (
+                load_package_124_certificate,
+                validate_package_124_certificate,
+            )
+
+            return _print_json(
+                {
+                    "certificate": load_package_124_certificate(args.archive_dir).to_dict(),
+                    "validation": validate_package_124_certificate(args.archive_dir),
+                }
+            )
+        if args.command == "package124-show-provenance":
+            import json
+            from pathlib import Path
+
+            return _print_json(json.loads((Path(args.archive_dir) / "package_124_provenance_graph.json").read_text(encoding="utf-8")))
+        if args.command == "package124-show-boundaries":
+            from pathlib import Path
+
+            print((Path(args.archive_dir) / "package_124_boundary_report.md").read_text(encoding="utf-8"))
+            return 0
         if args.command == "task-apply-advisory-readback-ordering-demo":
             return _print_json(
                 apply_advisory_readback_ordering_demo_from_guided_cradle_growth_console()
