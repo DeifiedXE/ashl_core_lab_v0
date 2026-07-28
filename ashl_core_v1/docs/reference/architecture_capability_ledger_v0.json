@@ -2,6 +2,7 @@
   "ledger_id": "architecture_capability_ledger:package_125_update",
   "schema_version": "ashl_architecture_capability_ledger_v0",
   "runtime_behavior_changed_by_package_124": false,
+  "runtime_behavior_changed_by_dlm0_qm0": false,
   "capabilities": [
     {
       "package": "123",
@@ -45,6 +46,20 @@
       "name": "Bounded Re-Sampling And Listen-Again Internal Action",
       "status": "next_critical_path",
       "runtime_delta": "planned"
+    }
+  ],
+  "migration_audits": [
+    {
+      "audit_lane": "DLM-0 / Q-M0",
+      "name": "D-Laplace Read-Only Migration Audit And ASHL Core Substitution Map",
+      "status": "completed",
+      "baseline_commit": "abc23707e68dc94b84e120b26d76ae1985bfbde7",
+      "runtime_delta": "none",
+      "organ_migration_delta": "none",
+      "qm1_execution_authorized": false,
+      "qingyin_migration_status": "QINGYIN_MIGRATION_INCOMPLETE_AUDIT_LAYER",
+      "next_critical_path": "Package 126",
+      "future_d_laplace_path": "Package 126-132 -> DLM-1 -> DLM-2"
     }
   ]
 }
