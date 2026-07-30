@@ -156,7 +156,15 @@ class WindowsWasapiLoopbackSource:
     def source_descriptor(self) -> SystemAudioLoopbackSourceDescriptor:
         return self._source_descriptor
 
-    def capture_samples(self, *, duration_ms: int, chunk_duration_ms: int = LOOPBACK_CHUNK_DURATION_MS) -> tuple[AdapterOutputSample, ...]:
+    def capture_samples(
+        self,
+        *,
+        duration_ms: int,
+        chunk_duration_ms: int = LOOPBACK_CHUNK_DURATION_MS,
+        capture_mode: str = "grounding_capture",
+    ) -> tuple[AdapterOutputSample, ...]:
+        if capture_mode not in {"grounding_capture", "recognition_ephemeral"}:
+            raise SensorCaptureError("unsupported_format", "invalid loopback capture mode")
         if duration_ms <= 0 or duration_ms > MAX_CAPTURE_DURATION_MS:
             raise SensorCaptureError("unsupported_format", "Package 123 loopback duration exceeds bounds")
         if not self._source_descriptor.available:
@@ -180,6 +188,7 @@ class WindowsWasapiLoopbackSource:
                     actual=actual,
                     captured_at_monotonic_ns=base_time + int(index * chunk_duration_ms * 1_000_000),
                     chunk_duration_ms=chunk_duration_ms,
+                    capture_mode=capture_mode,
                 )
             )
         return tuple(samples)
@@ -190,6 +199,7 @@ class WindowsWasapiLoopbackSource:
         deadline_ns_getter: Callable[[], int],
         on_sample: Callable[[AdapterOutputSample], None] | None = None,
         chunk_duration_ms: int = LOOPBACK_CHUNK_DURATION_MS,
+        capture_mode: str = "grounding_capture",
     ) -> tuple[AdapterOutputSample, ...]:
         """Capture through a shared mutable deadline without reopening WASAPI."""
 
@@ -198,6 +208,8 @@ class WindowsWasapiLoopbackSource:
                 "backend_missing",
                 self._source_descriptor.failure_reason or "WASAPI loopback unavailable",
             )
+        if capture_mode not in {"grounding_capture", "recognition_ephemeral"}:
+            raise SensorCaptureError("unsupported_format", "invalid loopback capture mode")
         started_ns = monotonic_ns()
         initial_deadline_ns = int(deadline_ns_getter())
         if initial_deadline_ns <= started_ns:
@@ -212,6 +224,7 @@ class WindowsWasapiLoopbackSource:
                 actual=actual,
                 captured_at_monotonic_ns=captured_at_monotonic_ns,
                 chunk_duration_ms=chunk_duration_ms,
+                capture_mode=capture_mode,
             )
             samples.append(sample)
             if on_sample is not None:
@@ -232,6 +245,7 @@ class WindowsWasapiLoopbackSource:
         actual: dict[str, object],
         captured_at_monotonic_ns: int,
         chunk_duration_ms: int,
+        capture_mode: str,
     ) -> AdapterOutputSample:
         sample_rate = int(actual["sample_rate"])
         channels = int(actual["channels"])
@@ -251,8 +265,12 @@ class WindowsWasapiLoopbackSource:
             data=chunk,
             metadata={
                 "package_123_audio_lane": "system_audio_loopback",
-                "capture_mode": "grounding_capture",
-                "retention_classification": "bounded_package_123_experiment_evidence",
+                "capture_mode": capture_mode,
+                "retention_classification": (
+                    "ram_only_recognition_ephemeral"
+                    if capture_mode == "recognition_ephemeral"
+                    else "bounded_package_123_experiment_evidence"
+                ),
                 "loopback_scope": "selected_render_endpoint",
                 "endpoint_id": self.endpoint_id,
                 "endpoint_name": self._source_descriptor.endpoint_name,

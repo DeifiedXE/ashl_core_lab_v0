@@ -3,6 +3,7 @@ from __future__ import annotations
 import tempfile
 import unittest
 from pathlib import Path
+from unittest.mock import patch
 
 from ashl_core_v1.migration_audit import (
     D_LAPLACE_QM0_AUDIT_STATUS,
@@ -29,11 +30,16 @@ class DLaplaceQM0AuditTests(unittest.TestCase):
             root = Path(temporary)
             source = build_complete_source(root / "source")
             state = root / "state"
-            report = run_qm0_read_only_audit(
-                ashl_root=REPO_ROOT,
-                d_laplace_source=source,
-                state_dir=state,
-            )
+            with patch(
+                "ashl_core_v1.migration_audit.d_laplace_qm0_audit."
+                "_ashl_changed_paths",
+                return_value=tuple(),
+            ):
+                report = run_qm0_read_only_audit(
+                    ashl_root=REPO_ROOT,
+                    d_laplace_source=source,
+                    state_dir=state,
+                )
         audit = report["audit"]
         self.assertEqual(audit["ashl_baseline_commit"], ASHL_BASELINE_COMMIT)
         self.assertTrue(audit["package_125_baseline_verified"])
@@ -50,11 +56,16 @@ class DLaplaceQM0AuditTests(unittest.TestCase):
     def test_source_status_preserves_all_four_dimensions(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)
-            report = run_qm0_read_only_audit(
-                ashl_root=REPO_ROOT,
-                d_laplace_source=build_complete_source(root / "source"),
-                state_dir=root / "state",
-            )
+            with patch(
+                "ashl_core_v1.migration_audit.d_laplace_qm0_audit."
+                "_ashl_changed_paths",
+                return_value=tuple(),
+            ):
+                report = run_qm0_read_only_audit(
+                    ashl_root=REPO_ROOT,
+                    d_laplace_source=build_complete_source(root / "source"),
+                    state_dir=root / "state",
+                )
         status = report["source_status"]
         self.assertEqual(status["synthetic_phase"], "COMPLETED")
         self.assertEqual(status["real_world_r_track"], "NOT ENTERED")
@@ -139,11 +150,16 @@ class DLaplaceQM0AuditTests(unittest.TestCase):
     def test_all_runtime_and_behavior_boundaries_remain_false(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)
-            report = run_qm0_read_only_audit(
-                ashl_root=REPO_ROOT,
-                d_laplace_source=build_complete_source(root / "source"),
-                state_dir=root / "state",
-            )
+            with patch(
+                "ashl_core_v1.migration_audit.d_laplace_qm0_audit."
+                "_ashl_changed_paths",
+                return_value=tuple(),
+            ):
+                report = run_qm0_read_only_audit(
+                    ashl_root=REPO_ROOT,
+                    d_laplace_source=build_complete_source(root / "source"),
+                    state_dir=root / "state",
+                )
         boundaries = report["boundaries"]
         for name in (
             "d_laplace_code_imported",

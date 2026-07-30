@@ -11,7 +11,8 @@ Updated By: Package 124 real host perception milestone audit and archive
 Updated By: Package 124A grounded temporal primitive foundation
 Updated By: Package 125 bounded observation window extension
 Updated By: DLM-0 / Q-M0 D-Laplace read-only migration audit and ASHL substitution map
-Critical Path Note: Package 123 through Package 125 and the independent DLM-0 / Q-M0 audit are completed. Package 126 remains the next critical-path item. DLM-1 is not scheduled until after Package 132.
+Updated By: Package 126 bounded re-sampling and listen-again internal actions
+Critical Path Note: Package 123 through Package 126 and the independent DLM-0 / Q-M0 audit are completed. Package 127 is the next critical-path item. DLM-1 is not scheduled until after Package 132.
 
 | Package | Name | Classification | Milestone Dependency | Route Note |
 | --- | --- | --- | --- | --- |
@@ -21,8 +22,8 @@ Critical Path Note: Package 123 through Package 125 and the independent DLM-0 / 
 | 124A | Grounded Temporal Primitive Foundation | critical_path | Package 132 | Completed: grounded temporal anchors, spans, intervals, relations, continuity and external-gap records without subjective time or rhythm semantics. |
 | 125 | Bounded Observation Window Extension | critical_path | Package 132 | Completed: use grounded temporal-tail evidence to extend the same active screen, system-audio and host-state capture sessions once, with a fixed bound and no restart, focus, semantics, memory, output or external control. |
 | DLM-0 / Q-M0 | D-Laplace Read-Only Migration Audit And ASHL Core Substitution Map | independent_migration_audit_lane | Package 125 | Completed: static source/archive audit, contamination and authority map, twelve-gate coverage, restricted future allowlist and ASHL substitution candidates. No runtime component or organ migrated; Qingyin migration remains incomplete. |
-| 126 | Bounded Re-Sampling And Listen-Again Internal Action | critical_path | Package 132 | Next: connect bounded observe-again/listen-again as internal actions only. |
-| 127 | Internal Perception Focus Shift | critical_path | Package 132 | Add bounded internal focus state separate from external control. |
+| 126 | Bounded Re-Sampling And Listen-Again Internal Action | critical_path | Package 132 | Completed: after one clean parent window, create one new bounded child capture using the same plan, target, configuration and privacy policy, with distinct source sessions and an explicit external gap. |
+| 127 | Internal Perception Focus Shift | critical_path | Package 132 | Next: add bounded internal focus state separate from external control. |
 | 128 | Evidence Sufficiency And Observation Stop Policy | critical_path | Package 132 | Decide when bounded observation evidence is sufficient to stop. |
 | 129 | Active Perception Real Two-Cycle Growth Run | critical_path | Package 132 | Run active perception growth without semantic vision, speech or external control. |
 | 130 | Grounded Auditory Event Concept Formation | supporting_path | Package 132 | Begin auditory event concepts, not speech or speaker identity. |

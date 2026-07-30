@@ -51,6 +51,8 @@ ALLOWED_INTERNAL_ACTION_KINDS = (
     "update_home_status",
     "pause_event_processing",
     "extend_observation_window",
+    "capture_again",
+    "listen_again",
 )
 FORBIDDEN_EXTERNAL_ACTION_KINDS = (
     "task_selected_action",
@@ -81,6 +83,8 @@ CHOICE_TIE_ORDER = {
     "shift_internal_focus": 5,
     "update_home_status": 6,
     "extend_observation_window": 7,
+    "capture_again": 8,
+    "listen_again": 9,
 }
 
 SAFE_CLAIM = (

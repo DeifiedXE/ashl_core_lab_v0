@@ -1,5 +1,5 @@
 {
-  "ledger_id": "architecture_capability_ledger:package_125_update",
+  "ledger_id": "architecture_capability_ledger:package_126_update",
   "schema_version": "ashl_architecture_capability_ledger_v0",
   "runtime_behavior_changed_by_package_124": false,
   "runtime_behavior_changed_by_dlm0_qm0": false,
@@ -44,6 +44,20 @@
     {
       "package": "126",
       "name": "Bounded Re-Sampling And Listen-Again Internal Action",
+      "status": "completed",
+      "runtime_delta": "one explicitly authorized fresh bounded child capture after a clean completed parent window",
+      "source_restart_delta": "same approved sources reopened with distinct capture-session identities",
+      "temporal_delta": "explicit parent-to-child external gap without window merging",
+      "focus_delta": "none",
+      "semantic_delta": "none",
+      "scoring_delta": "none",
+      "memory_delta": "none",
+      "output_delta": "none",
+      "external_control_delta": "none"
+    },
+    {
+      "package": "127",
+      "name": "Internal Perception Focus Shift",
       "status": "next_critical_path",
       "runtime_delta": "planned"
     }
@@ -58,7 +72,7 @@
       "organ_migration_delta": "none",
       "qm1_execution_authorized": false,
       "qingyin_migration_status": "QINGYIN_MIGRATION_INCOMPLETE_AUDIT_LAYER",
-      "next_critical_path": "Package 126",
+      "next_critical_path": "Package 127",
       "future_d_laplace_path": "Package 126-132 -> DLM-1 -> DLM-2"
     }
   ]

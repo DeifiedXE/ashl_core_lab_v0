@@ -21,7 +21,14 @@ class DLaplaceQM0CliAndBoundaryTests(unittest.TestCase):
     def test_cli_audit_uses_human_language_first(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)
-            with patch("sys.stdout", new_callable=StringIO) as output:
+            with (
+                patch(
+                    "ashl_core_v1.migration_audit.d_laplace_qm0_audit."
+                    "_ashl_changed_paths",
+                    return_value=tuple(),
+                ),
+                patch("sys.stdout", new_callable=StringIO) as output,
+            ):
                 status = cli.main(
                     [
                         "audit",
@@ -43,7 +50,14 @@ class DLaplaceQM0CliAndBoundaryTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)
             state = root / "state"
-            with patch("sys.stdout", new_callable=StringIO):
+            with (
+                patch(
+                    "ashl_core_v1.migration_audit.d_laplace_qm0_audit."
+                    "_ashl_changed_paths",
+                    return_value=tuple(),
+                ),
+                patch("sys.stdout", new_callable=StringIO),
+            ):
                 self.assertEqual(
                     cli.main(
                         [
@@ -114,15 +128,36 @@ class DLaplaceQM0CliAndBoundaryTests(unittest.TestCase):
         self.assertEqual(forbidden_calls, [])
         self.assertEqual(dlp_imports, [])
 
-    def test_package_is_outside_runtime_and_adds_no_package_126_module(self) -> None:
+    def test_qm0_remains_outside_runtime_after_package_126(self) -> None:
         self.assertTrue((REPO_ROOT / "ashl_core_v1" / "migration_audit").is_dir())
         self.assertFalse(
             (REPO_ROOT / "ashl_core_v1" / "runtime" / "d_laplace_qm0_audit.py").exists()
         )
-        self.assertEqual(
-            list((REPO_ROOT / "ashl_core_v1").rglob("*package_126*.py")),
-            [],
+        package_126_modules = sorted(
+            (REPO_ROOT / "ashl_core_v1" / "runtime").glob("*package_126*.py")
         )
+        self.assertTrue(package_126_modules)
+        for path in package_126_modules:
+            tree = ast.parse(path.read_text(encoding="utf-8"), filename=str(path))
+            imported_modules = {
+                alias.name
+                for node in ast.walk(tree)
+                if isinstance(node, ast.Import)
+                for alias in node.names
+            }
+            imported_modules.update(
+                node.module or ""
+                for node in ast.walk(tree)
+                if isinstance(node, ast.ImportFrom)
+            )
+            self.assertFalse(
+                any(
+                    "d_laplace" in module.casefold()
+                    or module.startswith("ashl_core_v1.migration_audit")
+                    for module in imported_modules
+                ),
+                path.name,
+            )
 
 
 if __name__ == "__main__":

@@ -20,6 +20,12 @@ class LocalOperatorEventStream:
         runtime_session_id: str | None = None,
         perception_session_id: str | None = None,
         observation_window_id: str | None = None,
+        parent_runtime_session_id: str | None = None,
+        parent_perception_session_id: str | None = None,
+        parent_observation_window_id: str | None = None,
+        child_runtime_session_id: str | None = None,
+        child_perception_session_id: str | None = None,
+        child_observation_window_id: str | None = None,
     ) -> LocalOperatorJsonEvent:
         event = LocalOperatorJsonEvent(
             event_id=stable_id("local_operator_event"),
@@ -34,6 +40,12 @@ class LocalOperatorEventStream:
             runtime_session_id=runtime_session_id,
             perception_session_id=perception_session_id,
             observation_window_id=observation_window_id,
+            parent_runtime_session_id=parent_runtime_session_id,
+            parent_perception_session_id=parent_perception_session_id,
+            parent_observation_window_id=parent_observation_window_id,
+            child_runtime_session_id=child_runtime_session_id,
+            child_perception_session_id=child_perception_session_id,
+            child_observation_window_id=child_observation_window_id,
         )
         self.store.append_json_event(event)
         return event

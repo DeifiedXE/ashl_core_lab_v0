@@ -126,6 +126,22 @@ VALID_EVENT_KINDS = (
     "observation_window_operator_interrupted",
     "observation_extension_outcome_created",
     "observation_extension_audit_failed",
+    "perception_reacquisition_authorized",
+    "perception_reacquisition_requested",
+    "perception_reacquisition_allowed",
+    "perception_reacquisition_blocked",
+    "perception_reacquisition_cancelled",
+    "capture_again_internal_action_created",
+    "listen_again_internal_action_created",
+    "reacquisition_child_window_started",
+    "reacquisition_source_reopened",
+    "reacquisition_child_window_completed",
+    "reacquisition_child_window_interrupted",
+    "cross_window_temporal_link_created",
+    "reacquired_evidence_summary_created",
+    "reacquisition_effect_comparison_created",
+    "audio_ephemeral_deletion_verified",
+    "package_126_audit_failed",
 )
 PACKAGE_125_OBSERVATION_EVENT_KINDS = (
     "observation_window_started",
@@ -139,6 +155,24 @@ PACKAGE_125_OBSERVATION_EVENT_KINDS = (
     "observation_window_operator_interrupted",
     "observation_extension_outcome_created",
     "observation_extension_audit_failed",
+)
+PACKAGE_126_REACQUISITION_EVENT_KINDS = (
+    "perception_reacquisition_authorized",
+    "perception_reacquisition_requested",
+    "perception_reacquisition_allowed",
+    "perception_reacquisition_blocked",
+    "perception_reacquisition_cancelled",
+    "capture_again_internal_action_created",
+    "listen_again_internal_action_created",
+    "reacquisition_child_window_started",
+    "reacquisition_source_reopened",
+    "reacquisition_child_window_completed",
+    "reacquisition_child_window_interrupted",
+    "cross_window_temporal_link_created",
+    "reacquired_evidence_summary_created",
+    "reacquisition_effect_comparison_created",
+    "audio_ephemeral_deletion_verified",
+    "package_126_audit_failed",
 )
 
 
@@ -646,6 +680,12 @@ class LocalOperatorJsonEvent:
     runtime_session_id: str | None = None
     perception_session_id: str | None = None
     observation_window_id: str | None = None
+    parent_runtime_session_id: str | None = None
+    parent_perception_session_id: str | None = None
+    parent_observation_window_id: str | None = None
+    child_runtime_session_id: str | None = None
+    child_perception_session_id: str | None = None
+    child_observation_window_id: str | None = None
 
     def __post_init__(self) -> None:
         if self.schema_version != JSON_EVENT_SCHEMA_VERSION:
@@ -660,6 +700,12 @@ class LocalOperatorJsonEvent:
             self.runtime_session_id and self.perception_session_id and self.observation_window_id
         ):
             raise ValueError("Package 125 observation events require runtime, perception, and observation window ids")
+        if self.event_kind in PACKAGE_126_REACQUISITION_EVENT_KINDS and not (
+            self.parent_runtime_session_id
+            and self.parent_perception_session_id
+            and self.parent_observation_window_id
+        ):
+            raise ValueError("Package 126 events require parent runtime, perception, and window ids")
         object.__setattr__(self, "source_record_refs", _tuple_of_str(self.source_record_refs))
         object.__setattr__(self, "source_trace_refs", _tuple_of_str(self.source_trace_refs))
 

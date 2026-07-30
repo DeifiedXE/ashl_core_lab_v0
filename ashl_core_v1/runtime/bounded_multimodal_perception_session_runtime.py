@@ -63,6 +63,18 @@ class PreparedArtifactReplayTransport:
     source_trace_refs: tuple[str, ...]
 
 
+@dataclass(frozen=True)
+class PreparedLiveCompiledTransport:
+    session_id: str
+    config: MultimodalPerceptionSessionConfig
+    lane_items: tuple[PerceptionLaneItem, ...]
+    backpressure_records: tuple[PerceptionBackpressureRecord, ...]
+    dropped_records: tuple[PerceptionDroppedSampleRecord, ...]
+    windows: tuple[Any, ...]
+    timeline: Any
+    source_trace_refs: tuple[str, ...]
+
+
 class MultimodalPerceptionSessionStore:
     def __init__(self, state_dir: str | Path) -> None:
         self.state_dir = Path(state_dir)
@@ -284,6 +296,113 @@ class BoundedMultimodalPerceptionSessionRuntime:
         return self.run_prepared_artifact_replay_to_teacher_gate(
             prepared,
             working_readback_snapshot=working_readback_snapshot,
+        )
+
+    def prepare_live_compiled_alignment_transport(
+        self,
+        *,
+        lane_items: tuple[PerceptionLaneItem, ...],
+        config: MultimodalPerceptionSessionConfig,
+        session_id: str,
+    ) -> PreparedLiveCompiledTransport:
+        """Align already compiled live records without replay or teacher dispatch."""
+
+        if config.mode != MultimodalPerceptionSessionMode.LIVE_BOUNDED_MULTIMODAL_CAPTURE.value:
+            raise ValueError("live compiled transport requires live_bounded_multimodal_capture mode")
+        if not lane_items:
+            raise ValueError("live compiled transport requires lane items")
+        if any(item.session_id != session_id for item in lane_items):
+            raise ValueError("live lane item session identity mismatch")
+        present = {item.source_kind for item in lane_items}
+        missing = set(config.required_source_kinds) - present
+        if missing:
+            raise ValueError(f"live compiled transport missing required lanes: {sorted(missing)}")
+        existing_timelines = self.store.list_payloads("multimodal_timelines")
+        if any(item.get("session_id") == session_id for item in existing_timelines):
+            raise ValueError("perception session_id already exists")
+
+        self._traces[session_id] = []
+        self.store.append_payload(
+            "multimodal_session_configs",
+            "config_id",
+            config.config_id,
+            config.to_dict(),
+        )
+        self._append_trace(
+            session_id=session_id,
+            record_kind="multimodal_session_started",
+            record_id=session_id,
+            payload_schema=SESSION_CONFIG_SCHEMA_VERSION,
+            payload_snapshot={
+                "mode": config.mode,
+                "artifact_backed_replay": False,
+                "live_precompiled_lanes": True,
+                "real_life_experience_claimed": False,
+                "config_sha256": config.config_sha256,
+            },
+            source_trace_refs=tuple(
+                dict.fromkeys(ref for item in lane_items for ref in item.source_trace_refs)
+            ),
+        )
+        accepted, backpressure, dropped = self._queue_live_lane_items(
+            session_id=session_id,
+            config=config,
+            lane_items=lane_items,
+        )
+        windows = assemble_alignment_windows(
+            session_id=session_id,
+            config=config,
+            lane_items=accepted,
+        )
+        for window in windows:
+            self.store.append_payload(
+                "multimodal_alignment_windows",
+                "alignment_window_id",
+                window.alignment_window_id,
+                window.to_dict(),
+            )
+        timeline = build_multimodal_perception_timeline(
+            session_id=session_id,
+            config=config,
+            lane_items=accepted,
+            alignment_window_ids=tuple(
+                window.alignment_window_id for window in windows
+            ),
+        )
+        self.store.append_payload(
+            "multimodal_timelines",
+            "timeline_id",
+            timeline.timeline_id,
+            timeline.to_dict(),
+        )
+        refs = tuple(
+            dict.fromkeys(
+                tuple(ref for item in accepted for ref in item.source_trace_refs)
+                + tuple(self._traces.get(session_id, ()))
+            )
+        )
+        return PreparedLiveCompiledTransport(
+            session_id=session_id,
+            config=config,
+            lane_items=accepted,
+            backpressure_records=backpressure,
+            dropped_records=dropped,
+            windows=windows,
+            timeline=timeline,
+            source_trace_refs=refs,
+        )
+
+    def lane_item_from_compilation(
+        self,
+        *,
+        session_id: str,
+        session_relative_ms: int,
+        compilation_bundle: Any,
+    ) -> PerceptionLaneItem:
+        return self._lane_item_from_bundle(
+            session_id,
+            session_relative_ms,
+            compilation_bundle,
         )
 
     def prepare_artifact_backed_alignment_replay_transport(
@@ -533,6 +652,77 @@ class BoundedMultimodalPerceptionSessionRuntime:
             self._append_trace(session_id=session_id, record_kind="perception_dropped_sample", record_id=record.dropped_sample_record_id, payload_schema=DROPPED_SAMPLE_SCHEMA_VERSION, payload_snapshot=record.to_dict(), source_trace_refs=record.source_trace_refs)
         lane_items.sort(key=lambda item: (item.session_relative_ns, item.lane_item_id))
         return tuple(lane_items), tuple(backpressure), tuple(dropped)
+
+    def _queue_live_lane_items(
+        self,
+        *,
+        session_id: str,
+        config: MultimodalPerceptionSessionConfig,
+        lane_items: tuple[PerceptionLaneItem, ...],
+    ) -> tuple[
+        tuple[PerceptionLaneItem, ...],
+        tuple[PerceptionBackpressureRecord, ...],
+        tuple[PerceptionDroppedSampleRecord, ...],
+    ]:
+        queues = {
+            "camera": PerceptionLaneQueue(
+                session_id=session_id,
+                source_kind="camera",
+                queue_depth_limit=config.camera_queue_depth,
+                drop_policy=config.camera_drop_policy,
+            ),
+            "screen": PerceptionLaneQueue(
+                session_id=session_id,
+                source_kind="screen",
+                queue_depth_limit=config.screen_queue_depth,
+                drop_policy=config.screen_drop_policy,
+            ),
+            "microphone": PerceptionLaneQueue(
+                session_id=session_id,
+                source_kind="microphone",
+                queue_depth_limit=config.microphone_queue_depth,
+                drop_policy=config.microphone_drop_policy,
+            ),
+            "host_state": PerceptionLaneQueue(
+                session_id=session_id,
+                source_kind="host_state",
+                queue_depth_limit=config.host_state_queue_depth,
+                drop_policy=config.host_state_drop_policy,
+            ),
+        }
+        accepted: list[PerceptionLaneItem] = []
+        backpressure: list[PerceptionBackpressureRecord] = []
+        dropped: list[PerceptionDroppedSampleRecord] = []
+        for item in sorted(
+            lane_items,
+            key=lambda value: (value.session_relative_ns, value.lane_item_id),
+        ):
+            result = queues[item.source_kind].push(item)
+            backpressure.extend(result.backpressure_records)
+            dropped.extend(result.dropped_sample_records)
+            if result.accepted:
+                accepted.append(item)
+                self.store.append_payload(
+                    "perception_lane_items",
+                    "lane_item_id",
+                    item.lane_item_id,
+                    item.to_dict(),
+                )
+        for record in backpressure:
+            self.store.append_payload(
+                "perception_backpressure_records",
+                "backpressure_record_id",
+                record.backpressure_record_id,
+                record.to_dict(),
+            )
+        for record in dropped:
+            self.store.append_payload(
+                "perception_dropped_sample_records",
+                "dropped_sample_record_id",
+                record.dropped_sample_record_id,
+                record.to_dict(),
+            )
+        return tuple(accepted), tuple(backpressure), tuple(dropped)
 
     def _lane_item_from_bundle(self, session_id: str, offset_ms: int, bundle: Any) -> PerceptionLaneItem:
         primitive = self.perception_store.get_primitive(bundle.primitive_record_id)
