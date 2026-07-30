@@ -1,8 +1,9 @@
 {
-  "ledger_id": "architecture_capability_ledger:package_127_update",
+  "ledger_id": "architecture_capability_ledger:package_128_update",
   "schema_version": "ashl_architecture_capability_ledger_v0",
   "runtime_behavior_changed_by_package_124": false,
   "runtime_behavior_changed_by_dlm0_qm0": false,
+  "runtime_behavior_changed_by_package_128": true,
   "capabilities": [
     {
       "package": "123",
@@ -70,7 +71,21 @@
     },
     {
       "package": "128",
-      "name": "Evidence Sufficiency And Observation Stop Policy",
+      "name": "Structural Evidence Sufficiency And Observation Stop Policy",
+      "status": "completed",
+      "runtime_delta": "one explicitly authorized focused visual child may stop before its hard deadline after all fixed structural evidence gates are satisfied",
+      "capture_delta": "all active required lanes receive one shared stop signal; sources are not reopened",
+      "temporal_delta": "actual visual onset, closure span and post-event source coverage remain append-only",
+      "focus_delta": "focus context remains stable until child completion and then releases",
+      "semantic_delta": "none",
+      "scoring_delta": "none",
+      "memory_delta": "none",
+      "output_delta": "none",
+      "external_control_delta": "none"
+    },
+    {
+      "package": "129",
+      "name": "Active Perception Real Two-Cycle Growth Run",
       "status": "next_critical_path",
       "runtime_delta": "planned"
     }
@@ -85,8 +100,8 @@
       "organ_migration_delta": "none",
       "qm1_execution_authorized": false,
       "qingyin_migration_status": "QINGYIN_MIGRATION_INCOMPLETE_AUDIT_LAYER",
-      "next_critical_path": "Package 128",
-      "future_d_laplace_path": "Package 128-132 -> DLM-1 -> DLM-2"
+      "next_critical_path": "Package 129",
+      "future_d_laplace_path": "Package 129-132 -> DLM-1 -> DLM-2"
     }
   ]
 }

@@ -151,6 +151,18 @@ VALID_EVENT_KINDS = (
     "internal_focus_released",
     "internal_focus_interrupted",
     "internal_focus_audit_failed",
+    "structural_sufficiency_contract_created",
+    "structural_evidence_checkpoint_created",
+    "structural_evidence_assessment_sufficient",
+    "structural_evidence_assessment_insufficient",
+    "structural_evidence_assessment_inconclusive",
+    "observation_stop_policy_allowed",
+    "observation_stop_policy_continue",
+    "observation_stop_policy_hard_deadline",
+    "stop_observation_internal_action_created",
+    "observation_policy_stop_executed",
+    "observation_completion_created",
+    "observation_sufficiency_audit_failed",
 )
 PACKAGE_125_OBSERVATION_EVENT_KINDS = (
     "observation_window_started",
@@ -193,6 +205,20 @@ PACKAGE_127_INTERNAL_FOCUS_EVENT_KINDS = (
     "internal_focus_released",
     "internal_focus_interrupted",
     "internal_focus_audit_failed",
+)
+PACKAGE_128_STRUCTURAL_SUFFICIENCY_EVENT_KINDS = (
+    "structural_sufficiency_contract_created",
+    "structural_evidence_checkpoint_created",
+    "structural_evidence_assessment_sufficient",
+    "structural_evidence_assessment_insufficient",
+    "structural_evidence_assessment_inconclusive",
+    "observation_stop_policy_allowed",
+    "observation_stop_policy_continue",
+    "observation_stop_policy_hard_deadline",
+    "stop_observation_internal_action_created",
+    "observation_policy_stop_executed",
+    "observation_completion_created",
+    "observation_sufficiency_audit_failed",
 )
 
 
@@ -733,6 +759,18 @@ class LocalOperatorJsonEvent:
         ):
             raise ValueError(
                 "Package 127 events require runtime, perception, and observation window ids"
+            )
+        if (
+            self.event_kind
+            in PACKAGE_128_STRUCTURAL_SUFFICIENCY_EVENT_KINDS
+            and not (
+                self.runtime_session_id
+                and self.perception_session_id
+                and self.observation_window_id
+            )
+        ):
+            raise ValueError(
+                "Package 128 events require runtime, perception, and observation window ids"
             )
         object.__setattr__(self, "source_record_refs", _tuple_of_str(self.source_record_refs))
         object.__setattr__(self, "source_trace_refs", _tuple_of_str(self.source_trace_refs))

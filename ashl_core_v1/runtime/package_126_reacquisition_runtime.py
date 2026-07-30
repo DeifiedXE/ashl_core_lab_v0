@@ -6,8 +6,9 @@ import gc
 import os
 import threading
 import time
+from dataclasses import dataclass
 from pathlib import Path
-from typing import Any
+from typing import Any, Callable
 
 from ashl_core_v1.host_body import (
     host_body_readback_internal_action_influence as package_112,
@@ -151,6 +152,22 @@ PACKAGE_126_EVENT_KINDS = (
     "audio_ephemeral_deletion_verified",
     "package_126_audit_failed",
 )
+
+
+@dataclass(frozen=True)
+class ActiveReacquisitionCaptureSnapshot:
+    """Ephemeral read-only view exposed while one Package 126 window is active."""
+
+    runtime_session_id: str
+    perception_session_id: str
+    observation_window_id: str
+    started_monotonic_ns: int
+    observed_at_monotonic_ns: int
+    hard_deadline_monotonic_ns: int
+    participating_lanes: tuple[str, ...]
+    capture_session_refs: tuple[str, ...]
+    screen_artifact_ids: tuple[str, ...]
+    host_artifact_ids: tuple[str, ...]
 
 
 def run_real_capture_again(
@@ -651,6 +668,9 @@ def _build_source_configs(
     audio_source: WindowsWasapiLoopbackSource | None,
     host_adapter: HostStateSensorAdapter,
     participating_lanes: tuple[str, ...] | None = None,
+    capture_duration_ms: int = WINDOW_DURATION_MS,
+    host_sample_interval_ms: int = 500,
+    maximum_artifact_count: int = 16,
 ) -> dict[str, Any]:
     lanes = participating_lanes or (
         ("screen", "microphone", "host_state")
@@ -667,9 +687,9 @@ def _build_source_configs(
             source_specific_config={
                 "host_state_fields": ("sample_monotonic_ns",)
             },
-            capture_duration_ms=WINDOW_DURATION_MS,
-            sample_interval_ms=500,
-            maximum_artifact_count=16,
+            capture_duration_ms=int(capture_duration_ms),
+            sample_interval_ms=int(host_sample_interval_ms),
+            maximum_artifact_count=int(maximum_artifact_count),
             maximum_total_bytes=1_048_576,
         ),
         "host_descriptor": host_descriptor,
@@ -679,13 +699,13 @@ def _build_source_configs(
             raise ValueError("microphone lane requires an audio source")
         configs["audio"] = audio_source.build_capture_config(
             state_dir=str(path),
-            duration_ms=WINDOW_DURATION_MS,
+            duration_ms=int(capture_duration_ms),
         )
     if "screen" in lanes:
         configs["screen"] = window_source.build_capture_config(
             state_dir=str(path),
             binding=binding,
-            duration_ms=WINDOW_DURATION_MS,
+            duration_ms=int(capture_duration_ms),
         )
     return configs
 
@@ -830,7 +850,27 @@ def capture_one_bounded_reacquisition_window(
     role: str,
     participating_lanes: tuple[str, ...],
     forced_ids: dict[str, str] | None = None,
+    window_duration_ns: int = WINDOW_DURATION_NS,
+    source_sample_interval_ns: int = 500_000_000,
+    deadline_controller: Any | None = None,
+    active_capture_hook: (
+        Callable[[ActiveReacquisitionCaptureSnapshot], None] | None
+    ) = None,
+    compile_all_samples: bool = False,
+    compilation_cache: dict[str, Any] | None = None,
+    alignment_window_ms: int = ALIGNMENT_WINDOW_MS,
+    stop_event_time_provider: Callable[[], int | None] | None = None,
 ) -> dict[str, Any]:
+    if window_duration_ns <= 0:
+        raise ValueError("window_duration_ns must be positive")
+    if source_sample_interval_ns <= 0:
+        raise ValueError("source_sample_interval_ns must be positive")
+    if alignment_window_ms <= 0:
+        raise ValueError("alignment_window_ms must be positive")
+    if deadline_controller is not None and int(
+        deadline_controller.current_deadline_ns()
+    ) != int(window_duration_ns):
+        raise ValueError("deadline controller duration mismatch")
     ids = forced_ids or {
         "runtime_session_id": stable_id(f"package_126_{role}_runtime_session"),
         "perception_session_id": stable_id(
@@ -900,13 +940,19 @@ def capture_one_bounded_reacquisition_window(
     audio_samples: list[Any] = []
     host_open = False
     started_ns = monotonic_ns()
+    duration_ms = max(1, int(window_duration_ns) // 1_000_000)
+    cache = (
+        compilation_cache
+        if compilation_cache is not None
+        else {}
+    )
 
     def capture_audio() -> None:
         try:
             if audio_source is None or ring is None:
                 raise RuntimeError("audio capture dependencies are unavailable")
             samples = audio_source.capture_samples(
-                duration_ms=WINDOW_DURATION_MS,
+                duration_ms=duration_ms,
                 capture_mode=AUDIO_PRIVACY_MODE,
             )
             audio_samples.extend(samples)
@@ -927,10 +973,15 @@ def capture_one_bounded_reacquisition_window(
         if "host_state" in participating_lanes:
             host_adapter.open(configs["host"])
             host_open = True
-        deadline_ns = started_ns + WINDOW_DURATION_NS
+        deadline_ns = started_ns + int(window_duration_ns)
         next_screen_ns = started_ns
         next_host_ns = started_ns
         while monotonic_ns() < deadline_ns:
+            if (
+                deadline_controller is not None
+                and deadline_controller.stop_requested
+            ):
+                break
             stimulus.tick()
             now_ns = monotonic_ns()
             if "screen" in participating_lanes and now_ns >= next_screen_ns:
@@ -941,7 +992,7 @@ def capture_one_bounded_reacquisition_window(
                     sample=window_source.capture_sample(binding),
                 )
                 screen_artifacts.append(artifact.artifact_id)
-                next_screen_ns += 500_000_000
+                next_screen_ns += int(source_sample_interval_ns)
             if "host_state" in participating_lanes and now_ns >= next_host_ns:
                 artifact = sensor_store.write_raw_artifact(
                     session=sessions["host"],
@@ -950,7 +1001,29 @@ def capture_one_bounded_reacquisition_window(
                     sample=host_adapter.read_sample(),
                 )
                 host_artifacts.append(artifact.artifact_id)
-                next_host_ns += 500_000_000
+                next_host_ns += int(source_sample_interval_ns)
+            if active_capture_hook is not None:
+                active_capture_hook(
+                    ActiveReacquisitionCaptureSnapshot(
+                        runtime_session_id=ids["runtime_session_id"],
+                        perception_session_id=ids[
+                            "perception_session_id"
+                        ],
+                        observation_window_id=ids[
+                            "observation_window_id"
+                        ],
+                        started_monotonic_ns=started_ns,
+                        observed_at_monotonic_ns=now_ns,
+                        hard_deadline_monotonic_ns=deadline_ns,
+                        participating_lanes=participating_lanes,
+                        capture_session_refs=tuple(
+                            session.capture_session_id
+                            for session in sessions.values()
+                        ),
+                        screen_artifact_ids=tuple(screen_artifacts),
+                        host_artifact_ids=tuple(host_artifacts),
+                    )
+                )
             time.sleep(0.005)
         if audio_thread is not None:
             audio_thread.join(timeout=4.0)
@@ -970,7 +1043,24 @@ def capture_one_bounded_reacquisition_window(
             and not screen_artifacts
         ):
             raise RuntimeError("Package 126 required source produced no fresh evidence")
-        ended_ns = min(monotonic_ns(), deadline_ns)
+        observed_end_ns = monotonic_ns()
+        if (
+            deadline_controller is not None
+            and deadline_controller.stop_requested
+            and stop_event_time_provider is not None
+        ):
+            provided_end_ns = stop_event_time_provider()
+            if provided_end_ns is None:
+                raise ValueError(
+                    "requested stop requires a grounded event-time boundary"
+                )
+            provided_end_ns = int(provided_end_ns)
+            if not started_ns <= provided_end_ns <= observed_end_ns:
+                raise ValueError(
+                    "stop event-time boundary falls outside the active window"
+                )
+            observed_end_ns = provided_end_ns
+        ended_ns = min(observed_end_ns, deadline_ns)
 
         ephemeral_source: Any | None = None
         audio_content_hash: str | None = None
@@ -988,38 +1078,95 @@ def capture_one_bounded_reacquisition_window(
                 ephemeral_source,
                 privacy_policy_id=AUDIO_BLUR_POLICY_VERSION,
             )
+        def compile_cached(artifact_id: str) -> Any:
+            if artifact_id not in cache:
+                cache[artifact_id] = compiler.compile_artifact(
+                    artifact_id
+                )
+            return cache[artifact_id]
+
+        screen_bundles = tuple(
+            compile_cached(artifact_id)
+            for artifact_id in (
+                screen_artifacts
+                if compile_all_samples
+                else screen_artifacts[-1:]
+            )
+        )
+        host_bundles = tuple(
+            compile_cached(artifact_id)
+            for artifact_id in (
+                host_artifacts
+                if compile_all_samples
+                else host_artifacts[-1:]
+            )
+        )
         screen_bundle = (
-            compiler.compile_artifact(screen_artifacts[-1])
-            if screen_artifacts
-            else None
+            screen_bundles[-1] if screen_bundles else None
         )
-        host_bundle = (
-            compiler.compile_artifact(host_artifacts[-1])
-            if host_artifacts
-            else None
-        )
+        host_bundle = host_bundles[-1] if host_bundles else None
         package_122 = BoundedMultimodalPerceptionSessionRuntime(path)
         lane_items = []
-        for bundle in (audio_bundle, host_bundle):
-            if bundle is not None:
-                lane_items.append(
-                    package_122.lane_item_from_compilation(
-                        session_id=ids["perception_session_id"],
-                        session_relative_ms=0,
-                        compilation_bundle=bundle,
-                    )
-                )
-        if screen_bundle is not None:
+        if audio_bundle is not None:
             lane_items.append(
                 package_122.lane_item_from_compilation(
                     session_id=ids["perception_session_id"],
                     session_relative_ms=0,
-                    compilation_bundle=screen_bundle,
+                    compilation_bundle=audio_bundle,
+                )
+            )
+        for bundle in host_bundles:
+            artifact = sensor_store.get_artifact(
+                str(bundle.source_artifact_id)
+            )
+            relative_ms = (
+                max(
+                    0,
+                    (
+                        int(artifact["captured_at_monotonic_ns"])
+                        - started_ns
+                    )
+                    // 1_000_000,
+                )
+                if compile_all_samples
+                else 0
+            )
+            lane_items.append(
+                package_122.lane_item_from_compilation(
+                    session_id=ids["perception_session_id"],
+                    session_relative_ms=relative_ms,
+                    compilation_bundle=bundle,
+                )
+            )
+        for bundle in screen_bundles:
+            artifact = sensor_store.get_artifact(
+                str(bundle.source_artifact_id)
+            )
+            relative_ms = (
+                max(
+                    0,
+                    (
+                        int(artifact["captured_at_monotonic_ns"])
+                        - started_ns
+                    )
+                    // 1_000_000,
+                )
+                if compile_all_samples
+                else 0
+            )
+            lane_items.append(
+                package_122.lane_item_from_compilation(
+                    session_id=ids["perception_session_id"],
+                    session_relative_ms=relative_ms,
+                    compilation_bundle=bundle,
                 )
             )
         config = _build_live_alignment_config(
             path=path,
             participating_lanes=participating_lanes,
+            window_duration_ns=window_duration_ns,
+            queue_depth=(64 if compile_all_samples else 16),
+            alignment_window_ms=alignment_window_ms,
         )
         prepared = package_122.prepare_live_compiled_alignment_transport(
             lane_items=tuple(lane_items),
@@ -1076,9 +1223,12 @@ def capture_one_bounded_reacquisition_window(
             participating_lanes=participating_lanes,
             required_lanes=participating_lanes,
             base_start_event_time_ns=started_ns,
-            base_deadline_event_time_ns=started_ns + WINDOW_DURATION_NS,
-            current_deadline_event_time_ns=started_ns + WINDOW_DURATION_NS,
-            hard_deadline_event_time_ns=started_ns + WINDOW_DURATION_NS,
+            base_deadline_event_time_ns=started_ns
+            + int(window_duration_ns),
+            current_deadline_event_time_ns=started_ns
+            + int(window_duration_ns),
+            hard_deadline_event_time_ns=started_ns
+            + int(window_duration_ns),
             extension_count=0,
             total_extension_ns=0,
             window_status="completed",
@@ -1163,7 +1313,12 @@ def capture_one_bounded_reacquisition_window(
                 previous_status="started",
                 new_status="stopped",
                 manual_command="stop",
-                reason_code=f"package_126_{role}_source_closed",
+                reason_code=(
+                    str(deadline_controller.stop_reason)
+                    if deadline_controller is not None
+                    and deadline_controller.stop_requested
+                    else f"package_126_{role}_source_closed"
+                ),
             )
         if host_open:
             host_adapter.close()
@@ -1201,14 +1356,16 @@ def capture_one_bounded_reacquisition_window(
             "screen_artifact_ids": tuple(screen_artifacts),
             "host_artifact_ids": tuple(host_artifacts),
             "visual_primitive_refs": (
-                (screen_bundle.primitive_record_id,)
-                if screen_bundle is not None
-                else tuple()
+                tuple(
+                    bundle.primitive_record_id
+                    for bundle in screen_bundles
+                )
             ),
             "visual_readable_data_refs": (
-                (screen_bundle.perception_readable_data_id,)
-                if screen_bundle is not None
-                else tuple()
+                tuple(
+                    bundle.perception_readable_data_id
+                    for bundle in screen_bundles
+                )
             ),
             "audio_primitive_refs": (
                 (audio_bundle.primitive_record_id,)
@@ -1216,9 +1373,10 @@ def capture_one_bounded_reacquisition_window(
                 else tuple()
             ),
             "host_state_primitive_refs": (
-                (host_bundle.primitive_record_id,)
-                if host_bundle is not None
-                else tuple()
+                tuple(
+                    bundle.primitive_record_id
+                    for bundle in host_bundles
+                )
             ),
             "audio_event_region_present": audio_event_region,
             "alignment_session_id": ids["perception_session_id"],
@@ -1244,6 +1402,16 @@ def capture_one_bounded_reacquisition_window(
             "participating_lanes": participating_lanes,
             "sessions_started": True,
             "sessions_stopped": True,
+            "stop_requested": bool(
+                deadline_controller is not None
+                and deadline_controller.stop_requested
+            ),
+            "stop_reason": (
+                deadline_controller.stop_reason
+                if deadline_controller is not None
+                else None
+            ),
+            "original_hard_deadline_monotonic_ns": deadline_ns,
             "raw_audio_retained": False,
             "raw_parent_artifact_reused": False,
             "semantic_interpretation_created": False,
@@ -1260,13 +1428,24 @@ def _build_live_alignment_config(
     *,
     path: Path,
     participating_lanes: tuple[str, ...],
+    window_duration_ns: int = WINDOW_DURATION_NS,
+    queue_depth: int = 16,
+    alignment_window_ms: int = ALIGNMENT_WINDOW_MS,
 ) -> Any:
+    if alignment_window_ms <= 0:
+        raise ValueError("alignment_window_ms must be positive")
+    duration_ms = max(1, int(window_duration_ns) // 1_000_000)
+    maximum_window_count = max(
+        1,
+        (duration_ms + int(alignment_window_ms) - 1)
+        // int(alignment_window_ms),
+    )
     config = build_default_multimodal_session_config(
         state_dir=path,
         mode=MultimodalPerceptionSessionMode.LIVE_BOUNDED_MULTIMODAL_CAPTURE.value,
-        alignment_window_ms=ALIGNMENT_WINDOW_MS,
-        maximum_window_count=3,
-        maximum_session_duration_ms=WINDOW_DURATION_MS,
+        alignment_window_ms=int(alignment_window_ms),
+        maximum_window_count=maximum_window_count,
+        maximum_session_duration_ms=duration_ms,
     )
     payload = config.to_dict()
     payload.update(
@@ -1275,9 +1454,9 @@ def _build_live_alignment_config(
             "enabled_source_kinds": participating_lanes,
             "required_source_kinds": participating_lanes,
             "optional_source_kinds": tuple(),
-            "screen_queue_depth": 16,
-            "microphone_queue_depth": 16,
-            "host_state_queue_depth": 16,
+            "screen_queue_depth": int(queue_depth),
+            "microphone_queue_depth": int(queue_depth),
+            "host_state_queue_depth": int(queue_depth),
             "audio_privacy_policy_id": AUDIO_BLUR_POLICY_VERSION,
             "config_sha256": "",
         }

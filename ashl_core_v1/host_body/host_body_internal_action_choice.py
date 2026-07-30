@@ -54,6 +54,7 @@ ALLOWED_INTERNAL_ACTION_KINDS = (
     "capture_again",
     "listen_again",
     "shift_internal_perception_focus",
+    "stop_observation",
 )
 FORBIDDEN_EXTERNAL_ACTION_KINDS = (
     "task_selected_action",
@@ -87,6 +88,7 @@ CHOICE_TIE_ORDER = {
     "capture_again": 8,
     "listen_again": 9,
     "shift_internal_perception_focus": 10,
+    "stop_observation": 11,
 }
 
 SAFE_CLAIM = (

@@ -75,6 +75,17 @@ class PreparedLiveCompiledTransport:
     source_trace_refs: tuple[str, ...]
 
 
+@dataclass(frozen=True)
+class ActiveCompiledAlignmentView:
+    """Read-only alignment view over records captured by an active window."""
+
+    session_id: str
+    config: MultimodalPerceptionSessionConfig
+    lane_items: tuple[PerceptionLaneItem, ...]
+    windows: tuple[Any, ...]
+    source_trace_refs: tuple[str, ...]
+
+
 class MultimodalPerceptionSessionStore:
     def __init__(self, state_dir: str | Path) -> None:
         self.state_dir = Path(state_dir)
@@ -291,6 +302,8 @@ class BoundedMultimodalPerceptionSessionRuntime:
     def attach_internal_perception_focus_context(
         self,
         sidecar: Any,
+        *,
+        active_lane_items: tuple[PerceptionLaneItem, ...] = tuple(),
     ) -> dict[str, Any]:
         """Attach one read-only focus index to an existing full-frame lane."""
 
@@ -310,12 +323,20 @@ class BoundedMultimodalPerceptionSessionRuntime:
             )
             if item.get("session_id") == session_id
         )
-        matching = tuple(
+        persisted_matching = tuple(
             item
             for item in lane_items
             if item.get("source_kind") == "screen"
             and item.get("perception_readable_data_id") == readable_id
         )
+        active_matching = tuple(
+            item
+            for item in active_lane_items
+            if item.session_id == session_id
+            and item.source_kind == "screen"
+            and item.perception_readable_data_id == readable_id
+        )
+        matching = persisted_matching + active_matching
         if not matching:
             raise ValueError(
                 "focus sidecar full-frame readable-data lineage mismatch"
@@ -329,6 +350,74 @@ class BoundedMultimodalPerceptionSessionRuntime:
             payload,
         )
         return payload
+
+    def inspect_active_compiled_alignment(
+        self,
+        *,
+        lane_items: tuple[PerceptionLaneItem, ...],
+        config: MultimodalPerceptionSessionConfig,
+        session_id: str,
+    ) -> ActiveCompiledAlignmentView:
+        """Build a bounded alignment view without finalizing or persisting it."""
+
+        if (
+            config.mode
+            != MultimodalPerceptionSessionMode.LIVE_BOUNDED_MULTIMODAL_CAPTURE.value
+        ):
+            raise ValueError(
+                "active alignment view requires live_bounded_multimodal_capture mode"
+            )
+        if not lane_items:
+            raise ValueError("active alignment view requires lane items")
+        if any(item.session_id != session_id for item in lane_items):
+            raise ValueError("active lane item session identity mismatch")
+        present = {item.source_kind for item in lane_items}
+        missing = set(config.required_source_kinds) - present
+        if missing:
+            raise ValueError(
+                f"active alignment view missing required lanes: {sorted(missing)}"
+            )
+        sorted_items = tuple(
+            sorted(
+                lane_items,
+                key=lambda item: (
+                    item.session_relative_ns,
+                    item.lane_item_id,
+                ),
+            )
+        )
+        lane_limits = {
+            "camera": config.camera_queue_depth,
+            "screen": config.screen_queue_depth,
+            "microphone": config.microphone_queue_depth,
+            "host_state": config.host_state_queue_depth,
+        }
+        for lane, limit in lane_limits.items():
+            count = sum(
+                1 for item in sorted_items if item.source_kind == lane
+            )
+            if count > int(limit):
+                raise ValueError(
+                    f"active alignment view exceeds {lane} queue depth"
+                )
+        windows = assemble_alignment_windows(
+            session_id=session_id,
+            config=config,
+            lane_items=sorted_items,
+        )
+        return ActiveCompiledAlignmentView(
+            session_id=session_id,
+            config=config,
+            lane_items=sorted_items,
+            windows=windows,
+            source_trace_refs=tuple(
+                dict.fromkeys(
+                    ref
+                    for item in sorted_items
+                    for ref in item.source_trace_refs
+                )
+            ),
+        )
 
     def run_artifact_backed_alignment_replay(
         self,

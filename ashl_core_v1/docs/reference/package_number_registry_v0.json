@@ -16,13 +16,13 @@
     "124A",
     "125",
     "126",
-    "127"
+    "127",
+    "128"
   ],
-  "created_at": "2026-07-30T00:00:00+00:00",
-  "current_package_id": "127",
+  "created_at": "2026-07-31T00:00:00+00:00",
+  "current_package_id": "128",
   "duplicate_package_ids": [],
   "future_package_ids": [
-    "128",
     "129",
     "130",
     "131",
@@ -85,7 +85,8 @@
     "125": "critical_path",
     "126": "critical_path",
     "127": "critical_path",
-    "128": "critical_path"
+    "128": "critical_path",
+    "129": "critical_path"
   },
   "package_status": {
     "123": "completed",
@@ -94,11 +95,12 @@
     "125": "completed",
     "126": "completed",
     "127": "completed",
-    "128": "next_critical_path"
+    "128": "completed",
+    "129": "next_critical_path"
   },
-  "registry_id": "package_number_registry:package_127_internal_perception_focus_shift",
+  "registry_id": "package_number_registry:package_128_structural_evidence_sufficiency_stop",
   "registry_valid": true,
   "reserved_package_ids": [],
   "schema_version": "ashl_package_number_registry_v0",
-  "registry_sha256": "9dc7e6944e757a4d6538fae94ff903a82758b782c5a785ba50048ec48bbb221f"
+  "registry_sha256": "6aade70a57f22f7b0cafd305123754b236fd2f21aefadd28b96ff337ead8a05d"
 }

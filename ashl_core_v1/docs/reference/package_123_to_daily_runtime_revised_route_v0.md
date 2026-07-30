@@ -13,7 +13,8 @@ Updated By: Package 125 bounded observation window extension
 Updated By: DLM-0 / Q-M0 D-Laplace read-only migration audit and ASHL substitution map
 Updated By: Package 126 bounded re-sampling and listen-again internal actions
 Updated By: Package 127 internal perception focus shift
-Critical Path Note: Package 123 through Package 127 and the independent DLM-0 / Q-M0 audit are completed. Package 128 is the next critical-path item. Package 132 closes the perception capability construction line, Package 133 begins persistent self-state, and DLM-1 remains after Package 132. No Package 132A or extra perception package is scheduled.
+Updated By: Package 128 structural evidence sufficiency and observation stop policy
+Critical Path Note: Package 123 through Package 128 and the independent DLM-0 / Q-M0 audit are completed. Package 129 is the next critical-path item. Package 132 closes the perception capability construction line, Package 133 begins persistent self-state, and DLM-1 remains after Package 132. No Package 132A or extra perception package is scheduled.
 
 | Package | Name | Classification | Milestone Dependency | Route Note |
 | --- | --- | --- | --- | --- |
@@ -25,8 +26,8 @@ Critical Path Note: Package 123 through Package 127 and the independent DLM-0 / 
 | DLM-0 / Q-M0 | D-Laplace Read-Only Migration Audit And ASHL Core Substitution Map | independent_migration_audit_lane | Package 125 | Completed: static source/archive audit, contamination and authority map, twelve-gate coverage, restricted future allowlist and ASHL substitution candidates. No runtime component or organ migrated; Qingyin migration remains incomplete. |
 | 126 | Bounded Re-Sampling And Listen-Again Internal Action | critical_path | Package 132 | Completed: after one clean parent window, create one new bounded child capture using the same plan, target, configuration and privacy policy, with distinct source sessions and an explicit external gap. |
 | 127 | Internal Perception Focus Shift | critical_path | Package 132 | Completed: deterministically select one actual changed-grid cell as a read-only focus for one full-frame Package 126 child, then release it automatically. |
-| 128 | Evidence Sufficiency And Observation Stop Policy | critical_path | Package 132 | Next: decide when bounded observation evidence is sufficient to stop. |
-| 129 | Active Perception Real Two-Cycle Growth Run | critical_path | Package 132 | Run active perception growth without semantic vision, speech or external control. |
+| 128 | Structural Evidence Sufficiency And Observation Stop Policy | critical_path | Package 132 | Completed: an explicitly authorized focused visual child may stop early only after fixed low-level closure, post-context, coverage, integrity and lineage gates all pass. |
+| 129 | Active Perception Real Two-Cycle Growth Run | critical_path | Package 132 | Next: run the bounded active-perception two-cycle growth path without semantic vision, speech or external control. |
 | 130 | Grounded Auditory Event Concept Formation | supporting_path | Package 132 | Begin auditory event concepts, not speech or speaker identity. |
 | 131 | Auditory Predictive Recognition | supporting_path | Package 132 | Compare observed and expected AudioPrimitive records. |
 | DLM-1 | Cost/Registry/Lineage Skeleton | future_d_laplace_path | after Package 132 | Not authorized by Q-M0; future implementation requires a separate package and approval. |
