@@ -142,6 +142,15 @@ VALID_EVENT_KINDS = (
     "reacquisition_effect_comparison_created",
     "audio_ephemeral_deletion_verified",
     "package_126_audit_failed",
+    "internal_focus_candidates_created",
+    "internal_focus_selected",
+    "internal_focus_policy_allowed",
+    "internal_focus_policy_blocked",
+    "internal_focus_shift_action_created",
+    "internal_focus_context_attached",
+    "internal_focus_released",
+    "internal_focus_interrupted",
+    "internal_focus_audit_failed",
 )
 PACKAGE_125_OBSERVATION_EVENT_KINDS = (
     "observation_window_started",
@@ -173,6 +182,17 @@ PACKAGE_126_REACQUISITION_EVENT_KINDS = (
     "reacquisition_effect_comparison_created",
     "audio_ephemeral_deletion_verified",
     "package_126_audit_failed",
+)
+PACKAGE_127_INTERNAL_FOCUS_EVENT_KINDS = (
+    "internal_focus_candidates_created",
+    "internal_focus_selected",
+    "internal_focus_policy_allowed",
+    "internal_focus_policy_blocked",
+    "internal_focus_shift_action_created",
+    "internal_focus_context_attached",
+    "internal_focus_released",
+    "internal_focus_interrupted",
+    "internal_focus_audit_failed",
 )
 
 
@@ -706,6 +726,14 @@ class LocalOperatorJsonEvent:
             and self.parent_observation_window_id
         ):
             raise ValueError("Package 126 events require parent runtime, perception, and window ids")
+        if self.event_kind in PACKAGE_127_INTERNAL_FOCUS_EVENT_KINDS and not (
+            self.runtime_session_id
+            and self.perception_session_id
+            and self.observation_window_id
+        ):
+            raise ValueError(
+                "Package 127 events require runtime, perception, and observation window ids"
+            )
         object.__setattr__(self, "source_record_refs", _tuple_of_str(self.source_record_refs))
         object.__setattr__(self, "source_trace_refs", _tuple_of_str(self.source_trace_refs))
 

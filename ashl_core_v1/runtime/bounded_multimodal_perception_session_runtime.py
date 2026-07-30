@@ -232,6 +232,12 @@ class MultimodalPerceptionSessionStore:
                     payload_json TEXT NOT NULL,
                     payload_sha256 TEXT NOT NULL
                 );
+                CREATE TABLE IF NOT EXISTS internal_perception_focus_context_sidecars (
+                    focus_context_id TEXT PRIMARY KEY,
+                    created_at TEXT,
+                    payload_json TEXT NOT NULL,
+                    payload_sha256 TEXT NOT NULL
+                );
                 CREATE TABLE IF NOT EXISTS multimodal_session_results (
                     result_id TEXT PRIMARY KEY,
                     created_at TEXT,
@@ -281,6 +287,48 @@ class BoundedMultimodalPerceptionSessionRuntime:
         self.perception_store = PerceptionPrimitiveStore(self.state_dir)
         self.embodied_runtime = BoundedEmbodiedSessionRuntime()
         self._traces: dict[str, list[str]] = {}
+
+    def attach_internal_perception_focus_context(
+        self,
+        sidecar: Any,
+    ) -> dict[str, Any]:
+        """Attach one read-only focus index to an existing full-frame lane."""
+
+        payload = (
+            sidecar.to_dict()
+            if hasattr(sidecar, "to_dict")
+            else dict(sidecar)
+        )
+        session_id = str(payload["child_perception_session_id"])
+        readable_id = str(
+            payload["full_frame_perception_readable_data_id"]
+        )
+        lane_items = tuple(
+            item
+            for item in self.store.list_payloads(
+                "perception_lane_items"
+            )
+            if item.get("session_id") == session_id
+        )
+        matching = tuple(
+            item
+            for item in lane_items
+            if item.get("source_kind") == "screen"
+            and item.get("perception_readable_data_id") == readable_id
+        )
+        if not matching:
+            raise ValueError(
+                "focus sidecar full-frame readable-data lineage mismatch"
+            )
+        if payload.get("read_only_context") is not True:
+            raise ValueError("focus sidecar must be read-only")
+        self.store.append_payload(
+            "internal_perception_focus_context_sidecars",
+            "focus_context_id",
+            str(payload["focus_context_id"]),
+            payload,
+        )
+        return payload
 
     def run_artifact_backed_alignment_replay(
         self,

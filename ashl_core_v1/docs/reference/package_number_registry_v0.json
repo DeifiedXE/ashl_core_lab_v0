@@ -15,13 +15,13 @@
     "124",
     "124A",
     "125",
-    "126"
+    "126",
+    "127"
   ],
   "created_at": "2026-07-30T00:00:00+00:00",
-  "current_package_id": "126",
+  "current_package_id": "127",
   "duplicate_package_ids": [],
   "future_package_ids": [
-    "127",
     "128",
     "129",
     "130",
@@ -84,7 +84,8 @@
     "124A": "critical_path",
     "125": "critical_path",
     "126": "critical_path",
-    "127": "critical_path"
+    "127": "critical_path",
+    "128": "critical_path"
   },
   "package_status": {
     "123": "completed",
@@ -92,11 +93,12 @@
     "124A": "completed",
     "125": "completed",
     "126": "completed",
-    "127": "next_critical_path"
+    "127": "completed",
+    "128": "next_critical_path"
   },
-  "registry_id": "package_number_registry:package_126_bounded_re_sampling_and_listen_again",
+  "registry_id": "package_number_registry:package_127_internal_perception_focus_shift",
   "registry_valid": true,
   "reserved_package_ids": [],
   "schema_version": "ashl_package_number_registry_v0",
-  "registry_sha256": "54678fe305df72491536816f7ec56191b20b3e945a967d87ff443e7d1a1c1b3d"
+  "registry_sha256": "9dc7e6944e757a4d6538fae94ff903a82758b782c5a785ba50048ec48bbb221f"
 }

@@ -243,7 +243,10 @@ def _run_real_reacquisition(
                 "device_unavailable",
                 f"Package 126 stimulus binding failed: {binding.binding_status}",
             )
-        if not audio_source.source_descriptor().available:
+        if (
+            "microphone" in participating_lanes
+            and not audio_source.source_descriptor().available
+        ):
             raise SensorCaptureError(
                 "backend_missing",
                 audio_source.source_descriptor().failure_reason
@@ -256,6 +259,7 @@ def _run_real_reacquisition(
             window_source=window_source,
             audio_source=audio_source,
             host_adapter=host_adapter,
+            participating_lanes=participating_lanes,
         )
         parent_plan = _build_plan_identity(
             action_kind=action_kind,
@@ -263,9 +267,10 @@ def _run_real_reacquisition(
             window_source=window_source,
             audio_source=audio_source,
             configs=configs,
+            participating_lanes=participating_lanes,
         )
         store.append_record("sampling_plan_identity_records", parent_plan)
-        parent = _capture_one_window(
+        parent = capture_one_bounded_reacquisition_window(
             path=path,
             store=store,
             sensor_store=sensor_store,
@@ -392,7 +397,7 @@ def _run_real_reacquisition(
             refs=(action.internal_action_id,),
             strict=strict_event_stream,
         )
-        child = _capture_one_window(
+        child = capture_one_bounded_reacquisition_window(
             path=path,
             store=store,
             sensor_store=sensor_store,
@@ -422,15 +427,16 @@ def _run_real_reacquisition(
             refs=tuple(child["capture_session_refs"]),
             strict=strict_event_stream,
         )
-        _emit_event(
-            path,
-            store=store,
-            event_kind="audio_ephemeral_deletion_verified",
-            parent=parent,
-            child=child,
-            refs=(child["audio_deletion"].deletion_record_id,),
-            strict=strict_event_stream,
-        )
+        if child["audio_deletion"] is not None:
+            _emit_event(
+                path,
+                store=store,
+                event_kind="audio_ephemeral_deletion_verified",
+                parent=parent,
+                child=child,
+                refs=(child["audio_deletion"].deletion_record_id,),
+                strict=strict_event_stream,
+            )
 
         continuity = build_cross_window_temporal_link(
             parent_observation_window_id=parent["observation_window_id"],
@@ -642,15 +648,17 @@ def _build_source_configs(
     action_kind: str,
     binding: Any,
     window_source: WindowsBoundedWindowCaptureSource,
-    audio_source: WindowsWasapiLoopbackSource,
+    audio_source: WindowsWasapiLoopbackSource | None,
     host_adapter: HostStateSensorAdapter,
+    participating_lanes: tuple[str, ...] | None = None,
 ) -> dict[str, Any]:
+    lanes = participating_lanes or (
+        ("screen", "microphone", "host_state")
+        if action_kind == "capture_again"
+        else ("microphone", "host_state")
+    )
     host_descriptor = host_adapter.enumerate_devices()[0]
     configs: dict[str, Any] = {
-        "audio": audio_source.build_capture_config(
-            state_dir=str(path),
-            duration_ms=WINDOW_DURATION_MS,
-        ),
         "host": build_sensor_capture_config(
             source_kind="host_state",
             adapter_id=host_adapter.adapter_id,
@@ -666,7 +674,14 @@ def _build_source_configs(
         ),
         "host_descriptor": host_descriptor,
     }
-    if action_kind == "capture_again":
+    if "microphone" in lanes:
+        if audio_source is None:
+            raise ValueError("microphone lane requires an audio source")
+        configs["audio"] = audio_source.build_capture_config(
+            state_dir=str(path),
+            duration_ms=WINDOW_DURATION_MS,
+        )
+    if "screen" in lanes:
         configs["screen"] = window_source.build_capture_config(
             state_dir=str(path),
             binding=binding,
@@ -680,8 +695,9 @@ def _build_plan_identity(
     action_kind: str,
     binding: Any,
     window_source: WindowsBoundedWindowCaptureSource,
-    audio_source: WindowsWasapiLoopbackSource,
+    audio_source: WindowsWasapiLoopbackSource | None,
     configs: dict[str, Any],
+    participating_lanes: tuple[str, ...] | None = None,
 ) -> SamplingPlanIdentityRecord:
     from ashl_core_v1.perception.audio_primitive_compiler import (
         AUDIO_PRIMITIVE_COMPILER_VERSION,
@@ -690,12 +706,16 @@ def _build_plan_identity(
         VISUAL_FRAME_COMPILER_VERSION,
     )
 
-    lanes = (
+    lanes = participating_lanes or (
         ("screen", "microphone", "host_state")
         if action_kind == "capture_again"
         else ("microphone", "host_state")
     )
-    source_descriptor = audio_source.source_descriptor()
+    source_descriptor = (
+        audio_source.source_descriptor()
+        if "microphone" in lanes and audio_source is not None
+        else None
+    )
     return build_sampling_plan_identity(
         plan_kind=(
             "multimodal_same_plan"
@@ -712,7 +732,7 @@ def _build_plan_identity(
                     "window_capture_adapter": window_source.adapter_id,
                 }
             )
-            if action_kind == "capture_again"
+            if "screen" in lanes
             else None
         ),
         screen_region_hash=(
@@ -724,39 +744,61 @@ def _build_plan_identity(
                     "height": int(binding.client_height),
                 }
             )
-            if action_kind == "capture_again"
+            if "screen" in lanes
             else None
         ),
         screen_capture_config_hash=(
             configs["screen"].capture_config_sha256
-            if action_kind == "capture_again"
+            if "screen" in lanes
             else None
         ),
-        audio_endpoint_descriptor_hash=sha256_payload(
-            {
-                "endpoint_id": source_descriptor.endpoint_id,
-                "sample_rate_hz": source_descriptor.sample_rate_hz,
-                "channel_count": source_descriptor.channel_count,
-                "sample_format": source_descriptor.sample_format,
-                "chunk_duration_ms": source_descriptor.chunk_duration_ms,
-            }
+        audio_endpoint_descriptor_hash=(
+            sha256_payload(
+                {
+                    "endpoint_id": source_descriptor.endpoint_id,
+                    "sample_rate_hz": source_descriptor.sample_rate_hz,
+                    "channel_count": source_descriptor.channel_count,
+                    "sample_format": source_descriptor.sample_format,
+                    "chunk_duration_ms": source_descriptor.chunk_duration_ms,
+                }
+            )
+            if source_descriptor is not None
+            else None
         ),
-        audio_capture_config_hash=configs["audio"].capture_config_sha256,
-        audio_privacy_mode=AUDIO_PRIVACY_MODE,
-        audio_blur_policy_version=AUDIO_BLUR_POLICY_VERSION,
+        audio_capture_config_hash=(
+            configs["audio"].capture_config_sha256
+            if "microphone" in lanes
+            else None
+        ),
+        audio_privacy_mode=(
+            AUDIO_PRIVACY_MODE if "microphone" in lanes else None
+        ),
+        audio_blur_policy_version=(
+            AUDIO_BLUR_POLICY_VERSION if "microphone" in lanes else None
+        ),
         host_state_config_hash=configs["host"].capture_config_sha256,
         visual_compiler_version=(
             VISUAL_FRAME_COMPILER_VERSION
-            if action_kind == "capture_again"
+            if "screen" in lanes
             else None
         ),
-        audio_compiler_version=AUDIO_PRIMITIVE_COMPILER_VERSION,
+        audio_compiler_version=(
+            AUDIO_PRIMITIVE_COMPILER_VERSION
+            if "microphone" in lanes
+            else None
+        ),
         redaction_config_hash=sha256_payload(
             {
-                "screen_redaction": "none_local_fixture"
-                if action_kind == "capture_again"
-                else "screen_absent_by_design",
-                "audio_source_blurring": AUDIO_BLUR_POLICY_VERSION,
+                "screen_redaction": (
+                    "none_local_fixture"
+                    if "screen" in lanes
+                    else "screen_absent_by_design"
+                ),
+                "audio_source_blurring": (
+                    AUDIO_BLUR_POLICY_VERSION
+                    if "microphone" in lanes
+                    else "audio_absent_by_design"
+                ),
             }
         ),
         event_clock_domain=EVENT_CLOCK_DOMAIN,
@@ -767,7 +809,7 @@ def _build_plan_identity(
     )
 
 
-def _capture_one_window(
+def capture_one_bounded_reacquisition_window(
     *,
     path: Path,
     store: Package126ReacquisitionStore,
@@ -775,9 +817,9 @@ def _capture_one_window(
     temporal_store: Package124ATemporalStore,
     compiler: HardSoftPerceptionPrimitiveCompiler,
     primitive_store: PerceptionPrimitiveStore,
-    stimulus: LocalPulseStimulusRuntime,
+    stimulus: Any,
     window_source: WindowsBoundedWindowCaptureSource,
-    audio_source: WindowsWasapiLoopbackSource,
+    audio_source: WindowsWasapiLoopbackSource | None,
     host_adapter: HostStateSensorAdapter,
     binding: Any,
     configs: dict[str, Any],
@@ -797,7 +839,7 @@ def _capture_one_window(
         "observation_window_id": stable_id("observation_window"),
     }
     sessions: dict[str, Any] = {}
-    if action_kind == "capture_again":
+    if "screen" in participating_lanes:
         sessions["screen"] = sensor_store.create_capture_session(
             source_kind="screen",
             config=configs["screen"],
@@ -805,20 +847,24 @@ def _capture_one_window(
             session_id=ids["runtime_session_id"],
             root_event_id=root_event_id,
         )
-    sessions["audio"] = sensor_store.create_capture_session(
-        source_kind="microphone",
-        config=configs["audio"],
-        descriptor=audio_source.descriptor(),
-        session_id=ids["runtime_session_id"],
-        root_event_id=root_event_id,
-    )
-    sessions["host"] = sensor_store.create_capture_session(
-        source_kind="host_state",
-        config=configs["host"],
-        descriptor=configs["host_descriptor"],
-        session_id=ids["runtime_session_id"],
-        root_event_id=root_event_id,
-    )
+    if "microphone" in participating_lanes:
+        if audio_source is None:
+            raise ValueError("microphone lane requires an audio source")
+        sessions["audio"] = sensor_store.create_capture_session(
+            source_kind="microphone",
+            config=configs["audio"],
+            descriptor=audio_source.descriptor(),
+            session_id=ids["runtime_session_id"],
+            root_event_id=root_event_id,
+        )
+    if "host_state" in participating_lanes:
+        sessions["host"] = sensor_store.create_capture_session(
+            source_kind="host_state",
+            config=configs["host"],
+            descriptor=configs["host_descriptor"],
+            session_id=ids["runtime_session_id"],
+            root_event_id=root_event_id,
+        )
     for session in sessions.values():
         sensor_store.append_lifecycle_event(
             session=session,
@@ -828,22 +874,26 @@ def _capture_one_window(
             reason_code=f"package_126_{role}_source_opened",
         )
 
-    audio_descriptor = audio_source.source_descriptor()
-    ring_config = build_ephemeral_audio_ring_buffer_config(
-        sample_rate=int(audio_descriptor.sample_rate_hz),
-        channels=int(audio_descriptor.channel_count),
-        sample_format="int16",
-        buffer_duration_ms=3_000,
-        chunk_duration_ms=int(audio_descriptor.chunk_duration_ms),
-        pre_roll_default_ms=3_000,
-        post_roll_default_ms=0,
-    )
-    ring = start_ephemeral_audio_session(
-        config=ring_config,
-        metadata_store=sensor_store,
-        state_dir_fingerprint=sensor_store.state_dir_fingerprint(),
-        device_index=None,
-    )
+    ring: Any | None = None
+    if "microphone" in participating_lanes:
+        if audio_source is None:
+            raise ValueError("microphone lane requires an audio source")
+        audio_descriptor = audio_source.source_descriptor()
+        ring_config = build_ephemeral_audio_ring_buffer_config(
+            sample_rate=int(audio_descriptor.sample_rate_hz),
+            channels=int(audio_descriptor.channel_count),
+            sample_format="int16",
+            buffer_duration_ms=3_000,
+            chunk_duration_ms=int(audio_descriptor.chunk_duration_ms),
+            pre_roll_default_ms=3_000,
+            post_roll_default_ms=0,
+        )
+        ring = start_ephemeral_audio_session(
+            config=ring_config,
+            metadata_store=sensor_store,
+            state_dir_fingerprint=sensor_store.state_dir_fingerprint(),
+            device_index=None,
+        )
     screen_artifacts: list[str] = []
     host_artifacts: list[str] = []
     audio_errors: list[BaseException] = []
@@ -853,6 +903,8 @@ def _capture_one_window(
 
     def capture_audio() -> None:
         try:
+            if audio_source is None or ring is None:
+                raise RuntimeError("audio capture dependencies are unavailable")
             samples = audio_source.capture_samples(
                 duration_ms=WINDOW_DURATION_MS,
                 capture_mode=AUDIO_PRIVACY_MODE,
@@ -863,22 +915,25 @@ def _capture_one_window(
         except BaseException as error:
             audio_errors.append(error)
 
-    audio_thread = threading.Thread(
-        target=capture_audio,
-        name=f"package_126_{role}_{action_kind}_wasapi",
-        daemon=True,
-    )
-    audio_thread.start()
+    audio_thread: threading.Thread | None = None
+    if ring is not None:
+        audio_thread = threading.Thread(
+            target=capture_audio,
+            name=f"package_126_{role}_{action_kind}_wasapi",
+            daemon=True,
+        )
+        audio_thread.start()
     try:
-        host_adapter.open(configs["host"])
-        host_open = True
+        if "host_state" in participating_lanes:
+            host_adapter.open(configs["host"])
+            host_open = True
         deadline_ns = started_ns + WINDOW_DURATION_NS
         next_screen_ns = started_ns
         next_host_ns = started_ns
         while monotonic_ns() < deadline_ns:
             stimulus.tick()
             now_ns = monotonic_ns()
-            if action_kind == "capture_again" and now_ns >= next_screen_ns:
+            if "screen" in participating_lanes and now_ns >= next_screen_ns:
                 artifact = sensor_store.write_raw_artifact(
                     session=sessions["screen"],
                     descriptor=window_source.descriptor(),
@@ -887,7 +942,7 @@ def _capture_one_window(
                 )
                 screen_artifacts.append(artifact.artifact_id)
                 next_screen_ns += 500_000_000
-            if now_ns >= next_host_ns:
+            if "host_state" in participating_lanes and now_ns >= next_host_ns:
                 artifact = sensor_store.write_raw_artifact(
                     session=sessions["host"],
                     descriptor=configs["host_descriptor"],
@@ -897,48 +952,63 @@ def _capture_one_window(
                 host_artifacts.append(artifact.artifact_id)
                 next_host_ns += 500_000_000
             time.sleep(0.005)
-        audio_thread.join(timeout=4.0)
-        if audio_thread.is_alive():
-            raise RuntimeError("Package 126 WASAPI capture did not stop at bounded deadline")
+        if audio_thread is not None:
+            audio_thread.join(timeout=4.0)
+        if audio_thread is not None and audio_thread.is_alive():
+            raise RuntimeError(
+                "Package 126 WASAPI capture did not stop at bounded deadline"
+            )
         if audio_errors:
             raise audio_errors[0]
-        if not audio_samples:
+        if "microphone" in participating_lanes and not audio_samples:
             raise RuntimeError("Package 126 audio source returned no fresh samples")
-        if not host_artifacts or (
-            action_kind == "capture_again" and not screen_artifacts
+        if (
+            "host_state" in participating_lanes
+            and not host_artifacts
+        ) or (
+            "screen" in participating_lanes
+            and not screen_artifacts
         ):
             raise RuntimeError("Package 126 required source produced no fresh evidence")
         ended_ns = min(monotonic_ns(), deadline_ns)
 
-        ephemeral_source = ring.get_window_as_source_buffer(
-            event_monotonic_ns=ring.chunk_descriptors[-1].end_monotonic_ns,
-            pre_roll_ms=3_000,
-            post_roll_ms=0,
-        )
-        audio_content_hash = sha256_bytes(bytes(ephemeral_source.readonly_bytes))
-        audio_bundle = compiler.compile_ephemeral_audio(
-            ephemeral_source,
-            privacy_policy_id=AUDIO_BLUR_POLICY_VERSION,
-        )
+        ephemeral_source: Any | None = None
+        audio_content_hash: str | None = None
+        audio_bundle: Any | None = None
+        if ring is not None:
+            ephemeral_source = ring.get_window_as_source_buffer(
+                event_monotonic_ns=ring.chunk_descriptors[-1].end_monotonic_ns,
+                pre_roll_ms=3_000,
+                post_roll_ms=0,
+            )
+            audio_content_hash = sha256_bytes(
+                bytes(ephemeral_source.readonly_bytes)
+            )
+            audio_bundle = compiler.compile_ephemeral_audio(
+                ephemeral_source,
+                privacy_policy_id=AUDIO_BLUR_POLICY_VERSION,
+            )
         screen_bundle = (
             compiler.compile_artifact(screen_artifacts[-1])
             if screen_artifacts
             else None
         )
-        host_bundle = compiler.compile_artifact(host_artifacts[-1])
+        host_bundle = (
+            compiler.compile_artifact(host_artifacts[-1])
+            if host_artifacts
+            else None
+        )
         package_122 = BoundedMultimodalPerceptionSessionRuntime(path)
-        lane_items = [
-            package_122.lane_item_from_compilation(
-                session_id=ids["perception_session_id"],
-                session_relative_ms=0,
-                compilation_bundle=audio_bundle,
-            ),
-            package_122.lane_item_from_compilation(
-                session_id=ids["perception_session_id"],
-                session_relative_ms=0,
-                compilation_bundle=host_bundle,
-            ),
-        ]
+        lane_items = []
+        for bundle in (audio_bundle, host_bundle):
+            if bundle is not None:
+                lane_items.append(
+                    package_122.lane_item_from_compilation(
+                        session_id=ids["perception_session_id"],
+                        session_relative_ms=0,
+                        compilation_bundle=bundle,
+                    )
+                )
         if screen_bundle is not None:
             lane_items.append(
                 package_122.lane_item_from_compilation(
@@ -1032,56 +1102,61 @@ def _capture_one_window(
             ],
         )
         store.append_record("observation_window_states", observation_state)
-        audio_primitive = primitive_store.get_primitive(
-            audio_bundle.primitive_record_id
-        )
-        audio_event_region = bool(
-            audio_primitive.get("onset_events")
-            or audio_primitive.get("offset_events")
-            or max(
-                (
-                    float(value)
-                    for value in audio_primitive.get(
-                        "amplitude_envelope", ()
-                    )
-                ),
-                default=0.0,
+        audio_event_region = False
+        deletion: EphemeralAudioDeletionVerificationRecord | None = None
+        if audio_bundle is not None and ring is not None:
+            audio_primitive = primitive_store.get_primitive(
+                audio_bundle.primitive_record_id
             )
-            > 0.01
-        )
-        del ephemeral_source
-        ring.close(reason_code=f"package_126_{role}_compiled_and_cleared")
-        gc.collect()
-        deletion = EphemeralAudioDeletionVerificationRecord(
-            deletion_record_id=stable_id(
-                "ephemeral_audio_deletion_verification"
-            ),
-            schema_version="ashl_package_126_ephemeral_audio_deletion_verification_v0",
-            created_at=utc_now(),
-            child_observation_window_id=ids["observation_window_id"],
-            ephemeral_audio_session_id=ring.session.ephemeral_audio_session_id,
-            content_sha256_before_deletion=audio_content_hash,
-            transient_file_path_fingerprint=None,
-            backend_transient_file_created=False,
-            ring_buffer_overwritten=True,
-            ring_buffer_live_bytes_after=ring.live_byte_length,
-            transient_file_absent_after=True,
-            raw_audio_retained=False,
-            deletion_verified=(
-                ring.live_byte_length == 0
-                and ring.status == "closed"
-                and ring.session.no_temporary_audio_file_created
-            ),
-            source_record_refs=(
-                ring.session.ephemeral_audio_session_id,
-                audio_bundle.primitive_record_id,
-            ),
-            source_trace_refs=tuple(),
-        )
-        store.append_record(
-            "ephemeral_audio_deletion_verifications",
-            deletion,
-        )
+            audio_event_region = bool(
+                audio_primitive.get("onset_events")
+                or audio_primitive.get("offset_events")
+                or max(
+                    (
+                        float(value)
+                        for value in audio_primitive.get(
+                            "amplitude_envelope", ()
+                        )
+                    ),
+                    default=0.0,
+                )
+                > 0.01
+            )
+            del ephemeral_source
+            ring.close(
+                reason_code=f"package_126_{role}_compiled_and_cleared"
+            )
+            gc.collect()
+            deletion = EphemeralAudioDeletionVerificationRecord(
+                deletion_record_id=stable_id(
+                    "ephemeral_audio_deletion_verification"
+                ),
+                schema_version="ashl_package_126_ephemeral_audio_deletion_verification_v0",
+                created_at=utc_now(),
+                child_observation_window_id=ids["observation_window_id"],
+                ephemeral_audio_session_id=ring.session.ephemeral_audio_session_id,
+                content_sha256_before_deletion=str(audio_content_hash),
+                transient_file_path_fingerprint=None,
+                backend_transient_file_created=False,
+                ring_buffer_overwritten=True,
+                ring_buffer_live_bytes_after=ring.live_byte_length,
+                transient_file_absent_after=True,
+                raw_audio_retained=False,
+                deletion_verified=(
+                    ring.live_byte_length == 0
+                    and ring.status == "closed"
+                    and ring.session.no_temporary_audio_file_created
+                ),
+                source_record_refs=(
+                    ring.session.ephemeral_audio_session_id,
+                    audio_bundle.primitive_record_id,
+                ),
+                source_trace_refs=tuple(),
+            )
+            store.append_record(
+                "ephemeral_audio_deletion_verifications",
+                deletion,
+            )
         for session in sessions.values():
             sensor_store.append_lifecycle_event(
                 session=session,
@@ -1108,9 +1183,21 @@ def _capture_one_window(
                 if "screen" in sessions
                 else None
             ),
-            "audio_capture_session_id": sessions["audio"].capture_session_id,
-            "host_state_capture_session_id": sessions["host"].capture_session_id,
-            "ephemeral_audio_session_id": ring.session.ephemeral_audio_session_id,
+            "audio_capture_session_id": (
+                sessions["audio"].capture_session_id
+                if "audio" in sessions
+                else None
+            ),
+            "host_state_capture_session_id": (
+                sessions["host"].capture_session_id
+                if "host" in sessions
+                else None
+            ),
+            "ephemeral_audio_session_id": (
+                ring.session.ephemeral_audio_session_id
+                if ring is not None
+                else None
+            ),
             "screen_artifact_ids": tuple(screen_artifacts),
             "host_artifact_ids": tuple(host_artifacts),
             "visual_primitive_refs": (
@@ -1118,8 +1205,21 @@ def _capture_one_window(
                 if screen_bundle is not None
                 else tuple()
             ),
-            "audio_primitive_refs": (audio_bundle.primitive_record_id,),
-            "host_state_primitive_refs": (host_bundle.primitive_record_id,),
+            "visual_readable_data_refs": (
+                (screen_bundle.perception_readable_data_id,)
+                if screen_bundle is not None
+                else tuple()
+            ),
+            "audio_primitive_refs": (
+                (audio_bundle.primitive_record_id,)
+                if audio_bundle is not None
+                else tuple()
+            ),
+            "host_state_primitive_refs": (
+                (host_bundle.primitive_record_id,)
+                if host_bundle is not None
+                else tuple()
+            ),
             "audio_event_region_present": audio_event_region,
             "alignment_session_id": ids["perception_session_id"],
             "alignment_window_ids": tuple(
@@ -1141,6 +1241,7 @@ def _capture_one_window(
             "clock_domain_id": temporal["clock_domain_id"],
             "observation_window_state_id": observation_state.observation_window_state_id,
             "audio_deletion": deletion,
+            "participating_lanes": participating_lanes,
             "sessions_started": True,
             "sessions_stopped": True,
             "raw_audio_retained": False,
@@ -1151,7 +1252,7 @@ def _capture_one_window(
     finally:
         if host_open:
             host_adapter.close()
-        if ring.status != "closed":
+        if ring is not None and ring.status != "closed":
             ring.close(reason_code=f"package_126_{role}_finally_clear")
 
 
@@ -1342,16 +1443,8 @@ def _completed_parent_reference(
         completion_status="completed_clean",
         finalized_at_event_time_ns=parent["ended_monotonic_ns"],
         finalized_at_processing_time_ns=monotonic_ns(),
-        participating_lanes=tuple(
-            ("screen", "microphone", "host_state")
-            if parent["screen_capture_session_id"]
-            else ("microphone", "host_state")
-        ),
-        required_lanes=tuple(
-            ("screen", "microphone", "host_state")
-            if parent["screen_capture_session_id"]
-            else ("microphone", "host_state")
-        ),
+        participating_lanes=tuple(parent["participating_lanes"]),
+        required_lanes=tuple(parent["participating_lanes"]),
         source_capture_session_refs=tuple(parent["capture_session_refs"]),
         sampling_plan_identity_ref=plan.sampling_plan_identity_id,
         final_temporal_bundle_ref=parent["temporal_bundle_id"],
@@ -1604,7 +1697,11 @@ def _public_window_result(window: dict[str, Any]) -> dict[str, Any]:
             "audio_deletion",
         }
     } | {
-        "audio_deletion": window["audio_deletion"].to_dict(),
+        "audio_deletion": (
+            window["audio_deletion"].to_dict()
+            if window["audio_deletion"] is not None
+            else None
+        ),
     }
 
 

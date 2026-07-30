@@ -1,5 +1,5 @@
 {
-  "ledger_id": "architecture_capability_ledger:package_126_update",
+  "ledger_id": "architecture_capability_ledger:package_127_update",
   "schema_version": "ashl_architecture_capability_ledger_v0",
   "runtime_behavior_changed_by_package_124": false,
   "runtime_behavior_changed_by_dlm0_qm0": false,
@@ -58,6 +58,19 @@
     {
       "package": "127",
       "name": "Internal Perception Focus Shift",
+      "status": "completed",
+      "runtime_delta": "one bounded deterministic changed-grid focus applied as read-only context to one Package 126 full-frame child window",
+      "capture_delta": "no raw target, region or configuration change",
+      "focus_lifetime": "one child window with automatic release",
+      "semantic_delta": "none",
+      "scoring_delta": "none",
+      "memory_delta": "none",
+      "output_delta": "none",
+      "external_control_delta": "none"
+    },
+    {
+      "package": "128",
+      "name": "Evidence Sufficiency And Observation Stop Policy",
       "status": "next_critical_path",
       "runtime_delta": "planned"
     }
@@ -72,8 +85,8 @@
       "organ_migration_delta": "none",
       "qm1_execution_authorized": false,
       "qingyin_migration_status": "QINGYIN_MIGRATION_INCOMPLETE_AUDIT_LAYER",
-      "next_critical_path": "Package 127",
-      "future_d_laplace_path": "Package 126-132 -> DLM-1 -> DLM-2"
+      "next_critical_path": "Package 128",
+      "future_d_laplace_path": "Package 128-132 -> DLM-1 -> DLM-2"
     }
   ]
 }
