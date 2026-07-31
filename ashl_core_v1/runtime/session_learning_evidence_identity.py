@@ -23,7 +23,26 @@ ALLOWED_EVIDENCE_THEMES = (
     "home_status_updated",
     "runtime_bridge_deferred",
     "unknown_event_seen",
+    "active_perception_sequence_observed",
 )
+
+FORBIDDEN_CANONICAL_CONTEXT_KEYS = {
+    "stimulus_schedule",
+    "expected_selected_grid",
+    "expected_stop_checkpoint",
+    "expected_stop_time",
+}
+NULL_ONLY_CANONICAL_CONTEXT_KEYS = {
+    "object_identity",
+    "object_class",
+    "semantic_label",
+    "event_meaning",
+    "causal_claim",
+    "curiosity",
+    "uncertainty",
+    "recognition",
+    "subjective_attention",
+}
 
 ALLOWED_PIPELINE_STAGES = (
     "learning_feedback_candidate",
@@ -105,6 +124,40 @@ def calculate_evidence_identity_sha256(identity_payload: dict[str, object]) -> s
     return calculate_sha256(identity_payload)
 
 
+def validate_canonical_evidence_context(context: dict[str, Any]) -> None:
+    def visit(value: Any) -> None:
+        if isinstance(value, (bytes, bytearray, memoryview)):
+            raise ValueError("canonical evidence context cannot contain raw payload bytes")
+        if isinstance(value, dict):
+            forbidden = FORBIDDEN_CANONICAL_CONTEXT_KEYS.intersection(
+                str(key) for key in value
+            )
+            if forbidden:
+                raise ValueError(
+                    "canonical evidence context contains forbidden fields: "
+                    + ",".join(sorted(forbidden))
+                )
+            non_null = tuple(
+                str(key)
+                for key, item in value.items()
+                if str(key) in NULL_ONLY_CANONICAL_CONTEXT_KEYS
+                and item is not None
+            )
+            if non_null:
+                raise ValueError(
+                    "canonical evidence context semantic fields must be null: "
+                    + ",".join(sorted(non_null))
+                )
+            for item in value.values():
+                visit(item)
+        elif isinstance(value, (list, tuple)):
+            for item in value:
+                visit(item)
+
+    visit(context)
+    canonical_json(context)
+
+
 def approval_scope_sufficient(approval_scope: str, required_scope: str) -> bool:
     if approval_scope not in APPROVAL_SCOPE_ORDER:
         return False
@@ -184,6 +237,8 @@ def build_session_learning_evidence_snapshot(
     existing_review_adapter: Any,
     source_trace_refs: tuple[str, ...],
     source_record_refs: tuple[str, ...] = tuple(),
+    canonical_evidence_context: dict[str, Any] | None = None,
+    evidence_summary: str | None = None,
 ) -> SessionLearningEvidenceSnapshot:
     packet = _record(evidence_packet)
     mapping_record = _record(mapping)
@@ -192,6 +247,8 @@ def build_session_learning_evidence_snapshot(
     evidence_theme = str(packet.get("evidence_theme") or "unknown_event_seen")
     if evidence_theme not in ALLOWED_EVIDENCE_THEMES:
         raise ValueError(f"unsupported evidence_theme: {evidence_theme}")
+    context = dict(canonical_evidence_context or {})
+    validate_canonical_evidence_context(context)
     canonical_payload = {
         "source_learning_evidence_packet_id": packet.get("host_body_learning_evidence_packet_id"),
         "source_learning_feedback_mapping_id": mapping_record.get("host_body_learning_feedback_mapping_id"),
@@ -201,7 +258,8 @@ def build_session_learning_evidence_snapshot(
         "evidence_theme": evidence_theme,
         "feedback_candidate_kind": mapping_record.get("feedback_candidate_kind"),
         "feedback_candidate_scope": mapping_record.get("feedback_candidate_scope"),
-        "evidence_summary": packet.get("evidence_summary"),
+        "evidence_summary": evidence_summary or packet.get("evidence_summary"),
+        "canonical_evidence_context": context,
         "source_trace_refs": tuple(source_trace_refs),
     }
     refs = tuple(
@@ -233,7 +291,11 @@ def build_session_learning_evidence_snapshot(
         evidence_theme=evidence_theme,
         feedback_candidate_kind=str(mapping_record.get("feedback_candidate_kind")),
         feedback_candidate_scope=str(mapping_record.get("feedback_candidate_scope")),
-        evidence_summary=str(packet.get("evidence_summary") or "Host Body learning evidence snapshot."),
+        evidence_summary=str(
+            evidence_summary
+            or packet.get("evidence_summary")
+            or "Host Body learning evidence snapshot."
+        ),
         canonical_evidence_payload=canonical_payload,
         source_record_refs=refs,
         source_trace_refs=tuple(source_trace_refs),

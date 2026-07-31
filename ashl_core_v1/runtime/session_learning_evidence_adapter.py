@@ -26,6 +26,9 @@ HOST_BODY_THEME_TO_CANDIDATE_KIND = {
     "event_processing_paused": "host_body_pause_feedback_candidate",
     "home_status_updated": "host_body_status_feedback_candidate",
     "unknown_event_seen": "host_body_unknown_event_feedback_candidate",
+    "active_perception_sequence_observed": (
+        "host_body_active_perception_feedback_candidate"
+    ),
 }
 
 EXISTING_SCHEMA_KIND_BY_THEME = {
@@ -37,6 +40,7 @@ EXISTING_SCHEMA_KIND_BY_THEME = {
     "event_processing_paused": "no_progress_candidate",
     "home_status_updated": "observation_only_candidate",
     "unknown_event_seen": "observation_only_candidate",
+    "active_perception_sequence_observed": "observation_only_candidate",
 }
 
 SIGNAL_CLASS_BY_THEME = {
@@ -48,6 +52,7 @@ SIGNAL_CLASS_BY_THEME = {
     "event_processing_paused": "no_progress_signal",
     "home_status_updated": "observation_context_signal",
     "unknown_event_seen": "unknown_signal",
+    "active_perception_sequence_observed": "observation_context_signal",
 }
 
 EXPECTED_EFFECT_BY_THEME = {
@@ -59,6 +64,10 @@ EXPECTED_EFFECT_BY_THEME = {
     "event_processing_paused": "preserve event-processing pause evidence for teacher-reviewed learning",
     "home_status_updated": "preserve Home status update evidence for teacher-reviewed learning",
     "unknown_event_seen": "preserve unknown Host Body event evidence for teacher-reviewed learning",
+    "active_perception_sequence_observed": (
+        "preserve bounded low-level active-perception sequence evidence "
+        "for exact teacher-reviewed learning"
+    ),
 }
 
 

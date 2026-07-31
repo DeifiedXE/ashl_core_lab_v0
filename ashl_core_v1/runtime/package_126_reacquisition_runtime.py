@@ -973,10 +973,21 @@ def capture_one_bounded_reacquisition_window(
         if "host_state" in participating_lanes:
             host_adapter.open(configs["host"])
             host_open = True
-        deadline_ns = started_ns + int(window_duration_ns)
+        initial_deadline_ns = started_ns + int(window_duration_ns)
+        hard_deadline_ns = (
+            started_ns + int(deadline_controller.hard_deadline_ns())
+            if deadline_controller is not None
+            else initial_deadline_ns
+        )
+
+        def current_deadline_ns() -> int:
+            if deadline_controller is None:
+                return initial_deadline_ns
+            return started_ns + int(deadline_controller.current_deadline_ns())
+
         next_screen_ns = started_ns
         next_host_ns = started_ns
-        while monotonic_ns() < deadline_ns:
+        while monotonic_ns() < current_deadline_ns():
             if (
                 deadline_controller is not None
                 and deadline_controller.stop_requested
@@ -1014,7 +1025,7 @@ def capture_one_bounded_reacquisition_window(
                         ],
                         started_monotonic_ns=started_ns,
                         observed_at_monotonic_ns=now_ns,
-                        hard_deadline_monotonic_ns=deadline_ns,
+                        hard_deadline_monotonic_ns=hard_deadline_ns,
                         participating_lanes=participating_lanes,
                         capture_session_refs=tuple(
                             session.capture_session_id
@@ -1060,7 +1071,8 @@ def capture_one_bounded_reacquisition_window(
                     "stop event-time boundary falls outside the active window"
                 )
             observed_end_ns = provided_end_ns
-        ended_ns = min(observed_end_ns, deadline_ns)
+        effective_deadline_ns = current_deadline_ns()
+        ended_ns = min(observed_end_ns, effective_deadline_ns)
 
         ephemeral_source: Any | None = None
         audio_content_hash: str | None = None
@@ -1164,7 +1176,12 @@ def capture_one_bounded_reacquisition_window(
         config = _build_live_alignment_config(
             path=path,
             participating_lanes=participating_lanes,
-            window_duration_ns=window_duration_ns,
+            window_duration_ns=max(
+                int(window_duration_ns),
+                effective_deadline_ns
+                - started_ns
+                + int(alignment_window_ms) * 1_000_000,
+            ),
             queue_depth=(64 if compile_all_samples else 16),
             alignment_window_ms=alignment_window_ms,
         )
@@ -1226,11 +1243,22 @@ def capture_one_bounded_reacquisition_window(
             base_deadline_event_time_ns=started_ns
             + int(window_duration_ns),
             current_deadline_event_time_ns=started_ns
-            + int(window_duration_ns),
-            hard_deadline_event_time_ns=started_ns
-            + int(window_duration_ns),
-            extension_count=0,
-            total_extension_ns=0,
+            + (
+                int(deadline_controller.current_deadline_ns())
+                if deadline_controller is not None
+                else int(window_duration_ns)
+            ),
+            hard_deadline_event_time_ns=hard_deadline_ns,
+            extension_count=(
+                int(deadline_controller.extension_count)
+                if deadline_controller is not None
+                else 0
+            ),
+            total_extension_ns=(
+                int(deadline_controller.total_extension_ns)
+                if deadline_controller is not None
+                else 0
+            ),
             window_status="completed",
             operator_stop_requested=False,
             operator_pause_requested=False,
@@ -1383,6 +1411,7 @@ def capture_one_bounded_reacquisition_window(
             "alignment_window_ids": tuple(
                 window.alignment_window_id for window in prepared.windows
             ),
+            "source_trace_refs": tuple(prepared.source_trace_refs),
             "required_windows_expected": len(prepared.windows),
             "required_windows_complete": complete_windows,
             "required_lane_drop_count": len(prepared.dropped_records),
@@ -1411,7 +1440,7 @@ def capture_one_bounded_reacquisition_window(
                 if deadline_controller is not None
                 else None
             ),
-            "original_hard_deadline_monotonic_ns": deadline_ns,
+            "original_hard_deadline_monotonic_ns": hard_deadline_ns,
             "raw_audio_retained": False,
             "raw_parent_artifact_reused": False,
             "semantic_interpretation_created": False,

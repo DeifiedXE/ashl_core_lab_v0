@@ -425,6 +425,8 @@ class BoundedMultimodalPerceptionSessionRuntime:
         *,
         config: MultimodalPerceptionSessionConfig | None = None,
         working_readback_snapshot: tuple[dict[str, Any], ...] | list[dict[str, Any]] | None = None,
+        learning_evidence_context: dict[str, Any] | None = None,
+        fixture_kind: str = "artifact_backed_multimodal_perception_replay",
     ) -> BoundedMultimodalPerceptionSessionResult:
         prepared = self.prepare_artifact_backed_alignment_replay_transport(
             manifest,
@@ -433,6 +435,8 @@ class BoundedMultimodalPerceptionSessionRuntime:
         return self.run_prepared_artifact_replay_to_teacher_gate(
             prepared,
             working_readback_snapshot=working_readback_snapshot,
+            learning_evidence_context=learning_evidence_context,
+            fixture_kind=fixture_kind,
         )
 
     def prepare_live_compiled_alignment_transport(
@@ -623,6 +627,8 @@ class BoundedMultimodalPerceptionSessionRuntime:
         prepared: PreparedArtifactReplayTransport,
         *,
         working_readback_snapshot: tuple[dict[str, Any], ...] | list[dict[str, Any]] | None = None,
+        learning_evidence_context: dict[str, Any] | None = None,
+        fixture_kind: str = "artifact_backed_multimodal_perception_replay",
     ) -> BoundedMultimodalPerceptionSessionResult:
         multimodal_session_id = prepared.session_id
         config = prepared.config
@@ -631,6 +637,11 @@ class BoundedMultimodalPerceptionSessionRuntime:
         timeline = prepared.timeline
         package_115_state = self.embodied_runtime.create_session()
         package_115_session_id = package_115_state.session_id
+        if learning_evidence_context:
+            self.embodied_runtime.attach_learning_evidence_context(
+                package_115_session_id,
+                **dict(learning_evidence_context),
+            )
         if working_readback_snapshot:
             self.embodied_runtime.attach_working_readback_snapshot(
                 package_115_session_id,
@@ -655,7 +666,7 @@ class BoundedMultimodalPerceptionSessionRuntime:
             self.embodied_runtime.inject_host_body_event_record(
                 package_115_session_id,
                 host_event,
-                fixture_kind="artifact_backed_multimodal_perception_replay",
+                fixture_kind=fixture_kind,
                 source_record_refs=(window.alignment_window_id,) + tuple(item.primitive_record_id for item in window_items),
             )
             bridge = build_perception_host_body_event_bridge_record(

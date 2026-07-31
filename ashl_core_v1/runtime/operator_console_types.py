@@ -163,6 +163,18 @@ VALID_EVENT_KINDS = (
     "observation_policy_stop_executed",
     "observation_completion_created",
     "observation_sufficiency_audit_failed",
+    "active_perception_cycle_started",
+    "active_perception_stage_completed",
+    "active_perception_cycle_waiting_teacher_review",
+    "active_perception_cycle_approved",
+    "active_perception_working_readback_committed",
+    "active_perception_cycle_process_ended",
+    "active_perception_cycle2_process_started",
+    "active_perception_readback_loaded",
+    "active_perception_readback_influence_applied",
+    "active_perception_cycle2_waiting_teacher_review",
+    "active_perception_two_cycle_comparison_created",
+    "package_129_audit_failed",
 )
 PACKAGE_125_OBSERVATION_EVENT_KINDS = (
     "observation_window_started",
@@ -219,6 +231,20 @@ PACKAGE_128_STRUCTURAL_SUFFICIENCY_EVENT_KINDS = (
     "observation_policy_stop_executed",
     "observation_completion_created",
     "observation_sufficiency_audit_failed",
+)
+PACKAGE_129_ACTIVE_PERCEPTION_EVENT_KINDS = (
+    "active_perception_cycle_started",
+    "active_perception_stage_completed",
+    "active_perception_cycle_waiting_teacher_review",
+    "active_perception_cycle_approved",
+    "active_perception_working_readback_committed",
+    "active_perception_cycle_process_ended",
+    "active_perception_cycle2_process_started",
+    "active_perception_readback_loaded",
+    "active_perception_readback_influence_applied",
+    "active_perception_cycle2_waiting_teacher_review",
+    "active_perception_two_cycle_comparison_created",
+    "package_129_audit_failed",
 )
 
 
@@ -732,6 +758,8 @@ class LocalOperatorJsonEvent:
     child_runtime_session_id: str | None = None
     child_perception_session_id: str | None = None
     child_observation_window_id: str | None = None
+    cycle_index: int | None = None
+    process_instance_id: str | None = None
 
     def __post_init__(self) -> None:
         if self.schema_version != JSON_EVENT_SCHEMA_VERSION:
@@ -772,6 +800,15 @@ class LocalOperatorJsonEvent:
             raise ValueError(
                 "Package 128 events require runtime, perception, and observation window ids"
             )
+        if self.event_kind in PACKAGE_129_ACTIVE_PERCEPTION_EVENT_KINDS:
+            if self.cycle_index not in {1, 2} or not self.process_instance_id:
+                raise ValueError(
+                    "Package 129 events require cycle_index and process_instance_id"
+                )
+            if not (self.runtime_session_id and self.perception_session_id):
+                raise ValueError(
+                    "Package 129 events require runtime and perception session ids"
+                )
         object.__setattr__(self, "source_record_refs", _tuple_of_str(self.source_record_refs))
         object.__setattr__(self, "source_trace_refs", _tuple_of_str(self.source_trace_refs))
 

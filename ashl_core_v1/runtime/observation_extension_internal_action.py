@@ -128,6 +128,7 @@ def execute_bounded_observation_extension(
         capture_identity_after_id=capture_identity_after.active_capture_identity_id,
         alignment_origin_before_ns=capture_identity_before.alignment_origin_monotonic_ns,
         alignment_origin_after_ns=capture_identity_after.alignment_origin_monotonic_ns,
+        participating_lanes=tuple(participating_lanes),
     )
 
 

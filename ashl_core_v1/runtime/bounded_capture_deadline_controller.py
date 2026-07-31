@@ -53,6 +53,14 @@ class BoundedCaptureDeadlineController:
         with self._lock:
             return self._current_deadline_ns
 
+    def base_deadline_ns(self) -> int:
+        with self._lock:
+            return self._base_deadline_ns
+
+    def hard_deadline_ns(self) -> int:
+        with self._lock:
+            return self._hard_deadline_ns
+
     def lane_deadline_ns(self, lane: str) -> int:
         with self._lock:
             return self._lane_deadlines[str(lane)]

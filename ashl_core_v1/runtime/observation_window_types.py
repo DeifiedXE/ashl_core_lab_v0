@@ -497,14 +497,39 @@ class ObservationWindowExtensionExecutionRecord:
     capture_identity_after_id: str
     alignment_origin_before_ns: int
     alignment_origin_after_ns: int
+    participating_lanes: tuple[str, ...] = (
+        "screen",
+        "microphone",
+        "host_state",
+    )
 
     def __post_init__(self) -> None:
         _require_schema(self.schema_version, OBSERVATION_EXTENSION_EXECUTION_SCHEMA_VERSION)
         if self.execution_status not in EXECUTION_STATUSES:
             raise ValueError("invalid execution status")
+        object.__setattr__(
+            self,
+            "participating_lanes",
+            tuple_of_str(self.participating_lanes),
+        )
+        if not self.participating_lanes or not set(
+            self.participating_lanes
+        ).issubset({"screen", "microphone", "host_state", "camera"}):
+            raise ValueError("invalid Package 125 participating lanes")
         if self.execution_status == "applied":
-            if not (self.screen_deadline_updated and self.audio_deadline_updated and self.host_state_deadline_updated):
-                raise ValueError("successful Package 125 extension must update all required lanes")
+            lane_updates = {
+                "screen": self.screen_deadline_updated,
+                "microphone": self.audio_deadline_updated,
+                "host_state": self.host_state_deadline_updated,
+                "camera": self.camera_deadline_updated,
+            }
+            if not all(
+                lane_updates[lane] is True
+                for lane in self.participating_lanes
+            ):
+                raise ValueError(
+                    "successful Package 125 extension must update all participating lanes"
+                )
             if not self.same_capture_sessions_preserved or self.sources_reopened:
                 raise ValueError("successful Package 125 extension must preserve same sessions and reopen no source")
         object.__setattr__(self, "source_record_refs", tuple_of_str(self.source_record_refs))

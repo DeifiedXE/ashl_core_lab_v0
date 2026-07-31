@@ -1,9 +1,10 @@
 {
-  "ledger_id": "architecture_capability_ledger:package_128_update",
+  "ledger_id": "architecture_capability_ledger:package_129_update",
   "schema_version": "ashl_architecture_capability_ledger_v0",
   "runtime_behavior_changed_by_package_124": false,
   "runtime_behavior_changed_by_dlm0_qm0": false,
   "runtime_behavior_changed_by_package_128": true,
+  "runtime_behavior_changed_by_package_129": true,
   "capabilities": [
     {
       "package": "123",
@@ -86,6 +87,19 @@
     {
       "package": "129",
       "name": "Active Perception Real Two-Cycle Growth Run",
+      "status": "completed",
+      "runtime_delta": "one teacher-reviewed real active-perception sequence persists through the existing memory path and contributes nonzero advisory score in a fresh-process second real sequence",
+      "action_delta": "none",
+      "sensor_delta": "none",
+      "semantic_delta": "none",
+      "readback_delta": "approved Cycle 1 structural evidence contributes through the existing Package 112 internal-action scorer without bypassing Package 125-128 policy gates",
+      "memory_delta": "Cycle 1 exact teacher approval uses the existing reviewed-memory and working-readback path; Cycle 2 remains unresolved and uncommitted",
+      "output_delta": "none",
+      "external_control_delta": "none"
+    },
+    {
+      "package": "130",
+      "name": "Grounded Auditory Event Concept Formation",
       "status": "next_critical_path",
       "runtime_delta": "planned"
     }
@@ -100,8 +114,8 @@
       "organ_migration_delta": "none",
       "qm1_execution_authorized": false,
       "qingyin_migration_status": "QINGYIN_MIGRATION_INCOMPLETE_AUDIT_LAYER",
-      "next_critical_path": "Package 129",
-      "future_d_laplace_path": "Package 129-132 -> DLM-1 -> DLM-2"
+      "next_critical_path": "Package 130",
+      "future_d_laplace_path": "Package 130-132 -> DLM-1 -> DLM-2"
     }
   ]
 }

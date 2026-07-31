@@ -965,7 +965,10 @@ class TeacherGatedSessionStore:
                 SELECT wr.working_readback_commit_id, wr.interpretation_commit_id,
                        wr.readback_payload_json, wr.source_trace_refs_json,
                        wr.source_evidence_snapshot_id, wr.evidence_identity_sha256,
-                       wr.source_reviewed_interpretation_commit_id
+                       wr.source_reviewed_interpretation_commit_id,
+                       ic.reviewed_concept_ref, ic.memory_learning_trace_ref,
+                       ic.memory_routing_trace_ref,
+                       ic.memory_application_data_ref
                 FROM working_readback_commits wr
                 JOIN reviewed_interpretation_commits ic
                   ON ic.interpretation_commit_id = wr.interpretation_commit_id
@@ -983,6 +986,10 @@ class TeacherGatedSessionStore:
             payload["source_evidence_snapshot_id"] = row["source_evidence_snapshot_id"]
             payload["evidence_identity_sha256"] = row["evidence_identity_sha256"]
             payload["source_reviewed_interpretation_commit_id"] = row["source_reviewed_interpretation_commit_id"]
+            payload["source_reviewed_concept_ref"] = row["reviewed_concept_ref"]
+            payload["memory_learning_trace_ref"] = row["memory_learning_trace_ref"]
+            payload["memory_routing_trace_ref"] = row["memory_routing_trace_ref"]
+            payload["memory_application_data_ref"] = row["memory_application_data_ref"]
             readback.append(payload)
         return tuple(readback)
 

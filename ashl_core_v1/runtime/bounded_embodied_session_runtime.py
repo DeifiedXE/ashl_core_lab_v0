@@ -137,8 +137,10 @@ from ashl_core_v1.runtime.runtime_capability_profile import (
 )
 from ashl_core_v1.runtime.session_learning_evidence_identity import (
     ALLOWED_APPROVAL_SCOPES,
+    ALLOWED_EVIDENCE_THEMES,
     FULL_COMMIT_APPROVAL_SCOPE,
     build_session_learning_evidence_snapshot,
+    validate_canonical_evidence_context,
 )
 from ashl_core_v1.runtime.trace_envelope import (
     TraceEnvelope,
@@ -761,6 +763,56 @@ class BoundedEmbodiedSessionRuntime:
             trace_envelope_count=len(self.trace_store.list_by_session(session_id)),
             raw_trace_cursor=envelope.sequence_index,
             session_summary="Committed working readback snapshot attached before fixture event handling.",
+        )
+        return envelope
+
+    def attach_learning_evidence_context(
+        self,
+        session_id: str,
+        *,
+        evidence_theme: str,
+        canonical_evidence_context: dict[str, Any],
+        evidence_summary: str,
+        source_record_refs: tuple[str, ...],
+        source_trace_refs: tuple[str, ...],
+    ) -> TraceEnvelope:
+        state = self._state(session_id)
+        if state.current_stage != BoundedEmbodiedSessionStage.SESSION_CREATED:
+            raise ValueError(
+                "learning evidence context must be attached before event handling"
+            )
+        if evidence_theme not in ALLOWED_EVIDENCE_THEMES:
+            raise ValueError(f"unsupported evidence_theme: {evidence_theme}")
+        context = copy.deepcopy(_plain(canonical_evidence_context))
+        validate_canonical_evidence_context(context)
+        refs = tuple(str(item) for item in source_record_refs)
+        traces = tuple(str(item) for item in source_trace_refs)
+        if not refs or not traces:
+            raise ValueError("learning evidence context requires record and trace refs")
+        self._records[session_id]["learning_evidence_context"] = {
+            "evidence_theme": evidence_theme,
+            "canonical_evidence_context": context,
+            "evidence_summary": str(evidence_summary),
+            "source_record_refs": refs,
+            "source_trace_refs": traces,
+        }
+        envelope = self._append_runtime_control(
+            session_id,
+            "StructuralLearningEvidenceContextAttached",
+            f"structural_learning_evidence_context:{session_id}",
+            {
+                "evidence_theme": evidence_theme,
+                "source_record_refs": refs,
+                "contains_raw_sensor_payload": False,
+                "contains_stimulus_schedule": False,
+            },
+        )
+        self._update_state(
+            session_id,
+            trace_envelope_count=len(
+                self.trace_store.list_by_session(session_id)
+            ),
+            raw_trace_cursor=envelope.sequence_index,
         )
         return envelope
 
@@ -1408,7 +1460,12 @@ class BoundedEmbodiedSessionRuntime:
             internal_action_choice_audit=records["internal_action_choice_audit"].to_dict(),
         )
         evidence_kwargs: dict[str, object] = {}
-        if records.get("fixture_kind") == "artifact_backed_multimodal_perception_replay":
+        learning_context = records.get("learning_evidence_context")
+        if learning_context:
+            evidence_kwargs["evidence_theme"] = learning_context[
+                "evidence_theme"
+            ]
+        elif records.get("fixture_kind") == "artifact_backed_multimodal_perception_replay":
             evidence_kwargs["evidence_theme"] = "teacher_review_requested"
         packet = self._call(session_id, "build_host_body_learning_evidence_packet", build_host_body_learning_evidence_packet, bridge_plan=plan, trace_history_readback=records["trace_history_readback"].to_dict(), internal_action_choice=records["internal_action_choice"].to_dict(), internal_action_result=records["internal_action_result"].to_dict(), runtime_bridge_trace=records["runtime_bridge_trace"].to_dict(), **evidence_kwargs)
         mapping = self._call(session_id, "map_host_body_evidence_to_learning_feedback_candidate", map_host_body_evidence_to_learning_feedback_candidate, evidence_packet=packet)
@@ -1451,6 +1508,10 @@ class BoundedEmbodiedSessionRuntime:
         records = self._records[session_id]
         packet = records["learning_evidence_packet"]
         adapter = records["existing_review_adapter"]
+        learning_context = records.get("learning_evidence_context") or {}
+        context_trace_refs = tuple(
+            learning_context.get("source_trace_refs", ()) or ()
+        )
         snapshot = build_session_learning_evidence_snapshot(
             session_id=session_id,
             root_event_id=self._state(session_id).root_event_id or records["host_body_event"].host_body_event_id,
@@ -1459,7 +1520,18 @@ class BoundedEmbodiedSessionRuntime:
             mapping=records["learning_feedback_mapping"],
             bridge=records["learning_feedback_bridge"],
             existing_review_adapter=adapter,
-            source_trace_refs=(self._latest_trace_id(session_id),),
+            source_trace_refs=tuple(
+                dict.fromkeys(
+                    context_trace_refs + (self._latest_trace_id(session_id),)
+                )
+            ),
+            source_record_refs=tuple(
+                learning_context.get("source_record_refs", ()) or ()
+            ),
+            canonical_evidence_context=learning_context.get(
+                "canonical_evidence_context"
+            ),
+            evidence_summary=learning_context.get("evidence_summary"),
         )
         records["session_learning_evidence_snapshot"] = snapshot
         review = PendingTeacherReviewRecord(
@@ -1684,6 +1756,8 @@ def _readback_signal_theme_for_item(item: dict[str, Any]) -> str:
         return "prior_home_status_update"
     if evidence_theme == "unknown_event_seen":
         return "prior_unknown_event"
+    if evidence_theme == "active_perception_sequence_observed":
+        return "prior_active_perception_sequence"
     return "none"
 
 

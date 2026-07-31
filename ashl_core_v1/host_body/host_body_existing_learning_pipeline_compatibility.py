@@ -42,6 +42,7 @@ ALLOWED_HOST_BODY_CANDIDATE_KINDS = (
     "host_body_interesting_event_feedback_candidate",
     "host_body_teacher_review_feedback_candidate",
     "host_body_runtime_bridge_feedback_candidate",
+    "host_body_active_perception_feedback_candidate",
 )
 FORBIDDEN_PARALLEL_PIPELINE_OUTPUTS = (
     "parallel_teacher_review",
@@ -240,6 +241,7 @@ class HostBodyFeedbackCandidateNormalizationRecord:
             "host_body_interesting_event_evidence",
             "host_body_teacher_review_request_evidence",
             "host_body_runtime_bridge_evidence",
+            "host_body_active_perception_evidence",
             "blocked",
         }:
             raise ValueError(f"unknown normalized_learning_feedback_kind: {self.normalized_learning_feedback_kind}")
@@ -1707,13 +1709,17 @@ def _normalized_learning_feedback_kind(candidate_kind: str) -> str:
         "host_body_interesting_event_feedback_candidate": "host_body_interesting_event_evidence",
         "host_body_teacher_review_feedback_candidate": "host_body_teacher_review_request_evidence",
         "host_body_runtime_bridge_feedback_candidate": "host_body_runtime_bridge_evidence",
+        "host_body_active_perception_feedback_candidate": "host_body_active_perception_evidence",
     }.get(candidate_kind, "blocked")
 
 
 def _normalized_evidence_scope(candidate_kind: str) -> str:
     if candidate_kind == "host_body_runtime_bridge_feedback_candidate":
         return "host_body_runtime_bridge_only"
-    if candidate_kind == "host_body_teacher_review_feedback_candidate":
+    if candidate_kind in {
+        "host_body_teacher_review_feedback_candidate",
+        "host_body_active_perception_feedback_candidate",
+    }:
         return "host_body_internal_action_only"
     if candidate_kind in ALLOWED_HOST_BODY_CANDIDATE_KINDS:
         return "host_body_trace_history_only"

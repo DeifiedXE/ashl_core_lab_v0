@@ -55,6 +55,7 @@ ALLOWED_FEEDBACK_CANDIDATE_KINDS = (
     "host_body_interesting_event_feedback_candidate",
     "host_body_teacher_review_feedback_candidate",
     "host_body_runtime_bridge_feedback_candidate",
+    "host_body_active_perception_feedback_candidate",
 )
 FORBIDDEN_LEARNING_OUTPUTS = (
     "ConceptCandidate",
@@ -77,6 +78,7 @@ ALLOWED_EVIDENCE_THEMES = (
     "runtime_bridge_deferred",
     "unknown_event_seen",
     "repeated_host_event_seen",
+    "active_perception_sequence_observed",
     "none",
 )
 
@@ -1616,6 +1618,7 @@ def _feedback_candidate_kind(theme: str) -> str:
         "interesting_event_marked": "host_body_interesting_event_feedback_candidate",
         "teacher_review_requested": "host_body_teacher_review_feedback_candidate",
         "runtime_bridge_deferred": "host_body_runtime_bridge_feedback_candidate",
+        "active_perception_sequence_observed": "host_body_active_perception_feedback_candidate",
     }.get(theme, "host_body_feedback_candidate")
 
 
@@ -1624,7 +1627,12 @@ def _feedback_candidate_scope(theme: str, status: str) -> str:
         return "blocked"
     if theme == "runtime_bridge_deferred":
         return "host_body_runtime_bridge_only"
-    if theme in {"uncertainty_detected", "interesting_event_marked", "teacher_review_requested"}:
+    if theme in {
+        "uncertainty_detected",
+        "interesting_event_marked",
+        "teacher_review_requested",
+        "active_perception_sequence_observed",
+    }:
         return "host_body_internal_action_only"
     return "host_body_trace_history_only"
 

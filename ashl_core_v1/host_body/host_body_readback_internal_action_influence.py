@@ -52,6 +52,7 @@ ALLOWED_READBACK_SIGNAL_THEMES = (
     "prior_unknown_event",
     "prior_event_processing_paused",
     "prior_home_status_update",
+    "prior_active_perception_sequence",
     "none",
 )
 ALLOWED_INTERNAL_ACTION_KINDS = (
@@ -62,6 +63,7 @@ ALLOWED_INTERNAL_ACTION_KINDS = (
     "shift_internal_focus",
     "update_home_status",
     "pause_event_processing",
+    "extend_observation_window",
 )
 ALLOWED_CANDIDATE_KINDS = ALLOWED_INTERNAL_ACTION_KINDS + ("blocked_external_action",)
 ALLOWED_ORDERING_EFFECTS = (
@@ -72,6 +74,7 @@ ALLOWED_ORDERING_EFFECTS = (
     "increase_pause_event_processing_priority",
     "increase_update_home_status_priority",
     "increase_shift_internal_focus_priority",
+    "increase_extend_observation_window_priority",
     "no_change",
 )
 FORBIDDEN_EFFECTS = (
@@ -114,6 +117,7 @@ TIE_BREAKER_ORDER = (
     "mark_event_interesting",
     "shift_internal_focus",
     "update_home_status",
+    "extend_observation_window",
 )
 TIE_BREAKER_INDEX = {kind: index for index, kind in enumerate(TIE_BREAKER_ORDER)}
 DELTA_MIN = -3
@@ -2177,6 +2181,8 @@ def _signal_status_for_theme(theme: str) -> str:
         return "readback_internal_action_signal_created_observe_again"
     if theme == "prior_runtime_bridge_deferred":
         return "readback_internal_action_signal_created_runtime_bridge"
+    if theme == "prior_active_perception_sequence":
+        return "readback_internal_action_signal_created"
     if theme == "none":
         return "readback_internal_action_signal_created_noop"
     return "readback_internal_action_signal_created"
@@ -2209,6 +2215,7 @@ def _deterministic_readback_delta(theme: str, action_kind: str) -> int:
         ("prior_unknown_event", "mark_uncertain"): 2,
         ("prior_unknown_event", "observe_again"): 1,
         ("prior_home_status_update", "update_home_status"): 2,
+        ("prior_active_perception_sequence", "extend_observation_window"): 3,
     }
     return table.get((theme, action_kind), 0)
 
@@ -2231,6 +2238,7 @@ def _effect_for_kind(kind: str) -> str:
         "pause_event_processing": "increase_pause_event_processing_priority",
         "update_home_status": "increase_update_home_status_priority",
         "shift_internal_focus": "increase_shift_internal_focus_priority",
+        "extend_observation_window": "increase_extend_observation_window_priority",
     }.get(kind, "no_change")
 
 
