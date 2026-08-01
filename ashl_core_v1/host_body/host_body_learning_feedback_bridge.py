@@ -56,6 +56,7 @@ ALLOWED_FEEDBACK_CANDIDATE_KINDS = (
     "host_body_teacher_review_feedback_candidate",
     "host_body_runtime_bridge_feedback_candidate",
     "host_body_active_perception_feedback_candidate",
+    "host_body_auditory_grounding_feedback_candidate",
 )
 FORBIDDEN_LEARNING_OUTPUTS = (
     "ConceptCandidate",
@@ -79,6 +80,7 @@ ALLOWED_EVIDENCE_THEMES = (
     "unknown_event_seen",
     "repeated_host_event_seen",
     "active_perception_sequence_observed",
+    "anonymous_auditory_event_concept_candidate",
     "none",
 )
 
@@ -254,6 +256,7 @@ class HostBodyLearningEvidencePacketRecord:
             "host_body_home_status_update_evidence",
             "host_body_runtime_bridge_deferred_evidence",
             "host_body_unknown_event_evidence",
+            "host_body_auditory_grounding_evidence",
             "blocked_evidence",
         }:
             raise ValueError(f"unknown evidence_kind: {self.evidence_kind}")
@@ -1569,6 +1572,7 @@ def _evidence_kind(theme: str) -> str:
         "home_status_updated": "host_body_home_status_update_evidence",
         "runtime_bridge_deferred": "host_body_runtime_bridge_deferred_evidence",
         "unknown_event_seen": "host_body_unknown_event_evidence",
+        "anonymous_auditory_event_concept_candidate": "host_body_auditory_grounding_evidence",
     }.get(theme, "host_body_unknown_event_evidence")
 
 
@@ -1619,6 +1623,7 @@ def _feedback_candidate_kind(theme: str) -> str:
         "teacher_review_requested": "host_body_teacher_review_feedback_candidate",
         "runtime_bridge_deferred": "host_body_runtime_bridge_feedback_candidate",
         "active_perception_sequence_observed": "host_body_active_perception_feedback_candidate",
+        "anonymous_auditory_event_concept_candidate": "host_body_auditory_grounding_feedback_candidate",
     }.get(theme, "host_body_feedback_candidate")
 
 
@@ -1632,6 +1637,7 @@ def _feedback_candidate_scope(theme: str, status: str) -> str:
         "interesting_event_marked",
         "teacher_review_requested",
         "active_perception_sequence_observed",
+        "anonymous_auditory_event_concept_candidate",
     }:
         return "host_body_internal_action_only"
     return "host_body_trace_history_only"

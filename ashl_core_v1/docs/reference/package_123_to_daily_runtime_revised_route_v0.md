@@ -15,7 +15,8 @@ Updated By: Package 126 bounded re-sampling and listen-again internal actions
 Updated By: Package 127 internal perception focus shift
 Updated By: Package 128 structural evidence sufficiency and observation stop policy
 Updated By: Package 129 active perception real two-cycle growth run
-Critical Path Note: Package 123 through Package 129 and the independent DLM-0 / Q-M0 audit are completed. Package 130 is the next critical-path item. Package 132 closes the perception capability construction line, Package 133 begins persistent self-state, and DLM-1 remains after Package 132. No Package 132A or extra perception package is scheduled.
+Updated By: Package 130 grounded anonymous auditory event concept formation
+Critical Path Note: Package 123 through Package 130 and the independent DLM-0 / Q-M0 audit are completed. Package 131 is the next critical-path item. Package 132 closes the perception capability construction line, Package 133 begins persistent self-state, and DLM-1 remains after Package 132. No Package 132A or extra perception package is scheduled.
 
 | Package | Name | Classification | Milestone Dependency | Route Note |
 | --- | --- | --- | --- | --- |
@@ -29,8 +30,8 @@ Critical Path Note: Package 123 through Package 129 and the independent DLM-0 / 
 | 127 | Internal Perception Focus Shift | critical_path | Package 132 | Completed: deterministically select one actual changed-grid cell as a read-only focus for one full-frame Package 126 child, then release it automatically. |
 | 128 | Structural Evidence Sufficiency And Observation Stop Policy | critical_path | Package 132 | Completed: an explicitly authorized focused visual child may stop early only after fixed low-level closure, post-context, coverage, integrity and lineage gates all pass. |
 | 129 | Active Perception Real Two-Cycle Growth Run | critical_path | Package 132 | Completed: one real four-action visual sequence was exactly teacher-reviewed and committed, then contributed through Package 112 in a fresh-process second real sequence without bypassing policy. |
-| 130 | Grounded Auditory Event Concept Formation | critical_path | Package 132 | Next: begin auditory event concepts, not speech or speaker identity. |
-| 131 | Auditory Predictive Recognition | critical_path | Package 132 | Compare observed and expected AudioPrimitive records. |
+| 130 | Grounded Auditory Event Concept Formation | critical_path | Package 132 | Completed: four real positive and three real contrast episodes form one exact teacher-reviewed anonymous low-level concept; all grounding waveforms are deleted before Package 131 consumer readiness. No recognition, speech, speaker identity or semantic label is created. |
+| 131 | Auditory Predictive Recognition | critical_path | Package 132 | Next: compare a fresh recognition-ephemeral observed AudioPrimitive with the reviewed expected primitive under the typed Package 131 scope. |
 | DLM-1 | Cost/Registry/Lineage Skeleton | future_d_laplace_path | after Package 132 | Not authorized by Q-M0; future implementation requires a separate package and approval. |
 | DLM-2 | Passive Organ Shadow | future_d_laplace_path | after DLM-1 | Future anonymous passive candidates only; no core replacement. |
 | 132 | Active Perception And Attention Milestone | critical_path | Package 132 | Seal bounded active perception and attention and close the perception capability construction line. |

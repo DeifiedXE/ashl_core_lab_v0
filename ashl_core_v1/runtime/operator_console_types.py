@@ -175,6 +175,23 @@ VALID_EVENT_KINDS = (
     "active_perception_cycle2_waiting_teacher_review",
     "active_perception_two_cycle_comparison_created",
     "package_129_audit_failed",
+    "auditory_grounding_authorized",
+    "auditory_grounding_episode_captured",
+    "auditory_grounding_episode_compiled",
+    "auditory_grounding_assignment_created",
+    "auditory_concept_feature_projection_created",
+    "auditory_concept_candidate_created",
+    "expected_audio_primitive_generated",
+    "auditory_concept_predictive_validation_passed",
+    "auditory_concept_predictive_validation_failed",
+    "auditory_concept_teacher_review_pending",
+    "auditory_concept_teacher_approved",
+    "auditory_concept_teacher_rejected",
+    "auditory_concept_teacher_deferred",
+    "auditory_concept_model_committed",
+    "auditory_grounding_raw_audio_deleted",
+    "auditory_concept_model_ready_for_package_131",
+    "package_130_audit_failed",
 )
 PACKAGE_125_OBSERVATION_EVENT_KINDS = (
     "observation_window_started",
@@ -245,6 +262,25 @@ PACKAGE_129_ACTIVE_PERCEPTION_EVENT_KINDS = (
     "active_perception_cycle2_waiting_teacher_review",
     "active_perception_two_cycle_comparison_created",
     "package_129_audit_failed",
+)
+PACKAGE_130_AUDITORY_CONCEPT_EVENT_KINDS = (
+    "auditory_grounding_authorized",
+    "auditory_grounding_episode_captured",
+    "auditory_grounding_episode_compiled",
+    "auditory_grounding_assignment_created",
+    "auditory_concept_feature_projection_created",
+    "auditory_concept_candidate_created",
+    "expected_audio_primitive_generated",
+    "auditory_concept_predictive_validation_passed",
+    "auditory_concept_predictive_validation_failed",
+    "auditory_concept_teacher_review_pending",
+    "auditory_concept_teacher_approved",
+    "auditory_concept_teacher_rejected",
+    "auditory_concept_teacher_deferred",
+    "auditory_concept_model_committed",
+    "auditory_grounding_raw_audio_deleted",
+    "auditory_concept_model_ready_for_package_131",
+    "package_130_audit_failed",
 )
 
 
@@ -760,6 +796,10 @@ class LocalOperatorJsonEvent:
     child_observation_window_id: str | None = None
     cycle_index: int | None = None
     process_instance_id: str | None = None
+    grounding_run_id: str | None = None
+    episode_id: str | None = None
+    concept_candidate_id: str | None = None
+    auditory_concept_model_id: str | None = None
 
     def __post_init__(self) -> None:
         if self.schema_version != JSON_EVENT_SCHEMA_VERSION:
@@ -809,6 +849,15 @@ class LocalOperatorJsonEvent:
                 raise ValueError(
                     "Package 129 events require runtime and perception session ids"
                 )
+        if self.event_kind in PACKAGE_130_AUDITORY_CONCEPT_EVENT_KINDS:
+            if not self.source_record_refs:
+                raise ValueError("Package 130 events require source record references")
+            if not (
+                self.grounding_run_id
+                or self.concept_candidate_id
+                or self.auditory_concept_model_id
+            ):
+                raise ValueError("Package 130 events require grounding or concept identity")
         object.__setattr__(self, "source_record_refs", _tuple_of_str(self.source_record_refs))
         object.__setattr__(self, "source_trace_refs", _tuple_of_str(self.source_trace_refs))
 

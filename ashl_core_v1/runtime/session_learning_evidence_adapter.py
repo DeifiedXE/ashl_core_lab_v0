@@ -29,6 +29,9 @@ HOST_BODY_THEME_TO_CANDIDATE_KIND = {
     "active_perception_sequence_observed": (
         "host_body_active_perception_feedback_candidate"
     ),
+    "anonymous_auditory_event_concept_candidate": (
+        "host_body_auditory_grounding_feedback_candidate"
+    ),
 }
 
 EXISTING_SCHEMA_KIND_BY_THEME = {
@@ -41,6 +44,7 @@ EXISTING_SCHEMA_KIND_BY_THEME = {
     "home_status_updated": "observation_only_candidate",
     "unknown_event_seen": "observation_only_candidate",
     "active_perception_sequence_observed": "observation_only_candidate",
+    "anonymous_auditory_event_concept_candidate": "observation_only_candidate",
 }
 
 SIGNAL_CLASS_BY_THEME = {
@@ -53,6 +57,7 @@ SIGNAL_CLASS_BY_THEME = {
     "home_status_updated": "observation_context_signal",
     "unknown_event_seen": "unknown_signal",
     "active_perception_sequence_observed": "observation_context_signal",
+    "anonymous_auditory_event_concept_candidate": "observation_context_signal",
 }
 
 EXPECTED_EFFECT_BY_THEME = {
@@ -67,6 +72,10 @@ EXPECTED_EFFECT_BY_THEME = {
     "active_perception_sequence_observed": (
         "preserve bounded low-level active-perception sequence evidence "
         "for exact teacher-reviewed learning"
+    ),
+    "anonymous_auditory_event_concept_candidate": (
+        "preserve exact anonymous low-level auditory grounding evidence "
+        "for teacher-reviewed Package 131 model preparation"
     ),
 }
 

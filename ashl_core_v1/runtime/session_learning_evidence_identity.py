@@ -24,6 +24,7 @@ ALLOWED_EVIDENCE_THEMES = (
     "runtime_bridge_deferred",
     "unknown_event_seen",
     "active_perception_sequence_observed",
+    "anonymous_auditory_event_concept_candidate",
 )
 
 FORBIDDEN_CANONICAL_CONTEXT_KEYS = {
@@ -31,6 +32,9 @@ FORBIDDEN_CANONICAL_CONTEXT_KEYS = {
     "expected_selected_grid",
     "expected_stop_checkpoint",
     "expected_stop_time",
+    "fixture_slot",
+    "scheduled_frequency_hz",
+    "scheduled_regions_ms",
 }
 NULL_ONLY_CANONICAL_CONTEXT_KEYS = {
     "object_identity",
@@ -42,6 +46,14 @@ NULL_ONLY_CANONICAL_CONTEXT_KEYS = {
     "uncertainty",
     "recognition",
     "subjective_attention",
+    "natural_language_name",
+    "speaker_identity",
+    "speech_content",
+    "transcript",
+    "emotion_label",
+    "object_identity",
+    "action_identity",
+    "material_identity",
 }
 
 ALLOWED_PIPELINE_STAGES = (

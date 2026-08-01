@@ -1,10 +1,11 @@
 {
-  "ledger_id": "architecture_capability_ledger:package_129_update",
+  "ledger_id": "architecture_capability_ledger:package_130_update",
   "schema_version": "ashl_architecture_capability_ledger_v0",
   "runtime_behavior_changed_by_package_124": false,
   "runtime_behavior_changed_by_dlm0_qm0": false,
   "runtime_behavior_changed_by_package_128": true,
   "runtime_behavior_changed_by_package_129": true,
+  "runtime_behavior_changed_by_package_130": true,
   "capabilities": [
     {
       "package": "123",
@@ -100,6 +101,19 @@
     {
       "package": "130",
       "name": "Grounded Auditory Event Concept Formation",
+      "status": "completed",
+      "runtime_delta": "one deterministic teacher-reviewed anonymous low-level auditory event concept model from four real positives and three real contrasts",
+      "recognition_delta": "none; Package 131 consumption is typed but no recognition runtime exists",
+      "source_blur_delta": "event-shape, temporal-ratio and rank-ordered relative spectral projection with exact pitch identity removed",
+      "memory_delta": "existing ReviewedConcept and memory trace path with package_131_auditory_prediction_only scope and no active Package 112 readback",
+      "raw_audio_delta": "seven governed raw waveform deletions before model readiness",
+      "semantic_delta": "none",
+      "output_delta": "none",
+      "external_control_delta": "none"
+    },
+    {
+      "package": "131",
+      "name": "Auditory Predictive Recognition",
       "status": "next_critical_path",
       "runtime_delta": "planned"
     }
@@ -114,8 +128,8 @@
       "organ_migration_delta": "none",
       "qm1_execution_authorized": false,
       "qingyin_migration_status": "QINGYIN_MIGRATION_INCOMPLETE_AUDIT_LAYER",
-      "next_critical_path": "Package 130",
-      "future_d_laplace_path": "Package 130-132 -> DLM-1 -> DLM-2"
+      "next_critical_path": "Package 131",
+      "future_d_laplace_path": "Package 131-132 -> DLM-1 -> DLM-2"
     }
   ]
 }

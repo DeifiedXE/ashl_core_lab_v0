@@ -521,7 +521,28 @@ class TeacherGatedSessionResumeCommitRuntime:
         state_dir: Path,
         *,
         force_fail_after: str | None = None,
+        memory_consumer_scope: str = "working_memory_readback_preview",
+        memory_target_layer: str = "working",
+        memory_route_decision: str = "routed_for_working_readback",
+        activate_working_readback: bool = True,
     ) -> TeacherGatedSessionRunResult:
+        if memory_consumer_scope == "package_131_auditory_prediction_only":
+            if (
+                memory_target_layer != "archive"
+                or memory_route_decision
+                != "routed_to_grounded_auditory_concept_model_store"
+                or activate_working_readback
+            ):
+                raise ValueError(
+                    "Package 131 typed auditory memory cannot activate working readback"
+                )
+        elif (
+            memory_consumer_scope != "working_memory_readback_preview"
+            or memory_target_layer != "working"
+            or memory_route_decision != "routed_for_working_readback"
+            or not activate_working_readback
+        ):
+            raise ValueError("unsupported teacher commit memory consumer configuration")
         store = TeacherGatedSessionStore(state_dir)
         decision = store.get_teacher_decision(teacher_decision_id)
         if decision["decision"] != "approved":
@@ -639,6 +660,10 @@ class TeacherGatedSessionResumeCommitRuntime:
             pending_review=pending_review,
             evidence_snapshot=evidence_snapshot,
             source_trace_refs=(resume_trace.trace_id,),
+            memory_consumer_scope=memory_consumer_scope,
+            memory_target_layer=memory_target_layer,
+            memory_route_decision=memory_route_decision,
+            activate_working_readback=activate_working_readback,
         )
         runtime_records.update(pipeline["records"])
         closing_state = replace(
@@ -647,14 +672,18 @@ class TeacherGatedSessionResumeCommitRuntime:
             updated_at=_now(),
             working_readback_snapshot_refs=(
                 pipeline["working_readback_commit"]["working_readback_commit_id"],
-            ),
+            ) if activate_working_readback else tuple(),
             session_summary="Approved interpretation prepared for atomic commit.",
         )
         committed_state = replace(
             closing_state,
             status=BoundedEmbodiedSessionStatus.COMMITTED,
             updated_at=_now(),
-            session_summary="Teacher-approved interpretation committed for future working readback.",
+            session_summary=(
+                "Teacher-approved interpretation committed for future working readback."
+                if activate_working_readback
+                else "Teacher-approved interpretation committed for a bounded typed future consumer."
+            ),
         )
         raw_count_before = len(raw_hashes_before)
         interpretation_record = pipeline["reviewed_interpretation_commit_record"]
@@ -1266,6 +1295,10 @@ def _run_existing_learning_pipeline(
     pending_review: PendingTeacherReviewRecord,
     evidence_snapshot: SessionLearningEvidenceSnapshot,
     source_trace_refs: tuple[str, ...],
+    memory_consumer_scope: str = "working_memory_readback_preview",
+    memory_target_layer: str = "working",
+    memory_route_decision: str = "routed_for_working_readback",
+    activate_working_readback: bool = True,
 ) -> dict[str, object]:
     bindings: list[dict[str, object]] = []
     records: dict[str, Any] = {}
@@ -1412,17 +1445,20 @@ def _run_existing_learning_pipeline(
         session_summary_ref=session_id,
         last_trace_summary_ref=pending_review.pending_teacher_review_id,
         routing_status="routed",
-        memory_layer_target="working",
-        trace_notes=("teacher_approved_interpretation", "working_readback_only"),
+        memory_layer_target=memory_target_layer,
+        trace_notes=("teacher_approved_interpretation", memory_consumer_scope),
     )
     _bind(bindings, lambda item: {"valid": True, "memory_learning_trace_id": item.memory_learning_trace_id}, memory_learning_trace, "ashl_core_v1.memory.types", "MemoryLearningTrace")
     add_identity_binding("memory_learning_trace", "MemoryLearningTrace", memory_learning_trace.memory_learning_trace_id)
     memory_routing_trace = MemoryRoutingTrace(
         memory_routing_trace_id=f"memory_routing_trace:{reviewed.feedback_derived_reviewed_concept_id}",
         source_memory_learning_trace_id=memory_learning_trace.memory_learning_trace_id,
-        route_decision="routed_for_working_readback",
-        target_layer="working",
-        route_reason_codes=("teacher_approved_reviewed_interpretation",),
+        route_decision=memory_route_decision,
+        target_layer=memory_target_layer,
+        route_reason_codes=(
+            "teacher_approved_reviewed_interpretation",
+            memory_consumer_scope,
+        ),
         confidence=0.8,
     )
     _bind(bindings, lambda item: {"valid": True, "memory_routing_trace_id": item.memory_routing_trace_id}, memory_routing_trace, "ashl_core_v1.memory.types", "MemoryRoutingTrace")
@@ -1435,6 +1471,7 @@ def _run_existing_learning_pipeline(
         "source_evidence_snapshot_id": evidence_snapshot.evidence_snapshot_id,
         "evidence_identity_sha256": evidence_snapshot.evidence_identity_sha256,
         "evidence_theme": evidence_snapshot.evidence_theme,
+        "consumer_scope": memory_consumer_scope,
         "source_trace_refs": list(source_trace_refs),
     }
     memory_application_data = MemoryApplicationData(
@@ -1442,7 +1479,7 @@ def _run_existing_learning_pipeline(
         source_memory_learning_trace_refs=(memory_learning_trace.memory_learning_trace_id,),
         source_memory_routing_trace_refs=(memory_routing_trace.memory_routing_trace_id,),
         memory_items=(interpretation_payload,),
-        read_scope="working_memory_readback_preview",
+        read_scope=memory_consumer_scope,
         routing_notes=("source_trace_refs_required", "raw_payload_excluded"),
     )
     _bind(bindings, lambda item: {"valid": True, "memory_application_data_id": item.memory_application_data_id}, memory_application_data, "ashl_core_v1.memory.types", "MemoryApplicationData")
@@ -1503,7 +1540,7 @@ def _run_existing_learning_pipeline(
         "evidence_identity_sha256": evidence_snapshot.evidence_identity_sha256,
         "readback_payload": interpretation_payload,
         "source_trace_refs": source_trace_refs,
-        "active_for_future_sessions": True,
+        "active_for_future_sessions": bool(activate_working_readback),
         "created_at": _now(),
     }
     provenance_binding = {
