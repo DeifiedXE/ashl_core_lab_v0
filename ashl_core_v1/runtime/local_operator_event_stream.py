@@ -32,6 +32,8 @@ class LocalOperatorEventStream:
         episode_id: str | None = None,
         concept_candidate_id: str | None = None,
         auditory_concept_model_id: str | None = None,
+        probe_id: str | None = None,
+        prediction_comparison_id: str | None = None,
     ) -> LocalOperatorJsonEvent:
         event = LocalOperatorJsonEvent(
             event_id=stable_id("local_operator_event"),
@@ -58,6 +60,8 @@ class LocalOperatorEventStream:
             episode_id=episode_id,
             concept_candidate_id=concept_candidate_id,
             auditory_concept_model_id=auditory_concept_model_id,
+            probe_id=probe_id,
+            prediction_comparison_id=prediction_comparison_id,
         )
         self.store.append_json_event(event)
         return event

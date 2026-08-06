@@ -94,10 +94,55 @@ def compare_projection_to_template(
     tolerances: dict[str, object],
     evaluation_kind: str,
 ) -> dict[str, Any]:
+    feature_values = {
+        name: getattr(projection, name)
+        for name in (
+            "normalized_amplitude_envelope",
+            "onset_count",
+            "offset_count",
+            "active_region_count",
+            "normalized_region_duration_ratios",
+            "normalized_inter_onset_interval_ratios",
+            "silence_ratio",
+            "relative_spectral_band_energy",
+            "coarse_pitch_contour",
+        )
+    }
+    errors, checks, inside = compare_low_level_auditory_features_to_template(
+        observed_feature_values=feature_values,
+        centers=centers,
+        tolerances=tolerances,
+    )
+    payload = {
+        "schema_version": "ashl_auditory_concept_prediction_error_v0",
+        "episode_id": projection.episode_id,
+        "feature_projection_id": projection.feature_projection_id,
+        "evaluation_kind": evaluation_kind,
+        "per_feature_errors": errors,
+        "per_feature_tolerance_checks": checks,
+        "inside_all_structural_tolerances": inside,
+        "opaque_confidence_score_used": False,
+        "runtime_recognition_performed": False,
+        "created_at": utc_now(),
+    }
+    payload["prediction_error_record_id"] = "auditory_prediction_error:" + sha256_payload(
+        {key: value for key, value in payload.items() if key != "created_at"}
+    )
+    return payload
+
+
+def compare_low_level_auditory_features_to_template(
+    *,
+    observed_feature_values: dict[str, object],
+    centers: dict[str, object],
+    tolerances: dict[str, object],
+) -> tuple[dict[str, Any], dict[str, bool], bool]:
+    """Compare one source-blurred payload to the frozen Package 130 template."""
+
     errors: dict[str, Any] = {}
     checks: dict[str, bool] = {}
     for name in ("onset_count", "offset_count", "active_region_count", "silence_ratio"):
-        error = abs(float(getattr(projection, name)) - float(centers[name]))
+        error = abs(float(observed_feature_values[name]) - float(centers[name]))
         errors[name] = round(error, 6)
         checks[name] = error <= float(tolerances[name])
     for name in (
@@ -106,7 +151,7 @@ def compare_projection_to_template(
         "normalized_inter_onset_interval_ratios",
         "relative_spectral_band_energy",
     ):
-        values = tuple(float(item) for item in getattr(projection, name))
+        values = tuple(float(item) for item in (observed_feature_values[name] or ()))
         expected = tuple(float(item) for item in centers[name])
         allowed = tuple(float(item) for item in tolerances[name])
         vector_errors = _vector_errors(values, expected)
@@ -120,7 +165,10 @@ def compare_projection_to_template(
         errors["coarse_pitch_contour"] = None
         checks["coarse_pitch_contour"] = True
     else:
-        values = tuple(float(item) for item in (projection.coarse_pitch_contour or ()))
+        values = tuple(
+            float(item)
+            for item in (observed_feature_values.get("coarse_pitch_contour") or ())
+        )
         expected = tuple(float(item) for item in expected_pitch)
         vector_errors = _vector_errors(values, expected)
         errors["coarse_pitch_contour"] = vector_errors
@@ -128,22 +176,7 @@ def compare_projection_to_template(
             value <= float(tuple(allowed_pitch)[index])
             for index, value in enumerate(vector_errors)
         )
-    payload = {
-        "schema_version": "ashl_auditory_concept_prediction_error_v0",
-        "episode_id": projection.episode_id,
-        "feature_projection_id": projection.feature_projection_id,
-        "evaluation_kind": evaluation_kind,
-        "per_feature_errors": errors,
-        "per_feature_tolerance_checks": checks,
-        "inside_all_structural_tolerances": all(checks.values()),
-        "opaque_confidence_score_used": False,
-        "runtime_recognition_performed": False,
-        "created_at": utc_now(),
-    }
-    payload["prediction_error_record_id"] = "auditory_prediction_error:" + sha256_payload(
-        {key: value for key, value in payload.items() if key != "created_at"}
-    )
-    return payload
+    return errors, checks, all(checks.values())
 
 
 def _prediction_improves_over_unconditioned(

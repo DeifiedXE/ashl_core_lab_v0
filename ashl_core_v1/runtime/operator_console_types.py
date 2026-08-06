@@ -192,6 +192,17 @@ VALID_EVENT_KINDS = (
     "auditory_grounding_raw_audio_deleted",
     "auditory_concept_model_ready_for_package_131",
     "package_130_audit_failed",
+    "auditory_prediction_model_loaded",
+    "auditory_prediction_source_compatibility_verified",
+    "auditory_recognition_probe_started",
+    "auditory_recognition_observed_primitive_compiled",
+    "auditory_recognition_feature_projection_created",
+    "auditory_prediction_comparison_created",
+    "auditory_recognition_ephemeral_audio_cleared",
+    "auditory_recognition_probe_completed",
+    "auditory_predictive_recognition_pair_comparison_created",
+    "package_131_audit_passed",
+    "package_131_audit_blocked",
 )
 PACKAGE_125_OBSERVATION_EVENT_KINDS = (
     "observation_window_started",
@@ -281,6 +292,19 @@ PACKAGE_130_AUDITORY_CONCEPT_EVENT_KINDS = (
     "auditory_grounding_raw_audio_deleted",
     "auditory_concept_model_ready_for_package_131",
     "package_130_audit_failed",
+)
+PACKAGE_131_AUDITORY_PREDICTION_EVENT_KINDS = (
+    "auditory_prediction_model_loaded",
+    "auditory_prediction_source_compatibility_verified",
+    "auditory_recognition_probe_started",
+    "auditory_recognition_observed_primitive_compiled",
+    "auditory_recognition_feature_projection_created",
+    "auditory_prediction_comparison_created",
+    "auditory_recognition_ephemeral_audio_cleared",
+    "auditory_recognition_probe_completed",
+    "auditory_predictive_recognition_pair_comparison_created",
+    "package_131_audit_passed",
+    "package_131_audit_blocked",
 )
 
 
@@ -800,6 +824,8 @@ class LocalOperatorJsonEvent:
     episode_id: str | None = None
     concept_candidate_id: str | None = None
     auditory_concept_model_id: str | None = None
+    probe_id: str | None = None
+    prediction_comparison_id: str | None = None
 
     def __post_init__(self) -> None:
         if self.schema_version != JSON_EVENT_SCHEMA_VERSION:
@@ -858,6 +884,23 @@ class LocalOperatorJsonEvent:
                 or self.auditory_concept_model_id
             ):
                 raise ValueError("Package 130 events require grounding or concept identity")
+        if self.event_kind in PACKAGE_131_AUDITORY_PREDICTION_EVENT_KINDS:
+            if not self.source_record_refs or not self.auditory_concept_model_id:
+                raise ValueError("Package 131 events require model and source record references")
+            if self.event_kind not in {
+                "auditory_predictive_recognition_pair_comparison_created",
+                "package_131_audit_passed",
+                "package_131_audit_blocked",
+            } and not (
+                self.probe_id
+                and self.process_instance_id
+                and self.runtime_session_id
+                and self.perception_session_id
+                and self.observation_window_id
+            ):
+                raise ValueError(
+                    "Package 131 probe events require probe, process, runtime, perception, and window ids"
+                )
         object.__setattr__(self, "source_record_refs", _tuple_of_str(self.source_record_refs))
         object.__setattr__(self, "source_trace_refs", _tuple_of_str(self.source_trace_refs))
 

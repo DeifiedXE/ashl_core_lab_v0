@@ -36,7 +36,61 @@ def build_auditory_concept_feature_projection(
         raise ValueError("AudioPrimitive compiler version does not match episode")
     if primitive.privacy_policy_id != "grounding_conservative_v0":
         raise ValueError("Package 130 requires the grounding conservative compiler policy")
+    feature_values = extract_source_blurred_auditory_feature_values(primitive)
+    identity = {
+        "schema_version": PROJECTION_SCHEMA_VERSION,
+        "episode_id": episode_item.episode_id,
+        "audio_primitive_refs": episode_item.audio_primitive_refs,
+        "normalized_amplitude_envelope": feature_values["normalized_amplitude_envelope"],
+        "active_region_count": feature_values["active_region_count"],
+        "normalized_region_duration_ratios": feature_values["normalized_region_duration_ratios"],
+        "normalized_inter_onset_interval_ratios": feature_values["normalized_inter_onset_interval_ratios"],
+        "silence_ratio": feature_values["silence_ratio"],
+        "relative_spectral_band_energy": feature_values["relative_spectral_band_energy"],
+        "coarse_pitch_contour": feature_values["coarse_pitch_contour"],
+        "compiler_version": primitive.compiler_version,
+        "blur_policy_version": BLUR_POLICY_VERSION,
+    }
+    return AuditoryConceptFeatureProjection(
+        feature_projection_id=(
+            "auditory_concept_feature_projection:" + sha256_payload(identity)
+        ),
+        schema_version=PROJECTION_SCHEMA_VERSION,
+        created_at=utc_now(),
+        episode_id=episode_item.episode_id,
+        audio_primitive_refs=(primitive.audio_primitive_id,),
+        normalized_amplitude_envelope=feature_values["normalized_amplitude_envelope"],
+        onset_count=int(feature_values["onset_count"]),
+        offset_count=int(feature_values["offset_count"]),
+        active_region_count=int(feature_values["active_region_count"]),
+        normalized_region_duration_ratios=feature_values["normalized_region_duration_ratios"],
+        normalized_inter_onset_interval_ratios=feature_values["normalized_inter_onset_interval_ratios"],
+        silence_ratio=float(feature_values["silence_ratio"]),
+        relative_spectral_band_energy=feature_values["relative_spectral_band_energy"],
+        coarse_pitch_contour=feature_values["coarse_pitch_contour"],
+        absolute_pitch_identity_removed=True,
+        fine_spectral_identity_removed=True,
+        intelligible_content_removed=True,
+        semantic_label=None,
+        compiler_version=primitive.compiler_version,
+        blur_policy_version=BLUR_POLICY_VERSION,
+        source_record_refs=(episode_item.episode_id, primitive.audio_primitive_id),
+        source_trace_refs=tuple(dict.fromkeys(episode_item.source_trace_refs + primitive.source_trace_refs)),
+    )
 
+
+def extract_source_blurred_auditory_feature_values(
+    audio_primitive: AudioPrimitiveRecord | dict[str, Any],
+) -> dict[str, Any]:
+    """Return the shared Package 130/131 nonsemantic structural feature domain."""
+
+    primitive = (
+        audio_primitive
+        if isinstance(audio_primitive, AudioPrimitiveRecord)
+        else AudioPrimitiveRecord(**dict(audio_primitive))
+    )
+    if primitive.primitive_role != "observed":
+        raise ValueError("source-blurred feature extraction requires an observed AudioPrimitive")
     source_envelope = tuple(float(item) for item in primitive.amplitude_envelope)
     window_envelope = _resample_normalized(source_envelope, ENVELOPE_BIN_COUNT)
     dense_envelope = _resample_normalized(source_envelope, ENVELOPE_BIN_COUNT * 4)
@@ -69,50 +123,18 @@ def build_auditory_concept_feature_projection(
         if spectral_total > 0.0
         else tuple(0.0 for _ in spectral)
     )
-    # The v0 concept is intentionally invariant to the fixture's absolute
-    # frequency. The current compiler contour is not source-blurred enough to
-    # retain without leaking that identity, so Package 130 records it as absent.
-    pitch = None
-    identity = {
-        "schema_version": PROJECTION_SCHEMA_VERSION,
-        "episode_id": episode_item.episode_id,
-        "audio_primitive_refs": episode_item.audio_primitive_refs,
+    # The v0 concept intentionally removes absolute pitch and fine spectrum.
+    return {
         "normalized_amplitude_envelope": normalized_envelope,
+        "onset_count": len(primitive.onset_events),
+        "offset_count": len(primitive.offset_events),
         "active_region_count": len(regions),
         "normalized_region_duration_ratios": duration_ratios,
         "normalized_inter_onset_interval_ratios": interval_ratios,
         "silence_ratio": silence_ratio,
         "relative_spectral_band_energy": normalized_spectral,
-        "coarse_pitch_contour": pitch,
-        "compiler_version": primitive.compiler_version,
-        "blur_policy_version": BLUR_POLICY_VERSION,
+        "coarse_pitch_contour": None,
     }
-    return AuditoryConceptFeatureProjection(
-        feature_projection_id=(
-            "auditory_concept_feature_projection:" + sha256_payload(identity)
-        ),
-        schema_version=PROJECTION_SCHEMA_VERSION,
-        created_at=utc_now(),
-        episode_id=episode_item.episode_id,
-        audio_primitive_refs=(primitive.audio_primitive_id,),
-        normalized_amplitude_envelope=normalized_envelope,
-        onset_count=len(primitive.onset_events),
-        offset_count=len(primitive.offset_events),
-        active_region_count=len(regions),
-        normalized_region_duration_ratios=duration_ratios,
-        normalized_inter_onset_interval_ratios=interval_ratios,
-        silence_ratio=silence_ratio,
-        relative_spectral_band_energy=normalized_spectral,
-        coarse_pitch_contour=pitch,
-        absolute_pitch_identity_removed=True,
-        fine_spectral_identity_removed=True,
-        intelligible_content_removed=True,
-        semantic_label=None,
-        compiler_version=primitive.compiler_version,
-        blur_policy_version=BLUR_POLICY_VERSION,
-        source_record_refs=(episode_item.episode_id, primitive.audio_primitive_id),
-        source_trace_refs=tuple(dict.fromkeys(episode_item.source_trace_refs + primitive.source_trace_refs)),
-    )
 
 
 def projection_active_regions(
