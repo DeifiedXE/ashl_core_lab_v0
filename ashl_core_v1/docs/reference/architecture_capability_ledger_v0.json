@@ -1,5 +1,5 @@
 {
-  "ledger_id": "architecture_capability_ledger:package_131_update",
+  "ledger_id": "architecture_capability_ledger:package_132_perception_line_closure",
   "schema_version": "ashl_architecture_capability_ledger_v0",
   "runtime_behavior_changed_by_package_124": false,
   "runtime_behavior_changed_by_dlm0_qm0": false,
@@ -7,6 +7,8 @@
   "runtime_behavior_changed_by_package_129": true,
   "runtime_behavior_changed_by_package_130": true,
   "runtime_behavior_changed_by_package_131": true,
+  "runtime_behavior_changed_by_package_132": false,
+  "perception_capability_construction_line_frozen": true,
   "capabilities": [
     {
       "package": "123",
@@ -130,8 +132,25 @@
     {
       "package": "132",
       "name": "Active Perception And Attention Milestone Audit",
+      "status": "completed",
+      "runtime_delta": "none",
+      "audit_delta": "read-only cross-package revalidation of Package 123 through Package 131 real evidence, commit ancestry, boundary controls and lineage consistency",
+      "closure_delta": "perception capability construction line frozen after Package 132; no Package 132A",
+      "capability_delta": "none; seals nine already-proven bounded perception and attention capabilities",
+      "action_delta": "none; the closed perception action surface remains extend_observation_window, capture_again, listen_again, shift_internal_perception_focus and stop_observation",
+      "semantic_delta": "none",
+      "memory_delta": "none",
+      "self_state_delta": "none",
+      "thought_delta": "none",
+      "output_delta": "none",
+      "external_control_delta": "none",
+      "dlm_1_delta": "none"
+    },
+    {
+      "package": "133",
+      "name": "Cross-Session Self-State Schema",
       "status": "next_critical_path",
-      "runtime_delta": "planned"
+      "runtime_delta": "planned outside the frozen perception capability construction line"
     }
   ],
   "migration_audits": [
@@ -144,8 +163,8 @@
       "organ_migration_delta": "none",
       "qm1_execution_authorized": false,
       "qingyin_migration_status": "QINGYIN_MIGRATION_INCOMPLETE_AUDIT_LAYER",
-      "next_critical_path": "Package 132",
-      "future_d_laplace_path": "Package 132 -> DLM-1 -> DLM-2"
+      "next_critical_path": "DLM-1 independent migration lane after Package 132, separate authorization required",
+      "future_d_laplace_path": "DLM-1 -> DLM-2"
     }
   ]
 }
