@@ -94,8 +94,11 @@ def load_package_133_source_read_only(
     leaf = graph["leaf"]
     if audit.get("parent_self_state_record_id") != root.self_state_record_id:
         raise RuntimeError("blocked_package_133_audit_root_mismatch")
-    if audit.get("child_self_state_record_id") != leaf.self_state_record_id:
-        raise RuntimeError("blocked_package_133_audit_leaf_mismatch")
+    audited_child_id = str(audit.get("child_self_state_record_id") or "")
+    by_id = {item.self_state_record_id: item for item in states}
+    audited_child = by_id.get(audited_child_id)
+    if audited_child is None or not _is_ancestor_or_same(audited_child, leaf, by_id):
+        raise RuntimeError("blocked_package_133_audit_lineage_prefix_mismatch")
     snapshot_payload: dict[str, Any] = {
         "source_snapshot_id": "",
         "source_snapshot_sha256": "",
@@ -267,3 +270,20 @@ def _validate_unique_lineage(
     if len(visited) != len(states) or cursor.self_state_record_id != roots[0].self_state_record_id:
         raise RuntimeError("blocked_disconnected_package_133_lineage")
     return {"root": roots[0], "leaf": leaves[0]}
+
+
+def _is_ancestor_or_same(
+    ancestor: PersistentSelfStateRecord,
+    leaf: PersistentSelfStateRecord,
+    by_id: dict[str, PersistentSelfStateRecord],
+) -> bool:
+    cursor = leaf
+    while True:
+        if cursor.self_state_record_id == ancestor.self_state_record_id:
+            return True
+        if cursor.parent_self_state_record_id is None:
+            return False
+        parent = by_id.get(cursor.parent_self_state_record_id)
+        if parent is None or cursor.parent_self_state_sha256 != parent.self_state_sha256:
+            return False
+        cursor = parent

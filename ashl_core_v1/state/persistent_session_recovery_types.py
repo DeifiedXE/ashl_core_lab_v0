@@ -295,15 +295,24 @@ class ActiveHeadCASEventRecord:
     def __post_init__(self) -> None:
         if self.schema_version != CAS_SCHEMA_VERSION:
             raise ValueError("invalid active-head CAS event schema")
-        if self.operation not in {"initialize_active_head", "recover_session"}:
+        if self.operation not in {
+            "initialize_active_head",
+            "recover_session",
+            "advance_reviewed_self_state_successor",
+        }:
             raise ValueError("invalid active-head CAS operation")
         if self.cas_succeeded:
             if not self.transaction_committed or self.failure_reason is not None:
                 raise ValueError("successful CAS event must be committed without failure")
             if self.new_head_revision is None or not self.new_active_head_sha256:
                 raise ValueError("successful CAS event requires a new head")
-            if not self.self_state_record_unchanged or not self.self_state_lineage_unchanged:
-                raise ValueError("Package 134 CAS cannot change self-state identity")
+            if self.operation == "advance_reviewed_self_state_successor":
+                if self.self_state_record_unchanged or not self.self_state_lineage_unchanged:
+                    raise ValueError(
+                        "reviewed-successor CAS must change the record within one lineage"
+                    )
+            elif not self.self_state_record_unchanged or not self.self_state_lineage_unchanged:
+                raise ValueError("Package 134 recovery CAS cannot change self-state identity")
         elif self.transaction_committed or not self.failure_reason:
             raise ValueError("blocked CAS event outcome mismatch")
         object.__setattr__(self, "source_record_refs", _str_tuple("source_record_refs", self.source_record_refs))

@@ -130,14 +130,18 @@ def create_package_133_representation_chain(
     store = PersistentSelfStateStore(output)
     existing_states = store.list_payloads("persistent_self_state_records")
     if existing_states:
-        if len(existing_states) != 2:
-            raise RuntimeError("Package 133 v0 store must contain exactly one two-record lineage")
         existing_transitions = store.list_payloads(
             "persistent_self_state_transition_records"
         )
         existing_validations = store.list_payloads(
             "persistent_self_state_lineage_validations"
         )
+        if (
+            len(existing_states) < 2
+            or len(existing_transitions) != len(existing_states) - 1
+            or len(existing_validations) != len(existing_transitions)
+        ):
+            raise RuntimeError("Package 133 store contains an incomplete successor lineage")
         return {
             "contract": store.latest_payload(
                 "persistent_self_state_representation_contracts"
@@ -386,7 +390,11 @@ def audit_package_133_cross_session_self_state_schema(
     states = store.list_payloads("persistent_self_state_records")
     transitions = store.list_payloads("persistent_self_state_transition_records")
     validations = store.list_payloads("persistent_self_state_lineage_validations")
-    if len(states) != 2 or len(transitions) != 1 or len(validations) != 1:
+    if (
+        len(states) < 2
+        or len(transitions) != len(states) - 1
+        or len(validations) != len(transitions)
+    ):
         raise RuntimeError("blocked_package_133_parent_child_representation_chain_missing")
     parent = PersistentSelfStateRecord.from_dict(states[0])
     child = PersistentSelfStateRecord.from_dict(states[1])

@@ -1,5 +1,5 @@
 {
-  "ledger_id": "architecture_capability_ledger:package_136_same_session_drive_modulation",
+  "ledger_id": "architecture_capability_ledger:package_137_persistent_self_state_review_gate",
   "schema_version": "ashl_architecture_capability_ledger_v0",
   "runtime_behavior_changed_by_package_124": false,
   "runtime_behavior_changed_by_dlm0_qm0": false,
@@ -12,6 +12,7 @@
   "runtime_behavior_changed_by_package_134": true,
   "runtime_behavior_changed_by_package_135": false,
   "runtime_behavior_changed_by_package_136": false,
+  "runtime_behavior_changed_by_package_137": false,
   "perception_capability_construction_line_frozen": true,
   "persistent_self_state_representation_added_by_package_133": true,
   "cross_session_recovery_added_by_package_133": false,
@@ -21,6 +22,8 @@
   "drive_runtime_modulation_added_by_package_135": false,
   "same_session_drive_modulation_infrastructure_added_by_package_136": true,
   "production_drive_modulation_consumer_added_by_package_136": false,
+  "persistent_self_state_review_gate_added_by_package_137": true,
+  "self_state_readback_added_by_package_137": false,
   "capabilities": [
     {
       "package": "123",
@@ -234,8 +237,28 @@
     {
       "package": "137",
       "name": "Persistent Self-State Review Gate",
+      "status": "completed",
+      "runtime_delta": "one explicitly teacher-reviewed opaque structural self-state successor may be appended and made current without creating behavior influence",
+      "schema_authority_delta": "none; Package 133 remains the sole immutable self-state schema and history authority",
+      "active_head_authority_delta": "none; Package 134 remains the sole active-head CAS authority",
+      "teacher_authority_delta": "reuses existing State Engine teacher actors, roles, explicit-action and exact-target semantics without a second teacher system or learning approval scope",
+      "mutation_delta": "exact self-state version and lineage generation increments only; all other Package 133 persistent fields are preserved",
+      "failure_delta": "stale review, wrong parent or head, tampering, reuse, CAS conflict, corrupt stores and cross-authority partial failure block without automatic rebase",
+      "rejection_delta": "reject and defer append review evidence while Package 133 history and Package 134 active head remain unchanged",
+      "drive_delta": "none; Package 135 traces and Package 136 modulation remain same-session and are not persisted",
+      "readback_delta": "none",
+      "memory_delta": "none",
+      "perception_delta": "none",
+      "attention_delta": "none",
+      "thought_delta": "none",
+      "action_delta": "none",
+      "output_delta": "none"
+    },
+    {
+      "package": "138",
+      "name": "Self-State Readback Boundary",
       "status": "next_critical_path",
-      "runtime_delta": "planned; teacher-gated immutable self-state mutation with exact Package 133 parent and Package 134 CAS authority"
+      "runtime_delta": "planned; exact opaque read-only self-state context with explicit consumer authority and no implicit behavior influence"
     }
   ],
   "migration_audits": [

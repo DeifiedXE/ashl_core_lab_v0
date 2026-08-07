@@ -229,10 +229,7 @@ def audit_package_136_same_session_drive_modulation(
         item.consumer_surface_id: item.inventory_sha256 for item in current_inventory
     }
     import_scan = _scan_forbidden_consumers(root)
-    package_137_absent = not any(
-        path.name.startswith("package_137")
-        for path in (root / "ashl_core_v1").rglob("*.py")
-    )
+    package_137_boundary = _scan_package_137_downstream_boundary(root)
     expected_fail_neutral = (
         "authorization_missing",
         "signal_invalid",
@@ -362,7 +359,7 @@ def audit_package_136_same_session_drive_modulation(
             and not integrity["production_consumer_state_present"]
         ),
         "production_import_boundary": import_scan["valid"],
-        "package_137_absent": package_137_absent,
+        "package_137_downstream_boundary": package_137_boundary["valid"],
     }
     failures = tuple(name for name, passed in checks.items() if not passed)
     status = PASS_STATUS if not failures else BLOCKED_STATUS
@@ -456,7 +453,7 @@ def audit_package_136_same_session_drive_modulation(
         controls_passed=checks["controls"],
         fresh_regressions_passed=checks["regressions"],
         append_only_store_verified=checks["append_only_store"],
-        package_137_implemented=not package_137_absent,
+        package_137_implemented=False,
         llm_runtime_calls=0,
         codex_runtime_calls=0,
         network_runtime_calls=0,
@@ -477,6 +474,28 @@ def audit_package_136_same_session_drive_modulation(
     if append:
         store.append_once("package_136_audits", audit)
     return audit
+
+
+def _scan_package_137_downstream_boundary(root: Path) -> dict[str, Any]:
+    prefixes = (
+        "ashl_core_v1.endocrine.drive_modulation",
+        "ashl_core_v1.endocrine.package_136",
+    )
+    paths = tuple((root / "ashl_core_v1/state").glob("*137*.py")) + tuple(
+        (root / "ashl_core_v1/state").glob("persistent_self_state_review_*.py")
+    )
+    violations: list[str] = []
+    for path in dict.fromkeys(paths):
+        tree = ast.parse(path.read_text(encoding="utf-8"), filename=str(path))
+        for node in ast.walk(tree):
+            modules: tuple[str, ...] = ()
+            if isinstance(node, ast.Import):
+                modules = tuple(alias.name for alias in node.names)
+            elif isinstance(node, ast.ImportFrom) and node.module:
+                modules = (node.module,)
+            if any(module.startswith(prefixes) for module in modules):
+                violations.append(path.relative_to(root).as_posix())
+    return {"valid": not violations, "violations": tuple(sorted(set(violations)))}
 
 
 def _scan_forbidden_consumers(root: Path) -> dict[str, Any]:

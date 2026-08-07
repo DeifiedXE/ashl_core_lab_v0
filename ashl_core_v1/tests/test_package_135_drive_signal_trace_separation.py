@@ -334,12 +334,13 @@ class Package135DriveSignalTraceSeparationTests(unittest.TestCase):
                 / "ashl_core_v1/docs/reference/package_number_registry_v0.json"
             ).read_text(encoding="utf-8")
         )
-        self.assertEqual(registry["current_package_id"], "136")
+        self.assertEqual(registry["current_package_id"], "137")
         self.assertIn("135", registry["completed_package_ids"])
         self.assertNotIn("135", registry["future_package_ids"])
         self.assertEqual(registry["package_status"]["135"], "completed")
         self.assertEqual(registry["package_status"]["136"], "completed")
-        self.assertEqual(registry["package_status"]["137"], "next_critical_path")
+        self.assertEqual(registry["package_status"]["137"], "completed")
+        self.assertEqual(registry["package_status"]["138"], "next_critical_path")
         digest = sha256_payload(
             {
                 "current": registry["current_package_id"],
@@ -355,7 +356,8 @@ class Package135DriveSignalTraceSeparationTests(unittest.TestCase):
         ).read_text(encoding="utf-8")
         self.assertIn("| 135 | Drive Signal Trace Separation", route)
         self.assertIn("Package 136 is completed", route)
-        self.assertIn("Package 137 is next", route)
+        self.assertIn("Package 137 is completed", route)
+        self.assertIn("Package 138 is next", route)
 
     def _store(self) -> Package135DriveSignalTraceStore:
         return Package135DriveSignalTraceStore(self.package_135_root)

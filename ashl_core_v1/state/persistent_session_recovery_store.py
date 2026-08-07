@@ -283,6 +283,100 @@ class PersistentSessionRecoveryStore:
                 raise ValueError("unknown Package 134 fault injection")
             connection.commit()
 
+    def advance_reviewed_successor_atomic(
+        self,
+        *,
+        review_id: str,
+        expected_head: ActiveSelfStateHeadRecord,
+        new_head: ActiveSelfStateHeadRecord,
+        cas_event: Any,
+        fault_injection: str | None = None,
+    ) -> None:
+        """Advance only to one exact reviewed Package 133 successor."""
+        if not review_id:
+            raise ValueError("review_id is required for reviewed-successor CAS")
+        if cas_event.operation != "advance_reviewed_self_state_successor":
+            raise ValueError("reviewed-successor CAS event operation is required")
+        if cas_event.authorization_id != review_id:
+            raise ValueError("reviewed-successor CAS review binding mismatch")
+        if new_head.active_head_id != expected_head.active_head_id:
+            raise ValueError("reviewed-successor CAS cannot replace active-head identity")
+        if new_head.self_state_lineage_id != expected_head.self_state_lineage_id:
+            raise ValueError("reviewed-successor CAS cannot change self-state lineage")
+        if new_head.self_state_record_id == expected_head.self_state_record_id:
+            raise ValueError("reviewed-successor CAS requires a distinct successor")
+        if new_head.self_state_version != expected_head.self_state_version + 1:
+            raise ValueError("reviewed-successor CAS version must increment exactly once")
+        if new_head.lineage_generation != expected_head.lineage_generation + 1:
+            raise ValueError("reviewed-successor CAS generation must increment exactly once")
+        if new_head.head_revision != expected_head.head_revision + 1:
+            raise ValueError("reviewed-successor CAS head revision must increment exactly once")
+        if new_head.previous_active_head_sha256 != expected_head.active_head_sha256:
+            raise ValueError("reviewed-successor CAS previous-head hash mismatch")
+        with self.connection() as connection:
+            connection.execute("BEGIN IMMEDIATE")
+            prior_events = connection.execute(
+                "SELECT payload_json FROM active_head_cas_events ORDER BY row_id"
+            ).fetchall()
+            if any(
+                json.loads(str(row["payload_json"])).get("authorization_id") == review_id
+                for row in prior_events
+            ):
+                raise ActiveHeadCASConflict("blocked_teacher_review_already_consumed")
+            row = connection.execute(
+                "SELECT payload_json, payload_sha256 FROM active_self_state_head WHERE singleton_key = 'active'"
+            ).fetchone()
+            if row is None:
+                raise ActiveHeadCASConflict("blocked_missing_active_head")
+            current = ActiveSelfStateHeadRecord.from_dict(
+                self._verified_payload(row, "active_self_state_head")
+            )
+            if (
+                current.active_head_id != expected_head.active_head_id
+                or current.active_head_sha256 != expected_head.active_head_sha256
+                or current.head_revision != expected_head.head_revision
+                or current.self_state_record_id != expected_head.self_state_record_id
+                or current.self_state_sha256 != expected_head.self_state_sha256
+            ):
+                raise ActiveHeadCASConflict("blocked_active_head_cas_conflict")
+            if fault_injection == "force_cas_conflict":
+                raise ActiveHeadCASConflict("blocked_active_head_cas_conflict")
+            new_payload = new_head.to_dict()
+            self._validate_payload(new_payload)
+            result = connection.execute(
+                """
+                UPDATE active_self_state_head
+                SET head_revision = ?, self_state_lineage_id = ?,
+                    self_state_record_id = ?, bound_session_id = ?,
+                    bound_process_instance_id = ?, payload_json = ?,
+                    payload_sha256 = ?, updated_at = ?
+                WHERE singleton_key = 'active' AND head_revision = ? AND payload_sha256 = ?
+                """,
+                (
+                    new_head.head_revision,
+                    new_head.self_state_lineage_id,
+                    new_head.self_state_record_id,
+                    new_head.bound_session_id,
+                    new_head.bound_process_instance_id,
+                    canonical_json(new_payload),
+                    sha256_payload(new_payload),
+                    new_head.updated_at,
+                    expected_head.head_revision,
+                    sha256_payload(expected_head.to_dict()),
+                ),
+            )
+            if result.rowcount != 1:
+                raise ActiveHeadCASConflict("blocked_active_head_cas_conflict")
+            self._insert_typed_group(
+                connection,
+                (("active_head_cas_events", cas_event),),
+            )
+            if fault_injection == "after_head_update_before_commit":
+                raise RuntimeError("simulated_reviewed_successor_partial_write_before_commit")
+            if fault_injection not in {None, "force_cas_conflict"}:
+                raise ValueError("unknown reviewed-successor CAS fault injection")
+            connection.commit()
+
     def append_blocked_recovery_attempt(
         self,
         *,
