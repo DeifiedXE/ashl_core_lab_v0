@@ -1,5 +1,5 @@
 {
-  "ledger_id": "architecture_capability_ledger:package_134_persistent_session_recovery",
+  "ledger_id": "architecture_capability_ledger:package_135_drive_signal_trace_separation",
   "schema_version": "ashl_architecture_capability_ledger_v0",
   "runtime_behavior_changed_by_package_124": false,
   "runtime_behavior_changed_by_dlm0_qm0": false,
@@ -10,11 +10,14 @@
   "runtime_behavior_changed_by_package_132": false,
   "runtime_behavior_changed_by_package_133": false,
   "runtime_behavior_changed_by_package_134": true,
+  "runtime_behavior_changed_by_package_135": false,
   "perception_capability_construction_line_frozen": true,
   "persistent_self_state_representation_added_by_package_133": true,
   "cross_session_recovery_added_by_package_133": false,
   "persistent_session_recovery_added_by_package_134": true,
   "self_state_behavior_influence_added_by_package_134": false,
+  "drive_signal_trace_boundary_added_by_package_135": true,
+  "drive_runtime_modulation_added_by_package_135": false,
   "capabilities": [
     {
       "package": "123",
@@ -188,8 +191,28 @@
     {
       "package": "135",
       "name": "Drive Signal Trace Separation",
+      "status": "completed",
+      "runtime_delta": "none; drive and regulatory signals are observable append-only traces with no runtime consumer or modulation authority",
+      "trace_delta": "one anonymous bounded same-session source/time/change lineage contract plus a real fresh-process reset proof",
+      "legacy_reconciliation_delta": "legacy mimetic endocrine fixtures and design documents remain historical; tendency, affordance, purpose and selected action retain separate owners",
+      "self_state_delta": "none; Package 133 remains the only self-state representation authority and drive is not a persistent field",
+      "recovery_delta": "none; Package 134 restores structural identity only and never restores or carries a drive trace",
+      "memory_delta": "none",
+      "perception_delta": "none",
+      "attention_delta": "none",
+      "candidate_ordering_delta": "none",
+      "thought_delta": "none",
+      "action_delta": "none",
+      "purpose_delta": "none",
+      "semantic_emotion_delta": "none",
+      "output_delta": "none",
+      "package_136_authorized": false
+    },
+    {
+      "package": "136",
+      "name": "Same-Session Drive Modulation",
       "status": "next_critical_path",
-      "runtime_delta": "planned"
+      "runtime_delta": "planned; requires separate authorization and all Package 135 future gates"
     }
   ],
   "migration_audits": [

@@ -140,12 +140,16 @@ py -3 -m ashl_core_v1.state.package_134_persistent_session_recovery_cli `
 `show-recovery-run` and `show-audit` expose the corresponding evidence. The
 recovery command blocks without `--allow-session-recovery`.
 
-## Package 135 boundary
+## Package 135 reconciliation
 
-Before Package 135 there is still no drive-signal trace authority, same-session
-drive modulation, self-state behavior influence, persistent working readback,
-persistent attention, persistent Thought Engine state, automatic learning,
-automatic action, automatic output or psychological continuity claim.
+Package 135 subsequently adds a separate append-only drive/regulatory signal
+trace authority. It does not change this recovery contract: drive remains
+absent from the Package 133 representation and Package 134 active head, and
+`drive_state_restored` remains false in both identity bindings and this audit.
+Package 135 proves that a fresh session starts a new drive-trace root rather
+than carrying a prior trace through structural identity recovery.
 
-Package 135 is the next package. It must preserve Package 133 as representation
-authority and Package 134 as the narrowly scoped active-head/recovery authority.
+Same-session drive modulation, self-state behavior influence, persistent
+working readback, persistent attention, persistent Thought Engine state,
+automatic learning, automatic action, automatic output and psychological
+continuity remain absent after Package 135.
