@@ -1,5 +1,5 @@
 {
-  "ledger_id": "architecture_capability_ledger:package_135_drive_signal_trace_separation",
+  "ledger_id": "architecture_capability_ledger:package_136_same_session_drive_modulation",
   "schema_version": "ashl_architecture_capability_ledger_v0",
   "runtime_behavior_changed_by_package_124": false,
   "runtime_behavior_changed_by_dlm0_qm0": false,
@@ -11,6 +11,7 @@
   "runtime_behavior_changed_by_package_133": false,
   "runtime_behavior_changed_by_package_134": true,
   "runtime_behavior_changed_by_package_135": false,
+  "runtime_behavior_changed_by_package_136": false,
   "perception_capability_construction_line_frozen": true,
   "persistent_self_state_representation_added_by_package_133": true,
   "cross_session_recovery_added_by_package_133": false,
@@ -18,6 +19,8 @@
   "self_state_behavior_influence_added_by_package_134": false,
   "drive_signal_trace_boundary_added_by_package_135": true,
   "drive_runtime_modulation_added_by_package_135": false,
+  "same_session_drive_modulation_infrastructure_added_by_package_136": true,
+  "production_drive_modulation_consumer_added_by_package_136": false,
   "capabilities": [
     {
       "package": "123",
@@ -211,8 +214,28 @@
     {
       "package": "136",
       "name": "Same-Session Drive Modulation",
+      "status": "completed",
+      "runtime_delta": "none in production; adds an explicitly authorized same-session modulation infrastructure with an isolated audit-only counterfactual scalar",
+      "signal_authority_delta": "none; Package 135 remains the sole immutable anonymous drive/regulatory trace authority",
+      "consumer_delta": "zero production consumers; one audit-only allowlisted scalar surface",
+      "clamp_delta": "absolute offset capped at 0.2 and per-application delta capped at 0.1",
+      "expiry_delta": "single-use authorization expires with one exact session and never crosses Package 134 recovery",
+      "failure_delta": "missing or invalid authorization, signal, consumer, lineage, session, expiry or consumer execution returns to neutral",
+      "counterfactual_delta": "only the audit-only regulatory offset differs; safety, teacher, purpose, candidate, action, memory, perception, self-state, output and recovery fingerprints remain equal",
+      "self_state_delta": "none",
+      "memory_delta": "none",
+      "perception_delta": "none",
+      "attention_delta": "none",
+      "action_delta": "none",
+      "purpose_delta": "none",
+      "semantic_delta": "none",
+      "output_delta": "none"
+    },
+    {
+      "package": "137",
+      "name": "Persistent Self-State Review Gate",
       "status": "next_critical_path",
-      "runtime_delta": "planned; requires separate authorization and all Package 135 future gates"
+      "runtime_delta": "planned; teacher-gated immutable self-state mutation with exact Package 133 parent and Package 134 CAS authority"
     }
   ],
   "migration_audits": [

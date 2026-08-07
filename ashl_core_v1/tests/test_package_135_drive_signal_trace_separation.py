@@ -324,20 +324,22 @@ class Package135DriveSignalTraceSeparationTests(unittest.TestCase):
             self.assertFalse(audit.package_134_drive_state_restored)
             self.assertFalse(audit.drive_trace_restored_across_session)
             self.assertFalse(audit.runtime_modulation_created)
-            self.assertFalse(audit.package_136_implemented)
+            self.assertTrue(audit.package_136_implemented)
+            self.assertFalse(audit.package_136_modulation_authorized)
 
-    def test_registry_and_route_advance_to_package_136(self) -> None:
+    def test_registry_and_route_preserve_package_135_after_package_136(self) -> None:
         registry = json.loads(
             (
                 self.repo_root
                 / "ashl_core_v1/docs/reference/package_number_registry_v0.json"
             ).read_text(encoding="utf-8")
         )
-        self.assertEqual(registry["current_package_id"], "135")
+        self.assertEqual(registry["current_package_id"], "136")
         self.assertIn("135", registry["completed_package_ids"])
         self.assertNotIn("135", registry["future_package_ids"])
         self.assertEqual(registry["package_status"]["135"], "completed")
-        self.assertEqual(registry["package_status"]["136"], "next_critical_path")
+        self.assertEqual(registry["package_status"]["136"], "completed")
+        self.assertEqual(registry["package_status"]["137"], "next_critical_path")
         digest = sha256_payload(
             {
                 "current": registry["current_package_id"],
@@ -351,8 +353,9 @@ class Package135DriveSignalTraceSeparationTests(unittest.TestCase):
             self.repo_root
             / "ashl_core_v1/docs/reference/package_123_to_daily_runtime_revised_route_v0.md"
         ).read_text(encoding="utf-8")
-        self.assertIn("Package 135 is completed", route)
-        self.assertIn("Package 136 is next", route)
+        self.assertIn("| 135 | Drive Signal Trace Separation", route)
+        self.assertIn("Package 136 is completed", route)
+        self.assertIn("Package 137 is next", route)
 
     def _store(self) -> Package135DriveSignalTraceStore:
         return Package135DriveSignalTraceStore(self.package_135_root)

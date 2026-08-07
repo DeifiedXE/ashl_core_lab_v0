@@ -164,10 +164,10 @@ Inspection commands expose inventory, contract, traces, reset and audit. There
 is deliberately no command to modulate perception, attention, thought, memory,
 candidate ordering, action or output.
 
-## Package 136 gates
+## Package 136 reconciliation
 
-Package 135 does not authorize Package 136. Any future same-session bounded
-modulation requires all of these gates:
+Package 135 does not itself authorize modulation. Package 136 is now separately
+implemented and has proven all of these gates:
 
 1. explicit same-session modulation authorization;
 2. an allowlisted read-only consumer scope;
@@ -180,5 +180,8 @@ modulation requires all of these gates:
 9. before/after counterfactual and equivalence receipts;
 10. preserved teacher and hard-safety authority.
 
-Until Package 136 is separately implemented and proven, a Package 135 signal
-can only be observed and audited.
+Package 136 preserves this file's authority: Package 135 traces remain
+read-only evidence and never become modulation records. The Package 136
+production allowlist is empty; its only consumer is an isolated audit-only
+counterfactual scalar. Consequently no current production runtime consumes a
+Package 135 signal, and cross-session drive or modulation remains forbidden.

@@ -234,10 +234,11 @@ def audit_package_135_drive_signal_trace_separation(
         item.boundary_record_id: item.boundary_sha256 for item in inventory
     }
     import_boundary = _scan_forbidden_consumers(root)
-    package_136_absent = not any(
+    package_136_implemented = any(
         path.name.startswith("package_136")
         for path in (root / "ashl_core_v1").rglob("*.py")
     )
+    package_136_boundary = _scan_package_136_downstream_boundary(root)
     checks = {
         "baseline": _is_ancestor(root, BASELINE_COMMIT),
         "package_133_source_unchanged": before_133 == after_133,
@@ -294,7 +295,7 @@ def audit_package_135_drive_signal_trace_separation(
             and not integrity["active_drive_head_present"]
             and not integrity["cross_session_recovery_table_present"]
         ),
-        "package_136_absent": package_136_absent,
+        "package_136_downstream_boundary": package_136_boundary["valid"],
     }
     failures = tuple(name for name, passed in checks.items() if not passed)
     status = PASS_STATUS if not failures else BLOCKED_STATUS
@@ -360,7 +361,7 @@ def audit_package_135_drive_signal_trace_separation(
         runtime_status_relabelled_as_drive=any(
             item.runtime_status_relabelled_as_drive for item in observations
         ),
-        package_136_implemented=not package_136_absent,
+        package_136_implemented=package_136_implemented,
         package_136_modulation_authorized=bool(
             contract and contract.package_136_modulation_authorized
         ),
@@ -413,6 +414,32 @@ def _scan_forbidden_consumers(root: Path) -> dict[str, Any]:
                         if alias.name.startswith(package_135_prefixes):
                             violations.append(path.relative_to(root).as_posix())
                 if module and module.startswith(package_135_prefixes):
+                    violations.append(path.relative_to(root).as_posix())
+    return {"valid": not violations, "violations": tuple(sorted(set(violations)))}
+
+
+def _scan_package_136_downstream_boundary(root: Path) -> dict[str, Any]:
+    protected_roots = tuple(
+        root / "ashl_core_v1" / name
+        for name in ("runtime", "perception", "memory", "thought", "task", "output", "state", "body")
+    )
+    prefixes = (
+        "ashl_core_v1.endocrine.drive_modulation",
+        "ashl_core_v1.endocrine.package_136",
+    )
+    violations: list[str] = []
+    for source_root in protected_roots:
+        if not source_root.is_dir():
+            continue
+        for path in source_root.rglob("*.py"):
+            tree = ast.parse(path.read_text(encoding="utf-8"), filename=str(path))
+            for node in ast.walk(tree):
+                modules: tuple[str, ...] = ()
+                if isinstance(node, ast.ImportFrom) and node.module:
+                    modules = (node.module,)
+                elif isinstance(node, ast.Import):
+                    modules = tuple(alias.name for alias in node.names)
+                if any(module.startswith(prefixes) for module in modules):
                     violations.append(path.relative_to(root).as_posix())
     return {"valid": not violations, "violations": tuple(sorted(set(violations)))}
 
