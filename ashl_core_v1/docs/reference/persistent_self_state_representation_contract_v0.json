@@ -1,0 +1,50 @@
+{
+  "contract_id": "persistent_self_state_contract:4cdb023a2b827df1",
+  "contract_sha256": "4cdb023a2b827df1e60a35f026e021560c357b823dad9e3b79d76fffd29382fe",
+  "schema_version": "ashl_persistent_self_state_representation_contract_v0",
+  "created_at": "2026-08-07T00:00:00+00:00",
+  "baseline_commit": "f4ba0bbc2b13d772c528dd6bc60fa62eb22769b3",
+  "authority_owner": "ashl_core_v1.state.state_engine",
+  "representation_kind": "opaque_structural_self_state_lineage_v0",
+  "allowed_persistent_fields": [
+    "self_state_lineage_id",
+    "self_state_version",
+    "lineage_generation",
+    "representation_status",
+    "governance_profile_version"
+  ],
+  "forbidden_content_categories": [
+    "raw_perception",
+    "world_fact",
+    "memory_content",
+    "semantic_history",
+    "output_content"
+  ],
+  "forbidden_authorities": [
+    "cross_session_recovery",
+    "active_head_selection",
+    "runtime_behavior_influence",
+    "drive_signal",
+    "memory_write",
+    "perception_control",
+    "action_selection",
+    "output",
+    "thought_engine"
+  ],
+  "parent_child_lineage_required": true,
+  "monotonic_version_required": true,
+  "distinct_session_provenance_required": true,
+  "canonical_hash_chain_required": true,
+  "append_only_persistence_required": true,
+  "state_engine_continuity_authority_reused": true,
+  "legacy_state_payload_reused": false,
+  "legacy_store_directly_reused": false,
+  "active_head_created": false,
+  "cross_session_recovery_enabled": false,
+  "runtime_behavior_influence_enabled": false,
+  "drive_signal_enabled": false,
+  "memory_write_enabled": false,
+  "output_enabled": false,
+  "persistent_self_claim_authorized": false,
+  "next_package": "134"
+}

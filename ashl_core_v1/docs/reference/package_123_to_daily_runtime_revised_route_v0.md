@@ -18,7 +18,8 @@ Updated By: Package 129 active perception real two-cycle growth run
 Updated By: Package 130 grounded anonymous auditory event concept formation
 Updated By: Package 131 auditory predictive recognition
 Updated By: Package 132 active perception and attention milestone closure
-Critical Path Note: Package 123 through Package 132 and the independent DLM-0 / Q-M0 audit are completed. Package 132 closed and froze the perception capability construction line without adding a runtime capability or action. Package 133 is the next core package and begins persistent self-state outside the perception line. DLM-1 is now chronologically eligible only as a separately authorized independent migration lane; it is not implemented by Package 132. Package 132A does not exist, and no extra perception package is scheduled.
+Updated By: Package 133 cross-session self-state representation schema
+Critical Path Note: Package 123 through Package 133 and the independent DLM-0 / Q-M0 audit are completed. Package 132 remains the frozen end of perception capability construction. Package 133 established only the first opaque, versioned, append-only self-state representation outside that line; it did not add recovery, behavior influence, drive, memory, action or output authority. Package 134 is the next core package. DLM-1 remains a separately authorized independent migration lane and is not implemented. Package 132A does not exist.
 
 | Package | Name | Classification | Milestone Dependency | Route Note |
 | --- | --- | --- | --- | --- |
@@ -37,8 +38,8 @@ Critical Path Note: Package 123 through Package 132 and the independent DLM-0 / 
 | DLM-1 | Cost/Registry/Lineage Skeleton | future_d_laplace_path | after Package 132 | Chronologically eligible but still not authorized by Q-M0; implementation requires a separate package and approval. |
 | DLM-2 | Passive Organ Shadow | future_d_laplace_path | after DLM-1 | Future anonymous passive candidates only; no core replacement. |
 | 132 | Active Perception And Attention Milestone | critical_path | Package 132 | Completed: reverified the Package 123-131 evidence and lineage, established the authoritative capability/boundary closure contract, and froze perception capability construction with no new action or runtime behavior. |
-| 133 | Cross-Session Self-State Schema | critical_path | Package 140 | Next core package: begin persistent self-state outside the frozen perception line; separate it from session checkpoints and working readback. |
-| 134 | Persistent Session Recovery And Identity | critical_path | Package 140 | Carry daily identity continuity without uncontrolled autonomy. |
+| 133 | Cross-Session Self-State Schema | critical_path | Package 140 | Completed: established an opaque parent-to-child representation contract, distinct session provenance, canonical hash lineage, source-grounded state-like boundary inventory and external append-only State Engine store. No recovery or persistent-self claim. |
+| 134 | Persistent Session Recovery And Identity | critical_path | Package 140 | Next: add explicit recovery authorization, active-head compare-and-swap, session-startup binding, crash semantics and a real fresh-process recovery run without uncontrolled autonomy. |
 | 135 | Drive Signal Trace Separation | supporting_path | Package 140 | Keep drive/endocrine-like signals traceable and non-authoritative. |
 | 136 | Same-Session Drive Modulation | supporting_path | Package 140 | Allow bounded modulation without creating purpose claims. |
 | 137 | Persistent Self-State Review Gate | critical_path | Package 140 | Teacher-gate self-state mutations. |

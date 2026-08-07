@@ -1,5 +1,5 @@
 {
-  "ledger_id": "architecture_capability_ledger:package_132_perception_line_closure",
+  "ledger_id": "architecture_capability_ledger:package_133_self_state_representation",
   "schema_version": "ashl_architecture_capability_ledger_v0",
   "runtime_behavior_changed_by_package_124": false,
   "runtime_behavior_changed_by_dlm0_qm0": false,
@@ -8,7 +8,10 @@
   "runtime_behavior_changed_by_package_130": true,
   "runtime_behavior_changed_by_package_131": true,
   "runtime_behavior_changed_by_package_132": false,
+  "runtime_behavior_changed_by_package_133": false,
   "perception_capability_construction_line_frozen": true,
+  "persistent_self_state_representation_added_by_package_133": true,
+  "cross_session_recovery_added_by_package_133": false,
   "capabilities": [
     {
       "package": "123",
@@ -149,8 +152,26 @@
     {
       "package": "133",
       "name": "Cross-Session Self-State Schema",
+      "status": "completed",
+      "runtime_delta": "no existing session runtime behavior changed; adds a State Engine representation, validator and external append-only persistence boundary",
+      "representation_delta": "one opaque versioned parent-to-child self-state schema with distinct session provenance and canonical SHA-256 lineage",
+      "state_engine_delta": "reuses State Engine continuity ownership, explicit state directory and validation boundary without reusing legacy handoff payloads or overwrite stores",
+      "persistent_fields": "opaque lineage id, self-state version, lineage generation, representation status and governance profile version only",
+      "content_delta": "no raw perception, world facts, memory content, semantic history or output content",
+      "recovery_delta": "none; no active head, startup load, restore or cross-session recovery",
+      "drive_delta": "none",
+      "behavior_influence_delta": "none",
+      "memory_delta": "none",
+      "action_delta": "none",
+      "thought_delta": "none",
+      "output_delta": "none",
+      "persistent_self_claim_delta": "none; representation does not establish a continuous self"
+    },
+    {
+      "package": "134",
+      "name": "Persistent Session Recovery And Identity",
       "status": "next_critical_path",
-      "runtime_delta": "planned outside the frozen perception capability construction line"
+      "runtime_delta": "planned recovery authorization, active-head selection, session startup binding and real fresh-process recovery outside the frozen perception line"
     }
   ],
   "migration_audits": [

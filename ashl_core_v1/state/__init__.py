@@ -1,4 +1,4 @@
-"""State Engine persistence handoff layer for ASHL Core v1."""
+"""State Engine continuity and persistent self-state representation layer."""
 
 from .cradle_state_persistence_handoff import (
     CradleBookmarkRecord,
@@ -74,6 +74,27 @@ from .state_engine_resume_continuity_audit import (
     validate_state_engine_resume_continuity_audit,
     write_state_engine_resume_continuity_audit,
 )
+from .persistent_self_state_boundary import (
+    build_state_like_structure_inventory,
+    load_authoritative_self_state_contract,
+)
+from .persistent_self_state_lineage import (
+    build_initial_self_state_record,
+    build_self_state_lineage_id,
+    build_self_state_lineage_validation_record,
+    build_successor_self_state_records,
+    validate_persistent_self_state_lineage,
+    validate_persistent_self_state_record,
+)
+from .persistent_self_state_schema import (
+    Package133CrossSessionSelfStateSchemaAudit,
+    PersistentSelfStateLineageValidationRecord,
+    PersistentSelfStateRecord,
+    PersistentSelfStateRepresentationContract,
+    PersistentSelfStateTransitionRecord,
+    StateLikeStructureBoundaryRecord,
+)
+from .persistent_self_state_store import PersistentSelfStateStore
 
 __all__ = [
     "CradleBookmarkRecord",
@@ -140,4 +161,19 @@ __all__ = [
     "write_restore_resume_handoff_bundle",
     "write_state_engine_resume_continuity_audit",
     "write_resume_selection_authorization_bundle",
+    "StateLikeStructureBoundaryRecord",
+    "PersistentSelfStateRepresentationContract",
+    "PersistentSelfStateRecord",
+    "PersistentSelfStateTransitionRecord",
+    "PersistentSelfStateLineageValidationRecord",
+    "Package133CrossSessionSelfStateSchemaAudit",
+    "PersistentSelfStateStore",
+    "build_state_like_structure_inventory",
+    "load_authoritative_self_state_contract",
+    "build_self_state_lineage_id",
+    "build_initial_self_state_record",
+    "build_successor_self_state_records",
+    "build_self_state_lineage_validation_record",
+    "validate_persistent_self_state_record",
+    "validate_persistent_self_state_lineage",
 ]
