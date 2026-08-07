@@ -1,5 +1,5 @@
 {
-  "ledger_id": "architecture_capability_ledger:package_133_self_state_representation",
+  "ledger_id": "architecture_capability_ledger:package_134_persistent_session_recovery",
   "schema_version": "ashl_architecture_capability_ledger_v0",
   "runtime_behavior_changed_by_package_124": false,
   "runtime_behavior_changed_by_dlm0_qm0": false,
@@ -9,9 +9,12 @@
   "runtime_behavior_changed_by_package_131": true,
   "runtime_behavior_changed_by_package_132": false,
   "runtime_behavior_changed_by_package_133": false,
+  "runtime_behavior_changed_by_package_134": true,
   "perception_capability_construction_line_frozen": true,
   "persistent_self_state_representation_added_by_package_133": true,
   "cross_session_recovery_added_by_package_133": false,
+  "persistent_session_recovery_added_by_package_134": true,
+  "self_state_behavior_influence_added_by_package_134": false,
   "capabilities": [
     {
       "package": "123",
@@ -170,8 +173,23 @@
     {
       "package": "134",
       "name": "Persistent Session Recovery And Identity",
+      "status": "completed",
+      "runtime_delta": "one explicitly authorized real Process A clean shutdown to fresh Process B startup identity recovery outside the frozen perception line",
+      "representation_delta": "none; Package 133 remains the sole immutable self-state representation authority",
+      "active_head_delta": "one separate singleton active-head authority with exact revision/hash compare-and-swap and append-only CAS history",
+      "authorization_delta": "separate exact-scope, expiring, single-use local-operator authorizations for initialization and recovery",
+      "identity_delta": "Process B binds to the same Package 133 lineage, leaf record and record SHA-256 without creating an identity fork",
+      "failure_delta": "missing, corrupt, stale or ambiguous heads, dirty shutdown, authorization faults, CAS conflicts and partial writes block without guessing",
+      "content_delta": "no memory, perception history, working readback, drive, attention, Thought Engine, output or action state restored",
+      "learning_delta": "none",
+      "behavior_influence_delta": "none",
+      "persistent_self_claim_delta": "none; structural identity continuity is not complete psychological continuity"
+    },
+    {
+      "package": "135",
+      "name": "Drive Signal Trace Separation",
       "status": "next_critical_path",
-      "runtime_delta": "planned recovery authorization, active-head selection, session startup binding and real fresh-process recovery outside the frozen perception line"
+      "runtime_delta": "planned"
     }
   ],
   "migration_audits": [

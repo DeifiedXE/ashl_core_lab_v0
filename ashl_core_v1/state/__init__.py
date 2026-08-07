@@ -95,6 +95,30 @@ from .persistent_self_state_schema import (
     StateLikeStructureBoundaryRecord,
 )
 from .persistent_self_state_store import PersistentSelfStateStore
+from .persistent_session_recovery_runtime import (
+    build_recovery_authorization,
+    preflight_persistent_session_recovery,
+    run_real_fresh_process_recovery,
+)
+from .persistent_session_recovery_store import (
+    ActiveHeadCASConflict,
+    PersistentSessionRecoveryStore,
+)
+from .persistent_session_recovery_types import (
+    ActiveHeadCASEventRecord,
+    ActiveSelfStateHeadRecord,
+    Package133SelfStateSourceSnapshot,
+    Package134PersistentSessionRecoveryAudit,
+    Package134RecoveryControlResult,
+    Package134RegressionReceipt,
+    PersistentSessionIdentityBindingRecord,
+    PersistentSessionRecoveryAuthorization,
+    PersistentSessionRecoveryPairRecord,
+    PersistentSessionRecoveryProcessReceipt,
+    PersistentSessionRecoveryResolutionRecord,
+    PersistentSessionShutdownRecord,
+    RecoveryAuthorizationConsumptionRecord,
+)
 
 __all__ = [
     "CradleBookmarkRecord",
@@ -176,4 +200,22 @@ __all__ = [
     "build_self_state_lineage_validation_record",
     "validate_persistent_self_state_record",
     "validate_persistent_self_state_lineage",
+    "Package133SelfStateSourceSnapshot",
+    "PersistentSessionRecoveryAuthorization",
+    "ActiveSelfStateHeadRecord",
+    "ActiveHeadCASEventRecord",
+    "RecoveryAuthorizationConsumptionRecord",
+    "PersistentSessionIdentityBindingRecord",
+    "PersistentSessionShutdownRecord",
+    "PersistentSessionRecoveryResolutionRecord",
+    "PersistentSessionRecoveryProcessReceipt",
+    "PersistentSessionRecoveryPairRecord",
+    "Package134RecoveryControlResult",
+    "Package134RegressionReceipt",
+    "Package134PersistentSessionRecoveryAudit",
+    "ActiveHeadCASConflict",
+    "PersistentSessionRecoveryStore",
+    "build_recovery_authorization",
+    "preflight_persistent_session_recovery",
+    "run_real_fresh_process_recovery",
 ]

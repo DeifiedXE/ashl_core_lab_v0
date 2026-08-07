@@ -455,8 +455,12 @@ def audit_package_133_cross_session_self_state_schema(
         "thought_engine_used": parent.thought_engine_authority
         or child.thought_engine_authority,
         "output_created": transition.output_created,
+        # Package 133's boundary is defined by its immutable records and store,
+        # not by whether a later package exists in the repository.
         "package_134_implemented": bool(
-            tuple((root / "ashl_core_v1/state").glob("package_134*.py"))
+            transition.recovery_performed
+            or store_integrity["active_head_present"]
+            or store_integrity["recovery_table_present"]
         ),
         "persistent_self_claimed": contract.persistent_self_claim_authorized,
     }
