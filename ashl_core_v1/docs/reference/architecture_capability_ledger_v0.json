@@ -1,5 +1,5 @@
 {
-  "ledger_id": "architecture_capability_ledger:package_137_persistent_self_state_review_gate",
+  "ledger_id": "architecture_capability_ledger:package_138_self_state_readback_boundary",
   "schema_version": "ashl_architecture_capability_ledger_v0",
   "runtime_behavior_changed_by_package_124": false,
   "runtime_behavior_changed_by_dlm0_qm0": false,
@@ -13,6 +13,7 @@
   "runtime_behavior_changed_by_package_135": false,
   "runtime_behavior_changed_by_package_136": false,
   "runtime_behavior_changed_by_package_137": false,
+  "runtime_behavior_changed_by_package_138": false,
   "perception_capability_construction_line_frozen": true,
   "persistent_self_state_representation_added_by_package_133": true,
   "cross_session_recovery_added_by_package_133": false,
@@ -24,6 +25,8 @@
   "production_drive_modulation_consumer_added_by_package_136": false,
   "persistent_self_state_review_gate_added_by_package_137": true,
   "self_state_readback_added_by_package_137": false,
+  "bounded_self_state_readback_boundary_added_by_package_138": true,
+  "production_self_state_readback_consumer_added_by_package_138": false,
   "capabilities": [
     {
       "package": "123",
@@ -257,8 +260,31 @@
     {
       "package": "138",
       "name": "Self-State Readback Boundary",
+      "status": "completed",
+      "runtime_delta": "none in production; adds one explicitly authorized, bounded, same-session read-only structural context for an isolated audit-only consumer",
+      "schema_authority_delta": "none; Package 133 remains the sole immutable self-state schema and history authority",
+      "active_head_authority_delta": "none; Package 134 remains the sole exact active-head CAS and recovery authority",
+      "teacher_authority_delta": "none; Package 137 mutation approval does not authorize readback consumption",
+      "consumer_delta": "zero production consumers, zero implicit consumers and one isolated audit-only consumer",
+      "binding_delta": "every authorization and readback binds one exact active-head ID, revision and SHA-256 plus one exact self-state record ID and SHA-256",
+      "expiry_delta": "readback expires at same-session process end; any active-head revision change makes the old context stale without follow, refresh or rebind",
+      "recovery_delta": "Package 134 fresh-process recovery restores no readback; a new session is blocked until separately reauthorized",
+      "counterfactual_delta": "only the readback surface differs; runtime behavior, selected action, memory, drive, perception history, self-state history, active head, output and recovery result remain equivalent",
+      "semantic_delta": "none; no autobiographical memory, personality, psychological state, world knowledge or semantic identity",
+      "memory_delta": "none",
+      "drive_delta": "none",
+      "perception_delta": "none",
+      "attention_delta": "none",
+      "thought_delta": "none",
+      "action_delta": "none",
+      "output_delta": "none",
+      "rollback_delta": "none; Package 139 is not implemented"
+    },
+    {
+      "package": "139",
+      "name": "Self-State Rollback And Audit",
       "status": "next_critical_path",
-      "runtime_delta": "planned; exact opaque read-only self-state context with explicit consumer authority and no implicit behavior influence"
+      "runtime_delta": "planned; requires separate rollback authorization, verified ancestor targeting, exact Package 134 CAS and append-only rollback history"
     }
   ],
   "migration_audits": [

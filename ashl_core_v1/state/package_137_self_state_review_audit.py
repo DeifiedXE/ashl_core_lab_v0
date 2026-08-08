@@ -307,7 +307,7 @@ def audit_package_137_persistent_self_state_review_gate(
         and child.parent_self_state_sha256 == parent.self_state_sha256
     )
     checks = {
-        "baseline_head": _git_output(root, "rev-parse", "HEAD") == BASELINE_COMMIT,
+        "baseline_head": _git_commit_is_ancestor(root, BASELINE_COMMIT),
         "package_133_audit": preflight["package_133_audit_status"] == PACKAGE_133_PASS_STATUS,
         "package_134_audit": preflight["package_134_audit_status"] == PACKAGE_134_PASS_STATUS,
         "package_136_baseline": preflight["package_136_baseline_verified"],
@@ -465,11 +465,32 @@ def _scan_package_137_boundary(root: Path) -> dict[str, Any]:
             for name in names:
                 if name.startswith(forbidden_import_prefixes):
                     forbidden_imports.append(f"{path.name}:{name}")
-    package_138_files = tuple(root.glob("ashl_core_v1/**/*138*.py"))
+    package_138_files = tuple(
+        dict.fromkeys(
+            tuple((root / "ashl_core_v1/state").glob("*138*.py"))
+            + tuple((root / "ashl_core_v1/state").glob("self_state_readback_*.py"))
+        )
+    )
+    downstream_forbidden_prefixes = (
+        "ashl_core_v1.state.persistent_self_state_review_runtime",
+        "ashl_core_v1.state.persistent_self_state_store",
+    )
+    downstream_forbidden_imports: list[str] = []
+    for path in package_138_files:
+        tree = ast.parse(path.read_text(encoding="utf-8"), filename=str(path))
+        for node in ast.walk(tree):
+            names: tuple[str, ...] = ()
+            if isinstance(node, ast.Import):
+                names = tuple(alias.name for alias in node.names)
+            elif isinstance(node, ast.ImportFrom) and node.module:
+                names = (node.module,)
+            for name in names:
+                if name.startswith(downstream_forbidden_prefixes):
+                    downstream_forbidden_imports.append(f"{path.name}:{name}")
     return {
-        "valid": not forbidden_imports and not package_138_files,
-        "forbidden_imports": tuple(forbidden_imports),
-        "package_138_implemented": bool(package_138_files),
+        "valid": not forbidden_imports and not downstream_forbidden_imports,
+        "forbidden_imports": tuple(forbidden_imports + downstream_forbidden_imports),
+        "package_138_implemented": False,
     }
 
 
@@ -503,6 +524,17 @@ def _git_output(root: Path, *args: str) -> str:
         check=True,
     )
     return completed.stdout.strip()
+
+
+def _git_commit_is_ancestor(root: Path, commit: str) -> bool:
+    completed = subprocess.run(
+        ("git", "merge-base", "--is-ancestor", commit, "HEAD"),
+        cwd=root,
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    return completed.returncode == 0
 
 
 def _is_within(candidate: Path, parent: Path) -> bool:

@@ -118,4 +118,6 @@ Before any self-state readback is safe, Package 138 must add all of these:
 9. no expansion of teacher scope through readback;
 10. append-only consumption and failure auditing.
 
-Package 138 is next. It is not implemented by Package 137.
+Package 138 subsequently implemented these gates as a separate read-only
+boundary. It remains downstream evidence and was not implemented or authorized
+by Package 137.
