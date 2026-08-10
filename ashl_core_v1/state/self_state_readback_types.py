@@ -668,6 +668,7 @@ class SelfStateReadbackLifecycleRecord:
             "expired_authorization_deadline",
             "stale_active_head_revision_changed",
             "closed_after_consumption",
+            "invalidated_before_authorized_active_head_transition",
         }:
             raise ValueError("invalid Package 138 lifecycle kind")
         if self.readback_active_after:

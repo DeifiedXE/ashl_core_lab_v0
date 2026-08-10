@@ -1,5 +1,5 @@
 {
-  "ledger_id": "architecture_capability_ledger:package_138_self_state_readback_boundary",
+  "ledger_id": "architecture_capability_ledger:package_139_self_state_rollback_and_audit",
   "schema_version": "ashl_architecture_capability_ledger_v0",
   "runtime_behavior_changed_by_package_124": false,
   "runtime_behavior_changed_by_dlm0_qm0": false,
@@ -14,6 +14,7 @@
   "runtime_behavior_changed_by_package_136": false,
   "runtime_behavior_changed_by_package_137": false,
   "runtime_behavior_changed_by_package_138": false,
+  "runtime_behavior_changed_by_package_139": true,
   "perception_capability_construction_line_frozen": true,
   "persistent_self_state_representation_added_by_package_133": true,
   "cross_session_recovery_added_by_package_133": false,
@@ -27,6 +28,9 @@
   "self_state_readback_added_by_package_137": false,
   "bounded_self_state_readback_boundary_added_by_package_138": true,
   "production_self_state_readback_consumer_added_by_package_138": false,
+  "verified_ancestor_self_state_rollback_added_by_package_139": true,
+  "self_state_history_rewrite_added_by_package_139": false,
+  "self_state_content_restoration_added_by_package_139": false,
   "capabilities": [
     {
       "package": "123",
@@ -278,13 +282,29 @@
       "thought_delta": "none",
       "action_delta": "none",
       "output_delta": "none",
-      "rollback_delta": "none; Package 139 is not implemented"
+      "rollback_delta": "none; Package 139 uses a separate explicit authorization and never treats readback authority as rollback authority"
     },
     {
       "package": "139",
       "name": "Self-State Rollback And Audit",
+      "status": "completed",
+      "runtime_delta": "one explicitly authorized verified-ancestor structural head selection followed by one separately authorized exact roll-forward to the preserved pre-rollback leaf",
+      "schema_authority_delta": "none; Package 133 history remains immutable and every intervening descendant remains present",
+      "active_head_authority_delta": "none; rollback and roll-forward each append one exact Package 134 CAS revision",
+      "authorization_delta": "two distinct exact, expiring, one-use local-operator authorizations; readback and teacher-review authority grant neither operation",
+      "ancestor_delta": "target must be an explicit strict ancestor in one fully verified parent/hash/transition chain; latest selection and cross-lineage targets are forbidden",
+      "readback_delta": "all Package 138 contexts bound to the changing head must be terminal before CAS and require fresh authorization afterward",
+      "no_fork_delta": "while an ancestor is selected, Package 137 mutation and normal Package 134 recovery are blocked; no child may be appended from that ancestor",
+      "roll_forward_delta": "only the exact preserved pre-rollback descendant recorded by the rollback receipt can restore canonical-leaf mutation and recovery eligibility",
+      "failure_delta": "stale authorization, wrong ancestor, cross-lineage target, CAS conflict, corrupt history, partial cross-authority commit and authorization reuse block or reconcile without a second CAS",
+      "content_delta": "no memory, perception history, working readback, drive trace or modulation, attention, Thought Engine, action or output state restored",
+      "identity_fork_delta": "none"
+    },
+    {
+      "package": "140",
+      "name": "Persistent Self-State And Drive Milestone",
       "status": "next_critical_path",
-      "runtime_delta": "planned; requires separate rollback authorization, verified ancestor targeting, exact Package 134 CAS and append-only rollback history"
+      "runtime_delta": "planned; read-only milestone closure of Package 133 through Package 139 authorities and boundaries"
     }
   ],
   "migration_audits": [

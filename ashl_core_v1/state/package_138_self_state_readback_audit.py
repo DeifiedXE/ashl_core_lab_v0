@@ -437,15 +437,40 @@ def _scan_package_138_boundary(root: Path) -> dict[str, Any]:
                 for module in modules:
                     if "self_state_readback" in module or "package_138" in module:
                         forbidden_imports.append(f"{path.relative_to(root).as_posix()}:{module}")
-    package_139_files = tuple(
-        path.relative_to(root).as_posix()
-        for path in root.glob("ashl_core_v1/**/*139*.py")
-        if "test_package_138" not in path.name
+    rollback_imports: list[str] = []
+    rollback_definitions: list[str] = []
+    package_138_sources = tuple(
+        dict.fromkeys(
+            tuple((root / "ashl_core_v1/state").glob("*138*.py"))
+            + tuple((root / "ashl_core_v1/state").glob("self_state_readback_*.py"))
+        )
     )
+    for path in package_138_sources:
+        tree = ast.parse(path.read_text(encoding="utf-8"), filename=str(path))
+        for node in ast.walk(tree):
+            modules: tuple[str, ...] = ()
+            if isinstance(node, ast.Import):
+                modules = tuple(item.name for item in node.names)
+            elif isinstance(node, ast.ImportFrom) and node.module:
+                modules = (node.module,)
+            for module in modules:
+                if "self_state_rollback" in module or "package_139" in module:
+                    rollback_imports.append(
+                        f"{path.relative_to(root).as_posix()}:{module}"
+                    )
+            if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef)) and (
+                "rollback" in node.name.lower() or "roll_forward" in node.name.lower()
+            ):
+                rollback_definitions.append(
+                    f"{path.relative_to(root).as_posix()}:{node.name}"
+                )
+    package_139_implemented = bool(rollback_imports or rollback_definitions)
     return {
-        "valid": not forbidden_imports and not package_139_files,
+        "valid": not forbidden_imports and not package_139_implemented,
         "forbidden_imports": tuple(forbidden_imports),
-        "package_139_implemented": bool(package_139_files),
+        "package_138_rollback_imports": tuple(rollback_imports),
+        "package_138_rollback_definitions": tuple(rollback_definitions),
+        "package_139_implemented": package_139_implemented,
     }
 
 

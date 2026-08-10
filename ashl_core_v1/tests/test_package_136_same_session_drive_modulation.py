@@ -404,13 +404,14 @@ class Package136SameSessionDriveModulationTests(unittest.TestCase):
                 / "ashl_core_v1/docs/reference/package_number_registry_v0.json"
             ).read_text(encoding="utf-8")
         )
-        self.assertEqual(registry["current_package_id"], "138")
+        self.assertEqual(registry["current_package_id"], "139")
         self.assertIn("136", registry["completed_package_ids"])
         self.assertNotIn("136", registry["future_package_ids"])
         self.assertEqual(registry["package_status"]["136"], "completed")
         self.assertEqual(registry["package_status"]["137"], "completed")
         self.assertEqual(registry["package_status"]["138"], "completed")
-        self.assertEqual(registry["package_status"]["139"], "next_critical_path")
+        self.assertEqual(registry["package_status"]["139"], "completed")
+        self.assertEqual(registry["package_status"]["140"], "next_critical_path")
         digest = sha256_payload(
             {
                 "current": registry["current_package_id"],
@@ -425,7 +426,8 @@ class Package136SameSessionDriveModulationTests(unittest.TestCase):
             / "ashl_core_v1/docs/reference/package_123_to_daily_runtime_revised_route_v0.md"
         ).read_text(encoding="utf-8")
         self.assertIn("Package 138 exposes that exact state", route)
-        self.assertIn("Package 139 is next", route)
+        self.assertIn("Package 139 selects only an explicit verified ancestor", route)
+        self.assertIn("Package 140 is next", route)
 
     def test_production_modules_do_not_import_package_136(self) -> None:
         prefixes = (

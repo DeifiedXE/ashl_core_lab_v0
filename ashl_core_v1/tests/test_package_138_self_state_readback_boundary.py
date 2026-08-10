@@ -328,13 +328,14 @@ class Package138SelfStateReadbackBoundaryTests(unittest.TestCase):
                     imports.append(node.module)
             self.assertFalse(any(name.startswith("ashl_core_v1.runtime.internal_action") for name in imports))
 
-    def test_registry_marks_138_completed_and_139_next(self) -> None:
+    def test_registry_marks_138_and_139_completed_with_140_next(self) -> None:
         registry = json.loads(
             (self.repo_root / "ashl_core_v1/docs/reference/package_number_registry_v0.json").read_text(encoding="utf-8")
         )
-        self.assertEqual(registry["current_package_id"], "138")
+        self.assertEqual(registry["current_package_id"], "139")
         self.assertEqual(registry["package_status"]["138"], "completed")
-        self.assertEqual(registry["package_status"]["139"], "next_critical_path")
+        self.assertEqual(registry["package_status"]["139"], "completed")
+        self.assertEqual(registry["package_status"]["140"], "next_critical_path")
         self.assertIn("138", registry["completed_package_ids"])
         self.assertNotIn("138", registry["future_package_ids"])
 

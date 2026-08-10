@@ -111,7 +111,7 @@ def preflight_self_state_readback_boundary(
         raise RuntimeError("blocked_package_138_consumer_inventory_boundary")
     registry = _load_registry(root)
     if not (
-        registry.get("current_package_id") in {"137", "138"}
+        registry.get("current_package_id") in {"137", "138", "139"}
         and registry.get("package_status", {}).get("137") == "completed"
     ):
         raise RuntimeError("blocked_package_137_baseline_not_completed")
@@ -1344,6 +1344,7 @@ def _build_lifecycle(
     lifecycle_kind: str,
     terminal_reason: str,
     occurred_at_monotonic_ns: int,
+    additional_source_refs: tuple[str, ...] = (),
 ) -> SelfStateReadbackLifecycleRecord:
     payload: dict[str, Any] = {
         "lifecycle_id": "",
@@ -1363,7 +1364,11 @@ def _build_lifecycle(
         "automatically_rebound": False,
         "carried_to_another_session": False,
         "terminal_reason": terminal_reason,
-        "source_record_refs": (readback.readback_id, observed_head.active_head_id),
+        "source_record_refs": (
+            readback.readback_id,
+            observed_head.active_head_id,
+            *additional_source_refs,
+        ),
     }
     return _hashed_record(
         SelfStateReadbackLifecycleRecord,
@@ -1372,6 +1377,74 @@ def _build_lifecycle(
         hash_field="lifecycle_sha256",
         prefix="self_state_readback_lifecycle",
     )
+
+
+def invalidate_readbacks_before_authorized_head_transition(
+    *,
+    state_dir: str | Path,
+    expected_head: Any,
+    authorization_ref: str,
+    operation: str,
+    occurred_at_monotonic_ns: int | None = None,
+) -> dict[str, Any]:
+    """Terminate every live readback bound to one exact pre-transition head."""
+    if operation not in {
+        "rollback_to_verified_ancestor",
+        "roll_forward_to_preserved_descendant",
+    }:
+        raise ValueError("invalid authorized active-head transition")
+    if not authorization_ref:
+        raise ValueError("active-head transition authorization reference is required")
+    store = Package138SelfStateReadbackStore(state_dir)
+    integrity = store.audit_integrity()
+    if not integrity["valid"]:
+        raise RuntimeError("blocked_corrupt_package_138_readback_store")
+    matching_payloads = tuple(
+        item
+        for item in store.list_payloads("bounded_self_state_readbacks")
+        if item.get("active_head_id") == expected_head.active_head_id
+        and item.get("active_head_sha256") == expected_head.active_head_sha256
+        and item.get("head_revision") == expected_head.head_revision
+        and item.get("self_state_record_id") == expected_head.self_state_record_id
+        and item.get("self_state_sha256") == expected_head.self_state_sha256
+    )
+    terminal_before: list[str] = []
+    invalidated: list[str] = []
+    occurred = int(monotonic_ns() if occurred_at_monotonic_ns is None else occurred_at_monotonic_ns)
+    for payload in matching_payloads:
+        readback = _record_from_payload(BoundedSelfStateReadbackRecord, payload)
+        if store.terminal_lifecycle_for(readback.readback_id) is not None:
+            terminal_before.append(readback.readback_id)
+            continue
+        lifecycle = _build_lifecycle(
+            readback=readback,
+            observed_head=expected_head,
+            lifecycle_kind="invalidated_before_authorized_active_head_transition",
+            terminal_reason=f"authorized_head_transition:{operation}",
+            occurred_at_monotonic_ns=occurred,
+            additional_source_refs=(authorization_ref,),
+        )
+        store.append_once("self_state_readback_lifecycle_records", lifecycle)
+        invalidated.append(lifecycle.lifecycle_id)
+    active_after = tuple(
+        item["readback_id"]
+        for item in matching_payloads
+        if store.terminal_lifecycle_for(str(item["readback_id"])) is None
+    )
+    if active_after:
+        raise RuntimeError("blocked_active_package_138_readback_remains_before_head_change")
+    return {
+        "matching_readback_refs": tuple(
+            str(item["readback_id"]) for item in matching_payloads
+        ),
+        "preexisting_terminal_readback_refs": tuple(terminal_before),
+        "new_lifecycle_refs": tuple(invalidated),
+        "active_readback_count_before": len(invalidated),
+        "active_readback_count_after": 0,
+        "all_matching_readbacks_terminal": True,
+        "operation": operation,
+        "authorization_ref": authorization_ref,
+    }
 
 
 def _build_blocked_attempt(

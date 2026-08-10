@@ -27,13 +27,13 @@
     "135",
     "136",
     "137",
-    "138"
+    "138",
+    "139"
   ],
   "created_at": "2026-08-02T00:00:00+00:00",
-  "current_package_id": "138",
+  "current_package_id": "139",
   "duplicate_package_ids": [],
   "future_package_ids": [
-    "139",
     "140",
     "141",
     "142",
@@ -96,7 +96,8 @@
     "136": "supporting_path",
     "137": "critical_path",
     "138": "critical_path",
-    "139": "critical_path"
+    "139": "critical_path",
+    "140": "critical_path"
   },
   "package_status": {
     "123": "completed",
@@ -116,11 +117,12 @@
     "136": "completed",
     "137": "completed",
     "138": "completed",
-    "139": "next_critical_path"
+    "139": "completed",
+    "140": "next_critical_path"
   },
-  "registry_id": "package_number_registry:ca701db381c27171",
+  "registry_id": "package_number_registry:d9a957f68d691605",
   "registry_valid": true,
   "reserved_package_ids": [],
   "schema_version": "ashl_package_number_registry_v0",
-  "registry_sha256": "ca701db381c27171cf272abf4399d0ae633edac53920523ac0e3b0e37dda4fa7"
+  "registry_sha256": "d9a957f68d691605680ec87c00894d3844c77f8937c55e14f6658d1785d498df"
 }

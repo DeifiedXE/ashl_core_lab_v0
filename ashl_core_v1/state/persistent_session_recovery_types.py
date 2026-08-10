@@ -299,6 +299,8 @@ class ActiveHeadCASEventRecord:
             "initialize_active_head",
             "recover_session",
             "advance_reviewed_self_state_successor",
+            "rollback_to_verified_ancestor",
+            "roll_forward_to_preserved_descendant",
         }:
             raise ValueError("invalid active-head CAS operation")
         if self.cas_succeeded:
@@ -306,10 +308,14 @@ class ActiveHeadCASEventRecord:
                 raise ValueError("successful CAS event must be committed without failure")
             if self.new_head_revision is None or not self.new_active_head_sha256:
                 raise ValueError("successful CAS event requires a new head")
-            if self.operation == "advance_reviewed_self_state_successor":
+            if self.operation in {
+                "advance_reviewed_self_state_successor",
+                "rollback_to_verified_ancestor",
+                "roll_forward_to_preserved_descendant",
+            }:
                 if self.self_state_record_unchanged or not self.self_state_lineage_unchanged:
                     raise ValueError(
-                        "reviewed-successor CAS must change the record within one lineage"
+                        "self-state selection CAS must change the record within one lineage"
                     )
             elif not self.self_state_record_unchanged or not self.self_state_lineage_unchanged:
                 raise ValueError("Package 134 recovery CAS cannot change self-state identity")
@@ -384,7 +390,11 @@ class PersistentSessionIdentityBindingRecord:
     def __post_init__(self) -> None:
         if self.schema_version != BINDING_SCHEMA_VERSION:
             raise ValueError("invalid persistent session identity binding schema")
-        if self.binding_kind not in {"initial_session_binding", "fresh_process_recovery_binding"}:
+        if self.binding_kind not in {
+            "initial_session_binding",
+            "fresh_process_recovery_binding",
+            "verified_roll_forward_binding",
+        }:
             raise ValueError("invalid identity binding kind")
         if self.operating_system_process_id <= 0 or self.head_revision < 1:
             raise ValueError("identity binding process/head identity is invalid")

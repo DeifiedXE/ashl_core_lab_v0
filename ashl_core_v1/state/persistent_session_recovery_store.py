@@ -396,6 +396,152 @@ class PersistentSessionRecoveryStore:
             )
             connection.commit()
 
+    def reselect_verified_state_atomic(
+        self,
+        *,
+        authorization_id: str,
+        expected_head: ActiveSelfStateHeadRecord,
+        new_head: ActiveSelfStateHeadRecord,
+        cas_event: Any,
+        identity_binding: Any | None = None,
+        fault_injection: str | None = None,
+    ) -> None:
+        """Select one verified Package 133 state without changing its history."""
+        operations = {
+            "rollback_to_verified_ancestor",
+            "roll_forward_to_preserved_descendant",
+        }
+        if not authorization_id:
+            raise ValueError("head-selection authorization is required")
+        if cas_event.operation not in operations:
+            raise ValueError("verified head-selection CAS operation is required")
+        if cas_event.authorization_id != authorization_id:
+            raise ValueError("head-selection CAS authorization binding mismatch")
+        if new_head.active_head_id != expected_head.active_head_id:
+            raise ValueError("head selection cannot replace active-head identity")
+        if new_head.self_state_lineage_id != expected_head.self_state_lineage_id:
+            raise ValueError("head selection cannot cross self-state lineage")
+        if new_head.self_state_record_id == expected_head.self_state_record_id:
+            raise ValueError("head selection requires a distinct self-state record")
+        if new_head.head_revision != expected_head.head_revision + 1:
+            raise ValueError("head-selection revision must increment exactly once")
+        if new_head.previous_active_head_sha256 != expected_head.active_head_sha256:
+            raise ValueError("head-selection previous-head hash mismatch")
+        if cas_event.operation == "rollback_to_verified_ancestor":
+            if not (
+                new_head.self_state_version < expected_head.self_state_version
+                and new_head.lineage_generation < expected_head.lineage_generation
+            ):
+                raise ValueError("rollback CAS target must be an older lineage state")
+            if identity_binding is not None:
+                raise ValueError("rollback-selected ancestor cannot create a recovery binding")
+        else:
+            if not (
+                new_head.self_state_version > expected_head.self_state_version
+                and new_head.lineage_generation > expected_head.lineage_generation
+            ):
+                raise ValueError("roll-forward CAS target must be a preserved descendant")
+            if identity_binding is None:
+                raise ValueError("roll-forward CAS requires an exact identity binding")
+            binding_payload = (
+                identity_binding.to_dict()
+                if hasattr(identity_binding, "to_dict")
+                else dict(identity_binding)
+            )
+            if not all(
+                (
+                    binding_payload.get("binding_kind")
+                    == "verified_roll_forward_binding",
+                    binding_payload.get("active_head_id") == new_head.active_head_id,
+                    binding_payload.get("active_head_sha256")
+                    == new_head.active_head_sha256,
+                    binding_payload.get("head_revision") == new_head.head_revision,
+                    binding_payload.get("self_state_record_id")
+                    == new_head.self_state_record_id,
+                    binding_payload.get("self_state_sha256")
+                    == new_head.self_state_sha256,
+                    binding_payload.get("session_id") == new_head.bound_session_id,
+                    binding_payload.get("process_instance_id")
+                    == new_head.bound_process_instance_id,
+                )
+            ):
+                raise ValueError("roll-forward identity binding mismatch")
+        with self.connection() as connection:
+            connection.execute("BEGIN IMMEDIATE")
+            prior_events = connection.execute(
+                "SELECT payload_json FROM active_head_cas_events ORDER BY row_id"
+            ).fetchall()
+            if any(
+                json.loads(str(row["payload_json"])).get("authorization_id")
+                == authorization_id
+                for row in prior_events
+            ):
+                raise ActiveHeadCASConflict(
+                    "blocked_head_selection_authorization_already_consumed"
+                )
+            row = connection.execute(
+                "SELECT payload_json, payload_sha256 FROM active_self_state_head "
+                "WHERE singleton_key = 'active'"
+            ).fetchone()
+            if row is None:
+                raise ActiveHeadCASConflict("blocked_missing_active_head")
+            current = ActiveSelfStateHeadRecord.from_dict(
+                self._verified_payload(row, "active_self_state_head")
+            )
+            if not all(
+                (
+                    current.active_head_id == expected_head.active_head_id,
+                    current.active_head_sha256 == expected_head.active_head_sha256,
+                    current.head_revision == expected_head.head_revision,
+                    current.self_state_lineage_id
+                    == expected_head.self_state_lineage_id,
+                    current.self_state_record_id
+                    == expected_head.self_state_record_id,
+                    current.self_state_sha256 == expected_head.self_state_sha256,
+                )
+            ):
+                raise ActiveHeadCASConflict("blocked_active_head_cas_conflict")
+            if fault_injection == "force_cas_conflict":
+                raise ActiveHeadCASConflict("blocked_active_head_cas_conflict")
+            new_payload = new_head.to_dict()
+            self._validate_payload(new_payload)
+            result = connection.execute(
+                """
+                UPDATE active_self_state_head
+                SET head_revision = ?, self_state_lineage_id = ?,
+                    self_state_record_id = ?, bound_session_id = ?,
+                    bound_process_instance_id = ?, payload_json = ?,
+                    payload_sha256 = ?, updated_at = ?
+                WHERE singleton_key = 'active' AND head_revision = ?
+                    AND payload_sha256 = ?
+                """,
+                (
+                    new_head.head_revision,
+                    new_head.self_state_lineage_id,
+                    new_head.self_state_record_id,
+                    new_head.bound_session_id,
+                    new_head.bound_process_instance_id,
+                    canonical_json(new_payload),
+                    sha256_payload(new_payload),
+                    new_head.updated_at,
+                    expected_head.head_revision,
+                    sha256_payload(expected_head.to_dict()),
+                ),
+            )
+            if result.rowcount != 1:
+                raise ActiveHeadCASConflict("blocked_active_head_cas_conflict")
+            records: tuple[tuple[str, Any], ...] = (
+                ("active_head_cas_events", cas_event),
+            )
+            if identity_binding is not None:
+                records += (("persistent_session_identity_bindings", identity_binding),)
+            self._insert_typed_group(connection, records)
+            if fault_injection == "after_head_update_before_commit":
+                raise RuntimeError("simulated_head_selection_partial_write_before_commit")
+            if fault_injection not in {None, "force_cas_conflict"}:
+                raise ValueError("unknown verified head-selection CAS fault injection")
+            connection.commit()
+
     def audit_integrity(self) -> dict[str, Any]:
         failures: list[str] = []
         with self.connection() as connection:
