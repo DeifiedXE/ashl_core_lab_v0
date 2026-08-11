@@ -404,6 +404,8 @@ def _scan_forbidden_consumers(root: Path) -> dict[str, Any]:
         if not source_root.is_dir():
             continue
         for path in source_root.rglob("*.py"):
+            if _is_package_140_audit_only_module(root, path):
+                continue
             tree = ast.parse(path.read_text(encoding="utf-8"), filename=str(path))
             for node in ast.walk(tree):
                 module = None
@@ -432,6 +434,8 @@ def _scan_package_136_downstream_boundary(root: Path) -> dict[str, Any]:
         if not source_root.is_dir():
             continue
         for path in source_root.rglob("*.py"):
+            if _is_package_140_audit_only_module(root, path):
+                continue
             tree = ast.parse(path.read_text(encoding="utf-8"), filename=str(path))
             for node in ast.walk(tree):
                 modules: tuple[str, ...] = ()
@@ -442,6 +446,13 @@ def _scan_package_136_downstream_boundary(root: Path) -> dict[str, Any]:
                 if any(module.startswith(prefixes) for module in modules):
                     violations.append(path.relative_to(root).as_posix())
     return {"valid": not violations, "violations": tuple(sorted(set(violations)))}
+
+
+def _is_package_140_audit_only_module(root: Path, path: Path) -> bool:
+    return path.relative_to(root).as_posix() in {
+        "ashl_core_v1/state/package_140_persistent_self_state_drive_milestone_audit.py",
+        "ashl_core_v1/state/package_140_persistent_self_state_drive_sources.py",
+    }
 
 
 def _record_from_payload(record_type: type[Any], payload: dict[str, Any]) -> Any:

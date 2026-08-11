@@ -111,7 +111,7 @@ def preflight_self_state_readback_boundary(
         raise RuntimeError("blocked_package_138_consumer_inventory_boundary")
     registry = _load_registry(root)
     if not (
-        registry.get("current_package_id") in {"137", "138", "139"}
+        registry.get("current_package_id") in {"137", "138", "139", "140"}
         and registry.get("package_status", {}).get("137") == "completed"
     ):
         raise RuntimeError("blocked_package_137_baseline_not_completed")

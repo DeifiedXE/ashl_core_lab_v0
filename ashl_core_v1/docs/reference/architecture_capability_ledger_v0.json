@@ -1,5 +1,5 @@
 {
-  "ledger_id": "architecture_capability_ledger:package_139_self_state_rollback_and_audit",
+  "ledger_id": "architecture_capability_ledger:package_140_persistent_self_state_and_drive_milestone",
   "schema_version": "ashl_architecture_capability_ledger_v0",
   "runtime_behavior_changed_by_package_124": false,
   "runtime_behavior_changed_by_dlm0_qm0": false,
@@ -15,6 +15,7 @@
   "runtime_behavior_changed_by_package_137": false,
   "runtime_behavior_changed_by_package_138": false,
   "runtime_behavior_changed_by_package_139": true,
+  "runtime_behavior_changed_by_package_140": false,
   "perception_capability_construction_line_frozen": true,
   "persistent_self_state_representation_added_by_package_133": true,
   "cross_session_recovery_added_by_package_133": false,
@@ -31,6 +32,10 @@
   "verified_ancestor_self_state_rollback_added_by_package_139": true,
   "self_state_history_rewrite_added_by_package_139": false,
   "self_state_content_restoration_added_by_package_139": false,
+  "persistent_self_state_and_drive_authority_line_frozen_by_package_140": true,
+  "stable_package_133_to_139_consumer_boundary_added_by_package_140": true,
+  "production_drive_modulation_consumer_count_after_package_140": 0,
+  "production_self_state_readback_consumer_count_after_package_140": 0,
   "capabilities": [
     {
       "package": "123",
@@ -303,8 +308,30 @@
     {
       "package": "140",
       "name": "Persistent Self-State And Drive Milestone",
+      "status": "completed",
+      "runtime_delta": "none; read-only milestone closure over Package 133 through Package 139 external evidence and typed authorities",
+      "audit_delta": "fresh source-hash, payload-hash, typed-audit, cross-package-lineage, failure-semantics and boundary-control revalidation",
+      "closure_delta": "Package 133-139 persistent self-state and drive authority line frozen as a stable consumer boundary",
+      "authority_delta": "none; Packages 133, 134, 135, 136, 137, 138 and 139 retain their exact existing ownership",
+      "no_fork_delta": "rollback selects an existing verified ancestor without changing history; mutation and normal recovery stay blocked until separately authorized exact roll-forward to the preserved descendant",
+      "consumer_delta": "zero production drive consumers and zero production self-state readback consumers",
+      "self_state_delta": "none",
+      "drive_delta": "none",
+      "recovery_delta": "none",
+      "modulation_delta": "none",
+      "mutation_delta": "none",
+      "readback_delta": "none",
+      "rollback_delta": "none",
+      "semantic_delta": "none",
+      "thought_delta": "none",
+      "action_delta": "none",
+      "output_delta": "none"
+    },
+    {
+      "package": "141",
+      "name": "Instinct Layer Runtime",
       "status": "next_critical_path",
-      "runtime_delta": "planned; read-only milestone closure of Package 133 through Package 139 authorities and boundaries"
+      "runtime_delta": "planned; begin the Package 141-148 Bounded Thought Engine line without bypassing or expanding the frozen Package 140 authorities"
     }
   ],
   "migration_audits": [

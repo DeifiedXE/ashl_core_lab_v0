@@ -404,14 +404,15 @@ class Package136SameSessionDriveModulationTests(unittest.TestCase):
                 / "ashl_core_v1/docs/reference/package_number_registry_v0.json"
             ).read_text(encoding="utf-8")
         )
-        self.assertEqual(registry["current_package_id"], "139")
+        self.assertEqual(registry["current_package_id"], "140")
         self.assertIn("136", registry["completed_package_ids"])
         self.assertNotIn("136", registry["future_package_ids"])
         self.assertEqual(registry["package_status"]["136"], "completed")
         self.assertEqual(registry["package_status"]["137"], "completed")
         self.assertEqual(registry["package_status"]["138"], "completed")
         self.assertEqual(registry["package_status"]["139"], "completed")
-        self.assertEqual(registry["package_status"]["140"], "next_critical_path")
+        self.assertEqual(registry["package_status"]["140"], "completed")
+        self.assertEqual(registry["package_status"]["141"], "next_critical_path")
         digest = sha256_payload(
             {
                 "current": registry["current_package_id"],
@@ -427,13 +428,18 @@ class Package136SameSessionDriveModulationTests(unittest.TestCase):
         ).read_text(encoding="utf-8")
         self.assertIn("Package 138 exposes that exact state", route)
         self.assertIn("Package 139 selects only an explicit verified ancestor", route)
-        self.assertIn("Package 140 is next", route)
+        self.assertIn("Package 140 is the frozen", route)
+        self.assertIn("Package 141 is next", route)
 
     def test_production_modules_do_not_import_package_136(self) -> None:
         prefixes = (
             "ashl_core_v1.endocrine.drive_modulation",
             "ashl_core_v1.endocrine.package_136",
         )
+        package_140_audit_only = {
+            "ashl_core_v1/state/package_140_persistent_self_state_drive_milestone_audit.py",
+            "ashl_core_v1/state/package_140_persistent_self_state_drive_sources.py",
+        }
         findings: list[str] = []
         for directory_name in (
             "runtime",
@@ -446,6 +452,8 @@ class Package136SameSessionDriveModulationTests(unittest.TestCase):
         ):
             directory = self.repo_root / "ashl_core_v1" / directory_name
             for path in directory.rglob("*.py"):
+                if path.relative_to(self.repo_root).as_posix() in package_140_audit_only:
+                    continue
                 tree = ast.parse(path.read_text(encoding="utf-8"))
                 for node in ast.walk(tree):
                     modules = ()

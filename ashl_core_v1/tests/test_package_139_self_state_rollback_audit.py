@@ -333,15 +333,18 @@ class Package139SelfStateRollbackAuditTests(unittest.TestCase):
             (0, 0, 0),
         )
 
-    def test_registry_marks_139_completed_and_140_next(self) -> None:
+    def test_registry_marks_139_and_140_completed_with_141_next(self) -> None:
         registry = json.loads(
             (self.repo_root / "ashl_core_v1/docs/reference/package_number_registry_v0.json").read_text(
                 encoding="utf-8"
             )
         )
-        self.assertEqual(registry["current_package_id"], "139")
+        self.assertEqual(registry["current_package_id"], "140")
         self.assertEqual(registry["package_status"]["139"], "completed")
-        self.assertEqual(registry["package_status"]["140"], "next_critical_path")
+        self.assertEqual(registry["package_status"]["140"], "completed")
+        self.assertEqual(registry["package_status"]["141"], "next_critical_path")
+        self.assertIn("140", registry["completed_package_ids"])
+        self.assertNotIn("140", registry["future_package_ids"])
         self.assertIn("139", registry["completed_package_ids"])
         self.assertNotIn("139", registry["future_package_ids"])
 
