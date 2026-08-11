@@ -302,7 +302,7 @@ class Package134PersistentSessionRecoveryIdentityTests(unittest.TestCase):
             / "package_number_registry_v0.json"
         )
         registry = json.loads(registry_path.read_text(encoding="utf-8"))
-        self.assertEqual(registry["current_package_id"], "140")
+        self.assertEqual(registry["current_package_id"], "141")
         self.assertIn("134", registry["completed_package_ids"])
         self.assertIn("135", registry["completed_package_ids"])
         self.assertNotIn("134", registry["future_package_ids"])
@@ -313,7 +313,8 @@ class Package134PersistentSessionRecoveryIdentityTests(unittest.TestCase):
         self.assertEqual(registry["package_status"]["138"], "completed")
         self.assertEqual(registry["package_status"]["139"], "completed")
         self.assertEqual(registry["package_status"]["140"], "completed")
-        self.assertEqual(registry["package_status"]["141"], "next_critical_path")
+        self.assertEqual(registry["package_status"]["141"], "completed")
+        self.assertEqual(registry["package_status"]["142"], "next_critical_path")
         digest = sha256_payload(
             {
                 "current": registry["current_package_id"],
@@ -348,7 +349,7 @@ class Package134PersistentSessionRecoveryIdentityTests(unittest.TestCase):
         self.assertIn("Package 138 exposes that exact state", route)
         self.assertIn("Package 139 selects only an explicit verified ancestor", route)
         self.assertIn("Package 140 is the frozen", route)
-        self.assertIn("Package 141 is next", route)
+        self.assertIn("Package 142 is next", route)
 
         ledger = json.loads(
             (
@@ -367,7 +368,8 @@ class Package134PersistentSessionRecoveryIdentityTests(unittest.TestCase):
         self.assertEqual(entries["138"]["status"], "completed")
         self.assertEqual(entries["139"]["status"], "completed")
         self.assertEqual(entries["140"]["status"], "completed")
-        self.assertEqual(entries["141"]["status"], "next_critical_path")
+        self.assertEqual(entries["141"]["status"], "completed")
+        self.assertEqual(entries["142"]["status"], "next_critical_path")
 
     def _write_package_133_fixture(self, state_dir: Path) -> None:
         result = create_package_133_representation_chain(

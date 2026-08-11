@@ -203,6 +203,15 @@ VALID_EVENT_KINDS = (
     "auditory_predictive_recognition_pair_comparison_created",
     "package_131_audit_passed",
     "package_131_audit_blocked",
+    "instinct_input_context_bound",
+    "instinct_rule_evaluated",
+    "bounded_instinct_signal_created",
+    "instinct_rule_conflict_preserved",
+    "instinct_evaluation_neutral",
+    "instinct_evaluation_blocked",
+    "instinct_evaluation_completed",
+    "package_141_audit_passed",
+    "package_141_audit_blocked",
 )
 PACKAGE_125_OBSERVATION_EVENT_KINDS = (
     "observation_window_started",
@@ -305,6 +314,17 @@ PACKAGE_131_AUDITORY_PREDICTION_EVENT_KINDS = (
     "auditory_predictive_recognition_pair_comparison_created",
     "package_131_audit_passed",
     "package_131_audit_blocked",
+)
+PACKAGE_141_INSTINCT_EVENT_KINDS = (
+    "instinct_input_context_bound",
+    "instinct_rule_evaluated",
+    "bounded_instinct_signal_created",
+    "instinct_rule_conflict_preserved",
+    "instinct_evaluation_neutral",
+    "instinct_evaluation_blocked",
+    "instinct_evaluation_completed",
+    "package_141_audit_passed",
+    "package_141_audit_blocked",
 )
 
 
@@ -900,6 +920,22 @@ class LocalOperatorJsonEvent:
             ):
                 raise ValueError(
                     "Package 131 probe events require probe, process, runtime, perception, and window ids"
+                )
+        if self.event_kind in PACKAGE_141_INSTINCT_EVENT_KINDS:
+            if not self.source_record_refs:
+                raise ValueError("Package 141 events require source record references")
+            identity_optional = {
+                "instinct_evaluation_blocked",
+                "package_141_audit_passed",
+                "package_141_audit_blocked",
+            }
+            if self.event_kind not in identity_optional and not (
+                self.runtime_session_id
+                and self.perception_session_id
+                and self.observation_window_id
+            ):
+                raise ValueError(
+                    "Package 141 evaluation events require runtime, perception, and window ids"
                 )
         object.__setattr__(self, "source_record_refs", _tuple_of_str(self.source_record_refs))
         object.__setattr__(self, "source_trace_refs", _tuple_of_str(self.source_trace_refs))

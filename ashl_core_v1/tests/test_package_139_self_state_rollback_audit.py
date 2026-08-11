@@ -339,10 +339,11 @@ class Package139SelfStateRollbackAuditTests(unittest.TestCase):
                 encoding="utf-8"
             )
         )
-        self.assertEqual(registry["current_package_id"], "140")
+        self.assertEqual(registry["current_package_id"], "141")
         self.assertEqual(registry["package_status"]["139"], "completed")
         self.assertEqual(registry["package_status"]["140"], "completed")
-        self.assertEqual(registry["package_status"]["141"], "next_critical_path")
+        self.assertEqual(registry["package_status"]["141"], "completed")
+        self.assertEqual(registry["package_status"]["142"], "next_critical_path")
         self.assertIn("140", registry["completed_package_ids"])
         self.assertNotIn("140", registry["future_package_ids"])
         self.assertIn("139", registry["completed_package_ids"])

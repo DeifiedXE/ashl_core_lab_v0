@@ -1,5 +1,5 @@
 {
-  "ledger_id": "architecture_capability_ledger:package_140_persistent_self_state_and_drive_milestone",
+  "ledger_id": "architecture_capability_ledger:package_141_instinct_layer_runtime",
   "schema_version": "ashl_architecture_capability_ledger_v0",
   "runtime_behavior_changed_by_package_124": false,
   "runtime_behavior_changed_by_dlm0_qm0": false,
@@ -16,6 +16,7 @@
   "runtime_behavior_changed_by_package_138": false,
   "runtime_behavior_changed_by_package_139": true,
   "runtime_behavior_changed_by_package_140": false,
+  "runtime_behavior_changed_by_package_141": true,
   "perception_capability_construction_line_frozen": true,
   "persistent_self_state_representation_added_by_package_133": true,
   "cross_session_recovery_added_by_package_133": false,
@@ -36,6 +37,11 @@
   "stable_package_133_to_139_consumer_boundary_added_by_package_140": true,
   "production_drive_modulation_consumer_count_after_package_140": 0,
   "production_self_state_readback_consumer_count_after_package_140": 0,
+  "bounded_instinct_rule_runtime_added_by_package_141": true,
+  "package_141_production_structural_input_count": 1,
+  "package_141_production_drive_input_count": 0,
+  "package_141_production_self_state_readback_input_count": 0,
+  "package_141_production_output_consumer_count": 0,
   "capabilities": [
     {
       "package": "123",
@@ -330,8 +336,27 @@
     {
       "package": "141",
       "name": "Instinct Layer Runtime",
+      "status": "completed",
+      "runtime_delta": "two fixed versioned deterministic rules evaluate one read-only Package 128 structural checkpoint kind and emit bounded revocable thought-precursor annotations",
+      "input_delta": "one allowlisted Package 128 structural checkpoint interface under the frozen Package 132 closure; no sensor or perception capability change",
+      "rule_delta": "closed-span-present and open-region-present structural conditions with explicit matched and not-matched records",
+      "conflict_delta": "all matching rules are preserved without winner, ranking, action selection or hidden arbitration",
+      "unknown_delta": "missing, unknown, wrong-lineage, transport-faulted or hard-safety-blocked evidence is blocked; valid no-match evidence remains neutral",
+      "drive_delta": "none; Package 135/136 production consumption remains zero",
+      "self_state_delta": "none; Package 138 production readback consumption remains zero",
+      "purpose_delta": "none",
+      "memory_delta": "none",
+      "action_delta": "none",
+      "semantic_delta": "none",
+      "output_delta": "none",
+      "external_control_delta": "none",
+      "llm_codex_network_delta": "zero runtime calls"
+    },
+    {
+      "package": "142",
+      "name": "Specialized Thought Bounded Rules",
       "status": "next_critical_path",
-      "runtime_delta": "planned; begin the Package 141-148 Bounded Thought Engine line without bypassing or expanding the frozen Package 140 authorities"
+      "runtime_delta": "planned; add a separately bounded specialized rule family without converting Package 141 precursors into purpose, action, memory or output authority"
     }
   ],
   "migration_audits": [
