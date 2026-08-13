@@ -9,6 +9,12 @@ from .instinct_layer_types import (
     InstinctRuleContractRecord,
     InstinctRuleEvaluationRecord,
 )
+from .specialized_thought_types import (
+    BoundedSpecializedThoughtResultRecord,
+    SpecializedThoughtCrossFamilyConflictRecord,
+    SpecializedThoughtInstinctConsumerBindingRecord,
+    SpecializedThoughtRuleFamilyContractRecord,
+)
 
 __all__ = [
     "InfluenceTrace",
@@ -20,4 +26,8 @@ __all__ = [
     "InstinctLayerConsumerBoundaryRecord",
     "InstinctRuleContractRecord",
     "InstinctRuleEvaluationRecord",
+    "BoundedSpecializedThoughtResultRecord",
+    "SpecializedThoughtCrossFamilyConflictRecord",
+    "SpecializedThoughtInstinctConsumerBindingRecord",
+    "SpecializedThoughtRuleFamilyContractRecord",
 ]

@@ -280,15 +280,16 @@ class Package140RepositoryBoundaryTests(unittest.TestCase):
         registry = json.loads(
             (REPO_ROOT / "ashl_core_v1" / "docs" / "reference" / "package_number_registry_v0.json").read_text(encoding="utf-8")
         )
-        self.assertEqual(registry["current_package_id"], "141")
+        self.assertEqual(registry["current_package_id"], "142")
         self.assertEqual(registry["package_status"]["140"], "completed")
         self.assertEqual(registry["package_status"]["141"], "completed")
-        self.assertEqual(registry["package_status"]["142"], "next_critical_path")
+        self.assertEqual(registry["package_status"]["142"], "completed")
+        self.assertEqual(registry["package_status"]["143"], "next_critical_path")
         self.assertIn("140", registry["completed_package_ids"])
         self.assertNotIn("140", registry["future_package_ids"])
         route = (REPO_ROOT / "ashl_core_v1" / "docs" / "reference" / "package_123_to_daily_runtime_revised_route_v0.md").read_text(encoding="utf-8")
         self.assertIn("Package 140 is the frozen", route)
-        self.assertIn("Package 142 is next", route)
+        self.assertIn("Package 143 is next", route)
         self.assertIn("Package 132A and Package 140A do not exist", route)
 
 

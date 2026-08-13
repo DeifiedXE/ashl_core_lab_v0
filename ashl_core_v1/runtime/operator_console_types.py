@@ -212,6 +212,17 @@ VALID_EVENT_KINDS = (
     "instinct_evaluation_completed",
     "package_141_audit_passed",
     "package_141_audit_blocked",
+    "specialized_thought_consumer_bound",
+    "specialized_thought_rule_family_loaded",
+    "specialized_thought_precursor_bound",
+    "specialized_thought_rule_evaluated",
+    "bounded_specialized_thought_result_created",
+    "specialized_thought_cross_family_conflict_preserved",
+    "specialized_thought_result_invalidated",
+    "specialized_thought_counterfactual_verified",
+    "specialized_thought_evaluation_blocked",
+    "package_142_audit_passed",
+    "package_142_audit_blocked",
 )
 PACKAGE_125_OBSERVATION_EVENT_KINDS = (
     "observation_window_started",
@@ -325,6 +336,19 @@ PACKAGE_141_INSTINCT_EVENT_KINDS = (
     "instinct_evaluation_completed",
     "package_141_audit_passed",
     "package_141_audit_blocked",
+)
+PACKAGE_142_SPECIALIZED_THOUGHT_EVENT_KINDS = (
+    "specialized_thought_consumer_bound",
+    "specialized_thought_rule_family_loaded",
+    "specialized_thought_precursor_bound",
+    "specialized_thought_rule_evaluated",
+    "bounded_specialized_thought_result_created",
+    "specialized_thought_cross_family_conflict_preserved",
+    "specialized_thought_result_invalidated",
+    "specialized_thought_counterfactual_verified",
+    "specialized_thought_evaluation_blocked",
+    "package_142_audit_passed",
+    "package_142_audit_blocked",
 )
 
 
@@ -936,6 +960,11 @@ class LocalOperatorJsonEvent:
             ):
                 raise ValueError(
                     "Package 141 evaluation events require runtime, perception, and window ids"
+                )
+        if self.event_kind in PACKAGE_142_SPECIALIZED_THOUGHT_EVENT_KINDS:
+            if not self.source_record_refs:
+                raise ValueError(
+                    "Package 142 events require typed source record references"
                 )
         object.__setattr__(self, "source_record_refs", _tuple_of_str(self.source_record_refs))
         object.__setattr__(self, "source_trace_refs", _tuple_of_str(self.source_trace_refs))

@@ -1,5 +1,5 @@
 {
-  "ledger_id": "architecture_capability_ledger:package_141_instinct_layer_runtime",
+  "ledger_id": "architecture_capability_ledger:package_142_specialized_thought_bounded_rules",
   "schema_version": "ashl_architecture_capability_ledger_v0",
   "runtime_behavior_changed_by_package_124": false,
   "runtime_behavior_changed_by_dlm0_qm0": false,
@@ -17,6 +17,7 @@
   "runtime_behavior_changed_by_package_139": true,
   "runtime_behavior_changed_by_package_140": false,
   "runtime_behavior_changed_by_package_141": true,
+  "runtime_behavior_changed_by_package_142": false,
   "perception_capability_construction_line_frozen": true,
   "persistent_self_state_representation_added_by_package_133": true,
   "cross_session_recovery_added_by_package_133": false,
@@ -42,6 +43,12 @@
   "package_141_production_drive_input_count": 0,
   "package_141_production_self_state_readback_input_count": 0,
   "package_141_production_output_consumer_count": 0,
+  "bounded_specialized_thought_runtime_added_by_package_142": true,
+  "package_142_specialized_rule_family_count": 2,
+  "package_142_production_instinct_precursor_input_authority_count": 1,
+  "package_142_production_drive_input_count": 0,
+  "package_142_production_self_state_readback_input_count": 0,
+  "package_142_production_output_consumer_count": 0,
   "capabilities": [
     {
       "package": "123",
@@ -355,8 +362,28 @@
     {
       "package": "142",
       "name": "Specialized Thought Bounded Rules",
+      "status": "completed",
+      "runtime_delta": "two independent versioned deterministic specialized rule families consume only exact Package 141 revocable structural precursors and emit bounded nonsemantic structural-phase results",
+      "input_delta": "one explicit read-only Package 141 consumer binding with exact signal-schema and annotation allowlists; no direct perception, legacy ThoughtSignal, drive or self-state readback input",
+      "rule_delta": "closed-span and open-region precursors project into mutually exclusive bounded visual-phase candidate values through single-pass rules",
+      "conflict_delta": "incompatible cross-family results remain an unresolved conflict with both results preserved and no winner, ranking, vote, random tie-break, deliberation or action selection",
+      "lifetime_delta": "each precursor binding and result expires within one bounded evaluation lease; upstream expiry or revocation cascades to invalidate every downstream result",
+      "counterfactual_delta": "specialized evidence is the only changed surface; runtime behavior, memory, purpose, action, output, self-state, drive and perception authority remain equivalent",
+      "workspace_delta": "none",
+      "recursive_thought_delta": "none",
+      "purpose_delta": "none",
+      "memory_delta": "none",
+      "action_delta": "none",
+      "semantic_delta": "none",
+      "output_delta": "none",
+      "external_control_delta": "none",
+      "llm_codex_network_delta": "zero runtime calls"
+    },
+    {
+      "package": "143",
+      "name": "Coarse Thought Workspace",
       "status": "next_critical_path",
-      "runtime_delta": "planned; add a separately bounded specialized rule family without converting Package 141 precursors into purpose, action, memory or output authority"
+      "runtime_delta": "planned; establish an explicitly bounded workspace without weakening Package 141/142 input, lifetime, conflict, or authority boundaries"
     }
   ],
   "migration_audits": [
