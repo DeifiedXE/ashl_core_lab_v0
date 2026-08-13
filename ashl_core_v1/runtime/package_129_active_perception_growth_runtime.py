@@ -154,6 +154,7 @@ from ashl_core_v1.runtime.package_128_sufficiency_stop_runtime import (
     _build_final_temporal_bundle,
     _evaluate_active_checkpoint,
     _initialize_active_contract,
+    _update_active_visual_evidence,
 )
 from ashl_core_v1.runtime.package_128_sufficiency_stop_store import (
     Package128SufficiencyStopStore,
@@ -890,6 +891,7 @@ def _run_real_active_perception_sequence(
                 ),
             )
 
+        stimulus.begin_parent_phase()
         parent_capture_started_ns = monotonic_ns()
         parent = capture_one_bounded_reacquisition_window(
             path=path,
@@ -1828,6 +1830,8 @@ def _capture_focused_child_with_structural_stop(
         "active_clock": None,
         "baseline_frame": None,
         "baseline_artifact_id": None,
+        "last_visual_artifact_id": None,
+        "latest_visual_change_id": None,
         "next_checkpoint_ns": None,
         "checkpoints": [],
         "assessments": [],
@@ -1918,6 +1922,16 @@ def _capture_focused_child_with_structural_stop(
                 active=active,
                 strict_event_stream=strict_event_stream,
             )
+        _update_active_visual_evidence(
+            focus_store=p127_store,
+            sensor_store=sensor_store,
+            temporal_store=temporal_store,
+            primitive_store=primitive_store,
+            focus_plan=focus_plan,
+            snapshot=snapshot,
+            compilation_cache=compilation_cache,
+            active=active,
+        )
         if (
             snapshot.observed_at_monotonic_ns
             < int(active["next_checkpoint_ns"])

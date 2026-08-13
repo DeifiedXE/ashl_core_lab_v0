@@ -21,6 +21,14 @@ from .coarse_thought_workspace_types import (
     CoarseThoughtWorkspaceEntryRecord,
     CoarseThoughtWorkspaceSessionRecord,
 )
+from .deep_thought_deliberation_types import (
+    BoundedDeepThoughtResultRecord,
+    DeepThoughtDeliberationAuthorizationRecord,
+    DeepThoughtDeliberationStepRecord,
+    DeepThoughtDeliberationTerminalRecord,
+    DeliberationOperationAllowlistRecord,
+    ImmutableCoarseWorkspaceSnapshotRecord,
+)
 
 __all__ = [
     "InfluenceTrace",
@@ -40,4 +48,10 @@ __all__ = [
     "CoarseThoughtWorkspaceContractRecord",
     "CoarseThoughtWorkspaceEntryRecord",
     "CoarseThoughtWorkspaceSessionRecord",
+    "BoundedDeepThoughtResultRecord",
+    "DeepThoughtDeliberationAuthorizationRecord",
+    "DeepThoughtDeliberationStepRecord",
+    "DeepThoughtDeliberationTerminalRecord",
+    "DeliberationOperationAllowlistRecord",
+    "ImmutableCoarseWorkspaceSnapshotRecord",
 ]

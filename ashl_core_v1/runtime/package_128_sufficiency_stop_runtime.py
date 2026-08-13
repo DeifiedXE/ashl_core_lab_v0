@@ -156,7 +156,9 @@ EXPERIMENT_ID = (
 PARTICIPATING_LANES = ("screen", "host_state")
 PARENT_WINDOW_NS = 2_500_000_000
 SOURCE_SAMPLE_INTERVAL_NS = 250_000_000
-ACTIVE_ALIGNMENT_WINDOW_MS = 750
+# Three complete windows must fit comfortably inside Package 126's
+# 2.5-second reacquisition grant, including real capture/compile overhead.
+ACTIVE_ALIGNMENT_WINDOW_MS = 500
 PACKAGE_128_EVENT_KINDS = (
     "structural_sufficiency_contract_created",
     "structural_evidence_checkpoint_created",
@@ -279,6 +281,8 @@ def run_real_structural_sufficiency_stop(
             "active_clock": None,
             "baseline_frame": None,
             "baseline_artifact_id": None,
+            "last_visual_artifact_id": None,
+            "latest_visual_change_id": None,
             "next_checkpoint_ns": None,
             "checkpoints": [],
             "assessments": [],
@@ -374,6 +378,16 @@ def run_real_structural_sufficiency_stop(
                     active=active,
                     strict_event_stream=strict_event_stream,
                 )
+            _update_active_visual_evidence(
+                focus_store=focus_store,
+                sensor_store=sensor_store,
+                temporal_store=temporal_store,
+                primitive_store=primitive_store,
+                focus_plan=focus_plan,
+                snapshot=snapshot,
+                compilation_cache=compilation_cache,
+                active=active,
+            )
             next_checkpoint = int(active["next_checkpoint_ns"])
             if (
                 snapshot.observed_at_monotonic_ns < next_checkpoint
@@ -940,6 +954,7 @@ def _prepare_focused_reacquisition(
         "sampling_plan_identity_records",
         parent_plan,
     )
+    stimulus.begin_parent_phase()
     parent = capture_one_bounded_reacquisition_window(
         path=path,
         store=reacquisition_store,
@@ -1246,6 +1261,10 @@ def _initialize_active_contract(
             "baseline_artifact_id": (
                 first_screen_bundle.source_artifact_id
             ),
+            "last_visual_artifact_id": (
+                first_screen_bundle.source_artifact_id
+            ),
+            "latest_visual_change_id": None,
             "next_checkpoint_ns": (
                 snapshot.started_monotonic_ns + MINIMUM_ELAPSED_NS
             ),
@@ -1271,31 +1290,21 @@ def _initialize_active_contract(
     )
 
 
-def _evaluate_active_checkpoint(
+def _update_active_visual_evidence(
     *,
-    path: Path,
-    store: Package128SufficiencyStopStore,
     focus_store: Package127InternalFocusStore,
     sensor_store: ContentAddressedSensorArtifactStore,
     temporal_store: Package124ATemporalStore,
     primitive_store: PerceptionPrimitiveStore,
-    package_122: BoundedMultimodalPerceptionSessionRuntime,
-    alignment_config: Any,
     focus_plan: Any,
     snapshot: ActiveReacquisitionCaptureSnapshot,
-    lane_items: tuple[Any, ...],
     compilation_cache: dict[str, Any],
     active: dict[str, Any],
-    controller: BoundedCaptureDeadlineController,
-    contract_authorized: bool,
-    strict_event_stream: bool,
 ) -> None:
-    alignment = package_122.inspect_active_compiled_alignment(
-        lane_items=lane_items,
-        config=alignment_config,
-        session_id=snapshot.perception_session_id,
-    )
     latest_artifact_id = snapshot.screen_artifact_ids[-1]
+    if latest_artifact_id == active["last_visual_artifact_id"]:
+        return
+
     latest_bundle = compilation_cache[latest_artifact_id]
     current_frame_payload = primitive_store.get_primitive(
         latest_bundle.primitive_record_id
@@ -1310,9 +1319,7 @@ def _evaluate_active_checkpoint(
         baseline_frame,
         current_frame,
     )
-    primitive_store.append_visual_change_primitive(
-        visual_change_record
-    )
+    primitive_store.append_visual_change_primitive(visual_change_record)
     visual_change = visual_change_record.to_dict()
     selected_changed = any(
         int(cell["grid_x"]) == focus_plan.grid_x
@@ -1330,28 +1337,21 @@ def _evaluate_active_checkpoint(
         ),
         visual_change=visual_change,
     )
-    focus_store.append_record(
-        "focused_visual_region_views",
-        view,
-    )
+    focus_store.append_record("focused_visual_region_views", view)
     active["latest_view"] = view
+    active["last_visual_artifact_id"] = latest_artifact_id
+    active["latest_visual_change_id"] = (
+        visual_change_record.visual_change_id
+    )
     if selected_changed:
         active["focused_evidence_view_ids"].append(
             view.focused_region_view_id
         )
-    latest_screen = sensor_store.get_artifact(
-        snapshot.screen_artifact_ids[-1]
-    )
-    latest_host = sensor_store.get_artifact(
-        snapshot.host_artifact_ids[-1]
-    )
+
+    latest_screen = sensor_store.get_artifact(latest_artifact_id)
     screen_event_ns = int(
         latest_screen["captured_at_monotonic_ns"]
     )
-    host_event_ns = int(
-        latest_host["captured_at_monotonic_ns"]
-    )
-    coverage_event_ns = min(screen_event_ns, host_event_ns)
     if selected_changed and active["open_region_ref"] is None:
         active["open_region_ref"] = visual_change_record.visual_change_id
         active["open_region_started_ns"] = screen_event_ns
@@ -1411,6 +1411,48 @@ def _evaluate_active_checkpoint(
         active["open_region_ref"] = None
         active["open_region_started_ns"] = None
 
+
+def _evaluate_active_checkpoint(
+    *,
+    path: Path,
+    store: Package128SufficiencyStopStore,
+    focus_store: Package127InternalFocusStore,
+    sensor_store: ContentAddressedSensorArtifactStore,
+    temporal_store: Package124ATemporalStore,
+    primitive_store: PerceptionPrimitiveStore,
+    package_122: BoundedMultimodalPerceptionSessionRuntime,
+    alignment_config: Any,
+    focus_plan: Any,
+    snapshot: ActiveReacquisitionCaptureSnapshot,
+    lane_items: tuple[Any, ...],
+    compilation_cache: dict[str, Any],
+    active: dict[str, Any],
+    controller: BoundedCaptureDeadlineController,
+    contract_authorized: bool,
+    strict_event_stream: bool,
+) -> None:
+    alignment = package_122.inspect_active_compiled_alignment(
+        lane_items=lane_items,
+        config=alignment_config,
+        session_id=snapshot.perception_session_id,
+    )
+    view = active["latest_view"]
+    if view is None:
+        raise RuntimeError("Package 128 active focus view is unavailable")
+    latest_screen = sensor_store.get_artifact(
+        snapshot.screen_artifact_ids[-1]
+    )
+    latest_host = sensor_store.get_artifact(
+        snapshot.host_artifact_ids[-1]
+    )
+    screen_event_ns = int(
+        latest_screen["captured_at_monotonic_ns"]
+    )
+    host_event_ns = int(
+        latest_host["captured_at_monotonic_ns"]
+    )
+    coverage_event_ns = min(screen_event_ns, host_event_ns)
+
     complete_windows = sum(
         1 for item in alignment.windows if item.complete_for_config
     )
@@ -1464,9 +1506,11 @@ def _evaluate_active_checkpoint(
         host_state_source_coverage_present=bool(
             snapshot.host_artifact_ids
         ),
-        source_record_refs=(
-            view.focused_region_view_id,
-            visual_change_record.visual_change_id,
+        source_record_refs=(view.focused_region_view_id,)
+        + (
+            (str(active["latest_visual_change_id"]),)
+            if active["latest_visual_change_id"] is not None
+            else tuple()
         )
         + tuple(
             item.alignment_window_id for item in alignment.windows

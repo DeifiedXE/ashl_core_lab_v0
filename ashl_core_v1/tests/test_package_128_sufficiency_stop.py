@@ -7,6 +7,7 @@ import tempfile
 import unittest
 from dataclasses import replace
 from pathlib import Path
+from unittest import mock
 
 from ashl_core_v1.host_body.host_body_internal_action_choice import (
     ALLOWED_INTERNAL_ACTION_KINDS,
@@ -23,6 +24,9 @@ from ashl_core_v1.runtime.bounded_multimodal_perception_session_runtime import (
 )
 from ashl_core_v1.runtime.internal_perception_focus_types import (
     PACKAGE_127_PASS_STATUS,
+)
+from ashl_core_v1.runtime.local_structural_sufficiency_stimulus_runtime import (
+    LocalStructuralSufficiencyStimulusRuntime,
 )
 from ashl_core_v1.runtime.observation_stop_policy import (
     decide_observation_stop_policy,
@@ -75,6 +79,83 @@ from ashl_core_v1.runtime.structural_evidence_sufficiency_types import (
 class Package128PolicyUnitTests(unittest.TestCase):
     def setUp(self) -> None:
         self.contract = self._contract()
+
+    def test_delayed_fixture_tick_preserves_observable_event_stage(self) -> None:
+        fixture = LocalStructuralSufficiencyStimulusRuntime(
+            experiment_run_id="delayed_fixture_tick"
+        )
+        fixture._root = mock.Mock()
+        fixture._canvas = mock.Mock()
+        fixture._started_ns = 0
+        fixture._child_started_ns = 0
+        fixture._stage = 1
+
+        with mock.patch(
+            "ashl_core_v1.runtime."
+            "local_structural_sufficiency_stimulus_runtime.monotonic_ns",
+            return_value=2_000_000_000,
+        ):
+            fixture.tick()
+            self.assertEqual(fixture._stage, 2)
+            self.assertEqual(
+                tuple(item["stage"] for item in fixture._transitions),
+                ("child_visual_event_open",),
+            )
+            fixture.tick()
+
+        self.assertEqual(fixture._stage, 3)
+        self.assertEqual(
+            tuple(item["stage"] for item in fixture._transitions),
+            (
+                "child_visual_event_open",
+                "child_visual_event_closed",
+            ),
+        )
+
+    def test_child_fixture_clock_starts_on_first_capture_tick(self) -> None:
+        fixture = LocalStructuralSufficiencyStimulusRuntime(
+            experiment_run_id="child_capture_tick"
+        )
+        fixture._root = mock.Mock()
+        fixture._canvas = mock.Mock()
+        fixture._started_ns = 0
+        fixture._stage = 1
+
+        fixture.begin_child_phase()
+        self.assertIsNone(fixture._child_started_ns)
+        self.assertTrue(fixture._child_phase_armed)
+        with mock.patch(
+            "ashl_core_v1.runtime."
+            "local_structural_sufficiency_stimulus_runtime.monotonic_ns",
+            return_value=2_000_000_000,
+        ):
+            fixture.tick()
+
+        self.assertEqual(fixture._child_started_ns, 2_000_000_000)
+        self.assertFalse(fixture._child_phase_armed)
+        self.assertEqual(fixture._stage, 1)
+
+    def test_parent_fixture_clock_starts_on_first_capture_tick(self) -> None:
+        fixture = LocalStructuralSufficiencyStimulusRuntime(
+            experiment_run_id="parent_capture_tick"
+        )
+        fixture._root = mock.Mock()
+        fixture._canvas = mock.Mock()
+        fixture._started_ns = 1
+
+        fixture.begin_parent_phase()
+        self.assertIsNone(fixture._started_ns)
+        self.assertTrue(fixture._parent_phase_armed)
+        with mock.patch(
+            "ashl_core_v1.runtime."
+            "local_structural_sufficiency_stimulus_runtime.monotonic_ns",
+            return_value=2_000_000_000,
+        ):
+            fixture.tick()
+
+        self.assertEqual(fixture._started_ns, 2_000_000_000)
+        self.assertFalse(fixture._parent_phase_armed)
+        self.assertEqual(fixture._stage, 0)
 
     def _contract(self):
         return create_structural_sufficiency_contract(

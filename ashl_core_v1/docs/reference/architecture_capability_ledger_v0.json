@@ -1,5 +1,5 @@
 {
-  "ledger_id": "architecture_capability_ledger:package_143_coarse_thought_workspace",
+  "ledger_id": "architecture_capability_ledger:package_144_deep_thought_deliberation_budget",
   "schema_version": "ashl_architecture_capability_ledger_v0",
   "runtime_behavior_changed_by_package_124": false,
   "runtime_behavior_changed_by_dlm0_qm0": false,
@@ -19,6 +19,7 @@
   "runtime_behavior_changed_by_package_141": true,
   "runtime_behavior_changed_by_package_142": false,
   "runtime_behavior_changed_by_package_143": false,
+  "runtime_behavior_changed_by_package_144": false,
   "perception_capability_construction_line_frozen": true,
   "persistent_self_state_representation_added_by_package_133": true,
   "cross_session_recovery_added_by_package_133": false,
@@ -56,6 +57,12 @@
   "package_143_production_drive_input_count": 0,
   "package_143_production_self_state_readback_input_count": 0,
   "package_143_production_output_consumer_count": 0,
+  "bounded_deep_thought_deliberation_added_by_package_144": true,
+  "package_144_immutable_snapshot_required": true,
+  "package_144_maximum_step_budget": 4,
+  "package_144_maximum_elapsed_time_budget_ns": 250000000,
+  "package_144_production_result_consumer_count": 0,
+  "package_144_live_workspace_read_during_deliberation_count": 0,
   "capabilities": [
     {
       "package": "123",
@@ -411,8 +418,30 @@
     {
       "package": "144",
       "name": "Deep Thought Deliberation Budget",
+      "status": "completed",
+      "runtime_delta": "one explicitly authorized process-local deterministic deliberation executes at most four allowlisted operations over one immutable Package 143 snapshot",
+      "snapshot_delta": "canonical typed Package 143 entries and unresolved-conflict lineage are copied by value into a hash-bound snapshot; no live workspace reference or post-freeze read remains",
+      "operation_delta": "fixed sequence: verify snapshot lineage, collect structural annotations, inspect unresolved conflict, form one bounded structural result",
+      "budget_delta": "step and elapsed-time limits are both authoritative; exhaustion terminates incomplete without a guessed result",
+      "cancellation_delta": "cancellation, workspace/source expiry, upstream revocation, invalid snapshot and operation fault stop all later steps and fail to neutral",
+      "conflict_delta": "unresolved Package 142/143 conflict remains unresolved with no winner, rank, order-based selection or budget-based selection",
+      "result_delta": "one revocable nonsemantic internal thought result may be produced; production consumer allowlist remains empty",
+      "trace_delta": "structured execution evidence exists for future Package 145 boundary design, but Package 145 is not implemented",
+      "purpose_delta": "none",
+      "memory_delta": "none",
+      "self_state_delta": "none",
+      "drive_delta": "none",
+      "perception_attention_delta": "none",
+      "action_delta": "none",
+      "output_delta": "none",
+      "external_control_delta": "none",
+      "llm_codex_network_delta": "zero runtime calls"
+    },
+    {
+      "package": "145",
+      "name": "Thought Trace Boundary",
       "status": "next_critical_path",
-      "runtime_delta": "planned; add explicitly authorized bounded deliberation over an immutable Package 143 workspace view without creating behavior authority"
+      "runtime_delta": "planned; define which bounded thought evidence can be safely exposed and audited without granting behavior authority"
     }
   ],
   "migration_audits": [

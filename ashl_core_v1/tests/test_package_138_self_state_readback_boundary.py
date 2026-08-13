@@ -332,14 +332,15 @@ class Package138SelfStateReadbackBoundaryTests(unittest.TestCase):
         registry = json.loads(
             (self.repo_root / "ashl_core_v1/docs/reference/package_number_registry_v0.json").read_text(encoding="utf-8")
         )
-        self.assertEqual(registry["current_package_id"], "143")
+        self.assertEqual(registry["current_package_id"], "144")
         self.assertEqual(registry["package_status"]["138"], "completed")
         self.assertEqual(registry["package_status"]["139"], "completed")
         self.assertEqual(registry["package_status"]["140"], "completed")
         self.assertEqual(registry["package_status"]["141"], "completed")
         self.assertEqual(registry["package_status"]["142"], "completed")
         self.assertEqual(registry["package_status"]["143"], "completed")
-        self.assertEqual(registry["package_status"]["144"], "next_critical_path")
+        self.assertEqual(registry["package_status"]["144"], "completed")
+        self.assertEqual(registry["package_status"]["145"], "next_critical_path")
         self.assertIn("138", registry["completed_package_ids"])
         self.assertNotIn("138", registry["future_package_ids"])
 

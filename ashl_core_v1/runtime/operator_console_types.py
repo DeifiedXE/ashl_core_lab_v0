@@ -236,6 +236,21 @@ VALID_EVENT_KINDS = (
     "coarse_workspace_admission_blocked",
     "package_143_audit_passed",
     "package_143_audit_blocked",
+    "deep_thought_workspace_consumer_bound",
+    "deep_thought_snapshot_contract_created",
+    "deep_thought_operation_allowlist_created",
+    "deep_thought_snapshot_frozen",
+    "deep_thought_deliberation_authorized",
+    "deep_thought_deliberation_started",
+    "deep_thought_deliberation_step_completed",
+    "bounded_deep_thought_result_created",
+    "deep_thought_deliberation_completed",
+    "deep_thought_deliberation_stopped",
+    "deep_thought_deliberation_cancelled",
+    "deep_thought_deliberation_invalidated",
+    "deep_thought_counterfactual_verified",
+    "package_144_audit_passed",
+    "package_144_audit_blocked",
 )
 PACKAGE_125_OBSERVATION_EVENT_KINDS = (
     "observation_window_started",
@@ -377,6 +392,23 @@ PACKAGE_143_COARSE_WORKSPACE_EVENT_KINDS = (
     "coarse_workspace_admission_blocked",
     "package_143_audit_passed",
     "package_143_audit_blocked",
+)
+PACKAGE_144_DEEP_THOUGHT_EVENT_KINDS = (
+    "deep_thought_workspace_consumer_bound",
+    "deep_thought_snapshot_contract_created",
+    "deep_thought_operation_allowlist_created",
+    "deep_thought_snapshot_frozen",
+    "deep_thought_deliberation_authorized",
+    "deep_thought_deliberation_started",
+    "deep_thought_deliberation_step_completed",
+    "bounded_deep_thought_result_created",
+    "deep_thought_deliberation_completed",
+    "deep_thought_deliberation_stopped",
+    "deep_thought_deliberation_cancelled",
+    "deep_thought_deliberation_invalidated",
+    "deep_thought_counterfactual_verified",
+    "package_144_audit_passed",
+    "package_144_audit_blocked",
 )
 
 
@@ -998,6 +1030,11 @@ class LocalOperatorJsonEvent:
             if not self.source_record_refs:
                 raise ValueError(
                     "Package 143 events require typed source record references"
+                )
+        if self.event_kind in PACKAGE_144_DEEP_THOUGHT_EVENT_KINDS:
+            if not self.source_record_refs:
+                raise ValueError(
+                    "Package 144 events require typed source record references"
                 )
         object.__setattr__(self, "source_record_refs", _tuple_of_str(self.source_record_refs))
         object.__setattr__(self, "source_trace_refs", _tuple_of_str(self.source_trace_refs))

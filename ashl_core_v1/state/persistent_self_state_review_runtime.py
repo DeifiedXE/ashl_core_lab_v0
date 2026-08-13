@@ -137,7 +137,7 @@ def preflight_self_state_review_gate(
         teacher_binding = stored_binding
     registry = _load_registry(root)
     package_136_verified = bool(
-        registry.get("current_package_id") in {"136", "137", "138", "139", "140", "141", "142", "143"}
+        registry.get("current_package_id") in {"136", "137", "138", "139", "140", "141", "142", "143", "144"}
         and registry.get("package_status", {}).get("136") == "completed"
     )
     if not package_136_verified:

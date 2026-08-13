@@ -28,6 +28,8 @@ class LocalActivePerceptionGrowthStimulusRuntime:
         self._started_ns: int | None = None
         self._finished_ns: int | None = None
         self._child_started_ns: int | None = None
+        self._parent_phase_armed = False
+        self._child_phase_armed = False
         self._parent_stage = 0
         self._child_stage = 0
         self._transitions: list[dict[str, Any]] = []
@@ -62,18 +64,24 @@ class LocalActivePerceptionGrowthStimulusRuntime:
         if self._root is None or self._canvas is None:
             raise RuntimeError("Package 129 fixture window is not open")
         now_ns = monotonic_ns()
-        if self._started_ns is None:
+        if self._parent_phase_armed:
+            self._started_ns = now_ns
+            self._parent_phase_armed = False
+        elif self._started_ns is None:
             self._started_ns = now_ns
         parent_elapsed_ms = (now_ns - self._started_ns) // 1_000_000
         if self._parent_stage == 0 and parent_elapsed_ms >= 3_900:
             self._draw_parent_open()
             self._record("parent_late_visual_regions_open", now_ns)
             self._parent_stage = 1
-        if self._parent_stage == 1 and parent_elapsed_ms >= 5_400:
+        elif self._parent_stage == 1 and parent_elapsed_ms >= 5_400:
             self._draw_baseline()
             self._record("parent_late_visual_regions_closed", now_ns)
             self._parent_stage = 2
 
+        if self._child_phase_armed:
+            self._child_started_ns = now_ns
+            self._child_phase_armed = False
         if self._child_started_ns is not None:
             child_elapsed_ms = (
                 now_ns - self._child_started_ns
@@ -82,7 +90,7 @@ class LocalActivePerceptionGrowthStimulusRuntime:
                 self._draw_child_open()
                 self._record("child_focused_visual_region_open", now_ns)
                 self._child_stage = 1
-            if self._child_stage == 1 and child_elapsed_ms >= 1_450:
+            elif self._child_stage == 1 and child_elapsed_ms >= 1_450:
                 self._draw_baseline()
                 self._record("child_focused_visual_region_closed", now_ns)
                 self._child_stage = 2
@@ -92,9 +100,16 @@ class LocalActivePerceptionGrowthStimulusRuntime:
     def begin_child_phase(self) -> None:
         if self._parent_stage != 2:
             raise RuntimeError("child phase requires closed parent event")
-        if self._child_started_ns is not None:
+        if self._child_started_ns is not None or self._child_phase_armed:
             raise RuntimeError("Package 129 child phase already started")
-        self._child_started_ns = monotonic_ns()
+        self._child_phase_armed = True
+
+    def begin_parent_phase(self) -> None:
+        if self._child_started_ns is not None or self._child_phase_armed:
+            raise RuntimeError("Package 129 parent phase already ended")
+        self._started_ns = None
+        self._parent_phase_armed = True
+        self._parent_stage = 0
 
     def mark_finished(self) -> None:
         self._finished_ns = monotonic_ns()

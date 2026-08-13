@@ -29,6 +29,8 @@ class LocalStructuralSufficiencyStimulusRuntime:
         self._started_ns: int | None = None
         self._finished_ns: int | None = None
         self._child_started_ns: int | None = None
+        self._parent_phase_armed = False
+        self._child_phase_armed = False
         self._stage = 0
         self._transitions: list[dict[str, Any]] = []
 
@@ -64,13 +66,19 @@ class LocalStructuralSufficiencyStimulusRuntime:
         if self._root is None or self._canvas is None:
             raise RuntimeError("Package 128 fixture is not open")
         now_ns = monotonic_ns()
-        if self._started_ns is None:
+        if self._parent_phase_armed:
+            self._started_ns = now_ns
+            self._parent_phase_armed = False
+        elif self._started_ns is None:
             self._started_ns = now_ns
         elapsed_ms = (now_ns - self._started_ns) // 1_000_000
         if self._stage == 0 and elapsed_ms >= 400:
             self._draw_parent_changes()
             self._record_transition("parent_spatial_changes", now_ns)
             self._stage = 1
+        if self._child_phase_armed:
+            self._child_started_ns = now_ns
+            self._child_phase_armed = False
         child_elapsed_ms = (
             (now_ns - self._child_started_ns) // 1_000_000
             if self._child_started_ns is not None
@@ -80,7 +88,7 @@ class LocalStructuralSufficiencyStimulusRuntime:
             self._draw_child_event_open()
             self._record_transition("child_visual_event_open", now_ns)
             self._stage = 2
-        if self._stage == 2 and child_elapsed_ms >= 1_450:
+        elif self._stage == 2 and child_elapsed_ms >= 1_000:
             self._draw_child_event_closed()
             self._record_transition("child_visual_event_closed", now_ns)
             self._stage = 3
@@ -92,9 +100,16 @@ class LocalStructuralSufficiencyStimulusRuntime:
             raise RuntimeError(
                 "Package 128 child phase requires parent changes"
             )
-        if self._child_started_ns is not None:
+        if self._child_started_ns is not None or self._child_phase_armed:
             raise RuntimeError("Package 128 child phase already started")
-        self._child_started_ns = monotonic_ns()
+        self._child_phase_armed = True
+
+    def begin_parent_phase(self) -> None:
+        if self._child_started_ns is not None or self._child_phase_armed:
+            raise RuntimeError("Package 128 parent phase already ended")
+        self._started_ns = None
+        self._parent_phase_armed = True
+        self._stage = 0
 
     def mark_finished(self) -> None:
         self._finished_ns = monotonic_ns()

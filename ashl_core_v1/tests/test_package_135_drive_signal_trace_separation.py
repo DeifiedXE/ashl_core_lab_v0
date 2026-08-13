@@ -334,7 +334,7 @@ class Package135DriveSignalTraceSeparationTests(unittest.TestCase):
                 / "ashl_core_v1/docs/reference/package_number_registry_v0.json"
             ).read_text(encoding="utf-8")
         )
-        self.assertEqual(registry["current_package_id"], "143")
+        self.assertEqual(registry["current_package_id"], "144")
         self.assertIn("135", registry["completed_package_ids"])
         self.assertNotIn("135", registry["future_package_ids"])
         self.assertEqual(registry["package_status"]["135"], "completed")
@@ -346,7 +346,8 @@ class Package135DriveSignalTraceSeparationTests(unittest.TestCase):
         self.assertEqual(registry["package_status"]["141"], "completed")
         self.assertEqual(registry["package_status"]["142"], "completed")
         self.assertEqual(registry["package_status"]["143"], "completed")
-        self.assertEqual(registry["package_status"]["144"], "next_critical_path")
+        self.assertEqual(registry["package_status"]["144"], "completed")
+        self.assertEqual(registry["package_status"]["145"], "next_critical_path")
         digest = sha256_payload(
             {
                 "current": registry["current_package_id"],
@@ -364,7 +365,7 @@ class Package135DriveSignalTraceSeparationTests(unittest.TestCase):
         self.assertIn("Package 138 exposes that exact state", route)
         self.assertIn("Package 139 selects only an explicit verified ancestor", route)
         self.assertIn("Package 140 is the frozen", route)
-        self.assertIn("Package 144 is next", route)
+        self.assertIn("Package 145 is next", route)
 
     def _store(self) -> Package135DriveSignalTraceStore:
         return Package135DriveSignalTraceStore(self.package_135_root)
