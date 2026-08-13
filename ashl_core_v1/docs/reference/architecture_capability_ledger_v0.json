@@ -1,5 +1,5 @@
 {
-  "ledger_id": "architecture_capability_ledger:package_142_specialized_thought_bounded_rules",
+  "ledger_id": "architecture_capability_ledger:package_143_coarse_thought_workspace",
   "schema_version": "ashl_architecture_capability_ledger_v0",
   "runtime_behavior_changed_by_package_124": false,
   "runtime_behavior_changed_by_dlm0_qm0": false,
@@ -18,6 +18,7 @@
   "runtime_behavior_changed_by_package_140": false,
   "runtime_behavior_changed_by_package_141": true,
   "runtime_behavior_changed_by_package_142": false,
+  "runtime_behavior_changed_by_package_143": false,
   "perception_capability_construction_line_frozen": true,
   "persistent_self_state_representation_added_by_package_133": true,
   "cross_session_recovery_added_by_package_133": false,
@@ -49,6 +50,12 @@
   "package_142_production_drive_input_count": 0,
   "package_142_production_self_state_readback_input_count": 0,
   "package_142_production_output_consumer_count": 0,
+  "ephemeral_coarse_thought_workspace_added_by_package_143": true,
+  "package_143_workspace_capacity": 3,
+  "package_143_cross_session_recovery_allowed": false,
+  "package_143_production_drive_input_count": 0,
+  "package_143_production_self_state_readback_input_count": 0,
+  "package_143_production_output_consumer_count": 0,
   "capabilities": [
     {
       "package": "123",
@@ -382,8 +389,30 @@
     {
       "package": "143",
       "name": "Coarse Thought Workspace",
+      "status": "completed",
+      "runtime_delta": "one process-local ephemeral context temporarily holds at most three active Package 142 specialized-thought entries",
+      "input_delta": "one explicit read-only Package 142 consumer binding; no direct perception, legacy ThoughtSignal, drive or self-state readback input",
+      "admission_delta": "only typed active revocable Package 142 results or one atomic unresolved-conflict group are admitted",
+      "capacity_delta": "fixed capacity three with deterministic oldest-admission-group then group-id eviction",
+      "eviction_delta": "bookkeeping only; no error, negation, forgetting, importance, suppression, winner, priority, rank or truth semantics",
+      "conflict_delta": "Package 142 unresolved conflicts remain unresolved and atomically carried without selection",
+      "lifetime_delta": "source expiry, source revocation or workspace closure cascades to all linked entries with zero orphans",
+      "recovery_delta": "none; a distinct fresh process starts with zero initial and zero recovered workspace entries",
+      "deliberation_delta": "none",
+      "memory_delta": "none",
+      "self_state_delta": "none",
+      "purpose_delta": "none",
+      "action_delta": "none",
+      "semantic_delta": "none",
+      "output_delta": "none",
+      "external_control_delta": "none",
+      "llm_codex_network_delta": "zero runtime calls"
+    },
+    {
+      "package": "144",
+      "name": "Deep Thought Deliberation Budget",
       "status": "next_critical_path",
-      "runtime_delta": "planned; establish an explicitly bounded workspace without weakening Package 141/142 input, lifetime, conflict, or authority boundaries"
+      "runtime_delta": "planned; add explicitly authorized bounded deliberation over an immutable Package 143 workspace view without creating behavior authority"
     }
   ],
   "migration_audits": [

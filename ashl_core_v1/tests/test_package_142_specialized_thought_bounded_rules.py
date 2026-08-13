@@ -527,12 +527,13 @@ class Package142RepositoryBoundaryTests(unittest.TestCase):
             tuple(name for name in imported if name.startswith(forbidden_prefixes))
         )
 
-    def test_no_workspace_package_143_or_full_thought_engine_module_created(self) -> None:
+    def test_package_143_workspace_exists_without_package_144_or_full_engine(self) -> None:
         thought_files = {
             path.name for path in (REPO_ROOT / "ashl_core_v1" / "thought").glob("*.py")
         }
-        self.assertNotIn("coarse_thought_workspace.py", thought_files)
-        self.assertNotIn("package_143_workspace_runtime.py", thought_files)
+        self.assertIn("coarse_thought_workspace_types.py", thought_files)
+        self.assertIn("package_143_coarse_workspace_runtime.py", thought_files)
+        self.assertNotIn("package_144_deliberation_runtime.py", thought_files)
         self.assertNotIn("full_thought_engine.py", thought_files)
 
     def test_registry_and_route_advance_only_to_143(self) -> None:
@@ -545,9 +546,10 @@ class Package142RepositoryBoundaryTests(unittest.TestCase):
                 / "package_number_registry_v0.json"
             ).read_text(encoding="utf-8")
         )
-        self.assertEqual(registry["current_package_id"], "142")
+        self.assertEqual(registry["current_package_id"], "143")
         self.assertEqual(registry["package_status"]["142"], "completed")
-        self.assertEqual(registry["package_status"]["143"], "next_critical_path")
+        self.assertEqual(registry["package_status"]["143"], "completed")
+        self.assertEqual(registry["package_status"]["144"], "next_critical_path")
         self.assertIn("142", registry["completed_package_ids"])
         self.assertNotIn("142", registry["future_package_ids"])
         route = (
@@ -558,8 +560,9 @@ class Package142RepositoryBoundaryTests(unittest.TestCase):
             / "package_123_to_daily_runtime_revised_route_v0.md"
         ).read_text(encoding="utf-8")
         self.assertIn("Package 142 is completed", route)
-        self.assertIn("Package 143 is next", route)
-        self.assertIn("Package 142 does not implement Package 143", route)
+        self.assertIn("Package 143 is completed", route)
+        self.assertIn("Package 144 is next", route)
+        self.assertIn("Package 143 does not implement Package 144", route)
 
 
 if __name__ == "__main__":

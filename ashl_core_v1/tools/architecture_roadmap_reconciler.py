@@ -82,7 +82,7 @@ def _route_records() -> tuple[RevisedRoutePackageRecord, ...]:
         ("140", "Persistent Self-State And Drive Milestone", "critical_path", "Package 140", "Seal persistent self-state and drive boundary."),
         ("141", "Instinct Layer Runtime", "critical_path", "Package 148", "Implement non-LLM instinct-like bounded rules."),
         ("142", "Specialized Thought Bounded Rules", "critical_path", "Package 148", "Add specialized thought as deterministic rules."),
-        ("143", "Coarse Thought Workspace", "critical_path", "Package 148", "Add bounded coarse workspace state."),
+        ("143", "Coarse Thought Workspace", "critical_path", "Package 148", "Add bounded ephemeral coarse workspace context."),
         ("144", "Deep Thought Deliberation Budget", "critical_path", "Package 148", "Add bounded deeper deliberation without LLM runtime."),
         ("145", "Thought Trace Boundary", "critical_path", "Package 148", "Trace thought outputs without exposing hidden model claims."),
         ("146", "Thought To Verification Handoff", "supporting_path", "Package 148", "Connect thought proposals to verification gates."),

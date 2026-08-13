@@ -15,6 +15,12 @@ from .specialized_thought_types import (
     SpecializedThoughtInstinctConsumerBindingRecord,
     SpecializedThoughtRuleFamilyContractRecord,
 )
+from .coarse_thought_workspace_types import (
+    CoarseThoughtWorkspaceConflictCarriageRecord,
+    CoarseThoughtWorkspaceContractRecord,
+    CoarseThoughtWorkspaceEntryRecord,
+    CoarseThoughtWorkspaceSessionRecord,
+)
 
 __all__ = [
     "InfluenceTrace",
@@ -30,4 +36,8 @@ __all__ = [
     "SpecializedThoughtCrossFamilyConflictRecord",
     "SpecializedThoughtInstinctConsumerBindingRecord",
     "SpecializedThoughtRuleFamilyContractRecord",
+    "CoarseThoughtWorkspaceConflictCarriageRecord",
+    "CoarseThoughtWorkspaceContractRecord",
+    "CoarseThoughtWorkspaceEntryRecord",
+    "CoarseThoughtWorkspaceSessionRecord",
 ]

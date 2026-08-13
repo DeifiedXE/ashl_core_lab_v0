@@ -336,14 +336,15 @@ class Package137PersistentSelfStateReviewGateTests(unittest.TestCase):
                 encoding="utf-8"
             )
         )
-        self.assertEqual(registry["current_package_id"], "142")
+        self.assertEqual(registry["current_package_id"], "143")
         self.assertEqual(registry["package_status"]["137"], "completed")
         self.assertEqual(registry["package_status"]["138"], "completed")
         self.assertEqual(registry["package_status"]["139"], "completed")
         self.assertEqual(registry["package_status"]["140"], "completed")
         self.assertEqual(registry["package_status"]["141"], "completed")
         self.assertEqual(registry["package_status"]["142"], "completed")
-        self.assertEqual(registry["package_status"]["143"], "next_critical_path")
+        self.assertEqual(registry["package_status"]["143"], "completed")
+        self.assertEqual(registry["package_status"]["144"], "next_critical_path")
         self.assertIn("137", registry["completed_package_ids"])
         self.assertNotIn("137", registry["future_package_ids"])
 

@@ -223,6 +223,19 @@ VALID_EVENT_KINDS = (
     "specialized_thought_evaluation_blocked",
     "package_142_audit_passed",
     "package_142_audit_blocked",
+    "coarse_workspace_consumer_bound",
+    "coarse_workspace_contract_created",
+    "coarse_workspace_session_started",
+    "coarse_workspace_result_admitted",
+    "coarse_workspace_conflict_carried",
+    "coarse_workspace_capacity_eviction",
+    "coarse_workspace_entry_invalidated",
+    "coarse_workspace_closed",
+    "coarse_workspace_fresh_process_reset_verified",
+    "coarse_workspace_counterfactual_verified",
+    "coarse_workspace_admission_blocked",
+    "package_143_audit_passed",
+    "package_143_audit_blocked",
 )
 PACKAGE_125_OBSERVATION_EVENT_KINDS = (
     "observation_window_started",
@@ -349,6 +362,21 @@ PACKAGE_142_SPECIALIZED_THOUGHT_EVENT_KINDS = (
     "specialized_thought_evaluation_blocked",
     "package_142_audit_passed",
     "package_142_audit_blocked",
+)
+PACKAGE_143_COARSE_WORKSPACE_EVENT_KINDS = (
+    "coarse_workspace_consumer_bound",
+    "coarse_workspace_contract_created",
+    "coarse_workspace_session_started",
+    "coarse_workspace_result_admitted",
+    "coarse_workspace_conflict_carried",
+    "coarse_workspace_capacity_eviction",
+    "coarse_workspace_entry_invalidated",
+    "coarse_workspace_closed",
+    "coarse_workspace_fresh_process_reset_verified",
+    "coarse_workspace_counterfactual_verified",
+    "coarse_workspace_admission_blocked",
+    "package_143_audit_passed",
+    "package_143_audit_blocked",
 )
 
 
@@ -965,6 +993,11 @@ class LocalOperatorJsonEvent:
             if not self.source_record_refs:
                 raise ValueError(
                     "Package 142 events require typed source record references"
+                )
+        if self.event_kind in PACKAGE_143_COARSE_WORKSPACE_EVENT_KINDS:
+            if not self.source_record_refs:
+                raise ValueError(
+                    "Package 143 events require typed source record references"
                 )
         object.__setattr__(self, "source_record_refs", _tuple_of_str(self.source_record_refs))
         object.__setattr__(self, "source_trace_refs", _tuple_of_str(self.source_trace_refs))

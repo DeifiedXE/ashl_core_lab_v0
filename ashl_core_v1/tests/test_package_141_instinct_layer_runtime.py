@@ -392,17 +392,19 @@ class Package141RepositoryBoundaryTests(unittest.TestCase):
         registry = json.loads(
             (REPO_ROOT / "ashl_core_v1" / "docs" / "reference" / "package_number_registry_v0.json").read_text(encoding="utf-8")
         )
-        self.assertEqual(registry["current_package_id"], "142")
+        self.assertEqual(registry["current_package_id"], "143")
         self.assertEqual(registry["package_status"]["141"], "completed")
         self.assertEqual(registry["package_status"]["142"], "completed")
-        self.assertEqual(registry["package_status"]["143"], "next_critical_path")
+        self.assertEqual(registry["package_status"]["143"], "completed")
+        self.assertEqual(registry["package_status"]["144"], "next_critical_path")
         self.assertIn("141", registry["completed_package_ids"])
         self.assertNotIn("141", registry["future_package_ids"])
         route = (REPO_ROOT / "ashl_core_v1" / "docs" / "reference" / "package_123_to_daily_runtime_revised_route_v0.md").read_text(encoding="utf-8")
         self.assertIn("Package 141 is completed", route)
         self.assertIn("Package 142 is completed", route)
-        self.assertIn("Package 143 is next", route)
-        self.assertIn("Package 142 does not implement Package 143", route)
+        self.assertIn("Package 143 is completed", route)
+        self.assertIn("Package 144 is next", route)
+        self.assertIn("Package 143 does not implement Package 144", route)
 
 
 if __name__ == "__main__":

@@ -1414,7 +1414,16 @@ def _derive_forbidden_capability_flags(
         "package_132a_created": (
             "132A" in tuple(registry.get("completed_package_ids") or ())
             or "132A" in tuple(registry.get("future_package_ids") or ())
-            or bool(tuple(root.rglob("*132a*")))
+            or any(
+                "132a" in Path(relative_path).name.lower()
+                for relative_path in _git_output(
+                    root,
+                    "ls-files",
+                    "--cached",
+                    "--others",
+                    "--exclude-standard",
+                ).splitlines()
+            )
         ),
         "dlm_1_implemented": any(
             payload.get("dlm_1_implemented") is True for payload in payloads
